@@ -852,6 +852,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response.statusCode === 200) {
           this.contactStatusStages = response.data;
+          this.contactStatusStages.unshift({ id: null, stageName: 'Select Contact Status' });
         }
         this.isListLoader = false;
       }, (error: any) => {
@@ -861,16 +862,31 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   isContactStatusPresent(user: User): boolean {
-    return this.contactStatusStages.some(stage => stage === user.contactStatus);
+    return this.contactStatusStages.some(stage => stage.stageName === user.contactStatus);
   }
 
   onContactStatusChange(status: any, user: User) {
-    if (!status) {
+    const isInvalidStatus = !status || status.stageName === 'Select Contact Status';
+
+    if (isInvalidStatus) {
       user.contactStatusId = null;
       user.contactStatus = '';
     } else {
       user.contactStatusId = status.id;
       user.contactStatus = status.stageName;
+    }
+  }
+
+  updateContactStatus(user: User) {
+    if (!this.isContactStatusPresent(user)) return;
+
+    const selectedStatus = this.contactStatusStages.find(
+      status => status.stageName === user.contactStatus
+    );
+
+    if (selectedStatus) {
+      this.onContactStatusChange(selectedStatus, user);
+      user.userStatus = selectedStatus;
     }
   }
 

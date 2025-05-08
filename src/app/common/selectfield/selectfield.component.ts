@@ -40,7 +40,7 @@ export class SelectfieldComponent implements OnInit {
   allItems: any[] = [];
   unSelectedItems: any[] = [];
   selectedItems: any[] = [];
-  excludedLabels = ["LastName","Last_Name", "Company", "Email"];
+  excludedLabels = ["LastName", "Last_Name", "Company", "Email"];
   selectModalPopUp = "exportExcelModalPopup";
   orderModalPopup = "orderFieldPopup";
   isOrderDivOpen = false;
@@ -62,7 +62,7 @@ export class SelectfieldComponent implements OnInit {
     this.isMyprofile = this.router.url.includes('dashboard/myprofile');
 
     if (!this.isMyprofile) {
-      
+
       this.dragulaService.setOptions('fieldsDragula', {
         moves: (el, container, handle) => {
           // Check if the dragged element has the 'non-draggable' class
@@ -89,9 +89,9 @@ export class SelectfieldComponent implements OnInit {
   ngOnInit() {
     this.ngxloading = true;
     if (this.opportunityType === 'LEAD') {
-      this.excludedLabels = ["LastName","Last_Name", "Company", "Email"];
+      this.excludedLabels = ["LastName", "Last_Name", "Company", "Email"];
     } else {
-      this.excludedLabels = ["Name","dealname","name","title","symptom","Account_Name","Deal_Name","CloseDate","closedate","expectedCloseDate","expected_close_date","FOppTargetDate","Closing_Date","Close_Date","Amount","amount","value","FOppValue"];
+      this.excludedLabels = ["Name", "dealname", "name", "title", "symptom", "Account_Name", "Deal_Name", "CloseDate", "closedate", "expectedCloseDate", "expected_close_date", "FOppTargetDate", "Closing_Date", "Close_Date", "Amount", "amount","AMOUNT", "value", "FOppValue","CLOSE_DATE","DEAL_NAME"];
     }
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -173,14 +173,14 @@ export class SelectfieldComponent implements OnInit {
     });
     this.updateHeaderCheckbox();
   }
-  isHeaderCheckBoxCheckedDisable:boolean
+  isHeaderCheckBoxCheckedDisable: boolean
   updateHeaderCheckbox() {
     if (!(this.pager.pages && this.pager.pages.length)) {
       this.isHeaderCheckBoxChecked = false;
     } else {
       this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
     }
-     this.isHeaderCheckBoxCheckedDisable = this.fieldsPagedItems.every((item: any) => item.defaultColumn);
+    this.isHeaderCheckBoxCheckedDisable = this.fieldsPagedItems.every((item: any) => item.defaultColumn) && !this.isMyprofile;
   }
   isCheked(field: any): boolean {
     if (this.isMyprofile) {
@@ -199,7 +199,7 @@ export class SelectfieldComponent implements OnInit {
   }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
-    this.selectedItems = this.isSelectDivOpen ? this.allItems.filter(item => item.selectedColumn === true) : this.selectFieldsDtos ;
+    this.selectedItems = this.isSelectDivOpen ? this.allItems.filter(item => item.selectedColumn === true) : this.selectFieldsDtos;
     this.emitValues('submit');
   }
   setMyPreferances(event: any) {
@@ -225,7 +225,10 @@ export class SelectfieldComponent implements OnInit {
   }
 
   isFieldDisabled(field: any): boolean {
-    return this.excludedLabels.includes(field.labelId) || (field.defaultColumn  && !this.isMyprofile);
+    return this.excludedLabels.includes(field.labelId) || (field.defaultColumn && !this.isMyprofile);
+  }
+  isDefaultFields(field: any): boolean {
+    return this.excludedLabels.includes(field.formDefaultFieldType);
   }
   searchKey: string = '';
   searchFieldsKeyPress(keyCode: any) {
@@ -282,7 +285,8 @@ export class SelectfieldComponent implements OnInit {
   }
   getExportExcelHeader(pagination: Pagination) {
     this.ngxloading = true;
-    this.dashboardService.getExportExcelHeaders(this.companyProfileName, this.loggedInUserType, this.customName, this.opportunityType,this.isMyprofile)
+    let self = this;
+    this.dashboardService.getExportExcelHeaders(this.companyProfileName, this.loggedInUserType, this.customName, this.opportunityType, this.isMyprofile)
       .subscribe(
         (response: any) => {
           if (response.statusCode == 200) {
@@ -301,8 +305,22 @@ export class SelectfieldComponent implements OnInit {
           }
           this.ngxloading = false;
         },
-        error => console.log(error),
+        error => {console.log(error)
+          this.ngxloading = false;
+        },
         () => {
+          // $.each(this.allItems, function (_index: number, customFiledDto: any) {
+          //   if (customFiledDto.selected) {
+          //     self.allItems.push(customFiledDto);
+          //   }
+          //   if (customFiledDto.columnOrder >= 1) {
+          //     self.allItems.sort((a, b) => {
+          //       if (a['columnOrder'] === null) return 1;
+          //       if (b['columnOrder'] === null) return -1;
+          //       return a['columnOrder'] - b['columnOrder'];
+          //     });
+          //   }
+          // });
         });
   }
 

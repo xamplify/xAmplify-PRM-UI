@@ -15,13 +15,18 @@
               <span class="required" *ngIf="contactStatusStage?.stageName?.length > 55">The maximum allowed characters limit is 55.</span>
             </span>
             <span class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <div class="mb_mt7 alignEqualtoFields">
-                <input class="radioButton_shadow" type="radio" [value]="x" [checked]="selectedDefaultIndex === x" name="defaultStage"
-                  class="alignEqualtoText" (change)="defaultStageChange(x)">
-                <span>Default</span>
+              <div class="mb_mt7">
+                <input type="radio" [value]="x" [checked]="selectedDefaultIndex === x" name="defaultStage"
+                  (change)="defaultStageChange(x)">
+                <span>Default</span>&nbsp;
+                <span *ngIf="contactStatusStage?.defaultStage" class="fa fa-info-circle" data-placement="top" data-toggle="tooltip"
+                  aria-hidden="true" data-original-title="Default status assigned to all new contacts."></span>
                 <button type="button" *ngIf="!contactStatusStage.defaultStage"
-                  class="btn-danger button-blue btn_add mr_4 spaceTopBottom pull-right" (click)="deleteStage(contactStatusStage)" data-toggle="tooltip"
-                  data-placement="top" [attr.data-original-title]="contactStatusStage.companyId === 1 ? 'Default stage can not be deleted' : 'Delete'"  [disabled]="contactStatusStage.companyId === 1"><span class="glyphicon glyphicon-trash"></span>
+                  [ngStyle]="{'cursor': contactStatusStage.companyId === 1 ? 'not-allowed' : 'pointer'}"
+                  class="btn-danger button-blue btn_add mr_4 spaceTopBottom pull-right" (click)="deleteStage(contactStatusStage)"
+                  data-toggle="tooltip" data-placement="top" [disabled]="contactStatusStage.companyId === 1"
+                  [attr.data-original-title]="contactStatusStage.companyId === 1 ? 'Save changes to delete this status.' : 'Delete'">
+                  <span class="glyphicon glyphicon-trash"></span>
                 </button>
               </div>
             </span>

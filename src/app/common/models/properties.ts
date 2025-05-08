@@ -579,9 +579,13 @@ export class Properties {
 
 	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
 
-
+	/** XNFR-952 **/
 	contactUploadManagementSettings = 'Contacts Usage Analytics';
 	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
+	LOAD_SELF_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load self contacts count. Please try again later.";
+	LOAD_PARTNER_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load contacts uploaded by partners. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE: "Unable to load subscription limit usage count. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE: "Unable to load subscription limit count. Please try again later.";
 
 	/**XNFR-973**/
 	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."

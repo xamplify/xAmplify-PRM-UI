@@ -462,7 +462,7 @@
                                                                   [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                                             </td>
                                                          </ng-container>
-                                                         <td class="text-center">{{contacts.countOfContactsLists}}</td>
+                                                         <td class="text-center" *ngIf="!campaign?.oneClickLaunch">{{contacts.countOfContactsLists}}</td>
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">

@@ -2809,3 +2809,4 @@ markdown pre,.aligin-para{
   .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
     color: #fff!important;
   }
+  .preview-border{border: 1px solid #2f4857 !important;}

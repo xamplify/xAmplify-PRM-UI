@@ -4629,3 +4629,4 @@ input:checked + .toggle-slider {
   margin-top: -40px !important;
   margin-right: -50px !important;
 }
+.preview-border{border: 1px solid #d0d5db !important;}

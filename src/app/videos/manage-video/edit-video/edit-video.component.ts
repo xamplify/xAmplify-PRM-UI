@@ -1330,6 +1330,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo],
       });
       this.completeLink = this.linkPrefix + this.saveVideoFile.slug;
+      this.existingSlug = this.saveVideoFile.slug;
       this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
       this.onValueChanged();
   }
@@ -1676,13 +1677,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
               }
             });
-
       }
 
       validateSlugForCompany(slug) {
         let linkControl = this.videoForm.get('slug')
-        this.completeLink = this.linkPrefix+linkControl.value;
-        if(slug != null && slug != '' ){
+        slug = slug.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_')
+        this.videoForm.get('slug').setValue(slug);
+        this.completeLink = this.linkPrefix+slug;
+        this.saveVideoFile.slug = slug
+        if(slug != null && slug != '' && this.existingSlug !== slug ){
       this.damService.validateSlug(slug, this.loggedInUserCompanyId).subscribe(
         (response: any) => {
           let isValid = response.data;

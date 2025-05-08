@@ -178,7 +178,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		{ 'name': 'Country', 'value': 'country' },
 		{ 'name': 'City', 'value': 'city' },
 		{ 'name': 'Mobile Number', 'value': 'mobile Number' },
-		{ 'name': 'state', 'value': 'State' },
+		{ 'name': 'State', 'value': 'State' },
 		/* { 'name': 'Notes', 'value': 'notes' },*/
 	];
 	filterOption = this.filterOptions[0];
@@ -1836,7 +1836,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.criteria.property = this.filterOptions[0].value;
 		this.criteria.operation = this.filterConditions[0].value;
 		if (this.isContactModule) {
-			this.filterOptions.push({ 'name': 'Contact Status', 'value': 'Contact Status' },);
+			const exists = this.filterOptions.some(option => option.value === 'Contact Status');
+			if (!exists) {
+				this.filterOptions.push({ name: 'Contact Status', value: 'Contact Status' });
+			}
 		}
 		this.addNewRow();
 	}

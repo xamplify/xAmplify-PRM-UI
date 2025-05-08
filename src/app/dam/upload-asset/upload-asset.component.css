@@ -704,18 +704,19 @@ margin-right: 10px;}
     cursor: not-allowed !important;
   }
   .inline-box{
-    display: inline-flex;
+    display:flex;
+    flex:1;
 }
 .link button{
   float: left;
-  width: 10%;
+  width: 7%;
   background: #2196f3;
   color: white;
   border-left: none;
   cursor: pointer;
 }
 .right-border {
-  border-right: 1px solid #eee;
+  border-right: 1px solid #2676b0;
 }
 .select-box{
   width: 60%;
@@ -728,4 +729,8 @@ margin-right: 10px;}
   vertical-align: middle;
   width: auto;
   padding: 10px 5px 10px 5px;
+}
+.asset_files.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

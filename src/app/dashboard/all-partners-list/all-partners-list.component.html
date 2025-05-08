@@ -1,4 +1,4 @@
-<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m">
+<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m pl5">
   <div class="panel panel-info mh480 panel-bgMain panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
@@ -46,16 +46,14 @@
                <!-- Alert Message Box  -->
               <app-response-message class="pg8" [customResponse]="customResponse"
                 *ngIf="customResponse?.isVisible"></app-response-message>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+              <div class="d-flex justify-content-between align-items-center mb5">
                 <h4 translate>Apply Filter</h4>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
                 <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
-                  <i class="fa fa-times" aria-hidden="true"></i>
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
                 </button>
-              </div>
+                </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
-                <ejs-multiselect [(ngModel)]='pagination.selectedRegionIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedRegionIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
                   [ignoreAccent]='true' id='multiselectelement' [dataSource]='regionNameFilters' [fields]='regionInfoFields'
                   [placeholder]='multiSelectPlaceholderForRegion'>
                 </ejs-multiselect>
@@ -63,21 +61,21 @@
                 [ignoreAccent]='true' id='multiselectelement' [dataSource]='statusOptions' [fields]='statusFields'
                 [placeholder]='multiSelectPlaceholderForStatus'>
               </ejs-multiselect>
-                <div class="portlet box custom_fiter-asset mt10">
+                <div class="portlet box custom_fiter-asset template_box">
                   <div class="row pl10 pr10 pb10">
-                    <div class="form-inline col-xs-12 createdOnRow">
-                      <div class="form-group" style="margin-right: 20px;">{{dateFilterText}}                       
+                    <div class="form-inline col-xs-12 createdOnRow p0">
+                      <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">{{dateFilterText}}                       
                           <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
                             title="Select the Date Range to View Analytics"></i>
                       </div>
-                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <div class="form-group col-xs-6 col-sm-4 col-md-4 col-lg-4 p0">
                         <label class="control-label">
                           From Date &nbsp;
                         </label>
                         <app-date-picker [(dataField)]="pagination.fromDateFilterString" [isFromFilter]='true'>
                         </app-date-picker>
                       </div>
-                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <div class="form-group col-xs-6 col-sm-4 col-md-4 col-lg-4 p0">
                         <label class="control-label">To Date &nbsp;
                         </label>
                         <app-date-picker [(dataField)]="pagination.toDateFilterString" [isFromFilter]='true'>

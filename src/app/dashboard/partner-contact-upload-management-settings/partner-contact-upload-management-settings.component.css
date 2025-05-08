@@ -24,3 +24,8 @@
 .justify-content-end {
     justify-content: end;
 }
+
+.contact-analytics-counts-info {
+    margin: 0px 10px;
+    padding: 4px 0px;
+}

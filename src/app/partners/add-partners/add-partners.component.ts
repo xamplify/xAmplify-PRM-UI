@@ -778,7 +778,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}, error => {
 				this.iteratePartnersAndAssignContactsCount(false);
 			});
-
+		this.loadContactUploadSubscriptionLimitForCompany();
 	}
 	iteratePartnersAndAssignContactsCount(notifyPartners: boolean) {
 		if (this.allselectedUsers.length > 0) {
@@ -2736,9 +2736,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
-
-		this.getTotalContactSubscriptionLimitUsedByCompany();
-		this.loadContactUploadSubscriptionLimitForCompany();
 	}
 
 
@@ -4935,7 +4932,7 @@ triggerUniversalSearch(){
 			},
 			error => {
 				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
-				this.customResponse = new CustomResponse('ERROR', "Unable to load the contact Subscription Count Used count", true);
+				this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE, true);
 			});
 	}
 
@@ -4950,7 +4947,9 @@ triggerUniversalSearch(){
 			},
 			error => {
 				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
-				this.customResponse = new CustomResponse('ERROR', "Unable to load the assigned Contact limit count", true);
+				this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE, true);
+			}, ()=> {
+				this.getTotalContactSubscriptionLimitUsedByCompany();
 			});
 	}
 	/** XNFR-952 end */
