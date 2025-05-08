@@ -86,7 +86,9 @@
               <tbody *ngFor="let partnerCompanyMetricsDTO of partnerCompanyMetricsDTOs;let i = index">
                 <tr>
                   <td style="width: 50%;">
-                    <app-user-info [isAllPartnersList]="true" [userInfo]="partnerCompanyMetricsDTO"></app-user-info>
+                    
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partnerCompanyMetricsDTO"></app-user-info>
+                    
                   </td>
                   <td class="contact-count error text-center" width="14%" id="contact-count-{{i}}">
                     <input type="number" [(ngModel)]="partnerCompanyMetricsDTO.contactUploadLimit"
