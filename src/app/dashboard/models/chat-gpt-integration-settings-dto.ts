@@ -13,4 +13,10 @@ export class ChatGptIntegrationSettingsDto {
     file:any;
     chatHistoryId:any;
     vectorStoreId:any;
+    isFromChatGptModal: boolean = false;
+    uploadedAssetIds = [];
+    agentType = "";
+    categoryIds = [];
+    contents:any[] = [];
+    partnerInsightAgent: boolean = false;
 }

@@ -8,12 +8,12 @@
 			</div>
 			<div class="page-toolbar col-xs-12 col-sm-6 col-lg-6" *ngIf="!httpRequestLoader.isLoading">
 				<div class="pull-right d-flex">
-					<div class="group-dropdown" style="padding-right: 4px;">
+					<div class="group-dropdown" style="padding-right: 4px;" [class.disabled]="selectedFoldersForOliver.length > 0">
 						<button
 							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs l-g-view':
                     			folderViewType == 'fl' ? 'fa fa-th btn-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs l-g-view':'fa fa-th-list btn-xs l-g-view'"
-							style="padding: 10px !important"></button>
-						<div class="group-dd-content" style="padding: 10px !important; min-width: max-content;">
+							style="padding: 10px !important" [class.disabled]="selectedFoldersForOliver.length > 0"></button>
+						<div class="group-dd-content" style="padding: 10px !important; min-width: max-content;" *ngIf="selectedFoldersForOliver.length == 0">
 							<ng-container class='m10'> <span class="btn btn-xs l-g-view" data-toggle="tooltip"
 									data-placement="bottom" title="List View" (click)="setViewType('l')"> <i
 										class="fa fa-th-list p10" aria-hidden="true"></i>
@@ -24,7 +24,7 @@
 									[class.disabled]="folderViewType=='fg'" (click)="setViewType('fg')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"> <i
 										class="fa fa-folder p10" aria-hidden="true"></i>
-								</span> <span
+								</span> <span *ngIf="!FromOliverPopUp"
 									class="btn btn-xs l-g-view margin-space folder-list-span-custom-width"
 									[class.disabled]="folderViewType=='fl'" (click)="setViewType('fl')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder List View">
@@ -76,7 +76,12 @@
 				*ngFor="let category of pagination.pagedItems; let i= index">
 				<div class="ffolder big gray folder-cheight">
 					<div class="grid-box folder-height" style="max-height: 194px;">
-						<div id="category-icon-div" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 icon-align">
+						<span class="select-check-box" *ngIf="FromOliverPopUp">
+							<label>
+								<input type="checkbox" class="radio-custimization pointer radioButton_shadow" [checked]="isSelected(category)" (change)="onCheckboxChange(category, $event)">
+							</label>
+						</span>
+						<div id="category-icon-div" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 icon-align" [ngClass]="FromOliverPopUp ? 'folder_check_box' : ''">
 							<i class="{{category.icon}} icon-align" id="category-icon-size" aria-hidden="true">
 							</i>
 						</div>
@@ -119,8 +124,8 @@
 								<div class="clickicons"></div>
 								<!-- color-chnage -->
 							</a>
-							<a *ngIf="authenticationService?.isOliverActive" class="Iconhover custom-icon oliverhover" data-toggle="tooltip"
-								data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id)">
+							<a *ngIf="authenticationService?.isOliverActive && !FromOliverPopUp" class="Iconhover custom-icon oliverhover"
+								data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id)">
 								<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg oliverStyle m0 ">
 							</a>
 						</div>
