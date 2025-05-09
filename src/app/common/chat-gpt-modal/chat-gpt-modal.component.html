@@ -351,7 +351,10 @@
                       <div class="oliver-container-img hidden-xs">
                         <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
                       </div>
-                      <div class="textarea-card clip-path2 scrollable">
+                      <div class="textarea-card clip-path2" [ngClass]="isTextLoading ? '' : 'scrollable' ">
+                        <div *ngIf="isTextLoading" class="align-center">
+                          <ng-container *ngTemplateOutlet="wifiLoader"></ng-container>
+                        </div>
                         <div #markdownComponent class="padding-align">
                           <markdown [data]="chatGptGeneratedText"></markdown>
                         </div>
@@ -547,4 +550,22 @@
     </div>
   </div>
 </ng-template>
+<ng-template #wifiLoader>
+  <div id="wifi-loader" class="align-center para-loader">
+    <svg viewBox="0 0 86 86" class="circle circle-outer">
+      <circle r="40" cy="43" cx="43" class="back"></circle>
+      <circle r="40" cy="43" cx="43" class="front"></circle>
+    </svg>
+    <svg viewBox="0 0 60 60" class="circle circle-middle">
+      <circle r="27" cy="30" cx="30" class="back"></circle>
+      <circle r="27" cy="30" cx="30" class="front"></circle>
+    </svg>
+    <svg viewBox="0 0 34 34" class="circle circle-inner">
+      <circle r="14" cy="17" cx="17" class="back"></circle>
+      <circle r="14" cy="17" cx="17" class="front"></circle>
+    </svg>
+    <div class="text" data-text="Searching"></div>
+  </div>
+</ng-template>
+
 
