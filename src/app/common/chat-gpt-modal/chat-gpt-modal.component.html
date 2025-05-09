@@ -112,22 +112,22 @@
               <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
                 <li *ngIf="!isWelcomePageUrl" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
-                    <i class="fa fa-file-text"></i> Insight Agent
+                    <i class="fa fa-file-text"></i> Oliver Insights
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'new-chat'}">
                   <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                    <i class="fa fa-plus"></i> BrainStorm Agent
+                    <i class="fa fa-plus"></i>Brainstorm with Oliver
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'writing'}">
                   <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
-                    <i class="fa fa-pencil"></i> Spark Writer Agent
+                    <i class="fa fa-pencil"></i> Oliver Spark Writer
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'paraphraser'}">
                   <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
-                    <i class="fa fa-align-left"></i> Paraphraser Agent
+                    <i class="fa fa-align-left"></i> Oliver Paraphraser
                   </a>
                 </li>
                 <li class="history-divider"></li>
@@ -173,17 +173,13 @@
                   <div [ngClass]="showOpenHistory && activeTab === 'new-chat' ? 'templateui col-lg-9' : 'container-ui'">
                     <!-- Heading -->
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
-                      <span class="oliver_heading">Brainstorm Agent</span>
+                      <span class="oliver_heading">Brainstorm with Oliver</span>
                       <!-- Oliver Image Positioned Correctly -->
                       <div class="oliver-container">
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
-                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging
-                      directions for your solution and audience. Specializes in creative
-                      brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core
-                      themes tailored to
-                      your goals.</p>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign directions with guided ideation.</p>
                     <!-- Input Section -->
                     <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
@@ -213,17 +209,13 @@
                   <div
                     [ngClass]="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
-                      <span class="oliver_heading">Spark Writer Agent</span>
+                      <span class="oliver_heading">Oliver Spark Writer</span>
                       <!-- Oliver Image Positioned Correctly -->
                       <div class="oliver-container">
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
-                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Crafts focused content concepts and core
-                      themes tailored to your goals. Specializes in persuasive writing, brand
-                      voice adaptation, technical accuracy, and audience-specific messaging to transform ideas into
-                      impactful marketing
-                      copy.</p>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Turn ideas into ready-to-go drafts for emails, posts, and more.</p>
                     <!-- Input Section -->
                     <div class="writing-card mt10">
                       <div class="form-group">
@@ -261,13 +253,8 @@
                   <!-- <div *ngIf="isCopyButtonDisplayed && activeTab === 'askpdf'" *ngFor="let msg of messages">
                       <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
                     </div>                 -->
-                  <span *ngIf="!showOpenHistory" class="oliver_heading">Insight Agent</span>
-                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Crafts focused content concepts and core themes
-                    tailored to your
-                    goals. Specializes in persuasive writing, brand
-                    voice adaptation, technical accuracy, and audience-specific messaging to transform ideas into
-                    impactful marketing
-                    copy.</p>
+                  <span *ngIf="!showOpenHistory" class="oliver_heading">Oliver Insights</span>
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Summarize, compare, and extract key insights from any content or data.</p>
                   <div
                     [ngClass]="showOpenHistory && activeTab === 'askpdf' ? showOpenHistory ? 'templateui col-lg-9 override-margin' : 'templateui col-lg-9' : 'container-ui'">
                     <div *ngIf="!showOpenHistory" class="custom-card mt10">
@@ -337,11 +324,8 @@
                 <div role="tabpanel"
                   [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}"
                   id="paraphraser">
-                  <div class="header-text fs-22">Paraphraser Agent</div>
-                  <p class="oliver-text-color">Refines and rephrases content to enhance clarity, tone, and impact.
-                    Specializes in preserving the original meaning
-                    while improving flow, structure, and audience alignment for sharper, more effective communication.
-                  </p>
+                  <div class="header-text fs-22">Oliver Paraphraser</div>
+                  <p class="oliver-text-color">Reword your content with clarity, variation, or different tones on demand.</p>
                   <div class="phara-card">
                     <div class="content-area">
                       <div class="textarea-card clip-path1">
