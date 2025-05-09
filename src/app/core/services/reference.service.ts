@@ -179,6 +179,9 @@ export class ReferenceService {
   showAnalytics = true;
   aircallPhone:any;
   isOliverEnabled = false;
+  asset:any;
+  OliverViewType = "";
+  OliverCategoryId = 0;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

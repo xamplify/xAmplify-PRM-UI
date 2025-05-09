@@ -167,6 +167,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		if(this.referenceService.isOliverEnabled){
+			this.referenceService.isOliverEnabled = false;
+			this.AskOliver(this.referenceService.asset)
+		}
 		this.isEditVideo = this.router.url.indexOf('/editVideo') > -1;
 		this.isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
 		if (!this.isEditVideo && !this.isPreviewVideo) {
@@ -653,6 +657,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (analytics) {
 			this.viewAnalytics(this.asset);
 		} else if(askOliverFromGridView){
+			this.referenceService.OliverViewType = this.viewType;
 			this.AskOliver(this.asset);
 
 		}else if(askAi){
