@@ -129,7 +129,7 @@ export class ChatGptModalComponent implements OnInit {
           // this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
           // this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
           // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
-          this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
+          // this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
           // this.chatGptGeneratedText = response.message;
           // this.messages.push({ role: 'assistant', content: response.message });
@@ -195,14 +195,15 @@ export class ChatGptModalComponent implements OnInit {
     this.pdfFiles = [];
     this.isReUpload = false;
     this.isfileProcessed = false;
-    this.threadId = 0;
+    this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
   }
 
   showOliverIcon() {
     if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
-      this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId, true);
+      this.saveChatHistoryTitle(this.chatHistoryId);
+      this.showIcon = true;
     } else {
       this.showIcon = true;
     }
@@ -219,9 +220,8 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = false;
     this.inputText = "";
     if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
-      this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId,false);
+      this.saveChatHistoryTitle(this.chatHistoryId);
     } else {
-      this.activeTab = tab;
       this.messages = [];
     }
     this.isTextLoading = false;
@@ -232,12 +232,13 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
-    this.threadId = 0;
+    this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
     this.selectedAssets = [];
     this.selectedFolders = [];
     this.isSaveHistoryPopUpVisible = true;
+    this.activeTab = tab;
     if (tab == 'history') {
       this.fetchHistories();
     }
@@ -576,7 +577,10 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
     self.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
-    self.inputText = '';
+    if (this.activeTab != 'paraphraser') {
+      self.inputText = '';
+    }
+    self.isValidInputText = false;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         self.isTextLoading = false;
