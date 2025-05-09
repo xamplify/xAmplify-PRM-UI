@@ -14,7 +14,7 @@
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
 			<!--List View / Grid View-->
 			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-				<div *ngIf="showRefreshNotification && !listLoader?.isLoading" class="alert alert-info">
+				<div *ngIf="(showRefreshNotification && !listLoader?.isLoading) && !FromOliverPopUp" class="alert alert-info">
 					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
 				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
@@ -275,8 +275,7 @@
 										<tr [ngClass]="{'hidden': !asset?.expand}">
 											<td [attr.colspan]="colspanValue">
 												<div class="table-responsive">
-													<div *ngIf="showRefreshNotificationForHistoryAssets"
-														class="alert alert-info">
+													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp" class="alert alert-info">
 														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
 													</div>
 													<table class="table tgrid table-condensed"

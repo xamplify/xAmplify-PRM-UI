@@ -33,7 +33,8 @@ export const emailRoutes: Routes = [
 { path: 'help', component: HelpComponent },
 { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
 { path: 'hubspot/upload', component: UploadMarketoEmailTemplateComponent,canDeactivate: [PendingChangesGuard] },
-{ path: 'hubspot/update', component: UpdateMarketoTemplateComponent,canDeactivate: [PendingChangesGuard] }
+{ path: 'hubspot/update', component: UpdateMarketoTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'create/Oliver', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] }
 ];
 
 @NgModule({

@@ -34,7 +34,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView ? 'modal-content': 'modal-content oliver-modal-content'">
+    <div [ngClass]="showView ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -110,14 +110,14 @@
               <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate
                 your marketing, messaging, and content creation workflows.</h5>
               <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
-                <li [ngClass]="{'active': activeTab === 'askpdf'}">
+                <li *ngIf="!isWelcomePageUrl" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                     <i class="fa fa-file-text"></i> Insight Agent
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'new-chat'}">
                   <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                    <i class="fa fa-plus-circle"></i> BrainStorm Agent
+                    <i class="fa fa-plus"></i> BrainStorm Agent
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'writing'}">
@@ -297,7 +297,7 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input mt10">
+                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
@@ -415,9 +415,18 @@
                     <!--  -->
                     <div *ngFor="let history of chatHistories;let i =index">
                       <div class="history-entry">
-                        <div *ngIf="!history.showInputField" (click)="showHistory(history)"><span class="entry-text" *ngIf="history.title">{{history.title}}</span></div>
+                        <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
+                          <!-- <span class="entry-text" *ngIf="history.title">{{history.title}}</span> -->
+                          <span class="entry-text" *ngIf="history.title">
+                            <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT" class="fa fa-plus mr5"></i>
+                            <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT" class="fa fa-file-text mr5"></i>
+                            <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT" class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
+                          <!-- <span class="entry-date">May 07</span> -->
+                          <app-timestamp class="entry-date" [isOnlyDate]="true"
+                            [dateAndTime]="history.updatedTimeString"></app-timestamp>
+                        </div>
                         <input *ngIf="history.showInputField" type="text" minlength="1" [(ngModel)]="history.title" class="edit-input form-control input-sm" required>
-                        <div class="actions">
+                        <div class="actions" [ngClass]="history.showInputField ? 'top_15' : ''">
                           <i *ngIf="!history.showInputField" class="fa fa-pencil" (click)="openEdit(history,i)"></i>
                           <i *ngIf="!history.showInputField" class="fa fa-trash" (click)="deleteHistory(history,i)"></i>
                           <i *ngIf="history.showInputField" class="fa fa-check" (click)="updateTitle(history,i)"></i>

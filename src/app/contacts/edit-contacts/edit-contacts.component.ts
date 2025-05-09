@@ -1601,6 +1601,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.noOfContactsDropdown = false;
 						this.pagedItems = null;
 					}
+					if(this.moveOptionClicked && this.contacts.length === 0){
+						this.moveOptionClicked = false;
+						this.goBackToManageList();
+					}
 					// this.refService.loading( this.httpRequestLoader, false );
 					this.refService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;
@@ -3363,7 +3367,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
 		if(this.moveOptionClicked){
-			this.moveOptionClicked = false;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);
 		}		

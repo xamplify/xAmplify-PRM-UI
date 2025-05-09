@@ -96,7 +96,7 @@
         <table *ngIf="pagination.totalRecords!=0" class="table" >
           <thead>
             <tr>
-              <th scope="col">Partner Name</th>
+              <th scope="col">Partner Details</th>
               <th scope="col">Region</th>
               <th scope="col">Onboarded On</th>
               <th scope="col">Status</th>
@@ -111,8 +111,8 @@
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
               <td>{{item?.status}}</td>
               <td>
-                <span *ngIf="item.status === 'Pending Signup'">-</span>
-                <app-timestamp  *ngIf="item.status !== 'Pending Signup'" [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp>
+                <span *ngIf="!item.dateLastLogin">-</span>
+                <app-timestamp  *ngIf="item.dateLastLogin" [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp>
               </td>
                <td>
                   <div class="actions-block float-none">
