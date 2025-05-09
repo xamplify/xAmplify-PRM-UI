@@ -117,7 +117,7 @@
                 </li>
                 <li [ngClass]="{'active': activeTab === 'new-chat'}">
                   <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                    <i class="fa fa-plus"></i>Brainstorm with Oliver
+                    <i class="fa fa-lightbulb-o"></i>Brainstorm with Oliver
                   </a>
                 </li>
                 <li [ngClass]="{'active': activeTab === 'writing'}">
@@ -405,7 +405,7 @@
                         <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
                           <!-- <span class="entry-text" *ngIf="history.title">{{history.title}}</span> -->
                           <span class="entry-text pointer" *ngIf="history.title">
-                            <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT" class="fa fa-plus mr5"></i>
+                            <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT" class="fa fa-lightbulb-o mr5"></i>
                             <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT" class="fa fa-file-text mr5"></i>
                             <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT" class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
                           <!-- <span class="entry-date">May 07</span> -->
