@@ -89,7 +89,9 @@ export const routes: Routes = [
 	{ path: "askAi/shared/view/:assetId", component: AiChatManagerComponent },
 	{ path: "askAi/shared/view/fg/:categoryId", component: AiChatManagerComponent },
 	{ path: "askAi/view/fg/:categoryId", component: AiChatManagerComponent },
-	{ path: "askAi/shared/view/g/:assetId", component: AiChatManagerComponent }
+	{ path: "askAi/shared/view/g/:assetId", component: AiChatManagerComponent },
+	{ path: "askAi/view/fl/:categoryId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/fl/:categoryId", component: AiChatManagerComponent },
 ];
 
 @NgModule({

@@ -291,15 +291,21 @@ onSelect(option: string) {
   this.selectedOption = option;
 }
 
-  AskOliver(categoryId: any) {
+ AskOliver(categoryId: any,viewType: string) {
     let url = "";
     this.referenceService.OliverCategoryId = categoryId;
     if (this.isPartnerView) {
-      url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      if(viewType == "fl"){
+         url = "/home/dam/askAi/shared/view/fl/" + categoryId;
+      }else{
+        url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      }
+    } else if(viewType == "fl") {
+      url = "/home/dam/askAi/view/fl/" + categoryId;
     } else {
       url = "/home/dam/askAi/view/fg/" + categoryId;
     }
-    this.referenceService.goToRouter(url);
+    this.referenceService.goToRouter(url)
   }
 
   onCheckboxChange(item: any, event: any) {

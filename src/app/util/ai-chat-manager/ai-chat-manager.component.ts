@@ -262,7 +262,7 @@ export class AiChatManagerComponent implements OnInit {
       } else {
         if (this.router.url.includes('/shared/view/g')) {
           this.referenceService.goToRouter('/home/dam/shared/g');
-        } else if( this.router.url.includes('/shared/view')) {
+        } else if (this.router.url.includes('/shared/view')) {
           this.referenceService.goToRouter('/home/dam/shared/l');
         } else {
           this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
@@ -271,6 +271,10 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromFolderView) {
       if (this.router.url.includes('/shared/view/fg')) {
         this.referenceService.goToRouter('/home/dam/shared/fg');
+      } else if (this.router.url.includes('/askAi/view/fl')) {
+        this.referenceService.goToRouter('/home/dam/manage/fl');
+      } else if (this.router.url.includes('/shared/view/fl')) {
+        this.referenceService.goToRouter('/home/dam/shared/fl');
       } else {
         this.referenceService.goToRouter('/home/dam/manage/fg');
       }

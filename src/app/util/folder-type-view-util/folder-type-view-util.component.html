@@ -125,7 +125,7 @@
 								<!-- color-chnage -->
 							</a>
 							<a *ngIf="authenticationService?.isOliverActive && !FromOliverPopUp" class="Iconhover custom-icon oliverhover"
-								data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id)">
+								data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id,'fg')">
 								<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg oliverStyle m0 ">
 							</a>
 						</div>
@@ -150,6 +150,7 @@
 					</th>
 					<th class="text-center" id="border-bottom" translate>Created On</th>
 					<th class="text-center" id="border-bottom" translate>Items Count</th>
+					<th *ngIf="authenticationService?.isOliverActive && !FromOliverPopUp" class="text-center" id="border-bottom" translate></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -182,6 +183,12 @@
 							<div class="override-actions">
 								<span id="count-{{moduleId}}-{{category.id}}"><b>{{category.count}}</b></span>
 							</div>
+						</td>
+						<td class="text-center">
+							<a *ngIf="authenticationService?.isOliverActive && !FromOliverPopUp" class="Iconhover custom-icon oliverhover"
+								data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id,'fl')">
+								<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliverStyle m0 ">
+							</a>
 						</td>
 					</tr>
 					<tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
