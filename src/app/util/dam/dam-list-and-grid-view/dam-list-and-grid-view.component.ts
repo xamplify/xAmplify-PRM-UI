@@ -310,16 +310,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.modulesDisplayType.isListView = true;
 					this.modulesDisplayType.isGridView = false;
 					this.modulesDisplayType.isFolderGridView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "g") {
 					this.modulesDisplayType.isGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isFolderGridView = false;
 					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "fg") {
 					this.modulesDisplayType.isFolderGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isGridView = false;
 					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				}
 			}
 		}
