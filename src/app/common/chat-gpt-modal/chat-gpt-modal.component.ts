@@ -99,7 +99,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   generateChatGPTText(chatHistoryId:any) {
-    this.referenceService.showSweetAlertProceesor("Saving...");
+    // this.referenceService.showSweetAlertProceesor("Saving...");
     this.customResponse = new CustomResponse();
     // this.isTextLoading = true;
     // this.chatGptGeneratedText = '';
@@ -123,7 +123,7 @@ export class ChatGptModalComponent implements OnInit {
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
-        swal.close();
+        // swal.close();
         if (statusCode === 200) {
           let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
           // this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
@@ -142,7 +142,7 @@ export class ChatGptModalComponent implements OnInit {
         // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
 
       }, error => {
-        swal.close();
+        // swal.close();
         // this.isTextLoading = false;
         // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         // this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
