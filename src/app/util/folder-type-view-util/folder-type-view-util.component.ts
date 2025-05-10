@@ -40,7 +40,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   selectedOption: string;
   @Input() FromOliverPopUp: boolean = false;
   @Input() selectedFoldersForOliver: any[] = [];
-  @Input() isPartnerViewFromOliver: boolean = false;;
+  @Input() isPartnerViewFromOliver: boolean = false;OliverViewType: string;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -51,7 +51,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
     if (this.FromOliverPopUp) {
-      this.folderViewType = "fg";
+      this.OliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      this.folderViewType = this.OliverViewType;
       this.isPartnerView = this.isPartnerViewFromOliver;
     }
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
@@ -258,8 +259,14 @@ export class FolderTypeViewUtilComponent implements OnInit {
       } else if (this.moduleId == this.roles.landingPageId) {
         this.referenceService.goToManageLandingPages(viewType);
       }
-    } else if (this.FromOliverPopUp) {
+    } else if (this.FromOliverPopUp && (viewType == "l" || viewType == "g")) {
       this.oliverfolderViewTypeEventEmitter.emit(viewType);
+    } else if (this.FromOliverPopUp && (viewType == "fl" || viewType == "fg")) {
+      this.folderViewType = viewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+      this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+      this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+      this.findAllCategories(this.pagination);
     }
   }
 

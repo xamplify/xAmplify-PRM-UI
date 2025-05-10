@@ -186,7 +186,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
 		}
 		if (this.selectedFoldersForOliver.length > 0) {
-			this.setViewType('fg');
+			let viewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+			this.setViewType(viewType);
 		}
 	}
 
@@ -239,7 +240,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				if (this.modulesDisplayType.isFolderListView && !this.FromOliverPopUp) {
 					this.viewType = "fl";
 					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
-				} else if (this.modulesDisplayType.isFolderGridView) {
+				} else if (this.modulesDisplayType.isFolderGridView && !this.FromOliverPopUp) {
 					this.viewType = "fg";
 					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
 				}
@@ -323,6 +324,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.modulesDisplayType.isGridView = false;
 					this.isFromOliverFolderView = false;
 					this.modulesDisplayType.isFolderListView = false;
+				} else if(viewType == "fl"){
+					this.modulesDisplayType.isFolderListView = true;
+					this.modulesDisplayType.isListView = false;
+					this.modulesDisplayType.isGridView = false;
+					this.modulesDisplayType.isFolderGridView = false;
+					this.isFromOliverFolderView = false;
 				}
 			}
 		}

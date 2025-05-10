@@ -24,7 +24,7 @@
 									[class.disabled]="folderViewType=='fg'" (click)="setViewType('fg')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"> <i
 										class="fa fa-folder p10" aria-hidden="true"></i>
-								</span> <span *ngIf="!FromOliverPopUp"
+								</span> <span 
 									class="btn btn-xs l-g-view margin-space folder-list-span-custom-width"
 									[class.disabled]="folderViewType=='fl'" (click)="setViewType('fl')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder List View">
@@ -41,7 +41,7 @@
 									[ngValue]="option">{{option.name}}</option>
 							</select>
 						</div>
-						<div id="left"class="mr5">
+						<div *ngIf="!FromOliverPopUp" id="left"class="mr5">
                             <select *ngIf="pagination.categoryType === 'DAM' || pagination.categoryType === 'PLAY_BOOK' || pagination.categoryType == 'LEARNING_TRACK'"  class="form-control"  [(ngModel)]="selectedOption" (ngModelChange)="onSelect(selectedOption)"
                                 id="select-dropdown">
                                 <option *ngFor="let option of options" [ngValue]="option">{{option}}</option>
@@ -144,6 +144,7 @@
 			aria-describedby="">
 			<thead>
 				<tr>
+					<th *ngIf="FromOliverPopUp"></th>
 					<th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
 						<span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)"></span>
 						<span class="gridHeader" translate>Folder</span>
@@ -156,6 +157,14 @@
 			<tbody>
 				<ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
 					<tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
+						<td *ngIf="FromOliverPopUp">
+							<span *ngIf="FromOliverPopUp">
+								<label>
+									<input type="checkbox" class="radio-custimization pointer radioButton_shadow"
+										[checked]="isSelected(category)" (change)="onCheckboxChange(category, $event)">
+								</label>
+							</span>
+						</td>
 						<td class="custom-icon-width">
 							<a (click)="$event.stopPropagation();viewFolderItems(category,i)" data-toggle="tooltip" data-placement="right"
 								title="View More/Less Items">
