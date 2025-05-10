@@ -40,7 +40,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   selectedOption: string;
   @Input() FromOliverPopUp: boolean = false;
   @Input() selectedFoldersForOliver: any[] = [];
-  @Input() isPartnerViewFromOliver: boolean = false;OliverViewType: string;
+  @Input() isPartnerViewFromOliver: boolean = false;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -50,16 +50,27 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
-    if (this.FromOliverPopUp) {
-      this.OliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
-      this.folderViewType = this.OliverViewType;
-      this.isPartnerView = this.isPartnerViewFromOliver;
-    }
+    this.setOliverViewType();
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
     this.utilService.searchKey = "";
+  }
+
+  private setOliverViewType() {
+    if (this.FromOliverPopUp) {
+      let oliverViewType;
+      if (this.modulesDisplayType.isFolderListView) {
+        oliverViewType = 'fl';
+      } else if (this.modulesDisplayType.isFolderGridView) {
+        oliverViewType = 'fg';
+      } else {
+        oliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      }
+      this.folderViewType = oliverViewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+    }
   }
 
   findAllCategories(pagination:Pagination){
@@ -266,7 +277,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.isPartnerView = this.isPartnerViewFromOliver;
       this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
       this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
-      this.findAllCategories(this.pagination);
+      // this.findAllCategories(this.pagination);
     }
   }
 
