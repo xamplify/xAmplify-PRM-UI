@@ -13,6 +13,8 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpClient } from '@angular/common/http';
 import { add } from 'ngx-bootstrap/chronos';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { EmailTemplate } from 'app/email-template/models/email-template';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -73,10 +75,13 @@ export class ChatGptModalComponent implements OnInit {
   searchKey:string;
   isPartnerLoggedIn: boolean = false;
   vanityUrlFilter: boolean = false;
+  showTemplate: boolean;
+  selectedTemplateList: any[];
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
-    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
+    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
+    private emailTemplateService: EmailTemplateService) {
   }
 
   ngOnInit() {
@@ -169,6 +174,7 @@ export class ChatGptModalComponent implements OnInit {
 
   resetValues() {
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
+    this.showDefaultTemplates();
     this.inputText = "";
     this.isSpeakingText = false;
     this.speakingIndex = null;
@@ -360,12 +366,17 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   closeSocialShare(event: any) {
+    this.emitterData(event);
+  }
+
+  private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
     }
-    this.openShareOption = false;
+     this.openShareOption = false;
+     this.showTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -789,4 +800,51 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
+  
+  showDefaultTemplates(): void {
+    let self = this;
+    this.chatGptSettingsService.listDefaultTemplates(this.authenticationService.getUserId()).subscribe(
+        (response: any) => {
+            var templates = [];
+            if (response && response.data && response.data.emailTemplates) {
+                templates = response.data.emailTemplates;
+            }
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            if (templates.length > 0) {
+                this.emailTemplateService.emailTemplate = templates[0]; 
+            }
+            this.selectedTemplateList = templates;
+        },
+        (error: any) => {
+            console.error("Error in showDefaultTemplates():", error);
+        }
+    );
+}
+  openDesignTemplate(markdown: any) {
+  const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+  this.showTemplate = true;
+  this.chatGptIntegrationSettingsDto.prompt = text;
+
+  this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+    (response: any) => {
+      if (!this.emailTemplateService.emailTemplate) {
+        this.emailTemplateService.emailTemplate = new EmailTemplate();
+        alert("Template created successfully.");
+      }
+      this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+      this.showTemplate = true;
+    },
+    (error: string) => {
+      this.showTemplate = false;
+      console.log('API Error:', error);
+    }
+  );
+}
+
+  closeDesignTemplate(event: any) {
+    this.emitterData(event);
+    this.emailTemplateService.emailTemplate = new EmailTemplate();
+     this.emailTemplateService.isNewTemplate = false;
+  }
 }

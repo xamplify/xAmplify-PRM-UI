@@ -24,8 +24,9 @@
 </div>
 
 <!--ICON END -->
-<link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link  *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>
+<link *ngIf="isWelcomePageUrl" rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>
 <script *ngIf="isWelcomePageUrl" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!--ChatGPT Modal-->
@@ -34,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -42,10 +43,14 @@
           </div> -->
       <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
         (notifyClose)="closeSocialShare($event)"></app-update-status>
-      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'" [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
-        <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView" [selectedItemFromOliver]="selectedAssets"
-        [selectedFoldersForOliver]="selectedFolders" [isPartnerViewFromOliver]="isPartnerLoggedIn"
-        (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+      <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
+      </app-create-template>
+      <div *ngIf="!openShareOption && !showTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
+        [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
+        <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
+          [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
+          [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
+          (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
         <div classs="row">
@@ -132,13 +137,14 @@
                 </li>
                 <li class="history-divider"></li>
                 <li [ngClass]="{'active': activeTab === 'history'}" style="margin-bottom: 10px;">
-                  <a class="oliver-history-btn" href="#history" role="tab" data-toggle="tab" (click)="setActiveTab('history')">
+                  <a class="oliver-history-btn" href="#history" role="tab" data-toggle="tab"
+                    (click)="setActiveTab('history')">
                     <!-- Left icon and text -->
                     <span style="display: flex; align-items: center;">
                       <i class="fa fa-history" style="margin-right: 8px;"></i>
                       History
                     </span>
-                
+
                     <!-- Right sparkle SVG -->
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" fill="#2f80ed">
                       <path
@@ -179,7 +185,8 @@
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
-                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign directions with guided ideation.</p>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign
+                      directions with guided ideation.</p>
                     <!-- Input Section -->
                     <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
@@ -215,7 +222,8 @@
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
-                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Turn ideas into ready-to-go drafts for emails, posts, and more.</p>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Turn ideas into ready-to-go drafts for emails,
+                      posts, and more.</p>
                     <!-- Input Section -->
                     <div class="writing-card mt10">
                       <div class="form-group">
@@ -254,13 +262,16 @@
                       <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
                     </div>                 -->
                   <span *ngIf="!showOpenHistory" class="oliver_heading">Oliver Insights</span>
-                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Summarize, compare, and extract key insights from any content or data.</p>
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Summarize, compare, and extract key insights
+                    from any content or data.</p>
                   <div
                     [ngClass]="showOpenHistory && activeTab === 'askpdf' ? showOpenHistory ? 'templateui col-lg-9 override-margin' : 'templateui col-lg-9' : 'container-ui'">
                     <div *ngIf="!showOpenHistory" class="custom-card mt10">
                       <div class="col-lg-12 pl0">
-                        <div [ngClass]="assetLoader || isfileProcessed  ? 'upload-box custom-align-center' : 'upload-box'"
-                          (click)="!isfileProcessed &&!assetLoader && openAssetsPage()" [ngStyle]="{ 'display': assetLoader ? 'flex' : '' }">
+                        <div
+                          [ngClass]="assetLoader || isfileProcessed  ? 'upload-box custom-align-center' : 'upload-box'"
+                          (click)="!isfileProcessed &&!assetLoader && openAssetsPage()"
+                          [ngStyle]="{ 'display': assetLoader ? 'flex' : '' }">
                           <label *ngIf="!assetLoader && !isfileProcessed">
                             <!-- <i class="glyphicon glyphicon-upload"></i> -->
                             <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
@@ -270,12 +281,15 @@
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
                           <div *ngIf="isfileProcessed && !assetLoader" class="file-info">
                             <div class="flex">
-                              <img *ngIf="selectedAssets?.length > 0" class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg" alt="Upload">
-                              <img *ngIf="!(selectedAssets?.length > 0)" class="file-icon mr10" src="assets/images/fileIconOliver.svg"
-                                alt="Upload">
+                              <img *ngIf="selectedAssets?.length > 0" class="file-icon mr5"
+                                src="assets/images/asset-uploads/PDF.svg" alt="Upload">
+                              <img *ngIf="!(selectedAssets?.length > 0)" class="file-icon mr10"
+                                src="assets/images/fileIconOliver.svg" alt="Upload">
                               <div class="file-details">
-                                <div *ngIf="selectedAssets?.length > 0" class="file-name"> {{ selectedAssets?.length }} file(s) processed successfully</div>
-                                <div *ngIf="!(selectedAssets?.length > 0)" class="file-name"> {{ selectedFolders?.length }} folder(s) processed successfully</div>
+                                <div *ngIf="selectedAssets?.length > 0" class="file-name"> {{ selectedAssets?.length }}
+                                  file(s) processed successfully</div>
+                                <div *ngIf="!(selectedAssets?.length > 0)" class="file-name"> {{ selectedFolders?.length
+                                  }} folder(s) processed successfully</div>
                                 <div class="file-status">Processing complete</div>
                               </div>
                             </div>
@@ -285,22 +299,28 @@
                           </div>
                         </div>
                         <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
-                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
-                            [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)"
+                            [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" (input)="validateInputText()"
+                            placeholder="Ask Me!">
                           <div class="btn-wrapper">
                             <button (click)="!assetLoader && openAssetsPage()" class="btn-plus">+</button>
                           </div>
                         </div>
                         <div *ngIf="isfileProcessed && !assetLoader" class="action-buttons mt5">
-                          <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
-                          <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
-                          <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview of
+                          <button class="action-btn" (click)="setInputText('Generate summaries')">Generate
+                            summaries</button>
+                          <button class="action-btn" (click)="setInputText('Compare documents')">Compare
+                            documents</button>
+                          <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a
+                            overview of
                             documents</button>
                         </div>
                       </div>
-                      <div class="submit-section" [ngStyle]="{'margin-bottom': isfileProcessed && !assetLoader ? '35px' : ''}">
+                      <div class="submit-section"
+                        [ngStyle]="{'margin-bottom': isfileProcessed && !assetLoader ? '35px' : ''}">
                         <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
-                        <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()" class="btn btn-submit">Submit</button>
+                        <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          class="btn btn-submit">Submit</button>
                       </div>
                     </div>
                     <div *ngIf="showOpenHistory" class="oliver_input mt10">
@@ -313,9 +333,11 @@
                       </div>
                     </div>
                     <div *ngIf="showOpenHistory" class="action-buttons">
-                      <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
+                      <button class="action-btn" (click)="setInputText('Generate summaries')">Generate
+                        summaries</button>
                       <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
-                      <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview of
+                      <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview
+                        of
                         documents</button>
                     </div>
                   </div>
@@ -325,7 +347,8 @@
                   [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}"
                   id="paraphraser">
                   <div class="header-text fs-22">Oliver Paraphraser</div>
-                  <p class="oliver-text-color">Reword your content with clarity, variation, or different tones on demand.</p>
+                  <p class="oliver-text-color">Reword your content with clarity, variation, or different tones on
+                    demand.</p>
                   <div class="phara-card">
                     <div class="content-area">
                       <div class="textarea-card clip-path1">
@@ -344,7 +367,8 @@
                         </div>
                         <textarea class="form-control border_0" id="chatGptGeneratedTextArea"
                           style="position: absolute; left: -9999px;" [(ngModel)]="chatGptGeneratedText"
-                          [ngModelOptions]="{standalone: true}" rows="18" readonly #chatGptGeneratedTextInput></textarea>
+                          [ngModelOptions]="{standalone: true}" rows="18" readonly
+                          #chatGptGeneratedTextInput></textarea>
                       </div>
                     </div>
                     <div class="content-area">
@@ -364,7 +388,8 @@
                             </i>
                           </div>
                           <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
-                          <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}">
+                          <div class="footer-icon"
+                            [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}">
                             <i data-toggle="tooltip" data-placement="top"
                               [title]="isEmailCopied ? 'Copied to Clipboard' : 'Copy to Clipboard'" class="fs-12"
                               [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
@@ -380,51 +405,61 @@
                   </div>
                 </div>
                 <!--History Content  -->
-              <div role="tabpanel" class="tab-pane" [ngClass]="{'in active': activeTab === 'history'}" id="history">
-                <div class="oliver_history_content">
-                  <div class="history-header text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 0 24 24" fill="#2f80ed" style="vertical-align: middle;">
-                      <path d="M9.5 2.5a.75.75 0 0 1 1.38 0l1.04 2.41c.19.45.57.82 1.03 1.01l2.41 1.04a.75.75 0 0 1 0 1.38l-2.41 1.04a2.25 2.25 0 0 0-1.03 1.01l-1.04 2.41a.75.75 0 0 1-1.38 0l-1.04-2.41a2.25 2.25 0 0 0-1.01-1.01l-2.41-1.04a.75.75 0 0 1 0-1.38l2.41-1.04a2.25 2.25 0 0 0 1.01-1.01L9.5 2.5Zm9 7a.75.75 0 0 1 .69.48l.53 1.34c.12.3.36.55.65.67l1.34.53a.75.75 0 0 1 0 1.38l-1.34.53a1.25 1.25 0 0 0-.65.67l-.53 1.34a.75.75 0 0 1-1.38 0l-.53-1.34a1.25 1.25 0 0 0-.67-.67l-1.34-.53a.75.75 0 0 1 0-1.38l1.34-.53c.3-.12.55-.36.67-.67l.53-1.34a.75.75 0 0 1 .69-.48Z"/>
-                    </svg>
-                    <span>History</span>
-                  </div>
-                   <!--  -->
-                   <div class="history-header-row">
-                    <!-- <h5 class="history-title mb0">Today</h5> -->
-                    <div class="search-wrapper">
-                      <input type="text" class="form-control input-sm search-input" [(ngModel)]="searchKey" (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
-                      <i class="fa fa-search search-icon" (click)="fetchHistories()"></i>
+                <div role="tabpanel" class="tab-pane" [ngClass]="{'in active': activeTab === 'history'}" id="history">
+                  <div class="oliver_history_content">
+                    <div class="history-header text-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 0 24 24" fill="#2f80ed"
+                        style="vertical-align: middle;">
+                        <path
+                          d="M9.5 2.5a.75.75 0 0 1 1.38 0l1.04 2.41c.19.45.57.82 1.03 1.01l2.41 1.04a.75.75 0 0 1 0 1.38l-2.41 1.04a2.25 2.25 0 0 0-1.03 1.01l-1.04 2.41a.75.75 0 0 1-1.38 0l-1.04-2.41a2.25 2.25 0 0 0-1.01-1.01l-2.41-1.04a.75.75 0 0 1 0-1.38l2.41-1.04a2.25 2.25 0 0 0 1.01-1.01L9.5 2.5Zm9 7a.75.75 0 0 1 .69.48l.53 1.34c.12.3.36.55.65.67l1.34.53a.75.75 0 0 1 0 1.38l-1.34.53a1.25 1.25 0 0 0-.65.67l-.53 1.34a.75.75 0 0 1-1.38 0l-.53-1.34a1.25 1.25 0 0 0-.67-.67l-1.34-.53a.75.75 0 0 1 0-1.38l1.34-.53c.3-.12.55-.36.67-.67l.53-1.34a.75.75 0 0 1 .69-.48Z" />
+                      </svg>
+                      <span>History</span>
                     </div>
-                  </div>
-                  <!--  -->
-                  <!-- History Sections -->
-                  <div class="oliver-history-scroll">
-                  <div class="history-section">
-                    <div *ngFor="let history of chatHistories;let i =index">
-                      <div class="history-entry">
-                        <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
-                          <!-- <span class="entry-text" *ngIf="history.title">{{history.title}}</span> -->
-                          <span class="entry-text pointer" *ngIf="history.title">
-                            <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT" class="fa fa-lightbulb-o mr5"></i>
-                            <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT" class="fa fa-file-text mr5"></i>
-                            <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT" class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
-                          <!-- <span class="entry-date">May 07</span> -->
-                          <app-timestamp class="entry-date" [isOnlyDate]="true"
-                            [dateAndTime]="history.updatedTimeString"></app-timestamp>
-                        </div>
-                        <input *ngIf="history.showInputField" type="text" minlength="1" [(ngModel)]="history.title" class="edit-input form-control input-sm" required>
-                        <div class="actions" [ngClass]="history.showInputField ? 'top_15' : ''">
-                          <i *ngIf="!history.showInputField" class="fa fa-pencil" (click)="openEdit(history,i)"></i>
-                          <i *ngIf="!history.showInputField" class="fa fa-trash" (click)="deleteHistory(history,i)"></i>
-                          <i *ngIf="history.showInputField" class="fa fa-check" (click)="updateTitle(history,i)"></i>
-                          <i *ngIf="history.showInputField" class="fa fa-times" (click)="closeEdit(history,i)"></i>
-                        </div>
+                    <!--  -->
+                    <div class="history-header-row">
+                      <!-- <h5 class="history-title mb0">Today</h5> -->
+                      <div class="search-wrapper">
+                        <input type="text" class="form-control input-sm search-input" [(ngModel)]="searchKey"
+                          (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
+                        <i class="fa fa-search search-icon" (click)="fetchHistories()"></i>
                       </div>
                     </div>
-                    <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
-                      <strong translate>No Data Found.</strong>
-                    </div>
-                    <!-- <div class="history-entry">
+                    <!--  -->
+                    <!-- History Sections -->
+                    <div class="oliver-history-scroll">
+                      <div class="history-section">
+                        <div *ngFor="let history of chatHistories;let i =index">
+                          <div class="history-entry">
+                            <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
+                              <!-- <span class="entry-text" *ngIf="history.title">{{history.title}}</span> -->
+                              <span class="entry-text pointer" *ngIf="history.title">
+                                <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT"
+                                  class="fa fa-lightbulb-o mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT"
+                                  class="fa fa-file-text mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
+                                  class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
+                                  *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
+                              <!-- <span class="entry-date">May 07</span> -->
+                              <app-timestamp class="entry-date" [isOnlyDate]="true"
+                                [dateAndTime]="history.updatedTimeString"></app-timestamp>
+                            </div>
+                            <input *ngIf="history.showInputField" type="text" minlength="1" [(ngModel)]="history.title"
+                              class="edit-input form-control input-sm" required>
+                            <div class="actions" [ngClass]="history.showInputField ? 'top_15' : ''">
+                              <i *ngIf="!history.showInputField" class="fa fa-pencil" (click)="openEdit(history,i)"></i>
+                              <i *ngIf="!history.showInputField" class="fa fa-trash"
+                                (click)="deleteHistory(history,i)"></i>
+                              <i *ngIf="history.showInputField" class="fa fa-check"
+                                (click)="updateTitle(history,i)"></i>
+                              <i *ngIf="history.showInputField" class="fa fa-times" (click)="closeEdit(history,i)"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
+                          <strong translate>No Data Found.</strong>
+                        </div>
+                        <!-- <div class="history-entry">
                       <span class="entry-text">How does ChatGPT work?</span>
                       <input class="edit-input form-control input-sm">
                       <div class="actions">
@@ -432,8 +467,8 @@
                         <i class="fa fa-trash"></i>
                       </div>
                     </div> -->
-                  </div>
-                  <!-- <div class="history-section">
+                      </div>
+                      <!-- <div class="history-section">
                     <h5>Last 7 Days</h5>
                     <div class="history-entry">
                       <span class="entry-text">Explain machine learning</span>
@@ -444,8 +479,8 @@
                       </div>
                     </div>
                   </div> -->
-                
-                  <!-- <div class="history-section">
+
+                      <!-- <div class="history-section">
                     <h5>Last 15 Days</h5>
                     <div class="history-entry">
                       <span class="entry-text">Benefits of using AI</span>
@@ -456,9 +491,9 @@
                       </div>
                     </div>
                   </div> -->
+                    </div>
                   </div>
                 </div>
-              </div>
                 <!-- <div role="tabpanel" *ngIf="activeTab == 'history'">
                   <div class="main-container newChatlabel">
                     <div *ngFor="let history of chatHistories">
@@ -487,42 +522,43 @@
     </div>
   </div>
 </div>
-<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<ng-template #messageTemplate let-message="data" let-index="index" >
-    <div class="message user" *ngIf="message.role === 'user'">
-      <div class="summarize-card">{{ message.content }}</div>
-      <div class="avatar">
-        <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
-      </div>
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
+  [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
+<ng-template #messageTemplate let-message="data" let-index="index">
+  <div class="message user" *ngIf="message.role === 'user'">
+    <div class="summarize-card">{{ message.content }}</div>
+    <div class="avatar">
+      <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
     </div>
-    <div class="d-flex" *ngIf="message.role === 'assistant'">
-      <div class="avatar1 col-lg-1 col-sm-1 mb_p0">
-        <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
-      </div>
-      <div class="col-lg-11 col-sm-11">
-        <div class="content-card">
-          <div class="chat-container">
-            <div #markdownComponent class="chat-history">
-              <markdown [data]="message.content"></markdown>
-            </div>
+  </div>
+  <div class="d-flex" *ngIf="message.role === 'assistant'">
+    <div class="avatar1 col-lg-1 col-sm-1 mb_p0">
+      <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
+    </div>
+    <div class="col-lg-11 col-sm-11">
+      <div class="content-card">
+        <div class="chat-container">
+          <div #markdownComponent class="chat-history">
+            <markdown [data]="message.content"></markdown>
           </div>
         </div>
-        <div class="footer-icons mb10">
-          <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
-            <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-              aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
-            </i>
-          </div>
-          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
-              (click)="copyChatGPTText(message.content)"></i></div>
-          <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
-          <button class="share-btn">Design Template</button>
-          <button class="share-btn">Design Page</button> -->
-          <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-          <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+      </div>
+      <div class="footer-icons mb10">
+        <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
+          <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
+            aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+          </i>
         </div>
+        <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+            (click)="copyChatGPTText(message.content)"></i></div>
+        <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
+        <button class="share-btn" (click)="openDesignTemplate(markdownComponent)">Design Template</button>
+        <!-- <button class="share-btn">Design Page</button> -->
+        <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+        <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
       </div>
     </div>
+  </div>
 </ng-template>
 <ng-template #assistantLoader>
   <div class="d-flex aligin-center">
@@ -551,5 +587,3 @@
     <div class="text" data-text="Searching"></div>
   </div>
 </ng-template>
-
-

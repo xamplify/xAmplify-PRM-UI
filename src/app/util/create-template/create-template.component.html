@@ -8,14 +8,14 @@
     <div class="row">
         <div class="col-xs-12">
             <div *ngIf="!ngxLoading" class="page-bar mWidth" style="border:none !important;">
-                <ul class="page-breadcrumb" *ngIf="loadTemplate">
+                <ul class="page-breadcrumb" *ngIf="loadTemplate && !isFromOliverPopUp">
                     <li>
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        <a [routerLink]="refService?.homeRouter" translate>Home</a>
+                        <a (click)="nagivatetoRouter('home')" translate>Home</a>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </li>
                     <li *ngIf="emailTemplateService.isNewTemplate">
-                        <a [routerLink]="['/home/emailtemplates/select']" translate>Select Templates</a>
+                        <a  (click)="nagivatetoRouter('emailtemplates')" translate>Select Templates</a>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </li>
                     <li *ngIf="!emailTemplateService.isNewTemplate">
@@ -44,7 +44,7 @@
     </div>
     <app-scroll-top></app-scroll-top>
 
-    <div class="modal fade in" id="save-template-popup" data-backdrop="static" data-keyboard="false">
+    <div *ngIf="!showPopUp" class="modal fade in" id="save-template-popup" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-copy" role="document">
             <div class="modal-content mSweetalertWid popup-cu-widthalign">
                 <app-modal-popup-loader *ngIf="saveLoader"></app-modal-popup-loader>
@@ -57,7 +57,7 @@
                                 [ngModelOptions]="{standalone: true}" />
                             <span class="required">{{errorMessage}}</span>
                         </div>
-                        <div *ngIf="isOliverCreateUrl" class="form-group">
+                        <div *ngIf="isOliverCreateUrl || isFromOliverPopUp" class="form-group">
                             <label>Email Type<span class="required">*</span></label>
                             <select class="form-control" [(ngModel)]="selectedEmailType">
                               <option *ngFor="let type of emailTemplateTypeLabels" [value]="type">
@@ -75,17 +75,17 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button *ngIf="isAdd && !isOliverCreateUrl" type="button" class="button bgcolor-unset"
+                        <button *ngIf="isAdd && !isOliverCreateUrl && !isFromOliverPopUp" type="button" class="button bgcolor-unset"
                             [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName" id="save"
                             (click)="saveTemplate(false);buttonClicked = true">
                             <span class="btn btn-primary transition txt_pd-top3">Save</span>
                         </button>
-                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"
+                        <button *ngIf="isAdd || isFromOliverPopUp" type="button" class="button bgcolor-unset"
                             [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName"
                             id="save-and-redirect" (click)="saveTemplate(true);buttonClicked = true">
                             <span class="btn btn-primary transition txt_pd-top3">{{properties?.SAVE_AND_CLOSE}}</span>
                         </button>
-                        <ng-container *ngIf="!isAdd">
+                        <ng-container *ngIf="!isAdd && !isFromOliverPopUp">
                             <button type="button" class="button bgcolor-unset"
                                 [disabled]="errorMessage?.length>0 || buttonClicked || isSaveAsButtonDisabled"
                                 id="save-as" (click)="saveTemplate(true);buttonClicked = true">
