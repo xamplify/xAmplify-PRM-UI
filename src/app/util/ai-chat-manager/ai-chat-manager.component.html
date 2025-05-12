@@ -7,7 +7,9 @@
   <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
   <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput"
   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled" class="pdf_body">
+  <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
+  </app-create-template>
+  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -134,7 +136,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
     <div *ngIf="showPreview" class="pdf-viewer">
       <div class="toolbar">
         <select class="zoom" [(ngModel)]="zoomLevel">
@@ -399,3 +401,4 @@
     </div>
   </div>
 </div>
+

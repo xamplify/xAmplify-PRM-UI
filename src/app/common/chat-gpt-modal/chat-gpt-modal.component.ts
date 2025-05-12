@@ -178,6 +178,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
     this.inputText = "";
@@ -379,9 +380,11 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
+      this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
-     this.openShareOption = false;
-     this.showTemplate = false;
+    this.emailTemplateService.emailTemplate.jsonBody = "";
+    this.openShareOption = false;
+    this.showTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -829,30 +832,28 @@ export class ChatGptModalComponent implements OnInit {
     );
 }
   openDesignTemplate(markdown: any) {
-  const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
-  this.showTemplate = true;
-  this.chatGptIntegrationSettingsDto.prompt = text;
-
-  this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
-    (response: any) => {
-      if (!this.emailTemplateService.emailTemplate) {
-        this.emailTemplateService.emailTemplate = new EmailTemplate();
-        alert("Template created successfully.");
+    const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (!this.emailTemplateService.emailTemplate) {
+          this.emailTemplateService.emailTemplate = new EmailTemplate();
+          alert("Template created successfully.");
+        }
+        this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+        this.showTemplate = true;
+      },
+      (error: string) => {
+        this.showTemplate = false;
+        this.emailTemplateService.emailTemplate.jsonBody = "";
+        console.log('API Error:', error);
       }
-      this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
-      this.showTemplate = true;
-    },
-    (error: string) => {
-      this.showTemplate = false;
-      console.log('API Error:', error);
-    }
-  );
-}
+    );
+  }
 
-  closeDesignTemplate(event: any) {
+  
+closeDesignTemplate(event: any) {
     this.emitterData(event);
-    this.emailTemplateService.emailTemplate = new EmailTemplate();
-     this.emailTemplateService.isNewTemplate = false;
   }
 
   showChatHistories() {

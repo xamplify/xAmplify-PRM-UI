@@ -576,7 +576,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.saveLoader = false;
         if(this.isFromOliverPopUp){
             this.showPopUp = true;
-            this.refService.closeModalPopup("save-template-popup");
+            // this.refService.closeModalPopup("save-template-popup");
         }else{
              this.refService.closeModalPopup("save-template-popup");
         }
