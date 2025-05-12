@@ -829,25 +829,25 @@ export class ChatGptModalComponent implements OnInit {
     );
 }
   openDesignTemplate(markdown: any) {
-  const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
-  this.showTemplate = true;
-  this.chatGptIntegrationSettingsDto.prompt = text;
+    const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.showTemplate = true;
+    this.chatGptIntegrationSettingsDto.prompt = text;
 
-  this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
-    (response: any) => {
-      if (!this.emailTemplateService.emailTemplate) {
-        this.emailTemplateService.emailTemplate = new EmailTemplate();
-        alert("Template created successfully.");
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (!this.emailTemplateService.emailTemplate) {
+          this.emailTemplateService.emailTemplate = new EmailTemplate();
+          alert("Template created successfully.");
+        }
+        this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+        this.showTemplate = true;
+      },
+      (error: string) => {
+        this.showTemplate = false;
+        console.log('API Error:', error);
       }
-      this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
-      this.showTemplate = true;
-    },
-    (error: string) => {
-      this.showTemplate = false;
-      console.log('API Error:', error);
-    }
-  );
-}
+    );
+  }
 
   closeDesignTemplate(event: any) {
     this.emitterData(event);
