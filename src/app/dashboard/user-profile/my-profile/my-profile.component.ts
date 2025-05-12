@@ -2320,7 +2320,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.callIntegrations;
 		} else if (this.activeTabName == "contactUploadManagementSettings") {
 			this.contactUploadManagementSettings = true;
-			this.activeTabHeader = this.properties.contactUploadManagementSettings;
+			this.activeTabHeader = this.properties.CONTACT_USAGE_ANALYTICS_TEXT;
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
 			// XNFR-967 Contact Status
 			this.activateContactStatusMenuHeader();
