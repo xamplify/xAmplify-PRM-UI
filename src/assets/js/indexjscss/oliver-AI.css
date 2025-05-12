@@ -239,7 +239,7 @@
     padding: 15px 0px 15px 15px;
   }
   .side_bar {
-    width: 22%;
+    width: 25%;
     background: linear-gradient(to bottom, #cde5ff, #b0d4ff);
     height: 100vh;
     padding: 10px 13px;
@@ -1004,6 +1004,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   font-size: 14px!important;
 }
 /* History Entry */
+.oliver_history_content{
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
 .history-entry {
   background-color: #ffffff;
   border: 1px solid #cce0f5;
@@ -1062,11 +1067,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   color: #005f99;
 }
 .history-entry .actions i.fa-trash {
-  color: #c9302c;
+  color: #c9302c!important;
 }
 .history-entry .actions i.fa-trash:hover {
-  background-color: #fce3e3;
-  color: #c9302c;
+  background-color: #fce3e3!important;
+  color: #c9302c!important;
 }
 .history-entry .edit-input {
   width: calc(100% - 60px);
@@ -1077,6 +1082,7 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   align-items: end;
   border-radius: 8px;
   margin-bottom: 10px;
+  padding-right: 5px;
 }
 
 /* Search styles */
@@ -1101,9 +1107,9 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   cursor: pointer;
 }
 .oliver-history-scroll {
-  height: 70vh;
   overflow-y: auto;
-  padding-right: 10px;
+  flex-grow: 1;
+  padding-right: 5px;
 }
 
 .oliver-history-scroll::-webkit-scrollbar {
@@ -1115,7 +1121,8 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   margin: 25px 10px;
 }
 
-/* Oliver history button */ .oliver-history-btn {
+/* Oliver history button */ 
+.oliver-history-btn {
   display: flex !important;
   align-items: center;
   justify-content: space-between;
@@ -1132,4 +1139,162 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
 
 .top_15 {
   top: 15px !important;
+}
+
+h5.oliver-heading-color {
+    color: #002b87;
+}
+
+#wifi-loader {
+  --background: #62abff;
+  --front-color: #000;
+  --back-color: #c3c8de;
+  --text-color: #414856;
+
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#wifi-loader svg.circle {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#wifi-loader circle {
+  fill: none;
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(-100deg);
+  transform-origin: center;
+}
+
+circle.back {
+  stroke: var(--back-color);
+}
+
+circle.front {
+  stroke: var(--front-color);
+}
+
+/* Circle Sizes & Dash Arrays */
+.circle-outer {
+  width: 86px;
+  height: 86px;
+}
+
+.circle-outer circle {
+  stroke-dasharray: 62.75 188.25;
+}
+
+.circle-middle {
+  width: 60px;
+  height: 60px;
+}
+
+.circle-middle circle {
+  stroke-dasharray: 42.5 127.5;
+}
+
+.circle-inner {
+  width: 34px;
+  height: 34px;
+}
+
+.circle-inner circle {
+  stroke-dasharray: 22 66;
+}
+
+/* Animations */
+.circle-outer .back {
+  animation: circle-outer 1.8s ease infinite 0.3s;
+}
+
+.circle-outer .front {
+  animation: circle-outer 1.8s ease infinite 0.15s;
+}
+
+.circle-middle .back {
+  animation: circle-middle 1.8s ease infinite 0.25s;
+}
+
+.circle-middle .front {
+  animation: circle-middle 1.8s ease infinite 0.1s;
+}
+
+.circle-inner .back {
+  animation: circle-inner 1.8s ease infinite 0.2s;
+}
+
+.circle-inner .front {
+  animation: circle-inner 1.8s ease infinite 0.05s;
+}
+
+/* Text Styling */
+#wifi-loader .text {
+  position: absolute;
+  bottom: -40px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: lowercase;
+  letter-spacing: 0.2px;
+}
+
+.text::before,
+.text::after {
+  content: attr(data-text);
+}
+
+.text::before {
+  color: var(--text-color);
+}
+
+.text::after {
+  position: absolute;
+  left: 0;
+  color: var(--front-color);
+  animation: text-flash 3.6s ease infinite;
+}
+
+/* Keyframes */
+@keyframes circle-outer {
+  0% { stroke-dashoffset: 25; }
+  25% { stroke-dashoffset: 0; }
+  65% { stroke-dashoffset: 301; }
+  80%, 100% { stroke-dashoffset: 276; }
+}
+
+@keyframes circle-middle {
+  0% { stroke-dashoffset: 17; }
+  25% { stroke-dashoffset: 0; }
+  65% { stroke-dashoffset: 204; }
+  80%, 100% { stroke-dashoffset: 187; }
+}
+
+@keyframes circle-inner {
+  0% { stroke-dashoffset: 9; }
+  25% { stroke-dashoffset: 0; }
+  65% { stroke-dashoffset: 106; }
+  80%, 100% { stroke-dashoffset: 97; }
+}
+
+@keyframes text-flash {
+  0% { clip-path: inset(0 100% 0 0); }
+  50% { clip-path: inset(0); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+.para-loader{
+  margin-top: 110px;
+}
+
+.mt10{
+  margin-top: 10px;
 }

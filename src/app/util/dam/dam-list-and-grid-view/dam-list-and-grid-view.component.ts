@@ -153,7 +153,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() selectedFoldersForOliver: any[] = [];
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
-
+	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -236,7 +236,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (this.categoryId == undefined || this.categoryId == 0) {
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ? 'g' : '';
-				if (this.modulesDisplayType.isFolderListView) {
+				if (this.modulesDisplayType.isFolderListView && !this.FromOliverPopUp) {
 					this.viewType = "fl";
 					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
 				} else if (this.modulesDisplayType.isFolderGridView) {
@@ -310,16 +310,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.modulesDisplayType.isListView = true;
 					this.modulesDisplayType.isGridView = false;
 					this.modulesDisplayType.isFolderGridView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "g") {
 					this.modulesDisplayType.isGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isFolderGridView = false;
 					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "fg") {
 					this.modulesDisplayType.isFolderGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isGridView = false;
 					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				}
 			}
 		}

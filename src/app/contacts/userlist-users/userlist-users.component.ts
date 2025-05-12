@@ -7,6 +7,7 @@ import { SortOption } from 'app/core/models/sort-option';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from '../services/contact.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-userlist-users',
@@ -23,9 +24,15 @@ export class UserlistUsersComponent implements OnInit {
 	usersLoader: HttpRequestLoader = new HttpRequestLoader();
 	usersCustomResponse: CustomResponse = new CustomResponse();
 	emptyListMessage: string = "No Data Found.";
+	isContactModule: boolean = false;
 
 	constructor(public referenceService: ReferenceService, private pagerService: PagerService,
-		public properties: Properties, public contactService: ContactService) { }
+		public properties: Properties, public contactService: ContactService, private router: Router) { 
+			let currentUrl = this.router.url;
+			if (currentUrl.includes('home/contacts')) {
+				this.isContactModule = true;
+			}
+		}
 
 	ngOnInit() {
 		this.usersPagination = new Pagination();

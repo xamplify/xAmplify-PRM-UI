@@ -12,6 +12,7 @@
               <th class="hidden-xs" scope="row">Entity Info</th>
               <th class="hidden-xs" scope="row">Job Title</th>
               <th class="hidden-xs" scope="row">Address</th>
+              <th class="hidden-xs" scope="row" *ngIf="isContactModule">Contact Status</th>
            </tr>
         </thead>
         <tbody>
@@ -20,8 +21,9 @@
                  <td style="width: 40%;">
                     <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
                  </td>
-                 <td style="width: 30%;">{{user.jobTitle}}</td>
-                 <td style="width: 30%;">{{user.address}}</td>
+                 <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.jobTitle}}</td>
+                 <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.address}}</td>
+                 <td style="width: 20%;" *ngIf="isContactModule">{{user.contactStatus}}</td>
               </tr>
            </ng-container>
         </tbody>
