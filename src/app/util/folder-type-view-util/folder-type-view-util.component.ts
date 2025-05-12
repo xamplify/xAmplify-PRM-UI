@@ -293,12 +293,13 @@ onSelect(option: string) {
 
   AskOliver(categoryId: any) {
     let url = "";
+    this.referenceService.OliverCategoryId = categoryId;
     if (this.isPartnerView) {
       url = "/home/dam/askAi/shared/view/fg/" + categoryId;
     } else {
       url = "/home/dam/askAi/view/fg/" + categoryId;
     }
-    this.referenceService.goToRouter(url)
+    this.referenceService.goToRouter(url);
   }
 
   onCheckboxChange(item: any, event: any) {

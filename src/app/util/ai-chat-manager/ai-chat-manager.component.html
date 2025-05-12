@@ -4,7 +4,10 @@
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
   [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
-  <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
+  <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
+  <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput"
+  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -155,7 +158,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
     <div *ngIf="showPreview" class="pdf-viewer">
       <div class="toolbar">
         <select class="zoom" [(ngModel)]="zoomLevel">
@@ -227,9 +230,9 @@
                     </div>
                     <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
-                  </div>
-                  <button class="share-btn" >Design Template</button>
-                  <button class="share-btn">Design Page</button> -->
+                  </div> -->
+                  <button *ngIf="!isPartnerView" class="share-btn" (click)="openDesignTemplate(markdownComponent)" >Design Template</button>
+                  <!-- <button class="share-btn">Design Page</button> -->
                     <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                     <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                   </div>

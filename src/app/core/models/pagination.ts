@@ -192,4 +192,5 @@ export class Pagination {
 	partnerSignatureType:string ="";
 	selectedRegionIds: any[] = [];
 	selectedStatusIds: any[] = [];
+	fromPartnerAnalytics : boolean = false;
 }

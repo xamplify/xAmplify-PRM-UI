@@ -99,7 +99,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   generateChatGPTText(chatHistoryId:any) {
-    this.referenceService.showSweetAlertProceesor("Saving...");
+    // this.referenceService.showSweetAlertProceesor("Saving...");
     this.customResponse = new CustomResponse();
     // this.isTextLoading = true;
     // this.chatGptGeneratedText = '';
@@ -123,13 +123,13 @@ export class ChatGptModalComponent implements OnInit {
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
-        swal.close();
+        // swal.close();
         if (statusCode === 200) {
           let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
           // this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
           // this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
           // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
-          this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
+          // this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
           // this.chatGptGeneratedText = response.message;
           // this.messages.push({ role: 'assistant', content: response.message });
@@ -142,7 +142,7 @@ export class ChatGptModalComponent implements OnInit {
         // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
 
       }, error => {
-        swal.close();
+        // swal.close();
         // this.isTextLoading = false;
         // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         // this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
@@ -178,7 +178,11 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
-    this.activeTab = 'askpdf';
+    if (this.isWelcomePageUrl) {
+      this.activeTab = 'new-chat';
+    } else {
+      this.activeTab = 'askpdf';
+    }
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];
@@ -191,14 +195,15 @@ export class ChatGptModalComponent implements OnInit {
     this.pdfFiles = [];
     this.isReUpload = false;
     this.isfileProcessed = false;
-    this.threadId = 0;
+    this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
   }
 
   showOliverIcon() {
     if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
-      this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId, true);
+      this.saveChatHistoryTitle(this.chatHistoryId);
+      this.showIcon = true;
     } else {
       this.showIcon = true;
     }
@@ -215,9 +220,8 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = false;
     this.inputText = "";
     if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
-      this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId,false);
+      this.saveChatHistoryTitle(this.chatHistoryId);
     } else {
-      this.activeTab = tab;
       this.messages = [];
     }
     this.isTextLoading = false;
@@ -228,12 +232,13 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
-    this.threadId = 0;
+    this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
     this.selectedAssets = [];
     this.selectedFolders = [];
     this.isSaveHistoryPopUpVisible = true;
+    this.activeTab = tab;
     if (tab == 'history') {
       this.fetchHistories();
     }
@@ -572,7 +577,10 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
     self.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
-    self.inputText = '';
+    if (this.activeTab != 'paraphraser') {
+      self.inputText = '';
+    }
+    self.isValidInputText = false;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         self.isTextLoading = false;

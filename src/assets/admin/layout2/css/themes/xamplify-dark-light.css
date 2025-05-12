@@ -2757,7 +2757,7 @@ textarea.cke_source {
   background: radial-gradient(#1e2f38, #1d262c, #1d2a36) !important;
   border: 1px solid #2f4857!important;
 }
-.pdf_card,.content-card,.fixed-card,.oliver_input,.writing-card,.phara-card{
+.pdf_card,.content-card,.fixed-card,.oliver_input,.writing-card,.phara-card,.custom-card,.history-entry{
   background-color: #2b3c46!important;
   border: 1px solid #2f4857!important;
 }
@@ -2800,13 +2800,23 @@ markdown pre,.aligin-para{
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
   background-color: #22313a !important;
   border: 1px solid #2f4857!important;
   color: #fff!important;
   border-radius: 5px;
   }
-  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date{
     color: #fff!important;
   }
   .preview-border{border: 1px solid #2f4857 !important;}
+  .btn-plus{
+    background: #007bff!important; 
+  }
+  .btn-plus:hover {
+    background-color: #0b5ed7!important;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, .3);
+}
+.history-divider{
+  border-top: 1px solid #2f4857 !important;
+}

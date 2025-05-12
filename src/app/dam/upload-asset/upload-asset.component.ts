@@ -224,11 +224,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
         this.referenceService.assetResponseMessage = "";
         this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
-		if (!this.isAdd) {
-			this.id = this.route.snapshot.params['id'];
-			this.getAssetDetailsById(this.id);
-            this.uploadOrReplaceAssetText = "Replace Asset";
-		}
 		this.loggedInUserId = this.authenticationService.getUserId();
         this.getCompanyId();
         /****XNFR-169*****/
@@ -2015,9 +2010,20 @@ confirmRemoveVideo(){
                   this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/dam/vapv/view/" + this.loggedInUserCompanyId + "/";
                 this.completeLink = this.linkPrefix;
               }
+              this.getAssetdetailsIfRequired();
             });
         } else {
           this.referenceService.showSweetAlertErrorMessage('UserId Not Found.Please try aftersometime');
+          this.getAssetdetailsIfRequired();
+
         }
       }
+
+    private getAssetdetailsIfRequired() {
+        if (!this.isAdd) {
+            this.id = this.route.snapshot.params['id'];
+            this.getAssetDetailsById(this.id);
+            this.uploadOrReplaceAssetText = "Replace Asset";
+        }
+    }
 }

@@ -1602,9 +1602,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.pagedItems = null;
 					}
 					if(this.moveOptionClicked && this.contacts.length === 0){
-						this.moveOptionClicked = false;
 						this.goBackToManageList();
 					}
+					this.moveOptionClicked = false;
 					// this.refService.loading( this.httpRequestLoader, false );
 					this.refService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;

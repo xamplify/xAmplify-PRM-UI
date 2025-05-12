@@ -14,7 +14,7 @@
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
 			<!--List View / Grid View-->
 			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-				<div *ngIf="showRefreshNotification && !listLoader?.isLoading" class="alert alert-info">
+				<div *ngIf="(showRefreshNotification && !listLoader?.isLoading) && !FromOliverPopUp" class="alert alert-info">
 					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
 				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
@@ -52,7 +52,7 @@
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
-													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)" [disabled]="asset.disableAccessForOliver"></td>
+													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)" [disabled]="asset.disableAccessForOliver || files.indexOf(asset.assetType) === -1"></td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
@@ -275,8 +275,7 @@
 										<tr [ngClass]="{'hidden': !asset?.expand}">
 											<td [attr.colspan]="colspanValue">
 												<div class="table-responsive">
-													<div *ngIf="showRefreshNotificationForHistoryAssets"
-														class="alert alert-info">
+													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp" class="alert alert-info">
 														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
 													</div>
 													<table class="table tgrid table-condensed"

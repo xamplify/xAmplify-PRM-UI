@@ -10,6 +10,8 @@ import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 declare var $: any;
 
 @Component({
@@ -75,15 +77,21 @@ export class AiChatManagerComponent implements OnInit {
   chatHistoryId: any;
   copiedIndex: number;
   socialShareOption: boolean;
-
+  isBeeTemplateComponentCalled: boolean;
+  beeContainerInput: { module: string; jsonBody: string; };
+  selectedTemplateList: any[] = [];
+  isPartnerView: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
   ngOnInit() {
     this.checkSocialAcess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
+    this.showDefaultTemplates();
+    this.referenceService.asset = '';
+    this.isPartnerView = this.router.url.indexOf("/sharedp/view/") > -1 || this.router.url.indexOf("/shared/view/") > -1;
     if (this.assetId > 0) {
       this.isOliverAiFromdam = false;
       this.chatGptIntegrationSettingsDto.partnerDam = true;
@@ -285,6 +293,7 @@ export class AiChatManagerComponent implements OnInit {
         this.referenceService.goToRouter('/home/dam/manage/fg');
       }
     }
+    this.referenceService.OliverViewType = '';
   }
 
   copyAiText(element: HTMLElement, index: number) {
@@ -691,6 +700,53 @@ export class AiChatManagerComponent implements OnInit {
         this.ngxLoading = false;
       }
     )
+  }
+
+  openDesignTemplate(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    // text = text.replace(/<\/?markdown[^>]*>/g, '').replace(/<[^>]+>/g, '');
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+        (response: any) => {
+          if (!this.emailTemplateService.emailTemplate) {
+            this.emailTemplateService.emailTemplate = new EmailTemplate();
+            alert("Template created successfully.");
+          }
+          this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+          this.referenceService.asset = this.asset;
+          this.router.navigate(["/home/emailtemplates/create/Oliver"]);
+        },
+        (error: string) => {
+          console.log('API Error:', error);
+        }
+      );
+  }
+  addRowsToJson(jsonBody: any) {
+    throw new Error('Method not implemented.');
+  }
+  
+  closeBee(){
+    this.isBeeTemplateComponentCalled = false;
+  }
+
+  showDefaultTemplates(): void {
+    this.chatGptSettingsService.listDefaultTemplates(this.authenticationService.getUserId()).subscribe(
+        (response: any) => {
+            var templates = [];
+            if (response && response.data && response.data.emailTemplates) {
+                templates = response.data.emailTemplates;
+            }
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            if (templates.length > 0) {
+                this.emailTemplateService.emailTemplate = templates[0]; 
+            }
+            this.selectedTemplateList = templates;
+        },
+        (error: any) => {
+            console.error("Error in showDefaultTemplates():", error);
+        }
+    );
   }
 
 }

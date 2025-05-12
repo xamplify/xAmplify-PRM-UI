@@ -404,7 +404,8 @@
 													<a (click)="openMergePopup()" translate>Copy To List</a>
 												</li>
 												<li
-													*ngIf="selectedContactListIds.length > 0 && isContactModule && !isSynchronizationList && !isFormList && !isDefaultContactList && !manageCompanies">
+													*ngIf="selectedContactListIds.length > 0 && isContactModule && !isSynchronizationList && !isFormList && !isDefaultContactList && !manageCompanies && ((authenticationService?.module?.adminOrSuperVisor)
+													|| (loggedInUserId==uploadedUserId))">
 													<a (click)="openRemovePopup()" translate>Move To List</a>
 												</li>
 												<!---XNFR-966-->
