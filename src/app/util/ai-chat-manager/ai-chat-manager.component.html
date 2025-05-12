@@ -66,10 +66,10 @@
           </div>
 
           <div *ngIf="isFromContactJourney" class="file-info">
-            <div class="file-icon">
+            <div class="file-icon" *ngIf="selectedContact != undefined && callActivity == undefined">
               <div class="d-flex document_flex">
                 <div *ngIf="ngxLoading" class="fileloader mr10"></div>
-                <ng-container *ngIf="!ngxLoading"><img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
+                <ng-container *ngIf="!ngxLoading && selectedContact != undefined"><img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
                   src="{{selectedContact.imageSourcePath}}" alt="CONTACT" width="28px" height="28px">
                 <img *ngIf="selectedContact.imageSourcePath == undefined" class="mr10"
                   src="assets/admin/pages/media/works/contacts2.png" alt="CONTACT" width="28px" height="28px">
@@ -87,14 +87,38 @@
               <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
               </div>
             </div>
+            <div class="file-icon" *ngIf="callActivity != undefined">
+              <div class="d-flex document_flex">
+                <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!ngxLoading && callActivity != undefined">
+                  <img class="mr10" *ngIf="callActivity.direction == 'Outgoing'"
+                    src="assets/admin/pages/media/works/outgoing-call.png" alt="CONTACT" width="28px" height="28px">
+                  <img class="mr10" *ngIf="callActivity.direction == 'Incoming'"
+                    src="assets/admin/pages/media/works/incoming-call.png" alt="CONTACT" width="28px" height="28px">
+                </ng-container>
+                <a *ngIf="callActivity?.direction" title="{{ callActivity?.direction }}">
+                  {{callActivity.direction | slice:0:35}} Call
+                  <span *ngIf="callActivity?.direction?.length > 25">...</span>
+                </a>
+              </div>
+              <div class="published-on">{{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                {{callActivity.callInfoString}}
+              </div>
+            </div>
             <div class="file-details">
-              <span class="aligin-para">
+              <span class="aligin-para" *ngIf="selectedContact != undefined && callActivity == undefined">
                 <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
               </span>
-              <span class="Track-countbg">
+              <span class="aligin-para" *ngIf="callActivity != undefined">
+                <p *ngIf="callActivity?.mobileNumber"><b>Mobile Number:</b> {{callActivity.mobileNumber}}</p>
+              </span>
+              <span class="Track-countbg" *ngIf="selectedContact != undefined && callActivity == undefined">
                 <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
                 </p>
                 <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
+              </span>
+              <span class="Track-countbg" *ngIf="callActivity != undefined">
+                <p>Duration: {{callActivity.duration}}</p>
               </span>
             </div>
           </div>
@@ -311,7 +335,7 @@
                     </a>
                   </h4>
                   <h4 class="panel-title" *ngIf="isFromContactJourney">
-                    <a *ngIf="!isCollapsed" (click)="toggleAction()">
+                    <a *ngIf="!isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div>
                         <span *ngIf="selectedContact.contactName">
                           Contact Name: {{selectedContact.contactName}} | </span><span>
@@ -319,7 +343,17 @@
                       </div>
                       <i class="fa fa-chevron-up toggle-icon"></i>
                     </a>
-                    <a *ngIf="isCollapsed" (click)="toggleAction()">
+                    <a *ngIf="!isCollapsed && callActivity != undefined" (click)="toggleAction()">
+                      <div>
+                        <span>
+                          {{callActivity.direction | slice:0:35}} Call | </span>
+                        <span>
+                          {{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                          {{callActivity.callInfoString}} | Duration: {{callActivity.duration}}</span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div class="Ai_file">
                         <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
                           <div class="d-flex document_flex">
@@ -353,6 +387,37 @@
                             <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
                           </span>
                         </div>
+                      </div>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && callActivity != undefined" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img class="mr10" *ngIf="callActivity.direction == 'Outgoing'"
+                                src="assets/admin/pages/media/works/outgoing-call.png" alt="CONTACT" width="28px" height="28px">
+                              <img class="mr10" *ngIf="callActivity.direction == 'Incoming'"
+                                src="assets/admin/pages/media/works/incoming-call.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="callActivity?.direction" title="{{ callActivity?.direction }}">
+                              {{callActivity.direction | slice:0:35}} Call
+                              <span *ngIf="callActivity?.direction?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div class="published-on">{{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                            {{callActivity.callInfoString}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="Ai-file-details">
+                        <span class="aligin-para">
+                          <p *ngIf="callActivity?.mobileNumber"><b>Mobile Number:</b> {{callActivity.mobileNumber}}</p>
+                        </span>
+                        <span class="Track-countbg">
+                          <p>Duration: {{callActivity.duration}}</p>
+                        </span>
                       </div>
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
