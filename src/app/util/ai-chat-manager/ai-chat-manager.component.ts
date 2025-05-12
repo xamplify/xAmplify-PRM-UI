@@ -83,11 +83,14 @@ export class AiChatManagerComponent implements OnInit {
   selectedEmailTemplateRow = 0;
   selectTemplate: boolean;
   showTemplate: boolean;
+  vanityUrlFilter: boolean;
+  isPartnerLoggedIn: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
   ngOnInit() {
     this.checkSocialAcess();
+    this.checkDamAccess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
@@ -725,5 +728,11 @@ export class AiChatManagerComponent implements OnInit {
     this.openShareOption = false;
     this.showTemplate = false;
     this.emailTemplateService.emailTemplate.jsonBody = "";
+  }
+  private checkDamAccess() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+      this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    }
   }
 }
