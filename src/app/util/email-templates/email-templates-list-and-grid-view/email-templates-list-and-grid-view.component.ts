@@ -72,6 +72,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   refreshFolderListView = false;
   updatedItemsCount = 0;
+  cacheBuster = '?t=' + new Date().getTime();
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -239,6 +240,7 @@ setViewType(viewType: string) {
 
 refreshList(){
   this.customResponse = new CustomResponse();
+  this.cacheBuster = '?t=' + new Date().getTime();
 	this.findEmailTemplates(this.pagination);
 }
 
