@@ -1284,3 +1284,8 @@ circle.front {
 .para-loader{
   margin-top: 110px;
 }
+
+.show_more {
+  float: right;
+  padding-right: 10px;
+}

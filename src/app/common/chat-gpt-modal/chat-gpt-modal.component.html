@@ -419,9 +419,9 @@
                     <div class="history-header-row">
                       <!-- <h5 class="history-title mb0">Today</h5> -->
                       <div class="search-wrapper">
-                        <input type="text" class="form-control input-sm search-input" [(ngModel)]="searchKey"
+                        <input type="text" class="form-control input-sm search-input" [(ngModel)]="chatHistorySortOption.searchKey"
                           (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
-                        <i class="fa fa-search search-icon" (click)="fetchHistories()"></i>
+                        <i class="fa fa-search search-icon" (click)="searchChatHistory()"></i>
                       </div>
                     </div>
                     <!--  -->
@@ -455,6 +455,10 @@
                               <i *ngIf="history.showInputField" class="fa fa-times" (click)="closeEdit(history,i)"></i>
                             </div>
                           </div>
+                        </div>
+                        <div
+                          *ngIf="chatHistoryPagination.totalRecords > chatHistories.length && !(chatHistories == undefined && chatHistories.length == 0)">
+                          <a (click)="setChatHistoryPage()" class="show_more"><strong translate class="pointer">Show more</strong></a>
                         </div>
                         <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
                           <strong translate>No Data Found.</strong>
