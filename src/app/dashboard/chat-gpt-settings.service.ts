@@ -5,6 +5,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Pagination } from 'app/core/models/pagination';
+import { OliverAgentAccessDTO } from 'app/common/models/oliver-agent-access-dto';
 
 
 @Injectable()
@@ -189,6 +190,20 @@ listDefaultTemplates(userId:any){
     let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
     const url = this.chatGptSettingsUrl + "/analyzeCallRecording?access_token=" + this.authenticationService.access_token + callIdRequestParameter + userIdRequestParameter + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
     return this.authenticationService.callGetMethod(url);
+  }
+
+  /** XNFR-982 **/
+  getOliverAgentConfigurationSettings() {
+    let loggedInUserId = this.authenticationService.getUserId()
+    let url = this.chatGptSettingsUrl + 'getOliverAgentConfigurationSettings/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  /** XNFR-982 **/
+  updateOliverAgentConfigurationSettings(oliverAgentAccessDTO: OliverAgentAccessDTO) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'updateOliverAgentConfigurationSettings/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, oliverAgentAccessDTO);
   }
 
 }

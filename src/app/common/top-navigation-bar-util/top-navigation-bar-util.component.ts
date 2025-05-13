@@ -821,6 +821,12 @@ private beforeAdd(tag: any) {
           this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
           this.authenticationService.isOliverActive = data.oliverActive;
           this.authenticationService.contactSubscriptionLimitEnabled = data.contactSubscriptionLimitEnabled;
+
+          this.authenticationService.oliverInsightsEnabled = data.oliverInsightsEnabled;
+          this.authenticationService.brainstormWithOliverEnabled = data.brainstormWithOliverEnabled;
+          this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
+          this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
+        
 					//XNFR-276
           this.menuItems = data.menuItems;
 
