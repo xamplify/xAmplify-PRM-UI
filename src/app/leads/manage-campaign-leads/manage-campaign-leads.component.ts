@@ -62,7 +62,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
   updateCurrentStage: boolean;
   
   /***09/06/2024****/
-  registeredByUsersLoader = true;;
+  registeredByUsersLoader = true;
+
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
@@ -72,6 +73,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   statusLoader = true;
   isStatusLoadedSuccessfully = true;
   isLoggedAsPartner:boolean = false;
+  vanityUrlFilter:boolean = false;
   constructor(public authenticationService: AuthenticationService, public utilService:UtilService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService,public dashboardService:DashboardService,public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -123,8 +125,13 @@ export class ManageCampaignLeadsComponent implements OnInit {
     pagination.campaignId = this.campaignId;
     pagination.partnerCompanyId = this.partnerCompanyId;
     pagination.forCampaignAnalytics = this.fromAnalytics;
+    pagination.partnerView = this.isPartnerVersion;
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
+    }
+    if (this.vanityLoginDto.vanityUrlFilter) {
+    pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+    pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.leadsService.listCampaignLeads(pagination)
     .subscribe(
@@ -455,7 +462,12 @@ getSelectedIndex(index:number){
 }
 
 getStageNamesForCampaign(){
-  this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
+  const hasVanity = this.vanityLoginDto.vanityUrlFilter === true;
+  const isPartner = this.isPartnerVersion === true;
+  const isVendor = this.isVendorVersion === true;
+  this.vanityUrlFilter = (hasVanity && isPartner) || isVendor;
+  // this.vanityUrlFilter = this.vanityLoginDto?.vanityUrlFilter && this.isPartnerVersion;
+  this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId, this.vanityUrlFilter)
   .subscribe(
     response =>{
       this.stageNamesForFilterDropDown = response;

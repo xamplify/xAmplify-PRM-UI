@@ -225,8 +225,8 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
-  getStageNamesForCampaign(campaignId: number, userId: number) {
-    return this.http.get(this.URL + `campaign/lead/stages/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
+  getStageNamesForCampaign(campaignId: number, userId: number, vanityUrlFilter: boolean) {
+    return this.http.get(this.URL + `campaign/lead/stages/${campaignId}/${userId}/${vanityUrlFilter}?access_token=${this.authenticationService.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);
   }

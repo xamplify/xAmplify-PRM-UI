@@ -23,11 +23,11 @@
               <label *ngIf="customFields.selected" for="required">Required</label>
               <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
                 title="Your partner must fill in this custom field if you toggle on this option."></span>
-              <label class="toggleOnOff" [ngClass]="!customFields?.canEditRequired ? 'disabled-opacity':''"
+              <label class="toggleOnOff" [ngClass]="!customFields?.canEditRequired || customFields.formDefaultFieldType == 'PIPELINE_STAGE'? 'disabled-opacity':''"
                 [attr.data-toggle]="!customFields?.canEditRequired ? 'tooltip' : null"
                 [attr.data-placement]="!customFields?.canEditRequired ? 'right' : null"
                 [attr.title]="!customFields?.canEditRequired ? 'Marked as required in your CRM account.' : null">
-                <input class="checkBox_shadow" type="checkbox" [disabled]="!customFields.canEditRequired"
+                <input class="checkBox_shadow" type="checkbox" [disabled]="!customFields.canEditRequired || customFields.formDefaultFieldType == 'PIPELINE_STAGE'"
                   [(ngModel)]="customFields.required" [ngModelOptions]="{standalone: true}">
                 <span class="sliderOnOff"></span>
                 <span class="labels" data-on="ON" data-off="OFF"></span>
@@ -72,12 +72,14 @@
                 </option>
               </select>
             </div>
-            <div class="col-sm-6" *ngIf="!isDefaultField && customFields.type === 'date' && opportunityType === 'LEAD'">
+            <div class="col-sm-6" *ngIf="!isDefaultField && (customFields.type === 'date' || (customFields.type === 'picklist' && !activeCRMDetails.showLeadPipeline && !activeCRMDetails.showLeadPipelineStage)) && opportunityType === 'LEAD'">
               <label *ngIf="customFields.selected" for="html" style="float: left;">Map As</label>
               <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
                 [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
                 <option [ngValue]="null">None</option>
-                <option  [ngValue]="'XAMPLIFY_LEAD_REGISTERED_DATE'">xAmplify Lead Registered Date
+                <option  *ngIf="customFields.type === 'date'" [ngValue]="'XAMPLIFY_LEAD_REGISTERED_DATE'">xAmplify Lead Registered Date
+                </option>
+                <option *ngIf="customFields.type === 'picklist' && !activeCRMDetails.showLeadPipeline && !activeCRMDetails.showLeadPipelineStage" [ngValue]="'PIPELINE_STAGE'">Pipeline Stage
                 </option>
               </select>
             </div>
