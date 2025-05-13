@@ -225,7 +225,14 @@ export class ChatGptModalComponent implements OnInit {
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
      this.checkDamAccess();
-     this.getOliverAgentAccessSettings();
+
+     if (this.authenticationService.vanityURLEnabled) {
+      this.getOliverAgentAccessSettingsForVanityLogin();
+     } else {
+        this.getOliverAgentAccessSettings();
+     }
+   
+
   }
 
   private checkDamAccess() {
@@ -989,7 +996,27 @@ closeDesignTemplate(event: any) {
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
         }
       }, error => {
+        console.log('Error in getOliverAgentAccessSettings() ', error);
+      });
+  }
 
+
+   getOliverAgentAccessSettingsForVanityLogin() {
+    this.chatGptSettingsService.getOliverAgentConfigurationSettingsForVanityLogin().subscribe(
+      result => {
+        if (result.data && result.statusCode == 200) {
+          let data = result.data;
+          this.showOliverInsights = data.showOliverInsights;
+          this.showBrainstormWithOliver = data.showBrainstormWithOliver;
+          this.showOliverSparkWriter = data.showOliverSparkWriter;
+          this.showOliverParaphraser = data.showOliverParaphraser;
+          this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
+          this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
+          this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
+          this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
+        }
+      }, error => {
+        console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
       });
   }
     /** XNFR-982 end **/

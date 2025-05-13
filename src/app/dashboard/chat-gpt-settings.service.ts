@@ -199,6 +199,12 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
+  getOliverAgentConfigurationSettingsForVanityLogin() {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let url = this.chatGptSettingsUrl + 'getOliverAgentConfigurationSettingsForVanityLogin/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
   /** XNFR-982 **/
   updateOliverAgentConfigurationSettings(oliverAgentAccessDTO: OliverAgentAccessDTO) {
     let loggedInUserId = this.authenticationService.getUserId();

@@ -155,7 +155,8 @@
 
                 <li *ngIf="authenticationService?.module?.adminOrSuperVisor
                   && (authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
-                  || authenticationService.oliverParaphraserEnabled)" [ngClass]="{'active': activeTab === 'settings'}">
+                  || authenticationService.oliverParaphraserEnabled) 
+                   && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)" [ngClass]="{'active': activeTab === 'settings'}">
                   <a href="#settings" role="tab" data-toggle="tab" (click)="setActiveTab('settings')">
                     <i class="fa fa-gear"></i> Settings
                   </a>
