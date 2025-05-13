@@ -40,7 +40,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   selectedOption: string;
   @Input() FromOliverPopUp: boolean = false;
   @Input() selectedFoldersForOliver: any[] = [];
-  @Input() isPartnerViewFromOliver: boolean = false;;
+  @Input() isPartnerViewFromOliver: boolean = false;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -50,15 +50,27 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
-    if (this.FromOliverPopUp) {
-      this.folderViewType = "fg";
-      this.isPartnerView = this.isPartnerViewFromOliver;
-    }
+    this.setOliverViewType();
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
     this.utilService.searchKey = "";
+  }
+
+  private setOliverViewType() {
+    if (this.FromOliverPopUp) {
+      let oliverViewType;
+      if (this.modulesDisplayType.isFolderListView) {
+        oliverViewType = 'fl';
+      } else if (this.modulesDisplayType.isFolderGridView) {
+        oliverViewType = 'fg';
+      } else {
+        oliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      }
+      this.folderViewType = oliverViewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+    }
   }
 
   findAllCategories(pagination:Pagination){
@@ -258,8 +270,14 @@ export class FolderTypeViewUtilComponent implements OnInit {
       } else if (this.moduleId == this.roles.landingPageId) {
         this.referenceService.goToManageLandingPages(viewType);
       }
-    } else if (this.FromOliverPopUp) {
+    } else if (this.FromOliverPopUp && (viewType == "l" || viewType == "g")) {
       this.oliverfolderViewTypeEventEmitter.emit(viewType);
+    } else if (this.FromOliverPopUp && (viewType == "fl" || viewType == "fg")) {
+      this.folderViewType = viewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+      this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+      this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+      // this.findAllCategories(this.pagination);
     }
   }
 
@@ -291,15 +309,21 @@ onSelect(option: string) {
   this.selectedOption = option;
 }
 
-  AskOliver(categoryId: any) {
+ AskOliver(categoryId: any,viewType: string) {
     let url = "";
     this.referenceService.OliverCategoryId = categoryId;
     if (this.isPartnerView) {
-      url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      if(viewType == "fl"){
+         url = "/home/dam/askAi/shared/view/fl/" + categoryId;
+      }else{
+        url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      }
+    } else if(viewType == "fl") {
+      url = "/home/dam/askAi/view/fl/" + categoryId;
     } else {
       url = "/home/dam/askAi/view/fg/" + categoryId;
     }
-    this.referenceService.goToRouter(url);
+    this.referenceService.goToRouter(url)
   }
 
   onCheckboxChange(item: any, event: any) {
