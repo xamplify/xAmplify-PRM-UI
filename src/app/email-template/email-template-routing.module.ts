@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmailEditorComponent } from './email-editor/email-editor.component';
-import { CreateTemplateComponent } from './create-template/create-template.component';
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { HelpComponent } from './help/help.component';
@@ -11,6 +10,7 @@ import { SocialContactsCallbackComponent } from 'app/contacts/social-contacts-ca
 import {CkEditorUploadComponent} from '../ck-editor-upload-component/ck-editor-upload-component.component';
 import { PendingChangesGuard } from 'app/component-can-deactivate';
 import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-email-templates.component';
+import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 
 
 export const emailRoutes: Routes = [

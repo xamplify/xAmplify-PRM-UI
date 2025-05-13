@@ -13,6 +13,10 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpClient } from '@angular/common/http';
 import { add } from 'ngx-bootstrap/chronos';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -73,10 +77,16 @@ export class ChatGptModalComponent implements OnInit {
   searchKey:string;
   isPartnerLoggedIn: boolean = false;
   vanityUrlFilter: boolean = false;
+  showTemplate: boolean;
+  selectedTemplateList: any[];
+  selectedFilterIndex: number = 1;
+  chatHistoryPagination: Pagination = new Pagination();
+  chatHistorySortOption: SortOption = new SortOption();
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
-    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
+    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
+    private emailTemplateService: EmailTemplateService, public pagerService: PagerService) {
   }
 
   ngOnInit() {
@@ -149,7 +159,7 @@ export class ChatGptModalComponent implements OnInit {
         // this.inputText = '';
       }, () => {
         if (this.activeTab == 'history') {
-          this.fetchHistories();
+          this.showChatHistories();
         }
       });
   }
@@ -169,6 +179,7 @@ export class ChatGptModalComponent implements OnInit {
 
   resetValues() {
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
+    this.showDefaultTemplates();
     this.inputText = "";
     this.isSpeakingText = false;
     this.speakingIndex = null;
@@ -240,7 +251,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isSaveHistoryPopUpVisible = true;
     this.activeTab = tab;
     if (tab == 'history') {
-      this.fetchHistories();
+      this.showChatHistories();
     }
   }
 
@@ -286,7 +297,7 @@ export class ChatGptModalComponent implements OnInit {
         }
       }, () => {
         if (this.activeTab == 'history') {
-          this.fetchHistories();
+          this.showChatHistories();
         }
       }
     )
@@ -360,12 +371,17 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   closeSocialShare(event: any) {
+    this.emitterData(event);
+  }
+
+  private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
     }
-    this.openShareOption = false;
+     this.openShareOption = false;
+     this.showTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -649,11 +665,13 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
-  fetchHistories() {
-    this.chatGptSettingsService.fetchHistories(this.searchKey).subscribe(
+  fetchHistories(chatHistoryPagination) {
+    this.chatGptSettingsService.fetchHistories(chatHistoryPagination).subscribe(
       (response) => {
+        const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.chatHistories = response.data;
+          chatHistoryPagination.totalRecords = data.totalRecords;
+          this.chatHistories = [...this.chatHistories,...data.list];
         }
       }, error => {
 
@@ -784,9 +802,84 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.searchKey != undefined && this.searchKey.length > 0) {
-      this.fetchHistories();
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+      this.searchChatHistory();
     }
   }
 
+  
+  showDefaultTemplates(): void {
+    let self = this;
+    this.chatGptSettingsService.listDefaultTemplates(this.authenticationService.getUserId()).subscribe(
+        (response: any) => {
+            var templates = [];
+            if (response && response.data && response.data.emailTemplates) {
+                templates = response.data.emailTemplates;
+            }
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            if (templates.length > 0) {
+                this.emailTemplateService.emailTemplate = templates[0]; 
+            }
+            this.selectedTemplateList = templates;
+        },
+        (error: any) => {
+            console.error("Error in showDefaultTemplates():", error);
+        }
+    );
+}
+  openDesignTemplate(markdown: any) {
+    const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.showTemplate = true;
+    this.chatGptIntegrationSettingsDto.prompt = text;
+
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (!this.emailTemplateService.emailTemplate) {
+          this.emailTemplateService.emailTemplate = new EmailTemplate();
+          alert("Template created successfully.");
+        }
+        this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+        this.showTemplate = true;
+      },
+      (error: string) => {
+        this.showTemplate = false;
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  closeDesignTemplate(event: any) {
+    this.emitterData(event);
+    this.emailTemplateService.emailTemplate = new EmailTemplate();
+     this.emailTemplateService.isNewTemplate = false;
+  }
+
+  showChatHistories() {
+    this.resetChatHistoryPagination();
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  resetChatHistoryPagination() {
+    this.chatHistoryPagination.maxResults = 12;
+    this.chatHistoryPagination = new Pagination;
+    this.chatHistories = [];
+  }
+
+  setChatHistoryPage() {
+    this.chatHistoryPagination.pageIndex = this.chatHistoryPagination.pageIndex + 1;
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  getAllFilteredChatHistoryResults() {
+    this.chatHistoryPagination.pageIndex = 1;
+    this.chatHistoryPagination.searchKey = this.chatHistorySortOption.searchKey;
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  searchChatHistory() {
+    this.chatHistories = [];
+    this.getAllFilteredChatHistoryResults();
+  }
+  
 }

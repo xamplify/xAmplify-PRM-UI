@@ -13,8 +13,8 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { CustomResponse } from '../../common/models/custom-response';
 import { HubSpotService } from 'app/core/services/hubspot.service';
-import { CreateTemplateComponent } from '../create-template/create-template.component';
 import { EmailTemplateSource } from '../../email-template/models/email-template-source';
+import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 
 declare var Metronic, Layout, Demo, TableManaged, $, CKEDITOR: any;
 

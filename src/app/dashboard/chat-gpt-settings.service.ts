@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { Pagination } from 'app/core/models/pagination';
 
 
 @Injectable()
@@ -163,11 +164,10 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
   }
 
-  fetchHistories(searchKey:any) {
+  fetchHistories(pagination:Pagination) {
     let userId = this.authenticationService.getUserId();
-    let loggedInUserIdParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
-    let searchKeyParameter = searchKey != undefined && searchKey.length > 0 ? '&searchKey=' + searchKey : '';
-    const url = this.chatGptSettingsUrl + "fetchChatHistories?access_token=" + this.authenticationService.access_token + loggedInUserIdParameter + searchKeyParameter;
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"?access_token=" + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
 
