@@ -31,6 +31,7 @@ export class CallActivityComponent implements OnInit {
 
   @Output() notifyClose = new EventEmitter();
   @Output() notifyOliver = new EventEmitter();
+  @Output() notifyAskOliver = new EventEmitter();
 
   callActivities = [];
   ngxLoading: boolean = false;
@@ -280,6 +281,10 @@ export class CallActivityComponent implements OnInit {
 
   askOliver() {
     this.notifyOliver.emit();
+  }
+
+  askOliverForCallRecording(callActivity) {
+    this.notifyAskOliver.emit(callActivity);
   }
 
 }

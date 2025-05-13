@@ -851,6 +851,7 @@ export class ChatGptModalComponent implements OnInit {
 }
   openDesignTemplate(markdown: any) {
     const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.showTemplate = true;
     this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
