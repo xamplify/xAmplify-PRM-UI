@@ -81,11 +81,17 @@ export class AiChatManagerComponent implements OnInit {
   beeContainerInput: { module: string; jsonBody: string; };
   selectedTemplateList: any[] = [];
   isPartnerView: boolean;
+  selectedEmailTemplateRow = 0;
+  selectTemplate: boolean;
+  showTemplate: boolean;
+  vanityUrlFilter: boolean;
+  isPartnerLoggedIn: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
   ngOnInit() {
     this.checkSocialAcess();
+    this.checkDamAccess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
@@ -708,20 +714,22 @@ export class AiChatManagerComponent implements OnInit {
 
   openDesignTemplate(markdown: any) {
     let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
-    // text = text.replace(/<\/?markdown[^>]*>/g, '').replace(/<[^>]+>/g, '');
     this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
         (response: any) => {
           if (!this.emailTemplateService.emailTemplate) {
             this.emailTemplateService.emailTemplate = new EmailTemplate();
             alert("Template created successfully.");
+            this.showTemplate = false;
           }
+
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
-          this.referenceService.asset = this.asset;
-          this.router.navigate(["/home/emailtemplates/create/Oliver"]);
+          this.showTemplate = true;
         },
         (error: string) => {
           console.log('API Error:', error);
+          this.showTemplate = false;
+
         }
       );
   }
@@ -751,6 +759,26 @@ export class AiChatManagerComponent implements OnInit {
             console.error("Error in showDefaultTemplates():", error);
         }
     );
+}
+ 
+  closeDesignTemplate(event: any) {
+    this.emitterData(event);
+  }
+  private emitterData(event: any) {
+    this.openShareOption = false;
+    if (event) {
+      this.referenceService.showSweetAlertSuccessMessage(event);
+      this.emailTemplateService.emailTemplate = new EmailTemplate();
+    }
+    this.openShareOption = false;
+    this.showTemplate = false;
+    this.emailTemplateService.emailTemplate.jsonBody = "";
+  }
+  private checkDamAccess() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+      this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    }
   }
 
 }

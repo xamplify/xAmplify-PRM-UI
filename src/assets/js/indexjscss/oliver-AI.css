@@ -234,7 +234,7 @@
 
   .modal-body.oliver-header{
     background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
-    max-height: 100%;
+    max-height: 100%!important;
     overflow: hidden;
     padding: 15px 0px 15px 15px;
   }

@@ -178,6 +178,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
     this.inputText = "";
@@ -209,6 +210,14 @@ export class ChatGptModalComponent implements OnInit {
     this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
+     this.checkDamAccess();
+  }
+
+  private checkDamAccess() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+      this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    }
   }
 
   showOliverIcon() {
@@ -312,25 +321,39 @@ export class ChatGptModalComponent implements OnInit {
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
-  parseHTMLBody(emailContent: string): void {
+  parseHTMLBody(emailContent: string) {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = emailContent;
     let plainText = tempDiv.innerHTML;
     let subject = "";
     let body = "";
-    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    let subjectStartIndex = -1;
+    let closingTag = "";
+
+    if (plainText.indexOf("<p>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p>Subject:");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<p><strong>Subject:</strong>") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p><strong>Subject:</strong>");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<strong>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<strong>Subject:");
+      closingTag = "</strong>";
+    }
+
     if (subjectStartIndex !== -1) {
-      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      let subjectEndIndex = plainText.indexOf(closingTag, subjectStartIndex);
       if (subjectEndIndex !== -1) {
-        this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
-          .replace("Subject:", "").trim();
+        const subjectRaw = plainText.substring(subjectStartIndex, subjectEndIndex + closingTag.length);
+        this.subjectText = subjectRaw.replace(/<[^>]*>/g, '').replace("Subject:", "").trim();
       }
-      this.emailBody = plainText.substring(subjectEndIndex + 4).trim();
+      this.emailBody = plainText.substring(subjectEndIndex + closingTag.length).trim();
       let lastHrIndex = this.emailBody.lastIndexOf("<hr");
       if (lastHrIndex !== -1) {
         this.emailBody = this.emailBody.substring(0, lastHrIndex).trim();
       }
     }
+
     console.log("Subject:", subject);
     console.log("Body:", body);
   }
@@ -379,9 +402,11 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
+      this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
-     this.openShareOption = false;
-     this.showTemplate = false;
+    this.emailTemplateService.emailTemplate.jsonBody = "";
+    this.openShareOption = false;
+    this.showTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -446,10 +471,6 @@ export class ChatGptModalComponent implements OnInit {
 
   openAssetsPage() {
     this.showView = true;
-    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-      this.vanityUrlFilter = true;
-    }
-    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
   }
 
 
@@ -832,7 +853,6 @@ export class ChatGptModalComponent implements OnInit {
     const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
     this.showTemplate = true;
     this.chatGptIntegrationSettingsDto.prompt = text;
-
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (!this.emailTemplateService.emailTemplate) {
@@ -844,15 +864,15 @@ export class ChatGptModalComponent implements OnInit {
       },
       (error: string) => {
         this.showTemplate = false;
+        this.emailTemplateService.emailTemplate.jsonBody = "";
         console.log('API Error:', error);
       }
     );
   }
 
-  closeDesignTemplate(event: any) {
+  
+closeDesignTemplate(event: any) {
     this.emitterData(event);
-    this.emailTemplateService.emailTemplate = new EmailTemplate();
-     this.emailTemplateService.isNewTemplate = false;
   }
 
   showChatHistories() {
