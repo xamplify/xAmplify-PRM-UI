@@ -99,7 +99,7 @@ export class SendTestEmailComponent implements OnInit {
       this.activeTab('registerNow'); 
       this.tabsEnabled = true;
     }else if (this.isLeadOptionClicked) {
-      this.findLeadStatusReminderEmailTemplate();
+      this.findSendReminderLeadEmailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
@@ -487,12 +487,12 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   /***** XNFR-970 *****/
-  findLeadStatusReminderEmailTemplate() {
+  findSendReminderLeadEmailTemplate() {
     this.processing = true;
     this.headerTitle = "Send Reminder";
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.openModalPopup(this.leadStatusModalId);
-    this.vanityURLService.findLeadStatusReminderEmailTemplate(this.toEmailId).subscribe(
+    this.vanityURLService.findSendReminderLeadEmailTemplate(this.toEmailId).subscribe(
       response => {
         if (response.statusCode === 200) {
           let data = response.data;
@@ -527,11 +527,11 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   /***** XNFR-970 *****/
-  sendLeadStatusReminiderMail() {
+  sendReminderLeadEmail() {
     this.processing = true;
     this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
     this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
-    this.vanityURLService.sendLeadStatusReminderEmail(this.sendTestEmailDto).subscribe(
+    this.vanityURLService.sendReminderLeadEmail(this.sendTestEmailDto).subscribe(
       response => {
         if (response.statusCode === 200) {
           this.processing = false;

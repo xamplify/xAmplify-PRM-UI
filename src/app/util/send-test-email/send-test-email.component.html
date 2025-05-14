@@ -129,7 +129,7 @@
          <div class="modal-footer" style="border: none" *ngIf="!processing">
             <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
             <button type="submit" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0"
-               (click)="sendLeadStatusReminiderMail()">
+               (click)="sendReminderLeadEmail()">
                <span class="btn btn-primary transition txt_pd-top3">Send<i aria-hidden="true"
                      class="fa fa-send"></i></span>
             </button>
