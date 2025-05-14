@@ -13,6 +13,11 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpClient } from '@angular/common/http';
 import { add } from 'ngx-bootstrap/chronos';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
+import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -73,10 +78,29 @@ export class ChatGptModalComponent implements OnInit {
   searchKey:string;
   isPartnerLoggedIn: boolean = false;
   vanityUrlFilter: boolean = false;
+  showTemplate: boolean;
+  selectedTemplateList: any[];
+  selectedFilterIndex: number = 1;
+  chatHistoryPagination: Pagination = new Pagination();
+  chatHistorySortOption: SortOption = new SortOption();
+
+  loggedInUserId: number = 0;
+  showOliverInsights: boolean = true;
+  showBrainstormWithOliver: boolean = false;
+  showOliverSparkWriter: boolean = false;
+  showOliverParaphraser: boolean = false;
+  oliverAgentAccessDTO = new OliverAgentAccessDTO(); 
+  disableOliverInsights: boolean = false;
+  disableBrainstormWithOliver: boolean = false;
+  disableOliverSparkWriter: boolean = false;
+  disableOliverParaphraser: boolean = false;
+  agentAccessUpdateButtonName: string = 'Update';
+  disableAgentAccessUpdateButton: boolean = false;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
-    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
+    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
+    private emailTemplateService: EmailTemplateService, public pagerService: PagerService) {
   }
 
   ngOnInit() {
@@ -149,7 +173,7 @@ export class ChatGptModalComponent implements OnInit {
         // this.inputText = '';
       }, () => {
         if (this.activeTab == 'history') {
-          this.fetchHistories();
+          this.showChatHistories();
         }
       });
   }
@@ -168,7 +192,9 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
+    this.showDefaultTemplates();
     this.inputText = "";
     this.isSpeakingText = false;
     this.speakingIndex = null;
@@ -198,6 +224,22 @@ export class ChatGptModalComponent implements OnInit {
     this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
+     this.checkDamAccess();
+
+     if (this.authenticationService.vanityURLEnabled) {
+      this.getOliverAgentAccessSettingsForVanityLogin();
+     } else {
+        this.getOliverAgentAccessSettings();
+     }
+   
+
+  }
+
+  private checkDamAccess() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+      this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    }
   }
 
   showOliverIcon() {
@@ -240,7 +282,11 @@ export class ChatGptModalComponent implements OnInit {
     this.isSaveHistoryPopUpVisible = true;
     this.activeTab = tab;
     if (tab == 'history') {
-      this.fetchHistories();
+      this.showChatHistories();
+    }
+
+    if (this.activeTab == 'settings') {
+      this.setOliverAgentDisableConditions();
     }
   }
 
@@ -286,7 +332,7 @@ export class ChatGptModalComponent implements OnInit {
         }
       }, () => {
         if (this.activeTab == 'history') {
-          this.fetchHistories();
+          this.showChatHistories();
         }
       }
     )
@@ -301,25 +347,39 @@ export class ChatGptModalComponent implements OnInit {
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
-  parseHTMLBody(emailContent: string): void {
+  parseHTMLBody(emailContent: string) {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = emailContent;
     let plainText = tempDiv.innerHTML;
     let subject = "";
     let body = "";
-    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    let subjectStartIndex = -1;
+    let closingTag = "";
+
+    if (plainText.indexOf("<p>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p>Subject:");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<p><strong>Subject:</strong>") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p><strong>Subject:</strong>");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<strong>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<strong>Subject:");
+      closingTag = "</strong>";
+    }
+
     if (subjectStartIndex !== -1) {
-      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      let subjectEndIndex = plainText.indexOf(closingTag, subjectStartIndex);
       if (subjectEndIndex !== -1) {
-        this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
-          .replace("Subject:", "").trim();
+        const subjectRaw = plainText.substring(subjectStartIndex, subjectEndIndex + closingTag.length);
+        this.subjectText = subjectRaw.replace(/<[^>]*>/g, '').replace("Subject:", "").trim();
       }
-      this.emailBody = plainText.substring(subjectEndIndex + 4).trim();
+      this.emailBody = plainText.substring(subjectEndIndex + closingTag.length).trim();
       let lastHrIndex = this.emailBody.lastIndexOf("<hr");
       if (lastHrIndex !== -1) {
         this.emailBody = this.emailBody.substring(0, lastHrIndex).trim();
       }
     }
+
     console.log("Subject:", subject);
     console.log("Body:", body);
   }
@@ -360,12 +420,19 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   closeSocialShare(event: any) {
+    this.emitterData(event);
+  }
+
+  private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
+      this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
+    this.emailTemplateService.emailTemplate.jsonBody = "";
     this.openShareOption = false;
+    this.showTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -430,10 +497,6 @@ export class ChatGptModalComponent implements OnInit {
 
   openAssetsPage() {
     this.showView = true;
-    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-      this.vanityUrlFilter = true;
-    }
-    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
   }
 
 
@@ -649,11 +712,13 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
-  fetchHistories() {
-    this.chatGptSettingsService.fetchHistories(this.searchKey).subscribe(
+  fetchHistories(chatHistoryPagination) {
+    this.chatGptSettingsService.fetchHistories(chatHistoryPagination).subscribe(
       (response) => {
+        const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.chatHistories = response.data;
+          chatHistoryPagination.totalRecords = data.totalRecords;
+          this.chatHistories = [...this.chatHistories,...data.list];
         }
       }, error => {
 
@@ -784,9 +849,176 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.searchKey != undefined && this.searchKey.length > 0) {
-      this.fetchHistories();
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+      this.searchChatHistory();
     }
   }
+
+  
+  showDefaultTemplates(): void {
+    let self = this;
+    this.chatGptSettingsService.listDefaultTemplates(this.authenticationService.getUserId()).subscribe(
+        (response: any) => {
+            var templates = [];
+            if (response && response.data && response.data.emailTemplates) {
+                templates = response.data.emailTemplates;
+            }
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            if (templates.length > 0) {
+                this.emailTemplateService.emailTemplate = templates[0]; 
+            }
+            this.selectedTemplateList = templates;
+        },
+        (error: any) => {
+            console.error("Error in showDefaultTemplates():", error);
+        }
+    );
+}
+  openDesignTemplate(markdown: any) {
+    const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.showTemplate = true;
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (!this.emailTemplateService.emailTemplate) {
+          this.emailTemplateService.emailTemplate = new EmailTemplate();
+          alert("Template created successfully.");
+        }
+        this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+        this.showTemplate = true;
+      },
+      (error: string) => {
+        this.showTemplate = false;
+        this.emailTemplateService.emailTemplate.jsonBody = "";
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  
+closeDesignTemplate(event: any) {
+    this.emitterData(event);
+  }
+
+  showChatHistories() {
+    this.resetChatHistoryPagination();
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  resetChatHistoryPagination() {
+    this.chatHistoryPagination.maxResults = 12;
+    this.chatHistoryPagination = new Pagination;
+    this.chatHistories = [];
+  }
+
+  setChatHistoryPage() {
+    this.chatHistoryPagination.pageIndex = this.chatHistoryPagination.pageIndex + 1;
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  getAllFilteredChatHistoryResults() {
+    this.chatHistoryPagination.pageIndex = 1;
+    this.chatHistoryPagination.searchKey = this.chatHistorySortOption.searchKey;
+    this.fetchHistories(this.chatHistoryPagination);
+  }
+
+  searchChatHistory() {
+    this.chatHistories = [];
+    this.getAllFilteredChatHistoryResults();
+  }
+
+  /** XNFR-982 start **/
+  updateCheckBox(event: any, agentType: string) {
+    const isChecked = event.target.checked;
+    if (agentType === this.INSIGHTAGENT) {
+      this.oliverAgentAccessDTO.showOliverInsights = isChecked;
+    } else if (agentType === this.BRAINSTORMAGENT) {
+      this.oliverAgentAccessDTO.showBrainstormWithOliver = isChecked;
+    } else if (agentType === this.SPARKWRITERAGENT) {
+      this.oliverAgentAccessDTO.showOliverSparkWriter = isChecked;
+    } else if (agentType === this.PARAPHRASERAGENT) {
+      this.oliverAgentAccessDTO.showOliverParaphraser = isChecked;
+    }
+  }
+
+  updateOliverAgentAccessSettings() {
+    this.agentAccessUpdateButtonName = 'Updating...';
+    this.disableAgentAccessUpdateButton = true;
+    this.chatGptSettingsService.updateOliverAgentConfigurationSettings(this.oliverAgentAccessDTO).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+        }
+      },
+      (error) => {
+        this.agentAccessUpdateButtonName = 'Update';
+        this.disableAgentAccessUpdateButton = false;
+        this.getOliverAgentAccessSettings();
+      }, () => {
+        this.agentAccessUpdateButtonName = 'Update';
+        this.disableAgentAccessUpdateButton = false;
+        this.getOliverAgentAccessSettings();
+      }
+    );
+  }
+
+  setOliverAgentDisableConditions() {
+    if (!this.authenticationService.brainstormWithOliverEnabled) {
+      this.disableBrainstormWithOliver = true;
+    } else {
+      this.disableBrainstormWithOliver = false;
+    }
+    if (!this.authenticationService.oliverSparkWriterEnabled) {
+      this.disableOliverSparkWriter = true;
+    } else {
+      this.disableOliverSparkWriter = false;
+    }
+    if (!this.authenticationService.oliverParaphraserEnabled) {
+      this.disableOliverParaphraser = true;
+    } else {
+      this.disableOliverParaphraser = false;
+    }
+  }
+
+  getOliverAgentAccessSettings() {
+    this.chatGptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+      result => {
+        if (result.data && result.statusCode == 200) {
+          let data = result.data;
+          this.showOliverInsights = data.showOliverInsights;
+          this.showBrainstormWithOliver = data.showBrainstormWithOliver;
+          this.showOliverSparkWriter = data.showOliverSparkWriter;
+          this.showOliverParaphraser = data.showOliverParaphraser;
+          this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
+          this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
+          this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
+          this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
+        }
+      }, error => {
+        console.log('Error in getOliverAgentAccessSettings() ', error);
+      });
+  }
+
+
+   getOliverAgentAccessSettingsForVanityLogin() {
+    this.chatGptSettingsService.getOliverAgentConfigurationSettingsForVanityLogin().subscribe(
+      result => {
+        if (result.data && result.statusCode == 200) {
+          let data = result.data;
+          this.showOliverInsights = data.showOliverInsights;
+          this.showBrainstormWithOliver = data.showBrainstormWithOliver;
+          this.showOliverSparkWriter = data.showOliverSparkWriter;
+          this.showOliverParaphraser = data.showOliverParaphraser;
+          this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
+          this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
+          this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
+          this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
+        }
+      }, error => {
+        console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
+      });
+  }
+    /** XNFR-982 end **/
 
 }

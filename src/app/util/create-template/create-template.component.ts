@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy,HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy,HostListener, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
-import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -17,6 +15,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { Properties } from 'app/common/models/properties';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 
 declare var BeePlugin:any, swal:any, $: any;
 
@@ -69,6 +69,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     emailTemplateTypeLabels = ['Email', 'Regular Co-Branding', 'Event', 'Event Co-Branding'];
     isOliverCreateUrl: boolean;
     selectedEmailType: any = this.emailTemplateTypeLabels[0];
+    @Input() isFromOliverPopUp: boolean;
+     @Output() notifyEmit: EventEmitter<any> = new EventEmitter();
+    showPopUp: boolean;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -80,7 +83,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.refService.scrollSmoothToTop();
         this.skipConfirmAlert = false;
         let url = this.refService.getCurrentRouteUrl();
-        this.isAdd = url.indexOf("create")>-1;
+        this.isAdd = url.indexOf("create")>-1 ;
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.viewType = this.route.snapshot.params['viewType'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
@@ -105,7 +108,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             /***Send Request To Bee Container */
             var request = self.sendRequestToBee(self);
 
-            if (emailTemplateService.emailTemplate == undefined) {
+            if (emailTemplateService.emailTemplate == undefined && !this.isFromOliverPopUp) {
                 this.router.navigate(["/home/emailtemplates/select"]);
             } 
            var save = self.openSaveModalPopUp(self, emailTemplateService);
@@ -262,6 +265,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             self.addCategoryId(self);
             self.emailTemplate.body = htmlContent;
             self.emailTemplate.jsonBody = jsonContent;
+            self.showPopUp = false;
             if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
                 if (jsonContent.indexOf(self.videoGif) < 0) {
                     swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
@@ -338,7 +342,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
         emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-        if(this.isOliverCreateUrl){
+        if(this.isOliverCreateUrl || this.isFromOliverPopUp){
             this.selecttemplatetype(emailTemplate);
         }
         let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
@@ -368,7 +372,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.closeModalPopup();
                             if (this.isOliverCreateUrl) {
                                 this.redirectToOliver();
-                            } else {
+                            } else if(this.isFromOliverPopUp){
+                                this.notifyEmit.emit('Template created successfully');
+                            }else {
                                 this.navigateToManageSection();
                             }
                         }else{
@@ -492,6 +498,11 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
     }
+     ngOnChanges(changes: SimpleChanges) {
+        if (changes['isFromOliverPopUp'] && changes['isFromOliverPopUp'].currentValue) {
+          this.isFromOliverPopUp = changes['isFromOliverPopUp'].currentValue;
+        }
+      }
 
     saveTemplate(isSaveAndRedirectButtonClicked:boolean) {
         this.emailTemplate.draft = false;
@@ -500,16 +511,18 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
   
 
-    navigateBack(){
+    navigateBack() {
         let url = this.refService.getCurrentRouteUrl();
-        let isCreateUrl = url.indexOf("create")>-1;
-        let isOliverCreateUrl = url.indexOf("create/Oliver")>-1;
-        if(isOliverCreateUrl){
+        let isCreateUrl = url.indexOf("create") > -1;
+        let isOliverCreateUrl = url.indexOf("create/Oliver") > -1;
+        if (isOliverCreateUrl) {
             this.redirectToOliver();
-        }else{
-            if(isCreateUrl){
+        } else if (this.isFromOliverPopUp) {
+            this.notifyEmit.emit();
+        } else {
+            if (isCreateUrl) {
                 this.router.navigate(["/home/emailtemplates/select"]);
-            }else{
+            } else {
                 this.navigateToManageSection();
             }
         }
@@ -561,7 +574,12 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
     closeModalPopup(){
         this.saveLoader = false;
-        this.refService.closeModalPopup("save-template-popup");
+        if(this.isFromOliverPopUp){
+            this.showPopUp = true;
+            // this.refService.closeModalPopup("save-template-popup");
+        }else{
+             this.refService.closeModalPopup("save-template-popup");
+        }
     }
     selecttemplatetype(emailTemplate: EmailTemplate){
         emailTemplate.beeRegularTemplate = false;
@@ -580,4 +598,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             emailTemplate.surveyCoBrandingTemplate = true;
         }
     }
+    nagivatetoRouter(urlType :any){
+		if(urlType =='home'){
+			this.refService.goToRouter(this.refService.homeRouter);
+		}else if(urlType =='emailtemplates'){
+			this.refService.goToRouter('/home/emailtemplates/select');
+		}else if(urlType =='social'){
+			this.refService.goToRouter('/home/campaigns/partner/social');
+		}
+		}
 }
