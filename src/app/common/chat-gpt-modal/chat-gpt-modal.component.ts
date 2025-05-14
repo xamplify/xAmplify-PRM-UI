@@ -36,7 +36,7 @@ export class ChatGptModalComponent implements OnInit {
   isCopyButtonDisplayed = false;
   customResponse: CustomResponse = new CustomResponse();
   showIcon: boolean = true;
-  activeTab: string = 'new-chat';
+  activeTab: string = 'globalchat';
   selectedValueForWork: any = {};
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   actionType: string;
@@ -73,6 +73,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
   private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
+  private readonly GLOBALCHAT = "GLOBALCHAT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -83,6 +84,7 @@ export class ChatGptModalComponent implements OnInit {
   selectedFilterIndex: number = 1;
   chatHistoryPagination: Pagination = new Pagination();
   chatHistorySortOption: SortOption = new SortOption();
+  vendorCompanyProfileName: string;
 
   loggedInUserId: number = 0;
   showOliverInsights: boolean = true;
@@ -209,7 +211,7 @@ export class ChatGptModalComponent implements OnInit {
     if (this.isWelcomePageUrl) {
       this.activeTab = 'new-chat';
     } else {
-      this.activeTab = 'askpdf';
+      this.activeTab = 'globalchat';
     }
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
@@ -226,15 +228,17 @@ export class ChatGptModalComponent implements OnInit {
     this.threadId = '';
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
-     this.checkDamAccess();
+    this.checkDamAccess();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    }
 
-     if (this.authenticationService.vanityURLEnabled) {
+    if (this.authenticationService.vanityURLEnabled) {
       this.getOliverAgentAccessSettingsForVanityLogin();
-     } else {
-        this.getOliverAgentAccessSettings();
-     }
+    } else {
+       this.getOliverAgentAccessSettings();
+    }
    
-
   }
 
   private checkDamAccess() {
@@ -639,10 +643,14 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.SPARKWRITERAGENT;
     } else if (this.activeTab === 'paraphraser') {
       this.chatGptIntegrationSettingsDto.agentType = this.PARAPHRASERAGENT;
+    } else if (this.activeTab == 'globalchat') {
+      this.chatGptIntegrationSettingsDto.agentType = this.GLOBALCHAT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
     self.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
+    self.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
+    self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
     }
@@ -750,6 +758,8 @@ export class ChatGptModalComponent implements OnInit {
         return "writing";
       case this.PARAPHRASERAGENT:
         return "paraphraser";
+      case this.GLOBALCHAT:
+        return "globalchat";
     }
   }
 
