@@ -65,5 +65,7 @@ export class CampaignAccess {
 
   contactSubscriptionLimitEnabled: boolean = false;
   contactSubscriptionLimit: number = 0;
+  oliverAccessStatus: boolean = false;
+  oliverFilesProcessing = false;
 
 }
