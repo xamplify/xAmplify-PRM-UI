@@ -23,6 +23,7 @@ declare var swal, $, videojs: any;
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
   @Input() public selectedContact: any;
+  @Input() public isVendorVersion: boolean = false;
 
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();

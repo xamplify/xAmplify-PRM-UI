@@ -80,7 +80,9 @@ export class ModuleAccessComponent implements OnInit {
   contactSubscriptionLoader: HttpRequestLoader = new HttpRequestLoader();
   disableUpdateModulesButton: boolean = false;
   contactSubscriptionLimitErrorMessage: string = "";
-  
+
+  disableOliverAgentModuleOptions: boolean = false;
+
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
     public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
@@ -631,5 +633,10 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     }
   }
   /** XNFR-952 end **/
+
+  oliverActiveUiSwitchEventReceiver(event: boolean) {
+    this.disableOliverAgentModuleOptions = !event;
+    this.campaignAccess.oliverActive = event;
+  }
 
 }

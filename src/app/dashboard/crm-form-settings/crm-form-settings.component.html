@@ -281,7 +281,7 @@
   </div>
 
   <div *ngIf="isCustomFieldsModelPopUp">
-    <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList" [opportunityType]="opportunityType"></app-integration-settings-popup>
+    <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList" [opportunityType]="opportunityType" [activeCRMDetails]="activeCRMDetails"></app-integration-settings-popup>
   </div>
   <div *ngIf="isCustomFieldsOrderModelPopUp">
     <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList" [opportunityType]="opportunityType"></app-custom-fields-order-popup>
