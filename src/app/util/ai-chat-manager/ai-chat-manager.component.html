@@ -9,6 +9,11 @@
   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
   <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
   </app-create-template>
+  <div *ngIf="selectTemplate" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+    <app-choose-emailtemplate  [selectedTemplateList]="selectedTemplateList"
+      (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
+  </div>
+
   <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
@@ -233,7 +238,7 @@
                     <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
                   </div> -->
-                  <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openDesignTemplate(markdownComponent)" >Design Template</button>
+                  <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openSelectionTemplate(markdownComponent)" >Design Template</button>
                   <!-- <button class="share-btn">Design Page</button> -->
                     <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                     <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

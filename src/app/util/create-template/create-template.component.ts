@@ -576,15 +576,16 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.saveLoader = false;
         if(this.isFromOliverPopUp){
             this.showPopUp = true;
-            // this.refService.closeModalPopup("save-template-popup");
+            this.refService.closeModalPopup("save-template-popup");
         }else{
              this.refService.closeModalPopup("save-template-popup");
         }
     }
     selecttemplatetype(emailTemplate: EmailTemplate){
         emailTemplate.beeRegularTemplate = false;
+        emailTemplate.defaultTemplate = false;
         if(this.selectedEmailType == 'Email'){
-            emailTemplate.regularTemplate = true;
+            // emailTemplate.regularTemplate = true;
              emailTemplate.beeRegularTemplate = true;
         } else if(this.selectedEmailType == 'Regular Co-Branding'){
             emailTemplate.regularCoBrandingTemplate = true;

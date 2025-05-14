@@ -96,6 +96,8 @@ export class ChatGptModalComponent implements OnInit {
   disableOliverParaphraser: boolean = false;
   agentAccessUpdateButtonName: string = 'Update';
   disableAgentAccessUpdateButton: boolean = false;
+  selectTemplate: boolean;
+  templateLoader: boolean;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
@@ -877,17 +879,21 @@ export class ChatGptModalComponent implements OnInit {
     );
 }
   openDesignTemplate(markdown: any) {
-    const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
-    this.showTemplate = true;
-    this.chatGptIntegrationSettingsDto.prompt = text;
+    // const text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    // this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (!this.emailTemplateService.emailTemplate) {
           this.emailTemplateService.emailTemplate = new EmailTemplate();
           alert("Template created successfully.");
+          this.showTemplate = false;
+          this.selectTemplate = true;
+          this.templateLoader = false;
         }
         this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
         this.showTemplate = true;
+        this.selectTemplate = false;
+        this.templateLoader = false;
       },
       (error: string) => {
         this.showTemplate = false;
@@ -896,6 +902,7 @@ export class ChatGptModalComponent implements OnInit {
       }
     );
   }
+
 
   
 closeDesignTemplate(event: any) {
@@ -1028,5 +1035,22 @@ closeDesignTemplate(event: any) {
     this.showOliverParaphraser = this.oliverAgentAccessDTO.showOliverParaphraser;
   }
     /** XNFR-982 end **/
+
+    closeSelectionTemplate(event: any) {
+    if (event) {
+      // this.emailTemplateService.emailTemplate.jsonBody = "";
+      this.emailTemplateService.emailTemplate = event;
+      this.chatGptIntegrationSettingsDto.templateId = event.id;
+      this.openDesignTemplate(event);
+      this.templateLoader = true;
+    } else{
+      this.selectTemplate = false;
+    }
+  } 
+   openSelectionTemplate(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.selectTemplate = true;
+  }
 
 }
