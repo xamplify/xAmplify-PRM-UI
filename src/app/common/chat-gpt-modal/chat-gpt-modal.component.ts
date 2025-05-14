@@ -249,6 +249,7 @@ export class ChatGptModalComponent implements OnInit {
     } else {
       this.showIcon = true;
     }
+    this.resetOliverAgentSettings();
   }
 
   sortBy(selectedValue: string) {
@@ -1018,6 +1019,13 @@ closeDesignTemplate(event: any) {
       }, error => {
         console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
       });
+  }
+
+  resetOliverAgentSettings() {
+    this.showOliverInsights = this.oliverAgentAccessDTO.showOliverInsights;
+    this.showBrainstormWithOliver = this.oliverAgentAccessDTO.showBrainstormWithOliver;
+    this.showOliverSparkWriter = this.oliverAgentAccessDTO.showOliverSparkWriter;
+    this.showOliverParaphraser = this.oliverAgentAccessDTO.showOliverParaphraser;
   }
     /** XNFR-982 end **/
 
