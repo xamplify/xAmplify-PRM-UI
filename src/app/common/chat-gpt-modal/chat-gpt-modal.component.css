@@ -1302,7 +1302,7 @@ circle.front {
   color: rgba(2, 118, 255, 1);
 }
 
-.sub-text {
+.agent-sub-text{
   margin: 10px 0px 20px 0px;
   color: #002b87;
   font-size: 15px;
@@ -1344,7 +1344,9 @@ circle.front {
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;
-  height: calc(60vh - 20px);
+  max-height: 60vh;
+  padding-right: 6px;
+  /* height: calc(60vh - 20px); */
 }
 .agent-card-section::-webkit-scrollbar {
   width: 6px;
@@ -1353,19 +1355,27 @@ circle.front {
 .agent-card {
   background-color: #fff;
   border-radius: 16px;
-  padding: 20px;
+  padding: 17px;
   display: flex;
-  align-items: flex-start;
-  min-height: 135px;
+  align-items:center;
+  min-height: 125px;
 }
 .agent-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+.agent-checkbox {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  margin: 0px;
+  transform: scale(1.2);
+  transform-origin: top left;
+}
 .agent-icon {
-  width: 60px;
-  height: 60px;
-  margin-right: 20px;
-  border-radius: 10px;
+  width: 68px;
+  height: 68px;
+  margin-right: 16px;
+  border-radius: 50%;
   object-fit: contain;
   background: #f1f1f1;
 }
@@ -1373,6 +1383,8 @@ circle.front {
   background-color: #e2eeff;
   padding: 8px;
   border-radius: 8px;
+  flex: 1;
+  min-height: 91px;
 }
 .agent-info h5 {
   margin-top: 0;
@@ -1394,9 +1406,22 @@ circle.front {
     align-items: center;
     text-align: center;
   }
-
+  .agent-checkbox {
+    top: 10px;
+    left: 10px;
+  }
   .agent-icon {
     margin-bottom: 15px;
   }
 
+}
+.fixed-update-button {
+  position: fixed;
+  bottom: 20px;
+  right: 45px;
+  z-index: 1000;
+}
+.agent-card-align{
+  padding-right: 12px!important;
+  padding-left: 12px!important;
 }

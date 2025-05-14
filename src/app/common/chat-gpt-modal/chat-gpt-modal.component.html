@@ -35,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -45,6 +45,9 @@
         (notifyClose)="closeSocialShare($event)"></app-update-status>
       <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
       </app-create-template>
+      <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
+          (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
+      <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div *ngIf="!openShareOption && !showTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
@@ -337,7 +340,7 @@
                           <label *ngIf="!assetLoader && !isfileProcessed">
                             <!-- <i class="glyphicon glyphicon-upload"></i> -->
                             <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
-                            Feed Me Digital Assets
+                            Add Digital Assets
                           </label>
                           <div *ngIf="assetLoader" class="fileloader"></div>
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
@@ -568,20 +571,19 @@
                 <div class="agent-content">
                   <!-- Top Heading + Search -->
                   <div class="top-section text-center">
-                    <span class="main-heading">Oliver Agent Settings</span>
-                    <p class="sub-text">
+                    <span class="main-heading">Oliver Settings</span>
+                    <p class="agent-sub-text">
                       Choose which Oliver agents to enable. Partners will only see the ones you activate.
                     </p>
                   </div>
               
                   <!-- Agent Cards Section -->
                   <div class="row agent-card-section">
-                    <div class="col-sm-6" *ngIf="authenticationService.oliverInsightsEnabled">
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
                       <div class="agent-card" style="position: relative;">
-                        <div style="position: absolute; top: 1px; left: 7px;">
-                          <input class="checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
-                            [ngModelOptions]="{standalone: true}"
-                            style="transform: scale(1.5); transform-origin: top left; vertical-align: middle;" [disabled]="true"
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
+                            [ngModelOptions]="{standalone: true}" [disabled]="true"
                             (change)="updateCheckBox($event, 'INSIGHTAGENT')">
                         </div>
                         <img src="assets/images/oliver-insights.svg" class="agent-icon">
@@ -591,12 +593,11 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-6" *ngIf="authenticationService.brainstormWithOliverEnabled">
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.brainstormWithOliverEnabled">
                       <div class="agent-card" style="position: relative;">
-                        <div style="position: absolute; top: 1px; left: 7px;">
-                          <input class="checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
                             [ngModelOptions]="{standalone: true}"
-                            style="transform: scale(1.5); transform-origin: top left; vertical-align: middle;"
                             (change)="updateCheckBox($event, 'BRAINSTORMAGENT')" [disabled]="disableBrainstormWithOliver">
                         </div>
                         <img src="assets/images/brainstorm-with-oliver.svg" class="agent-icon">
@@ -606,12 +607,11 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-6" *ngIf="authenticationService.oliverSparkWriterEnabled">
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverSparkWriterEnabled">
                       <div class="agent-card" style="position: relative;">
-                        <div style="position: absolute; top: 1px; left: 7px;">
-                          <input class="checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
                             [ngModelOptions]="{standalone: true}"
-                            style="transform: scale(1.5); transform-origin: top left; vertical-align: middle;"
                             (change)="updateCheckBox($event, 'SPARKWRITERAGENT')" [disabled]="disableOliverSparkWriter">
                         </div>
                         <img src="assets/images/oliver-spark-writer.svg" class="agent-icon">
@@ -621,12 +621,11 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-6" *ngIf="authenticationService.oliverParaphraserEnabled">
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverParaphraserEnabled">
                       <div class="agent-card" style="position: relative;">
-                        <div style="position: absolute; top: 1px; left: 7px;">
-                          <input class="checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
                             [ngModelOptions]="{standalone: true}"
-                            style="transform: scale(1.5); transform-origin: top left; vertical-align: middle;"
                             (change)="updateCheckBox($event, 'PARAPHRASERAGENT')" [disabled]="disableOliverParaphraser">
                         </div>
                         <img src="assets/images/oliver-paraphraser.svg" class="agent-icon">
@@ -637,9 +636,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="submit-section" style="width: 14%;float: right;margin-right: 10px;">
+                  <div class="submit-section fixed-update-button">
                     <button (click)="updateOliverAgentAccessSettings()" [disabled]="disableAgentAccessUpdateButton"
-                      class="btn btn-submit">{{agentAccessUpdateButtonName}}</button>
+                      class="btn btn-primary">{{agentAccessUpdateButtonName}}</button>
                   </div>
                 </div>
               </div>
@@ -704,7 +703,7 @@
         <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
             (click)="copyChatGPTText(message.content)"></i></div>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openDesignTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

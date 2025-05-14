@@ -23,6 +23,7 @@ export class ChatGptIntegrationSettingsDto {
     isFromContactJourney:boolean = false;
     contactId: any;
     userListId: any;
+    templateId = 0;
     partnerLoggedIn:boolean = false;
     vendorCompanyProfileName:any;
 }

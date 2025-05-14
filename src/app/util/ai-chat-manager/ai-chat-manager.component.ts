@@ -713,22 +713,27 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   openDesignTemplate(markdown: any) {
-    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
-    this.chatGptIntegrationSettingsDto.prompt = text;
+    // let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    // this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
         (response: any) => {
           if (!this.emailTemplateService.emailTemplate) {
             this.emailTemplateService.emailTemplate = new EmailTemplate();
             alert("Template created successfully.");
             this.showTemplate = false;
+            this.selectTemplate = true;
+             this.ngxLoading = false;
           }
 
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
           this.showTemplate = true;
+          this.selectTemplate = false;
+           this.ngxLoading = false;
         },
         (error: string) => {
           console.log('API Error:', error);
           this.showTemplate = false;
+           this.ngxLoading = false;
 
         }
       );
@@ -750,9 +755,9 @@ export class AiChatManagerComponent implements OnInit {
             }
             this.emailTemplateService.isEditingDefaultTemplate = false;
             this.emailTemplateService.isNewTemplate = true;
-            if (templates.length > 0) {
-                this.emailTemplateService.emailTemplate = templates[0]; 
-            }
+            // if (templates.length > 0) {
+            //     this.emailTemplateService.emailTemplate = templates[0]; 
+            // }
             this.selectedTemplateList = templates;
         },
         (error: any) => {
@@ -780,5 +785,32 @@ export class AiChatManagerComponent implements OnInit {
       this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     }
   }
-
+  openSelectionTemplate(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.selectTemplate = true;
+  }
+  // closeSelectionTemplate() {
+  //   this.selectTemplate = false;
+  // }
+  saveSelectedTemplate(template: any) {
+    this.openDesignTemplate(template);
+  }
+  selectEmailTemplate(emailTemplate: any) {
+    this.selectedEmailTemplateRow = emailTemplate.id;
+    this.chatGptIntegrationSettingsDto.templateId = emailTemplate.id;
+    this.emailTemplateService.emailTemplate = emailTemplate;
+  }
+  closeSelectionTemplate(event: any) {
+    if (event) {
+      // this.emailTemplateService.emailTemplate.jsonBody = "";
+      this.emailTemplateService.emailTemplate = event;
+      this.chatGptIntegrationSettingsDto.templateId = event.id;
+       this.ngxLoading = true;
+      this.openDesignTemplate(event);
+    } else{
+      this.selectTemplate = false;
+    }
+   
+  }
 }

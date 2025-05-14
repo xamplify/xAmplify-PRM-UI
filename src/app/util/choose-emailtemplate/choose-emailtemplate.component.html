@@ -1,0 +1,52 @@
+<div [ngClass]="fromOliverPopup ? '' : 'portlet light'">
+  <div class="modal-body">
+    <div class="row" [ngClass]="fromOliverPopup ? 'template-selection' : ''">
+      <button class="btn close_btn" (click)="closeSelectionTemplate()">×</button>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+        *ngFor="let emailTemplate of selectedTemplateList; let i = index">
+        <div class="grid-box imgage-paddings grid-email-card pointer"
+          [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' : ''"
+          (click)="selectEmailTemplate(emailTemplate)">
+          <span class="select-check-box">
+            <label>
+              <input type="radio" name="emailTemplateGroup" class="radio-custimization pointer radioButton_shadow"
+                [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+            </label>
+          </span>
+          <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject"
+            alt="No Preview Found" />
+
+          <span class="icon-alignments">
+            <a data-toggle="tooltip" title="Preview"
+              (click)="$event.stopPropagation(); previewEmailTemplate(emailTemplate, false)">
+              <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i>
+            </a>
+          </span>
+          <div class="bar hover-bar"
+            [class.white-labeled-custom-css]="selectedTemplateList?.whiteLabeledEmailTemplateReceivedFromVendor">
+            <a class="border-none-dark">
+              <div class="emailtemp-content">
+                <div class="content-hover-align fontsize-cls">
+                  <span class="item__name cardDetails-mar mb10 ml10" [title]="emailTemplate?.name">
+                    <strong>Name : {{emailTemplate?.name | slice:0:20}}</strong>
+                    <strong *ngIf="emailTemplate?.name?.length > 20">..</strong>
+                  </span>
+                  <span class="view-banner green-btn-cu LabeledmarginLeft">Default</span>
+                  <br>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]= "fromOliverPopup ? 'modal-footer' : 'pull-right save-template' " *ngIf="selectedEmailTemplateRow">
+    <button class="btn btn-primary" (click)="generateEmailTemplate()">Generate Template</button>
+  </div>
+
+  <div *ngIf="!selectedTemplateList || selectedTemplateList.length === 0" class="alert alert-info text-center mt-3">
+    <strong>No Data Found.</strong>
+  </div>
+</div>

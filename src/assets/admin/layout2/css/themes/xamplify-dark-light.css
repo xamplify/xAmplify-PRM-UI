@@ -2757,7 +2757,7 @@ textarea.cke_source {
   background: radial-gradient(#1e2f38, #1d262c, #1d2a36) !important;
   border: 1px solid #2f4857!important;
 }
-.pdf_card,.content-card,.fixed-card,.oliver_input,.writing-card,.phara-card,.custom-card,.history-entry{
+.pdf_card,.content-card,.fixed-card,.oliver_input,.writing-card,.phara-card,.custom-card,.history-entry,.agent-card{
   background-color: #2b3c46!important;
   border: 1px solid #2f4857!important;
 }
@@ -2765,7 +2765,7 @@ textarea.cke_source {
   background: #2b3c46!important;
   border: 1px solid #2f4857!important;
 }
-.pdf_child,.textarea-card{
+.pdf_child,.textarea-card,.agent-info{
   background-color: #22313a!important;
   border: 1px solid #2f4857!important;
 }
@@ -2806,7 +2806,7 @@ markdown pre,.aligin-para{
   color: #fff!important;
   border-radius: 5px;
   }
-  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date{
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.main-heading,.agent-sub-text,.agent-info p{
     color: #fff!important;
   }
   .preview-border{border: 1px solid #2f4857 !important;}
@@ -2819,4 +2819,8 @@ markdown pre,.aligin-para{
 }
 .history-divider{
   border-top: 1px solid #2f4857 !important;
+}
+.agent-card:hover {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3)!important;
+  transition: box-shadow 0.3s ease;
 }

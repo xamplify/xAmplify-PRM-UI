@@ -168,3 +168,13 @@
   z-index: 1050;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
+.contact_status_select {
+  border: none !important;
+}
+.contact_status_line {
+  width: 100% !important;
+}
+.contact_status_info {
+  position: relative;
+  margin-top: 20px;
+}

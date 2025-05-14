@@ -221,6 +221,7 @@ import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 import { AddCompanyComponent } from '../company/add-company/add-company.component';
 import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
+import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
 
 
 @NgModule({
@@ -266,7 +267,7 @@ import { CreateTemplateComponent } from 'app/util/create-template/create-templat
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
-		CreateTemplateComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent
 	],
 
 
@@ -309,7 +310,7 @@ import { CreateTemplateComponent } from 'app/util/create-template/create-templat
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,CreateTemplateComponent
+		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,CreateTemplateComponent,ChooseEmailtemplateComponent
 	]
 
 
