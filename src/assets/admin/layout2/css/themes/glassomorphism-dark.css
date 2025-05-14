@@ -4392,7 +4392,7 @@ input:checked + .toggle-slider {
   background-color: #d1d1d170!important;
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards,.agent-info{
   background: rgb(0 0 0 / 45%) !important;
   border: 1px solid #ffffff33 !important;
 }
@@ -4428,7 +4428,7 @@ markdown pre,.aligin-para{
   background: #8d8a8a00 !important;
 }
 .side_bar,.writing-card,.phara-card,
-.oliver_input,.textarea-card,.custom-card,.history-entry{
+.oliver_input,.textarea-card,.custom-card,.history-entry,.agent-card{
   background: rgba(16 18 27 / 40%) !important;
   border: 1px solid #ffffff33 !important;
   backdrop-filter: blur(5px);
@@ -4440,7 +4440,7 @@ markdown pre,.aligin-para{
   color: #fcfeff!important;
   border-radius: 8px!important;
 }
-.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date{
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.main-heading,.agent-sub-text,.agent-info p,.history-header{
   color: #fff!important;
 }
   textarea.textarea.h-350 {
@@ -4450,6 +4450,8 @@ markdown pre,.aligin-para{
 .history-divider{
   border-top: 1px solid #ffffff33  !important;
 }
-.history-header{
-  color: rgba(2, 118, 255, 1) !important;
+.fixed-update-button {bottom: 44px!important;}
+.templateui {padding: 20px 100px 12px 54px!important;}
+.agent-card:hover {
+  transform: scale(1.02);
 }

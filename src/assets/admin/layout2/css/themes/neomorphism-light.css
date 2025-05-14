@@ -4636,3 +4636,6 @@ input:checked + .toggle-slider {
 .history-header{
   color: rgba(2, 118, 255, 1) !important;
 }
+.agent-card{
+  background-color: #fcfcfc!important;
+}

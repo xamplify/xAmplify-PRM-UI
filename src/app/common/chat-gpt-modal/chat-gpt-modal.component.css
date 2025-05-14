@@ -1302,7 +1302,7 @@ circle.front {
   color: rgba(2, 118, 255, 1);
 }
 
-.sub-text {
+.agent-sub-text{
   margin: 10px 0px 20px 0px;
   color: #002b87;
   font-size: 15px;
