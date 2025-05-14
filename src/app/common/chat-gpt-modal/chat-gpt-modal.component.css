@@ -1289,3 +1289,114 @@ circle.front {
   float: right;
   padding-right: 10px;
 }
+
+
+.top-section {
+  margin-bottom:35px;
+}
+
+.main-heading {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: rgba(2, 118, 255, 1);
+}
+
+.sub-text {
+  margin: 10px 0px 20px 0px;
+  color: #002b87;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+.agent-search-wrapper {
+  /* max-width: 600px; */
+  margin: 0 auto;
+  position: relative;
+}
+
+.agent-search-input {
+  padding: 24px 45px 24px 20px;
+  border-radius:11px !important;
+  width: 100%;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+  font-size: 16px;
+  outline: none;
+}
+.agent-search-input:hover {box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);}
+.agent_search{
+  right: 18px !important;
+  top: 17px !important;
+}
+.agent-search-wrapper::before {
+  /* content: '\f002';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 16px; */
+}
+
+.agent-card-section .col-sm-6 {
+  margin-bottom: 20px;
+}
+.agent-card-section {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  height: calc(60vh - 20px);
+}
+.agent-card-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.agent-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  min-height: 135px;
+}
+.agent-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.agent-icon {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: #f1f1f1;
+}
+.agent-info {
+  background-color: #e2eeff;
+  padding: 8px;
+  border-radius: 8px;
+}
+.agent-info h5 {
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 17px !important;
+  margin-bottom: 5px;
+}
+
+.agent-info p {
+  margin-bottom: 0;
+  font-size: 12px;
+  color: #444;
+}
+
+@media (max-width: 767px) {
+ 
+ .agent-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .agent-icon {
+    margin-bottom: 15px;
+  }
+
+}
