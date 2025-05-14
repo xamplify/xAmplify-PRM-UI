@@ -273,6 +273,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
   /*************************Search********************** */
   searchLandingPages() {
+    this.cacheBuster = '?t=' + new Date().getTime();
     if(this.isLandingPages){
         this.findPartnerVendorJourneyLandingPages(this.pagination);
     }else if(this.isVendorPartnerJourneyPages){
