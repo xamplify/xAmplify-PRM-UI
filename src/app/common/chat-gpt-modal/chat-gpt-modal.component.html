@@ -115,6 +115,11 @@
               <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate
                 your marketing, messaging, and content creation workflows.</h5>
               <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
+                <li [ngClass]="{'active': activeTab === 'globalchat'}">
+                  <a href="#globalchat" role="tab" data-toggle="tab" (click)="setActiveTab('globalchat')">
+                    <i class="fa fa-file-text"></i> Ask Oliver
+                  </a>
+                </li>
                 <li *ngIf="!isWelcomePageUrl" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                     <i class="fa fa-file-text"></i> Oliver Insights
@@ -160,9 +165,56 @@
               </ul>
             </div>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
               <div class="tab-content oliver_content"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
+                
+                <!-- Global Chat -->
+                <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'globalchat', 'tab-pane fade': activeTab !== 'globalchat'}"
+                 class="tab-pane fade">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'globalchat'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                  'fixed_oliver_input': !isSidebarVisible,
+                                  'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
+                                  'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
+                                }">
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Ask Oliver</span>
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your
+                      solution and audience. Specializes in creative
+                      brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
+                      to
+                      your goals.</p>
+                    <div class="oliver_input mt10">
+                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                      <div class="btn-wrapper">
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div>
+                    <!--  -->
+                    <!-- <div class="action-buttons mt10">
+                      <button class="action-btn">Analyze Asset</button>
+                      <button class="action-btn">Summarize in detail</button>
+                      <button class="action-btn">Summarize with Key
+                        Quotes</button>
+                    </div> -->
+                    <!--  -->
+                  </div>
+                </div>
                 <!-- Start New Chat -->
                 <div role="tabpanel"
                   [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}"
