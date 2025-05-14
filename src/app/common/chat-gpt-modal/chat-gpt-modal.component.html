@@ -48,7 +48,7 @@
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
           (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
