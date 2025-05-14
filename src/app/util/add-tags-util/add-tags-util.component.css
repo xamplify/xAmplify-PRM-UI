@@ -7,7 +7,7 @@
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 8px;
-    max-height: 300px;
+    max-height: 390px;
     overflow-y: auto;
 }
 .add-tag-card::-webkit-scrollbar {

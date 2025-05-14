@@ -151,7 +151,7 @@
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
             <button class="btn btn-pdf" (click)="setInputText('Compare documents')">Compare documents</button>
-            <button class="btn btn-pdf" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
+            <button class="btn btn-pdf" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
           </div>
           <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
             (click)="submitdata()">Submit</button>
@@ -455,7 +455,7 @@
               <div *ngIf="isFromFolderView">
                 <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
                 <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
-                <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
+                <button class="action-btn" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
               </div>
               <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
                 Submit</button>

@@ -490,10 +490,50 @@
 									<th scope="row">Ask Oliver
 										<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" width="22px" height="22px">
 									</th>
-									<td *ngIf="!campaignAccess.oliverFilesProcessing"><input class="checkBox_shadow" type="checkbox"
-											[(ngModel)]="campaignAccess.oliverActive" [ngModelOptions]="{standalone: true}"></td>
+
 									<td *ngIf="campaignAccess.oliverFilesProcessing"><img style="height: 40px; padding-left: 0px;"
 											src="../../../assets/images/Spinner.gif" alt="">Processing Files to Oliver</td>
+
+									<td *ngIf="!campaignAccess.oliverFilesProcessing">
+										<app-custom-ui-switch [customSwitch]="campaignAccess.oliverActive"
+											(customUiSwitchEventEmitter)="oliverActiveUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+										<div style="margin-left: 20px; margin-top: 10px;">
+											
+												<div>
+													<strong>
+														<input class="checkBox_shadow" type="checkbox" [disabled]="true"
+															[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
+														<span class="ml10">Enable Oliver Insights</span>
+													</strong>
+												</div>
+									
+												<div>
+													<strong>
+														<input class="checkBox_shadow" type="checkbox"
+															[(ngModel)]="campaignAccess.brainstormWithOliverEnabled" [ngModelOptions]="{standalone: true}"
+															[disabled]="disableOliverAgentModuleOptions">
+														<span class="ml10">Enable Brainstorm With Oliver</span>
+													</strong>
+												</div>
+									
+												<div>
+													<strong>
+														<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverSparkWriterEnabled"
+															[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+														<span class="ml10">Enable Oliver Spark Writer</span>
+													</strong>
+												</div>
+									
+												<div>
+													<strong>
+														<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverParaphraserEnabled"
+															[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+														<span class="ml10">Enable Oliver Paraphraser</span>
+													</strong>
+												</div>
+											
+										</div>
+									</td>
 								</tr>
 
 								<tr *ngIf="!prm">

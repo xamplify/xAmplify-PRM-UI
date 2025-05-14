@@ -197,7 +197,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             campaign.displayTime = new Date(campaign.utcTimeInString);
                             campaign.createdDate = new Date(campaign.createdDate);
                             campaign.displayRedistributionCount = self.campaignAnalyticsSettingsOptionEnabled;
-                            if(campaign.campaignType=='LANDINGPAGE' || campaign.campaignType=='SOCIAL' || campaign.oneClickLaunchCondition){
+                            if(campaign.campaignType=='LANDINGPAGE' || campaign.campaignType=='SOCIAL' || campaign.oneClickLaunchCondition || (!campaign.emailNotification && !campaign.nurtureCampaign)){
                                 self.getRedistributionCount(campaign);
                             }
                         });

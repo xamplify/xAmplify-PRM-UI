@@ -68,4 +68,10 @@ export class CampaignAccess {
   oliverAccessStatus: boolean = false;
   oliverFilesProcessing = false;
 
+  /** XNFR-982 **/
+  oliverInsightsEnabled: boolean = false;
+  brainstormWithOliverEnabled: boolean = false;
+  oliverSparkWriterEnabled: boolean = false;
+  oliverParaphraserEnabled: boolean = false;
+
 }

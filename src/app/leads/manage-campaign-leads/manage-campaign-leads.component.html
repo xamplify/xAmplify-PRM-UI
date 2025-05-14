@@ -168,8 +168,8 @@
                   </span>
                 </h5>
               </div>
-              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 60px;">
-                <h5 class="m0"><strong>Deal Reg Status:</strong>
+              <div *ngIf="(isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 60px;">
+                <h5 class="m0"><strong>{{lead.sfcfDealRegStatusNameForVersa}}:</strong>
                   <span>{{lead.sfcfDealRegStatusForVersa}}
                   </span>
                 </h5>
@@ -193,7 +193,7 @@
               </h5>
             </td>
             <td style="width: 23%; text-align: center;">
-              {{lead.currentStageName | slice:0:30}}
+              {{ (isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa  ? (lead.sfcfDealRegStatusForVersa | slice:0:30) : (lead.currentStageName | slice:0:30) }}
               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                 <i class="fa fa-check-circle mr5" aria-hidden="true"
                   style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
