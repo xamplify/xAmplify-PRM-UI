@@ -766,7 +766,7 @@
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
 </app-deal-chat-popup>
 <!-- XNFR-839-->
-<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" (closeEmitter)="closeEmitter($event)"></app-selectfield>
+<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [opportunityType]="'LEAD'" [customName]="'manage'" (closeEmitter)="closeEmitter($event)"></app-selectfield>
 <!-- <app-order-fields *ngIf="showOrderFieldComponent" [selectedItems]="selectedFields" [enabledMyPreferances]="enabledMyPreferances" (closeEmitter)="closeEmitter($event)"></app-order-fields> -->
 <!-- XNFR-839-->
  

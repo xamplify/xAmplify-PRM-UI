@@ -307,4 +307,4 @@
   [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
 </app-opportunities-chat-modal-popup>
 
-<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" (closeEmitter)="closeEmitter($event)"></app-selectfield>
+<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" [opportunityType]="'LEAD'"  (closeEmitter)="closeEmitter($event)"></app-selectfield>

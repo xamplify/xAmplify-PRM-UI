@@ -1,15 +1,22 @@
-<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m pr0">
+<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m pl5">
   <div class="panel panel-info mh480 panel-bgMain panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m  mobilesearchdisplay">
-        <!-- <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
-        <div class="float-left">
+        <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}} mr5" data-placement="bottom" data-toggle="tooltip" title="Filter">
+          <div class="btn-group">
+            <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+              (click)="clickFilter()">
+              <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+            </a>
+          </div>
+        </span>
+        <div class="float-left mr5">
           <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
             (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
             <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
           </select>
-        </div> -->
+        </div> 
         <button class="pull-right  btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
         (click)="downloadAllPartnerDetailsReport()" [disabled]="pagination.totalRecords==0">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
@@ -33,10 +40,63 @@
       </div>
       <div class="scroll table-responsive tableHeightScroll {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
         [ngClass]="isVendorVersion?'scrolladjustment':''">
+          <div class="portlet light ht125" *ngIf="showFilterOption">
+         <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               <!-- Alert Message Box  -->
+              <app-response-message class="pg8" [customResponse]="customResponse"
+                *ngIf="customResponse?.isVisible"></app-response-message>
+              <div class="d-flex justify-content-between align-items-center mb5">
+                <h4 translate>Apply Filter</h4>
+                <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
+                </button>
+                </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedRegionIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+                  [ignoreAccent]='true' id='multiselectelement' [dataSource]='regionNameFilters' [fields]='regionInfoFields'
+                  [placeholder]='multiSelectPlaceholderForRegion'>
+                </ejs-multiselect>
+                <ejs-multiselect [(ngModel)]='pagination.selectedStatusIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+                [ignoreAccent]='true' id='multiselectelement' [dataSource]='statusOptions' [fields]='statusFields'
+                [placeholder]='multiSelectPlaceholderForStatus'>
+              </ejs-multiselect>
+                <div class="portlet box custom_fiter-asset template_box">
+                  <div class="row pl10 pr10 pb10">
+                    <div class="form-inline col-xs-12 createdOnRow p0">
+                      <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">{{dateFilterText}}                       
+                          <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                            title="Select the Date Range to View Analytics"></i>
+                      </div>
+                      <div class="form-group col-xs-6 col-sm-4 col-md-4 col-lg-4 p0">
+                        <label class="control-label">
+                          From Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="pagination.fromDateFilterString" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                      <div class="form-group col-xs-6 col-sm-4 col-md-4 col-lg-4 p0">
+                        <label class="control-label">To Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="pagination.toDateFilterString" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <span class="btn-aligmntCu">
+                  <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                  <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+                </span>
+              </div>
+            </div>
+          </div> 
+        </div>
         <table *ngIf="pagination.totalRecords!=0" class="table" >
           <thead>
             <tr>
-              <th scope="col">Partner Name</th>
+              <th scope="col">Partner Details</th>
               <th scope="col">Region</th>
               <th scope="col">Onboarded On</th>
               <th scope="col">Status</th>
@@ -50,13 +110,11 @@
               <td>{{item.region}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
               <td>{{item?.status}}</td>
-              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>
-            
-                <!-- <div class="alert alert-info NaNAData" *ngIf="item?.primaryAdmin">
-                  <span><strong>N/A</strong></span>
-                </div>
-                <ng-container> -->
-                  <td>
+              <td>
+                <span *ngIf="!item.dateLastLogin">-</span>
+                <app-timestamp  *ngIf="item.dateLastLogin" [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp>
+              </td>
+               <td>
                   <div class="actions-block float-none">
                     <a *ngIf="item.status !== 'Active'" (click)="callParentMethod(item)" class="custom-icon" 
                     data-toggle="tooltip" data-placement="left" title="Send reminder email">
@@ -70,22 +128,7 @@
                       <div class="clickicons"></div>
                     </a>
                   </div>
-                </td> 
-                 <!-- <div class="actions-block override-actions custom-width-icon">
-                     <a data-toggle="tooltip" data-placement="bottom"
-                      title="Resend the invitation email" 
-                      (click)="resendEmailInvitation(item.emailId,item.status)">
-                      <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
-                      <div class="clickicons"></div>
-                    </a> -->
-                    <!-- <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                      title="Invitation cannot be sent as the account is created successfully" class="inactive custom-icon">
-                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
-                      <div class="clickicons"></div>
-                    </a>
-                  </div>-->
-                <!-- </ng-container> -->
-             
+                </td>            
             </tr>
           </tbody>
         </table>

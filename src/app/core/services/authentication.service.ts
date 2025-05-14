@@ -181,6 +181,7 @@ export class AuthenticationService {
   isOliverActive :boolean = false;
   synth = window.speechSynthesis;
 
+  contactSubscriptionLimitEnabled: boolean = false;
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;

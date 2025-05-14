@@ -4,7 +4,12 @@
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
   [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
-  <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
+  <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
+  <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput"
+  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+  <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
+  </app-create-template>
+  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -18,8 +23,8 @@
                 <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
                   <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
                 </ng-container>
-                <ng-container
-                  *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
+                <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
+                                  assetType =='ppt' || assetType =='pptx') ">
                   <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
                 </ng-container>
                 <ng-container
@@ -66,10 +71,10 @@
           </div>
 
           <div *ngIf="isFromContactJourney" class="file-info">
-            <div class="file-icon">
+            <div class="file-icon" *ngIf="selectedContact != undefined && callActivity == undefined">
               <div class="d-flex document_flex">
                 <div *ngIf="ngxLoading" class="fileloader mr10"></div>
-                <ng-container *ngIf="!ngxLoading"><img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
+                <ng-container *ngIf="!ngxLoading && selectedContact != undefined"><img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
                   src="{{selectedContact.imageSourcePath}}" alt="CONTACT" width="28px" height="28px">
                 <img *ngIf="selectedContact.imageSourcePath == undefined" class="mr10"
                   src="assets/admin/pages/media/works/contacts2.png" alt="CONTACT" width="28px" height="28px">
@@ -87,14 +92,38 @@
               <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
               </div>
             </div>
+            <div class="file-icon" *ngIf="callActivity != undefined">
+              <div class="d-flex document_flex">
+                <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!ngxLoading && callActivity != undefined">
+                  <img class="mr10" *ngIf="callActivity.direction == 'Outgoing'"
+                    src="assets/admin/pages/media/works/outgoing-call.png" alt="CONTACT" width="28px" height="28px">
+                  <img class="mr10" *ngIf="callActivity.direction == 'Incoming'"
+                    src="assets/admin/pages/media/works/incoming-call.png" alt="CONTACT" width="28px" height="28px">
+                </ng-container>
+                <a *ngIf="callActivity?.direction" title="{{ callActivity?.direction }}">
+                  {{callActivity.direction | slice:0:35}} Call
+                  <span *ngIf="callActivity?.direction?.length > 25">...</span>
+                </a>
+              </div>
+              <div class="published-on">{{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                {{callActivity.callInfoString}}
+              </div>
+            </div>
             <div class="file-details">
-              <span class="aligin-para">
+              <span class="aligin-para" *ngIf="selectedContact != undefined && callActivity == undefined">
                 <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
               </span>
-              <span class="Track-countbg">
+              <span class="aligin-para" *ngIf="callActivity != undefined">
+                <p *ngIf="callActivity?.mobileNumber"><b>Mobile Number:</b> {{callActivity.mobileNumber}}</p>
+              </span>
+              <span class="Track-countbg" *ngIf="selectedContact != undefined && callActivity == undefined">
                 <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
                 </p>
                 <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
+              </span>
+              <span class="Track-countbg" *ngIf="callActivity != undefined">
+                <p>Duration: {{callActivity.duration}}</p>
               </span>
             </div>
           </div>
@@ -104,7 +133,7 @@
               [(ngModel)]="inputText" (input)="validateInputText()" placeholder="Ask me!">
           </div>
         </div>
-        <div class="action-buttons">
+        <div class="action-buttons action-btn-align">
           <div *ngIf="!isFromFolderView" class="btn-group">
             <button *ngIf="false" class="btn plus-btn" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
@@ -131,7 +160,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
     <div *ngIf="showPreview" class="pdf-viewer">
       <div class="toolbar">
         <select class="zoom" [(ngModel)]="zoomLevel">
@@ -194,19 +223,20 @@
                       <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
                         aria-hidden="true" (click)="speakTextOn(i, markdownComponent)"></i>
                     </div>
-                    <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}"
-                      data-toggle="tooltip" [attr.data-original-title]="isEmailCopied ? 'copied' : 'Copy to Clipboard'"
+                    <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied && copiedIndex === i ? '#00FF13' : '#0d6efd'}"
+                      data-toggle="tooltip"
+                      [attr.data-original-title]="isEmailCopied && copiedIndex === i  ? 'copied' : 'Copy to Clipboard'"
                       data-placement="top">
-                      <i class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
-                        (click)="!isEmailCopied && copyAiText(markdownComponent)"></i>
+                      <i class="fs-12" [ngClass]="isEmailCopied && copiedIndex === i  ? 'fa fa-check' : 'fa fa-clone'"
+                        (click)="!isEmailCopied && copyAiText(markdownComponent,i)"></i>
                     </div>
                     <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
-                  </div>
-                  <button class="share-btn" >Design Template</button>
-                  <button class="share-btn">Design Page</button> -->
+                  </div> -->
+                  <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openDesignTemplate(markdownComponent)" >Design Template</button>
+                  <!-- <button class="share-btn">Design Page</button> -->
                     <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                    <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+                    <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                   </div>
                 </div>
               </div>
@@ -252,10 +282,9 @@
                                 <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px"
                                   height="28px">
                               </ng-container>
-                              <ng-container
-                                *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
-                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px"
-                                  height="28px">
+                              <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
+                                                              assetType =='ppt' || assetType =='pptx') ">
+                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
                               </ng-container>
                               <ng-container
                                 *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
@@ -311,7 +340,7 @@
                     </a>
                   </h4>
                   <h4 class="panel-title" *ngIf="isFromContactJourney">
-                    <a *ngIf="!isCollapsed" (click)="toggleAction()">
+                    <a *ngIf="!isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div>
                         <span *ngIf="selectedContact.contactName">
                           Contact Name: {{selectedContact.contactName}} | </span><span>
@@ -319,9 +348,19 @@
                       </div>
                       <i class="fa fa-chevron-up toggle-icon"></i>
                     </a>
-                    <a *ngIf="isCollapsed" (click)="toggleAction()">
+                    <a *ngIf="!isCollapsed && callActivity != undefined" (click)="toggleAction()">
+                      <div>
+                        <span>
+                          {{callActivity.direction | slice:0:35}} Call | </span>
+                        <span>
+                          {{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                          {{callActivity.callInfoString}} | Duration: {{callActivity.duration}}</span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div class="Ai_file">
-                        <div class="Ai-icon" (click)="showAssetPreview()" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
                           <div class="d-flex document_flex">
                             <div *ngIf="ngxLoading" class="fileloader mr10"></div>
                             <ng-container *ngIf="!ngxLoading">
@@ -353,6 +392,37 @@
                             <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
                           </span>
                         </div>
+                      </div>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && callActivity != undefined" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img class="mr10" *ngIf="callActivity.direction == 'Outgoing'"
+                                src="assets/admin/pages/media/works/outgoing-call.png" alt="CONTACT" width="28px" height="28px">
+                              <img class="mr10" *ngIf="callActivity.direction == 'Incoming'"
+                                src="assets/admin/pages/media/works/incoming-call.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="callActivity?.direction" title="{{ callActivity?.direction }}">
+                              {{callActivity.direction | slice:0:35}} Call
+                              <span *ngIf="callActivity?.direction?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div class="published-on">{{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}}
+                            {{callActivity.callInfoString}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="Ai-file-details">
+                        <span class="aligin-para">
+                          <p *ngIf="callActivity?.mobileNumber"><b>Mobile Number:</b> {{callActivity.mobileNumber}}</p>
+                        </span>
+                        <span class="Track-countbg">
+                          <p>Duration: {{callActivity.duration}}</p>
+                        </span>
                       </div>
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
@@ -396,3 +466,4 @@
     </div>
   </div>
 </div>
+

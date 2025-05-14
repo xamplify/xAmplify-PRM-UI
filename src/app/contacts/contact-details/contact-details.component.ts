@@ -154,6 +154,7 @@ export class ContactDetailsComponent implements OnInit {
   showAskOliverModalPopup: boolean;
   chatGptSettingDTO: any;
   contact: any;
+  callActivity: any;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -439,14 +440,14 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showEmailSubmitSuccessStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeEmailModalPopup();
   }
 
   showEmailFailedErrorStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.closeEmailModalPopup();
@@ -1017,7 +1018,11 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   closeAskAI(event) {
-    this.chatGptSettingDTO = event;
+    if (this.callActivity == undefined) {
+      this.chatGptSettingDTO = event;
+    } else {
+      this.callActivity = undefined;
+    }
     this.showAskOliverModalPopup = false;
   }
 
@@ -1042,6 +1047,16 @@ export class ContactDetailsComponent implements OnInit {
         this.ngxLoading = false;
       }
     )
+  }
+
+  askOliverForCallRecording(callActivity:any) {
+    this.callActivity = callActivity;
+    this.callActivity.contactName = this.contactName;
+    this.callActivity.emailId = this.selectedContact.emailId;
+    this.callActivity.mobileNumber = this.selectedContact.mobileNumber;
+    this.callActivity.contactId = this.selectedContact.id;
+    this.callActivity.userListId = this.selectedContactListId;
+    this.showAskOliverModalPopup = true;
   }
   
 }

@@ -569,6 +569,12 @@
 															</td>
 														</tr>
 
+														<!----- XNFR-967 ------>
+														<tr class="border-bottom" *ngIf="isContactModule()">
+															<td class='pt10 pb10' translate>Contact Status:</td>
+															<td class='pt10 pb10'>{{newContact.contactStatus}}</td>
+														</tr>
+
 														<!----- XNFR-680 Flexi Fields ----->
 														<tr class="border-bottom" *ngFor="let flexiField of newContact.flexiFields">
 															<td class='pt10 pb10' translate>{{flexiField.fieldName}}:</td>
@@ -829,6 +835,11 @@
 																				{{user?.mobileNumber}}
 																			</a>
 																		</td>
+																	</tr>
+
+																	<tr *ngIf="isContactModule()">
+																		<td class='bold'>Contact Status</td>
+																		<td>{{user.contactStatus}}</td>
 																	</tr>
 																
 																	<!----- XNFR-680 Flexi Fields ----->

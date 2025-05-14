@@ -10,4 +10,17 @@ export class ChatGptIntegrationSettingsDto {
     vendorDam: boolean = false;
     folderDam: boolean = false;
     isFolder = false;
+    file:any;
+    chatHistoryId:any;
+    vectorStoreId:any;
+    isFromChatGptModal: boolean = false;
+    uploadedAssetIds = [];
+    agentType = "";
+    categoryIds = [];
+    contents:any[] = [];
+    partnerInsightAgent: boolean = false;
+    callId: any;
+    isFromContactJourney:boolean = false;
+    contactId: any;
+    userListId: any;
 }

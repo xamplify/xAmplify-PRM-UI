@@ -365,7 +365,7 @@ form-group {
 
 .form-control {
   flex: 1;
-  height: 40px;
+  height: 34px;
   border-radius: 4px;
   border: 1px solid #ddd;
   padding: 8px 12px;
@@ -703,3 +703,34 @@ margin-right: 10px;}
   input[type="file"]:disabled {
     cursor: not-allowed !important;
   }
+  .inline-box{
+    display:flex;
+    flex:1;
+}
+.link button{
+  float: left;
+  width: 7%;
+  background: #2196f3;
+  color: white;
+  border-left: none;
+  cursor: pointer;
+}
+.right-border {
+  border-right: 1px solid #2676b0;
+}
+.select-box{
+  width: 60%;
+  height: 36px;
+  padding: 6px 12px;
+  border-radius: 0px !important;
+}
+.input-group-addon {
+  white-space: nowrap;
+  vertical-align: middle;
+  width: auto;
+  padding: 10px 5px 10px 5px;
+}
+.asset_files.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -459,3 +459,35 @@ margin-right: 10px;}
   width: 7px!important;
   height: 7px!important;
 }
+.inline-box{
+  display:flex;
+  flex:1;
+}
+.link button{
+float: left;
+width: 6%;
+background: #2196f3;
+color: white;
+border-left: none;
+cursor: pointer;
+}
+.right-border {
+border-right: 1px solid #2676b0;
+}
+.select-box{
+width: 60%;
+height: 36px;
+padding: 6px 12px;
+border-radius: 0px !important;
+}
+.input-group-addon {
+white-space: nowrap;
+vertical-align: middle;
+width: auto;
+padding: 10px 5px 10px 5px;
+}
+.close-align{
+  width: 31px!important;
+  height: 31px!important;
+}
+.btn_align{padding: 6px 13px!important;}

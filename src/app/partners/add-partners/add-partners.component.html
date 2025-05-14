@@ -911,7 +911,7 @@
                                                 <!--- XNFR-890-end --->
                                                 <th></th>
                                                 <th translate>SIGNUP STATUS</th>
-                                                <th class="hidden-sm" translate>COMPANY PROFILE</th>
+                                                <th translate>COMPANY PROFILE</th>
                                                 <th class='text-center' translate>ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -961,7 +961,7 @@
                                                         </ng-container>
                                                     </td>
                                                     <!--- XNFR-890-start --->
-                                                    <td class="hidden-xs">
+                                                    <td>
                                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="contact.createdTime">
                                                         </app-timestamp>
                                                     </td>
@@ -1801,11 +1801,28 @@
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
-                                <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts <span
+                                <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts 
+                                    <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle" aria-hidden="true"
                                             data-toggle="tooltip" data-placement="bottom"
-                                            title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
+                                            title="Assign contacts to partners (Minimum 1)">
+                                        </i>
                                     </span>
+                                    <!-- XNFR-952 -->
+                                    <h5>
+                                        <span *ngIf="!contactSubscriptionLimitLoader?.isLoading" [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
+                                            ? contactSubscriptionCountUsed - contactSubscriptionLimit
+                                            : 0) ? 'red' : 'inherit'}">
+                                            <strong>
+                                                {{ contactSubscriptionCountUsed > contactSubscriptionLimit 
+                                                    ? 'Limit Exceeded by: ' + (contactSubscriptionCountUsed - contactSubscriptionLimit)
+                                                    : 'Available Limit: ' + (contactSubscriptionLimit - contactSubscriptionCountUsed) }}
+                                            </strong>
+                                        </span>
+                                        <span *ngIf="contactSubscriptionLimitLoader?.isLoading" >Limit exceeded by: </span>
+                                        <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+                                            src="../../../assets/images/Spinner.gif" alt="">
+                                    </h5>
                                 </th>
                                 <th scope="row" translate>Sign up Notification <span id="tooltip-helper"> <i
                                             class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"

@@ -1,5 +1,5 @@
 <div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp &&  !askAiValue">
-	<div class="page-bar">
+	<div class="page-bar" *ngIf="!isVendorLogin">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home" aria-hidden="true"></i>
 				<a [routerLink]="referenceService.homeRouter" translate>Home</a>
@@ -18,6 +18,22 @@
 			</li>
 		</ul>
 	</div>
+
+	<div *ngIf="isVendorLogin" class="page-bar">
+		<ul class="page-breadcrumb">
+		   <li><i class="fa fa-home" aria-hidden="true"></i>
+			  <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+			  <i class="fa fa-angle-right" aria-hidden="true"></i>
+		   </li>
+		   <li>
+			  <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+			  <i class="fa fa-angle-right" aria-hidden="true"></i>
+		   </li>
+		   <li >
+			  <a (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
+		   </li>
+		</ul>
+		</div>
 	<div class="row" *ngIf="!previewContent">
 		<div class="col-md-12">
 			<div class="portlet light clearfix minhsfp">
@@ -45,7 +61,7 @@
 								<div class="portlet-title port-heading">
 									<div class="caption">Overview</div>
 									<div
-										*ngIf="authenticationService?.isOliverActive">
+										*ngIf="authenticationService?.isOliverActive && !assetDetailsViewDto.disableAccessForOliver">
 										<button class="btn btn-pdf pull-right caption oliveButton" (click)="AskAi()">
 											<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveimgButton">
 											<span>Ask Oliver</span>
@@ -112,7 +128,7 @@
 		</object>
 	</div> -->
 	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath" [fileType]="fileType"
-		(notifyClose)="closePreview()" [isImageFormat]="this.assetDetailsViewDto.imageFileType" [isTextFormat]="this.assetDetailsViewDto.textFileType"></app-preview-content>
+		(notifyClose)="closePreview()" [isImageFormat]="isImageFormat" [isTextFormat]="isTextFormat"></app-preview-content>
 </div>
 <ng-container *ngIf="download">
 	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"

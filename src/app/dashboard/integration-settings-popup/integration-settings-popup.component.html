@@ -159,7 +159,7 @@
                 <option [ngValue]="'select'">PickList</option>
               </select>
             </div>   
-            <div class="col-sm-6 display_ruby pt10" *ngIf="opportunityType === 'LEAD'">
+            <div class="col-sm-6 display_ruby pt10" *ngIf="opportunityType === 'LEAD' && !isXamplifyCustomField">
               <label for="mapAs" style="float: left;">{{leadFieldUpdateLableName}}</label>
               <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
               title="{{leadFieldUpdateTooltip}}"></i>

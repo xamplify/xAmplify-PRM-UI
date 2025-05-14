@@ -24,6 +24,9 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Input() moduleId:number;
   @Input()modulesDisplayType:ModulesDisplayType;
   @Output() folderViewTypeEventEmitter = new EventEmitter();
+  @Output() oliverfolderViewTypeEventEmitter = new EventEmitter();
+  @Output() folderViewAssetEventEmitter = new EventEmitter();
+  @Output() notifyFolders = new EventEmitter();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   categorySortOption: SortOption = new SortOption();
@@ -35,21 +38,39 @@ export class FolderTypeViewUtilComponent implements OnInit {
   suffixHeader:string = "";
   options: string[] = ['Search Folder', 'Search In Folder'];
   selectedOption: string;
+  @Input() FromOliverPopUp: boolean = false;
+  @Input() selectedFoldersForOliver: any[] = [];
+  @Input() isPartnerViewFromOliver: boolean = false;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-    public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { 
-      this.isPartnerView = this.router.url.indexOf("/shared")>-1 || this.router.url.indexOf("/pages/partner")>-1; 
-
-    }
+    public userService: UserService, public utilService: UtilService, private route: ActivatedRoute) {
+    this.isPartnerView = this.router.url.indexOf("/shared") > -1 || this.router.url.indexOf("/pages/partner") > -1;
+  }
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
+    this.setOliverViewType();
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
-    this.utilService.searchKey ="";
+    this.utilService.searchKey = "";
+  }
+
+  private setOliverViewType() {
+    if (this.FromOliverPopUp) {
+      let oliverViewType;
+      if (this.modulesDisplayType.isFolderListView) {
+        oliverViewType = 'fl';
+      } else if (this.modulesDisplayType.isFolderGridView) {
+        oliverViewType = 'fg';
+      } else {
+        oliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      }
+      this.folderViewType = oliverViewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+    }
   }
 
   findAllCategories(pagination:Pagination){
@@ -209,41 +230,54 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
-  viewItemsByCategoryId(categoryId:number) {
+  viewItemsByCategoryId(categoryId: number) {
     this.utilService.folderListViewSelected = false;
-    if(this.moduleId==this.roles.damId){
-      this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
-    }else if(this.moduleId==this.roles.learningTrackId){
-      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,true);
-    }else if(this.moduleId==this.roles.playbookId){
-      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,false);
-    }else if(this.moduleId==this.roles.campaignId){
-      this.referenceService.goToManageCampaignsByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.emailTemplateId){
-      this.referenceService.goToManageEmailTemplatesByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.landingPageId){
-      this.referenceService.goToManageLandingPagesByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.formId){
-      this.referenceService.goToManageFormsByCategoryId("fg","l",categoryId);
+    if (this.FromOliverPopUp) {
+      this.folderViewAssetEventEmitter.emit(categoryId);
+    }
+    if (!this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssetsByCategoryId("fg", "l", categoryId, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
+        this.referenceService.goToManageCampaignsByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.emailTemplateId) {
+        this.referenceService.goToManageEmailTemplatesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.landingPageId) {
+        this.referenceService.goToManageLandingPagesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.formId) {
+        this.referenceService.goToManageFormsByCategoryId("fg", "l", categoryId);
+      }
     }
   }
 
-  setViewType(viewType:string){
+  setViewType(viewType: string) {
     this.utilService.folderListViewSelected = false;
-    if(this.folderViewType!=viewType){
-      if(this.moduleId==this.roles.damId){
-        this.referenceService.goToManageAssets(viewType,this.isPartnerView);
-      }else if(this.moduleId==this.roles.learningTrackId){
-        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,true);
-      }else if(this.moduleId==this.roles.playbookId){
-        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,false);
-      }else if(this.moduleId==this.roles.campaignId){
+    if (this.folderViewType != viewType && !this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
         this.referenceService.goToManageCampaigns(viewType);
-      }else if(this.moduleId==this.roles.emailTemplateId){
+      } else if (this.moduleId == this.roles.emailTemplateId) {
         this.referenceService.goToManageEmailTemplates(viewType);
-      }else if(this.moduleId==this.roles.landingPageId){
+      } else if (this.moduleId == this.roles.landingPageId) {
         this.referenceService.goToManageLandingPages(viewType);
       }
+    } else if (this.FromOliverPopUp && (viewType == "l" || viewType == "g")) {
+      this.oliverfolderViewTypeEventEmitter.emit(viewType);
+    } else if (this.FromOliverPopUp && (viewType == "fl" || viewType == "fg")) {
+      this.folderViewType = viewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+      this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+      this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+      // this.findAllCategories(this.pagination);
     }
   }
 
@@ -275,14 +309,40 @@ onSelect(option: string) {
   this.selectedOption = option;
 }
 
-  AskOliver(categoryId: any) {
+ AskOliver(categoryId: any,viewType: string) {
     let url = "";
+    this.referenceService.OliverCategoryId = categoryId;
     if (this.isPartnerView) {
-      url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      if(viewType == "fl"){
+         url = "/home/dam/askAi/shared/view/fl/" + categoryId;
+      }else{
+        url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      }
+    } else if(viewType == "fl") {
+      url = "/home/dam/askAi/view/fl/" + categoryId;
     } else {
       url = "/home/dam/askAi/view/fg/" + categoryId;
     }
     this.referenceService.goToRouter(url)
   }
+
+  onCheckboxChange(item: any, event: any) {
+		if (event.target.checked) {
+			this.selectedFoldersForOliver.push(item);
+		} else {
+			const index = this.selectedFoldersForOliver.findIndex(selected => selected.id === item.id);
+			if (index !== -1) {
+				this.selectedFoldersForOliver.splice(index, 1);
+			}
+		}
+		this.notifyFolders.emit(this.selectedFoldersForOliver);
+	}
+
+  isSelected(item: any): boolean {
+		if (!item || !this.selectedFoldersForOliver) {
+			return false;
+		}
+		return this.selectedFoldersForOliver.some(selected => selected.id === item.id);
+	}
 
 }

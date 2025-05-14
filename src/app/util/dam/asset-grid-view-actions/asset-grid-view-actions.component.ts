@@ -17,14 +17,15 @@ declare var $:any,swal:any;
 export class AssetGridViewActionsComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() isPartnerView:boolean = false;
-  @Input() asset:any;
+  @Input() asset: any;
   @Input() isFromTop4Assets: boolean = false;
   @Output() assetGridViewActionsEmitter = new EventEmitter();
-  @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
+  @Output() assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
   @Output() assetGridViewRefreshListEmitter = new EventEmitter();
   @Output() assetGridViewCommentStatusHistoryEmitter = new EventEmitter();
   @Output() assetGridViewAssetPreviewEmitter = new EventEmitter();
+  @Input() FromOliverPopUp: boolean = false;
 
   hasCampaignRole = false;
   hasAllAccess = false;
@@ -38,6 +39,8 @@ export class AssetGridViewActionsComponent implements OnInit {
   isChildTemplatesRouter = false;
 
   fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+  SendAssetToOliver: any;
+  isOliverCalled: boolean;
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute) {
@@ -99,22 +102,26 @@ export class AssetGridViewActionsComponent implements OnInit {
 	  this.setEventEmittersByType(asset,"campaign");
   }
 
-  setEventEmittersByType(asset:any,type:string){
+  setEventEmittersByType(asset: any, type: string) {
     let input = {};
-    if("preview"==type){
+    if ("preview" == type) {
       input['preview'] = true;
-    }else if("publishPopup"==type){
+    } else if ("publishPopup" == type) {
       input['publishPopup'] = true;
-    }else if("campaign"==type){
-    	input['campaign'] = true;
-    }else if("edit"==type){
-        input['edit'] = true;
-    }else if("analytics"==type){
-        input['analytics'] = true;
-    }else if("shareAsWhiteLabeledContent"==type){
+    } else if ("campaign" == type) {
+      input['campaign'] = true;
+    } else if ("edit" == type) {
+      input['edit'] = true;
+    } else if ("analytics" == type) {
+      input['analytics'] = true;
+    } else if ("shareAsWhiteLabeledContent" == type) {
       input['shareAsWhiteLabeledContent'] = true;
-    }else if("changeAsParentPdf"==type){
+    } else if ("changeAsParentPdf" == type) {
       input['changeAsParentPdf'] = true;
+    } else if ("askOliver" == type) {
+      input['askOliver'] = true;
+    } else if ("askAi" == type) {
+      input['askAi'] = true;
     }
     input['asset'] = asset;
     this.assetGridViewActionsEmitter.emit(input);
@@ -159,7 +166,12 @@ export class AssetGridViewActionsComponent implements OnInit {
     this.setEventEmittersByType(asset,'changeAsParentPdf');
   }
 
- 
+  AskOliver(asset: any){
+		this.setEventEmittersByType(asset,'askOliver');
+	}
+  AskAi(asset: any){
+    this.setEventEmittersByType(asset,'askAi');
+  }
 
   
 

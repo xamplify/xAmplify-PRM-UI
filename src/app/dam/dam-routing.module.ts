@@ -70,6 +70,8 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
+	{ path: "vapv/view/:damCompanyId/:slug", component: ViewDamComponent },
+	
 	/************XNFR-543*********/
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
@@ -86,7 +88,10 @@ export const routes: Routes = [
 	{ path: "askAi/view/:assetId", component: AiChatManagerComponent },
 	{ path: "askAi/shared/view/:assetId", component: AiChatManagerComponent },
 	{ path: "askAi/shared/view/fg/:categoryId", component: AiChatManagerComponent },
-	{ path: "askAi/view/fg/:categoryId", component: AiChatManagerComponent }
+	{ path: "askAi/view/fg/:categoryId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/g/:assetId", component: AiChatManagerComponent },
+	{ path: "askAi/view/fl/:categoryId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/fl/:categoryId", component: AiChatManagerComponent },
 ];
 
 @NgModule({

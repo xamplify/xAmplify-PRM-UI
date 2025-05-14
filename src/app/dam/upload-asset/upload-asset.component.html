@@ -248,23 +248,12 @@
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div">
                                                    <div [ngClass]="uploadedAssetName?.length > 0 ? 'files_asset' : 'files-div'">
-                                                      <div class="asset_files" (click)="browse()" (drop)="chooseAsset($event)">
-                                                         <input type="file" (change)="chooseAsset($event)" [disabled]="uploadedAssetName?.length > 0" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
+                                                      <div class="asset_files" [class.disabled]="uploadedAssetName?.length > 0"
+                                                         [style.pointer-events]="uploadedAssetName?.length > 0 ? 'none' : 'auto'" (click)="browse()" (drop)="chooseAsset($event)">
+                                                         <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
                                                          <div class="text-center card-template">
                                                             <img class="img-templates" src="../../../assets/images/asset-uploads/file-upload.svg" height="39px" alt="">
                                                             <span [ngClass]="uploadedAssetName?.length > 0 ? 'mb0 drag-text mt10' : 'mb0 drag-text mt10 d_block'">{{ uploadedAssetName?.length > 0 ? 'Click to upload ' : 'Click to upload or Drag and drop files' }}</span>
-                                                            <!-- <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
-                                                                                                                                                         <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6> -->
-                                                            <!-- <button class="button_blue bgcolor-unset" style="color:#fff"><span
-                                                                                                                                                               class="btn btn-primary transition txt_pd-top3">Browse</span></button> -->
-                                                            <!-- <br><br>
-                                                                                                                                                         <span *ngIf="uploadedAssetName?.length>0">
-                                                                                                                                                            <strong>File Name : {{uploadedAssetName | slice: 0:
-                                                                                                                                                               23}}</strong>
-                                                                                                                                                         </span>
-                                                                                                                                                         <span *ngIf="uploadedAssetName?.length==0">
-                                                                                                                                                            <strong>No File Selected</strong>
-                                                                                                                                                   </span> -->
                                                          </div>
                                                       </div>
                                                       <p class="mt8 mb0" *ngIf="uploadedAssetName?.length==0">Maximum file size is 800 MB.</p>
@@ -580,10 +569,45 @@
                                                    </label>
                                                    <div class="width-fit-content">
                                                       <input type="text" class="form-control" [(ngModel)]="damUploadPostDto.assetName"
-                                                         [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                                                         [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName'); updateSlug('title');">
                                                       <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
                                                    </div>
                                                 </div>
+                                             </div>
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                                <div class="form-group label-flex">
+                                                   <label class="control-label form_label"  translate>Link
+                                                     <span class="required">*</span>
+                                                   </label>
+                                                   <div class="width-fit-content">
+                                                     <div *ngIf="isEditSlug">
+                                                       <div class="prefix inline-box">
+                                                         <span class="input-group-addon" style="min-width: auto;">
+                                                           {{linkPrefix}}
+                                                         </span>
+                                                         <div class="inline-box link" action="action_page.php">
+                                                           <input class="select-box inline-box form-control" [(ngModel)]="damUploadPostDto.slug"
+                                                             maxlength="100" (input)="updateSlug('slug');">
+                                                           <button type="button" (click)="editedSlug()" style="width: auto;border-radius:0px 3px 3px 0px;"><i
+                                                               class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+                                                         </div>
+                                                       </div>
+                                                     </div>
+                                                     <div *ngIf="!isEditSlug">
+                                                       <div class="inline-box link" action="action_page.php" style="width: 100%;">
+                                                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
+                                                           [ngModel]="completeLink" #link>
+                                                         <button type="button" class="right-border widthauto" (click)="editSlug()" data-toggle="tooltip"
+                                                           data-placement="top" title="Edit" style="border-radius:0px !important;"><i
+                                                             class="fa fa-edit"></i></button>
+                                                         <button type="button" class="widthauto" (click)="copyInputMessage(link)" data-toggle="tooltip"
+                                                           data-placement="top" title="Copy" style="border-radius:0px 3px 3px 0px!important;"><i
+                                                             class="fa fa-copy"></i></button>
+                                                       </div>
+                                                     </div>
+                                                     <span *ngIf="!damUploadPostDto.isSlugValid" class="required pull-left">{{slugErrorMessage}}</span>
+                                                   </div>
+                                                 </div>
                                              </div>
                                              <!---XNFR-169-->
                                              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
@@ -764,6 +788,18 @@
                                                             </div>
                                                          </div>
                                                       </div>
+                                                   </div>
+                                                   <!--XNFR-973-->
+                                                   <div class="toggle-item" *ngIf="authenticationService?.isOliverActive">
+                                                      <div class="toggle-label">Disable Access for Oliver</div>
+                                                      <label class="toggle-switch">
+                                                         <input type="checkbox" [checked]="damUploadPostDto?.disableAccessForOliver"
+                                                            (change)="setOliverAccess($event.target.checked)">
+                                                         <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                         [title]="properties?.ACCESS_TO_ASK_OLIVER">
+                                                      </i>
                                                    </div>
                                                 </div>
                                                 <!-- <div class="row grid-container m0">
@@ -961,7 +997,7 @@
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
-                           <!-- XNFR-884 -->
+                           <!-- XNFR-884 -->                            
                            <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
                               [disabled]="isSaveAsDraftDisabled()" id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"

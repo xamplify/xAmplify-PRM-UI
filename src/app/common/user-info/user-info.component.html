@@ -8,18 +8,19 @@
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
 		
 		<ng-container *ngIf="isAllPartnersList">
-			<p *ngIf="userInfo?.firstName || userInfo?.lastName" data-toggle="tooltip" data-placement="bottom" 
+			<p class="mb0" *ngIf="userInfo?.companyName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}">
+				<b>Company Name:</b> {{userInfo?.companyName |slice:0:25}}<span *ngIf="userInfo?.companyName?.length>25">..</span>
+			</p>
+			<p class="mb0" *ngIf="userInfo?.firstName || userInfo?.lastName" data-toggle="tooltip" data-placement="bottom" 
 			title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
 				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} 
 				<span *ngIf="userInfo?.firstName?.length>15">...</span>
 				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 			</p>
-			<p *ngIf="userInfo?.emailId?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">
-				<b>Email id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
+			<p class="mb0" *ngIf="userInfo?.emailId?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">
+				<b>Email Id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
 			</p>
-			<p *ngIf="userInfo?.companyName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}">
-				<b>Company Name:</b> {{userInfo?.companyName |slice:0:25}}<span *ngIf="userInfo?.companyName?.length>25">..</span>
-			</p>
+		
 		</ng-container>
 		<ng-container *ngIf="isFromAdminList && !isAllPartnersList">
 			<h5 *ngIf="userInfo?.firstName || userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip"

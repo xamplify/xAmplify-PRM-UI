@@ -3447,3 +3447,19 @@ border-bottom-right-radius: 7px;
 .panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
   background-color: #f1f5f9!important;
 }
+
+h5.oliver-heading-color{
+  color: #002b87 !important;
+}
+.grid-card-shadow:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+}
+.grid-card-shadow {
+  box-shadow:none;
+}
+.align-items-center{
+  align-items: center;
+}
+.justify-content-center{
+  justify-content: center;
+}

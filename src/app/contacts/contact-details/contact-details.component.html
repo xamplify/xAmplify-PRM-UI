@@ -255,6 +255,13 @@
                   <span *ngIf="selectedContact?.twitterURL == undefined || selectedContact?.twitterURL == ''" class="mb0"> --</span>
                 </div>
               </li>
+              <li><i class="fas fa-globe"></i>
+                <div class="user_details">
+                  <span class="address_title"> Contact Status:</span>
+                  <span *ngIf="selectedContact?.contactStatus != undefined && selectedContact?.contactStatus != ''" class="mb0">{{selectedContact?.contactStatus}}</span>
+                  <span *ngIf="selectedContact?.contactStatus == undefined || selectedContact?.contactStatus == ''" class="mb0"> --</span>
+                </div>
+              </li>
               <li *ngFor="let flexiField of selectedContact?.flexiFields">
                 <i class="fas fa-highlighter"></i>
                 <div class="user_details">
@@ -328,7 +335,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()" (notifyAskOliver)="askOliverForCallRecording($event)"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -366,12 +373,12 @@
               <div class="deals_card mb10" *ngFor="let contact of companyContacts">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a *ngIf="contact.fullName" class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
+                  <a *ngIf="contact.fullName != undefined && contact?.fullName != ' ' && contact.fullName != ''" class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
                     <span class="activity-title">{{contact.fullName | slice:0:20}}</span><span *ngIf="contact?.fullName != undefined && contact?.fullName?.length>20">..</span>
                   </a>
                   <a class="underline-on-hover"
-                    (click)="viewContactJourney(contact.contactId)"><span *ngIf="contact?.fullName == undefined || contact?.fullName == ' ' || contact?.fullName == ''" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</span>
-                    <div *ngIf="contact.fullName" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</div></a>
+                    (click)="viewContactJourney(contact.contactId)"><span *ngIf="contact?.fullName == undefined || contact?.fullName == ' ' || contact?.fullName == ''" class="activity-title" [ngClass]="(contact.fullName != undefined && contact?.fullName != ' ' && contact.fullName != '') ? 'pl20' : ''">{{contact.emailId}}</span>
+                    <div *ngIf="contact.fullName != undefined && contact?.fullName != ' ' && contact.fullName != ''" class="activity-title" [ngClass]="(contact.fullName != undefined && contact?.fullName != ' ' && contact.fullName != '') ? 'pl20' : ''">{{contact.emailId}}</div></a>
                 </div>
                 <div *ngIf="contact?.mobileNumber!=undefined && contact?.mobileNumber?.length > 0" class="activity-body">
                   <label class="mb0 f-w-600"> Phone:</label> {{contact.mobileNumber}}
@@ -446,7 +453,7 @@
                 </div>
                 <div class="activity-body">
                   <i class="fa fa-usd" aria-hidden="true"></i>
-                  <label class="mb0 f-w-600"> Amount: </label>{{deal.amount}}
+                  <label class="mb0 f-w-600"> Amount: </label> ${{deal.amount}}
                 </div>
                 <div class="activity-body">
                   <i class="fa fa-calendar" aria-hidden="true"></i> <label class="mb0 f-w-600"> Close Date: </label> {{deal.closeDate | slice:0:10}}
@@ -600,5 +607,5 @@
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
 
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact"
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact" [callActivity]="callActivity"
   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

@@ -989,7 +989,7 @@
 																	<th scope="row" style="text-align: center;"
 																		translate>
 																		Uploaded on</th>
-																	<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage"
+																	<th 
 																		scope="row" style="text-align: center;"
 																		translate>Count
 																	</th>
@@ -1183,10 +1183,11 @@
 																				*ngIf="referenceService.isSafariBrowser()">
 																				{{contactList.createdDate}} </span>
 																		</td>
-																		<td class="text-center"
-																			*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
-																			{{contactList?.count}}
-																		</td>
+																		<td class="text-center">
+																			<div>{{contactList?.count}}</div>
+																			<div>{{contactList?.countOfContactsLists}}</div>
+																		  </td>
+																		  
 																		<td class="text-center">
 																			<a class="custom-grid-icon" title=""
 																			data-original-title="Preview"  data-toggle="tooltip" data-placement="bottom"

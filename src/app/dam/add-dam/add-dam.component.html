@@ -55,15 +55,16 @@
             <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded"
                [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-               <div class="cf-padding-dam">
-                  <a class="close-circle" (click)="hidePopup()">
-                     <i class="fa fa-times" aria-hidden="true"></i>
-                  </a>
-                  <button class="button_blue bgcolor-unset btn-alignment mrgn_top0" style="padding-top:0px;" id="right"
-                     (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition mr5">Create a
-                        Folder</span></button>
+               <div class="d-flex justify-content-between align-items-center">
+                  <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
+                  <div class="cf-padding-dam">
+                     <a class="close-circle close-align d-flex justify-content-center align-items-center" (click)="hidePopup()">
+                        <i class="fa fa-times mt0" aria-hidden="true"></i>
+                     </a>
+                     <button class="btn btn-primary mr10 btn_align" id="right" (click)="openCreateFolderPopup()"
+                        translate>Create a Folder</button>
+                  </div>
                </div>
-               <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
             </div>
             <div class="modal-body popup-border-bottom">
                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -75,7 +76,7 @@
                      <div class="col-lg-12 col-md-12 p0">
                         <div class="form-group col-md-6 col-lg-6">
                            <label>Name <span class="required">*</span></label>
-                           <input class="form-control" type="text" placeholder="Name" (input)="validateForm('name')"
+                           <input class="form-control" type="text" placeholder="Name" (input)="validateForm('name'); updateSlug('name');"
                               [(ngModel)]="damPostDto.name" [ngModelOptions]="{standalone: true}">
                            <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
                         </div>
@@ -84,6 +85,42 @@
                            <app-select-dropdown [categoryId]="damPostDto.categoryId" [dropDownItems]="categoryNames"
                               (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
                         </div>
+                     </div>
+
+                     <div class="col-lg-12 col-md-12">
+                        <div class="form-group label-flex">
+                           <label class="control-label form_label"  translate>Link
+                             <span class="required">*</span>
+                           </label>
+                           <div class="width-fit-content">
+                             <div *ngIf="isEditSlug">
+                               <div class="prefix inline-box" style="width: 100%;">
+                                 <span class="input-group-addon" style="min-width: auto;">
+                                   {{linkPrefix}}
+                                 </span>
+                                 <div class="inline-box link" action="action_page.php">
+                                   <input class="select-box inline-box form-control" [(ngModel)]="damPostDto.slug"
+                                     maxlength="100" (input)="updateSlug('slug');">
+                                   <button type="button" (click)="editedSlug()" style="width: auto;border-radius:0px 3px 3px 0px;"><i
+                                       class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+                                 </div>
+                               </div>
+                             </div>
+                             <div *ngIf="!isEditSlug">
+                               <div class="inline-box link" action="action_page.php" style="width: 100%;">
+                                 <input class="form-control" id="copy-link" type="text" readonly="readonly"
+                                   [ngModel]="completeLink" #link>
+                                 <button type="button" class="right-border widthauto" (click)="editSlug()" data-toggle="tooltip"
+                                   data-placement="top" title="Edit" style="border-radius:0px !important;"><i
+                                     class="fa fa-edit"></i></button>
+                                 <button type="button" class="widthauto" (click)="copyInputMessage(link)" data-toggle="tooltip"
+                                   data-placement="top" title="Copy" style="border-radius:0px 3px 3px 0px!important;"><i
+                                     class="fa fa-copy"></i></button>
+                               </div>
+                             </div>
+                             <span class="required" *ngIf="slugErrorMessage.length>0">{{slugErrorMessage}}</span>
+                           </div>
+                         </div>
                      </div>
                      <!--Page Size & Page Orientation-->
                      <div class="col-lg-12 col-md-12" *ngIf="showPageSizeAndOrientation">
@@ -234,6 +271,36 @@
                            </div>
                         </div>
                      </div>
+                       <!--Tags---->
+                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 p0">
+                        <div class="form-group" style="margin-bottom: 0;">
+                           <label class="control-label col-sm-1" translate>Tags
+                           </label>
+                           <div class="col-sm-11 col-xs-8">
+                              <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn mb10" (click)="addTag()"
+                                 data-toggle="tooltip" data-placement="top" title="Pick up Tag'(s)">
+                                 <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
+                              <!--  -->
+                              <div *ngIf="savedTags.length>0" class="add_tag-container">
+                                 <ng-container class="add-tag-list">
+                                    <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
+                                       <div class="add_tag">
+                                          {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                          <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                                       </div>
+                                    </ng-container>
+                                    <ng-container *ngFor="let tag of tagsListSecondColumn; let i = index">
+                                       <div class="add_tag">
+                                          {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                          <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                                       </div>
+                                    </ng-container>
+                                 </ng-container>
+                              </div>
+                              <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
+                           </div>
+                        </div>
+                     </div>
                      <!-- <div class="col-lg-12 col-md-12" >
                         <div class="form-group col-md-6 col-lg-6" *ngIf="hasShareWhiteLabeledContentAccess">
                            <label>White Labeled</label>
@@ -332,41 +399,8 @@
                            </div>
                         </div>
                      </div>
-
-                     <!--Tags---->
-                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                        <div class="form-group" style="margin-bottom: 0;">
-                           <label class="control-label col-sm-1" translate>Tags
-                           </label>
-                           <div class="col-sm-11 col-xs-8">
-                              <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn mb10" (click)="addTag()"
-                                 data-toggle="tooltip" data-placement="top" title="Pick up Tag'(s)">
-                                 <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
-                              <!--  -->
-                              <div *ngIf="savedTags.length>0" class="add_tag-container">
-                                 <ng-container class="add-tag-list">
-                                    <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
-                                       <div class="add_tag">
-                                          {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
-                                          <span class="close-btn" (click)="removeTag(tag)">&times;</span>
-                                       </div>
-                                    </ng-container>
-                                    <ng-container *ngFor="let tag of tagsListSecondColumn; let i = index">
-                                       <div class="add_tag">
-                                          {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
-                                          <span class="close-btn" (click)="removeTag(tag)">&times;</span>
-                                       </div>
-                                    </ng-container>
-                                 </ng-container>
-                              </div>
-                              <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
-                           </div>
-                        </div>
-                     </div>
-
-
                      <!---Select Partner Lists/Partners-->
-                     <div class="form-group col-lg-12 col-md-12 ml15">
+                     <div class="form-group col-lg-12 col-md-12">
                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                         <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader &&
                         ((!authenticationService?.approvalRequiredForAssets && damPostDto?.approvalStatus !== 'REJECTED')

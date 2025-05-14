@@ -575,6 +575,7 @@ showRegisterDealButton(lead):boolean {
   selectedFields: any[] = [];
   showSlectFieldComponent: boolean = false;
   enabledMyPreferances: boolean = false;
+  setDefaultFields:boolean = false;
   exportExcelSelection() {
     if (this.authenticationService.companyProfileName) {
         this.getActiveCRMDetailsByCompanyProfileName();
@@ -601,6 +602,9 @@ showRegisterDealButton(lead):boolean {
     selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
     selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
     selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+    selectedFieldsResponseDto['integation'] = true;
+    selectedFieldsResponseDto['opportunityType'] = "LEAD";
     this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
       .subscribe(
         data => {

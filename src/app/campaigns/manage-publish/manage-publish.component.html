@@ -256,9 +256,9 @@
                      <!-----List View--------->
                      <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5 mrg_top10'
                         *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                        <div class="table-responsive">
+                        <div class="table-responsive mb10">
                            <table [class.bottomTableCss]="pagination.pagedItems.length<5"
-                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool'
+                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool mb10'
                               aria-describedby="campaignsListTable" *ngIf="modulesDisplayType.isListView"
                               id="manage-campaign-list" style="overflow: inherit;">
                               <thead>
@@ -1587,7 +1587,7 @@
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                             (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && campaign.redistributedCount>0"
+                                             (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && campaign.redistributedCount>0 && campaign.campaignType!='LANDINGPAGE'"
                                                 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Show Redistributed Campaigns">
                                                 <strong>{{campaign.redistributedCount}}</strong>
@@ -1595,7 +1595,7 @@
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
+                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0 && campaign.campaignType!='LANDINGPAGE'"
                                                 data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                                                 <i class="mobile-circled-number disabled fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i>
                                                 <div class="clickicons"></div>

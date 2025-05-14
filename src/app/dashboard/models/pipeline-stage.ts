@@ -8,4 +8,5 @@ export class PipelineStage {
     displayIndex: number;
     canDelete: boolean = true;
     private: boolean;
+    companyId: number = 0;
 }

@@ -302,3 +302,30 @@ textarea {
     display: flex !important;
   }
 }
+
+.inline-box{
+  display: inline-flex;
+  width: 100%;
+}
+.link button{
+float: left;
+width: 10%;
+background: #2196f3;
+color: white;
+border-left: none;
+cursor: pointer;
+}
+.right-border {
+border-right: 1px solid #eee;
+}
+.select-box{
+height: 36px;
+padding: 6px 12px;
+border-radius: 0px !important;
+}
+.input-group-addon {
+white-space: nowrap;
+vertical-align: middle;
+width:56%;
+padding: 10px 5px 10px 5px;
+}

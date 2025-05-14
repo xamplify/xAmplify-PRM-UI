@@ -10,6 +10,8 @@ import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 declare var $: any;
 
 @Component({
@@ -21,6 +23,7 @@ export class AiChatManagerComponent implements OnInit {
   @Input() asset: any;
   @Input() chatGptSettingDTO: any;
   @Input() selectedContact: any;
+  @Input() callActivity: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -61,7 +64,7 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
-  pdfFiles: Blob[] = [];
+  pdfFiles: any[] = [];
   categoryId: any;
   isPartnerFolderView :boolean = false;
   isFromFolderView:boolean = false;
@@ -71,19 +74,36 @@ export class AiChatManagerComponent implements OnInit {
   folderFrom: any;
   folderAssetCount: any;
   isFromContactJourney: boolean = false;
+  chatHistoryId: any;
+  copiedIndex: number;
+  socialShareOption: boolean;
+  isBeeTemplateComponentCalled: boolean;
+  beeContainerInput: { module: string; jsonBody: string; };
+  selectedTemplateList: any[] = [];
+  isPartnerView: boolean;
+  selectedEmailTemplateRow = 0;
+  selectTemplate: boolean;
+  showTemplate: boolean;
+  vanityUrlFilter: boolean;
+  isPartnerLoggedIn: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
   ngOnInit() {
+    this.checkSocialAcess();
+    this.checkDamAccess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
+    this.showDefaultTemplates();
+    this.referenceService.asset = '';
+    this.isPartnerView = this.router.url.indexOf("/sharedp/view/") > -1 || this.router.url.indexOf("/shared/view/") > -1;
     if (this.assetId > 0) {
       this.isOliverAiFromdam = false;
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
       this.getThreadId(this.chatGptIntegrationSettingsDto);
-    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined) {
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
@@ -92,6 +112,14 @@ export class AiChatManagerComponent implements OnInit {
         this.getChatHistory();
       }
       this.analyzeCallRecordings();
+    } else if (this.callActivity != undefined) {
+      this.isFromContactJourney = true;
+      this.chatGptIntegrationSettingsDto.callId = this.callActivity.id;
+      this.chatGptIntegrationSettingsDto.isFromContactJourney = true;
+      this.chatGptIntegrationSettingsDto.contactId = this.callActivity.contactId;
+      this.chatGptIntegrationSettingsDto.userListId = this.callActivity.userListId;
+      this.getThreadId(this.chatGptIntegrationSettingsDto);
+      this.referenceService.goToTop();
     } else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -110,16 +138,24 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
-    this.isPdfUploading = true;
+    if (!this.isFromContactJourney) {
+      this.isPdfUploading = true;
+    }
     this.chatGptSettingsService.getThreadIdByDamId(chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         this.loading = false;
         if (response.statusCode == 200) {
           let self = this;
-          self.threadId = response.data.threadId;
-          self.vectorStoreId = response.data.vectorStoreId;
+          let data = response.data;
+          self.threadId = data.threadId;
+          self.vectorStoreId = data.vectorStoreId;
+          self.chatHistoryId = data.chatHistoryId;
         }
-        this.getSharedAssetPath();
+        if (this.isFromContactJourney && !(this.chatHistoryId != undefined && this.chatHistoryId > 0)) {
+          this.analyzeCallRecording();
+        } else {
+          this.getSharedAssetPath();
+        }
       },
       (error) => {
         this.loading = false;
@@ -138,7 +174,8 @@ export class AiChatManagerComponent implements OnInit {
       this.getSharedAssetDetailsById(this.assetId);
     } else {
       if (this.asset != undefined && this.asset != null) {
-        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        const timeString = this.asset.publishedTimeInUTCString || this.asset.createdDateInUTCString;
+        this.assetDetailsViewDtoOfPartner.displayTime = timeString ? new Date(timeString) : null; 
         this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
         this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
         this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
@@ -212,6 +249,7 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.uploadedFileId = this.uploadedFileId;
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
@@ -242,9 +280,13 @@ export class AiChatManagerComponent implements OnInit {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
       } else if (this.isFromContactJourney) {
+        this.selectedContact = undefined;
+        this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
-        if (this.router.url.includes('/shared/view/')) {
+        if (this.router.url.includes('/shared/view/g')) {
+          this.referenceService.goToRouter('/home/dam/shared/g');
+        } else if (this.router.url.includes('/shared/view')) {
           this.referenceService.goToRouter('/home/dam/shared/l');
         } else {
           this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
@@ -253,17 +295,22 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromFolderView) {
       if (this.router.url.includes('/shared/view/fg')) {
         this.referenceService.goToRouter('/home/dam/shared/fg');
+      } else if (this.router.url.includes('/askAi/view/fl')) {
+        this.referenceService.goToRouter('/home/dam/manage/fl');
+      } else if (this.router.url.includes('/shared/view/fl')) {
+        this.referenceService.goToRouter('/home/dam/shared/fl');
       } else {
         this.referenceService.goToRouter('/home/dam/manage/fg');
       }
     }
+    this.referenceService.OliverViewType = '';
   }
 
-  copyAiText(element: HTMLElement) {
-    this.copyToClipboard(element);
+  copyAiText(element: HTMLElement, index: number) {
+    this.copyToClipboard(element, index);
   }
 
-  copyToClipboard(element: any) {
+  copyToClipboard(element: any, index: number) {
     this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
@@ -272,10 +319,13 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    this.copiedIndex = index;
     setTimeout(() => {
       this.isEmailCopied = false;
+      this.copiedIndex = null;
     }, 2000);
   }
+
 
   onFileSelected(event: any) {
     this.UploadedFile =true;
@@ -296,7 +346,7 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
+    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto, this.assetDetailsViewDtoOfPartner.assetName).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
         let data = response.data;
@@ -555,9 +605,9 @@ export class AiChatManagerComponent implements OnInit {
           this.folderCreatedBy = data[0].createdBy;
           this.folderFrom = data[0].companyName;
           this.folderAssetCount = data[0].count;
-          if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+          // if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
             this.getPdfByAssetPaths(data);
-          }
+          // }
         }
       },
       (error) => {
@@ -576,7 +626,12 @@ export class AiChatManagerComponent implements OnInit {
     );
     forkJoin(requests).subscribe({
       next: (responses: Blob[]) => {
-        this.pdfFiles.push(...responses);
+        this.pdfFiles = responses.map((blob, index) => ({
+          file: blob,
+          assetName: assetsPath[index].assetName,
+          assetId: assetsPath[index].id
+        }));
+
         this.ngxLoading = false;
         this.getUploadedFileIds();
       },
@@ -589,6 +644,9 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileIds() {
     this.isPdfUploading = true;
+    this.chatGptIntegrationSettingsDto.threadId = this.threadId;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    this.chatGptIntegrationSettingsDto.vectorStoreId = this.vectorStoreId;
     this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
@@ -604,8 +662,6 @@ export class AiChatManagerComponent implements OnInit {
     );
   }
 
-  
-
   analyzeCallRecordings() {
     this.ngxLoading = true;
     this.chatGptSettingsService.analyzeCallRecordings(this.chatGptSettingDTO).subscribe(
@@ -615,6 +671,8 @@ export class AiChatManagerComponent implements OnInit {
           this.chatGptSettingDTO.threadId = data.threadId;
           this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
           this.chatGptSettingDTO.totalRecords = data.totalRecords;
+          this.chatGptSettingDTO.chatHistoryId = data.chatHistoryId;
+          this.chatHistoryId = data.chatHistoryId;
           this.threadId = data.threadId;
         }
         this.ngxLoading = false;
@@ -622,6 +680,105 @@ export class AiChatManagerComponent implements OnInit {
         this.ngxLoading = false;
       }
     )
+  }
+
+  checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
+  analyzeCallRecording() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.contactId = this.callActivity.contactId;
+    this.chatGptIntegrationSettingsDto.userListId = this.callActivity.userListId;
+    this.chatGptSettingsService.analyzeCallRecording(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptSettingDTO.threadId = data.threadId;
+          this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  openDesignTemplate(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+        (response: any) => {
+          if (!this.emailTemplateService.emailTemplate) {
+            this.emailTemplateService.emailTemplate = new EmailTemplate();
+            alert("Template created successfully.");
+            this.showTemplate = false;
+          }
+
+          this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+          this.showTemplate = true;
+        },
+        (error: string) => {
+          console.log('API Error:', error);
+          this.showTemplate = false;
+
+        }
+      );
+  }
+  addRowsToJson(jsonBody: any) {
+    throw new Error('Method not implemented.');
+  }
+  
+  closeBee(){
+    this.isBeeTemplateComponentCalled = false;
+  }
+
+  showDefaultTemplates(): void {
+    this.chatGptSettingsService.listDefaultTemplates(this.authenticationService.getUserId()).subscribe(
+        (response: any) => {
+            var templates = [];
+            if (response && response.data && response.data.emailTemplates) {
+                templates = response.data.emailTemplates;
+            }
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            if (templates.length > 0) {
+                this.emailTemplateService.emailTemplate = templates[0]; 
+            }
+            this.selectedTemplateList = templates;
+        },
+        (error: any) => {
+            console.error("Error in showDefaultTemplates():", error);
+        }
+    );
+}
+ 
+  closeDesignTemplate(event: any) {
+    this.emitterData(event);
+  }
+  private emitterData(event: any) {
+    this.openShareOption = false;
+    if (event) {
+      this.referenceService.showSweetAlertSuccessMessage(event);
+      this.emailTemplateService.emailTemplate = new EmailTemplate();
+    }
+    this.openShareOption = false;
+    this.showTemplate = false;
+    this.emailTemplateService.emailTemplate.jsonBody = "";
+  }
+  private checkDamAccess() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+      this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    }
   }
 
 }
