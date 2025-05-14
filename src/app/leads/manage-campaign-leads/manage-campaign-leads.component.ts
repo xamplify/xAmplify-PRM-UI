@@ -63,7 +63,9 @@ export class ManageCampaignLeadsComponent implements OnInit {
   
   /***09/06/2024****/
   registeredByUsersLoader = true;
-
+  leadId: number;
+  partnerEmailAddress: string;
+  isLeadOptionClicked: boolean = false;
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
@@ -629,5 +631,19 @@ showRegisterDealButton(lead):boolean {
         });
   }
   /*** XNFR-839 */
+
+  /***** XNFR-970 *****/
+  openSendReminiderPopup(lead: any) {
+    this.leadId = lead.id;
+    this.partnerEmailAddress = lead.createdByEmail;
+    this.isLeadOptionClicked = !this.isLeadOptionClicked;
+  }
+
+  /***** XNFR-970 *****/
+  closeSendReminiderPopup() {
+    this.leadId = 0;
+    this.partnerEmailAddress = "";
+    this.isLeadOptionClicked = false;
+  }
 
 }

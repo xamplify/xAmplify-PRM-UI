@@ -9,6 +9,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
+import { DomSanitizer } from '@angular/platform-browser';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-send-test-email',
@@ -64,8 +65,14 @@ export class SendTestEmailComponent implements OnInit {
   activateNowItems: any[]= [];
   registerNowItems: any[]= [];
   tabsEnabled: boolean = false;
-  // selectedTab: string = 'registerNow'; // Default active tab
-  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
+
+  /***** XNFR-970 *****/
+  @Input() isLeadOptionClicked: boolean = false;
+  leadStatusModalId: string = 'LEAD-STATUS-REMINDER-MODAL-POPUP';
+  emailBodyHtml: any;
+
+  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
+    private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.processing = true;
@@ -74,7 +81,9 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.fromEmail = this.fromEmail;
     this.sendTestEmailDto.fromName = this.fromName;
     this.isSendMdfRequestOptionClicked = XAMPLIFY_CONSTANTS.unlockMdfFunding==this.moduleName;
-    this.referenceService.openModalPopup(this.modalPopupId);
+    if (!this.isLeadOptionClicked) {
+      this.referenceService.openModalPopup(this.modalPopupId);
+    }
     $('#sendTestEmailHtmlBody').val('');
     this.tabsEnabled = false;
     if(this.sendSignatureRemainder){
@@ -86,11 +95,12 @@ export class SendTestEmailComponent implements OnInit {
       this.getFundingTemplateHtmlBody();
     }else if(this.teamMemberReminder){
       this.getVanityEmailTemplatesPartnerAnalytics();
-    }
-    else if(this.vanityTemplatesPartnerAnalytics &&(this.id==undefined || this.id==0)){
+    }else if(this.vanityTemplatesPartnerAnalytics &&(this.id==undefined || this.id==0)){
       this.activeTab('registerNow'); 
       this.tabsEnabled = true;
-    }else{
+    }else if (this.isLeadOptionClicked) {
+      this.findLeadStatusReminderEmailTemplate();
+    } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
@@ -100,7 +110,8 @@ export class SendTestEmailComponent implements OnInit {
       'pointer-events': ''
     });
     this.referenceService.closeModalPopup(this.modalPopupId);
-}
+    this.closeModalPopup();
+  }
   /***XNFR-832****/
   getFundingTemplateHtmlBody() {
     this.processing = true;
@@ -475,4 +486,66 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  /***** XNFR-970 *****/
+  findLeadStatusReminderEmailTemplate() {
+    this.processing = true;
+    this.headerTitle = "Send Reminder";
+    this.sendTestEmailDto = new SendTestEmailDto();
+    this.referenceService.openModalPopup(this.leadStatusModalId);
+    this.vanityURLService.findLeadStatusReminderEmailTemplate(this.toEmailId).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          let data = response.data;
+          this.sendTestEmailDto.id = this.id;
+          this.sendTestEmailDto.body = data.body;
+          this.sendTestEmailDto.subject = data.subject;
+          this.sendTestEmailDto.toEmailIds = data.toEmailIds;
+          this.sendTestEmailDto.ccEmailIds = data.ccEmailIds;
+          this.emailBodyHtml = this.sanitizer.bypassSecurityTrustHtml(data.body);
+          this.processing = false;
+        } else if (response.statusCode === 401) {
+          this.processing = false;
+          this.closeModalPopup();
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      }, error => {
+        this.processing = false;
+        this.closeModalPopup();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
   }
+
+  /***** XNFR-970 *****/
+  closeModalPopup() {
+    this.id = 0;
+    this.processing = false;
+    this.sendTestEmailDto = new SendTestEmailDto();
+    this.referenceService.closeModalPopup(this.leadStatusModalId);
+    this.referenceService.closeModalPopup(this.modalPopupId);
+    this.sendTestEmailComponentEventEmitter.emit();
+  }
+
+  /***** XNFR-970 *****/
+  sendLeadStatusReminiderMail() {
+    this.processing = true;
+    this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
+    this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
+    this.vanityURLService.sendLeadStatusReminderEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          this.processing = false;
+          this.closeModalPopup();
+          this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
+        } else if (response.statusCode === 401) {
+          this.processing = false;
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      }, error => {
+        this.processing = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
+
+}

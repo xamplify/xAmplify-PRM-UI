@@ -1436,7 +1436,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.inviteTeamMemberLoading = true;
     $('#invite_team_member_modal').modal('show');
     this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
-    this.teamMemberService.getHtmlBody().subscribe(
+    let templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
+    this.teamMemberService.getHtmlBody(templateId).subscribe(
       response => {
         if (response.statusCode === 200) {
           let data = response.data;
