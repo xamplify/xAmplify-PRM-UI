@@ -15,6 +15,7 @@ import { Properties } from 'app/common/models/properties';
 import { ModuleCustomName } from '../models/module-custom-name';
 import { SuperAdminService } from '../super-admin.service';
 import { CustomDomainDto } from '../models/custom-domain-dto';
+import { ChatGptSettingsService } from '../chat-gpt-settings.service';
 import { runInThisContext } from 'vm';
 
 declare var $:any;
@@ -80,12 +81,12 @@ export class ModuleAccessComponent implements OnInit {
   contactSubscriptionLoader: HttpRequestLoader = new HttpRequestLoader();
   disableUpdateModulesButton: boolean = false;
   contactSubscriptionLimitErrorMessage: string = "";
-
+  oliverActive: boolean;
   disableOliverAgentModuleOptions: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
-    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
+    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService, private chatGptSettingsService: ChatGptSettingsService) { }
 
     ngOnInit() {
       this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
@@ -343,6 +344,7 @@ export class ModuleAccessComponent implements OnInit {
     if (this.companyId) {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
+        this.oliverActive = this.campaignAccess.oliverActive;
         this.moduleLoader = false;
       }, _error => {
         this.moduleLoader = false;
@@ -355,11 +357,14 @@ export class ModuleAccessComponent implements OnInit {
 
   
 
-  updateModuleAccess(){
+  updateModuleAccess() {
     this.customResponse = new CustomResponse();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.userId = this.companyAndUserDetails.id;
+    if (this.campaignAccess.oliverActive && this.campaignAccess.oliverActive != this.oliverActive) {
+      this.campaignAccess.oliverAccessStatus = true;
+    }
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       this.statusCode = result.statusCode;
       this.customResponse = new CustomResponse('ERROR', result.message, true);
@@ -368,22 +373,22 @@ export class ModuleAccessComponent implements OnInit {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('ERROR', "Something went wrong.", true);
     },
-    ()=>{
-      if(this.statusCode==200){
-        if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
-          this.ngxLoading = true;
-          this.addDefaultMdfForm();
-        }else{
-          this.showSuccessMessage();
-          if(!this.isNavigatedFromMyProfileSection){
-            this.findMaximumAdminsLimitDetails();
-          }else{
-            this.showMessageAndLogout();
+      () => {
+        if (this.statusCode == 200) {
+          if (this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible) {
+            this.ngxLoading = true;
+            this.addDefaultMdfForm();
+          } else {
+            this.showSuccessMessage();
+            if (!this.isNavigatedFromMyProfileSection) {
+              this.findMaximumAdminsLimitDetails();
+            } else {
+              this.showMessageAndLogout();
+            }
+
           }
-          
         }
       }
-    }
     );
 
   }
