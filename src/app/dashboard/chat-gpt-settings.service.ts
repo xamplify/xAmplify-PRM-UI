@@ -149,13 +149,14 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
-  deleteChatHistory(chatHistoryId:any, threadId:any, vectorStoreId:any) {
+  deleteChatHistory(chatHistoryId:any, threadId:any, vectorStoreId:any, agentType:any) {
     let userId = this.authenticationService.getUserId();
     let threadIdRequestParameter = threadId != undefined ? '&threadId=' + threadId : '';
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let vectorStoreIdRequestParameter = vectorStoreId != undefined ? '&vectorStoreId=' + vectorStoreId : '';
     let chatHistoryIdRequestParameter = chatHistoryId != undefined ? '&chatHistoryId=' + chatHistoryId : '';
-    const url = this.chatGptSettingsUrl + "/deleteChatHistory?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + chatHistoryIdRequestParameter;
+    let agentTypeParameter = agentType != undefined ? '&agentType=' + agentType : '';
+    const url = this.chatGptSettingsUrl + "/deleteChatHistory?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + chatHistoryIdRequestParameter + agentTypeParameter;
     return this.authenticationService.callDeleteMethod(url);
   }
 
@@ -165,10 +166,10 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
   }
 
-  fetchHistories(pagination:Pagination) {
+  fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"?access_token=" + this.authenticationService.access_token + pageableUrl;
+    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"?access_token=" + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
 

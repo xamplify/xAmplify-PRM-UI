@@ -214,7 +214,7 @@
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
