@@ -1292,21 +1292,21 @@ circle.front {
 
 
 .top-section {
-  margin-bottom:35px;
+  margin-bottom:25px;
 }
 
 .main-heading {
   font-size: 25px;
+  margin-bottom: 0px!important;
   font-weight: bold;
   margin-bottom: 10px;
   color: rgba(2, 118, 255, 1);
 }
 
 .agent-sub-text{
-  margin: 10px 0px 20px 0px;
+  margin: 0px 0px 20px 0px;
   color: #002b87;
   font-size: 15px;
-  margin-bottom: 25px;
 }
 .agent-search-wrapper {
   /* max-width: 600px; */
@@ -1424,4 +1424,15 @@ circle.front {
 .agent-card-align{
   padding-right: 12px!important;
   padding-left: 12px!important;
+}
+.settings-heading-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.agent-settings-icon {
+  width: 25px;
+  height: 25px;
 }
