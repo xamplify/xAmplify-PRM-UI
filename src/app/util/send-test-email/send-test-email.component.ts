@@ -82,7 +82,9 @@ export class SendTestEmailComponent implements OnInit {
   @Input() pagedItems: any[];
   onAddedFunc = this.beforeAdd.bind(this);
   addFirstAttemptFailed = false;
-  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format',
+    'invalid_domain': 'Email domain is not allowed'
+   };
   validators = [this.mustBeEmail.bind(this)];
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
@@ -584,27 +586,56 @@ export class SendTestEmailComponent implements OnInit {
     const isPaste = !!tag['value'];
     const emailTag = isPaste ? tag.value : tag;
     if (!this.isValidEmail(emailTag)) {
-      return this.handleInvalidEmail(emailTag, isPaste);
+      return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['must_be_email']);
     }
+    if (!this.isAllowedDomain(emailTag)) {
+    return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['invalid_domain']);
+  }
     this.addFirstAttemptFailed = false;
     return Observable.of(emailTag);
   }
 
-  private handleInvalidEmail(tag: string, isPaste: boolean): Observable<any> {
+  private handleInvalidEmail(tag: string, isPaste: boolean, message: string): Observable<any> {
     if (!this.addFirstAttemptFailed) {
       this.addFirstAttemptFailed = true;
       if (!isPaste) {
         this.tagInput.setInputValue(tag);
       }
     }
-    return isPaste ? Observable.throw(this.errorMessages['must_be_email'])
+    return isPaste ? Observable.throw(message)
       : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
   }
 
-   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
-      if (this.addFirstAttemptFailed && !this.isValidEmail(control.value)) {
-        return { "must_be_email": true };
-      }
-      return null;
+  mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
+    const email = control.value;
+    if (this.addFirstAttemptFailed && !this.isValidEmail(email)) {
+      return { "must_be_email": true };
     }
+    if (this.isValidEmail(email)) {
+    const domain = email.substring(email.lastIndexOf('@') + 1).toLowerCase().trim();
+    const allowedDomains = (this.pagedItems || [])
+      .map(d => d.domainName ? d.domainName.toLowerCase().trim() : '');
+   if (allowedDomains.indexOf(domain) === -1) {
+      return { "invalid_domain": true };
+    }
+  }
+    return null;
+  }
+  private isAllowedDomain(email: string): boolean {
+    if (!email || email.indexOf('@') === -1 || !this.pagedItems) {
+      return false;
+    }
+
+    const emailDomain = email.split('@')[1].toLowerCase();
+
+    for (let i = 0; i < this.pagedItems.length; i++) {
+      const item = this.pagedItems[i];
+      if (item && item.domainName && item.domainName.toLowerCase() === emailDomain) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
