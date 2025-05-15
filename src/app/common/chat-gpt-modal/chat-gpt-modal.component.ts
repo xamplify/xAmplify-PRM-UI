@@ -87,7 +87,8 @@ export class ChatGptModalComponent implements OnInit {
   vendorCompanyProfileName: string;
 
   loggedInUserId: number = 0;
-  showOliverInsights: boolean = true;
+  showAskOliver: boolean = true;
+  showOliverInsights: boolean = false;
   showBrainstormWithOliver: boolean = false;
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
@@ -982,6 +983,11 @@ closeDesignTemplate(event: any) {
   }
 
   setOliverAgentDisableConditions() {
+    if (!this.authenticationService.oliverInsightsEnabled) {
+      this.disableOliverInsights = true;
+    } else {
+      this.disableOliverInsights = false;
+    }
     if (!this.authenticationService.brainstormWithOliverEnabled) {
       this.disableBrainstormWithOliver = true;
     } else {

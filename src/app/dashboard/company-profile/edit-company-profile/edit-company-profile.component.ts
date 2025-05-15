@@ -232,8 +232,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     disableContactSubscriptionLimitField: boolean = false;
     contactSubscriptionLimitErrorMessage: string = "";
 
-    enableOliverInsights: boolean = true;
+    enableOliverInsights: boolean = false;
     disableOliverAgentModuleOptions: boolean = false;
+    showAskOliver: boolean = true;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,

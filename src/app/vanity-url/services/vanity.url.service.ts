@@ -12,6 +12,7 @@ import { EnvService } from "app/env.service";
 import { CustomLoginTemplate } from "app/email-template/models/custom-login-template";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Properties } from "app/common/models/properties";
+import { SendTestEmailDto } from "app/common/models/send-test-email-dto";
 
 @Injectable()
 export class VanityURLService {
@@ -439,6 +440,19 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     return this.http.post(url, pagination)
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  /***** XNFR-970 *****/
+  findSendReminderLeadEmailTemplate(emailId: string) {
+    const url = this.authenticationService.REST_URL + "lead/send-reminider/template?loggedInUserId=" + this.authenticationService.getUserId()
+      + "&emailId=" + emailId + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  /***** XNFR-970 *****/
+  sendReminderLeadEmail(sendTestEmailDto: SendTestEmailDto) {
+    const url = this.authenticationService.REST_URL + "lead/send-reminider/notification?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, sendTestEmailDto);
   }
 
 }

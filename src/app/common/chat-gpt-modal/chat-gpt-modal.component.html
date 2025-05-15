@@ -48,7 +48,7 @@
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
           (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
@@ -123,7 +123,7 @@
                     <i class="fa fa-file-text"></i> Ask Oliver
                   </a>
                 </li>
-                <li *ngIf="!isWelcomePageUrl" [ngClass]="{'active': activeTab === 'askpdf'}">
+                <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                     <i class="fa fa-file-text"></i> Oliver Insights
                   </a>
@@ -162,7 +162,7 @@
                 </li>
 
                 <li *ngIf="authenticationService?.module?.adminOrSuperVisor
-                  && (authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
+                  && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
                   || authenticationService.oliverParaphraserEnabled) 
                    && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)" [ngClass]="{'active': activeTab === 'settings'}">
                   <a href="#settings" role="tab" data-toggle="tab" (click)="setActiveTab('settings')">
@@ -579,11 +579,26 @@
               
                   <!-- Agent Cards Section -->
                   <div class="row agent-card-section">
+                    
+                    <div class="col-sm-6 agent-card-align">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showAskOliver"
+                            [ngModelOptions]="{standalone: true}" [disabled]="true">
+                        </div>
+                        <img src="assets/images/ask-oliver-agent-icon.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5>Ask Oliver</h5>
+                          <p>Generates key angles, ideas, and messaging directions for your solution and audience.</p>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
                       <div class="agent-card" style="position: relative;">
                         <div>
                           <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
-                            [ngModelOptions]="{standalone: true}" [disabled]="true"
+                            [ngModelOptions]="{standalone: true}" [disabled]="disableOliverInsights"
                             (change)="updateCheckBox($event, 'INSIGHTAGENT')">
                         </div>
                         <img src="assets/images/oliver-insights.svg" class="agent-icon">

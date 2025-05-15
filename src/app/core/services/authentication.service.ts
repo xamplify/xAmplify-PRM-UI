@@ -183,7 +183,7 @@ export class AuthenticationService {
 
   contactSubscriptionLimitEnabled: boolean = false;
 
-  oliverInsightsEnabled: boolean = true;
+  oliverInsightsEnabled: boolean = false;
   brainstormWithOliverEnabled: boolean = false;
   oliverSparkWriterEnabled: boolean = false;
   oliverParaphraserEnabled: boolean = false;
