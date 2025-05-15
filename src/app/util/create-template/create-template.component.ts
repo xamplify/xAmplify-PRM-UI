@@ -583,8 +583,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
     selecttemplatetype(emailTemplate: EmailTemplate){
         emailTemplate.beeRegularTemplate = false;
+        emailTemplate.defaultTemplate = false;
         if(this.selectedEmailType == 'Email'){
-            emailTemplate.regularTemplate = true;
+            // emailTemplate.regularTemplate = true;
              emailTemplate.beeRegularTemplate = true;
         } else if(this.selectedEmailType == 'Regular Co-Branding'){
             emailTemplate.regularCoBrandingTemplate = true;

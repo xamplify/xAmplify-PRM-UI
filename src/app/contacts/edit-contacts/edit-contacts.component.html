@@ -1072,7 +1072,8 @@
 																</td>
 																<!----- XNFR-967 ----->
 																<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(contact)">
-																	<h5 class='mb0'>{{contact.contactStatus | slice:0:15}}
+																	<h5 class='mb0' data-toggle="tooltip" data-placement="bottom" title="{{contact.contactStatus}}">
+																		{{contact.contactStatus | slice:0:15}}
 																		<span *ngIf="contact.contactStatus?.length>15">...</span>
 																	</h5>
 																</td>
@@ -1574,10 +1575,10 @@
 													<td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
 													</td> -->
-													<td class="hidden-xs" [ngClass]="(isContactModule)?'text-line':''"
-														*ngIf="!isPartner"
+													<td class="hidden-xs" [ngClass]="(isContactModule)?'text-line':''" *ngIf="!isPartner"
 														(click)="(isContactModule)?showContactDetails(allcontacts):''">
-														<h5 class='mb0 ellipsis'>{{allcontacts.jobTitle | slice:0:25}}
+														<h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.jobTitle}}">
+															{{allcontacts.jobTitle | slice:0:25}}
 															<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 														</h5>
 													</td>
@@ -1602,7 +1603,8 @@
 													</td>
 													<!----- XNFR-967 ----->
 													<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(allcontacts)">
-														<h5 class='mb0'>{{allcontacts.contactStatus | slice:0:15}}
+														<h5 class='mb0' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.contactStatus}}">
+															{{allcontacts.contactStatus | slice:0:15}}
 															<span *ngIf="allcontacts.contactStatus?.length>15">...</span>
 														</h5>
 													</td>

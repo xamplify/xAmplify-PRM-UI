@@ -360,17 +360,20 @@
 
             <!----- XNFR-967 Contact Status ----->
             <div class="form-group mrg0" *ngIf="checkIsContactType()">
-              <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
-              <div class="col-xs-10 col-sm-10 p0 px_0" id="contactStatus">
-                <select class="form-control same-bgcolor-for-select mt10" style="border: none !important;width: 91%;"
-                  [(ngModel)]="selectedContactStatus" (ngModelChange)="onContactStatusChange($event)"
-                  [ngModelOptions]="{ standalone: true }">
+              <label class="control-label col-xs-2 col-sm-2 col-lg-2 col-md-2" for=""></label>
+              <div class="col-xs-9 col-sm-9 col-lg-9 col-md-9 p0 px_0" id="contactStatus">
+                <div class="d-flex">
+                  <span aria-hidden="true" class="fa fa-info-circle contact_status_info" data-original-title="Select Contact Status" data-placement="top"
+                  data-toggle="tooltip"></span>
+                  <select class="form-control same-bgcolor-for-select mt10 contact_status_select" [(ngModel)]="selectedContactStatus"
+                  (ngModelChange)="onContactStatusChange($event)" [ngModelOptions]="{ standalone: true }">
                   <option [ngValue]="null">Select Contact Status</option>
                   <option *ngFor="let stage of contactStatusStages" [ngValue]="stage">
                     {{ stage.stageName }}
                   </option>
                 </select>
-                <div class="textCss"></div>
+                </div>
+                <div class="textCss contact_status_line"></div>
               </div>
             </div>
 

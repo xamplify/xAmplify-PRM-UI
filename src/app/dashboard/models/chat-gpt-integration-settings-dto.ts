@@ -19,4 +19,11 @@ export class ChatGptIntegrationSettingsDto {
     categoryIds = [];
     contents:any[] = [];
     partnerInsightAgent: boolean = false;
+    callId: any;
+    isFromContactJourney:boolean = false;
+    contactId: any;
+    userListId: any;
+    templateId = 0;
+    partnerLoggedIn:boolean = false;
+    vendorCompanyProfileName:any;
 }

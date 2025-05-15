@@ -335,7 +335,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()" (notifyAskOliver)="askOliverForCallRecording($event)"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -607,5 +607,5 @@
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
 
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact"
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact" [callActivity]="callActivity"
   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

@@ -13,3 +13,8 @@
 .danger {
   color: red;
 }
+
+.close-circle {width: 30px!important;height: 30px!important;}
+.margin_15{
+  margin-top: 15px;
+}

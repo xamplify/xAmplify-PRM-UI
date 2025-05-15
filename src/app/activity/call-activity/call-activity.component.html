@@ -149,6 +149,18 @@
               aria-hidden="true"></i>
           </div>
         </div>
+        <a *ngIf="authenticationService?.isOliverActive && !callActivity.deletedRecording" class="ask_oliver_recording mr5"
+          data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliverForCallRecording(callActivity)">
+          <div>
+            <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImgIcon">
+          </div>
+        </a>
+        <a *ngIf="authenticationService?.isOliverActive && callActivity.deletedRecording" class="ask_oliver_recording mr5 disabled disabled_bg_clr"
+          data-toggle="tooltip" data-placement="top" title="This feature is unavailable as the recording has been deleted.">
+          <div class="disabled">
+            <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImgIcon">
+          </div>
+        </a>
       </span>
       <span *ngIf="callActivity.voiceMailURL != undefined">
         <div class="icon-item" (click)="toggleVoiceMailCard(callActivity)">

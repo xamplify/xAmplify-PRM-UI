@@ -65,5 +65,13 @@ export class CampaignAccess {
 
   contactSubscriptionLimitEnabled: boolean = false;
   contactSubscriptionLimit: number = 0;
+  oliverAccessStatus: boolean = false;
+  oliverFilesProcessing = false;
+
+  /** XNFR-982 **/
+  oliverInsightsEnabled: boolean = false;
+  brainstormWithOliverEnabled: boolean = false;
+  oliverSparkWriterEnabled: boolean = false;
+  oliverParaphraserEnabled: boolean = false;
 
 }

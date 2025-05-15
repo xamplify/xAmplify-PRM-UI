@@ -94,6 +94,7 @@ export class CrmFormSettingsComponent {
 		} else {
 			this.listExternalCustomFields();
 		}
+		this.getActiveCRMDetails();
 	}
 
   checkAuthorization() {

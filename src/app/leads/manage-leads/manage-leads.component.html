@@ -391,8 +391,8 @@
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo ml-50">
-                                <h5 class="mt5"><strong>Deal Reg Status:</strong>
+                              <div *ngIf="(isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo ml-50">
+                                <h5 class="mt5"><strong>{{lead.sfcfDealRegStatusNameForVersa}}:</strong>
                                   <span>{{lead.sfcfDealRegStatusForVersa}}
                                   </span>
                                 </h5>
@@ -420,7 +420,7 @@
                             </td>
                             <td class="text-center">
                               <!---xnfr-426---->
-                              {{lead.currentStageName | slice:0:30}}
+                              {{ (isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa  ? (lead.sfcfDealRegStatusForVersa | slice:0:30) : (lead.currentStageName | slice:0:30) }}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                                 <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                 Deal
@@ -496,12 +496,18 @@
                                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
                                   title="Comments/History">
-                                  <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
+                                  <i class="fa fa-comments mr5 IconCustomization" aria-hidden="true">
                                   </i>
                                   <div class="clickicons"></div>
                                 </a>
                                 <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
                                   style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                                <a class="custom-icon"
+                                  *ngIf="isVendorVersion && !lead.canUpdate && !authenticationService?.module?.isMarketingCompany && authenticationService?.module?.isAnyAdminOrSupervisor"
+                                  data-rel="fancybox-button" (click)="openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
+                                  title="Send Email" id="lead"><i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                                  <div class="clickicons"></div>
+                                </a>
                               </div>
                             </td>
                           </tr>
@@ -806,5 +812,8 @@
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
   [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
 </app-opportunities-chat-modal-popup>
+
+<!--- XNFR-970 --->
+<app-send-test-email *ngIf="isLeadOptionClicked" [id]="leadId" [toEmailId]="partnerEmailAddress" [isLeadOptionClicked]="isLeadOptionClicked" (sendTestEmailComponentEventEmitter)="closeSendReminiderPopup()">
 
 <!-- END CONTENT -->

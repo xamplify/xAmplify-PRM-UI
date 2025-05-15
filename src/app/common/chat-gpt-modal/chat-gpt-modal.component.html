@@ -35,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -45,7 +45,10 @@
         (notifyClose)="closeSocialShare($event)"></app-update-status>
       <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
       </app-create-template>
-      <div *ngIf="!openShareOption && !showTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
+      <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
+          (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
+      <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
@@ -115,22 +118,27 @@
               <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate
                 your marketing, messaging, and content creation workflows.</h5>
               <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
-                <li *ngIf="!isWelcomePageUrl" [ngClass]="{'active': activeTab === 'askpdf'}">
+                <li [ngClass]="{'active': activeTab === 'globalchat'}">
+                  <a href="#globalchat" role="tab" data-toggle="tab" (click)="setActiveTab('globalchat')">
+                    <i class="fa fa-file-text"></i> Ask Oliver
+                  </a>
+                </li>
+                <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                     <i class="fa fa-file-text"></i> Oliver Insights
                   </a>
                 </li>
-                <li [ngClass]="{'active': activeTab === 'new-chat'}">
+                <li *ngIf="authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver" [ngClass]="{'active': activeTab === 'new-chat'}">
                   <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
                     <i class="fa fa-lightbulb-o"></i>Brainstorm with Oliver
                   </a>
                 </li>
-                <li [ngClass]="{'active': activeTab === 'writing'}">
+                <li *ngIf="authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter" [ngClass]="{'active': activeTab === 'writing'}">
                   <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
                     <i class="fa fa-pencil"></i> Oliver Spark Writer
                   </a>
                 </li>
-                <li [ngClass]="{'active': activeTab === 'paraphraser'}">
+                <li *ngIf="authenticationService.oliverParaphraserEnabled && showOliverParaphraser" [ngClass]="{'active': activeTab === 'paraphraser'}">
                   <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
                     <i class="fa fa-align-left"></i> Oliver Paraphraser
                   </a>
@@ -152,6 +160,16 @@
                     </svg>
                   </a>
                 </li>
+
+                <li *ngIf="authenticationService?.module?.adminOrSuperVisor
+                  && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
+                  || authenticationService.oliverParaphraserEnabled) 
+                   && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)" [ngClass]="{'active': activeTab === 'settings'}">
+                  <a href="#settings" role="tab" data-toggle="tab" (click)="setActiveTab('settings')">
+                    <i class="fa fa-gear"></i> Settings
+                  </a>
+                </li>
+
                 <!-- <li [ngClass]="{'active': activeTab === 'history'}">
                   <a href="#history" role="tab" data-toggle="tab" (click)="setActiveTab('history')">
                     <i class="fa fa-history"></i> Chat History
@@ -160,9 +178,56 @@
               </ul>
             </div>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
               <div class="tab-content oliver_content"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
+                
+                <!-- Global Chat -->
+                <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'globalchat', 'tab-pane fade': activeTab !== 'globalchat'}"
+                 class="tab-pane fade">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'globalchat'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                  'fixed_oliver_input': !isSidebarVisible,
+                                  'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
+                                  'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
+                                }">
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Ask Oliver</span>
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your
+                      solution and audience. Specializes in creative
+                      brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
+                      to
+                      your goals.</p>
+                    <div class="oliver_input mt10">
+                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                      <div class="btn-wrapper">
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div>
+                    <!--  -->
+                    <!-- <div class="action-buttons mt10">
+                      <button class="action-btn">Analyze Asset</button>
+                      <button class="action-btn">Summarize in detail</button>
+                      <button class="action-btn">Summarize with Key
+                        Quotes</button>
+                    </div> -->
+                    <!--  -->
+                  </div>
+                </div>
                 <!-- Start New Chat -->
                 <div role="tabpanel"
                   [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}"
@@ -275,7 +340,7 @@
                           <label *ngIf="!assetLoader && !isfileProcessed">
                             <!-- <i class="glyphicon glyphicon-upload"></i> -->
                             <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
-                            Feed Me Digital Assets
+                            Add Digital Assets
                           </label>
                           <div *ngIf="assetLoader" class="fileloader"></div>
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
@@ -311,7 +376,7 @@
                             summaries</button>
                           <button class="action-btn" (click)="setInputText('Compare documents')">Compare
                             documents</button>
-                          <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a
+                          <button class="action-btn" (click)="setInputText('Give an overview of documents')">Give an
                             overview of
                             documents</button>
                         </div>
@@ -336,7 +401,7 @@
                       <button class="action-btn" (click)="setInputText('Generate summaries')">Generate
                         summaries</button>
                       <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
-                      <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview
+                      <button class="action-btn" (click)="setInputText('Give an overview of documents')">Give an overview
                         of
                         documents</button>
                     </div>
@@ -498,6 +563,106 @@
                     </div>
                   </div>
                 </div>
+
+              <!-- XNFR-982 -->
+              <div role="tabpanel"
+                [ngClass]="{'tab-pane fade in active': activeTab === 'settings', 'tab-pane fade': activeTab !== 'settings'}"
+                id="settings">
+                <div class="agent-content">
+                  <!-- Top Heading + Search -->
+                  <div class="top-section text-center">
+                    <div class="settings-heading-wrapper">
+                    <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
+                    <span class="main-heading">Oliver Settings</span>
+                  </div>
+                    <p class="agent-sub-text">
+                      Choose which Oliver agents to enable. Partners will only see the ones you activate.
+                    </p>
+                  </div>
+              
+                  <!-- Agent Cards Section -->
+                  <div class="row agent-card-section">
+                    
+                    <div class="col-sm-6 agent-card-align">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showAskOliver"
+                            [ngModelOptions]="{standalone: true}" [disabled]="true">
+                        </div>
+                        <img src="assets/images/oliver-global-img.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5>Ask Oliver</h5>
+                          <p>Generates key angles, ideas, and messaging directions for your solution and audience.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
+                            [ngModelOptions]="{standalone: true}" [disabled]="disableOliverInsights"
+                            (change)="updateCheckBox($event, 'INSIGHTAGENT')">
+                        </div>
+                        <img src="assets/images/oliver-insights.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5>Oliver Insights</h5>
+                          <p>Summarize, compare, and extract key insights from any content or data.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.brainstormWithOliverEnabled">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
+                            [ngModelOptions]="{standalone: true}"
+                            (change)="updateCheckBox($event, 'BRAINSTORMAGENT')" [disabled]="disableBrainstormWithOliver">
+                        </div>
+                        <img src="assets/images/brainstorm-with-oliver.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5>Brainstorm with Oliver</h5>
+                          <p>Unlock fresh ideas, angles, and campaign directions with guided ideation.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverSparkWriterEnabled">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
+                            [ngModelOptions]="{standalone: true}"
+                            (change)="updateCheckBox($event, 'SPARKWRITERAGENT')" [disabled]="disableOliverSparkWriter">
+                        </div>
+                        <img src="assets/images/oliver-spark-writer.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5> Oliver Spark Writer</h5>
+                          <p>Turn ideas into ready-to-go drafts for emails, posts, and more.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverParaphraserEnabled">
+                      <div class="agent-card" style="position: relative;">
+                        <div>
+                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
+                            [ngModelOptions]="{standalone: true}"
+                            (change)="updateCheckBox($event, 'PARAPHRASERAGENT')" [disabled]="disableOliverParaphraser">
+                        </div>
+                        <img src="assets/images/oliver-paraphraser.svg" class="agent-icon">
+                        <div class="agent-info">
+                          <h5>Oliver Paraphraser</h5>
+                          <p>Reword your content with clarity, variation, or different tones on demand.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="submit-section fixed-update-button">
+                    <button (click)="updateOliverAgentAccessSettings()" [disabled]="disableAgentAccessUpdateButton"
+                      class="btn btn-primary">{{agentAccessUpdateButtonName}}</button>
+                  </div>
+                </div>
+              </div>
+
+
+
                 <!-- <div role="tabpanel" *ngIf="activeTab == 'history'">
                   <div class="main-container newChatlabel">
                     <div *ngFor="let history of chatHistories">
@@ -556,7 +721,7 @@
         <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
             (click)="copyChatGPTText(message.content)"></i></div>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button class="share-btn" (click)="openDesignTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

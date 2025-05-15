@@ -45,7 +45,7 @@
     width: 90px;
     margin: 0;
     max-width: 90px;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 6px;
     margin-left: 6px;
   }
