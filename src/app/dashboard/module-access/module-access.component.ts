@@ -83,6 +83,12 @@ export class ModuleAccessComponent implements OnInit {
   contactSubscriptionLimitErrorMessage: string = "";
   oliverActive: boolean;
   disableOliverAgentModuleOptions: boolean = false;
+  showAskOliver: boolean = true;
+  oliverInsightsEnabledFlag: boolean = false;
+  brainstormWithOliverEnabledFlag: boolean = false;
+  oliverSparkWriterEnabledFlag: boolean = false;
+  oliverParaphraserEnabledFlag: boolean = false;
+
 
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
@@ -351,6 +357,7 @@ export class ModuleAccessComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
       },() => {
         this.disableContactSubscriptionLimitField = !this.campaignAccess.contactSubscriptionLimitEnabled;
+         this.setOliverAgentFlagValues(this.campaignAccess);
       });
     }
   }
@@ -637,11 +644,24 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       });
     }
   }
+
+  setOliverAgentFlagValues(campaignAccess: CampaignAccess) {
+    this.oliverInsightsEnabledFlag = campaignAccess.oliverInsightsEnabled;
+    this.brainstormWithOliverEnabledFlag = campaignAccess.brainstormWithOliverEnabled;
+    this.oliverSparkWriterEnabledFlag = campaignAccess.oliverSparkWriterEnabled;
+    this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
+  }
   /** XNFR-952 end **/
 
   oliverActiveUiSwitchEventReceiver(event: boolean) {
     this.disableOliverAgentModuleOptions = !event;
     this.campaignAccess.oliverActive = event;
+    if (!event) {
+      this.campaignAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
+      this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
+      this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
+      this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
+    }
   }
 
 }

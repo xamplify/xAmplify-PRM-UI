@@ -502,6 +502,14 @@
 												<div>
 													<strong>
 														<input class="checkBox_shadow" type="checkbox" [disabled]="true"
+															[ngModel]="showAskOliver" [ngModelOptions]="{standalone: true}">
+														<span class="ml10">Enable Ask Oliver</span>
+													</strong>
+												</div>
+
+												<div>
+													<strong>
+														<input class="checkBox_shadow" type="checkbox" [disabled]="disableOliverAgentModuleOptions"
 															[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
 														<span class="ml10">Enable Oliver Insights</span>
 													</strong>

@@ -439,10 +439,19 @@
 															<app-custom-ui-switch [customSwitch]="campaignAccess.oliverActive"
 																(customUiSwitchEventEmitter)="oliverActiveUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 															<div style="margin-left: 20px; margin-top: 10px;">
+																
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [disabled]="true"
-																			[(ngModel)]="enableOliverInsights" [ngModelOptions]="{standalone: true}">
+																		<input class="checkBox_shadow" type="checkbox" [disabled]="true" [ngModel]="showAskOliver"
+																			[ngModelOptions]="{standalone: true}">
+																		<span class="ml10">Enable Ask Oliver</span>
+																	</strong>
+																</div>
+																
+																<div>
+																	<strong>
+																		<input class="checkBox_shadow" type="checkbox" [disabled]="disableOliverAgentModuleOptions"
+																			[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
 																		<span class="ml10">Enable Oliver Insights</span>
 																	</strong>
 																</div>
