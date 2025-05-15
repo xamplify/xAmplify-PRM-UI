@@ -583,20 +583,6 @@
                   <!-- Agent Cards Section -->
                   <div class="row agent-card-section">
                     
-                    <div class="col-sm-6 agent-card-align">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showAskOliver"
-                            [ngModelOptions]="{standalone: true}" [disabled]="true">
-                        </div>
-                        <img src="assets/images/oliver-global-img.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5>Ask Oliver</h5>
-                          <p>Generates key angles, ideas, and messaging directions for your solution and audience.</p>
-                        </div>
-                      </div>
-                    </div>
-
                     <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
                       <div class="agent-card" style="position: relative;">
                         <div>
