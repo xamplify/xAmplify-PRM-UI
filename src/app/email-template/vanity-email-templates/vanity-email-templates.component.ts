@@ -1,4 +1,4 @@
-import { Component, OnInit,Output,EventEmitter,ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Pagination } from 'app/core/models/pagination';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -8,7 +8,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { VanityEmailTempalte } from '../models/vanity-email-template';
 import { Properties } from 'app/common/models/properties';
 import { CustomResponse } from 'app/common/models/custom-response';
-import {EmailTemplatePreviewUtilComponent} from 'app/util/email-template-preview-util/email-template-preview-util.component';
+import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 
@@ -22,44 +22,45 @@ export class VanityEmailTemplatesComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
-  vanityEmailTemplate:VanityEmailTempalte = new VanityEmailTempalte();
+  vanityEmailTemplate: VanityEmailTempalte = new VanityEmailTempalte();
   ngxloading = false;
   searchKey = "";
-  isZeroDefaultsTemplates :boolean = false;
+  isZeroDefaultsTemplates: boolean = false;
   vanityEmailSortOption: SortOption = new SortOption();
 
   @Output() editTemplate = new EventEmitter();
-  @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent:EmailTemplatePreviewUtilComponent;
+  @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent: EmailTemplatePreviewUtilComponent;
   selectedTypeIndex = 0;
-	activeTab: string = 'templates';
+  activeTab: string = 'templates';
   selectedType: boolean = false;
   isZeroDefaultsYourTemplates: boolean = false;
   isZeroDefaultsPartnerNotifications: boolean = false;
   cacheBuster = '?t=' + new Date().getTime();
-  constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties,public utilService: UtilService) { }
+  constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties, public utilService: UtilService) { }
 
   ngOnInit() {
-    this.isZeroDefaultsYourTemplates = false;  
-  this.isZeroDefaultsPartnerNotifications = false;
-  this.selectedTypeIndex = this.vanityURLService.selectedTypeIndex;
+    this.isZeroDefaultsYourTemplates = false;
+    this.isZeroDefaultsPartnerNotifications = false;
+    this.selectedTypeIndex = this.vanityURLService.selectedTypeIndex;
     this.setActiveTab(this.vanityURLService.activeTab);
-    
+
   }
 
-  
+
   showAllVanityTemplates(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.pagination.pagedItems = [];
     this.vanityURLService.selectedTypeIndex = index;
     this.pagination.filterKey = type;
     this.pagination.pageIndex = 1;
     this.vanityEmailSortOption.searchKey = "";
     this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
-    if(index == 1){
-      this.pagination.sortcolumn ="name";
+    if (index == 1) {
+      this.pagination.sortcolumn = "name";
     }
     this.getVanityEmailTemplates(this.pagination);
-}
+  }
   getVanityEmailTemplates(pagination: Pagination) {
     if (this.authenticationService.vanityURLEnabled) {
       this.referenceService.loading(this.httpRequestLoader, true);
@@ -72,9 +73,9 @@ export class VanityEmailTemplatesComponent implements OnInit {
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
-          if(data.vanityEmailTemplates.length == 0 && (this.pagination.searchKey == '' || this.pagination.searchKey == "") && this.pagination.filterKey == "DEFAULT"){
+          if (data.vanityEmailTemplates.length == 0 && (this.pagination.searchKey == '' || this.pagination.searchKey == "") && this.pagination.filterKey == "DEFAULT") {
             this.isZeroDefaultsTemplates = true;
-            this.showAllVanityTemplates("CUSTOM" ,1);
+            this.showAllVanityTemplates("CUSTOM", 1);
             return;
           }
           pagination.totalRecords = data.totalRecords;
@@ -85,11 +86,11 @@ export class VanityEmailTemplatesComponent implements OnInit {
     }
   }
 
-  saveOrUpdateVanityEmailTempalte(){
+  saveOrUpdateVanityEmailTempalte() {
     this.vanityEmailTemplate.userId = this.authenticationService.getUserId();
     this.vanityEmailTemplate.companyProfileName = this.authenticationService.companyProfileName;
     this.vanityURLService.saveOrUpdateEmailTemplate(this.vanityEmailTemplate).subscribe(result => {
-      if(result.statusCode === 200){
+      if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_ET_SUCCESS_TEXT, true);
         this.getVanityEmailTemplates(this.pagination);
       }
@@ -98,35 +99,35 @@ export class VanityEmailTemplatesComponent implements OnInit {
     });
   }
 
-  deleteVanityEmailTemplate(defaultEmailTemplateId:number){
-    this.vanityURLService.deleteEmailTempalte(defaultEmailTemplateId).subscribe(result =>{
+  deleteVanityEmailTemplate(defaultEmailTemplateId: number) {
+    this.vanityURLService.deleteEmailTempalte(defaultEmailTemplateId).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_ET_DELETE_TEXT, true);
         if (this.pagination.pageIndex === this.pagination.pager.totalPages && this.pagination.pagedItems.length === 1) {
           this.pagination.pageIndex = 1;
         }
-        this.getVanityEmailTemplates(this.pagination);        
+        this.getVanityEmailTemplates(this.pagination);
       }
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
     })
   }
-  designTemplate(emailTemplate:VanityEmailTempalte){
+  designTemplate(emailTemplate: VanityEmailTempalte) {
     this.vanityURLService.activeTab = this.activeTab;
     this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
     this.editTemplate.emit(emailTemplate);
   }
 
-  previewTemplate(emailTemplate:VanityEmailTempalte){
+  previewTemplate(emailTemplate: VanityEmailTempalte) {
     this.referenceService.previewVanityEmailTemplateInNewTab(emailTemplate.defaultEmailTemplateId);
   }
   searchVanityEventHandler(keyCode: any) { if (keyCode === 13) { this.searchVanityEmailTemp(); } }
 
-  searchVanityEmailTemp(){
+  searchVanityEmailTemp() {
     this.pagination.pageIndex = 1;
-		this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
-    this.getVanityEmailTemplates(this.pagination);  
-    
+    this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
+    this.getVanityEmailTemplates(this.pagination);
+
   }
 
 
@@ -136,35 +137,30 @@ export class VanityEmailTemplatesComponent implements OnInit {
     this.getAllFilteredResults(this.pagination);
   }
   getAllFilteredResults(pagination: Pagination) {
-	this.pagination.pageIndex = 1;
-	this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
-	this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
-  if(this.selectedTypeIndex == 1){
-    this.pagination.sortcolumn = "name";
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
+    if (this.selectedTypeIndex == 1) {
+      this.pagination.sortcolumn = "name";
+    }
+    this.getVanityEmailTemplates(this.pagination);
   }
-	this.getVanityEmailTemplates(this.pagination);
-}
 
-setPage(event: any) {
-	this.pagination.pageIndex = event.page;
-	this.getVanityEmailTemplates(this.pagination);
-}
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getVanityEmailTemplates(this.pagination);
+  }
+
   setActiveTab(tabName: string) {
-    
     this.activeTab = tabName;
     this.vanityURLService.activeTab = this.activeTab;
     this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
-
     if (tabName === 'templates') {
-      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
+      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates;
       this.showAllVanityTemplates('DEFAULT', 0);
-
     } else if (tabName === 'partnerNotifications') {
-      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
+      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates;
       this.showAllVanityTemplates('DEFAULT', 0);
-
     }
   }
-  
-  
 }
