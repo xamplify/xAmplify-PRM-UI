@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -57,6 +57,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   isDomainAllowedToAddToSamePartnerAccount: boolean = false;
   editAction: boolean = false;
   domainId = 0;
+  sendTestEmailIconClicked = false;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -157,7 +158,6 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     }
     this.referenceService.openModalPopup("domainModal");
   }
-
   closeAddDomainModal() {
     this.referenceService.closeModalPopup("domainModal");
     this.domain = "";
@@ -436,5 +436,10 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   setIsDomainAllowed(event: any) {
     this.isDomainAllowedToAddToSamePartnerAccount = event;
   }
-
+  addWelcomeMailModalOpen() {
+    this.sendTestEmailIconClicked = true;
+  }
+  sendWelcomeMailModalPopupEventReceiver() {
+    this.sendTestEmailIconClicked = false;
+  }
 }

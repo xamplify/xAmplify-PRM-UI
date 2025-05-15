@@ -10,6 +10,10 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import { tap} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-send-test-email',
@@ -49,6 +53,8 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
+  selectedEmailTemplateId: any;
+
   /**XNFR-832***/
   @Input() moduleName = "";
   @Input() campaignName="";
@@ -60,6 +66,7 @@ export class SendTestEmailComponent implements OnInit {
   @Output() sendTestEmailComponentTeamMemberEventEmitter = new EventEmitter();
   @Input() selectedPartners : any;
   @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
+  @ViewChild('tagInput') tagInput: SourceTagInput;
   duplicateMdfRequestDto:DuplicateMdfRequest = new DuplicateMdfRequest();
   ngxloading = false;
   activateNowItems: any[]= [];
@@ -70,6 +77,13 @@ export class SendTestEmailComponent implements OnInit {
   @Input() isLeadOptionClicked: boolean = false;
   leadStatusModalId: string = 'LEAD-STATUS-REMINDER-MODAL-POPUP';
   emailBodyHtml: any;
+/***** XNFR-972 *****/
+  @Input() isFromDomainWhiteListing: false;
+  @Input() pagedItems: any[];
+  onAddedFunc = this.beforeAdd.bind(this);
+  addFirstAttemptFailed = false;
+  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  validators = [this.mustBeEmail.bind(this)];
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -100,6 +114,8 @@ export class SendTestEmailComponent implements OnInit {
       this.tabsEnabled = true;
     }else if (this.isLeadOptionClicked) {
       this.findSendReminderLeadEmailTemplate();
+    }else if(this.isFromDomainWhiteListing){
+      this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
@@ -516,6 +532,28 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  findWelcomeMailTemplate() {
+    this.processing = true;
+    this.headerTitle = "Send Welcome Email";
+    this.sendTestEmailDto = new SendTestEmailDto();
+    this.vanityURLService.getWelcomeTemplateForPartnerDomainWhitelisting().subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          this.processEmailTemplate(response);
+          this.processing = false;
+        } else if (response.statusCode === 401) {
+          this.processing = false;
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
+
   /***** XNFR-970 *****/
   closeModalPopup() {
     this.id = 0;
@@ -547,5 +585,36 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
+   private isValidEmail(text: string): boolean {
+    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return text ? EMAIL_REGEXP.test(text) : false;
+  }
 
+ beforeAdd(tag: any): Observable<any> {
+    const isPaste = !!tag['value'];
+    const emailTag = isPaste ? tag.value : tag;
+    if (!this.isValidEmail(emailTag)) {
+      return this.handleInvalidEmail(emailTag, isPaste);
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(emailTag);
+  }
+
+  private handleInvalidEmail(tag: string, isPaste: boolean): Observable<any> {
+    if (!this.addFirstAttemptFailed) {
+      this.addFirstAttemptFailed = true;
+      if (!isPaste) {
+        this.tagInput.setInputValue(tag);
+      }
+    }
+    return isPaste ? Observable.throw(this.errorMessages['must_be_email'])
+      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+  }
+
+   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
+      if (this.addFirstAttemptFailed && !this.isValidEmail(control.value)) {
+        return { "must_be_email": true };
+      }
+      return null;
+    }
 }
