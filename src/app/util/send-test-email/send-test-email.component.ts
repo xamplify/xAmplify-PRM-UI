@@ -534,18 +534,9 @@ export class SendTestEmailComponent implements OnInit {
 
   findWelcomeMailTemplate() {
     this.processing = true;
-    this.headerTitle = "Send Welcome Email";
-    this.sendTestEmailDto = new SendTestEmailDto();
     this.vanityURLService.getWelcomeTemplateForPartnerDomainWhitelisting().subscribe(
       response => {
-        if (response.statusCode === 200) {
-          this.processEmailTemplate(response);
-          this.processing = false;
-        } else if (response.statusCode === 401) {
-          this.processing = false;
-          this.callEventEmitter();
-          this.referenceService.showSweetAlertServerErrorMessage();
-        }
+        this.processEmailTemplate(response);
       }, error => {
         this.processing = false;
         this.callEventEmitter();
@@ -553,7 +544,6 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
-
   /***** XNFR-970 *****/
   closeModalPopup() {
     this.id = 0;
