@@ -1270,6 +1270,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.pagination.vanityUrlFilter = this.authenticationService.vanityURLEnabled;
         this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         this.referenseService.loading(this.httpRequestLoader, true);
+        this.pagination.fromPartnerAnalytics = true;
         this.parterService.mailSend(this.pagination).subscribe(
             data => {
                 if (data.access) {

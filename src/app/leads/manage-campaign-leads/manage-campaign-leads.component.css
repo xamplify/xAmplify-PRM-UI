@@ -62,3 +62,6 @@
         margin-left: -15px !important;
     }
 }   
+.lead_actions {
+    float: none !important;
+}

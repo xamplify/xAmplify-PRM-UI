@@ -36,7 +36,7 @@ a.disabled {
   max-width: 100%;
   margin-left: 5px;
   border-radius: 2px;
-  object-fit: cover;
+  object-fit: fill;
 }
 td h6 {
   margin: 5px 0;
@@ -174,7 +174,7 @@ td h6 {
   height: 603px !important;
 }
 .grid-box img {
-  object-fit: cover !important;
+  object-fit: fill !important;
 }
 .mix-filter li:hover {
   background: #1c84ff;

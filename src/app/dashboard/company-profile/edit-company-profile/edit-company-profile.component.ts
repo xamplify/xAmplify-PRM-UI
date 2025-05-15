@@ -232,6 +232,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     disableContactSubscriptionLimitField: boolean = false;
     contactSubscriptionLimitErrorMessage: string = "";
 
+    enableOliverInsights: boolean = false;
+    disableOliverAgentModuleOptions: boolean = false;
+    showAskOliver: boolean = true;
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -2202,5 +2206,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     disableModuleAccessButton() {
         $('#module-access-button').prop('disabled', true);
+    }
+
+    oliverActiveUiSwitchEventReceiver(event: boolean) {
+        this.disableOliverAgentModuleOptions = !event;
+        this.campaignAccess.oliverActive = event;
     }
 }

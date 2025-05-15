@@ -131,6 +131,7 @@ export class CountryPhoneInputComponent implements OnInit {
     } else {
       this.isValidMobileNumber = false;
       this.errorMessage = 'Please select the country code';
+      this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber, selectedCountry: this.selectedCountry });
     }
   }
 

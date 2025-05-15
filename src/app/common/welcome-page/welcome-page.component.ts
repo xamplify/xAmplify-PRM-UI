@@ -71,6 +71,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     $("#xamplify-index-head").append("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/universal-search-bar.css' type='text/css'>");
+    $("#xamplify-index-head").append("<link  href='assets/js/indexjscss/sweetalert2.min.css' rel='stylesheet' type='text/css'>");
   }
    
   ngAfterViewInit(){

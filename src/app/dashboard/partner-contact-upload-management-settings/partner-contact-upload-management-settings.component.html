@@ -30,19 +30,24 @@
             <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
           </div>
-          <div class="contact-analytics-counts-info" >
-            Contacts exceeded by:
-            <span *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading"
-             [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
-            ? contactSubscriptionCountUsed - contactSubscriptionLimit
-            : 0) ? 'red' : 'inherit'}">
-              <strong> {{contactSubscriptionCountUsed > contactSubscriptionLimit
-                ? contactSubscriptionCountUsed - contactSubscriptionLimit : 0 }}
+            <div class="contact-analytics-counts-info">
+              <span *ngIf="contactSubscriptionCountUsed > contactSubscriptionLimit">
+                Contacts Exceeded By:
+              </span>
+              <span *ngIf="contactSubscriptionCountUsed <= contactSubscriptionLimit">
+                Available Limit:
+              </span>
+              <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+                src="../../../assets/images/Spinner.gif" alt="">
+              <strong>
+                <span *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading" [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
+                                ? 'red' : 'green')}">
+                  {{ contactSubscriptionCountUsed > contactSubscriptionLimit
+                  ? contactSubscriptionCountUsed - contactSubscriptionLimit
+                  : contactSubscriptionLimit - contactSubscriptionCountUsed }}
+                </span>
               </strong>
-            </span>
-            <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
-              src="../../../assets/images/Spinner.gif" alt="">
-          </div>
+            </div>
         </div>
       </div>
 

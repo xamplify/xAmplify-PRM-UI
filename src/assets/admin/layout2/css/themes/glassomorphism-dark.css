@@ -4392,7 +4392,7 @@ input:checked + .toggle-slider {
   background-color: #d1d1d170!important;
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards,.agent-info{
   background: rgb(0 0 0 / 45%) !important;
   border: 1px solid #ffffff33 !important;
 }
@@ -4428,21 +4428,30 @@ markdown pre,.aligin-para{
   background: #8d8a8a00 !important;
 }
 .side_bar,.writing-card,.phara-card,
-.oliver_input,.textarea-card{
+.oliver_input,.textarea-card,.custom-card,.history-entry,.agent-card{
   background: rgba(16 18 27 / 40%) !important;
   border: 1px solid #ffffff33 !important;
   backdrop-filter: blur(5px);
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
   background: rgb(146 151 179 / 39%) !important;
   color: #fcfeff!important;
   border-radius: 8px!important;
 }
-.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.main-heading,.agent-sub-text,.agent-info p,.history-header{
   color: #fff!important;
 }
   textarea.textarea.h-350 {
     box-shadow: unset !important;
+}
+.btn-plus{background: rgb(146 151 179 / 39%) !important;}
+.history-divider{
+  border-top: 1px solid #ffffff33  !important;
+}
+.fixed-update-button {bottom: 44px!important;}
+.templateui {padding: 20px 100px 12px 54px!important;}
+.agent-card:hover {
+  transform: scale(1.02);
 }
