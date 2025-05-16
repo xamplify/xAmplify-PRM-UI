@@ -169,7 +169,8 @@ listDefaultTemplates(userId:any){
   fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"?access_token=" + this.authenticationService.access_token + pageableUrl;
+    let vendorCompanyProfileNameRequestParam = pagination.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + pagination.vendorCompanyProfileName : '';
+    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"?access_token=" + this.authenticationService.access_token + pageableUrl + vendorCompanyProfileNameRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 

@@ -725,6 +725,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   fetchHistories(chatHistoryPagination) {
+    chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn).subscribe(
       (response) => {
         const data = response.data;
