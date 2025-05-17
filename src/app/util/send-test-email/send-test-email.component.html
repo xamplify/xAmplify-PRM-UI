@@ -49,11 +49,11 @@
                            class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
                   
                         <span class="required"
-                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder">
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                            Please enter a valid email address
                         </span>
                         <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.toEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
-                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()"
                            [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
                            [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
                         </tag-input>
@@ -82,7 +82,7 @@
             </div>
 
          </div>
-         <div class="modal-footer" *ngIf="!processing">
+          <div class="modal-footer" *ngIf="!processing">
             <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">{{ isFromDomainWhiteListing ? 'Cancel' : 'Close' }}</button>
             <button type="submit" class="button bgcolor-unset btn-top3" [disabled]="!isValidForm || clicked"
                (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate">

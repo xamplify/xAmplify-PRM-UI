@@ -277,6 +277,6 @@
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked"
   (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
 
-  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [pagedItems]="pagination.pagedItems" [toEmailId]= "''" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()"></app-send-test-email>
+  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [allPartnerDomains]="allPartnerDomains" [toEmailId]= "''" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()"></app-send-test-email>
 
 

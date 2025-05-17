@@ -58,6 +58,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   editAction: boolean = false;
   domainId = 0;
   sendTestEmailIconClicked = false;
+
+  allPartnerDomains: string[] = [];
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -72,6 +74,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     if (this.isPartnerDomains) {
       this.moduleName = "Partner";
       this.activatePartnersDomainsTab();
+      this.getAllPartnerDomainNames();
     } else if (this.isTeamMemberDomains) {
       this.moduleName = "Team Member";
       this.activateTeamMemberDomainsTab();
@@ -442,4 +445,21 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   sendWelcomeMailModalPopupEventReceiver() {
     this.sendTestEmailIconClicked = false;
   }
+  getAllPartnerDomainNames(): void {
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.dashboardService.getAllPartnerDomainNames(this.selectedTab).subscribe(
+    (response: any) => {
+      if (response && response.data) {
+        this.allPartnerDomains = response.data; 
+      }
+      this.referenceService.loading(this.httpRequestLoader, false);
+    },
+    error => {
+      this.xtremandLogger.errorPage(error);
+      this.referenceService.loading(this.httpRequestLoader, false);
+    }
+  );
+}
+
+
 }

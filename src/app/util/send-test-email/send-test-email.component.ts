@@ -78,6 +78,7 @@ export class SendTestEmailComponent implements OnInit {
   leadStatusModalId: string = 'LEAD-STATUS-REMINDER-MODAL-POPUP';
   emailBodyHtml: any;
 /***** XNFR-972 *****/
+  @Input() allPartnerDomains: string[] = [];
   @Input() isFromDomainWhiteListing: false;
   @Input() pagedItems: any[];
   onAddedFunc = this.beforeAdd.bind(this);
@@ -167,7 +168,13 @@ export class SendTestEmailComponent implements OnInit {
     this.isValidEmailLength = email.length > 0;
     this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
     let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
-    this.isValidForm = isValidEmail && this.isValidSubject;
+   // this.isValidForm = isValidEmail && this.isValidSubject;
+    if(this.isFromDomainWhiteListing){
+      this.isValidForm = this.isValidSubject && this.sendTestEmailDto.toEmailIds && this.sendTestEmailDto.toEmailIds.length > 0;
+    }else{
+      this.isValidForm = isValidEmail && this.isValidSubject;
+      //sendTestEmailDto.toEmailIds
+    }
   }
 
   getTemplateHtmlBodyAndMergeTagsInfo() {
@@ -301,6 +308,9 @@ export class SendTestEmailComponent implements OnInit {
     }else if(this.campaignSendTestEmail){
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendCampaignTestEmail();
+    }else if(this.isFromDomainWhiteListing){
+      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
+      this.sendWelcomeMailRemainder();
     }else{
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendTestEmail();
@@ -577,6 +587,27 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
+  sendWelcomeMailRemainder(){
+    this.processing = true;
+    this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
+    this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
+    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          this.processing = false;
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
+        } else if (response.statusCode === 401) {
+          this.processing = false;
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      }, error => {
+        this.processing = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
    private isValidEmail(text: string): boolean {
     const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return text ? EMAIL_REGEXP.test(text) : false;
@@ -608,29 +639,34 @@ export class SendTestEmailComponent implements OnInit {
 
   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
     const email = control.value;
+
     if (this.addFirstAttemptFailed && !this.isValidEmail(email)) {
       return { "must_be_email": true };
     }
+
     if (this.isValidEmail(email)) {
-    const domain = email.substring(email.lastIndexOf('@') + 1).toLowerCase().trim();
-    const allowedDomains = (this.pagedItems || [])
-      .map(d => d.domainName ? d.domainName.toLowerCase().trim() : '');
-   if (allowedDomains.indexOf(domain) === -1) {
-      return { "invalid_domain": true };
+      const domain = email.substring(email.lastIndexOf('@') + 1).toLowerCase().trim();
+      const allowedDomains = (this.allPartnerDomains || [])
+        .map(function (d) { return d ? d.toLowerCase().trim() : ''; });
+
+      if (allowedDomains.indexOf(domain) === -1) {
+        return { "invalid_domain": true };
+      }
     }
-  }
+
     return null;
   }
+
   private isAllowedDomain(email: string): boolean {
-    if (!email || email.indexOf('@') === -1 || !this.pagedItems) {
+    if (!email || email.indexOf('@') === -1 || !this.allPartnerDomains) {
       return false;
     }
 
-    const emailDomain = email.split('@')[1].toLowerCase();
+    const emailDomain = email.split('@')[1].toLowerCase().trim();
 
-    for (let i = 0; i < this.pagedItems.length; i++) {
-      const item = this.pagedItems[i];
-      if (item && item.domainName && item.domainName.toLowerCase() === emailDomain) {
+    for (var i = 0; i < this.allPartnerDomains.length; i++) {
+      var domain = this.allPartnerDomains[i];
+      if (domain && domain.toLowerCase().trim() === emailDomain) {
         return true;
       }
     }
