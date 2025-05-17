@@ -168,13 +168,7 @@ export class SendTestEmailComponent implements OnInit {
     this.isValidEmailLength = email.length > 0;
     this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
     let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
-   // this.isValidForm = isValidEmail && this.isValidSubject;
-    if(this.isFromDomainWhiteListing){
-      this.isValidForm = this.isValidSubject && this.sendTestEmailDto.toEmailIds && this.sendTestEmailDto.toEmailIds.length > 0;
-    }else{
-      this.isValidForm = isValidEmail && this.isValidSubject;
-      //sendTestEmailDto.toEmailIds
-    }
+    this.isValidForm = isValidEmail && this.isValidSubject;
   }
 
   getTemplateHtmlBodyAndMergeTagsInfo() {
