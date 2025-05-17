@@ -113,7 +113,7 @@
                 </div>
               </div> -->
           <div *ngIf="!showView" class="d-flex oliver_flex">
-            <div class="side_bar">
+            <div class="side_bar" [ngClass]="{ 'collapsed': !isSidebarVisible }">
               <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
               <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate
                 your marketing, messaging, and content creation workflows.</h5>
@@ -123,7 +123,7 @@
                     <i class="fa fa-file-text"></i> Ask Oliver
                   </a>
                 </li>
-                <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights" [ngClass]="{'active': activeTab === 'askpdf'}">
+                <!-- <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights" [ngClass]="{'active': activeTab === 'askpdf'}">
                   <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                     <i class="fa fa-file-text"></i> Oliver Insights
                   </a>
@@ -138,11 +138,43 @@
                     <i class="fa fa-pencil"></i> Oliver Spark Writer
                   </a>
                 </li>
-                <li *ngIf="authenticationService.oliverParaphraserEnabled && showOliverParaphraser" [ngClass]="{'active': activeTab === 'paraphraser'}">
+                <li *ngIf="authenticationService.oliverParaphraserEnabled && showOliverParaphraser"
+                  [ngClass]="{'active': activeTab === 'paraphraser'}">
                   <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
                     <i class="fa fa-align-left"></i> Oliver Paraphraser
                   </a>
+                </li> -->
+                
+                <!-- Ask Oliver Agent with Submenu -->
+                <li [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
+                  <a href="javascript:void(0);" class="submenu-toggle" (click)="toggleAgentSubmenu()">
+                    <i class="fa fa-user"></i>Oliver Agents
+                  </a>
+                  <ul class="nav submenu" *ngIf="isAgentSubmenuOpen">
+                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights"
+                      [ngClass]="{'active': activeTab === 'askpdf'}">
+                      <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
+                        <i class="fa fa-file-text"></i> Oliver Insights
+                      </a>
+                    </li>
+                    <li *ngIf="!isWelcomePageUrl && authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver" [ngClass]="{'active': activeTab === 'new-chat'}">
+                      <a href="#new-chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
+                        <i class="fa fa-plus-circle"></i> BrainStorm Agent
+                      </a>
+                    </li>
+                    <li *ngIf="authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter" [ngClass]="{'active': activeTab === 'writing'}">
+                      <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
+                        <i class="fa fa-pencil"></i> Spark Writer Agent
+                      </a>
+                    </li>
+                    <li *ngIf="authenticationService.oliverParaphraserEnabled && showOliverParaphraser" [ngClass]="{'active': activeTab === 'paraphraser'}">
+                      <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
+                        <i class="fa fa-align-left"></i> Paraphraser Agent
+                      </a>
+                    </li>
+                  </ul>
                 </li>
+                
                 <li class="history-divider"></li>
                 <li [ngClass]="{'active': activeTab === 'history'}" style="margin-bottom: 10px;">
                   <a class="oliver-history-btn" href="#history" role="tab" data-toggle="tab"
@@ -177,9 +209,14 @@
                 </li> -->
               </ul>
             </div>
+            <!-- Sidebar Toggle Button -->
+            <button class="toggle-button" (click)="toggleSidebar()">
+              <span *ngIf="!isSidebarVisible">&#9776;</span>
+              <span *ngIf="isSidebarVisible">&#9776;</span>
+            </button>
             <div
               [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
-              <div class="tab-content oliver_content"
+              <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
                 
                 <!-- Global Chat -->
@@ -241,7 +278,11 @@
                       <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                     </div>
                   </ng-container>
-                  <div [ngClass]="showOpenHistory && activeTab === 'new-chat' ? 'templateui col-lg-9' : 'container-ui'">
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'new-chat',
+                                      'container-ui': !(showOpenHistory && activeTab === 'new-chat'),
+                                      'fixed_oliver_input': !isSidebarVisible
+                                    }">
                     <!-- Heading -->
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
                       <span class="oliver_heading">Brainstorm with Oliver</span>
@@ -278,8 +319,10 @@
                       <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                     </div>
                   </ng-container>
-                  <div
-                    [ngClass]="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">
+                  <div [ngClass]="{
+                                      'templateui col-lg-9' : (isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing',
+                                      'fixed_oliver_input' : !isSidebarVisible
+                                    }">
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
                       <span class="oliver_heading">Oliver Spark Writer</span>
                       <!-- Oliver Image Positioned Correctly -->
@@ -297,14 +340,13 @@
                       </div>
                       <div class="oliver_text">Text Length</div>
                       <div class="input-group d-flex">
-                        <select class="form-control oliver-focus" [(ngModel)]="selectedValueForWork"
-                          (ngModelChange)="sortBy($event)" id="select-dropdown">
+                        <select class="form-control oliver-focus" [(ngModel)]="selectedValueForWork" (ngModelChange)="sortBy($event)"
+                          id="select-dropdown">
                           <option *ngFor="let option of sortOption.wordOptionsForOliver" [value]="option.value">
                             {{ option.name }}
                           </option>
                         </select>
-                        <button class="btn btn-submit ml10" type="button"
-                          (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                        <button class="btn btn-submit ml10" type="button" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
@@ -329,12 +371,14 @@
                   <span *ngIf="!showOpenHistory" class="oliver_heading">Oliver Insights</span>
                   <p *ngIf="!showOpenHistory" class="oliver-text-color">Summarize, compare, and extract key insights
                     from any content or data.</p>
-                  <div
-                    [ngClass]="showOpenHistory && activeTab === 'askpdf' ? showOpenHistory ? 'templateui col-lg-9 override-margin' : 'templateui col-lg-9' : 'container-ui'">
+                  <div [ngClass]="{
+                                      'templateui col-lg-9 override-margin' : showOpenHistory && activeTab === 'askpdf',
+                                      'container-ui' : !(showOpenHistory && activeTab === 'askpdf'),
+                                      'fixed_oliver_input' : !isSidebarVisible
+                                    }">
                     <div *ngIf="!showOpenHistory" class="custom-card mt10">
                       <div class="col-lg-12 pl0">
-                        <div
-                          [ngClass]="assetLoader || isfileProcessed  ? 'upload-box custom-align-center' : 'upload-box'"
+                        <div [ngClass]="assetLoader || isfileProcessed  ? 'upload-box custom-align-center' : 'upload-box'"
                           (click)="!isfileProcessed &&!assetLoader && openAssetsPage()"
                           [ngStyle]="{ 'display': assetLoader ? 'flex' : '' }">
                           <label *ngIf="!assetLoader && !isfileProcessed">
@@ -346,10 +390,10 @@
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
                           <div *ngIf="isfileProcessed && !assetLoader" class="file-info">
                             <div class="flex">
-                              <img *ngIf="selectedAssets?.length > 0" class="file-icon mr5"
-                                src="assets/images/asset-uploads/PDF.svg" alt="Upload">
-                              <img *ngIf="!(selectedAssets?.length > 0)" class="file-icon mr10"
-                                src="assets/images/fileIconOliver.svg" alt="Upload">
+                              <img *ngIf="selectedAssets?.length > 0" class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg"
+                                alt="Upload">
+                              <img *ngIf="!(selectedAssets?.length > 0)" class="file-icon mr10" src="assets/images/fileIconOliver.svg"
+                                alt="Upload">
                               <div class="file-details">
                                 <div *ngIf="selectedAssets?.length > 0" class="file-name"> {{ selectedAssets?.length }}
                                   file(s) processed successfully</div>
@@ -364,9 +408,8 @@
                           </div>
                         </div>
                         <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
-                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)"
-                            [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" (input)="validateInputText()"
-                            placeholder="Ask Me!">
+                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
+                            [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
                             <button (click)="!assetLoader && openAssetsPage()" class="btn-plus">+</button>
                           </div>
@@ -381,11 +424,9 @@
                             documents</button>
                         </div>
                       </div>
-                      <div class="submit-section"
-                        [ngStyle]="{'margin-bottom': isfileProcessed && !assetLoader ? '35px' : ''}">
+                      <div class="submit-section" [ngStyle]="{'margin-bottom': isfileProcessed && !assetLoader ? '35px' : ''}">
                         <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
-                        <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
-                          class="btn btn-submit">Submit</button>
+                        <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()" class="btn btn-submit">Submit</button>
                       </div>
                     </div>
                     <div *ngIf="showOpenHistory" class="oliver_input mt10">

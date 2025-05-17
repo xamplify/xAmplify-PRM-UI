@@ -101,6 +101,8 @@ export class ChatGptModalComponent implements OnInit {
   disableAgentAccessUpdateButton: boolean = false;
   selectTemplate: boolean;
   templateLoader: boolean;
+  isAgentSubmenuOpen: boolean;
+  isSidebarVisible: boolean = true;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
@@ -739,7 +741,7 @@ export class ChatGptModalComponent implements OnInit {
     )
   }
 
-  showHistory(history:any) {
+  showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
     this.setActiveTab(tab);
     this.threadId = history.threadId;
@@ -747,6 +749,11 @@ export class ChatGptModalComponent implements OnInit {
     this.chatHistoryId = history.chatHistoryId;
     this.showOpenHistory = true;
     this.isSaveHistoryPopUpVisible = false;
+    if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
+      || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
+      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)) {
+      this.isAgentSubmenuOpen = true;
+    }
     this.getChatHistory();
   }
 
@@ -1064,10 +1071,19 @@ closeDesignTemplate(event: any) {
       this.selectTemplate = false;
     }
   } 
-   openSelectionTemplate(markdown: any) {
+   
+  openSelectionTemplate(markdown: any) {
     let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
     this.chatGptIntegrationSettingsDto.prompt = text;
     this.selectTemplate = true;
+  }
+
+  toggleAgentSubmenu(): void {
+    this.isAgentSubmenuOpen = !this.isAgentSubmenuOpen;
+  }
+
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
 
 }
