@@ -256,6 +256,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	isFromCompanyModule: boolean;
 	isContactModule: boolean;
+	masterContactListId: number;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -1563,6 +1564,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
 			this.contactListObject = new ContactList;
+			this.contactListObject.id = this.masterContactListId;
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
@@ -2557,6 +2559,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.callInitMethods();
 		/**** user guide ****/
 		this.getMergeTagsForDifferentModules();
+		this.findMasterContactListId();
 	}
 
 
@@ -2675,6 +2678,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			$('#filterModal').modal('hide');
 			$('#saveAsModal').modal('hide');
 			$("#listSharedDetailsModal").modal('hide');
+			this.masterContactListId = null;
 		} catch (error) {
 			this.xtremandLogger.error("ERROR : MangeContactsComponent onOnDestroy() " + error);
 		}
@@ -3124,6 +3128,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	updateUrl() {
 		this.location.replaceState('/home/contacts/manage');
+	}
+
+	findMasterContactListId() {
+		if (this.isContactModule) {
+			this.contactService.findMasterContactListId().subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					this.masterContactListId = response.data;
+				}
+			}, error => {
+				this.xtremandLogger.error(error);
+			});
+		}
 	}
 
 }
