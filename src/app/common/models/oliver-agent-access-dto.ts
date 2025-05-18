@@ -4,5 +4,7 @@ export class OliverAgentAccessDTO {
     showBrainstormWithOliver: boolean = false;
     showOliverSparkWriter: boolean = false;
     showOliverParaphraser: boolean = false;
+
+    updateOliverAgentSettings: boolean = false;
     
 }

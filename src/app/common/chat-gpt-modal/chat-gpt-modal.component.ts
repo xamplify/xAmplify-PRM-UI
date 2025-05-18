@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
@@ -29,6 +29,7 @@ export class ChatGptModalComponent implements OnInit {
   @Input() isChatGptIconDisplayed: boolean;
   @Input() isShowingRouteLoadIndicator: boolean;
   @Input() showLoaderForAuthGuard: boolean;
+  @Output() loadOliverSettings = new EventEmitter();
   inputText = "";
   isValidInputText = false;
   chatGptGeneratedText = "";
@@ -103,6 +104,7 @@ export class ChatGptModalComponent implements OnInit {
   templateLoader: boolean;
   isAgentSubmenuOpen: boolean;
   isSidebarVisible: boolean = true;
+  isFromOliverSettingsModalPopup: boolean = true;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
@@ -297,6 +299,7 @@ export class ChatGptModalComponent implements OnInit {
 
     if (this.activeTab == 'settings') {
       this.setOliverAgentDisableConditions();
+      this.loadOliverSettings.emit();
     }
   }
 
@@ -1084,6 +1087,16 @@ closeDesignTemplate(event: any) {
 
   toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
+  }
+
+  onOliverFlagsUpdate(flags: {
+    showOliverInsights: boolean; showBrainstormWithOliver: boolean; showOliverSparkWriter: boolean;
+    showOliverParaphraser: boolean;
+  }) {
+    this.showOliverInsights = flags.showOliverInsights;
+    this.showBrainstormWithOliver = flags.showBrainstormWithOliver;
+    this.showOliverSparkWriter = flags.showOliverSparkWriter;
+    this.showOliverParaphraser = flags.showOliverParaphraser;
   }
 
 }

@@ -622,80 +622,13 @@
                   <!-- Top Heading + Search -->
                   <div class="top-section text-center">
                     <div class="settings-heading-wrapper">
-                    <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
-                    <span class="main-heading">Oliver Settings</span>
-                  </div>
-                    <p class="agent-sub-text">
-                      Choose which Oliver agents to enable. Partners will only see the ones you activate.
-                    </p>
-                  </div>
-              
-                  <!-- Agent Cards Section -->
-                  <div class="row agent-card-section">
-                    
-                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
-                            [ngModelOptions]="{standalone: true}" [disabled]="disableOliverInsights"
-                            (change)="updateCheckBox($event, 'INSIGHTAGENT')">
-                        </div>
-                        <img src="assets/images/oliver-insights.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5>Oliver Insights</h5>
-                          <p>Summarize, compare, and extract key insights from any content or data.</p>
-                        </div>
-                      </div>
+                      <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
+                      <span class="main-heading">Oliver Settings</span>
                     </div>
-                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.brainstormWithOliverEnabled">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
-                            [ngModelOptions]="{standalone: true}"
-                            (change)="updateCheckBox($event, 'BRAINSTORMAGENT')" [disabled]="disableBrainstormWithOliver">
-                        </div>
-                        <img src="assets/images/brainstorm-with-oliver.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5>Brainstorm with Oliver</h5>
-                          <p>Unlock fresh ideas, angles, and campaign directions with guided ideation.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverSparkWriterEnabled">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
-                            [ngModelOptions]="{standalone: true}"
-                            (change)="updateCheckBox($event, 'SPARKWRITERAGENT')" [disabled]="disableOliverSparkWriter">
-                        </div>
-                        <img src="assets/images/oliver-spark-writer.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5> Oliver Spark Writer</h5>
-                          <p>Turn ideas into ready-to-go drafts for emails, posts, and more.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverParaphraserEnabled">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
-                            [ngModelOptions]="{standalone: true}"
-                            (change)="updateCheckBox($event, 'PARAPHRASERAGENT')" [disabled]="disableOliverParaphraser">
-                        </div>
-                        <img src="assets/images/oliver-paraphraser.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5>Oliver Paraphraser</h5>
-                          <p>Reword your content with clarity, variation, or different tones on demand.</p>
-                        </div>
-                      </div>
-                    </div>
+                    <app-chat-gpt-integration-settings [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
+                      (updateOliverFlags)="onOliverFlagsUpdate($event)"
+                      (loadOliverSettings)="getSettings()"></app-chat-gpt-integration-settings>
                   </div>
-                  <div class="submit-section fixed-update-button">
-                    <button (click)="updateOliverAgentAccessSettings()" [disabled]="disableAgentAccessUpdateButton"
-                      class="btn btn-primary">{{agentAccessUpdateButtonName}}</button>
-                  </div>
-                </div>
-              </div>
 
 
 

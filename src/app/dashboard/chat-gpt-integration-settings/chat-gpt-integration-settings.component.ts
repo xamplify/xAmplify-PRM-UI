@@ -1,9 +1,10 @@
 import { ChatGptSettingsService } from './../chat-gpt-settings.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChatGptIntegrationSettingsDto } from './../models/chat-gpt-integration-settings-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Properties } from 'app/common/models/properties';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 
 @Component({
@@ -13,15 +14,40 @@ import { Properties } from 'app/common/models/properties';
   providers:[Properties]
 })
 export class ChatGptIntegrationSettingsComponent implements OnInit {
+
+  @Input() isFromOliverSettingsModalPopup: boolean = false;
+  
   chatGptSettingsLoader = false;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   customResponse:CustomResponse = new CustomResponse();
   isSwitchOptionDisabled = false;
   chatGptIntegrationEnabledPreviousState = false;
   description = "To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired";
+  helperText = "If you prefer using your own AI infrastructure, you can enter your own API key here. This enables custom control over AI behavior while continuing to access Oliver features";
+
+  activeTab: string = 'settings';
+  showOliverInsights: boolean = false;
+  showBrainstormWithOliver: boolean = false;
+  showOliverSparkWriter: boolean = false;
+  showOliverParaphraser: boolean = false;
+  showAskOliver: boolean = true;
+  disableOliverInsights: boolean = false;
+  disableBrainstormWithOliver: boolean = false;
+  disableOliverSparkWriter: boolean = false;
+  disableOliverParaphraser: boolean = false;
+  updateButtonName: string = 'Update';
+  disableUpdateButton: boolean;
+
+  @Output() updateOliverFlags = new EventEmitter<{
+    showOliverInsights: boolean;
+    showBrainstormWithOliver: boolean;
+    showOliverSparkWriter: boolean;
+    showOliverParaphraser: boolean;
+  }>();
 
   constructor(public referenceService:ReferenceService,
-    public chatGptSettingsService:ChatGptSettingsService,public properties:Properties) { }
+    public chatGptSettingsService:ChatGptSettingsService,public properties:Properties,
+    public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.getSettings();
@@ -33,6 +59,10 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
       response=>{
         this.chatGptIntegrationSettingsDto = response.data;
         this.chatGptIntegrationEnabledPreviousState = this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled;
+        this.showOliverInsights = this.chatGptIntegrationSettingsDto.showOliverInsights;
+        this.showBrainstormWithOliver = this.chatGptIntegrationSettingsDto.showBrainstormWithOliver;
+        this.showOliverSparkWriter = this.chatGptIntegrationSettingsDto.showOliverSparkWriter;
+        this.showOliverParaphraser = this.chatGptIntegrationSettingsDto.showOliverParaphraser;
         this.chatGptSettingsLoader = false;
       },error=>{
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -42,7 +72,10 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
 
   updateSettings(){
     this.customResponse = new CustomResponse();
+    this.updateButtonName = 'Updating...';
+    this.disableUpdateButton = true;
     this.chatGptSettingsLoader = true;
+    this.checkCanUpdateOliverAgentAccessSettings();
     this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
       response=>{
         let statusCode = response.statusCode;
@@ -54,17 +87,36 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
               this.referenceService.closeSweetAlert();
 						}, 3000);
           }else{
-            this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+            if (!this.isFromOliverSettingsModalPopup) {
+              this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+            }
+            this.getSettings();
           }
+          this.updateOliverFlags.emit({
+            showOliverInsights: this.chatGptIntegrationSettingsDto.showOliverInsights,
+            showBrainstormWithOliver: this.chatGptIntegrationSettingsDto.showBrainstormWithOliver,
+            showOliverSparkWriter: this.chatGptIntegrationSettingsDto.showOliverSparkWriter,
+            showOliverParaphraser: this.chatGptIntegrationSettingsDto.showOliverParaphraser
+          });
         }else{
           this.customResponse = new CustomResponse('ERROR',response.message,true);
         }
         this.chatGptSettingsLoader = false;
+        this.updateButtonName = 'Update';
+        this.disableUpdateButton = false;
       },error=>{
+        this.updateButtonName = 'Update';
+        this.disableUpdateButton = false;
         this.chatGptSettingsLoader = false;
         let message = this.referenceService.getApiErrorMessage(error);
         this.customResponse = new CustomResponse('ERROR',message,true);
       });
+  }
+
+  private checkCanUpdateOliverAgentAccessSettings() {
+    this.chatGptIntegrationSettingsDto.updateOliverAgentSettings = this.authenticationService.module.adminOrSuperVisor
+      && (this.authenticationService.oliverInsightsEnabled || this.authenticationService.brainstormWithOliverEnabled || this.authenticationService.oliverSparkWriterEnabled
+        || this.authenticationService.oliverParaphraserEnabled) && (this.authenticationService.vanityURLEnabled ? this.authenticationService.module.loggedInThroughOwnVanityUrl : true);
   }
 
   validateForm(){
@@ -80,5 +132,47 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   enableOrDisableChatGptSettings(value:boolean){
     this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled = value;
   }
+
+  private readonly INSIGHTAGENT = "INSIGHTAGENT";
+  private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
+  private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
+  private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
+
+  updateCheckBox(event: any, agentType: string) {
+    const isChecked = event.target.checked;
+    if (agentType === this.INSIGHTAGENT) {
+      this.chatGptIntegrationSettingsDto.showOliverInsights = isChecked;
+    } else if (agentType === this.BRAINSTORMAGENT) {
+      this.chatGptIntegrationSettingsDto.showBrainstormWithOliver = isChecked;
+    } else if (agentType === this.SPARKWRITERAGENT) {
+      this.chatGptIntegrationSettingsDto.showOliverSparkWriter = isChecked;
+    } else if (agentType === this.PARAPHRASERAGENT) {
+      this.chatGptIntegrationSettingsDto.showOliverParaphraser = isChecked;
+    }
+  }
+
+  // setOliverAgentDisableConditions() {
+  //   if (!this.authenticationService.oliverInsightsEnabled) {
+  //     this.disableOliverInsights = true;
+  //   } else {
+  //     this.disableOliverInsights = false;
+  //   }
+  //   if (!this.authenticationService.brainstormWithOliverEnabled) {
+  //     this.disableBrainstormWithOliver = true;
+  //   } else {
+  //     this.disableBrainstormWithOliver = false;
+  //   }
+  //   if (!this.authenticationService.oliverSparkWriterEnabled) {
+  //     this.disableOliverSparkWriter = true;
+  //   } else {
+  //     this.disableOliverSparkWriter = false;
+  //   }
+  //   if (!this.authenticationService.oliverParaphraserEnabled) {
+  //     this.disableOliverParaphraser = true;
+  //   } else {
+  //     this.disableOliverParaphraser = false;
+  //   }
+  // }
+
 
 }
