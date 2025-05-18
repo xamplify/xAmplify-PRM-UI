@@ -4435,7 +4435,7 @@ markdown pre,.aligin-para{
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle {
   background: rgb(146 151 179 / 39%) !important;
   color: #fcfeff!important;
   border-radius: 8px!important;
@@ -4454,4 +4454,8 @@ markdown pre,.aligin-para{
 .templateui {padding: 20px 100px 12px 54px!important;}
 .agent-card:hover {
   transform: scale(1.02);
+}
+.submenu-toggle::after{
+  border-right: 2px solid #ffffff!important;
+  border-bottom: 2px solid #ffffff!important;
 }

@@ -233,15 +233,16 @@
       max-height: 100% !important;
     }
     .side_bar {
-      width: 25%;
+      width: 24.5%;
       background: linear-gradient(to bottom, #cde5ff, #b0d4ff);
       height: 100vh;
       padding: 10px 13px;
       text-align: center;
-      /* position: fixed; */
-      left: 0;
-      top: 0;
       border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: width 0.3s ease;
     }
   
     .side_bar img {
@@ -250,7 +251,7 @@
     }
   
     .side_bar h5 {
-      margin: 0px 0px 17px 0px !important;
+      margin: 0px 0px 10px 0px !important;
     }
   
     .nav-pills.nav-stacked.oliver_tab>li>a {
@@ -259,11 +260,12 @@
       padding: 12px 20px;
       transition: background-color 0.3s;
       font-size: 14px;
-      margin: 0 0 10px 0;
+      margin: 0 5px 10px 5px;
       text-align: left;
     }
 .nav-pills.nav-stacked.oliver_tab > li > a:hover {
     background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
 }
 
 .nav-pills.nav-stacked.oliver_tab> li.active > a,
@@ -1126,7 +1128,6 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   color: white;
   padding: 10px 14px;
   border-radius: 8px;
-  font-weight: 600;
   margin: 0 5px 10px 5px;
 }
 
@@ -1446,7 +1447,7 @@ circle.front {
   padding: 12px 20px;
   font-size: 15px;
   color: #0056b3;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 6px;
   margin-bottom: 6px;
   text-align: left;
@@ -1455,7 +1456,6 @@ circle.front {
 
 .submenu-toggle:hover {
   background-color: #e6f0ff;
-  color: #003d80;
 }
 
 /* Arrow Icon */
@@ -1495,6 +1495,7 @@ circle.front {
   color: #0066cc;
   border-radius: 4px;
   text-decoration: none;
+  text-align: left;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -1506,7 +1507,7 @@ circle.front {
 .submenu li.active a {
   background-color: #dbefff;
   color: #0056b3;
-  border-left: 4px solid #007bff;
+  border-left: 4px solid #007bff!important;
   border-radius: 4px;
 }
 
@@ -1515,7 +1516,7 @@ circle.front {
 }
 
 .submenu-toggle {
-  margin: 0 5px 10px 5px !important;
+  /* margin: 0 5px 10px 5px !important; */
   border-radius: 5px !important;
 }
 
@@ -1540,20 +1541,21 @@ circle.front {
   transform: rotate(-180deg);
 }
 
-.side_bar {
-  width: 280px;
+/* .side_bar {
+  width: 25%;
   background-color: #e6f0ff;
   padding: 1rem;
   transition: width 0.3s ease;
   overflow: hidden;
   height: 100vh;
-}
+} */
 
 .side_bar.collapsed {
   /* width: 60px;
   padding: 1rem 0.5rem; */
   width: 0px;
   padding: 0px;
+  border: none !important;
 }
 
 .side_bar img,
@@ -1617,4 +1619,28 @@ circle.front {
 
 .fixed_oliver_input {
   padding: 20px 47px 7px 54px !important;
+}
+.sidebar-header {
+  flex-shrink: 0;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.sidebar-scroll {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 190px);
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.open > .submenu-toggle,.submenu a.active,.submenu-toggle:focus{
+  background-color: #ffffff; 
+}
+@media only screen and (max-width:1024px){
+  .modal-body.oliver-header{
+    overflow-y: auto!important;
+  }
+  .toggle-button{
+    display: none!important;
+  }
 }
