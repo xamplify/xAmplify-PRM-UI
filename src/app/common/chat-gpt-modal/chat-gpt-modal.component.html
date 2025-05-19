@@ -150,7 +150,8 @@
                             </li> -->
             
                 <!-- Ask Oliver Agent with Submenu -->
-                <li [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
+                <li *ngIf="((authenticationService.oliverInsightsEnabled && showOliverInsights) || (authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver) || (authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter)
+                  || (authenticationService.oliverParaphraserEnabled && showOliverParaphraser))" [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
                   <a href="javascript:void(0);" class="submenu-toggle" (click)="toggleAgentSubmenu()">
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
@@ -161,7 +162,7 @@
                         <i class="fa fa-file-text"></i> Oliver Insights
                       </a>
                     </li>
-                    <li *ngIf="!isWelcomePageUrl && authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver"
+                    <li *ngIf="authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver"
                       [ngClass]="{'active': activeTab === 'new-chat'}">
                       <a href="#new-chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
                         <i class="fa fa-plus-circle"></i> BrainStorm Agent
