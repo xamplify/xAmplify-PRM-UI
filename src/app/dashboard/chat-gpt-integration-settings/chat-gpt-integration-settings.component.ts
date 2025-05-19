@@ -31,10 +31,6 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
   showAskOliver: boolean = true;
-  disableOliverInsights: boolean = false;
-  disableBrainstormWithOliver: boolean = false;
-  disableOliverSparkWriter: boolean = false;
-  disableOliverParaphraser: boolean = false;
   updateButtonName: string = 'Update';
   disableUpdateButton: boolean;
 
@@ -139,7 +135,6 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     }
   }
  
-
   enableOrDisableChatGptSettings(value:boolean){
     this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled = value;
   }
@@ -156,29 +151,5 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.showOliverParaphraser = isChecked;
     }
   }
-
-  // setOliverAgentDisableConditions() {
-  //   if (!this.authenticationService.oliverInsightsEnabled) {
-  //     this.disableOliverInsights = true;
-  //   } else {
-  //     this.disableOliverInsights = false;
-  //   }
-  //   if (!this.authenticationService.brainstormWithOliverEnabled) {
-  //     this.disableBrainstormWithOliver = true;
-  //   } else {
-  //     this.disableBrainstormWithOliver = false;
-  //   }
-  //   if (!this.authenticationService.oliverSparkWriterEnabled) {
-  //     this.disableOliverSparkWriter = true;
-  //   } else {
-  //     this.disableOliverSparkWriter = false;
-  //   }
-  //   if (!this.authenticationService.oliverParaphraserEnabled) {
-  //     this.disableOliverParaphraser = true;
-  //   } else {
-  //     this.disableOliverParaphraser = false;
-  //   }
-  // }
-
 
 }

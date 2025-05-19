@@ -624,7 +624,7 @@
                       <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
                       <span class="main-heading">Oliver Settings</span>
                     </div>
-                    <app-chat-gpt-integration-settings [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
+                    <app-chat-gpt-integration-settings *ngIf="callChatGptIntegrationSettingsComponent"  [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
                       (updateOliverFlags)="onOliverFlagsUpdate($event)"
                       (loadOliverSettings)="getSettings()"></app-chat-gpt-integration-settings>
                   </div>

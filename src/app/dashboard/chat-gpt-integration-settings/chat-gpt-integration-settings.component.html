@@ -37,7 +37,7 @@
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
-                  [ngModelOptions]="{standalone: true}" [disabled]="disableOliverInsights"
+                  [ngModelOptions]="{standalone: true}"
                   (change)="updateCheckBox($event, 'INSIGHTAGENT')">
               </div>
               <img src="assets/images/oliver-insights.svg" class="agent-icon">
@@ -51,8 +51,7 @@
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
-                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'BRAINSTORMAGENT')"
-                  [disabled]="disableBrainstormWithOliver">
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'BRAINSTORMAGENT')">
               </div>
               <img src="assets/images/brainstorm-with-oliver.svg" class="agent-icon">
               <div class="agent-info">
@@ -65,8 +64,7 @@
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
-                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'SPARKWRITERAGENT')"
-                  [disabled]="disableOliverSparkWriter">
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'SPARKWRITERAGENT')">
               </div>
               <img src="assets/images/oliver-spark-writer.svg" class="agent-icon">
               <div class="agent-info">
@@ -79,8 +77,7 @@
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
-                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'PARAPHRASERAGENT')"
-                  [disabled]="disableOliverParaphraser">
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'PARAPHRASERAGENT')">
               </div>
               <img src="assets/images/oliver-paraphraser.svg" class="agent-icon">
               <div class="agent-info">

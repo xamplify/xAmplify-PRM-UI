@@ -94,10 +94,6 @@ export class ChatGptModalComponent implements OnInit {
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
   oliverAgentAccessDTO = new OliverAgentAccessDTO(); 
-  disableOliverInsights: boolean = false;
-  disableBrainstormWithOliver: boolean = false;
-  disableOliverSparkWriter: boolean = false;
-  disableOliverParaphraser: boolean = false;
   agentAccessUpdateButtonName: string = 'Update';
   disableAgentAccessUpdateButton: boolean = false;
   selectTemplate: boolean;
@@ -105,6 +101,7 @@ export class ChatGptModalComponent implements OnInit {
   isAgentSubmenuOpen: boolean;
   isSidebarVisible: boolean = true;
   isFromOliverSettingsModalPopup: boolean = true;
+  callChatGptIntegrationSettingsComponent: boolean = false;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
@@ -298,8 +295,10 @@ export class ChatGptModalComponent implements OnInit {
     }
 
     if (this.activeTab == 'settings') {
-      this.setOliverAgentDisableConditions();
       this.loadOliverSettings.emit();
+      this.callChatGptIntegrationSettingsComponent = true;
+    } else {
+      this.callChatGptIntegrationSettingsComponent = false;
     }
   }
 
@@ -993,29 +992,6 @@ closeDesignTemplate(event: any) {
     );
   }
 
-  setOliverAgentDisableConditions() {
-    if (!this.authenticationService.oliverInsightsEnabled) {
-      this.disableOliverInsights = true;
-    } else {
-      this.disableOliverInsights = false;
-    }
-    if (!this.authenticationService.brainstormWithOliverEnabled) {
-      this.disableBrainstormWithOliver = true;
-    } else {
-      this.disableBrainstormWithOliver = false;
-    }
-    if (!this.authenticationService.oliverSparkWriterEnabled) {
-      this.disableOliverSparkWriter = true;
-    } else {
-      this.disableOliverSparkWriter = false;
-    }
-    if (!this.authenticationService.oliverParaphraserEnabled) {
-      this.disableOliverParaphraser = true;
-    } else {
-      this.disableOliverParaphraser = false;
-    }
-  }
-
   getOliverAgentAccessSettings() {
     this.chatGptSettingsService.getOliverAgentConfigurationSettings().subscribe(
       result => {
@@ -1034,7 +1010,6 @@ closeDesignTemplate(event: any) {
         console.log('Error in getOliverAgentAccessSettings() ', error);
       });
   }
-
 
    getOliverAgentAccessSettingsForVanityLogin() {
     this.chatGptSettingsService.getOliverAgentConfigurationSettingsForVanityLogin().subscribe(

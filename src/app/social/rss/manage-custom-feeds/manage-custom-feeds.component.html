@@ -172,7 +172,7 @@
 															<div class="clickicons"></div>
 														</a> <a class="custom-icon"
 															*ngIf="selectedType!='p' && feed.canUpdate"
-															data-toggle="tooltip" data-placement="top" title="Share the feed with your partners"
+															data-toggle="tooltip" data-placement="top" title="{{feed.publishToPartners && selectedType!='p' ? 'Unshare the feed with your partners' : 'Share the feed with your partners'}}"
 															(click)="publishFeed(feed)"> <i
 																class="fa fa-upload IconCustomization"
 																aria-hidden="true"></i>
