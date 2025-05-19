@@ -201,10 +201,7 @@
                 </li>
             
                 <li
-                  *ngIf="authenticationService?.module?.adminOrSuperVisor
-                              && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
-                              || authenticationService.oliverParaphraserEnabled) 
-                               && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
+                  *ngIf="authenticationService?.module?.adminOrSuperVisor && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
                   [ngClass]="{'active': activeTab === 'settings'}">
                   <a href="#settings" role="tab" data-toggle="tab" (click)="setActiveTab('settings')">
                     <i class="fa fa-gear"></i> Settings
