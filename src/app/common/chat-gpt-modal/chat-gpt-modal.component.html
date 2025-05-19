@@ -222,9 +222,10 @@
               <span *ngIf="isSidebarVisible">&#9776;</span>
             </button>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 
+              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ? 'd-flex align-start' : 'd-flex align-center align_tab_view')">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
-                [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
+                [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
                 
                 <!-- Global Chat -->
                 <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'globalchat', 'tab-pane fade': activeTab !== 'globalchat'}"
@@ -618,7 +619,7 @@
                 id="settings">
                 <div class="agent-content">
                   <!-- Top Heading + Search -->
-                  <div class="top-section text-center">
+                  <div class="top-section">
                     <div class="settings-heading-wrapper">
                       <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
                       <span class="main-heading">Oliver Settings</span>

@@ -1388,7 +1388,7 @@ body {
   overflow-y: auto;
   max-height: 60vh;
   padding-right: 6px;
-  /* height: calc(60vh - 20px); */
+  height: calc(46vh - 15px);
 }
 .agent-card-section::-webkit-scrollbar {
   width: 6px;
@@ -1682,4 +1682,26 @@ body {
   .toggle-button{
     display: none!important;
   }
+  .align-start{
+    width: 100%!important;
+  }
+  .oliver-tabcontent {
+    margin: 0 10px !important;
+  }
+  .newChatlabel {
+    max-height: calc(100vh - 624px) !important;
 }
+.avatar{
+  margin-left: 5px!important;
+}
+.agent-card-section{
+  height: auto!important;
+}
+}
+.align-start{
+  justify-self: center;
+  align-items: start;
+  height: 86vh;
+  width: 78%;
+  flex: 1;
+ }
