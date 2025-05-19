@@ -27,4 +27,26 @@ export class Reply{
     jsonBody="";
     customEmailTemplateId = 0;
     /***XNFR-330****/
+
+//XNFR-921
+    title ="";
+    subjectId = 0;
+    timePhraseId = 0;
+    rules = {};
+    filterQueryJson = {};
+    selectedPartnerListIds = [];
+    customTemplateSelected = false;
+    templateId = 0;
+    previouslySelectedTemplateId = 0;
+    notificationSubject= "";
+    notificationMessage = "";
+    loggedInUserId = 0;
+    customDays = 1;
+    queryBuilderInputString:any;
+    isAdd = false;
+    preHeader = "";
+    fromEmailUserId = 0;
+    fromEmail = "";
+    fromName = "";
+    partnerGroupSelected:boolean = false;
 }

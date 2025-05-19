@@ -117,7 +117,7 @@
                   </div>
                 </div>
                 <!--XNFR-523--->
-                <div class="row form-group pb10" *ngIf="isSendEmailNotificationOptionDisplayed && !trackOrPlaybookPublishEmailNotificationLoader">
+                <div class="row form-group pb10" *ngIf="isSendEmailNotificationOptionDisplayed && !trackOrPlaybookPublishEmailNotificationLoader ">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Send Email Notification</label>
                   <div class="col-sm-8 col-xs-12 mt--10px">
                     <app-custom-ui-switch [customSwitch]="tracksPlayBook.trackUpdatedEmailNotification" [isSwitchOptionDisabled]="isSwitchOptionDisabled"
@@ -480,7 +480,7 @@
         style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
-      <app-tracks-play-book-partner-company-and-lists *ngIf="!trackOrPlaybookPublishEmailNotificationLoader"
+      <app-tracks-play-book-partner-company-and-lists *ngIf="!trackOrPlaybookPublishEmailNotificationLoader "
         [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
         [selectedPartnerGroupIds]="tracksPlayBook.groupIds" [selectedTeamMemberIds]="tracksPlayBook.userIds"
         [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
@@ -488,6 +488,7 @@
         [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
+      <app-campaign-work-flows-util #campaignWorkFlowsUtilComponent  [isPlaybookWorkflow] = "true" [tracksPlayBook] = "tracksPlayBook" [playbookReplies]="replies" (updateReplies) ="updateRepliesData($event)" ></app-campaign-work-flows-util>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
@@ -1371,3 +1372,4 @@
 
 <app-preview-content *ngIf="showPreviewContent" [previewPath]="assetPreviewProxyPath" [fileType]="assetType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
     [isPreviewPopup]="showPreviewContent" (notifyClose)="closePreview()"></app-preview-content>
+    
