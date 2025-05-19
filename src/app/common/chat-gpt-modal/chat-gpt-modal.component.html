@@ -652,14 +652,14 @@
           <!--  -->
         </div>
       </div>
+    </div>
+  </div>
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5" [disabled]="selectedAssets.length == 0 && selectedFolders.length == 0"
           (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
-    </div>
-  </div>
 </div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
