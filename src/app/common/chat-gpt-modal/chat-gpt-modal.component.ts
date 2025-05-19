@@ -316,7 +316,7 @@ export class ChatGptModalComponent implements OnInit {
         self.showIcon = true;
       }
     }, function (dismiss: any) {
-      self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId,isClosingModelPopup);
+      // self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId,isClosingModelPopup);
     })
     self.activeTab = tab;
   }
@@ -327,7 +327,7 @@ export class ChatGptModalComponent implements OnInit {
 
   deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
     this.referenceService.showSweetAlertProcessingLoader("Loading");
-    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId).subscribe(
+    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId,"GLOBALCHAT").subscribe(
       response => {
         swal.close();
         if (isClosingModelPopup) {
@@ -725,7 +725,8 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   fetchHistories(chatHistoryPagination) {
-    this.chatGptSettingsService.fetchHistories(chatHistoryPagination).subscribe(
+    chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn).subscribe(
       (response) => {
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
@@ -849,7 +850,7 @@ export class ChatGptModalComponent implements OnInit {
       cancelButtonText: 'No'
     }).then(function () {
       self.referenceService.showSweetAlertProcessingLoader("Loading...");
-      self.chatGptSettingsService.deleteChatHistory(history.chatHistoryId,history.threadId,history.vectorStoreId).subscribe(
+      self.chatGptSettingsService.deleteChatHistory(history.chatHistoryId,history.threadId,history.vectorStoreId, history.oliverChatHistoryType).subscribe(
         response => {
           self.index = 0;
           self.chatHistories.splice(index, 1);

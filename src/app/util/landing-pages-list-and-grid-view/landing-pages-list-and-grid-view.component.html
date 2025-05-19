@@ -471,8 +471,7 @@
 <!--Edit-->
 <ng-template #editIcon let-landingPage="landingPage">
     <a class="mMobileDisable Iconhover custom-grid-icon"
-        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId ||
-        this.authenticationService.isVendor || this.authenticationService.module?.isAnyAdminOrSupervisor)"
+        *ngIf="!isPartnerLandingPage && (this.authenticationService.isVendor || this.authenticationService.module?.isAnyAdminOrSupervisor) && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
         data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
             aria-hidden="true"></i>

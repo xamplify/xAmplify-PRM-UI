@@ -214,7 +214,7 @@
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
@@ -571,7 +571,10 @@
                 <div class="agent-content">
                   <!-- Top Heading + Search -->
                   <div class="top-section text-center">
+                    <div class="settings-heading-wrapper">
+                    <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
                     <span class="main-heading">Oliver Settings</span>
+                  </div>
                     <p class="agent-sub-text">
                       Choose which Oliver agents to enable. Partners will only see the ones you activate.
                     </p>
@@ -580,20 +583,6 @@
                   <!-- Agent Cards Section -->
                   <div class="row agent-card-section">
                     
-                    <div class="col-sm-6 agent-card-align">
-                      <div class="agent-card" style="position: relative;">
-                        <div>
-                          <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showAskOliver"
-                            [ngModelOptions]="{standalone: true}" [disabled]="true">
-                        </div>
-                        <img src="assets/images/ask-oliver-agent-icon.svg" class="agent-icon">
-                        <div class="agent-info">
-                          <h5>Ask Oliver</h5>
-                          <p>Generates key angles, ideas, and messaging directions for your solution and audience.</p>
-                        </div>
-                      </div>
-                    </div>
-
                     <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
                       <div class="agent-card" style="position: relative;">
                         <div>
