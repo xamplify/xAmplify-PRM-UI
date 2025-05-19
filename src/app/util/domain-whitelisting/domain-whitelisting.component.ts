@@ -74,7 +74,6 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     if (this.isPartnerDomains) {
       this.moduleName = "Partner";
       this.activatePartnersDomainsTab();
-      this.getAllPartnerDomainNames();
     } else if (this.isTeamMemberDomains) {
       this.moduleName = "Team Member";
       this.activateTeamMemberDomainsTab();
@@ -440,7 +439,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.isDomainAllowedToAddToSamePartnerAccount = event;
   }
   addWelcomeMailModalOpen() {
-    this.sendTestEmailIconClicked = true;
+    this.getAllPartnerDomainNames();
   }
   sendWelcomeMailModalPopupEventReceiver() {
     this.sendTestEmailIconClicked = false;
@@ -451,6 +450,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     (response: any) => {
       if (response && response.data) {
         this.allPartnerDomains = response.data; 
+        this.sendTestEmailIconClicked = true;
       }
       this.referenceService.loading(this.httpRequestLoader, false);
     },
