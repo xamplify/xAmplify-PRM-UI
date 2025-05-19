@@ -88,6 +88,8 @@ export class ModuleAccessComponent implements OnInit {
   brainstormWithOliverEnabledFlag: boolean = false;
   oliverSparkWriterEnabledFlag: boolean = false;
   oliverParaphraserEnabledFlag: boolean = false;
+  oliverIntegrationTypeSelected: boolean = false;
+  oliverIntegrationType: string = "";
 
 
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
@@ -369,8 +371,9 @@ export class ModuleAccessComponent implements OnInit {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.userId = this.companyAndUserDetails.id;
-    if (this.campaignAccess.oliverActive && this.campaignAccess.oliverActive != this.oliverActive) {
+    if ((this.campaignAccess.oliverActive && this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType)) {
       this.campaignAccess.oliverAccessStatus = true;
+      this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
     }
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       this.statusCode = result.statusCode;
@@ -656,12 +659,20 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
   oliverActiveUiSwitchEventReceiver(event: boolean) {
     this.disableOliverAgentModuleOptions = !event;
     this.campaignAccess.oliverActive = event;
+    this.disableUpdateModulesButton = event && !this.campaignAccess.oliverIntegrationType;
     if (!event) {
       this.campaignAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
+      this.campaignAccess.oliverIntegrationType = "";
     }
+  }
+
+  onIntegrationTypeChange(selected: any) {
+    this.oliverIntegrationType = selected;
+    this.disableUpdateModulesButton = false;
+    this.campaignAccess.oliverAccessStatus = true;
   }
 
 }

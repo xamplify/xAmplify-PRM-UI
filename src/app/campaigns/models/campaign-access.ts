@@ -73,5 +73,6 @@ export class CampaignAccess {
   brainstormWithOliverEnabled: boolean = false;
   oliverSparkWriterEnabled: boolean = false;
   oliverParaphraserEnabled: boolean = false;
+  oliverIntegrationType: string = '';
 
 }

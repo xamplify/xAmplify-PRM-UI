@@ -498,48 +498,46 @@
 										<app-custom-ui-switch [customSwitch]="campaignAccess.oliverActive"
 											(customUiSwitchEventEmitter)="oliverActiveUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 										<div style="margin-left: 20px; margin-top: 10px;">
-											
-												<div>
-													<strong>
-														<input class="checkBox_shadow" type="checkbox" [disabled]="true"
-															[ngModel]="showAskOliver" [ngModelOptions]="{standalone: true}">
-														<span class="ml10">Enable Ask Oliver</span>
-													</strong>
-												</div>
-
-												<div>
-													<strong>
-														<input class="checkBox_shadow" type="checkbox" [disabled]="disableOliverAgentModuleOptions"
-															[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
-														<span class="ml10">Enable Oliver Insights</span>
-													</strong>
-												</div>
+											<div>
+												<input class="checkBox_shadow" type="radio" [disabled]="disableOliverAgentModuleOptions"
+													[checked]="oliverIntegrationType =='OPENAI'" value="OPENAI"
+													(change)="onIntegrationTypeChange('OPENAI')">
+												<span class="ml10 mr5">Open AI</span>
+												<input class="checkBox_shadow" type="radio" [disabled]="disableOliverAgentModuleOptions" value="RAGIT"
+													[checked]="oliverIntegrationType =='RAGIT'" (change)="onIntegrationTypeChange('RAGIT')">
+												<span class="ml10">RAGIT</span>
+											</div>
+											<div>
+												<strong>
+													<input class="checkBox_shadow" type="checkbox" [disabled]="true" [ngModel]="showAskOliver"
+														[ngModelOptions]="{standalone: true}">
+													<span class="ml10">Enable Ask Oliver</span>
+												</strong>
+											</div>
 									
-												<div>
-													<strong>
-														<input class="checkBox_shadow" type="checkbox"
-															[(ngModel)]="campaignAccess.brainstormWithOliverEnabled" [ngModelOptions]="{standalone: true}"
-															[disabled]="disableOliverAgentModuleOptions">
-														<span class="ml10">Enable Brainstorm With Oliver</span>
-													</strong>
-												</div>
+											<div>
+												<strong>
+													<input class="checkBox_shadow" type="checkbox" [disabled]="disableOliverAgentModuleOptions"
+														[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
+													<span class="ml10">Enable Oliver Insights</span>
+												</strong>
+											</div>
 									
-												<div>
-													<strong>
-														<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverSparkWriterEnabled"
-															[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
-														<span class="ml10">Enable Oliver Spark Writer</span>
-													</strong>
-												</div>
+											<div>
+												<strong>
+													<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.brainstormWithOliverEnabled"
+														[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+													<span class="ml10">Enable Brainstorm With Oliver</span>
+												</strong>
+											</div>
 									
-												<div>
-													<strong>
-														<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverParaphraserEnabled"
-															[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
-														<span class="ml10">Enable Oliver Paraphraser</span>
-													</strong>
-												</div>
-											
+											<div>
+												<strong>
+													<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverSparkWriterEnabled"
+														[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+													<span class="ml10">Enable Oliver Spark Writer</span>
+												</strong>
+											</div>
 										</div>
 									</td>
 								</tr>
