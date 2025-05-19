@@ -242,7 +242,7 @@
                     </div>
                   </ng-container>
                   <div [ngClass]="{
-                                  'fixed_oliver_input': !isSidebarVisible,
+                                  'fixed_oliver_input': !isSidebarVisible && showOpenHistory,
                                   'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
                                   'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
                                 }">
@@ -291,7 +291,7 @@
                   <div [ngClass]="{
                                       'templateui col-lg-9': showOpenHistory && activeTab === 'new-chat',
                                       'container-ui': !(showOpenHistory && activeTab === 'new-chat'),
-                                      'fixed_oliver_input': !isSidebarVisible
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
                                     }">
                     <!-- Heading -->
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
@@ -331,7 +331,7 @@
                   </ng-container>
                   <div [ngClass]="{
                                       'templateui col-lg-9' : (isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing',
-                                      'fixed_oliver_input' : !isSidebarVisible
+                                      'fixed_oliver_input' : !isSidebarVisible && showOpenHistory
                                     }">
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
                       <span class="oliver_heading">Oliver Spark Writer</span>
@@ -384,7 +384,7 @@
                   <div [ngClass]="{
                                       'templateui col-lg-9 override-margin' : showOpenHistory && activeTab === 'askpdf',
                                       'container-ui' : !(showOpenHistory && activeTab === 'askpdf'),
-                                      'fixed_oliver_input' : !isSidebarVisible
+                                      'fixed_oliver_input' : !isSidebarVisible && showOpenHistory
                                     }">
                     <div *ngIf="!showOpenHistory" class="custom-card mt10">
                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0">
