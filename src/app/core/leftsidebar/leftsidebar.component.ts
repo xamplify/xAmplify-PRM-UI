@@ -508,6 +508,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('approval-hub')){
 			this.mergeTag = "approval-hub";
+		}
+		else if(this.router.url.includes('insights')){
+			this.mergeTag = "insights";
 		}	
 	}
 	
