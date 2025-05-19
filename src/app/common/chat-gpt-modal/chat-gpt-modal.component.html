@@ -691,7 +691,7 @@
         <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
             (click)="copyChatGPTText(message.content)"></i></div>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button *ngIf="!isPartnerLoggedIn" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

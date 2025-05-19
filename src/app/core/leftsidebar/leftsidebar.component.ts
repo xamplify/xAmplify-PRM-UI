@@ -336,6 +336,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isEmailTemplate = data.emailTemplates;
 		module.hasFormAccess = data.forms;
 		module.hasLandingPageAccess = data.pages;
+		module.design = data.design;
 		
 	}
 
