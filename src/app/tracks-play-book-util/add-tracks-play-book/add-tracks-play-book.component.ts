@@ -218,6 +218,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   @ViewChild("campaignWorkFlowsUtilComponent") campaignWorkFlowsUtilComponent: CampaignWorkFlowsUtilComponent;
   replies: Array<Reply> = new Array<Reply>();
+  deletedWorkflowIds:number[] = [];
   playbookWorkflowLoader = false; 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -1347,6 +1348,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
         this.campaignWorkFlowsUtilComponent.saveWorkflows();
         if(this.campaignWorkFlowsUtilComponent.hasError){
+          if(this.isAdd){
+            this.tracksPlayBook.published = false;
+          }
           return;
         }else{
         this.setWorkflowDtoData()
@@ -1911,6 +1915,7 @@ addTagsCondition(selectedTags:any[]) {
 //XNFR-921
 
   setWorkflowDtoData() {
+    this.tracksPlayBook.deletedWorkflowIds = this.campaignWorkFlowsUtilComponent.deletedWorkflowIds;
     let workflowExists = this.campaignWorkFlowsUtilComponent.replies != null && this.campaignWorkFlowsUtilComponent.replies.length > 0
     if (workflowExists) {
       let workFlowDtos: WorkflowDto[] = [];
@@ -1948,7 +1953,8 @@ addTagsCondition(selectedTags:any[]) {
   }
 
   updateRepliesData(event:any){
-    this.replies = event;
+    this.replies = event.replies;
+    this.deletedWorkflowIds = event.ids;
   }
 
     getWorkflowsByPlaybookId() {

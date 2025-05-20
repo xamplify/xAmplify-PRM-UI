@@ -591,7 +591,7 @@ export class Properties {
 	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."
 
 	/**XNFR-921**/
-	ADD_AUTO_RESPONSE_PLAYBOOK= 'Auto-Responses to Your PLAYBOOK'
+	ADD_AUTO_RESPONSE_PLAYBOOK= 'Auto-Responses to Your Playbook'
 
 
 }

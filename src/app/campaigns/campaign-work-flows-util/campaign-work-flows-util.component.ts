@@ -54,11 +54,15 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   timePhrases:Array<any> = new Array<any>();
   triggerTitles:Array<any> = new Array<any>();
   @Input() playbookReplies: Array<Reply> = new Array<Reply>();
-  @Output() updateReplies = new EventEmitter<Array<Reply>>();
+  @Output() updateReplies = new EventEmitter<{ replies: Reply[]; ids: number[] }>();
   loggedInUserId:number = 0;
   responseType:string = 'e-mail';
+  @Input() deletedWorkflowIds:number[]=[];
+  mergeTagsInput: any = {};
+  selectedReply: Reply = new Reply();
+
   constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService, private router: Router,
-    public parterService:ParterService,callActionSwitch:CallActionSwitch
+    public parterService:ParterService,private callActionSwitch:CallActionSwitch,
   ) {
   }
   
@@ -79,8 +83,10 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
         if(reply.divId == null || reply.divId == ''){
             var id = 'reply-' + (this.replies.indexOf(reply) +1);
             reply.divId = id;
+            reply.customDays = 1;
         }
         reply.previouslySelectedTemplateId = reply.templateId
+        reply.timePhraseId = 20;
       }
     }else{
       this.campaign = this.campaignOutPut;
@@ -90,12 +96,16 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     }
   }
 
-  ngOnChanges(){
-    if(this.isPlaybookWorkflow){
-    //this.playbookReplies = this.replies
-      this.updateReplies.emit(this.replies)
-    }
+  ngOnChanges() {
+  if (this.isPlaybookWorkflow) {
+    setTimeout(() => {
+      this.updateReplies.emit({
+        replies: this.replies,
+        ids: this.deletedWorkflowIds
+      });
+    });
   }
+}
   listWebsiteUrlsByCampaignId(campaignId: number) {
     this.campaignService.listCampaignEmailTemplateUrls(campaignId)
       .subscribe(
@@ -142,7 +152,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     if (this.isPlaybookWorkflow) {
       this.reply.subjectId = this.subjects[0].id;
       this.reply.actionId = this.actions[0].id;
-      this.reply.timePhraseId = this.timePhrases[0].id;
+      this.reply.timePhraseId = this.timePhrases[this.timePhrases.length -1].id;
       let teamMember = this.fromEmailUsers.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
           this.reply.fromEmailUserId = teamMember.id;
           this.reply.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
@@ -152,7 +162,10 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     // this.loadEmailTemplatesForWorkFlows(this.reply);
   }
 
-  remove(divId: string, type: string) {
+  remove(divId: string, type: string,reply:any) {
+    if(this.isPlaybookWorkflow && reply.id != null && reply.id !=0){
+      this.deletedWorkflowIds.push(reply.id);
+    }
     if (type === "replies") {
       this.replies = this.referenceService.spliceArray(this.replies, divId);
     } else {
@@ -182,6 +195,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
         this.validateReplyInDays(reply);
         this.validateEmailTemplateForAddReply(reply);
       } else {
+        this.validateReplyInDays(reply);
         this.validateEmailTemplateForAddReply(reply);
       }
 
@@ -192,7 +206,10 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   }
 
   validateReplyInDays(reply: Reply) {
-    if (reply.replyInDays == null || reply.replyInDays === 0){
+    this.removeStyleAttrByDivId('reply-days-' + reply.divId);
+    if(this.isPlaybookWorkflow && (reply.customDays == null || reply.customDays === 0)){
+      this.addReplyDaysErrorDiv(reply);
+    }else if (!this.isPlaybookWorkflow && (reply.replyInDays == null || reply.replyInDays === 0)){
       this.addReplyDaysErrorDiv(reply);
     }
   }
@@ -299,9 +316,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       response=>{
         let data = response.data;
         this.subjects = data.subjects
-        console.log(this.subjects)
         this.actions = data.actions.filter(subj=>subj.value.toLowerCase().includes('playbook'));
-        console.log(this.actions)
         this.timePhrases = data.timePhrases;
       }
     );
@@ -315,6 +330,38 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   selectEmailTemplateForEmailAutoResponseWorkflow(event: any, index: number, reply: Reply) {
     reply.customTemplateSelected = event;
   }
+
+    openMergeTagsPopup(type: string, autoResponseSubject: any) {
+      this.selectedReply = autoResponseSubject;
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = false;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+  }
+
+  clearHiddenClick() {
+    this.mergeTagsInput['hideButton'] = false;
+  }
+
+  appendValueToSubjectLine(event: any) {
+    if (event != undefined) {
+      let type = event['type'];
+      let copiedValue = event['copiedValue'];
+      if (type == "subject") {
+        let subjectLine = $.trim(this.selectedReply.subject);
+        let updatedValue = subjectLine + " " + copiedValue;
+        $('#notificationSubject').val(updatedValue);
+        const index = this.replies.indexOf(this.selectedReply);
+        if (index !== -1) {
+          this.replies[index].subject = updatedValue;
+          this.validateReplySubject(this.replies[index]);
+        }
+      }
+    }
+    this.mergeTagsInput['hideButton'] = false;
+  }
+
 }
 
 
