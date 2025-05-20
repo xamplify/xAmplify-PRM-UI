@@ -28,4 +28,8 @@ export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     templateId = 0;
     partnerLoggedIn:boolean = false;
     vendorCompanyProfileName:any;
+    assets:any[] = [];
+    accessToken:any;
+    assistantId:any;
+    oliverIntegrationType:any;
 }

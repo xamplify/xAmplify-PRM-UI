@@ -111,20 +111,22 @@ listDefaultTemplates(userId:any){
   }
 
   onUploadFiles(pdfFiles: any[], chatGptSettings: ChatGptIntegrationSettingsDto) {
-    const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.authenticationService.REST_URL}oliver/uploadFiles?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    pdfFiles.forEach((pdfFile, index) => {
-      formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
-      formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
-    });
+    // pdfFiles.forEach((pdfFile, index) => {
+    //   formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
+    //   formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
+    // });
 
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    formData.append('chatGptSettingsDTO', new Blob(
-      [JSON.stringify(chatGptSettings)],
-      { type: 'application/json' }
-    ));
+    // formData.append('chatGptSettingsDTO', new Blob(
+    //   [JSON.stringify(chatGptSettings)],
+    //   { type: 'application/json' }
+    // ));
+    chatGptSettings.assets = pdfFiles;
+    chatGptSettings.oliverIntegrationType = 'openai';
 
-    return this.authenticationService.callPostMethod(url, formData);
+    return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
 
   analyzeCallRecordings(chatGptSettingDTO: any) {

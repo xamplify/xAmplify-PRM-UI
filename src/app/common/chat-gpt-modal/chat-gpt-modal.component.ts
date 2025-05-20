@@ -520,7 +520,9 @@ export class ChatGptModalComponent implements OnInit {
     this.assetLoader = true;
     this.showOpenHistory = false;
     if (this.selectedFolders.length == 0) {
-      this.getPdfByAssetPaths(this.selectedAssets);
+      this.pdfFiles = this.selectedAssets;
+      // this.getPdfByAssetPaths(this.selectedAssets);
+      this.getUploadedFileIds();
     } else {
       this.getAssetPathsByCategoryIds();
     }
@@ -719,7 +721,9 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (response.statusCode == 200) {
           let data = response.data;
-          this.getPdfByAssetPaths(data);
+          // this.getPdfByAssetPaths(data);
+          this.pdfFiles = data;
+          this.getUploadedFileIds();
         }
       },
       (error) => {
