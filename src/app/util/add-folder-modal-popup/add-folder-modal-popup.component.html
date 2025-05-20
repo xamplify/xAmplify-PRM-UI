@@ -16,8 +16,7 @@
                         <input type="text" autocomplete="off" class="form-control" [(ngModel)]="category.name"
                             id="categoryName" placeholder="Enter Name" maxlength="1000"
                             (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
-                        <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
-                        <span *ngIf="category?.name?.length > 55" class="required">The maximum allowed characters limit is 55.</span>
+                        <span *ngIf="categoryNameErrorMessage" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
@@ -27,8 +26,8 @@
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!category.isValid || loader.isLoading || category?.name?.length > 55"
-                    class="button_blue bgcolor-unset" (click)="saveOrUpdateCategory()"><span
+                <button type="submit" [disabled]="!category.isValid || loader.isLoading"
+                    class="button_blue bgcolor-unset" (click)="saveOrUpdate()"><span
                         class="btn btn-primary transition txt_pd-top3">Save</span></button>
             </div>
         </div>
