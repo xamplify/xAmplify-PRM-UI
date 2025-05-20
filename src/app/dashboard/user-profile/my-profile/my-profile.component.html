@@ -707,7 +707,7 @@
                                         <!--- XNFR-967 Contact Status --->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
                                             [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
-                                            style="border-bottom: none !important;">
+                                            [ngStyle]="{ 'border-bottom': (authenticationService.contactSubscriptionLimitEnabled && authenticationService?.module?.adminOrSuperVisor) ? '' : 'none !important'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
                                                 (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER);clearCustomResponse()">{{MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER
                                                 | translate}}
@@ -717,10 +717,10 @@
                                         </li>
 
                                          <!-- XNFR-952 -->
-                                         <ng-container *ngIf="authenticationService.contactSubscriptionLimitEnabled">
+                                         <ng-container *ngIf="authenticationService.contactSubscriptionLimitEnabled && authenticationService?.module?.adminOrSuperVisor">
                                             <li [ngClass]="{'active-tab': activeTabName == 'contactUploadManagementSettings'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'contactUploadManagementSettings'}"
-                                                    (click)="activateTab('contactUploadManagementSettings');clearCustomResponse()">{{properties.contactUploadManagementSettings
+                                                    (click)="activateTab('contactUploadManagementSettings');clearCustomResponse()">{{properties.CONTACT_USAGE_ANALYTICS_TEXT
                                                     | translate}}
                                                     <ng-template [ngTemplateOutlet]="activeIcon"
                                                         [ngTemplateOutletContext]="{'moduleName':'contactUploadManagementSettings'}"></ng-template>

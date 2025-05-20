@@ -2591,7 +2591,7 @@ textarea.cke_source {
   color: #000;
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards,.agent-info{
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2626,20 +2626,32 @@ markdown pre,.aligin-para{
   background: var(--div-bg-color) !important;
 }
 .side_bar,.writing-card,.phara-card,
-.oliver_input{
+.oliver_input,.custom-card,.history-entry,.agent-card{
   background: var(--page-content) !important;
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
   border-radius: 8px!important;
 }
-.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text,.oliver-text-color,h5.oliver-heading-color{
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.search-icon,.history-entry .actions i,.main-heading,.agent-sub-text,.agent-info p{
   color: var(---text-color) !important;
 }
-  textarea.textarea.h-350,.oliver_input,.writing-card,.phara-card{
+  textarea.textarea.h-350,.oliver_input,.writing-card,.phara-card,.history-entry:hover{
     box-shadow: unset !important;
+}
+.btn-plus,.history-entry .actions i:hover{background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;}
+.history-divider{
+  border-top: 1px solid var(--border-color)  !important;
+}
+.history-entry{border: none!important;}
+.oliver_input.custom_oliver_input.mt10{ border: 1px solid var(--border-color) !important;border-radius: 8px!important;}
+.agent-card:hover {
+  transform: scale(1.02);
+  box-shadow: unset!important;
 }

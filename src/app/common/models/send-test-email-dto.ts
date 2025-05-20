@@ -15,4 +15,5 @@ export class SendTestEmailDto {
   ccEmailIds = [];
   bccEmailIds = [];
   toEmailIds = [];
+  companyProfileName: string = "";
 }

@@ -3,7 +3,7 @@
   <div class="scrollbar-x row-over_ride">
     <ul class="nav nav-tabs hideBorder">  
       <li [ngClass]="{'active': activeTab == 'templates' } " class="caption-subject font-blue-madison bold">
-        <a data-toggle="tab" href="#YourTemplates" (click)="setActiveTab('templates')">Your Templates</a>
+        <a data-toggle="tab" href="#YourTemplates" (click)="setActiveTab('templates')"> My Notification Templates</a>
       </li>
       <li *ngIf="!authenticationService.module.isMarketing  &&  authenticationService.module.isPartner  && !isLoggedInAsPartner && ( authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || authenticationService.module.isPrm ||  authenticationService.module.isAnyAdminOrSupervisor)"
         [ngClass]="{'active': activeTab == 'partnerNotifications' } " class="caption-subject font-blue-madison bold">

@@ -153,7 +153,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() selectedFoldersForOliver: any[] = [];
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
-
+	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -167,6 +167,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		if(this.referenceService.isOliverEnabled){
+			this.referenceService.isOliverEnabled = false;
+			this.AskOliver(this.referenceService.asset)
+		}
 		this.isEditVideo = this.router.url.indexOf('/editVideo') > -1;
 		this.isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
 		if (!this.isEditVideo && !this.isPreviewVideo) {
@@ -182,7 +186,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
 		}
 		if (this.selectedFoldersForOliver.length > 0) {
-			this.setViewType('fg');
+			this.setOliverViewType();
+			
 		}
 	}
 
@@ -232,10 +237,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (this.categoryId == undefined || this.categoryId == 0) {
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ? 'g' : '';
-				if (this.modulesDisplayType.isFolderListView) {
+				if (this.modulesDisplayType.isFolderListView && !this.FromOliverPopUp) {
 					this.viewType = "fl";
 					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
-				} else if (this.modulesDisplayType.isFolderGridView) {
+				} else if (this.modulesDisplayType.isFolderGridView && !this.FromOliverPopUp) {
 					this.viewType = "fg";
 					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
 				}
@@ -306,15 +311,24 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.modulesDisplayType.isListView = true;
 					this.modulesDisplayType.isGridView = false;
 					this.modulesDisplayType.isFolderGridView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "g") {
 					this.modulesDisplayType.isGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isFolderGridView = false;
 					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
 				} else if (viewType == "fg") {
 					this.modulesDisplayType.isFolderGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isGridView = false;
+					this.isFromOliverFolderView = false;
+					this.modulesDisplayType.isFolderListView = false;
+				} else if(viewType == "fl"){
+					this.modulesDisplayType.isFolderListView = true;
+					this.modulesDisplayType.isListView = false;
+					this.modulesDisplayType.isGridView = false;
+					this.modulesDisplayType.isFolderGridView = false;
 					this.isFromOliverFolderView = false;
 				}
 			}
@@ -653,6 +667,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (analytics) {
 			this.viewAnalytics(this.asset);
 		} else if(askOliverFromGridView){
+			this.referenceService.OliverViewType = this.viewType;
 			this.AskOliver(this.asset);
 
 		}else if(askAi){
@@ -1285,8 +1300,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.damUploadPostDto.description = file.name;
 		this.damUploadPostDto.draft = true;
 		this.damUploadPostDto.cloudContent = false;
-		this.damUploadPostDto.slug = $.trim(assetName).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
-
+		this.damUploadPostDto.slug = $.trim(this.damUploadPostDto.assetName).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+		if (this.categoryId) {
+			this.damUploadPostDto.categoryId = this.categoryId;
+		}
 	}
 
 	viewAssets(event: any) {
@@ -1308,4 +1325,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	handleFolders(event) {
 		this.notifyFolders.emit(event);
 	}
+	private setOliverViewType() {
+    if (this.FromOliverPopUp) {
+      let oliverViewType: string;
+      if (this.modulesDisplayType.isFolderListView) {
+        oliverViewType = 'fl';
+      } else if (this.modulesDisplayType.isFolderGridView) {
+        oliverViewType = 'fg';
+      } else {
+        oliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      }
+	  this.setViewType(oliverViewType);
+    }
+  }
 }

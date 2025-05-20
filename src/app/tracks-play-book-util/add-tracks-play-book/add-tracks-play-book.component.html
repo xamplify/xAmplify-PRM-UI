@@ -596,7 +596,7 @@
 
 <!-- --------------List Of Forms Popup--------------- -->
 <div class="modal right" id="formsList" data-backdrop="static">
-  <div class="modal-dialog modal-lg modal_52" style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg modal_52"  style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal">
@@ -654,13 +654,13 @@
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
-                          Created By <strong>{{form.createdName}}</strong>
+                          <strong>Created By:</strong> {{form.createdName}}
                         </h6>
                         <h6>
                           From <strong>{{form.companyName}}</strong>
                         </h6>
                         <h6>
-                          Folder Name <strong>{{form.categoryName}}</strong>
+                          <strong>Folder Name:</strong> {{form.categoryName}}
                         </h6>
                       </td>
                       <td class="hidden-xs text-center">
@@ -711,7 +711,7 @@
 
 <!-- --------------Order assets Popup--------------- -->
 <div class="modal right" id="order-assets" data-backdrop="static">
-  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg "  style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal">
@@ -764,13 +764,13 @@
                         </h4>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.displayName}}" translate>
-                            Created By
-                            <strong>{{asset.quiz.createdName}}</strong></span>
+                            <strong> Created By:</strong>
+                            {{asset.quiz.createdName}}</span>
                         </h6>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
-                            Folder Name
-                            <strong>{{asset.quiz.categoryName}}</strong></span>
+                            <strong>Folder Name:</strong>
+                            {{asset.quiz.categoryName}}</span>
                         </h6>
                       </td>
                       <td class="text-center">
@@ -809,13 +809,13 @@
                         </h4>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.displayName}}"
-                            translate> Created By
-                            <strong>{{asset.dam.displayName}}</strong></span>
+                            translate><strong>Created By:</strong>
+                           {{asset.dam.displayName}}</span>
                         </h6>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.categoryName}}" translate>
-                            Folder Name
-                            <strong>{{asset.dam.categoryName}}</strong></span>
+                            <strong>Folder Name:</strong>
+                            {{asset.dam.categoryName}}</span>
                         </h6>
                       </td>
                       <td class="text-center">
@@ -860,7 +860,7 @@
 
 <!-- --------------List Of Quiz Forms Popup--------------- -->
 <div class="modal right" id="quiz-list" data-backdrop="static">
-  <div class="modal-dialog modal-lg modal_52" style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg modal_52"  style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal">
@@ -920,13 +920,13 @@
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
-                          Created By <strong>{{form.createdName}}</strong>
+                          <strong>Created By:</strong>{{form.createdName}}
                         </h6>
                         <h6>
                           From <strong>{{form.companyName}}</strong>
                         </h6>
                         <h6>
-                          Folder Name <strong>{{form.categoryName}}</strong>
+                          <strong>Folder Name:</strong> {{form.categoryName}}
                         </h6>
                       </td>
                       <td class="hidden-xs text-center">
@@ -1052,7 +1052,7 @@
 
 <!-- --------------List Of Assets Popup--------------- -->
 <div class="modal right" id="media-asset-list" data-backdrop="static">
-  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg"  style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetModal()">
@@ -1128,13 +1128,13 @@
                         </h4>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.displayName}}" translate>
-                            Created By
-                            <strong>{{asset.displayName}}</strong></span>
+                            <strong>Created By:</strong>
+                            {{asset.displayName}}</span>
                         </h6>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
-                            Folder Name
-                            <strong>{{asset.categoryName}}</strong></span>
+                            <strong>Folder Name:</strong>
+                            {{asset.categoryName}}</span>
                         </h6>
                       </td>
                       <td class=" text-center">

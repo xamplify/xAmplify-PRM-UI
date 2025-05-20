@@ -3463,3 +3463,6 @@ h5.oliver-heading-color{
 .justify-content-center{
   justify-content: center;
 }
+.close_popup{
+  width: 30px!important;height: 30px!important;
+}

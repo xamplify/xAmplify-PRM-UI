@@ -580,7 +580,7 @@ export class Properties {
 	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
 
 	/** XNFR-952 **/
-	contactUploadManagementSettings = 'Contacts Usage Analytics';
+	CONTACT_USAGE_ANALYTICS_TEXT  = 'Contacts Usage Analytics';
 	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
 	LOAD_SELF_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load self contacts count. Please try again later.";
 	LOAD_PARTNER_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load contacts uploaded by partners. Please try again later.";

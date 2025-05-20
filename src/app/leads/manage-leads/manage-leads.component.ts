@@ -127,6 +127,8 @@ export class ManageLeadsComponent implements OnInit {
   /*** XNFR-839 ****/
   activeCRMDetailsByCompany :any; //XNFR-887
   isLoggedAsPartner: boolean = false;
+  isLeadOptionClicked: boolean = false;
+  partnerEmailAddress: string = "";
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1673,4 +1675,19 @@ triggerUniversalSearch(){
           this.init();
         });
   }
+
+  /***** XNFR-970 *****/
+  openSendReminiderPopup(lead: any) {
+    this.leadId = lead.id;
+    this.partnerEmailAddress = lead.createdByEmail;
+    this.isLeadOptionClicked = !this.isLeadOptionClicked;
+  }
+
+  /***** XNFR-970 *****/
+  closeSendReminiderPopup() {
+    this.leadId = 0;
+    this.partnerEmailAddress = "";
+    this.isLeadOptionClicked = false;
+  }
+
 }

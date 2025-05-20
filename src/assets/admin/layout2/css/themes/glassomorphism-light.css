@@ -4704,13 +4704,28 @@ input:checked + .toggle-slider {
   backdrop-filter: blur(5px);
 }
 .writing-card,.phara-card,
-.oliver_input,.textarea-card {
+.oliver_input,.textarea-card,.custom-card,.history-entry,.agent-card,.agent-info {
   border: 1px solid rgb(255 255 255 / 35%) !important;
   background: rgb(255 255 255 / 27%) !important;
 }
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box  {
+  background-color: rgb(255 255 255 / 75%) !important;
+}
+ 
 .oliver_input input {
   color: #000;
 }
   textarea.textarea.h-350 {
     box-shadow: unset !important;
 }
+.btn-plus{background: rgb(255 255 255 / 75%) !important;}
+.history-divider{
+  border-top: 1px solid rgb(255 255 255 / 62%);
+  }
+  .history-header{
+    color: rgba(2, 118, 255, 1) !important;
+  }
+  .fixed-update-button {bottom: 44px!important;}
+  .templateui {padding: 20px 100px 12px 54px!important;}
