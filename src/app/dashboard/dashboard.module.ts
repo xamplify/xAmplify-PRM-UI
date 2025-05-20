@@ -111,7 +111,6 @@ import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-setting
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
-import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { ChatGptSettingsService } from './chat-gpt-settings.service';
 import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
 import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
@@ -215,7 +214,6 @@ import { ContactStatusDropDownComponent } from './contact-status-drop-down/conta
         CampaignAnalyticsSettingsComponent,
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
-        ChatGptIntegrationSettingsComponent,
         FlexiFieldComponent,
         UniversalSearchComponent,
         XamplifyCustomFieldsSettingsComponent,

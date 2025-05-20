@@ -2631,7 +2631,7 @@ markdown pre,.aligin-para{
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle,.submenu-toggle:focus {
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
@@ -2654,4 +2654,8 @@ markdown pre,.aligin-para{
 .agent-card:hover {
   transform: scale(1.02);
   box-shadow: unset!important;
+}
+.submenu-toggle::after{
+  border-right: 2px solid var(---text-color) !important;
+  border-bottom: 2px solid var(---text-color) !important;
 }

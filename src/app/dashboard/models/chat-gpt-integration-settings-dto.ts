@@ -1,4 +1,6 @@
-export class ChatGptIntegrationSettingsDto {
+import { OliverAgentAccessDTO } from "app/common/models/oliver-agent-access-dto";
+
+export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     chatGptIntegrationEnabled = false;
     loggedInUserId = 0;
     id = 0;

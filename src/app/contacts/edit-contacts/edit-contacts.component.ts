@@ -3366,6 +3366,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	copyGroupUsersModalPopupEventReceiver() {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
+		this.selectedContactListIds = [];
 		if(this.moveOptionClicked){
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);

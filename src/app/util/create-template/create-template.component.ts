@@ -66,7 +66,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     isSaveAsButtonDisabled = true;
     invalidTemplateName = false;
     properties:Properties = new Properties();
-    emailTemplateTypeLabels = ['Email', 'Regular Co-Branding', 'Event', 'Event Co-Branding'];
+    emailTemplateTypeLabels = ['Email', 'Email Co-Branding', 'Event', 'Event Co-Branding'];
     isOliverCreateUrl: boolean;
     selectedEmailType: any = this.emailTemplateTypeLabels[0];
     @Input() isFromOliverPopUp: boolean;
@@ -587,7 +587,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         if(this.selectedEmailType == 'Email'){
             // emailTemplate.regularTemplate = true;
              emailTemplate.beeRegularTemplate = true;
-        } else if(this.selectedEmailType == 'Regular Co-Branding'){
+        } else if(this.selectedEmailType == 'Email Co-Branding'){
             emailTemplate.regularCoBrandingTemplate = true;
         } else if(this.selectedEmailType == 'Event'){
             emailTemplate.beeEventTemplate = true;

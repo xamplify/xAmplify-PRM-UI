@@ -1,23 +1,102 @@
 <app-modal-popup-loader *ngIf="chatGptSettingsLoader"></app-modal-popup-loader>
-<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+<app-response-message class="pg8" [customResponse]="customResponse"
+  *ngIf="customResponse?.isVisible"></app-response-message>
 <div *ngIf="!chatGptSettingsLoader">
-  <div class="portlet light">
-    <h5 class="bold-font-weight h5-custom-font">{{description | translate }}</h5>
+  <div class="p10 pt0">
+    <p class="agent-sub-text">{{helperText | translate }}</p>
     <!--ApI Key-->
-    <div class="form-group">
-      <input type="text" maxlength="255" placeholder="Enter Your ChatGPT API key" [(ngModel)]="chatGptIntegrationSettingsDto.chatGptApiKey"
-        [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" />
-    </div>
-    <!--On/Off-->
-    <div class="form-group">
-      <label class="control-label">Turn ChatGPT Settings ON or OFF</label>
-      <app-custom-ui-switch [isSwitchOptionDisabled]="isSwitchOptionDisabled" [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationEnabled" (customUiSwitchEventEmitter)="enableOrDisableChatGptSettings($event)"></app-custom-ui-switch>
+    <div>
+      <div class="form-group">
+        <input type="text" class="form-control input-lg oliver-input"
+          [(ngModel)]="chatGptIntegrationSettingsDto.chatGptApiKey" [ngModelOptions]="{standalone: true}"
+          (input)="validateForm()" placeholder="Enter Your API key!" maxlength="255">
+      </div>
     </div>
 
+    <!--On/Off-->
+    <!-- <div class="form-group">
+      <label class="control-label">Turn ChatGPT Settings ON or OFF</label>
+      <app-custom-ui-switch [isSwitchOptionDisabled]="isSwitchOptionDisabled" [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationEnabled" (customUiSwitchEventEmitter)="enableOrDisableChatGptSettings($event)"></app-custom-ui-switch>
+    </div> -->
+
+    <div
+      *ngIf="authenticationService?.module?.adminOrSuperVisor
+                  && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
+                  || authenticationService.oliverParaphraserEnabled) 
+                   && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
+      role="tabpanel" class="tab-pane fade in active" id="settings">
+      <div class="agent-content">
+                
+        <p class="agent-sub-text mt10">
+          Choose which Oliver agents to enable. You and Your partners will only see the ones you activate.
+        </p>
+
+        <!-- Agent Cards Section -->
+        <div class="row agent-card-section">
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
+            <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverInsights"
+                  [ngModelOptions]="{standalone: true}"
+                  (change)="updateCheckBox($event, 'INSIGHTAGENT')">
+              </div>
+              <img src="assets/images/oliver-insights.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Oliver Insights</h5>
+                <p>Summarize, compare, and extract key insights from any content or data.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.brainstormWithOliverEnabled">
+            <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showBrainstormWithOliver"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'BRAINSTORMAGENT')">
+              </div>
+              <img src="assets/images/brainstorm-with-oliver.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Brainstorm with Oliver</h5>
+                <p>Unlock fresh ideas, angles, and campaign directions with guided ideation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverSparkWriterEnabled">
+            <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverSparkWriter"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'SPARKWRITERAGENT')">
+              </div>
+              <img src="assets/images/oliver-spark-writer.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5> Oliver Spark Writer</h5>
+                <p>Turn ideas into ready-to-go drafts for emails, posts, and more.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverParaphraserEnabled">
+            <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverParaphraser"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'PARAPHRASERAGENT')">
+              </div>
+              <img src="assets/images/oliver-paraphraser.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Oliver Paraphraser</h5>
+                <p>Reword your content with clarity, variation, or different tones on demand.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="submit-section fixed-update-button" *ngIf="isFromOliverSettingsModalPopup">
+      <button (click)="updateSettings()" [disabled]="disableUpdateButton"
+        class="btn btn-primary">{{updateButtonName}}</button>
+    </div>
   </div>
   <!--Update Button-->
-  <div id="right">
-    <button type="button" class="button_blue bgcolor-unset"  (click)="updateSettings()">
-      <span class="btn btn-primary transition txt_pd-top3" translate>Update</span></button>
+  <div id="right" *ngIf="!isFromOliverSettingsModalPopup">
+    <button type="button" class="button_blue bgcolor-unset" (click)="updateSettings()" [disabled]="disableUpdateButton">
+      <span class="btn btn-primary transition txt_pd-top3" translate>{{updateButtonName}}</span></button>
   </div>
 </div>

@@ -223,7 +223,7 @@ import { AddCompanyComponent } from '../company/add-company/add-company.componen
 import { CampaignWorkFlowsUtilComponent } from 'app/campaigns/campaign-work-flows-util/campaign-work-flows-util.component';
 import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
-
+import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -268,7 +268,7 @@ import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choo
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent
 	],
 
 
@@ -311,7 +311,7 @@ import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choo
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent,
+		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent
 	]
 
 

@@ -154,4 +154,7 @@ export class Module {
     /**XNFR-891**/
     sharedLeads = false;
 
+    /**XBI-4542**/
+    design = false;
+
 }
