@@ -581,6 +581,21 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
+
+  /***** XNFR-970 *****/
+  onEmailSelected(event: any): void {
+    if (!this.sendTestEmailDto.toEmailIds.includes(event.itemData)) {
+      this.sendTestEmailDto.toEmailIds.push(event.itemData);
+    }
+  }
+
+  /***** XNFR-970 *****/
+  onEmailRemoved(event: any): void {
+    this.sendTestEmailDto.toEmailIds = this.sendTestEmailDto.toEmailIds.filter(
+      (item: any) => item !== event.itemData
+    );
+  }
+
   sendWelcomeMailRemainder(){
     this.processing = true;
     this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
