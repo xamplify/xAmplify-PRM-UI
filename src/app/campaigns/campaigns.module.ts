@@ -77,7 +77,6 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
     AddLeadsComponent,
     EventCheckInComponent,
     CampaignWorkFlowsModalPopupComponent,
-    CampaignWorkFlowsUtilComponent,
     ClickedUrlsVendorAnalyticsComponent,
     UserLevelTimelineComponent,
     UserCampaignsListUtilComponent,

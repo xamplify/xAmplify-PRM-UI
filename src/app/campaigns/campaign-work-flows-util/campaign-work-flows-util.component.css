@@ -53,7 +53,7 @@
 .button-blue {
   position: relative;
   background: #888a8c !important;
-  top: 6px;
+  /* top: 6px; */
   font-size: 4px;
 }
 .colorBlue {
@@ -67,3 +67,10 @@
   float: right;
   margin-top: 10px;
 }
+.switch-choose{
+    top: 0px !important;
+    left:0px;
+  }
+  .mt3{
+    margin-top: 3px;
+  }
