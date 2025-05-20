@@ -34,7 +34,8 @@ export const RouterUrlConstants = {
     approval : 'approval/',
     action: ':action/',
     manageApproval : 'approval-hub/manage/',
-    mergePartnerCompanies:'merge-partner-companies'
+    mergePartnerCompanies:'merge-partner-companies',
+    insights:'insights'
 
 
 }

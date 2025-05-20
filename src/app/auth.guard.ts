@@ -33,6 +33,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     playbookUrl = 'playbook';
     companyUrl = 'company';
     approvalHubUrl = 'approval-hub';
+        /*******XNFR-979*******/
+    insightsUrl = 'insights';
     addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     /*** user guide **** */
     userGuideUrl = 'help';
@@ -232,6 +234,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.approvalHubUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.approvalHubUrl);
             }
+            if (url.indexOf(this.insightsUrl) > -1) {
+                return this.authorizeUrl(roles, url, this.insightsUrl);
+            }
             /*******XNFR-83*******/
             if (url.indexOf(this.agencyUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.agencyUrl);
@@ -335,7 +340,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 this.authorizeUrlAccess(url);
             } else if (urlType == this.approvalHubUrl) {
                 this.authorizeUrlAccess(url);
-            }
+            } 
             /*******XNFR-83*******/
             else if (urlType == this.agencyUrl) {
                 return true;
