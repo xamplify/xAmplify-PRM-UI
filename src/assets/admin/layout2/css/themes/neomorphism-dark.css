@@ -4603,7 +4603,7 @@ markdown pre,.aligin-para{
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle,.submenu-toggle:focus {
   background: #2d3035 !important;
   color: #fff!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #404750 !important;
@@ -4644,9 +4644,6 @@ box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;}
 }
 .history-divider{
 border-top: 1px solid #191b1e !important;
-}
-.history-header{
-  color: rgba(2, 118, 255, 1) !important;
 }
 .agent-card:hover {
   transform: scale(1.02);
