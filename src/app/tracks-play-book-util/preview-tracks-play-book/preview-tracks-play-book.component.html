@@ -256,7 +256,7 @@
                                                     <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
-                                                        <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;" class="banner">In Progress</h6>
+                                                        <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081; width: 50%;" class="banner">In Progress</h6>
                                                     </div>
                                                     <div *ngIf="content?.dam?.categoryName"><i class="fa fa-folder-open mr3"></i>{{content?.dam?.categoryName}}</div>
                                                 </td>

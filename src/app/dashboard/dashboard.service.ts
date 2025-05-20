@@ -1335,8 +1335,13 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
         let findAllUrl = this.domainUrl+teamMemberOrPartnerDomain+userId+this.QUERY_PARAMETERS+pageableUrl;
         return this.authenticationService.callGetMethod(findAllUrl);
-      }
-
+    }
+    getAllPartnerDomainNames(selectedTab:number) {
+        let userId = this.authenticationService.getUserId();
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
+        let url = this.domainUrl+teamMemberOrPartnerDomain+userId+'/domain-names';
+        return this.authenticationService.callGetMethod(url); 
+    }
     /***XNFR-454*****/
     saveDomains(domainRequestDto:DomainRequestDto,selectedTab:number){
         let teamMemberOrPartnerDomain = selectedTab==1 ? '' :'/partners';

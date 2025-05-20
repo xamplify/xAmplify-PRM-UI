@@ -336,6 +336,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isEmailTemplate = data.emailTemplates;
 		module.hasFormAccess = data.forms;
 		module.hasLandingPageAccess = data.pages;
+		module.design = data.design;
 		
 	}
 
@@ -508,6 +509,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('approval-hub')){
 			this.mergeTag = "approval-hub";
+		}
+		else if(this.router.url.includes('insights')){
+			this.mergeTag = "insights";
 		}	
 	}
 	

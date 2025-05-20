@@ -770,5 +770,11 @@ export class ParterService {
     //         .catch(this.handleError);
     // }
 
+    //XNFR-921
+    getWorkflowsByPlaybookId(playbookId:number) {
+        let findAllUrl = this.WORK_FLOW_PREFIX_URL + '/getWorkflowsByPlaybookId/' + playbookId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
 }
 
