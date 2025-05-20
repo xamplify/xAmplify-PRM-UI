@@ -36,6 +36,10 @@ import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-typ
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { DatePipe } from '@angular/common';
+import { CampaignWorkFlowsUtilComponent } from 'app/campaigns/campaign-work-flows-util/campaign-work-flows-util.component';
+import { WorkflowDto } from 'app/contacts/models/workflow-dto';
+import { Reply } from 'app/campaigns/models/campaign-reply';
+import { ParterService } from 'app/partners/services/parter.service';
 Properties
 declare var $, swal, CKEDITOR: any,flatpickr:any;
 @Component({
@@ -211,9 +215,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   assetType: any;
   isImageFormat: any;
   isTextFormat: any;
+
+  @ViewChild("campaignWorkFlowsUtilComponent") campaignWorkFlowsUtilComponent: CampaignWorkFlowsUtilComponent;
+  replies: Array<Reply> = new Array<Reply>();
+  playbookWorkflowLoader = false; 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe, private partnerService:ParterService) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -395,6 +403,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       },()=>{
         /***XNFR-523***/
         this.findTrackOrPlaybookPublishEmailNotificationOption();
+        this.getWorkflowsByPlaybookId()
+
       });
   }
 
@@ -1334,6 +1344,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
+      if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+        this.campaignWorkFlowsUtilComponent.saveWorkflows();
+        if(this.campaignWorkFlowsUtilComponent.hasError){
+          return;
+        }else{
+        this.setWorkflowDtoData()
+        }
+      }
       this.referenceService.startLoader(this.httpRequestLoader);
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
@@ -1889,5 +1907,65 @@ addTagsCondition(selectedTags:any[]) {
       return `${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
     } 
     return '';
+  }
+//XNFR-921
+
+  setWorkflowDtoData() {
+    let workflowExists = this.campaignWorkFlowsUtilComponent.replies != null && this.campaignWorkFlowsUtilComponent.replies.length > 0
+    if (workflowExists) {
+      let workFlowDtos: WorkflowDto[] = [];
+      for (let workflow of this.campaignWorkFlowsUtilComponent.replies) {
+        let workFlowDto: WorkflowDto = new WorkflowDto();
+        workFlowDto.id = workflow.id;
+        workFlowDto.title = workflow.title;
+        workFlowDto.subjectId = workflow.subjectId;
+        workFlowDto.actionId = workflow.actionId;
+        workFlowDto.timePhraseId = workflow.timePhraseId;
+        workFlowDto.selectedPartnerListIds = workflow.selectedPartnerListIds;
+        workFlowDto.customTemplateSelected = workflow.customTemplateSelected;
+        workFlowDto.templateId = workflow.templateId;
+        workFlowDto.notificationSubject = workflow.subject;
+        workFlowDto.notificationMessage = workflow.body;
+        workFlowDto.loggedInUserId = this.loggedInUserId;
+        workFlowDto.customDays = workflow.customDays;
+        workFlowDto.isAdd = true;
+        workFlowDto.preHeader = workflow.preHeader;
+        workFlowDto.fromEmailUserId = workflow.fromEmailUserId;
+        workFlowDto.fromEmail = workflow.fromEmail;
+        workFlowDto.fromName = workflow.fromName;
+        workFlowDto.fromName
+        if (this.tracksPlayBook.groupIds != null && this.tracksPlayBook.groupIds.length > 0) {
+          workFlowDto.partnerGroupSelected = true;
+          workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds
+        } else {
+          workFlowDto.partnerGroupSelected = false;
+          workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
+        }
+        workFlowDtos.push(workFlowDto)
+      }
+      this.tracksPlayBook.workflowDtos = workFlowDtos;
+    }
+  }
+
+  updateRepliesData(event:any){
+    this.replies = event;
+  }
+
+    getWorkflowsByPlaybookId() {
+      this.ngxloading = true;
+    this.partnerService.getWorkflowsByPlaybookId(this.learningTrackId)
+    .subscribe(
+        response=>{
+          this.replies = response.data;
+          if(this.replies != null && this.replies.length>0){
+            for(let reply of this.replies){
+              reply.subject  = reply.notificationSubject;
+              reply.body = reply.notificationMessage;
+              reply.customTemplateSelected = reply.templateId != null
+            }
+          }
+        },error=>{
+            this.ngxloading = false;
+        });
   }
 }

@@ -2,6 +2,7 @@ import { Form } from '../../forms/models/form';
 import { Tag } from '../../dashboard/models/tag';
 import { ActivityType } from '../models/activity-type.enum';
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
+import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 
 export class TracksPlayBook {
     id:number;
@@ -50,4 +51,7 @@ export class TracksPlayBook {
 
     /*** XNFR-897 */
     expireDate:string;
+
+//XNFR-921
+    workflowDtos:WorkflowDto[] = []
 }

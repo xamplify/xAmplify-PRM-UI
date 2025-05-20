@@ -19,4 +19,9 @@ export class WorkflowDto {
     fromEmailUserId = 0;
     fromEmail = "";
     fromName = "";
+    //XNFR-921
+    partnerGroupSelected:boolean = false;
+    selectedPartnerIds = [];
+    divId:string;
+
 }

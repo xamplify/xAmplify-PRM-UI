@@ -40,7 +40,7 @@
                      </div>
                      <div class="form-group">
                         <label>Email Address<span class="required">*</span></label>
-                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder" type="text" autocomplete="off"
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
                            placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail"
                            [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
                   
@@ -48,9 +48,16 @@
                            [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
                            class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
                   
-                        <span class="required" *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder">
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                            Please enter a valid email address
                         </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.toEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
                      </div>    
                        <!--XNFR-832-->
                        <div class="form-group" *ngIf="isSendMdfRequestOptionClicked">
@@ -61,13 +68,13 @@
                         <label>Email Subject<span class="required">*</span></label>
                         <input type="text" autocomplete="off" [(ngModel)]="sendTestEmailDto.subject"
                            (input)="validateForm()" [ngModelOptions]="{standalone: true}"
-                           placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder" />
+                           placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder || isFromDomainWhiteListing" />
                      </div>
                      <div class="form-group">
                         <label>Email Body</label>
                      </div>
                   </div>
-                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked && !teamMemberReminder && !sendSignatureRemainder">
+                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                      <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
                   </ng-container>
                   <div id="sendTestEmailHtmlBody" class="plspx"></div>
@@ -75,12 +82,17 @@
             </div>
 
          </div>
-         <div class="modal-footer" *ngIf="!processing">
-            <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
+          <div class="modal-footer" *ngIf="!processing">
+            <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">{{ isFromDomainWhiteListing ? 'Cancel' : 'Close' }}</button>
             <button type="submit" class="button bgcolor-unset btn-top3" [disabled]="!isValidForm || clicked"
-               (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate">
-               <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked || teamMemberReminder ||sendSignatureRemainder ) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
+               (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate && !isFromDomainWhiteListing">
+               <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked || teamMemberReminder ||sendSignatureRemainder) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
                      aria-hidden="true"></i></span>
+            </button>
+            <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0"
+               (click)="sendWelcomeMailRemainder()">
+               <span class="btn btn-primary transition txt_pd-top3">Send<i aria-hidden="true"
+                     class="fa fa-send"></i></span>
             </button>
          </div>
       </div>

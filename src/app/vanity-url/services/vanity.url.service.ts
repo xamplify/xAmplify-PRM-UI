@@ -454,5 +454,12 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     const url = this.authenticationService.REST_URL + "lead/send-reminider/notification?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url, sendTestEmailDto);
   }
-
+ getWelcomeTemplateForPartnerDomainWhitelisting() {
+    const url = this.authenticationService.REST_URL + "v_url/getWelcomeTemplateForPartnerDomainWhitelisting/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+  sendWelcomeEmail(sendTestEmailDto: SendTestEmailDto) {
+    const url = this.authenticationService.REST_URL + "v_url/sendWelcomeMailForPartnerDomainWhitelisting?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, sendTestEmailDto);
+  }
 }
