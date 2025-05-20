@@ -91,6 +91,9 @@
           <div
             class="portlet-input search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right pr0 d-flex"
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+            <button id="welcome_mail" class="btn Btn-Green" (click)="addWelcomeMailModalOpen()" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
+              Send Welcome Mail
+             </button>
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
               <i _ngcontent-c17="" aria-hidden="true" data-toggle="tooltip" title="Filter" class="fa fa-filter p10"></i>
             </button>
@@ -273,3 +276,7 @@
 </div>
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked"
   (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
+
+  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [allPartnerDomains]="allPartnerDomains" [toEmailId]= "''" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()"></app-send-test-email>
+
+
