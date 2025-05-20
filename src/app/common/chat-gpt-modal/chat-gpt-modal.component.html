@@ -201,10 +201,7 @@
                 </li>
             
                 <li
-                  *ngIf="authenticationService?.module?.adminOrSuperVisor
-                              && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
-                              || authenticationService.oliverParaphraserEnabled) 
-                               && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
+                  *ngIf="authenticationService?.module?.adminOrSuperVisor && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
                   [ngClass]="{'active': activeTab === 'settings'}">
                   <a href="#settings" role="tab" data-toggle="tab" (click)="setActiveTab('settings')">
                     <i class="fa fa-gear"></i> Settings
@@ -225,9 +222,10 @@
               <span *ngIf="isSidebarVisible">&#9776;</span>
             </button>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 
+              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ? 'd-flex align-start' : 'd-flex align-center align_tab_view')">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
-                [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
+                [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
                 
                 <!-- Global Chat -->
                 <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'globalchat', 'tab-pane fade': activeTab !== 'globalchat'}"
@@ -621,12 +619,12 @@
                 id="settings">
                 <div class="agent-content">
                   <!-- Top Heading + Search -->
-                  <div class="top-section text-center">
+                  <div class="top-section">
                     <div class="settings-heading-wrapper">
                       <img src="assets/images/ask-oliver-agent-icon.svg" alt="Settings Icon" class="agent-settings-icon">
                       <span class="main-heading">Oliver Settings</span>
                     </div>
-                    <app-chat-gpt-integration-settings [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
+                    <app-chat-gpt-integration-settings *ngIf="callChatGptIntegrationSettingsComponent"  [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
                       (updateOliverFlags)="onOliverFlagsUpdate($event)"
                       (loadOliverSettings)="getSettings()"></app-chat-gpt-integration-settings>
                   </div>
@@ -652,14 +650,14 @@
           <!--  -->
         </div>
       </div>
+    </div>
+  </div>
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5" [disabled]="selectedAssets.length == 0 && selectedFolders.length == 0"
           (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
-    </div>
-  </div>
 </div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>

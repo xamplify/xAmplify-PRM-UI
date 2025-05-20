@@ -31,10 +31,6 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
   showAskOliver: boolean = true;
-  disableOliverInsights: boolean = false;
-  disableBrainstormWithOliver: boolean = false;
-  disableOliverSparkWriter: boolean = false;
-  disableOliverParaphraser: boolean = false;
   updateButtonName: string = 'Update';
   disableUpdateButton: boolean;
 
@@ -44,6 +40,11 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     showOliverSparkWriter: boolean;
     showOliverParaphraser: boolean;
   }>();
+
+  private readonly INSIGHTAGENT = "INSIGHTAGENT";
+  private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
+  private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
+  private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
 
   constructor(public referenceService:ReferenceService,
     public chatGptSettingsService:ChatGptSettingsService,public properties:Properties,
@@ -74,7 +75,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.updateButtonName = 'Updating...';
     this.disableUpdateButton = true;
-    this.chatGptSettingsLoader = true;
+    this.chatGptSettingsLoader = !this.isFromOliverSettingsModalPopup ? true : this.chatGptSettingsLoader;
     this.checkCanUpdateOliverAgentAccessSettings();
     this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
       response=>{
@@ -104,12 +105,18 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
         this.chatGptSettingsLoader = false;
         this.updateButtonName = 'Update';
         this.disableUpdateButton = false;
+        if (!this.isFromOliverSettingsModalPopup) {
+          this.referenceService.scrollSmoothToTop();
+        }
       },error=>{
         this.updateButtonName = 'Update';
         this.disableUpdateButton = false;
         this.chatGptSettingsLoader = false;
         let message = this.referenceService.getApiErrorMessage(error);
         this.customResponse = new CustomResponse('ERROR',message,true);
+        if (!this.isFromOliverSettingsModalPopup) {
+          this.referenceService.scrollSmoothToTop();
+        }
       });
   }
 
@@ -128,15 +135,9 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     }
   }
  
-
   enableOrDisableChatGptSettings(value:boolean){
     this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled = value;
   }
-
-  private readonly INSIGHTAGENT = "INSIGHTAGENT";
-  private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
-  private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
-  private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
 
   updateCheckBox(event: any, agentType: string) {
     const isChecked = event.target.checked;
@@ -150,29 +151,5 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.showOliverParaphraser = isChecked;
     }
   }
-
-  // setOliverAgentDisableConditions() {
-  //   if (!this.authenticationService.oliverInsightsEnabled) {
-  //     this.disableOliverInsights = true;
-  //   } else {
-  //     this.disableOliverInsights = false;
-  //   }
-  //   if (!this.authenticationService.brainstormWithOliverEnabled) {
-  //     this.disableBrainstormWithOliver = true;
-  //   } else {
-  //     this.disableBrainstormWithOliver = false;
-  //   }
-  //   if (!this.authenticationService.oliverSparkWriterEnabled) {
-  //     this.disableOliverSparkWriter = true;
-  //   } else {
-  //     this.disableOliverSparkWriter = false;
-  //   }
-  //   if (!this.authenticationService.oliverParaphraserEnabled) {
-  //     this.disableOliverParaphraser = true;
-  //   } else {
-  //     this.disableOliverParaphraser = false;
-  //   }
-  // }
-
 
 }

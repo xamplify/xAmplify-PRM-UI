@@ -81,6 +81,9 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   findGroupsForMerging(pagination:Pagination){
     this.addLoader();
     pagination.moduleName = this.isContactModule ? 'CONTACTS' : 'PARTNERS';
+    if (this.isContactModule && this.authenticationService.loggedInUserRole === "Team Member") {
+      this.referenceService.setTeamMemberFilterForPagination(pagination, 1);
+    }
     this.authenticationService.findGroupsForMerging(pagination).subscribe(
       response=>{
         const data = response.data;

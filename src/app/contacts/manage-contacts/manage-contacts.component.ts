@@ -2557,9 +2557,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.loadContactsByType(moduleId)
 		}
 		this.callInitMethods();
+		this.findMasterContactListId();
 		/**** user guide ****/
 		this.getMergeTagsForDifferentModules();
-		this.findMasterContactListId();
 	}
 
 

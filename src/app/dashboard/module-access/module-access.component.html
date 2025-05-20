@@ -472,6 +472,12 @@
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.approvalHub"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
+								<!--XNFR-979-->
+								<tr>
+									<th scope="row">Insights</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.insights"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
 								<!--XNFR-832-->
 								<tr *ngIf="marketing || orgAdmin">
 									<th scope="row">Unlock MDF Funding</th>

@@ -10,6 +10,10 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import { tap} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-send-test-email',
@@ -49,6 +53,8 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
+  selectedEmailTemplateId: any;
+
   /**XNFR-832***/
   @Input() moduleName = "";
   @Input() campaignName="";
@@ -60,6 +66,7 @@ export class SendTestEmailComponent implements OnInit {
   @Output() sendTestEmailComponentTeamMemberEventEmitter = new EventEmitter();
   @Input() selectedPartners : any;
   @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
+  @ViewChild('tagInput') tagInput: SourceTagInput;
   duplicateMdfRequestDto:DuplicateMdfRequest = new DuplicateMdfRequest();
   ngxloading = false;
   activateNowItems: any[]= [];
@@ -70,6 +77,16 @@ export class SendTestEmailComponent implements OnInit {
   @Input() isLeadOptionClicked: boolean = false;
   leadStatusModalId: string = 'LEAD-STATUS-REMINDER-MODAL-POPUP';
   emailBodyHtml: any;
+/***** XNFR-972 *****/
+  @Input() allPartnerDomains: string[] = [];
+  @Input() isFromDomainWhiteListing: false;
+  @Input() pagedItems: any[];
+  onAddedFunc = this.beforeAdd.bind(this);
+  addFirstAttemptFailed = false;
+  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format',
+    'invalid_domain': 'Email domain is not allowed'
+   };
+  validators = [this.mustBeEmail.bind(this)];
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -100,6 +117,8 @@ export class SendTestEmailComponent implements OnInit {
       this.tabsEnabled = true;
     }else if (this.isLeadOptionClicked) {
       this.findSendReminderLeadEmailTemplate();
+    }else if(this.isFromDomainWhiteListing){
+      this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
@@ -283,6 +302,9 @@ export class SendTestEmailComponent implements OnInit {
     }else if(this.campaignSendTestEmail){
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendCampaignTestEmail();
+    }else if(this.isFromDomainWhiteListing){
+      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
+      this.sendWelcomeMailRemainder();
     }else{
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendTestEmail();
@@ -516,6 +538,18 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  findWelcomeMailTemplate() {
+    this.processing = true;
+    this.vanityURLService.getWelcomeTemplateForPartnerDomainWhitelisting().subscribe(
+      response => {
+        this.processEmailTemplate(response);
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
   /***** XNFR-970 *****/
   closeModalPopup() {
     this.id = 0;
@@ -546,6 +580,92 @@ export class SendTestEmailComponent implements OnInit {
         this.referenceService.showSweetAlertServerErrorMessage();
       }
     );
+  }
+  sendWelcomeMailRemainder(){
+    this.processing = true;
+    this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
+    this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
+    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          this.processing = false;
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
+        } else if (response.statusCode === 401) {
+          this.processing = false;
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      }, error => {
+        this.processing = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
+   private isValidEmail(text: string): boolean {
+    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return text ? EMAIL_REGEXP.test(text) : false;
+  }
+
+ beforeAdd(tag: any): Observable<any> {
+    const isPaste = !!tag['value'];
+    const emailTag = isPaste ? tag.value : tag;
+    if (!this.isValidEmail(emailTag)) {
+      return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['must_be_email']);
+    }
+    if (!this.isAllowedDomain(emailTag)) {
+    return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['invalid_domain']);
+  }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(emailTag);
+  }
+
+  private handleInvalidEmail(tag: string, isPaste: boolean, message: string): Observable<any> {
+    if (!this.addFirstAttemptFailed) {
+      this.addFirstAttemptFailed = true;
+      if (!isPaste) {
+        this.tagInput.setInputValue(tag);
+      }
+    }
+    return isPaste ? Observable.throw(message)
+      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+  }
+
+  mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
+    const email = control.value;
+
+    if (this.addFirstAttemptFailed && !this.isValidEmail(email)) {
+      return { "must_be_email": true };
+    }
+
+    if (this.isValidEmail(email)) {
+      const domain = email.substring(email.lastIndexOf('@') + 1).toLowerCase().trim();
+      const allowedDomains = (this.allPartnerDomains || [])
+        .map(function (d) { return d ? d.toLowerCase().trim() : ''; });
+
+      if (allowedDomains.indexOf(domain) === -1) {
+        return { "invalid_domain": true };
+      }
+    }
+
+    return null;
+  }
+
+  private isAllowedDomain(email: string): boolean {
+    if (!email || email.indexOf('@') === -1 || !this.allPartnerDomains) {
+      return false;
+    }
+
+    const emailDomain = email.split('@')[1].toLowerCase().trim();
+
+    for (var i = 0; i < this.allPartnerDomains.length; i++) {
+      var domain = this.allPartnerDomains[i];
+      if (domain && domain.toLowerCase().trim() === emailDomain) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

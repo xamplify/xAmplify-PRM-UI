@@ -53,9 +53,11 @@
   flex-wrap: wrap;
   overflow-y: auto;
   padding-right: 6px;
-  /* height: calc(60vh - 20px); */
+  height: calc(46vh - 15px);
 }
-
+.agent-card-section::-webkit-scrollbar {
+  width: 6px;
+}
 .agent-card {
   background-color: #fff;
   border-radius: 16px;
@@ -167,4 +169,9 @@
   flex-direction: column;
     display: flex;
     margin-left: 20px;
+}
+@media only screen and (max-width:1024px){
+  .agent-card-section{
+    height: auto!important;
+  }
 }

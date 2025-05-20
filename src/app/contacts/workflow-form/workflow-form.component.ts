@@ -613,6 +613,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
      this.workflowDto.queryBuilderInputString  = this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
      this.workflowDto.id = this.id;
      this.workflowDto.isAdd = this.isAdd;
+     this.workflowDto.partnerGroupSelected =true;
         this.parterService.saveOrUpdateWorkflow(this.workflowDto).subscribe(
             response=>{
               this.titleDivClass = this.successClass;

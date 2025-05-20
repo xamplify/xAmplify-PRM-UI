@@ -12,12 +12,17 @@ import { CampaignService } from '../services/campaign.service';
 import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
+import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
+import { ParterService } from 'app/partners/services/parter.service';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 declare var $: any;
 @Component({
   selector: 'app-campaign-work-flows-util',
   templateUrl: './campaign-work-flows-util.component.html',
   styleUrls: ['./campaign-work-flows-util.component.css'],
-  providers: [HttpRequestLoader, Properties]
+  providers: [HttpRequestLoader, Properties, CallActionSwitch],
+  animations:[CustomAnimation]
 })
 export class CampaignWorkFlowsUtilComponent implements OnInit {
 
@@ -31,6 +36,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   allItems = [];
   campaign: Campaign = new Campaign();
   campaignWorkflowsPostDto: CampaignWorkflowPostDto = new CampaignWorkflowPostDto();
+
   dataError = false;
   workflowsMap: Map<string, any[]> = new Map<string, any[]>();
   @Input() campaignOutPut: Campaign;
@@ -38,21 +44,58 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   @Output() messageEvent = new EventEmitter<string>();
   hasError = false;
   customResponse: CustomResponse = new CustomResponse();
-  constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService, private router: Router) {
+//XNFR-921  
+  @Input() isPlaybookWorkflow: boolean = false;
+  @Input() tracksPlayBook: TracksPlayBook;
+
+  fromEmailUsers:Array<any> = new Array<any>();
+  subjects:Array<any> = new Array<any>();
+  actions:Array<any> = new Array<any>();
+  timePhrases:Array<any> = new Array<any>();
+  triggerTitles:Array<any> = new Array<any>();
+  @Input() playbookReplies: Array<Reply> = new Array<Reply>();
+  @Output() updateReplies = new EventEmitter<Array<Reply>>();
+  loggedInUserId:number = 0;
+  responseType:string = 'e-mail';
+  constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService, private router: Router,
+    public parterService:ParterService,callActionSwitch:CallActionSwitch
+  ) {
   }
   
 
   ngOnInit() {
-    this.campaign = this.campaignOutPut;
+    this.loggedInUserId = this.authenticationService.getUserId();
     this.showContent();
   }
 
   showContent() {
-    this.referenceService.loading(this.loader, true);
-    this.listWebsiteUrlsByCampaignId(this.campaign.campaignId);
+    if(this.isPlaybookWorkflow){
+        this.responseType = 'playbook';
+      this.replies = this.playbookReplies;
+      this.findAllUsers();
+      this.findTriggerTitles()
+      this.loadPromptAndNotificationTabsData();
+      for(let reply of this.replies){
+        if(reply.divId == null || reply.divId == ''){
+            var id = 'reply-' + (this.replies.indexOf(reply) +1);
+            reply.divId = id;
+        }
+        reply.previouslySelectedTemplateId = reply.templateId
+      }
+    }else{
+      this.campaign = this.campaignOutPut;
+      this.referenceService.loading(this.loader, true);
+      this.listWebsiteUrlsByCampaignId(this.campaign.campaignId);
     this.listWorkflowsOptions();
+    }
   }
 
+  ngOnChanges(){
+    if(this.isPlaybookWorkflow){
+    //this.playbookReplies = this.replies
+      this.updateReplies.emit(this.replies)
+    }
+  }
   listWebsiteUrlsByCampaignId(campaignId: number) {
     this.campaignService.listCampaignEmailTemplateUrls(campaignId)
       .subscribe(
@@ -90,11 +133,20 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   addReplyRows() {
     this.reply = new Reply();
     let length = this.allItems.length;
+    let subject  = this.isPlaybookWorkflow? this.tracksPlayBook.title: this.campaign.subjectLine;
     length = length + 1;
     var id = 'reply-' + length;
     this.reply.divId = id;
     this.reply.actionId = 0;
-    this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
+    this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(subject);
+    if (this.isPlaybookWorkflow) {
+      this.reply.subjectId = this.subjects[0].id;
+      this.reply.actionId = this.actions[0].id;
+      this.reply.timePhraseId = this.timePhrases[0].id;
+      let teamMember = this.fromEmailUsers.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
+          this.reply.fromEmailUserId = teamMember.id;
+          this.reply.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+    }
     this.replies.push(this.reply);
     this.allItems.push(id);
     // this.loadEmailTemplatesForWorkFlows(this.reply);
@@ -121,14 +173,19 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       this.removeStyleAttrByDivId('reply-subject-' + reply.divId);
       this.removeStyleAttrByDivId('email-template-' + reply.divId);
       this.removeStyleAttrByDivId('reply-message-' + reply.divId);
+      this.removeStyleAttrByDivId('reply-fromEmail-' + reply.divId);
+      this.removeStyleAttrByDivId('reply-preHeader-' + reply.divId);
       $('#' + reply.divId).addClass('portlet light dashboard-stat2');
       this.validateReplySubject(reply);
-      if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !==25 && reply.actionId !==26 && reply.actionId !==27 && reply.actionId !==28 ) {
+    
+      if ( !this.isPlaybookWorkflow && reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !==25 && reply.actionId !==26 && reply.actionId !==27 && reply.actionId !==28 ) {
         this.validateReplyInDays(reply);
         this.validateEmailTemplateForAddReply(reply);
       } else {
         this.validateEmailTemplateForAddReply(reply);
       }
+
+      
       let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
      
     }
@@ -155,10 +212,10 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   }
 
   validateEmailTemplateForAddReply(reply: Reply) {
-    if (reply.defaultTemplate && reply.selectedEmailTemplateId === 0) {
+    if (( reply.customTemplateSelected) && reply.templateId === 0) {
       $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
       $('#email-template-' + reply.divId).css('color', 'red');
-    } else if (!reply.defaultTemplate && (reply.body == null || reply.body == undefined || $.trim(reply.body).length == 0)) {
+    } else if ( !( reply.customTemplateSelected) && (reply.body == null || reply.body == undefined || $.trim(reply.body).length == 0)) {
       $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
       $('#reply-message-' + reply.divId).css('color', 'red');
     }
@@ -186,7 +243,11 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     if(errorLength===0){
       this.hasError = false;
       console.log(this.replies);
-      this.addAllWorkflows();
+      if(this.isPlaybookWorkflow){
+        this.playbookReplies = this.replies;
+      }else{
+       this.addAllWorkflows();
+      }
     }else{
       this.hasError = true;
     }
@@ -214,6 +275,46 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     this.messageEvent.emit("");
   }
 
+    //XNFR-921
+    findAllUsers() {
+    this.authenticationService.findAllUsers().subscribe(
+      response=>{
+        this.fromEmailUsers = response.data;
+      },error=>{
+      });
+  }
+
+  
+  findTriggerTitles(){
+    this.parterService.findTriggerTitles().subscribe(
+      response=>{
+        this.triggerTitles = response.data;
+        
+      },error=>{
+      });
+  }
+
+    loadPromptAndNotificationTabsData(){
+    this.parterService.findDefaultTriggerOptions().subscribe(
+      response=>{
+        let data = response.data;
+        this.subjects = data.subjects
+        console.log(this.subjects)
+        this.actions = data.actions.filter(subj=>subj.value.toLowerCase().includes('playbook'));
+        console.log(this.actions)
+        this.timePhrases = data.timePhrases;
+      }
+    );
+  }
+
+    getSelectedEmailTemplateReceiver(event:any, replay:any){
+    replay.templateId = event;
+    this.validateEmailTemplateForAddReply(replay);
+  }
+
+  selectEmailTemplateForEmailAutoResponseWorkflow(event: any, index: number, reply: Reply) {
+    reply.customTemplateSelected = event;
+  }
 }
 
 
