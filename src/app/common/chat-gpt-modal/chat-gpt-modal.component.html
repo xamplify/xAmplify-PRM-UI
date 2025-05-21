@@ -159,13 +159,13 @@
                     <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights"
                       [ngClass]="{'active': activeTab === 'askpdf'}">
                       <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
-                        <i class="fa fa-file-text"></i> Oliver Insights
+                        <i class="fa fa-bar-chart"></i> Oliver Insights
                       </a>
                     </li>
                     <li *ngIf="authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver"
                       [ngClass]="{'active': activeTab === 'new-chat'}">
                       <a href="#new-chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                        <i class="fa fa-plus-circle"></i> BrainStorm Agent
+                        <i class="fa fa-lightbulb-o"></i> BrainStorm Agent
                       </a>
                     </li>
                     <li *ngIf="authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter"

@@ -167,3 +167,80 @@ background-color: var(--top-bg-color) !important;
 .modal-title{
   color: var(--menu-text) !important;
 }
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards,.agent-info{
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  color: var(--text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: var(--text-color) !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
+  background: var(--div-bg-color) !important;
+}
+.modal-body.oliver-header,.textarea-card,input.form-control.input-lg.oliver-input,select.form-control.oliver-focus{
+  background: var(--div-bg-color) !important;
+}
+.side_bar,.writing-card,.phara-card,
+.oliver_input,.custom-card,.history-entry,.agent-card{
+  background: var(--page-content) !important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle,.submenu-toggle:focus {
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+  border-radius: 8px!important;
+}
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.search-icon,.history-entry .actions i,.main-heading,.agent-sub-text,.agent-info p{
+  color: var(--text-color) !important;
+}
+  textarea.textarea.h-350,.oliver_input,.writing-card,.phara-card,.history-entry:hover{
+    box-shadow: unset !important;
+}
+.btn-plus,.history-entry .actions i:hover{background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;}
+.history-divider{
+  border-top: 1px solid var(--border-color)  !important;
+}
+.history-entry{border: none!important;}
+.oliver_input.custom_oliver_input.mt10{ border: 1px solid var(--border-color) !important;border-radius: 8px!important;}
+.agent-card:hover {
+  transform: scale(1.02);
+  box-shadow: unset!important;
+}
+.submenu-toggle::after{
+  border-right: 2px solid var(--text-color) !important;
+  border-bottom: 2px solid var(--text-color) !important;
+}
+.form-control{
+  color: var(--text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;}
+  .close-circle {
+    background-color: var(--div-bg-color) !important;
+    color: var(--text-color) !important;
+}
