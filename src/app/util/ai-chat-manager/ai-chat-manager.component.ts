@@ -606,7 +606,9 @@ export class AiChatManagerComponent implements OnInit {
           this.folderFrom = data[0].companyName;
           this.folderAssetCount = data[0].count;
           // if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
-            this.getPdfByAssetPaths(data);
+            // this.getPdfByAssetPaths(data);
+            this.pdfFiles = data;
+            this.getUploadedFileIds();
           // }
         }
       },

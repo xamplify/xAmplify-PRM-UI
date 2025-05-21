@@ -37,7 +37,7 @@ export class ChatGptSettingsService {
   }
 
   onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
-    const url = `${this.chatGptSettingsUrl}/upload?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.authenticationService.REST_URL}oliver/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
     formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
@@ -46,7 +46,9 @@ export class ChatGptSettingsService {
       {
         type: "application/json"
       }));
-    return this.authenticationService.callPostMethod(url, formData);
+    chatGptSettings.oliverIntegrationType = 'openai';
+    chatGptSettings.assetName = assetName;
+    return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
 
   generateAssistantText(chatGptSettings: ChatGptIntegrationSettingsDto) {
