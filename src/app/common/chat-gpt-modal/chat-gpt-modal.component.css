@@ -1345,8 +1345,6 @@ circle.front {
   margin-bottom: 20px;
 }
 .agent-card-section {
-  display: flex;
-  flex-wrap: wrap;
   overflow-y: auto;
   max-height: 60vh;
   padding-right: 6px;

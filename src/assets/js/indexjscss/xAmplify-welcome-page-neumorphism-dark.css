@@ -89,3 +89,105 @@ a.xamplify-dropdown-toggle.circlebg-none-v
   color:#fff;
 }
 /*** Universal Search *******/
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.summarize-pdf-cards{
+  background: radial-gradient(circle at center, #414850, #2b2e32, #2d3034)!important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.pdf_card,.content-card,.fixed-card,.pdf_child{
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  border: 1px solid rgb(70 143 230)!important;
+  color: rgb(70 143 230)!important;
+  background-color: transparent !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+background-color:#23262b!important;
+box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2)!important;
+border: 1px solid #3b6178!important;
+color: #fff;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: #fff!important;
+}
+.panel-heading.accordion_card.panel-title a {
+  color: rgb(70 143 230)!important;
+}
+.modal-body.oliver-header{
+  background: #2e3033 !important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle,.submenu-toggle:focus {
+  background: #2d3035 !important;
+  color: #fff!important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #404750 !important;
+  border-radius: 8px!important;
+  }
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.main-heading,.agent-sub-text,.agent-info p,.history-header{
+    color: #fff!important;
+  }
+.side_bar{
+  background: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.writing-card,.phara-card,
+.oliver_input,.custom-card,.history-entry,.agent-card{
+  background-color: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: none!important;
+}
+.textarea-card,.agent-info {
+background: #303337 !important;
+box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}
+.preview-border{border: 1px solid #191b1e !important;}
+.btn-plus{
+  background: #007bff!important; 
+}
+.btn-plus:hover {
+  background-color: #0b5ed7!important;
+  box-shadow: 0 2px 5px rgba(13, 110, 253, .3);
+}
+.history-divider{
+border-top: 1px solid #191b1e !important;
+}
+.agent-card:hover {
+  transform: scale(1.02);
+}
+.upload-box{
+  background: #3b3e43!important;
+}
+.modal-content {
+  background-color: #2e3033 !important;
+  color: white !important;
+  border: 1px solid #191b1e !important;
+}
+.form-control{
+  color: white !important;
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.form-control:focus, .oliver_input:hover {
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  border: 1px solid #252525 !important;
+}

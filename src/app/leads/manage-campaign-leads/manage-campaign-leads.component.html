@@ -279,8 +279,10 @@
                 </ng-container>
                 <a class="custom-icon"
                   *ngIf="isVendorVersion && !lead.canUpdate && !authenticationService?.module?.isMarketingCompany && authenticationService?.module?.isAnyAdminOrSupervisor"
-                  data-rel="fancybox-button" (click)="openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
-                  title="Send Email" id="lead"><i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                  data-rel="fancybox-button" (click)="lead?.associatedDealId > 0 ? '' : openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
+                  [attr.data-original-title]="lead?.associatedDealId > 0 ? 'Can not send email' : 'Send Email'" id="lead">
+                  <i class="fa fa-envelope IconCustomization" aria-hidden="true"
+                    [ngClass]="lead?.associatedDealId > 0 ? 'disabled gray' : ''"></i>
                   <div class="clickicons"></div>
                 </a>
               </div>

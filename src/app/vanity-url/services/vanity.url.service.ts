@@ -444,14 +444,14 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 
   /***** XNFR-970 *****/
   findSendReminderLeadEmailTemplate(emailId: string) {
-    const url = this.authenticationService.REST_URL + "lead/send-reminider/template?loggedInUserId=" + this.authenticationService.getUserId()
+    const url = this.authenticationService.REST_URL + "lead/send-reminder/template?loggedInUserId=" + this.authenticationService.getUserId()
       + "&emailId=" + emailId + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
   /***** XNFR-970 *****/
   sendReminderLeadEmail(sendTestEmailDto: SendTestEmailDto) {
-    const url = this.authenticationService.REST_URL + "lead/send-reminider/notification?access_token=" + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + "lead/send-reminder/notification?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url, sendTestEmailDto);
   }
  getWelcomeTemplateForPartnerDomainWhitelisting() {
