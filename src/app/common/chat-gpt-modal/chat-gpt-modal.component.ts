@@ -246,6 +246,7 @@ export class ChatGptModalComponent implements OnInit {
     }
     this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     this.fetchOliverActiveIntegration();
+    this.chatHistorySortOption.searchKey = '';
   }
 
   private checkDamAccess() {
@@ -305,6 +306,7 @@ export class ChatGptModalComponent implements OnInit {
     } else {
       this.callChatGptIntegrationSettingsComponent = false;
     }
+    this.chatHistorySortOption.searchKey = '';
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {

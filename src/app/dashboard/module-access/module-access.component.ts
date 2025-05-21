@@ -352,7 +352,7 @@ export class ModuleAccessComponent implements OnInit {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
         this.oliverActive = this.campaignAccess.oliverActive;
-        if (this.oliverActive) {
+        if (this.oliverActive && !this.campaignAccess.oliverFilesProcessing) {
           this.fetchOliverActiveIntegrationType();
         }
         this.moduleLoader = false;
