@@ -1090,7 +1090,7 @@ closeDesignTemplate(event: any) {
       (response: any) => {
         if (response.statusCode == 200) {
           let data = response.data;
-          if (data != null || data != undefined) {
+          if (data != null && data != undefined) {
             this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
             this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
