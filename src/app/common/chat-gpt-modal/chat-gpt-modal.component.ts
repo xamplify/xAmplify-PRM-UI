@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, ViewChild} from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
@@ -18,6 +18,7 @@ import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
+import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -29,7 +30,9 @@ export class ChatGptModalComponent implements OnInit {
   @Input() isChatGptIconDisplayed: boolean;
   @Input() isShowingRouteLoadIndicator: boolean;
   @Input() showLoaderForAuthGuard: boolean;
-  @Output() loadOliverSettings = new EventEmitter();
+
+  @ViewChild (ChatGptIntegrationSettingsComponent) chatGptIntegrationSettingsChildComponent: ChatGptIntegrationSettingsComponent;
+
   inputText = "";
   isValidInputText = false;
   chatGptGeneratedText = "";
@@ -295,8 +298,8 @@ export class ChatGptModalComponent implements OnInit {
     }
 
     if (this.activeTab == 'settings') {
-      this.loadOliverSettings.emit();
       this.callChatGptIntegrationSettingsComponent = true;
+      this.chatGptIntegrationSettingsChildComponent.getSettings();
     } else {
       this.callChatGptIntegrationSettingsComponent = false;
     }
