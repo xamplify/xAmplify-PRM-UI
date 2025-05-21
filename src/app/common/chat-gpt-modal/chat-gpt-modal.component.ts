@@ -739,7 +739,7 @@ export class ChatGptModalComponent implements OnInit {
 
   fetchHistories(chatHistoryPagination) {
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
-    this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn).subscribe(
+    this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
@@ -765,7 +765,7 @@ export class ChatGptModalComponent implements OnInit {
       || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)) {
       this.isAgentSubmenuOpen = true;
     }
-    this.getChatHistory();
+    this.getChatHistory(history.oliverChatHistoryType);
   }
 
   getTabName(tab): string {
@@ -783,8 +783,12 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  getChatHistory() {
-    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId).subscribe(
+  getChatHistory(oliverChatHistoryType:any) {
+    let oliverIntegrationType = this.chatGptIntegrationSettingsDto.oliverIntegrationType;
+    if (oliverChatHistoryType == this.BRAINSTORMAGENT || oliverChatHistoryType == this.PARAPHRASERAGENT || this.SPARKWRITERAGENT) {
+      oliverIntegrationType = "openai";
+    }
+    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId, oliverIntegrationType, this.chatGptIntegrationSettingsDto.accessToken).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
           let messages = response.data;

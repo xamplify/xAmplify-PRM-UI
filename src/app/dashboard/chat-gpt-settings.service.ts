@@ -47,7 +47,7 @@ export class ChatGptSettingsService {
       {
         type: "application/json"
       }));
-    chatGptSettings.oliverIntegrationType = 'openai';
+    // chatGptSettings.oliverIntegrationType = 'openai';
     chatGptSettings.assetName = assetName;
     return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
@@ -59,7 +59,11 @@ export class ChatGptSettingsService {
 
   generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    const url = this.oliverUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
+    let suffixUrl = this.authenticationService.REST_URL + 'oliver/';
+    if (chatGptSettings.agentType && chatGptSettings.agentType != 'INSIGHTAGENT' && chatGptSettings.agentType != 'GLOBALCHAT') {
+      suffixUrl = this.chatGptSettingsUrl;
+    }
+    const url = suffixUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
 
@@ -73,8 +77,8 @@ export class ChatGptSettingsService {
     return this.http.delete(url);
   }
 
-  getChatHistoryByThreadId(threadId: string) {
-    const url = this.chatGptSettingsUrl + '/chatHistory/' + threadId + '?access_token=' + this.authenticationService.access_token;
+  getChatHistoryByThreadId(threadId: string, oliverIntegrationType:any, accessToken:any) {
+    const url = this.authenticationService.REST_URL + 'oliver/chatHistory/' + threadId + "/" + accessToken + "/" + oliverIntegrationType + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -89,7 +93,8 @@ export class ChatGptSettingsService {
     let contactJourneyRequestParameter = chatGptIntegrationSettingsDto.isFromContactJourney ? '&contactJourney=' + true : '';
     let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
     let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
-    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm + callIdRequestParam + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParameter = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm + callIdRequestParam + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParameter;
     return this.authenticationService.callGetMethod(url);
   }
 insertTemplateData(chatGptIntegrationSettingsDto: any) {
@@ -127,7 +132,7 @@ listDefaultTemplates(userId:any){
     //   { type: 'application/json' }
     // ));
     chatGptSettings.assets = pdfFiles;
-    chatGptSettings.oliverIntegrationType = 'openai';
+    // chatGptSettings.oliverIntegrationType = 'openai';
 
     return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
@@ -171,11 +176,11 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
   }
 
-  fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean) {
+  fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean, oliverIntegrationType:any) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
     let vendorCompanyProfileNameRequestParam = pagination.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + pagination.vendorCompanyProfileName : '';
-    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"?access_token=" + this.authenticationService.access_token + pageableUrl + vendorCompanyProfileNameRequestParam;
+    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"/"+oliverIntegrationType+"?access_token=" + this.authenticationService.access_token + pageableUrl + vendorCompanyProfileNameRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 

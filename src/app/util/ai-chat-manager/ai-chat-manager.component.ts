@@ -108,7 +108,7 @@ export class AiChatManagerComponent implements OnInit {
       this.isOliverAiFromdam = false;
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
-      this.getThreadId(this.chatGptIntegrationSettingsDto);
+      // this.getThreadId(this.chatGptIntegrationSettingsDto);
     } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
@@ -124,21 +124,21 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.isFromContactJourney = true;
       this.chatGptIntegrationSettingsDto.contactId = this.callActivity.contactId;
       this.chatGptIntegrationSettingsDto.userListId = this.callActivity.userListId;
-      this.getThreadId(this.chatGptIntegrationSettingsDto);
+      // this.getThreadId(this.chatGptIntegrationSettingsDto);
       this.referenceService.goToTop();
     } else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
         this.chatGptIntegrationSettingsDto.id = this.asset.id;
-        this.getThreadId(this.chatGptIntegrationSettingsDto);
+        // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
       if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
         this.chatGptIntegrationSettingsDto.folderDam = true;
         this.isFromFolderView = true;
         this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1;
         this.chatGptIntegrationSettingsDto.id = this.categoryId;
-        this.getThreadId(this.chatGptIntegrationSettingsDto);
+        // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
   }
@@ -407,7 +407,7 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   private getChatHistory() {
-    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId).subscribe(
+    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId, this.chatGptIntegrationSettingsDto.oliverIntegrationType, this.chatGptIntegrationSettingsDto.accessToken).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
         this.openHistory = true;
@@ -838,6 +838,10 @@ export class AiChatManagerComponent implements OnInit {
         }
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
+      }, () => {
+        if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
+          this.getThreadId(this.chatGptIntegrationSettingsDto);
+        }
       });
   }
   
