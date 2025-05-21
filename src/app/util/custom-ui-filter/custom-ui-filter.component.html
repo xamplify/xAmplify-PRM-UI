@@ -46,7 +46,7 @@
           <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
             <strong>{{filterConditionErrorMessage}}</strong>
           </div>
-          <div class="row pl10 pr10 pb10">
+          <div *ngIf ="!showDateFilters" class="row pl10 pr10 pb10">
             <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
               <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
                 <div class="control-label" style="font-size:15px">{{parterViewText}}</div>
