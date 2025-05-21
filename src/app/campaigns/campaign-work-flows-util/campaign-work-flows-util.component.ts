@@ -83,7 +83,6 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
         if(reply.divId == null || reply.divId == ''){
             var id = 'reply-' + (this.replies.indexOf(reply) +1);
             reply.divId = id;
-            reply.customDays = 1;
         }
         reply.previouslySelectedTemplateId = reply.templateId
         reply.timePhraseId = 20;
