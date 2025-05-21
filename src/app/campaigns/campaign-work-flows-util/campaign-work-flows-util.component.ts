@@ -60,6 +60,9 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   @Input() deletedWorkflowIds:number[]=[];
   mergeTagsInput: any = {};
   selectedReply: Reply = new Reply();
+  @Input() expiryDateTime:any;
+  errorCustomResponse: CustomResponse = new CustomResponse();
+  InfoCustomResponse: CustomResponse = new CustomResponse();
 
   constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService, private router: Router,
     public parterService:ParterService,private callActionSwitch:CallActionSwitch,
@@ -174,6 +177,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
     if (errorLength === 0) {
       this.hasError = false;
+      this.errorCustomResponse = new CustomResponse();
     }
   }
 
@@ -210,6 +214,8 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       this.addReplyDaysErrorDiv(reply);
     }else if (!this.isPlaybookWorkflow && (reply.replyInDays == null || reply.replyInDays === 0)){
       this.addReplyDaysErrorDiv(reply);
+    }else{
+      this.validateTriggerDate(reply);
     }
   }
 
@@ -253,6 +259,8 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
   saveWorkflows() {
     this.customResponse = new CustomResponse();
+    this.errorCustomResponse = new CustomResponse();
+
     this.getRepliesData();
     let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
     if(errorLength===0){
@@ -266,6 +274,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       }
     }else{
       this.hasError = true;
+      this.errorCustomResponse = new CustomResponse('ERROR', "Please complete the required fields", true);
       this.referenceService.goToDiv('campaign-work-flow');
     }
 
@@ -361,6 +370,30 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     }
     this.mergeTagsInput['hideButton'] = false;
   }
+
+  validateTriggerDate(reply:any) {
+  this.InfoCustomResponse = new CustomResponse();
+
+  // Don't show warning if 'Partner Has' and 'Completed Playbook' combination
+  if (reply.subjectId == 21 && reply.actionId == 34) {
+    reply.showExpiryWarning = false;
+    return; 
+  }
+
+  if (!this.expiryDateTime || !reply.customDays) {
+    reply.showExpiryWarning = false;
+    return;
+  }
+
+  const now = new Date();
+  const triggerDate = new Date(now.getTime() + reply.customDays * 24 * 60 * 60 * 1000);
+  const expiry = new Date(this.expiryDateTime);
+
+  reply.showExpiryWarning = triggerDate > expiry;
+  if(reply.showExpiryWarning){
+    this.InfoCustomResponse = new CustomResponse('INFO', "Auto-response May not trigger as the scheduled send date is beyond the playbook expiry Date.", true);
+  }
+}
 
 }
 
