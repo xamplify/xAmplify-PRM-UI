@@ -49,4 +49,5 @@ export class Reply{
     fromEmail = "";
     fromName = "";
     partnerGroupSelected:boolean = false;
+    showExpiryWarning:boolean =false;
 }
