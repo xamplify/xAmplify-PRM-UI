@@ -787,7 +787,7 @@ export class ChatGptModalComponent implements OnInit {
 
   getChatHistory(oliverChatHistoryType:any) {
     let oliverIntegrationType = this.chatGptIntegrationSettingsDto.oliverIntegrationType;
-    if (oliverChatHistoryType == this.BRAINSTORMAGENT || oliverChatHistoryType == this.PARAPHRASERAGENT || this.SPARKWRITERAGENT) {
+    if (oliverChatHistoryType == this.BRAINSTORMAGENT || oliverChatHistoryType == this.PARAPHRASERAGENT ||  oliverChatHistoryType == this.SPARKWRITERAGENT) {
       oliverIntegrationType = "openai";
     }
     this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId, oliverIntegrationType, this.chatGptIntegrationSettingsDto.accessToken).subscribe(
