@@ -12,9 +12,12 @@ export class ChooseEmailtemplateComponent implements OnInit {
 selectedTemplate : any;
  selectedEmailTemplateRow = 0;
  @Input() fromOliverPopup: boolean = false;
+ selectedTemplatetype: any[] = [];
+  filterType: string;
   constructor() { }
 
   ngOnInit() {
+   this.showEmailTemplates('All');
   }
 
   generateEmailTemplate() {
@@ -28,5 +31,15 @@ selectedTemplate : any;
     this.selectedTemplate = null;
     this.selectedEmailTemplateRow = 0;
     this.notifyData.emit();
+  }
+  showEmailTemplates(type: any) {
+    this.filterType = type;
+    if(type == 'Email') {
+        this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.beeRegularTemplate == true);
+    } else if(type == 'EmailCo-branding') {
+      this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.regularCoBrandingTemplate == true);
+    }else{
+      this.selectedTemplatetype = this.selectedTemplateList;
+    }
   }
 }

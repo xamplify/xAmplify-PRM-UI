@@ -57,14 +57,14 @@
                                 [ngModelOptions]="{standalone: true}" />
                             <span class="required">{{errorMessage}}</span>
                         </div>
-                        <div *ngIf="isOliverCreateUrl || isFromOliverPopUp" class="form-group">
+                        <!-- <div *ngIf="isOliverCreateUrl || isFromOliverPopUp" class="form-group">
                             <label>Email Type<span class="required">*</span></label>
                             <select class="form-control" [(ngModel)]="selectedEmailType">
                               <option *ngFor="let type of emailTemplateTypeLabels" [value]="type">
                                 {{ type }}
                               </option>
                             </select>                              
-                          </div>                          
+                          </div>                           -->
                         <div class="form-group">
                             <label>Folder<span class="required">*</span></label>
                             <select class="form-control" [(ngModel)]="emailTemplate.categoryId">

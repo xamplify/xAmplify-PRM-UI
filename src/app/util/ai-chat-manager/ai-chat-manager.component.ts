@@ -86,6 +86,8 @@ export class AiChatManagerComponent implements OnInit {
   showTemplate: boolean;
   vanityUrlFilter: boolean;
   isPartnerLoggedIn: any;
+  openAssetPage: boolean;
+  emittdata: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
@@ -712,31 +714,35 @@ export class AiChatManagerComponent implements OnInit {
     )
   }
 
-  openDesignTemplate(markdown: any) {
+  openDesignTemplate(event: any) {
     // let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
     // this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
-        (response: any) => {
-          if (!this.emailTemplateService.emailTemplate) {
-            this.emailTemplateService.emailTemplate = new EmailTemplate();
-            alert("Template created successfully.");
-            this.showTemplate = false;
-            this.selectTemplate = true;
-             this.ngxLoading = false;
-          }
-
+      (response: any) => {
+        if (!this.emailTemplateService.emailTemplate) {
+          this.emailTemplateService.emailTemplate = new EmailTemplate();
+          alert("Template created successfully.");
+          this.showTemplate = false;
+          this.selectTemplate = true;
+          this.ngxLoading = false;
+        }
+        if (this.chatGptIntegrationSettingsDto.designPdf) {
+          this.emittdata = JSON.stringify(response.data);
+          this.openAssetPage = true;
+        } else {
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
           this.showTemplate = true;
-          this.selectTemplate = false;
-           this.ngxLoading = false;
-        },
-        (error: string) => {
-          console.log('API Error:', error);
-          this.showTemplate = false;
-           this.ngxLoading = false;
-
         }
-      );
+        this.selectTemplate = false;
+        this.ngxLoading = false;
+      },
+      (error: string) => {
+        console.log('API Error:', error);
+        this.showTemplate = false;
+        this.ngxLoading = false;
+
+      }
+    );
   }
   addRowsToJson(jsonBody: any) {
     throw new Error('Method not implemented.');
@@ -775,8 +781,12 @@ export class AiChatManagerComponent implements OnInit {
       this.referenceService.showSweetAlertSuccessMessage(event);
       this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
+    this.chatGptIntegrationSettingsDto.prompt = '';
+    this.chatGptIntegrationSettingsDto.designPdf = false;
+    this.chatGptIntegrationSettingsDto.templateId = 0;
     this.openShareOption = false;
     this.showTemplate = false;
+    this.openAssetPage = false;
     this.emailTemplateService.emailTemplate.jsonBody = "";
   }
   private checkDamAccess() {
@@ -811,6 +821,18 @@ export class AiChatManagerComponent implements OnInit {
     } else{
       this.selectTemplate = false;
     }
-   
+  }
+  readBeeTemplateData(event :any) {
+    this.emittdata = event;
+      this.isBeeTemplateComponentCalled = false;
+      this.openAssetPage = true;
+    }
+  createAsset(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptIntegrationSettingsDto.designPdf = true;
+    const templateId = this.selectedTemplateList.find(t => t.name === 'Basic Blank Template-co default').id;
+    this.chatGptIntegrationSettingsDto.templateId = templateId;
+    this.openDesignTemplate(this.chatGptIntegrationSettingsDto);
   }
 }
