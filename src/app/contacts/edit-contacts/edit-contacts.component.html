@@ -426,16 +426,20 @@
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
 										style="margin-right: 5px;" [ngClass]="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner ? 'media-btn' : 'no-media-btn'">
-										<div *ngIf="!clickBoard && !filePrevew"
-											class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
-											<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+										<div *ngIf="!clickBoard && !filePrevew" class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
+											 <div *ngIf="isPartnerUserList" class="btn btn-xs l-g-view margin-space mt3 pull-right" (click)="toggleFilterOption()">
+												<span data-placement="left" data-toggle="tooltip" title="Filter">
+													<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+												</span>
+											</div>
+											<div *ngIf="!isPartnerUserList && !isSegmentation" (click)="modelForSeg()"
 												style="float: right; cursor: pointer;" data-toggle="modal"
 												data-target="#filterModal">
 												<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 													data-placement="left" title="Apply a filter"
 													style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 											</div>
-											<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+											<div *ngIf="!isPartnerUserList && isSegmentation" (click)="removeSegmentation()"
 												style="float: right; cursor: pointer;">
 												<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 													data-placement="left" title="Remove a filter"
@@ -498,6 +502,7 @@
 										</div>
 									</div>
 								</div>
+								<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
@@ -1361,15 +1366,20 @@
 							</div>
 								<div class="col-xs-12 col-md-7 col-sm-7 col-lg-7 pr0">
 								<div class="d-flex justify-content-end">
-									<div class="" style="padding: 0;">
-										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+									<div *ngIf="isPartnerUserList" class="btn btn-xs l-g-view margin-space mt3 pull-right" (click)="toggleFilterOption()">
+										<span data-placement="left" data-toggle="tooltip" title="Filter">
+											<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+										</span>
+									</div>
+								<div class="" style="padding: 0;">
+										<div *ngIf="!isSegmentation && !isPartnerUserList" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; " data-toggle="modal"
 											data-target="#filterModal">
 											<i class="fa fa-filter ml_16 mr10" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>
-										<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+										<div *ngIf="isSegmentation && !isPartnerUserList" (click)="removeSegmentation()"
 											style="float: left; cursor: pointer; padding-right: 20px;">
 											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
@@ -1443,6 +1453,7 @@
 								</div>
 								</div>
 							</div>
+							<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
 							<div class="portlet-body">
 								<div class="page-bar remove_table_bg register_bg mb10" *ngIf="!showEditContactData"
 									style="border:none !important;">
@@ -2196,3 +2207,8 @@
 </app-share-unpublished-content>
 
 </div>
+<ng-template #filterOptionDiv>
+	<app-custom-ui-filter [showDateFilters] ="showFilterOption" *ngIf="showFilterOption" [type]="'Partners'" 
+	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
+		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
+</ng-template>

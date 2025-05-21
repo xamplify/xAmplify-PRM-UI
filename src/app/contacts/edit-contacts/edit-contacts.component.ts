@@ -161,6 +161,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	downloadDataList = [];
 	isEmailExist: boolean = false;
 	contactsCompanyListSync: boolean = false;
+	// XNFR-899
+	showFilterOption: boolean = false;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
@@ -3875,5 +3877,46 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	handleCriteriaValue(value: any, index: any) {
 		this.criterias[index].value1 = value.trim();
 	}
-
+	toggleFilterOption() {
+		this.showFilterOption = !this.showFilterOption;
+	}
+	partnersFilter(event: any) {
+		let input = event;
+		this.criterias = input['criterias'];
+		this.pagination.filterOptionEnable = input['isCriteriasFilter'];
+		this.pagination.customFilterOption = true;
+		this.pagination.pageIndex = 1;
+		if(this.userListPaginationWrapper.userList.contactType == 'active'){
+			this.listOfSelectedContactListByType('active');
+		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
+			this.listOfSelectedContactListByType('non-active');
+		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
+			this.listOfSelectedContactListByType('unsubscribed');
+		}else{
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+		}
+	}
+	closeFilterEmitter(event: any) {
+		if (event === 'close') {
+			this.showFilterOption = false;
+			this.criterias = new Array<Criteria>();
+			this.pagination.criterias = null;
+		} else {
+			this.showFilterOption = true
+		}
+		if (typeof event === 'object') {
+			this.showFilterOption = false;
+			this.criterias = new Array<Criteria>();
+			this.pagination.criterias = (this.criterias && this.criterias.length > 0) ? this.criterias : null;
+		}
+		if(this.userListPaginationWrapper.userList.contactType == 'active'){
+			this.listOfSelectedContactListByType('active');
+		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
+			this.listOfSelectedContactListByType('invalid');
+		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
+			this.listOfSelectedContactListByType('unsubscribed');
+		}else{
+		this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+		}
+	}
 }
