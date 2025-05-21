@@ -253,10 +253,10 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
   saveWorkflows() {
     this.customResponse = new CustomResponse();
-    this.referenceService.goToTop();
     this.getRepliesData();
     let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
     if(errorLength===0){
+    this.referenceService.goToTop();
       this.hasError = false;
       console.log(this.replies);
       if(this.isPlaybookWorkflow){
@@ -266,6 +266,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       }
     }else{
       this.hasError = true;
+      this.referenceService.goToDiv('campaign-work-flow');
     }
 
   }

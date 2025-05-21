@@ -1,6 +1,6 @@
 <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 <ng-container *ngIf="!loader.isLoading">
-   <div class="portlet light shadow">
+   <div class="portlet light shadow" id="campaign-work-flow">
       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !loader.isLoading">
       </app-response-message>
       <div class="portlet-title">
@@ -46,8 +46,8 @@
                   <strong>Please complete the required fields</strong>
                </div>
                <fieldset *ngIf="replies?.length>0">
-                  <legend *ngIf="!isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
-                  <legend *ngIf="isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_PLAYBOOK}}</legend>
+                  <legend class ="workflow-title" *ngIf="!isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                  <legend class ="workflow-title" *ngIf="isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_PLAYBOOK}}</legend>
                   <div *ngFor="let reply of replies;let i=index">
                      <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                         <div class="portlet-title custom-change-css"
@@ -173,9 +173,9 @@
                                     </div>
 
                                     <div class="col-xs-12 col-sm-4 workflow-margin">
-                                       <label class="default-cursor f-w-600" id="reply-days-{{reply.divId}}" for="reason">Enter Custom Days* </label>
+                                       <label class="default-cursor f-w-600" id="reply-days-{{reply.divId}}" for="reason">Send In X Days* </label>
                                        <input type="number" placeholder="Enter Days" class="form-control full-width" [(ngModel)]="reply.customDays"
-                                          name="reply.customDays" autocomplete="off" (input)="validateReplyInDays(reply)">
+                                          name="reply.customDays" autocomplete="off" (input)="validateReplyInDays(reply)" min="1" oninput="validity.valid||(value='');">
                                      <span *ngIf="!isValidCustomDays"><strong>(Minimum 1 Day)</strong></span>
                                     </div>
                                  </div>
