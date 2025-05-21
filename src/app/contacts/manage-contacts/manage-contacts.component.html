@@ -1095,6 +1095,7 @@
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="page-bar remove_cardBgcolor neg_mrg_top14 light_bg_removal">
+                <ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
                <div class="tab-content table-padding p0">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">
@@ -1112,14 +1113,19 @@
                         <ng-template #filterButton>
                            <div class="btn-group" style="margin-right: 10px;">
                               <div class="inputs" style="float: right;display: flex;">
-                                 <div *ngIf="!isSegmentation" (click)="modelForSeg()"
+                                 <div *ngIf="isPartner" class="btn btn-xs l-g-view margin-space mt3 pull-right" (click)="toggleFilterOption()">
+												<span data-placement="left" data-toggle="tooltip" title="Filter">
+													<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+												</span>
+											</div>
+                                 <div *ngIf="!isPartner && !isSegmentation" (click)="modelForSeg()"
                                     style="float: left; cursor: pointer; margin-right: 15px" data-toggle="modal"
                                     data-target="#filterModal">
                                     <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
                                        data-placement="left" title="Apply a filter"
                                        style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
                                  </div>
-                                 <div *ngIf="isSegmentation" (click)="removeSegmentation()"
+                                 <div *ngIf="!isPartner && isSegmentation" (click)="removeSegmentation()"
                                     style="float: left; cursor: pointer; margin-right: 10px;display: flex;">
                                     <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
                                        data-placement="left" title="Remove a filter"
@@ -1250,7 +1256,9 @@
                                     </ul>
                                  </div>
                               </div>
+                              
                            </div>
+                          
                            <div class="portlet-body">
                               <div class="table-responsive">
                                  <app-loader [model]="httpRequestLoader.isHorizontalCss"
@@ -1958,3 +1966,10 @@
    [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && module!='contacts'"
    [hasDashboardButtonsAccess] ="authenticationService?.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.loggedInThroughOwnVanityUrl && isPartner">
 </app-share-unpublished-content>
+
+
+<ng-template #filterOptionDiv>
+	<app-custom-ui-filter [showDateFilters] ="showFilterOption" *ngIf="showFilterOption" [type]="'Partners'" 
+	 (filterConditionsEmitter)="partnersFilter($event)" [criteria]="criteria"
+		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
+</ng-template>
