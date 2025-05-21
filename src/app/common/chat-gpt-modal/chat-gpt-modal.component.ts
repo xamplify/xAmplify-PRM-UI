@@ -102,6 +102,10 @@ export class ChatGptModalComponent implements OnInit {
   isSidebarVisible: boolean = true;
   isFromOliverSettingsModalPopup: boolean = true;
   callChatGptIntegrationSettingsComponent: boolean = false;
+  accessToken: any;
+  assistantId: any;
+  agentAssistantId: any;
+  integrationType: any;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
@@ -234,13 +238,14 @@ export class ChatGptModalComponent implements OnInit {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     }
-
+    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     if (this.authenticationService.vanityURLEnabled) {
       this.getOliverAgentAccessSettingsForVanityLogin();
     } else {
-       this.getOliverAgentAccessSettings();
+      this.getOliverAgentAccessSettings();
     }
-   
+    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
+    this.fetchOliverActiveIntegration();
   }
 
   private checkDamAccess() {
@@ -1076,6 +1081,25 @@ closeDesignTemplate(event: any) {
     this.showBrainstormWithOliver = flags.showBrainstormWithOliver;
     this.showOliverSparkWriter = flags.showOliverSparkWriter;
     this.showOliverParaphraser = flags.showOliverParaphraser;
+  }
+
+  fetchOliverActiveIntegration() {
+    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+          if (data != null || data != undefined) {
+            this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
+            this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
+            this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
+            this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+          }
+        }
+      }, error => {
+        console.log('Error in fetchOliverActiveIntegration() ', error);
+      });
   }
 
 }

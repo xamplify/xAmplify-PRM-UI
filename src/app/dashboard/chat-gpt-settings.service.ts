@@ -12,6 +12,7 @@ import { OliverAgentAccessDTO } from 'app/common/models/oliver-agent-access-dto'
 export class ChatGptSettingsService {
 
   chatGptSettingsUrl =  this.authenticationService.REST_URL+RouterUrlConstants.chatGptSettings;
+   oliverUrl =  this.authenticationService.REST_URL+ 'oliver/';
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,private http: HttpClient) { 
 
   }
@@ -58,7 +59,7 @@ export class ChatGptSettingsService {
 
   generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    const url = this.chatGptSettingsUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
+    const url = this.oliverUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
 
@@ -211,11 +212,20 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
-  /** XNFR-982 **/
+  /** XNFR-981 **/
   updateOliverAgentConfigurationSettings(oliverAgentAccessDTO: OliverAgentAccessDTO) {
     let loggedInUserId = this.authenticationService.getUserId();
     const url = this.chatGptSettingsUrl + 'updateOliverAgentConfigurationSettings/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url, oliverAgentAccessDTO);
+  }
+
+   fetchOliverActiveIntegration(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let parnerLoggedInRequestParameter = chatGptIntegrationSettingsDto.partnerLoggedIn ? '&partnerLoggedIn=' + chatGptIntegrationSettingsDto.partnerLoggedIn : '&partnerLoggedIn=' + false;
+    let vendorCompanyRequestParameter = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    const url = this.oliverUrl + "/fetchIntegrationDetials?access_token=" + this.authenticationService.access_token + vendorCompanyRequestParameter + userIdRequestParameter + parnerLoggedInRequestParameter;
+    return this.authenticationService.callGetMethod(url);
   }
 
 }

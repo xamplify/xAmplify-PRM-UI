@@ -33,4 +33,5 @@ export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     assistantId:any;
     oliverIntegrationType:any;
     assetName:any;
+    agentAssistantId: any;
 }

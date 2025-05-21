@@ -659,13 +659,13 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
   oliverActiveUiSwitchEventReceiver(event: boolean) {
     this.disableOliverAgentModuleOptions = !event;
     this.campaignAccess.oliverActive = event;
-    this.disableUpdateModulesButton = event && !this.campaignAccess.oliverIntegrationType;
+    this.disableUpdateModulesButton = event && !this.oliverIntegrationType;
     if (!event) {
       this.campaignAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
-      this.campaignAccess.oliverIntegrationType = "";
+      this.oliverIntegrationType = "";
     }
   }
 
