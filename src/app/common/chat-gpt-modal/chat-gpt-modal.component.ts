@@ -31,7 +31,7 @@ export class ChatGptModalComponent implements OnInit {
   @Input() isShowingRouteLoadIndicator: boolean;
   @Input() showLoaderForAuthGuard: boolean;
 
-  @ViewChild (ChatGptIntegrationSettingsComponent) chatGptIntegrationSettingsComponentChildObject: ChatGptIntegrationSettingsComponent;
+  @ViewChild (ChatGptIntegrationSettingsComponent) chatGptIntegrationSettingsChildComponent: ChatGptIntegrationSettingsComponent;
 
   inputText = "";
   isValidInputText = false;
@@ -299,7 +299,7 @@ export class ChatGptModalComponent implements OnInit {
 
     if (this.activeTab == 'settings') {
       this.callChatGptIntegrationSettingsComponent = true;
-      this.chatGptIntegrationSettingsComponentChildObject.getSettings();
+      this.chatGptIntegrationSettingsChildComponent.getSettings();
     } else {
       this.callChatGptIntegrationSettingsComponent = false;
     }
