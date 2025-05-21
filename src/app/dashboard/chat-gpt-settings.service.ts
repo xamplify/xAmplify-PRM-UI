@@ -224,12 +224,17 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPostMethod(url, oliverAgentAccessDTO);
   }
 
-   fetchOliverActiveIntegration(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+  fetchOliverActiveIntegration(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
     let userId = this.authenticationService.getUserId();
     let parnerLoggedInRequestParameter = chatGptIntegrationSettingsDto.partnerLoggedIn ? '&partnerLoggedIn=' + chatGptIntegrationSettingsDto.partnerLoggedIn : '&partnerLoggedIn=' + false;
     let vendorCompanyRequestParameter = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     const url = this.oliverUrl + "/fetchIntegrationDetials?access_token=" + this.authenticationService.access_token + vendorCompanyRequestParameter + userIdRequestParameter + parnerLoggedInRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  fetchOliverActiveIntegrationType(companyId: any) {
+    const url = this.oliverUrl + 'fetchOliverActiveIntegrationType/' + companyId + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
