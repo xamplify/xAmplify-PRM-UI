@@ -506,11 +506,10 @@
 										<div style="margin-left: 20px; margin-top: 10px;">
 											<div>
 												<input class="checkBox_shadow" type="radio" [disabled]="disableOliverAgentModuleOptions"
-													[checked]="oliverIntegrationType =='OPENAI'" value="OPENAI"
-													(change)="onIntegrationTypeChange('OPENAI')">
+													[checked]="oliverIntegrationType =='openai'" value="openai" (change)="onIntegrationTypeChange('openai')">
 												<span class="ml10 mr5">Open AI</span>
 												<input class="checkBox_shadow" type="radio" [disabled]="disableOliverAgentModuleOptions" value="RAGIT"
-													[checked]="oliverIntegrationType =='RAGIT'" (change)="onIntegrationTypeChange('RAGIT')">
+													[checked]="oliverIntegrationType =='ragit'" (change)="onIntegrationTypeChange('ragit')">
 												<span class="ml10">RAGIT</span>
 											</div>
 											<div>
@@ -542,6 +541,13 @@
 													<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverSparkWriterEnabled"
 														[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 													<span class="ml10">Enable Oliver Spark Writer</span>
+												</strong>
+											</div>
+											<div>
+												<strong>
+													<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverParaphraserEnabled"
+														[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+													<span class="ml10">Enable Oliver Paraphraser</span>
 												</strong>
 											</div>
 										</div>

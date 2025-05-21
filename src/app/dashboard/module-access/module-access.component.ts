@@ -119,7 +119,6 @@ export class ModuleAccessComponent implements OnInit {
         }
           
       }
-    
     }
 
   private getAllData() {
@@ -353,13 +352,16 @@ export class ModuleAccessComponent implements OnInit {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
         this.oliverActive = this.campaignAccess.oliverActive;
+        if (this.oliverActive) {
+          this.fetchOliverActiveIntegrationType();
+        }
         this.moduleLoader = false;
       }, _error => {
         this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
-      },() => {
+      }, () => {
         this.disableContactSubscriptionLimitField = !this.campaignAccess.contactSubscriptionLimitEnabled;
-         this.setOliverAgentFlagValues(this.campaignAccess);
+        this.setOliverAgentFlagValues(this.campaignAccess);
       });
     }
   }
@@ -371,7 +373,7 @@ export class ModuleAccessComponent implements OnInit {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.userId = this.companyAndUserDetails.id;
-    if ((this.campaignAccess.oliverActive && this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType)) {
+    if (this.campaignAccess.oliverActive && (this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType)) {
       this.campaignAccess.oliverAccessStatus = true;
       this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
     }
@@ -665,14 +667,28 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
-      this.oliverIntegrationType = "";
     }
   }
 
   onIntegrationTypeChange(selected: any) {
     this.oliverIntegrationType = selected;
     this.disableUpdateModulesButton = false;
-    this.campaignAccess.oliverAccessStatus = true;
+    // this.campaignAccess.oliverAccessStatus = true;
+  }
+
+  fetchOliverActiveIntegrationType() {
+    this.chatGptSettingsService.fetchOliverActiveIntegrationType(this.companyId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+          if (data != null && data != undefined) {
+            this.oliverIntegrationType = data;
+            this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
+          }
+        }
+      }, error => {
+        console.log('Error in fetchOliverActiveIntegrationType() ', error);
+      });
   }
 
 }
