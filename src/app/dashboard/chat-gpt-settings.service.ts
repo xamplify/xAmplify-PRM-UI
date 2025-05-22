@@ -12,6 +12,7 @@ import { OliverAgentAccessDTO } from 'app/common/models/oliver-agent-access-dto'
 export class ChatGptSettingsService {
 
   chatGptSettingsUrl =  this.authenticationService.REST_URL+RouterUrlConstants.chatGptSettings;
+   oliverUrl =  this.authenticationService.REST_URL+ 'oliver/';
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,private http: HttpClient) { 
 
   }
@@ -37,7 +38,7 @@ export class ChatGptSettingsService {
   }
 
   onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
-    const url = `${this.chatGptSettingsUrl}/upload?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.authenticationService.REST_URL}oliver/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
     formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
@@ -46,7 +47,9 @@ export class ChatGptSettingsService {
       {
         type: "application/json"
       }));
-    return this.authenticationService.callPostMethod(url, formData);
+    // chatGptSettings.oliverIntegrationType = 'openai';
+    chatGptSettings.assetName = assetName;
+    return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
 
   generateAssistantText(chatGptSettings: ChatGptIntegrationSettingsDto) {
@@ -56,7 +59,11 @@ export class ChatGptSettingsService {
 
   generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    const url = this.chatGptSettingsUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
+    let suffixUrl = this.authenticationService.REST_URL + 'oliver/';
+    if (chatGptSettings.agentType && chatGptSettings.agentType != 'INSIGHTAGENT' && chatGptSettings.agentType != 'GLOBALCHAT') {
+      suffixUrl = this.chatGptSettingsUrl;
+    }
+    const url = suffixUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
 
@@ -70,8 +77,8 @@ export class ChatGptSettingsService {
     return this.http.delete(url);
   }
 
-  getChatHistoryByThreadId(threadId: string) {
-    const url = this.chatGptSettingsUrl + '/chatHistory/' + threadId + '?access_token=' + this.authenticationService.access_token;
+  getChatHistoryByThreadId(threadId: string, oliverIntegrationType:any, accessToken:any) {
+    const url = this.authenticationService.REST_URL + 'oliver/chatHistory/' + threadId + "/" + accessToken + "/" + oliverIntegrationType + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -86,7 +93,8 @@ export class ChatGptSettingsService {
     let contactJourneyRequestParameter = chatGptIntegrationSettingsDto.isFromContactJourney ? '&contactJourney=' + true : '';
     let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
     let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
-    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm + callIdRequestParam + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParameter = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm + callIdRequestParam + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParameter;
     return this.authenticationService.callGetMethod(url);
   }
 insertTemplateData(chatGptIntegrationSettingsDto: any) {
@@ -111,20 +119,22 @@ listDefaultTemplates(userId:any){
   }
 
   onUploadFiles(pdfFiles: any[], chatGptSettings: ChatGptIntegrationSettingsDto) {
-    const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.authenticationService.REST_URL}oliver/uploadFiles?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    pdfFiles.forEach((pdfFile, index) => {
-      formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
-      formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
-    });
+    // pdfFiles.forEach((pdfFile, index) => {
+    //   formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
+    //   formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
+    // });
 
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    formData.append('chatGptSettingsDTO', new Blob(
-      [JSON.stringify(chatGptSettings)],
-      { type: 'application/json' }
-    ));
+    // formData.append('chatGptSettingsDTO', new Blob(
+    //   [JSON.stringify(chatGptSettings)],
+    //   { type: 'application/json' }
+    // ));
+    chatGptSettings.assets = pdfFiles;
+    // chatGptSettings.oliverIntegrationType = 'openai';
 
-    return this.authenticationService.callPostMethod(url, formData);
+    return this.authenticationService.callPostMethod(url, chatGptSettings);
   }
 
   analyzeCallRecordings(chatGptSettingDTO: any) {
@@ -166,11 +176,11 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
   }
 
-  fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean) {
+  fetchHistories(pagination:Pagination, isPartnerLoggedIn:boolean, oliverIntegrationType:any) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
     let vendorCompanyProfileNameRequestParam = pagination.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + pagination.vendorCompanyProfileName : '';
-    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"?access_token=" + this.authenticationService.access_token + pageableUrl + vendorCompanyProfileNameRequestParam;
+    const url = this.chatGptSettingsUrl + "fetchChatHistories/"+userId+"/"+isPartnerLoggedIn+"/"+oliverIntegrationType+"?access_token=" + this.authenticationService.access_token + pageableUrl + vendorCompanyProfileNameRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -207,11 +217,25 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
-  /** XNFR-982 **/
+  /** XNFR-981 **/
   updateOliverAgentConfigurationSettings(oliverAgentAccessDTO: OliverAgentAccessDTO) {
     let loggedInUserId = this.authenticationService.getUserId();
     const url = this.chatGptSettingsUrl + 'updateOliverAgentConfigurationSettings/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url, oliverAgentAccessDTO);
+  }
+
+  fetchOliverActiveIntegration(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let parnerLoggedInRequestParameter = chatGptIntegrationSettingsDto.partnerLoggedIn ? '&partnerLoggedIn=' + chatGptIntegrationSettingsDto.partnerLoggedIn : '&partnerLoggedIn=' + false;
+    let vendorCompanyRequestParameter = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    const url = this.oliverUrl + "/fetchIntegrationDetials?access_token=" + this.authenticationService.access_token + vendorCompanyRequestParameter + userIdRequestParameter + parnerLoggedInRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  fetchOliverActiveIntegrationType(companyId: any) {
+    const url = this.oliverUrl + 'fetchOliverActiveIntegrationType/' + companyId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
   }
 
 }
