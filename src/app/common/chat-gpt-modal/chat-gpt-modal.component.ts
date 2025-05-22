@@ -111,6 +111,8 @@ export class ChatGptModalComponent implements OnInit {
   assistantId: any;
   agentAssistantId: any;
   integrationType: any;
+  uploadedAssets: any;
+  isReUploadFromPreview: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -239,16 +241,12 @@ export class ChatGptModalComponent implements OnInit {
     this.vectorStoreId = 0;
     this.chatHistoryId = 0;
     this.checkDamAccess();
-    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-    }
     this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     if (this.authenticationService.vanityURLEnabled) {
       this.getOliverAgentAccessSettingsForVanityLogin();
     } else {
       this.getOliverAgentAccessSettings();
     }
-    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     this.fetchOliverActiveIntegration();
     this.chatHistorySortOption.searchKey = '';
   }
@@ -256,6 +254,7 @@ export class ChatGptModalComponent implements OnInit {
   private checkDamAccess() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityUrlFilter = true;
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     }
   }
@@ -528,13 +527,21 @@ export class ChatGptModalComponent implements OnInit {
 
 
   getSelectedAssets(event: any) {
-    this.selectedAssets = event;
+    if (!this.isReUpload) {
+      this.selectedAssets = event;
+    } else {
+      this.uploadedAssets = event;
+    }
   }
+  
 
   submitSelectedAssetsToOliver() {
     this.assetLoader = true;
     this.showOpenHistory = false;
     if (this.selectedFolders.length == 0) {
+      if (this.isReUpload) {
+        this.selectedAssets = this.uploadedAssets;
+      }
       this.pdfFiles = this.selectedAssets;
       // this.getPdfByAssetPaths(this.selectedAssets);
       this.getUploadedFileIds();
@@ -626,6 +633,8 @@ export class ChatGptModalComponent implements OnInit {
         let self = this
         if (!self.isReUpload) {
           self.isfileProcessed = true;
+        } else if (self.isReUploadFromPreview) {
+          self.isfileProcessed = true;
         } else if (self.isReUpload) {
           setTimeout(function () {
             self.scrollToBottom();
@@ -706,17 +715,19 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  closeManageAssets() {
+ closeManageAssets() {
     this.showView = false;
     if (!this.isReUpload && !this.isfileProcessed) {
       this.selectedAssets = [];
       this.selectedFolders = [];
+      this.isfileProcessed = false;
     }
   }
 
   reUploadFiles() {
-    this.openAssetsPage();
     this.isReUpload = true;
+    this.isReUploadFromPreview = false;
+    this.openAssetsPage();
   }
 
   setInputText(text: string) {
@@ -1128,6 +1139,12 @@ closeDesignTemplate(event: any) {
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
       });
+  }
+
+  uploadFilesFromPreview() {
+    this.isReUpload = true;
+    this.isReUploadFromPreview = true;
+    this.openAssetsPage();
   }
 
 }

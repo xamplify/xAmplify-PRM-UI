@@ -143,7 +143,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	proxyAssetPath: any;
 	showOliver: boolean;
 	@Input() FromOliverPopUp: boolean = false;
-	@Input() selectedItemFromOliver: any;
+	@Input() selectedItemFromOliver: any[] = [];
     selectedItems: any[] = []; 
     @Output() notifyasset = new EventEmitter<any>();
 	formData: any = new FormData();
@@ -181,7 +181,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.FromOliverPopUp) {
 			this.SuffixHeading = 'Select ';
 			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
-				this.selectedItems = this.selectedItemFromOliver;
+				this.selectedItems = [];
+				for (let item of this.selectedItemFromOliver) {
+					this.selectedItems.push(item);
+				}
 			}
 		} else if (!this.FromOliverPopUp) {
 			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
