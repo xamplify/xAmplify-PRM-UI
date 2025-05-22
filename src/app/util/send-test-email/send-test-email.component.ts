@@ -84,7 +84,7 @@ export class SendTestEmailComponent implements OnInit {
   onAddedFunc = this.beforeAdd.bind(this);
   addFirstAttemptFailed = false;
   errorMessages = { 'must_be_email': 'Please be sure to use a valid email format',
-    'invalid_domain': 'Email domain is not allowed'
+    'invalid_domain': 'Email domain is not whitelisted'
    };
   validators = [this.mustBeEmail.bind(this)];
 
