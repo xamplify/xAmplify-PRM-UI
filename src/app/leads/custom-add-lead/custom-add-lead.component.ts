@@ -1320,6 +1320,7 @@ export class CustomAddLeadComponent implements OnInit {
           } else {
             sfCfData.value = formLabel.value;
           }
+          sfCfData.formLabel = formLabel;
           sfCfDataList.push(sfCfData);
         }
         this.lead.sfCustomFieldsDataDto = sfCfDataList;

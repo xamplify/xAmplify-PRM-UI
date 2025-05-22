@@ -74,3 +74,14 @@
   .mt3{
     margin-top: 3px;
   }
+  .switch-choose {
+  position: relative;
+  top: 6px;
+  left: -5px;
+}
+.workflow-margin{
+  margin: 5px 0px;
+}
+.workflow-title{
+  font-size: 15px;
+}

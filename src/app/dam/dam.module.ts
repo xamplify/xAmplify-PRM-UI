@@ -6,7 +6,6 @@ import { CommonComponentModule } from "../common/common.module";
 import { DamRoutingModule } from './dam-routing.module';
 import { ManageDamComponent } from './manage-dam/manage-dam.component';
 import {DamService} from './services/dam.service';
-import { AddDamComponent } from './add-dam/add-dam.component';
 import { PublishedDamListComponent } from './published-dam-list/published-dam-list.component';
 import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
@@ -23,7 +22,7 @@ import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analy
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
+  declarations: [ManageDamComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
                   VideoBasedReportsComponent,
                   DamPartnerCompanyAnalyticsComponent],
   providers: [DamService, VideoBaseReportService]

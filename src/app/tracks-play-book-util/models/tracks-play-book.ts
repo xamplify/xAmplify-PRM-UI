@@ -54,4 +54,5 @@ export class TracksPlayBook {
 
 //XNFR-921
     workflowDtos:WorkflowDto[] = []
+    deletedWorkflowIds:number[]=[];
 }

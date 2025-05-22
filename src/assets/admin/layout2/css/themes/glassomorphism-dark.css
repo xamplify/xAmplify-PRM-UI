@@ -4435,7 +4435,7 @@ markdown pre,.aligin-para{
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a,.nav .submenu-parent.open > .submenu-toggle,.submenu-toggle:focus {
   background: rgb(146 151 179 / 39%) !important;
   color: #fcfeff!important;
   border-radius: 8px!important;

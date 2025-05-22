@@ -258,7 +258,7 @@ export class ContactDetailsComponent implements OnInit {
         event.country = null;
       }
       this.editUser.user = event;
-      this.contactService.updateContactListUser(this.selectedContactListId, this.editUser).subscribe(
+      this.contactService.updateContactListUser(this.selectedContactListId, this.editUser, false).subscribe(
         data => {
           if (data.access) {
             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);

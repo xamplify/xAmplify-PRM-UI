@@ -45,7 +45,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	@Input() criteria: Criteria ;
 	isAssetTabSelected: any = false;
 	sortOption: SortOption = new SortOption();
-
+	@Input() showDateFilters : boolean;
 
 	constructor(private router: Router,public authenticationService: AuthenticationService) {
 	}

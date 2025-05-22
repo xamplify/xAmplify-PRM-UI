@@ -504,8 +504,10 @@
                                   style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                                 <a class="custom-icon"
                                   *ngIf="isVendorVersion && !lead.canUpdate && !authenticationService?.module?.isMarketingCompany && authenticationService?.module?.isAnyAdminOrSupervisor"
-                                  data-rel="fancybox-button" (click)="openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
-                                  title="Send Email" id="lead"><i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                                  data-rel="fancybox-button" (click)="lead?.associatedDealId > 0 ? '' : openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
+                                  [attr.data-original-title]="lead?.associatedDealId > 0 ? 'Email disabled for converted leads.' : 'Send Email'" id="lead">
+                                  <i class="fa fa-envelope IconCustomization" aria-hidden="true"
+                                    [ngClass]="lead?.associatedDealId > 0 ? 'disabled gray' : ''"></i>
                                   <div class="clickicons"></div>
                                 </a>
                               </div>

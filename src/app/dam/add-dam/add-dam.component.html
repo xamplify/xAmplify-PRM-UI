@@ -1,17 +1,17 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+<div [ngClass]="isFromOliverPopup ? '' : 'page-content'" [style.background-color]="referenceService.pageContnetBgColor">
    <div class="row">
       <div class="col-xs-12">
          <div class="tile remove_shadow_bgcolor" style="border-radius: 8px;">
             <div class="page-bar bar-border-bottom">
-               <ul class="page-breadcrumb">
+               <ul *ngIf="!isFromOliverPopup" class="page-breadcrumb">
                   <li>
                      <i class="fa fa-home" aria-hidden="true"></i>
-                     <a [routerLink]="referenceService.homeRouter">Home</a>
+                     <a (click)="nagivatetoRouter('home')">Home</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li *ngIf="!isFromApprovalModule">
-                     <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                     <a (click)="nagivatetoRouter('SelectModule')" translate>Select Module</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li *ngIf="!isFromApprovalModule">
@@ -20,7 +20,7 @@
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li *ngIf="isFromApprovalModule">
-                     <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+                     <a (click)="nagivatetoRouter('ManageApproval')" translate>Manage Approval</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li>
