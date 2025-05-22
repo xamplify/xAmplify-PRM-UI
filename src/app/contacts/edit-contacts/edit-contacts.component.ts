@@ -2570,7 +2570,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					},
 					error => {
 						this.xtremandLogger.error(error);
-						this.loading = false
+						this.loading = false;
+						this.refService.showSweetAlertServerErrorMessage();
 					},
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
