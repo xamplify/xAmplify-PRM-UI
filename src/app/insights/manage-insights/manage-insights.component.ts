@@ -73,7 +73,7 @@ export class ManageInsightsComponent implements OnInit {
       container: '#dashboard-container',
       dashboardToken: this.dashboardToken,
       width: '100%',
-      height: '500px',
+      height: '1000px',
       filters: {
         "Company": [this.companyId],
       }
