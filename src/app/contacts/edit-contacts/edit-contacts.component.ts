@@ -3912,7 +3912,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if(this.userListPaginationWrapper.userList.contactType == 'active'){
 			this.listOfSelectedContactListByType('active');
 		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
-			this.listOfSelectedContactListByType('invalid');
+			this.listOfSelectedContactListByType('non-active');
 		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
 			this.listOfSelectedContactListByType('unsubscribed');
 		}else{
