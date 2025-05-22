@@ -951,6 +951,7 @@ private beforeAdd(tag: any) {
 		module.isEmailTemplate = data.emailTemplates;
 		module.hasFormAccess = data.forms;
 		module.hasLandingPageAccess = data.pages;
+    module.design = data.design;
 		
 	}
 
