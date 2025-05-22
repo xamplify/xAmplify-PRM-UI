@@ -105,11 +105,12 @@ export class ChatGptModalComponent implements OnInit {
   isSidebarVisible: boolean = true;
   isFromOliverSettingsModalPopup: boolean = true;
   callChatGptIntegrationSettingsComponent: boolean = false;
+   openAssetPage: boolean = false;
+  emittdata: any;
   accessToken: any;
   assistantId: any;
   agentAssistantId: any;
   integrationType: any;
-
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -445,15 +446,19 @@ export class ChatGptModalComponent implements OnInit {
     this.emitterData(event);
   }
 
-  private emitterData(event: any) {
+ private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
       this.referenceService.showSweetAlertSuccessMessage(event);
       this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
+    this.chatGptIntegrationSettingsDto.prompt = '';
+    this.chatGptIntegrationSettingsDto.designPdf = false;
+    this.chatGptIntegrationSettingsDto.templateId = 0;
     this.emailTemplateService.emailTemplate.jsonBody = "";
     this.openShareOption = false;
+    this.openAssetPage = false;
     this.showTemplate = false;
   }
 
@@ -929,8 +934,13 @@ export class ChatGptModalComponent implements OnInit {
           this.selectTemplate = true;
           this.templateLoader = false;
         }
-        this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
-        this.showTemplate = true;
+        if (this.chatGptIntegrationSettingsDto.designPdf) {
+          this.emittdata = JSON.stringify(response.data);
+          this.openAssetPage = true;
+        } else {
+          this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+          this.showTemplate = true;
+        }
         this.selectTemplate = false;
         this.templateLoader = false;
       },
@@ -1090,6 +1100,15 @@ closeDesignTemplate(event: any) {
     this.showBrainstormWithOliver = flags.showBrainstormWithOliver;
     this.showOliverSparkWriter = flags.showOliverSparkWriter;
     this.showOliverParaphraser = flags.showOliverParaphraser;
+  }
+
+  createAsset(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptIntegrationSettingsDto.designPdf = true;
+    const templateId = this.selectedTemplateList.find(t => t.name === 'Basic Blank Template-co default').id;
+    this.chatGptIntegrationSettingsDto.templateId = templateId;
+    this.openDesignTemplate(this.chatGptIntegrationSettingsDto);
   }
 
   fetchOliverActiveIntegration() {

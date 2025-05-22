@@ -35,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate  || selectTemplate? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage  ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -48,16 +48,17 @@
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
           (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
-        [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
+        [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
           [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
           (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+          <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
         <div classs="row">
-          <button *ngIf="!showView" type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
+          <button *ngIf="!showView && !openAssetPage" type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
             style="position: absolute;  top: 12px;right: 12px; width: 27px;height: 27px;" (click)="showOliverIcon()">
             <i class="fa fa-times m0" aria-hidden="true"></i></button>
           <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
@@ -112,7 +113,7 @@
                   </div>
                 </div>
               </div> -->
-          <div *ngIf="!showView" class="d-flex oliver_flex">
+          <div *ngIf="!showView && !openAssetPage" class="d-flex oliver_flex">
             <div class="side_bar" [ngClass]="{ 'collapsed': !isSidebarVisible }">
               <div class="sidebar-header">
                 <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
@@ -689,6 +690,7 @@
             (click)="copyChatGPTText(message.content)"></i></div>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
         <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

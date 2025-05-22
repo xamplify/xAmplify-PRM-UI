@@ -2547,7 +2547,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			this.editUser.user = event;
 			this.addContactModalClose();
-			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
+			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser, this.isPartner)
 				.subscribe(
 					(data: any) => {
 						this.loading = false;
@@ -3919,4 +3919,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		}
 	}
+
+	
 }

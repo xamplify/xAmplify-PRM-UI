@@ -1304,7 +1304,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}
 			this.editUser.user = event;
 			this.addPartnerModalClose();
-			this.contactService.updateContactListUser(this.partnerListId, this.editUser)
+			this.contactService.updateContactListUser(this.partnerListId, this.editUser, true)
 				.subscribe(
 					(data: any) => {
 						if (data.access) {

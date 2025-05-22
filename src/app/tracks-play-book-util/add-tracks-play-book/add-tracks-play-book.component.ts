@@ -1908,7 +1908,7 @@ addTagsCondition(selectedTags:any[]) {
 
   tooltipMessage(tracksPlayBook):string {
     if(this.SubmitButtonValue ==='Update' && tracksPlayBook.published && this.isButtonDisabled) {
-      return `${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
+      return `${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} cannot be ${tracksPlayBook.published ? "updated": "published"} as the end date has expired.`;
     } 
     return '';
   }

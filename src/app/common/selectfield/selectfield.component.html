@@ -27,6 +27,9 @@
       <div class="modal-body">
         <div *ngIf="isSelectDivOpen">
           <div class="table-responsive">
+            <app-response-message class="pg8" [customResponse]="customFieldsResponse"
+              *ngIf="customFieldsResponse.isVisible">
+            </app-response-message>
             <div class="alert alert-info">
               <strong *ngIf="!isMyprofile">**Only the chosen fields will be displayed in the
                 report.</strong>
@@ -166,12 +169,10 @@
           <div class="right-buttons">
             <div *ngIf="!showBackButton">
               <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
-              <button class="btn btn-primary" (click)="submit()"
-              [disabled]="!(pager.pages && pager.pages.length)"
+              <button class="btn btn-primary" (click)="submit()" [disabled]="!(pager.pages && pager.pages.length)"
                 *ngIf="!isMyprofile">Email
                 The Report</button>
-              <button class="btn btn-primary" (click)="submit()"
-              [disabled]="!(pager.pages && pager.pages.length)"
+              <button class="btn btn-primary" (click)="submit()" [disabled]="!(pager.pages && pager.pages.length)"
                 *ngIf="isMyprofile">Save</button>
             </div>
             <div *ngIf="showBackButton">

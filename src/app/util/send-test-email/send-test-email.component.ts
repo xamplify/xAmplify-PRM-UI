@@ -118,6 +118,7 @@ export class SendTestEmailComponent implements OnInit {
     }else if (this.isLeadOptionClicked) {
       this.findSendReminderLeadEmailTemplate();
     }else if(this.isFromDomainWhiteListing){
+      this.headerTitle = "Send Welcome Mail";
       this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();

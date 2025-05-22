@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpClient } from "@angular/common/http";
@@ -101,6 +101,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
   existingSlug = "";
   loggedInUserCompanyId:number;
   slug=""
+  @Input () isFromOliverPopup: boolean = false;
+  @Input() assetData: any;
+ @Output() notifyEmit: EventEmitter<any> = new EventEmitter();
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -126,7 +129,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
       this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
-      this.getCompanyId();
+         this.getCompanyId();
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
       if (this.router.url.indexOf("/edit") > -1) {
@@ -144,13 +147,19 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.modalTitle = "Add Details";
         this.saveOrUpdateButtonText = "Save";
         this.listCategories(false);
-        this.httpClient
+        if (this.isFromOliverPopup) {
+          this.jsonBody = JSON.stringify(this.assetData);
+          this.beeContainerInput["jsonBody"] = this.jsonBody;
+          this.ngxloading = false;
+        } else{
+          this.httpClient
           .get("assets/config-files/bee-default-asset.json")
           .subscribe((data) => {
             this.jsonBody = JSON.stringify(data);
             this.beeContainerInput["jsonBody"] = this.jsonBody;
             this.ngxloading = false;
           });
+        }
       }
       this.findAssetPublishEmailNotificationOption();
       /** XNFR-884 **/
@@ -377,7 +386,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.referenceService.assetResponseMessage = result.message;
             if (this.isFromApprovalModule) {
               this.goBackToManageApproval();
-            } else {
+            } else if(this.isFromOliverPopup){
+              this.notifyEmit.emit('Asset Created');
+            }else {
               this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
             }
           } else if (result.statusCode == 401) {
@@ -493,6 +504,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
   goBack() {
     if (this.isFromApprovalModule) {
       this.goBackToManageApproval();
+    }else if (this.isFromOliverPopup) {
+      this.notifyEmit.emit();
     } else {
       this.goToManageDam();
     }
@@ -1028,5 +1041,13 @@ setVendorSignatureRequired(event){
     this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 
-
+nagivatetoRouter(urlType :any){
+		if(urlType =='home'){
+			this.referenceService.goToRouter(this.referenceService.homeRouter);
+		}else if(urlType =='SelectModule'){
+			this.referenceService.goToRouter(this.referenceService.selectModuleRouter);
+		}else if(urlType =='ManageApproval'){
+			this.referenceService.goToRouter(this.referenceService.approvalModuleRouter);
+		}
+		}
 }

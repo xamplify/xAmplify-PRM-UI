@@ -2,8 +2,13 @@
   <div class="modal-body">
     <div class="row" [ngClass]="fromOliverPopup ? 'template-selection' : ''">
       <button class="btn close_btn" (click)="closeSelectionTemplate()">×</button>
+      <ul class="mix-filter">
+          <li class="filter" [class.active]="filterType === 'All'" (click)="showEmailTemplates('All')" translate>All </li>
+          <li class="filter" [class.active]="filterType === 'Email'" (click)="showEmailTemplates('Email')" translate>Email</li>
+          <li class="filter"[class.active]="filterType === 'EmailCo-branding'"  (click)="showEmailTemplates('EmailCo-branding')" translate>Email Co-Branding</li>
+        </ul>
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
-        *ngFor="let emailTemplate of selectedTemplateList; let i = index">
+        *ngFor="let emailTemplate of selectedTemplatetype; let i = index">
         <div class="grid-box imgage-paddings grid-email-card pointer"
           [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' : ''"
           (click)="selectEmailTemplate(emailTemplate)">

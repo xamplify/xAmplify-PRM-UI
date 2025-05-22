@@ -51,6 +51,7 @@ export class SelectfieldComponent implements OnInit {
   loggedInUserType: string = '';
   isMyprofile: boolean = false;
   defaultSelectedFieldsDtos: Array<any> = new Array<any>();
+  customFieldsResponse: CustomResponse = new CustomResponse();
   constructor(public dashboardService: DashboardService, public authenticationService: AuthenticationService, private pagerService: PagerService,
     public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService, public paginationComponent: PaginationComponent
     , public router: Router
@@ -91,7 +92,7 @@ export class SelectfieldComponent implements OnInit {
     if (this.opportunityType === 'LEAD') {
       this.excludedLabels = ["LastName", "Last_Name", "Company", "Email"];
     } else {
-      this.excludedLabels = ["Name", "dealname", "name", "title", "symptom", "Account_Name", "Deal_Name", "CloseDate", "closedate", "expectedCloseDate", "expected_close_date", "FOppTargetDate", "Closing_Date", "Close_Date", "Amount", "amount","AMOUNT", "value", "FOppValue","CLOSE_DATE","DEAL_NAME"];
+      this.excludedLabels = ["Name", "dealname", "name", "title", "symptom", "Account_Name", "Deal_Name", "CloseDate", "closedate", "expectedCloseDate", "expected_close_date", "FOppTargetDate", "Closing_Date", "Close_Date", "Amount", "amount", "AMOUNT", "value", "FOppValue", "CLOSE_DATE", "DEAL_NAME"];
     }
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -303,25 +304,18 @@ export class SelectfieldComponent implements OnInit {
             this.updateHeaderCheckbox();
             this.setFieldsPage(1);
           }
+          else if (response.statusCode === 401 && response.message === "Expired Refresh Token") {
+            this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
+          } 
           this.ngxloading = false;
         },
-        error => {console.log(error)
+        error => {
+          console.log(error)
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.customFieldsResponse = new CustomResponse('ERROR', errorMessage, true);
           this.ngxloading = false;
         },
-        () => {
-          // $.each(this.allItems, function (_index: number, customFiledDto: any) {
-          //   if (customFiledDto.selected) {
-          //     self.allItems.push(customFiledDto);
-          //   }
-          //   if (customFiledDto.columnOrder >= 1) {
-          //     self.allItems.sort((a, b) => {
-          //       if (a['columnOrder'] === null) return 1;
-          //       if (b['columnOrder'] === null) return -1;
-          //       return a['columnOrder'] - b['columnOrder'];
-          //     });
-          //   }
-          // });
-        });
+        () => { });
   }
 
 }
