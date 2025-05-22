@@ -3900,16 +3900,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	closeFilterEmitter(event: any) {
 		if (event === 'close') {
 			this.showFilterOption = false;
-			this.criterias = new Array<Criteria>();
 			this.pagination.criterias = null;
 		} else {
 			this.showFilterOption = true
 		}
 		if (typeof event === 'object') {
 			this.showFilterOption = false;
-			this.criterias = new Array<Criteria>();
 			this.pagination.criterias = (this.criterias && this.criterias.length > 0) ? this.criterias : null;
 		}
+		this.criteria = new Criteria();
+		this.criterias = new Array<Criteria>();
+		this.pagination.criterias = null;
 		if(this.userListPaginationWrapper.userList.contactType == 'active'){
 			this.listOfSelectedContactListByType('active');
 		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
