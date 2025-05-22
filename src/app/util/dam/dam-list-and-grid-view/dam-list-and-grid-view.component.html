@@ -679,7 +679,7 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Custom Upload Button -->
-						<button *ngIf="FromOliverPopUp && !isPartnerView" (click)="fileInput.click()"
+						<button *ngIf="FromOliverPopUp && !isPartnerView && !authenticationService?.module?.loggedInThroughVendorVanityUrl" (click)="fileInput.click()"
 							class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate="" type="button">
 							<span class="btn btn-primary transition d-inline"><span data-placement="bottom" data-toggle="tooltip"
 									title="Add New Asset">

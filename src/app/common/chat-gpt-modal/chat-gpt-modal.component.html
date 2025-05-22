@@ -157,7 +157,7 @@
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
                   <ul class="nav submenu" *ngIf="isAgentSubmenuOpen">
-                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights"
+                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner)"
                       [ngClass]="{'active': activeTab === 'askpdf'}">
                       <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                         <i class="fa fa-bar-chart"></i> Oliver Insights
