@@ -474,7 +474,13 @@
 																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"  aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
-																			
+																			<a class="oliveIcon mr5"
+																				*ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
+																				data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+																				<div class="oliveBackground">
+																					<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																				</div>
+																			</a>
 																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Delete"
 																				(click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)">
