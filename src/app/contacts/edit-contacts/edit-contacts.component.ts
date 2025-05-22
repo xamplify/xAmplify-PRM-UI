@@ -3879,7 +3879,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias[index].value1 = value.trim();
 	}
 	toggleFilterOption() {
-		this.showFilterOption = !this.showFilterOption;
+		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
 		let input = event;

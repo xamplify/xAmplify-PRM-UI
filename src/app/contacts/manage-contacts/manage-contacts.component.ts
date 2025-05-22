@@ -3149,7 +3149,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	toggleFilterOption() {
-		this.showFilterOption = !this.showFilterOption;
+		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
 		let input = event;
