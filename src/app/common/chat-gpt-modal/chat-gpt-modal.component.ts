@@ -517,7 +517,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
+    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
       this.AskAiTogetData();
     }
   }
