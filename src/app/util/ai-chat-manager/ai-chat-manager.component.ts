@@ -134,8 +134,7 @@ export class AiChatManagerComponent implements OnInit {
         this.chatGptIntegrationSettingsDto.vendorDam = true;
         this.chatGptIntegrationSettingsDto.id = this.asset.id;
         // this.getThreadId(this.chatGptIntegrationSettingsDto);
-      }
-      if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+      } else if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
         this.chatGptIntegrationSettingsDto.folderDam = true;
         this.isFromFolderView = true;
         this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1;
