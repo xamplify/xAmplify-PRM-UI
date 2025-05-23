@@ -373,7 +373,7 @@ export class ModuleAccessComponent implements OnInit {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.userId = this.companyAndUserDetails.id;
-    if (this.campaignAccess.oliverActive && (this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType)) {
+    if (this.campaignAccess.oliverActive && ((this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType))) {
       this.campaignAccess.oliverAccessStatus = true;
       this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
     }
