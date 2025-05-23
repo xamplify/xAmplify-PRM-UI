@@ -65,6 +65,7 @@ export class SelectEmailTemplateComponent implements OnInit {
 
   findEmailTemplates(pagination:Pagination){
     this.emailTemplatesLoader = true;
+    pagination.filterBy = this.properties.campaignRegularEmailsFilter;
     this.campaignService.findCampaignEmailTemplates(pagination).subscribe(
       response=>{
           const data = response.data;
