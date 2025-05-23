@@ -60,9 +60,9 @@
                            </div>
                            <div class="col-xs-12 col-lg-6 mt3">
                               <div class="pull-right">
-                                 <label *ngIf="isPlaybookWorkflow && !authenticationService.isPrm" class="f-w-600"
+                                 <label *ngIf="isPlaybookWorkflow && !(authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember)" class="f-w-600"
                                     translate>Choose Template</label>
-                                 <switch *ngIf="isPlaybookWorkflow && !authenticationService.isPrm"
+                                 <switch *ngIf="isPlaybookWorkflow && !(authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember)"
                                     [status]="reply.customTemplateSelected" [onText]="callActionSwitch.onTextValue"
                                     [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch"
