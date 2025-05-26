@@ -36,6 +36,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   isZeroDefaultsYourTemplates: boolean = false;
   isZeroDefaultsPartnerNotifications: boolean = false;
   cacheBuster = '?t=' + new Date().getTime();
+  selectedCategory: string = 'all';  
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties, public utilService: UtilService) { }
 
   ngOnInit() {
@@ -50,6 +51,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   showAllVanityTemplates(type: string, index: number) {
     this.selectedTypeIndex = index;
     this.pagination.pagedItems = [];
+    this.selectedCategory = 'all';
     this.vanityURLService.selectedTypeIndex = index;
     this.pagination.filterKey = type;
     this.pagination.pageIndex = 1;
@@ -68,15 +70,18 @@ export class VanityEmailTemplatesComponent implements OnInit {
       pagination.userId = this.authenticationService.getUserId();
       pagination.isAdmin = this.authenticationService.module.isAdmin;
       pagination.companyId = this.referenceService.companyId;
+      pagination.category = this.selectedCategory; 
       this.pagination.selectedType = this.activeTab == 'templates' ? true : false;
       this.cacheBuster = '?t=' + new Date().getTime();
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
           if (data.vanityEmailTemplates.length == 0 && (this.pagination.searchKey == '' || this.pagination.searchKey == "") && this.pagination.filterKey == "DEFAULT") {
-            this.isZeroDefaultsTemplates = true;
-            this.showAllVanityTemplates("CUSTOM", 1);
-            return;
+            if(this.selectedCategory == 'all'){
+              this.isZeroDefaultsTemplates = true;
+              this.showAllVanityTemplates("CUSTOM", 1);
+              return;  
+            }
           }
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.vanityEmailTemplates);
@@ -159,8 +164,16 @@ export class VanityEmailTemplatesComponent implements OnInit {
       this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates;
       this.showAllVanityTemplates('DEFAULT', 0);
     } else if (tabName === 'partnerNotifications') {
-      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates;
+      this.isZeroDefaultsTemplates = this.isZeroDefaultsPartnerNotifications;
       this.showAllVanityTemplates('DEFAULT', 0);
     }
+  }
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+    this.pagination.category = category; 
+    this.pagination.pageIndex = 1;
+    this.vanityEmailSortOption.searchKey = "";
+    this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
+    this.getVanityEmailTemplates(this.pagination);
   }
 }

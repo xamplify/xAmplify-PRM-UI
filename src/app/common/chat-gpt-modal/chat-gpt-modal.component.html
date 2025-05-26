@@ -35,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate  || selectTemplate? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage  ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -48,16 +48,17 @@
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
           (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'"
-        [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
+        [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
           [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
           (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+          <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
         <div classs="row">
-          <button *ngIf="!showView" type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
+          <button *ngIf="!showView && !openAssetPage" type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
             style="position: absolute;  top: 12px;right: 12px; width: 27px;height: 27px;" (click)="showOliverIcon()">
             <i class="fa fa-times m0" aria-hidden="true"></i></button>
           <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
@@ -112,7 +113,7 @@
                   </div>
                 </div>
               </div> -->
-          <div *ngIf="!showView" class="d-flex oliver_flex">
+          <div *ngIf="!showView && !openAssetPage" class="d-flex oliver_flex">
             <div class="side_bar" [ngClass]="{ 'collapsed': !isSidebarVisible }">
               <div class="sidebar-header">
                 <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
@@ -156,7 +157,7 @@
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
                   <ul class="nav submenu" *ngIf="isAgentSubmenuOpen">
-                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights"
+                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner)"
                       [ngClass]="{'active': activeTab === 'askpdf'}">
                       <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                         <i class="fa fa-bar-chart"></i> Oliver Insights
@@ -419,7 +420,7 @@
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
-                            <button (click)="!assetLoader && openAssetsPage()" class="btn-plus">+</button>
+                            <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
                           </div>
                         </div>
                         <div *ngIf="isfileProcessed && !assetLoader" class="action-buttons mt5">
@@ -441,7 +442,7 @@
                       <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
+                        <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
@@ -625,8 +626,7 @@
                       <span class="main-heading">Oliver Settings</span>
                     </div>
                     <app-chat-gpt-integration-settings *ngIf="callChatGptIntegrationSettingsComponent"  [isFromOliverSettingsModalPopup]="isFromOliverSettingsModalPopup"
-                      (updateOliverFlags)="onOliverFlagsUpdate($event)"
-                      (loadOliverSettings)="getSettings()"></app-chat-gpt-integration-settings>
+                      (updateOliverFlags)="onOliverFlagsUpdate($event)"></app-chat-gpt-integration-settings>
                   </div>
 
 
@@ -654,7 +654,8 @@
   </div>
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
-        <button class="btn btn-primary mr5" [disabled]="selectedAssets.length == 0 && selectedFolders.length == 0"
+        <button class="btn btn-primary mr5"
+          [disabled]="(selectedAssets.length == 0 && selectedFolders.length == 0) || (isReUpload && uploadedAssets?.length == 0)"
           (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
@@ -690,6 +691,7 @@
             (click)="copyChatGPTText(message.content)"></i></div>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
         <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

@@ -22,7 +22,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 pr0 pl-left0 tabview-fields">
               <div class="d-flex justify-content-end mb-flex-wrap my-10">
-                <div class="inputs mr5 width100">
+                <div class="inputs  width100">
                   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                     (ngModelChange)="sortFieldsByOption()">
                     <ng-container *ngFor="let sort of sortOptions">
@@ -44,9 +44,9 @@
                   </div>
                 </div>
                 <!-- XNFR-906 -->
-                <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl" class="btn btn-primary ml5 my-10" (click)="openSetDefaultFieldsPopUp()">Default {{opportunityType==='LEAD'? 'Lead ':'Deal '}} Report</button>
+                <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl" class="btn btn-primary my-10" (click)="openSetDefaultFieldsPopUp()">Default {{opportunityType==='LEAD'? 'Lead ':'Deal '}} Report</button>
                 <!-- XNFR-906 -->
-                <button type="button" class="btn btn-primary ml5 my-10" (click)="addCustomFielsdOrderModalOpen()">Order
+                <button type="button" class="btn btn-primary my-10" (click)="addCustomFielsdOrderModalOpen()">Order
                   Custom Fields</button>
               </div>
             </div>

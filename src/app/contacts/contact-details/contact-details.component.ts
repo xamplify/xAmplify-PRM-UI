@@ -258,7 +258,7 @@ export class ContactDetailsComponent implements OnInit {
         event.country = null;
       }
       this.editUser.user = event;
-      this.contactService.updateContactListUser(this.selectedContactListId, this.editUser).subscribe(
+      this.contactService.updateContactListUser(this.selectedContactListId, this.editUser, false).subscribe(
         data => {
           if (data.access) {
             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
@@ -268,11 +268,10 @@ export class ContactDetailsComponent implements OnInit {
             this.mobileNumber = event.mobileNumber;
           }
           this.isLoading = false;
-        },
-        error => {
+        }, error => {
           this.isLoading = false;
-        },
-        () => {
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }, () => {
           this.setContactNameToDisplay();
           this.setHighlightLetter();
           this.referenceService.goToTop();

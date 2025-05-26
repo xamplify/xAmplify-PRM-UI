@@ -309,3 +309,7 @@
     border: 1px solid #cb5a5e;
     color: #cb5a5e;
   }
+  .mb-flex-wrap{
+    flex-wrap: wrap;
+    gap: 5px;
+  }

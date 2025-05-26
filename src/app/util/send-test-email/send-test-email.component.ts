@@ -84,7 +84,7 @@ export class SendTestEmailComponent implements OnInit {
   onAddedFunc = this.beforeAdd.bind(this);
   addFirstAttemptFailed = false;
   errorMessages = { 'must_be_email': 'Please be sure to use a valid email format',
-    'invalid_domain': 'Email domain is not allowed'
+    'invalid_domain': 'Email domain is not whitelisted'
    };
   validators = [this.mustBeEmail.bind(this)];
 
@@ -118,6 +118,7 @@ export class SendTestEmailComponent implements OnInit {
     }else if (this.isLeadOptionClicked) {
       this.findSendReminderLeadEmailTemplate();
     }else if(this.isFromDomainWhiteListing){
+      this.headerTitle = "Send Welcome Mail";
       this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();

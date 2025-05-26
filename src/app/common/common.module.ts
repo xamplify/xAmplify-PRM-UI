@@ -224,6 +224,7 @@ import { CampaignWorkFlowsUtilComponent } from 'app/campaigns/campaign-work-flow
 import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
+import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -268,7 +269,7 @@ import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-inte
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent
 	],
 
 
@@ -311,7 +312,8 @@ import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-inte
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent
+		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
+		AddDamComponent
 	]
 
 

@@ -5,8 +5,8 @@
   [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
   <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
-  <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput"
-  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+  <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+  <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
   <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
   </app-create-template>
   <div *ngIf="selectTemplate" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
@@ -14,7 +14,7 @@
       (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
   </div>
 
-  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" class="pdf_body">
+  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -165,7 +165,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
     <div *ngIf="showPreview" class="pdf-viewer">
       <div class="toolbar">
         <select class="zoom" [(ngModel)]="zoomLevel">
@@ -239,6 +239,7 @@
                     <i class="fa fa-refresh fs-12"></i>
                   </div> -->
                   <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)" >Design Template</button>
+                  <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)" >Design Pdf</button>
                   <!-- <button class="share-btn">Design Page</button> -->
                     <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                     <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>

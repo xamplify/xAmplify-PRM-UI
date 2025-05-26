@@ -9,7 +9,7 @@
   padding: 15px;
 }
 .cmr {
-  margin-right: 70px;
+  margin-right: 20px;
 }
 .inline {
   display: inline-flex;
@@ -491,3 +491,10 @@ padding: 10px 5px 10px 5px;
   height: 31px!important;
 }
 .btn_align{padding: 6px 13px!important;}
+@media only screen and (max-width:1024px) {
+.save-btn-align{
+margin-bottom: 7px!important;
+}
+.modal-open,.modal.right .modal-content {
+  overflow-y:auto!important;
+}}

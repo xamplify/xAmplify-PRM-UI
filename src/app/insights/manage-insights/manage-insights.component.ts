@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 declare var AnalytifySDK: any;
@@ -13,6 +14,8 @@ export class ManageInsightsComponent implements OnInit {
   loggedInUserId: number;
   companyId: any;
   dashboardToken: string = '';
+  insightsLoader: HttpRequestLoader = new HttpRequestLoader();
+  
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -23,6 +26,7 @@ export class ManageInsightsComponent implements OnInit {
   }
 
   loadCompanyAndInitDashboard() {
+    this.referenceService.loading(this.insightsLoader, true);
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
       (result: any) => {
         this.companyId = result;
@@ -39,16 +43,19 @@ export class ManageInsightsComponent implements OnInit {
         } else if (module.isPartnerCompany){
           this.dashboardToken = 'uko3omwl5hFy';
         }
-
         if (!this.dashboardToken || !this.companyId) {
           console.warn('Missing dashboardToken or companyId, skipping dashboard load');
+              this.referenceService.loading(this.insightsLoader, false);
           return;
         }
-
+        setTimeout(() => {
+          this.referenceService.loading(this.insightsLoader, false);
+        }, 2500);
         this.loadDashboard();
       },
       (error) => {
         console.error('Error fetching company ID:', error);
+        this.referenceService.loading(this.insightsLoader, false);
       }
     );
   }
@@ -66,7 +73,7 @@ export class ManageInsightsComponent implements OnInit {
       container: '#dashboard-container',
       dashboardToken: this.dashboardToken,
       width: '100%',
-      height: '500px',
+      height: '1000px',
       filters: {
         "Company": [this.companyId],
       }

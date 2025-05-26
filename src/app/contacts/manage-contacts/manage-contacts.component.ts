@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer, ViewChild,Input } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
@@ -138,7 +138,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isPartnerUserList: boolean = false;
 
 	public currentContactType: string = "valid";
-
+	showFilterOption: boolean = false;
+	
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
@@ -1953,10 +1954,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 						}
-					}
-					if (this.isContactModule) {
+						if (this.isContactModule) {
 						object["Contact Status"] = this.contactsByType.listOfAllContacts[i].contactStatus;
+						}
 					}
+					
 					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
 						&& !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
 						&& this.contactsByType.selectedCategory != 'invalid'
@@ -2040,7 +2042,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
-						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						if (this.isPartner) {
+							parentObject["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						} else {
+							object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
@@ -3142,5 +3148,27 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			});
 		}
 	}
-
+	toggleFilterOption() {
+		this.showFilterOption = true;
+	}
+	partnersFilter(event: any) {
+		let input = event;
+		this.criterias = input['criterias'];
+		this.contactsByType.pagination.criterias = this.criterias;
+		this.pagination.customFilterOption = true;
+		this.pagination.pageIndex = 1;
+		this.listContactsByType(this.contactsByType.selectedCategory);
+		}
+	closeFilterEmitter(event: any) {
+		if (event === 'close') {
+			this.showFilterOption = false;
+		} else {
+			this.showFilterOption = true
+		}
+		this.criteria = new Criteria();
+		this.pagination.criterias = null;
+		this.criterias = new Array<Criteria>();
+		this.listContactsByType(this.contactsByType.selectedCategory);
+		}
+		
 }

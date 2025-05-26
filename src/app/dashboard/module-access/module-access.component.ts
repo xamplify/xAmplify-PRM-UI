@@ -88,6 +88,8 @@ export class ModuleAccessComponent implements OnInit {
   brainstormWithOliverEnabledFlag: boolean = false;
   oliverSparkWriterEnabledFlag: boolean = false;
   oliverParaphraserEnabledFlag: boolean = false;
+  oliverIntegrationTypeSelected: boolean = false;
+  oliverIntegrationType: string = "";
 
 
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
@@ -117,7 +119,6 @@ export class ModuleAccessComponent implements OnInit {
         }
           
       }
-    
     }
 
   private getAllData() {
@@ -351,13 +352,16 @@ export class ModuleAccessComponent implements OnInit {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
         this.oliverActive = this.campaignAccess.oliverActive;
+        if (this.oliverActive && !this.campaignAccess.oliverFilesProcessing) {
+          this.fetchOliverActiveIntegrationType();
+        }
         this.moduleLoader = false;
       }, _error => {
         this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
-      },() => {
+      }, () => {
         this.disableContactSubscriptionLimitField = !this.campaignAccess.contactSubscriptionLimitEnabled;
-         this.setOliverAgentFlagValues(this.campaignAccess);
+        this.setOliverAgentFlagValues(this.campaignAccess);
       });
     }
   }
@@ -369,8 +373,9 @@ export class ModuleAccessComponent implements OnInit {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.userId = this.companyAndUserDetails.id;
-    if (this.campaignAccess.oliverActive && this.campaignAccess.oliverActive != this.oliverActive) {
+    if (this.campaignAccess.oliverActive && ((this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType))) {
       this.campaignAccess.oliverAccessStatus = true;
+      this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
     }
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       this.statusCode = result.statusCode;
@@ -656,12 +661,34 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
   oliverActiveUiSwitchEventReceiver(event: boolean) {
     this.disableOliverAgentModuleOptions = !event;
     this.campaignAccess.oliverActive = event;
+    this.disableUpdateModulesButton = event && !this.oliverIntegrationType;
     if (!event) {
       this.campaignAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
     }
+  }
+
+  onIntegrationTypeChange(selected: any) {
+    this.oliverIntegrationType = selected;
+    this.disableUpdateModulesButton = false;
+    // this.campaignAccess.oliverAccessStatus = true;
+  }
+
+  fetchOliverActiveIntegrationType() {
+    this.chatGptSettingsService.fetchOliverActiveIntegrationType(this.companyId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+          if (data != null && data != undefined) {
+            this.oliverIntegrationType = data;
+            this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
+          }
+        }
+      }, error => {
+        console.log('Error in fetchOliverActiveIntegrationType() ', error);
+      });
   }
 
 }

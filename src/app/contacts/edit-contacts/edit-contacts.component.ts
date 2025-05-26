@@ -161,6 +161,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	downloadDataList = [];
 	isEmailExist: boolean = false;
 	contactsCompanyListSync: boolean = false;
+	// XNFR-899
+	showFilterOption: boolean = false;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
@@ -2545,7 +2547,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			this.editUser.user = event;
 			this.addContactModalClose();
-			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
+			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser, this.isPartner)
 				.subscribe(
 					(data: any) => {
 						this.loading = false;
@@ -2568,7 +2570,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					},
 					error => {
 						this.xtremandLogger.error(error);
-						this.loading = false
+						this.loading = false;
+						this.refService.showSweetAlertServerErrorMessage();
 					},
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
@@ -3362,12 +3365,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.moveOptionClicked = true;
         this.selectedUserIdsForMerging = this.selectedContactListIds;
 	}
-	
+
 	copyGroupUsersModalPopupEventReceiver() {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
-		this.selectedContactListIds = [];
-		if(this.moveOptionClicked){
+		if (this.moveOptionClicked) {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);
 		}		
@@ -3875,5 +3877,49 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	handleCriteriaValue(value: any, index: any) {
 		this.criterias[index].value1 = value.trim();
 	}
+	toggleFilterOption() {
+		this.showFilterOption = true;
+	}
+	partnersFilter(event: any) {
+		let input = event;
+		this.criterias = input['criterias'];
+		this.pagination.filterOptionEnable = input['isCriteriasFilter'];
+		this.pagination.customFilterOption = true;
+		this.pagination.pageIndex = 1;
+		if(this.userListPaginationWrapper.userList.contactType == 'active'){
+			this.listOfSelectedContactListByType('active');
+		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
+			this.listOfSelectedContactListByType('non-active');
+		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
+			this.listOfSelectedContactListByType('unsubscribed');
+		}else{
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+		}
+	}
+	closeFilterEmitter(event: any) {
+		if (event === 'close') {
+			this.showFilterOption = false;
+			this.pagination.criterias = null;
+		} else {
+			this.showFilterOption = true
+		}
+		if (typeof event === 'object') {
+			this.showFilterOption = false;
+			this.pagination.criterias = (this.criterias && this.criterias.length > 0) ? this.criterias : null;
+		}
+		this.criteria = new Criteria();
+		this.criterias = new Array<Criteria>();
+		this.pagination.criterias = null;
+		if(this.userListPaginationWrapper.userList.contactType == 'active'){
+			this.listOfSelectedContactListByType('active');
+		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
+			this.listOfSelectedContactListByType('non-active');
+		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
+			this.listOfSelectedContactListByType('unsubscribed');
+		}else{
+		this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+		}
+	}
 
+	
 }
