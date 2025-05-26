@@ -113,6 +113,7 @@ export class ChatGptModalComponent implements OnInit {
   integrationType: any;
   uploadedAssets: any;
   isReUploadFromPreview: boolean = false;
+  stopClickEvent: boolean;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -768,6 +769,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   fetchHistories(chatHistoryPagination) {
+    this.stopClickEvent = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
@@ -776,8 +778,9 @@ export class ChatGptModalComponent implements OnInit {
           chatHistoryPagination.totalRecords = data.totalRecords;
           this.chatHistories = [...this.chatHistories,...data.list];
         }
+        this.stopClickEvent = false;
       }, error => {
-
+        this.stopClickEvent = false;
       }
     )
   }
@@ -916,7 +919,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0 && !this.stopClickEvent) {
       this.searchChatHistory();
     }
   }
