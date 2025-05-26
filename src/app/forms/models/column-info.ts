@@ -50,7 +50,7 @@ export class ColumnInfo {
     /** XNFR-424 ENDS **/
     /** XNFR-528 **/
     lookupDropDownChoices: Array<FormOption> = new Array<FormOption>();
-    parentLabelId : number;
+    parentLabelId : any;
     dependentDropDownChoices: Array<FormOption> = new Array<FormOption>();
     nonInteractive = false;
     defaultChoiceLabel: any;
