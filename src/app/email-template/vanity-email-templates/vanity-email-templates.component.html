@@ -71,7 +71,7 @@
           >Assets</li>
         <li (click)="selectCategory('opportunities')" [class.active]="selectedCategory === 'opportunities'">Opportunities
         </li>
-        <li  *ngIf="!authenticationService?.module?.isPrm" (click)="selectCategory('campaigns')" [class.active]="selectedCategory === 'campaigns'">Campaigns</li>
+        <li  *ngIf="!authenticationService?.module?.isPrm && !authenticationService.module?.isVendor && !authenticationService.module?.isPrm " (click)="selectCategory('campaigns')" [class.active]="selectedCategory === 'campaigns'">Campaigns</li>
         <li (click)="selectCategory('forms')" [class.active]="selectedCategory === 'forms'">Forms</li>
         <li (click)="selectCategory('team')" [class.active]="selectedCategory === 'team'">Team</li>
         <li (click)="selectCategory('others')" [class.active]="selectedCategory === 'others'">Others</li>
