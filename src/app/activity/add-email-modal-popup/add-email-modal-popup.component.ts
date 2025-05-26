@@ -207,7 +207,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   validateEmail() {
     let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.emailActivity.body);
     let isValidContactId = this.isCompanyJourney ? (this.userIds != undefined && this.userIds.length > 0) : true;
-    let isValidDescription = this.referenceService.validateCkEditorDescription(trimmedDescription) || this.isEmailTemplateActivated;
+    let isValidDescription = (this.referenceService.validateCkEditorDescription(trimmedDescription) && trimmedDescription != "<p></p>") || this.isEmailTemplateActivated;
     let isValidSubject = this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
     if (isValidDescription && isValidContactId && isValidSubject) {
       this.isValidEmail = true;
