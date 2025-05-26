@@ -528,6 +528,9 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   openAssetsPage() {
+    if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
+      this.uploadedAssets = this.selectedAssets;
+    }
     this.showView = true;
   }
 
