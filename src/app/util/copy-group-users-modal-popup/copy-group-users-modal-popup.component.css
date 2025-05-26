@@ -122,3 +122,13 @@
     font-size: 30px;
     color: red;
 }
+@media screen and (min-width: 601px) {
+    .modal-dialog-contacts {
+        width: 74% !important;
+    }
+}
+.micon-al{
+    height: 54px;
+    float: right;
+    margin-right: 13px;
+}

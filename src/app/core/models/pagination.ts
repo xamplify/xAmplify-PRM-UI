@@ -193,4 +193,5 @@ export class Pagination {
 	selectedRegionIds: any[] = [];
 	selectedStatusIds: any[] = [];
 	fromPartnerAnalytics : boolean = false;
+	category: string;
 }

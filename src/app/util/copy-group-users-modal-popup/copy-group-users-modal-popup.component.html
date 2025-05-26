@@ -1,6 +1,6 @@
 <div class="modal fade right" id="copyGroupUsersModalPopup" tabindex="-1" role="dialog" aria-labelledby=""
     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" [ngClass]="isContactModule ? 'modal-dialog-contacts' : 'modal-dialog'">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closePopup()">
@@ -74,7 +74,7 @@
                             <strong *ngIf="moduleName == 'partners'">Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
                         </div>
                         <div class="table-responsive">
-                            <table class='table tgrid table-condensed table-bordered'
+                            <table class='table tgrid table-condensed' [class.table-bordered]="!isContactModule"
                                 *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
                                 <thead>
                                     <tr>
@@ -83,7 +83,8 @@
                                                 id="copy-group-users-header-checkbox-id"
                                                 (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                         </th>
-                                        <th class="text-center">Name</th>
+                                        <th *ngIf="isContactModule" class="text-center">Logo</th>
+                                        <th class="text-center">{{isContactModule ? 'List Name' : 'Name'}}</th>
                                         <th class="text-center">Count</th>
                                         <th class="text-center">Created On</th>
                                         <th class="text-center">Preview</th>
@@ -101,9 +102,26 @@
                                                     name="copyGroupUsersCheckBoxName[]"
                                                     (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
                                             </td>
-                                            <td class="text-center" title="{{group?.groupName}}">
-                                                {{group?.groupName | slice:0:25}} <span
-                                                    *ngIf="group?.groupName?.length>25">...</span>
+                                             <td *ngIf="isContactModule"  style="width: 10%;" class="hidden-xs image_effect">
+                                                <img class="neu-l-d micon-al"               
+                                                   src="{{properties?.manualImage}}" alt="manual">
+                                            </td>
+                                            <td [class.text-center]="!isContactModule">
+                                                <h4 class="m0 moreipsis ListFontCu" *ngIf="isContactModule">
+                                                    <span data-toggle="tooltip" data-placement="top" title="{{group?.groupName}}" class="ListFontCu">
+                                                         <b> Name:</b> {{group?.groupName | slice:0:25}}
+                                                    </span>
+                                                </h4>
+                                                <h5 class='mb0 moreipsis mt5' *ngIf="isContactModule">
+                                                     <span class='f-w-400' data-toggle="tooltip" data-placement="top"
+                                                      title="mounika">
+                                                      <b translate>By:</b> {{group?.uploadedBy}}
+                                                   </span>
+                                                </h5>
+                                                 <span *ngIf="!isContactModule">
+                                                    {{ group?.groupName | slice:0:25 }}
+                                                     <span *ngIf="group?.groupName?.length>25">...</span>
+                                                 </span>                                          
                                             </td>
                                             <td class="text-center">
                                                 <span>{{group?.numberOfPartners}}</span>
