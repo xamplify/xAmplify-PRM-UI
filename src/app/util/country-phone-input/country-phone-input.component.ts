@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { CountryNames } from 'app/common/models/country-names';
-import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 declare var $: any;
 
@@ -30,13 +30,7 @@ export class CountryPhoneInputComponent implements OnInit {
     this.filteredCountries = [...this.countryNames.countriesMobileCodes];
   }
 
-  ngOnInit() {
-    if (this.mobileNumber) {
-      this.autoDetectCountry();
-    } else {
-      this.setDefaultCountry();
-    }
-  }
+  ngOnInit() { }
 
   ngOndestroy() {
     this.isOpen = false;
@@ -44,6 +38,14 @@ export class CountryPhoneInputComponent implements OnInit {
     this.selectedCountry = [];
     this.filteredCountries = [];
     this.clickOutside.unsubscribe();
+  }
+
+  ngOnChanges() {
+    if (this.mobileNumber) {
+      this.autoDetectCountry();
+    } else {
+      this.setDefaultCountry();
+    }
   }
 
   validateMobileNumber() {
