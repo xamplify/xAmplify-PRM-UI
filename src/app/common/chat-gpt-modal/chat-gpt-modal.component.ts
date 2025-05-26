@@ -249,6 +249,9 @@ export class ChatGptModalComponent implements OnInit {
     }
     this.fetchOliverActiveIntegration();
     this.chatHistorySortOption.searchKey = '';
+    this.isfileProcessed = false;
+    this.isReUpload = false;
+    this.isReUploadFromPreview = false;
   }
 
   private checkDamAccess() {
@@ -310,6 +313,9 @@ export class ChatGptModalComponent implements OnInit {
       this.callChatGptIntegrationSettingsComponent = false;
     }
     this.chatHistorySortOption.searchKey = '';
+    this.isfileProcessed = false;
+    this.isReUpload = false;
+    this.isReUploadFromPreview = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
