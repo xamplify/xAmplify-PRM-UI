@@ -391,7 +391,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
   reply.showExpiryWarning = triggerDate > expiry;
   if(reply.showExpiryWarning){
-    this.InfoCustomResponse = new CustomResponse('INFO', "Auto-response May not trigger as the scheduled send date is beyond the playbook expiry Date.", true);
+    this.InfoCustomResponse = new CustomResponse('INFO', "The auto-response may not trigger because the scheduled send date ('Send in X days') is beyond the playbook expiry date. Please update it to fall within the expiry period.", true);
   }
 }
 

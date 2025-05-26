@@ -2570,7 +2570,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					},
 					error => {
 						this.xtremandLogger.error(error);
-						this.loading = false
+						this.loading = false;
+						this.refService.showSweetAlertServerErrorMessage();
 					},
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
@@ -3878,7 +3879,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias[index].value1 = value.trim();
 	}
 	toggleFilterOption() {
-		this.showFilterOption = !this.showFilterOption;
+		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
 		let input = event;
@@ -3899,20 +3900,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	closeFilterEmitter(event: any) {
 		if (event === 'close') {
 			this.showFilterOption = false;
-			this.criterias = new Array<Criteria>();
 			this.pagination.criterias = null;
 		} else {
 			this.showFilterOption = true
 		}
 		if (typeof event === 'object') {
 			this.showFilterOption = false;
-			this.criterias = new Array<Criteria>();
 			this.pagination.criterias = (this.criterias && this.criterias.length > 0) ? this.criterias : null;
 		}
+		this.criteria = new Criteria();
+		this.criterias = new Array<Criteria>();
+		this.pagination.criterias = null;
 		if(this.userListPaginationWrapper.userList.contactType == 'active'){
 			this.listOfSelectedContactListByType('active');
 		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
-			this.listOfSelectedContactListByType('invalid');
+			this.listOfSelectedContactListByType('non-active');
 		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
 			this.listOfSelectedContactListByType('unsubscribed');
 		}else{

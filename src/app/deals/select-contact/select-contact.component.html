@@ -122,6 +122,13 @@
                                         <td class='pt10 pl10'>
                                           {{contact.zipCode}}</td>
                                       </tr>
+                                      <tr *ngIf="contact.contactStatus" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>Contact Status : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.contactStatus}}</td>
+                                      </tr>
                                       <tr *ngFor="let flexiField of contact.flexiFields" class="d-flex">
                                         <td class='pt10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:
                                         </td>

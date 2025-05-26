@@ -207,7 +207,7 @@
 								<ng-container *ngIf="moduleId==roles.damId">
 									<app-dam-list-and-grid-view [folderListViewCategoryId]="category.id"
 										[folderListViewExpanded]="category.expanded" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"
-										[FromOliverPopUp]="FromOliverPopUp">
+										[FromOliverPopUp]="FromOliverPopUp" [fromListView]="FromOliverPopUp">
 									</app-dam-list-and-grid-view>
 								</ng-container>
 								<!----TRACKS / PLAYBOOKS---->

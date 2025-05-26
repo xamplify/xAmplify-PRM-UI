@@ -268,11 +268,10 @@ export class ContactDetailsComponent implements OnInit {
             this.mobileNumber = event.mobileNumber;
           }
           this.isLoading = false;
-        },
-        error => {
+        }, error => {
           this.isLoading = false;
-        },
-        () => {
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }, () => {
           this.setContactNameToDisplay();
           this.setHighlightLetter();
           this.referenceService.goToTop();

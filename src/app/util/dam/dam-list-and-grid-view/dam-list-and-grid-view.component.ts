@@ -143,7 +143,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	proxyAssetPath: any;
 	showOliver: boolean;
 	@Input() FromOliverPopUp: boolean = false;
-	@Input() selectedItemFromOliver: any;
+	@Input() selectedItemFromOliver: any[] = [];
     selectedItems: any[] = []; 
     @Output() notifyasset = new EventEmitter<any>();
 	formData: any = new FormData();
@@ -154,6 +154,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
 	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
+	@Input() fromListView: boolean = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -180,7 +181,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.FromOliverPopUp) {
 			this.SuffixHeading = 'Select ';
 			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
-				this.selectedItems = this.selectedItemFromOliver;
+				this.selectedItems = [];
+				for (let item of this.selectedItemFromOliver) {
+					this.selectedItems.push(item);
+				}
 			}
 		} else if (!this.FromOliverPopUp) {
 			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';

@@ -1954,10 +1954,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 						}
-					}
-					if (this.isContactModule) {
+						if (this.isContactModule) {
 						object["Contact Status"] = this.contactsByType.listOfAllContacts[i].contactStatus;
+						}
 					}
+					
 					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
 						&& !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
 						&& this.contactsByType.selectedCategory != 'invalid'
@@ -2041,7 +2042,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
-						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						if (this.isPartner) {
+							parentObject["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						} else {
+							object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
@@ -3144,7 +3149,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	toggleFilterOption() {
-		this.showFilterOption = !this.showFilterOption;
+		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
 		let input = event;

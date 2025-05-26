@@ -157,7 +157,7 @@
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
                   <ul class="nav submenu" *ngIf="isAgentSubmenuOpen">
-                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights"
+                    <li *ngIf="!isWelcomePageUrl && authenticationService.oliverInsightsEnabled && showOliverInsights && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner)"
                       [ngClass]="{'active': activeTab === 'askpdf'}">
                       <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                         <i class="fa fa-bar-chart"></i> Oliver Insights
@@ -420,7 +420,7 @@
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
-                            <button (click)="!assetLoader && openAssetsPage()" class="btn-plus">+</button>
+                            <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
                           </div>
                         </div>
                         <div *ngIf="isfileProcessed && !assetLoader" class="action-buttons mt5">
@@ -442,7 +442,7 @@
                       <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
+                        <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
