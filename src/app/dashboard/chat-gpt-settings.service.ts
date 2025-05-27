@@ -40,7 +40,7 @@ export class ChatGptSettingsService {
   onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
     const url = `${this.authenticationService.REST_URL}oliver/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    formData.append('file', pdfFile, `${assetName}.pdf`);
+    // formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     formData.delete('chatGptSettingsDTO');
     formData.append('chatGptSettingsDTO', new Blob([JSON.stringify(chatGptSettings)],
@@ -107,14 +107,14 @@ listDefaultTemplates(userId:any){
   return  this.authenticationService.callGetMethod(url);
 }
 
-  getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean) {
+   getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean, oliverIntegrationType: any) {
     let urlPrefix = "";
     if (isPartnerFolderView) {
       urlPrefix = 'getAssetDetailsByCategoryIdForPartner';
     } else if (!isPartnerFolderView) {
       urlPrefix = 'getAssetDetailsByCategoryId';
     }
-    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}&oliverIntegrationtype=${oliverIntegrationType}`;
     return this.http.get(url);
   }
 

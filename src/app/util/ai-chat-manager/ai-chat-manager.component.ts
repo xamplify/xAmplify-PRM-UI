@@ -192,7 +192,7 @@ export class AiChatManagerComponent implements OnInit {
         this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
         this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
         if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
-          this.getPdfByAssetPath();
+          this.getUploadedFileId();
         }
         this.framePerviewPath();
       }
@@ -383,7 +383,7 @@ export class AiChatManagerComponent implements OnInit {
           self.assetType = self.assetDetailsViewDtoOfPartner.assetType;
           self.framePerviewPath();
           if (!(self.vectorStoreId != undefined && self.vectorStoreId != '')) {
-            this.getPdfByAssetPath();
+            this.getUploadedFileId();
           }
         }
       },
@@ -599,10 +599,10 @@ export class AiChatManagerComponent implements OnInit {
     return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
   }
 
-  getSharedAssetsDetailsByFolderId(categoryId: number) {
+ getSharedAssetsDetailsByFolderId(categoryId: number) {
     this.loading = true;
     this.isPdfUploading = true;
-    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId,this.isPartnerFolderView).subscribe(
+    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId, this.isPartnerFolderView, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response: any) => {
         this.loading = false;
         if (response.statusCode == 200) {
@@ -613,9 +613,9 @@ export class AiChatManagerComponent implements OnInit {
           this.folderFrom = data[0].companyName;
           this.folderAssetCount = data[0].count;
           // if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
-            // this.getPdfByAssetPaths(data);
-            this.pdfFiles = data;
-            this.getUploadedFileIds();
+          // this.getPdfByAssetPaths(data);
+          this.pdfFiles = data;
+          this.getUploadedFileIds();
           // }
         }
       },

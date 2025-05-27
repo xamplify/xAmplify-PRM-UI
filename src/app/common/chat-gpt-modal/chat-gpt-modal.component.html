@@ -51,9 +51,9 @@
       <div *ngIf="!openShareOption && !showTemplate && !selectTemplate " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
-          [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
-          [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
-          (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+          [oliverIntegrationType]="chatGptIntegrationSettingsDto?.oliverIntegrationType" [selectedItemFromOliver]="selectedAssets"
+          [selectedFoldersForOliver]="selectedFolders" [isPartnerViewFromOliver]="isPartnerLoggedIn"
+          (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
           <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>

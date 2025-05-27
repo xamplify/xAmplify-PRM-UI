@@ -155,6 +155,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() isPartnerViewFromOliver: boolean = false;
 	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
 	@Input() fromListView: boolean = false;
+	@Input() oliverIntegrationType: any;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
