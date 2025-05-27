@@ -139,7 +139,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	public currentContactType: string = "valid";
 	showFilterOption: boolean = false;
-	
+	// XNFR-994
+	@Input() selectedType: string;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
@@ -3149,6 +3150,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	toggleFilterOption() {
+		if(this.isPartner){
+			this.selectedType = 'Partners';
+		}else if(this.isContactModule){
+			this.selectedType = 'Contacts';
+		}else if(this.assignLeads){
+			this.selectedType = 'AssignLeads'
+		}else if(this.sharedLeads){
+			this.selectedType = 'SharedLeads';
+		}	
 		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
@@ -3162,6 +3172,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	closeFilterEmitter(event: any) {
 		if (event === 'close') {
 			this.showFilterOption = false;
+			this.pagination.criterias = null;
 		} else {
 			this.showFilterOption = true
 		}

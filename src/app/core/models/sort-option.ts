@@ -611,7 +611,9 @@ export class SortOption {
 		{ 'name': 'website', 'value': 'Website' },
 		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	];
-
+	contactFilterOptions = [
+		{ 'name': 'contactStatus', 'value': 'Contact Status'  }
+	];
 	/***XNFR-908***/
 	callIntegrationDropDownOptions = [
 		{ 'name': 'Call Time(Desc)', 'value': 'desc' },
