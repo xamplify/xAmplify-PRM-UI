@@ -10,6 +10,7 @@ import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 import { PartnerCompanyMetricsDto } from 'app/dashboard/models/partner-company-metrics-dto';
+import { Partnership } from '../models/partnership.model';
 
 @Injectable()
 export class ParterService {
@@ -774,6 +775,12 @@ export class ParterService {
     getWorkflowsByPlaybookId(playbookId:number) {
         let findAllUrl = this.WORK_FLOW_PREFIX_URL + '/getWorkflowsByPlaybookId/' + playbookId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    //XNFR-988
+    updatePartnerShipStatusForPartner(partnership:Partnership) {
+        let url = this.URL +  `partnership/updatePartnerShipStatusForPartner` + `?access_token=${this.authenticationService.access_token}`;
+        return this.authenticationService.callPostMethod(url, partnership);
     }
 
 }
