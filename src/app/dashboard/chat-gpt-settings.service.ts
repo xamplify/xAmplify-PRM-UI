@@ -146,16 +146,19 @@ listDefaultTemplates(userId:any){
     let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
     let chatHistoryIdRequestParameter = chatGptSettingDTO.chatHistoryId != undefined ? '&chatHistoryId=' + chatGptSettingDTO.chatHistoryId : '';
     let contactJourneyRequestParameter = '&contactJourney='+true;
-    const url = this.chatGptSettingsUrl + "/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter;
+    let oliverIntegrationTypeRequestParam = chatGptSettingDTO.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptSettingDTO.oliverIntegrationType : '';
+    let accessTokenRequestParam = chatGptSettingDTO.accessToken != undefined ? '&accessToken=' + chatGptSettingDTO.accessToken : '';
+    const url = this.authenticationService.REST_URL + "oliver/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter + oliverIntegrationTypeRequestParam + accessTokenRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
-  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any) {
+  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any, activeOliverIntegrationType:any) {
     let userId = this.authenticationService.getUserId();
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let contactIdRequestParameter = contactId != undefined ? '&contactId=' + contactId : '';
     let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
-    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParam = activeOliverIntegrationType != undefined ? '&oliverIntegrationType=' + activeOliverIntegrationType : '';
+    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -200,7 +203,9 @@ listDefaultTemplates(userId:any){
     let contactJourneyRequestParameter = '&contactJourney='+true;
     let contactIdRequestParameter = chatGptSettingDTO.contactId != undefined ? '&contactId=' + chatGptSettingDTO.contactId : '';
     let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
-    const url = this.chatGptSettingsUrl + "/analyzeCallRecording?access_token=" + this.authenticationService.access_token + callIdRequestParameter + userIdRequestParameter + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParam = chatGptSettingDTO.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptSettingDTO.oliverIntegrationType : '';
+    let accessTokenRequestParam = chatGptSettingDTO.accessToken != undefined ? '&accessToken=' + chatGptSettingDTO.accessToken : '';
+    const url = this.authenticationService.REST_URL + "oliver/analyzeCallRecording?access_token=" + this.authenticationService.access_token + callIdRequestParameter + userIdRequestParameter + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + accessTokenRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 

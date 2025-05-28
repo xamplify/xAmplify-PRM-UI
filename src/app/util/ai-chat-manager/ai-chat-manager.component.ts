@@ -95,6 +95,7 @@ export class AiChatManagerComponent implements OnInit {
   ngOnInit() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityUrlFilter = true;
     }
     this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     this.fetchOliverActiveIntegration();
@@ -116,9 +117,9 @@ export class AiChatManagerComponent implements OnInit {
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
       }
-      if (this.threadId != undefined && this.threadId != '') {
-        this.getChatHistory();
-      }
+      // if (this.threadId != undefined && this.threadId != '') {
+      //   this.getChatHistory();
+      // }
       this.analyzeCallRecordings();
     } else if (this.callActivity != undefined) {
       this.isFromContactJourney = true;
@@ -709,8 +710,8 @@ export class AiChatManagerComponent implements OnInit {
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           let data = response.data;
-          this.chatGptSettingDTO.threadId = data.threadId;
-          this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
           this.threadId = data.threadId;
           this.chatHistoryId = data.chatHistoryId;
         }
@@ -859,11 +860,14 @@ export class AiChatManagerComponent implements OnInit {
         }
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
-      }, () => {
-        if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
-          this.getThreadId(this.chatGptIntegrationSettingsDto);
-        }
-      });
+    }, () => {
+      if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
+      }
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined)) {
+        this.getChatHistory();
+      }
+    });
   }
   
 }
