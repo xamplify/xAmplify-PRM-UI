@@ -95,6 +95,7 @@ export class AiChatManagerComponent implements OnInit {
   ngOnInit() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityUrlFilter = true;
     }
     this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     this.fetchOliverActiveIntegration();
@@ -865,5 +866,21 @@ export class AiChatManagerComponent implements OnInit {
         }
       });
   }
+
+  getFileIcon(): string {
+    const docTypes = ['doc', 'docx', 'csv', 'xlsx', 'ppt', 'pptx'];
+    const imageTypes = ['jpg', 'png', 'jfif', 'ico'];
+
+    if (this.assetType === 'pdf') {
+      return 'assets/images/pdficonAi.svg';
+    } else if (docTypes.includes(this.assetType)) {
+      return 'assets/images/aidocslogo.svg';
+    } else if (imageTypes.includes(this.assetType)) {
+      return 'assets/images/oliverImagelogo.svg';
+    } else {
+      return 'assets/images/aidocslogo.svg';
+    }
+  }
+
   
 }
