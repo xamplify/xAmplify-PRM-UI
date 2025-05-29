@@ -17,35 +17,120 @@
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
       </button>
+      <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.selectedOption"
+        (ngModelChange)="getSortedResults($event)" id="select-dropdown">
+        <option *ngFor="let option of sortOption.assetInteractionDropDownOptions" [ngValue]="option">
+          {{option.name}}
+        </option>
+      </select>
+      <span class="btn btn-xs l-g-view filter-btn {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip"
+        title="Filter">
+        <div class="btn-group">
+          <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+            (click)="clickFilter()">
+            <i aria-hidden="true" class="fa fa-filter p10"></i>
+          </a>
+        </div>
+      </span>
     </div>
     <div class="panel-body">
-      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
+        [rowsCount]="4"></app-list-loader>
       <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
+        <div class="portlet light ht125" *ngIf="showFilterOption">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <!-- Alert Message Box  -->
+              <app-response-message class="pg8" [customResponse]="customResponse"
+                *ngIf="customResponse?.isVisible"></app-response-message>
+              <div class="d-flex justify-content-between align-items-center mb5">
+                <h4 translate>Apply Filter</h4>
+                <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedAssetNames' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
+                  [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
+                </ejs-multiselect>
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedCompanyIds' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
+                  [placeholder]='companyInfoFilterPlaceHolder'>
+                </ejs-multiselect>
+                <div class="portlet box custom_fiter-asset mt10">
+                  <div class="row pl10 pr10 pb10">
+                    <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                      <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                        <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                          <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                            title="Select the Date Range to View Analytics"></i>
+                        </div>
+                      </div>
+                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                        <label class="control-label">
+                          From Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                        <label class="control-label">To Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="btn-aligmntCu">
+                  <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                  <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <table class="table">
           <thead>
             <tr>
               <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team
                 Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name
+              </th>
               <th scope="col">Asset Name</th>
               <th scope="col">Asset Type</th>
               <th scope="col">Created By</th>
-              <th scope="col">Folder Name</th>
+              <th scope="col">View Count</th>
+              <th scope="col">Download Count</th>
               <th scope="col">Published On</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info>
+              </td>
               <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
                   (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
                     [userInfo]="item"></app-user-info></a></td>
-              <td>{{item?.assetName}}</td>
+              <td>{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
               <td>{{item?.assetType}}</td>
               <td>{{item?.createdByName}}</td>
-              <td>{{item?.folderName}}</td>
+              <td>{{item?.viewedCount}}</td>
+              <td>{{item?.downloadedCount}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp></td>
+              <td>
+                -
+                <!-- <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+                      *ngIf="!authenticationService?.module?.isMarketingCompany"
+                      (click)="item.approvalStatus !== approvalStatus.DRAFT && !item?.approvalReferenceId ? showAnalytics(item) : ''">
+                      <i class="fa fa-line-chart IconCustomization" aria-hidden="true"
+                        [ngClass]="(item?.approvalStatus !== approvalStatus.DRAFT && !item?.approvalReferenceId) ? '' : 'disabled gray'"></i>
+                      <div class="clickicons"></div>
+                    </a> -->
+              </td>
             </tr>
           </tbody>
         </table>
@@ -54,8 +139,7 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
-        [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getAssetDetails($event)">
         </app-pagination>

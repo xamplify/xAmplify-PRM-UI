@@ -6,12 +6,16 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ParterService } from '../services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { SortOption } from 'app/core/models/sort-option';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 @Component({
   selector: 'app-partner-journey-asset-details',
   templateUrl: './partner-journey-asset-details.component.html',
-  styleUrls: ['./partner-journey-asset-details.component.css']
+  styleUrls: ['./partner-journey-asset-details.component.css'],
+  providers: [SortOption]
 })
 export class PartnerJourneyAssetDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
@@ -36,20 +40,38 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   scrollClass: string;
   headerText = "Asset Details";
 
+  customResponse: CustomResponse = new CustomResponse();
+  filterActiveBg: string;
+  filterApplied: boolean = false;
+  showFilterOption: boolean = false;
+  showFilterDropDown: boolean = false;
+  filterCategoryLoader = false;
+  public companyInfoFilterPlaceHolder: string = 'Select Companies';
+  public companyNameFilters: Array<any>;
+  public selectedCompanyIds = [];
+  public companyInfoFields: any;
+  public multiSelectPlaceholderForAsset: string = "Select Asset";
+  public selectedAssetNames: any[] = [];
+  public assetNameFilters: Array<any>;
+  public assetInfoFields: any;
+  dateFilterText = "Select Date Filter";
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    this.findCompanyNames();
+    this.findAssetNames();
   }
 
   ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.getAssetDetails(this.pagination);
+    this.setFilterColor();
   }
 
   getAssetDetailsForPartnerJourney(pagination: Pagination) {
@@ -62,7 +84,10 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.selectedCompanyIds = this.pagination.selectedCompanyIds;
+    this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.parterService.getAssetDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -92,11 +117,16 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
       this.search();
     }
   }
+  
+  getSortedResults(text: any) {
+    this.sortOption.selectedOption = text;
+    this.getAllFilteredResults(this.pagination);
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
-    this.getAssetDetails(this.pagination);
+    this.getAssetDetails(pagination);
   }
 
   setPage(event: any) {
@@ -108,6 +138,16 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
     this.referenseService.goToTop();
   }
+  
+  showAnalytics(asset: any) {
+    this.navigateToPartnerAnalytics(asset.id);
+  }
+
+  navigateToPartnerAnalytics(id: number) {
+    let viewType = localStorage.getItem('defaultDisplayType');
+    let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenseService.encodePathVariable(id);
+    this.referenseService.goToRouter(url);
+	}
 
   getAssetDetails(pagination: Pagination) {
     this.getAssetDetailsForPartnerJourney(this.pagination);
@@ -129,5 +169,108 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);
   }
+  sortAssetDetails(text: any) {
+      this.sortOption.selectedOption = text;
+      this.getAssetDetails(this.pagination);
+    }
+    setFilterColor() {
+    let isValidSelectedCompanies = this.pagination.selectedCompanyIds != undefined && this.pagination.selectedCompanyIds.length > 0;
+    let isValidSelectedAssetNames = this.pagination.selectedAssetNames != undefined && this.pagination.selectedAssetNames.length > 0;
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter.length > 0;
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter.length > 0;
+    if (isValidSelectedCompanies && isValidSelectedAssetNames && isValidFromDateFilter && isValidToDateFilter) {
+      this.filterActiveBg = 'filterActiveBg';
+      this.filterApplied = true;
+    }
+    if (isValidSelectedCompanies) {
+      this.filterActiveBg = 'filterActiveBg';
+    }
+  }
+  clickFilter() {
+      this.showFilterOption = !this.showFilterOption;
+      this.customResponse.isVisible = false;
+    }
+  viewDropDownFilter() {
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
 
+  closeFilterOption() {
+    this.showFilterOption = false;
+    this.clearFilter();
+  }
+  clearFilter() {
+    this.pagination.selectedCompanyIds = [];
+    this.pagination.selectedAssetNames = [];
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.setDateFilterOptions();
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
+  }
+  setDateFilterOptions() {
+    let obj = {
+      "fromDate": this.fromDateFilter,
+      "toDate": this.toDateFilter
+    }
+  }
+   applyFilters() {
+    this.filterApplied = true;
+    this.setDateFilterOptions();
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
+    this.getAssetDetails(this.pagination);
+  }
+  validateDateFilter() {
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidSelectedCompaniesAndAssetNames = this.pagination.selectedCompanyIds.length > 0 && this.pagination.selectedAssetNames.length > 0;
+    let checkIfToDateIsEmpty = isValidFromDateFilter && isEmptyToDateFilter;
+    let checkIfFromDateIsEmpty = isValidToDateFilter && isEmptyFromDateFilter;
+    let showToDateError = (isValidSelectedCompaniesAndAssetNames && checkIfToDateIsEmpty) || (!isValidSelectedCompaniesAndAssetNames && checkIfToDateIsEmpty)
+    let showFromDateError = (isValidSelectedCompaniesAndAssetNames && checkIfFromDateIsEmpty) || (!isValidSelectedCompaniesAndAssetNames && checkIfFromDateIsEmpty)
+    if (!(this.pagination.selectedCompanyIds.length > 0) && !(this.pagination.selectedAssetNames.length > 0)  && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+      this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else if (showToDateError) {
+      this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    } else if (showFromDateError) {
+      this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    } else if (isValidToDateFilter && isValidFromDateFilter) {
+      var toDate = Date.parse(this.toDateFilter);
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (fromDate <= toDate) {
+        this.applyFilters();
+      } else {
+        this.customResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+      }
+    } else {
+      this.applyFilters();
+    }
+  }
+findCompanyNames(){
+    this.filterCategoryLoader = true;
+    this.selectedCompanyIds = this.selectedPartnerCompanyIds;
+    this.companyInfoFields = { text: 'companyName', value: 'companyId' };
+    this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
+      subscribe(response => {
+        this.companyNameFilters = response.data;
+      }, error => {
+        this.companyNameFilters = [];
+        this.filterCategoryLoader = false;
+      });
+}
+findAssetNames(){
+  this.pagination.userId = this.loggedInUserId;  
+  //this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+  this.assetInfoFields = { text: 'asset', value: 'asset' };
+  this.parterService.getAllPartnerAssetNamesFilter(this.pagination).
+  subscribe(response => {
+    this.assetNameFilters = response.data;
+  }, error => {
+    this.assetNameFilters = [];
+  });
+}
 }
