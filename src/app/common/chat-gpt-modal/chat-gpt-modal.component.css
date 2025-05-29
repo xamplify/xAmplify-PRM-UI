@@ -1665,3 +1665,6 @@ circle.front {
   width: 78%;
   flex: 1;
  }
+.right_30 {
+  right: 30px;
+}

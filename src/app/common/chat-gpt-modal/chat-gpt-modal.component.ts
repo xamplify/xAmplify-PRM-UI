@@ -114,6 +114,7 @@ export class ChatGptModalComponent implements OnInit {
   uploadedAssets: any;
   isReUploadFromPreview: boolean = false;
   stopClickEvent: boolean;
+  copiedIndexes: number[] = [];
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -317,6 +318,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.copiedIndexes = [];
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -1157,6 +1159,34 @@ closeDesignTemplate(event: any) {
     this.isReUpload = true;
     this.isReUploadFromPreview = true;
     this.openAssetsPage();
+  }
+
+  copyToClipBoard(inputValue: HTMLElement) {
+    const title = inputValue.getAttribute('value') || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = title;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  copyResponse(inputValue: HTMLElement, index:any) {
+    this.copiedIndexes[index] = 1;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.copiedIndexes[index] = 0;
+    }, 2000)
+  }
+
+  isCopied(index: number): boolean {
+    return !!this.copiedIndexes[index];
+  }
+
+  clearSeachKey() {
+    this.chatHistorySortOption.searchKey = '';
+    this.searchChatHistory();
   }
 
 }
