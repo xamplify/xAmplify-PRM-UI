@@ -12,6 +12,9 @@ import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-int
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var $: any;
 
 @Component({
@@ -89,8 +92,11 @@ export class AiChatManagerComponent implements OnInit {
   openAssetPage: boolean;
   emittdata: any;
   vendorCompanyProfileName: string;
+  showPage: boolean;
+  pagination: Pagination = new Pagination();
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
+  private landingPageService: LandingPageService,public pagerService:PagerService) { }
 
   ngOnInit() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -728,7 +734,6 @@ export class AiChatManagerComponent implements OnInit {
       (response: any) => {
         if (!this.emailTemplateService.emailTemplate) {
           this.emailTemplateService.emailTemplate = new EmailTemplate();
-          alert("Template created successfully.");
           this.showTemplate = false;
           this.selectTemplate = true;
           this.ngxLoading = false;
@@ -736,7 +741,10 @@ export class AiChatManagerComponent implements OnInit {
         if (this.chatGptIntegrationSettingsDto.designPdf) {
           this.emittdata = JSON.stringify(response.data);
           this.openAssetPage = true;
-        } else {
+        } else if(this.chatGptIntegrationSettingsDto.designPage){
+          this.showPage = true;
+          this.landingPageService.jsonBody = JSON.stringify(response.data);
+        }else {
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
           this.showTemplate = true;
         }
@@ -751,6 +759,7 @@ export class AiChatManagerComponent implements OnInit {
       }
     );
   }
+
   addRowsToJson(jsonBody: any) {
     throw new Error('Method not implemented.');
   }
@@ -795,6 +804,10 @@ export class AiChatManagerComponent implements OnInit {
     this.showTemplate = false;
     this.openAssetPage = false;
     this.emailTemplateService.emailTemplate.jsonBody = "";
+    this.landingPageService.jsonBody = "";
+    this.landingPageService.id = 0;
+    this.showPage = false;
+    this.selectTemplate = false;
   }
   private checkDamAccess() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -818,10 +831,15 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.templateId = emailTemplate.id;
     this.emailTemplateService.emailTemplate = emailTemplate;
   }
+
   closeSelectionTemplate(event: any) {
     if (event) {
       // this.emailTemplateService.emailTemplate.jsonBody = "";
-      this.emailTemplateService.emailTemplate = event;
+      if(this.chatGptIntegrationSettingsDto.designPage){
+        this.landingPageService.id = event.id;
+      }else{
+           this.emailTemplateService.emailTemplate = event;
+      }
       this.chatGptIntegrationSettingsDto.templateId = event.id;
        this.ngxLoading = true;
       this.openDesignTemplate(event);
@@ -829,6 +847,7 @@ export class AiChatManagerComponent implements OnInit {
       this.selectTemplate = false;
     }
   }
+
   readBeeTemplateData(event :any) {
     this.emittdata = event;
       this.isBeeTemplateComponentCalled = false;
@@ -866,4 +885,35 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
   
+  /** XNFR-1002 start **/
+  desginPage(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.pagination.source = "OLIVER_DEFAULT_PAGE";
+    this.listLandingPages(this.pagination);
+    this.chatGptIntegrationSettingsDto.designPage = true;
+  }
+
+  listLandingPages(pagination: Pagination) {
+    this.referenceService.goToTop();
+    this.landingPageService.listDefault(pagination).subscribe(
+      (response: any) => {
+        if (response.access) {
+          let data = response.data;
+          if (response.statusCode == 200) {
+            pagination.totalRecords = data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+            this.selectedTemplateList = pagination.pagedItems;
+            this.selectTemplate = true;
+          }
+        } else {
+          this.authenticationService.forceToLogout();
+        }
+
+      },
+      (error: any) => {
+        console.error("Error in listLandingPages():", error);
+      });
+  }
+  /** XNFR-1002 End **/
 }
