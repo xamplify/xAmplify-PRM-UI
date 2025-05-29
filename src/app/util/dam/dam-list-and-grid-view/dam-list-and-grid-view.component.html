@@ -55,7 +55,7 @@
 													class="chk checkBox_shadow" type="checkbox" [checked]="isSelected(asset)"
 													(change)="onCheckboxChange(asset, $event)"
 													[disabled]="asset.disableAccessForOliver || oliverIntegrationType != 'openai' ? 
-													asset.assetType?.toLowerCase() === 'mp4'  : files.indexOf(asset.assetType?.toLowerCase()) === -1">
+													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1">
 											</td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
