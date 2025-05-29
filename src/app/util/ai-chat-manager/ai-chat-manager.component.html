@@ -243,7 +243,7 @@
                     (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
                   <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design
                     Pdf</button>
-                  <button class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+                  <button *ngIf="authenticationService.module.hasLandingPageAccess" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                   <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                   </div>
