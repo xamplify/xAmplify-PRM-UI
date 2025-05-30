@@ -40,6 +40,8 @@ import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/servi
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { CustomCsvMappingComponent } from '../custom-csv-mapping/custom-csv-mapping.component';
+import { Partnership } from 'app/partners/models/partnership.model';
+import { ParterService } from 'app/partners/services/parter.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -307,11 +309,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	// XNFR-945
 	isEditMode: boolean = false;
-	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
-		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
-		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
+	partnership: Partnership = new Partnership();
+	isDeleteOptionClicked: boolean = false;
+
+	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
+		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
+		private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, 
+		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -3921,5 +3927,51 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	
+	/***** XNFR-988 *****/
+	confirmDeactivatePartner(partner) {
+		this.addContactuser = new User();
+		this.addContactuser = partner;
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated' 
+			? 'The partner will be Deactivated' : 'The partner will be Activated';
+		this.sweetAlertParameterDto.confirmButtonText = partner.partnerStatus !== 'deactivated'
+			? 'Yes, Deactivate it!' : 'Yes, Activate it!';
+		this.isDeleteOptionClicked = true;
+	}
+
+	/***** XNFR-988 *****/
+	deactivatePartner(event: any) {
+		if (event) {
+			this.refService.loading(this.httpRequestLoader, true);
+			let partnershipIds = [];
+			partnershipIds.push(this.addContactuser.partnershipId);
+			let partnerStatus = this.addContactuser.partnerStatus;
+			partnerStatus = partnerStatus == 'deactivated' ? 'approved' : 'deactivated';
+			this.partnerService.updatePartnerShipStatusForPartner(partnershipIds, partnerStatus)
+				.subscribe(response => {
+					this.resetDeleteOptions();
+					this.refService.loading(this.httpRequestLoader, false);
+					if (response.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+					} else {
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				}, error => {
+					this.resetDeleteOptions();
+					this.refService.loading(this.httpRequestLoader, false);
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				});
+		} else {
+			this.resetDeleteOptions();
+		}
+	}
+
+	/***** XNFR-988 *****/
+	resetDeleteOptions() {
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		this.isDeleteOptionClicked = false;
+		this.addContactuser = new User();
+	}
+
 }
