@@ -61,7 +61,7 @@
     </div>
     <!-- Partner Domain Whitelisting #XNFR-549 -->
     <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
-        [isPartnerDomains]="true"></app-domain-whitelisting>
+        [isPartnerDomains]="true" (notifyLoadPartners)="notifyLoadPartners()"></app-domain-whitelisting>
     <div class="">
         <!----XNFR-222-->
         <div class="portlet-body">
@@ -400,6 +400,12 @@
                         <a (click)="openMergePopup()" translate> Add To Groups</a>
                     </li>
                     <!---XNFR-278-->
+
+                    <!---XNFR-988-->
+                    <li><a id="exportToExcel"
+                            *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
+                            (click)="showDeactivateAlert()" translate> Deactivate </a></li>
+                    <!---XNFR-988-->
                 </ul>
             </ng-template>
             <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
