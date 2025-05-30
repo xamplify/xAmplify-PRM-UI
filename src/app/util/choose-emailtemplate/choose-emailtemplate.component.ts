@@ -14,10 +14,15 @@ selectedTemplate : any;
  @Input() fromOliverPopup: boolean = false;
  selectedTemplatetype: any[] = [];
   filterType: string;
+@Input() pageView : boolean = false;
   constructor() { }
 
   ngOnInit() {
-   this.showEmailTemplates('All');
+    if(this.pageView){
+      this.showPageTemplates('All');
+    }else{
+      this.showEmailTemplates('All');
+    }
   }
 
   generateEmailTemplate() {
@@ -38,6 +43,17 @@ selectedTemplate : any;
         this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.beeRegularTemplate == true);
     } else if(type == 'EmailCo-branding') {
       this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.regularCoBrandingTemplate == true);
+    }else{
+      this.selectedTemplatetype = this.selectedTemplateList;
+    }
+  }
+
+  showPageTemplates(type: any) {
+    this.filterType = type;
+    if(type == 'Regular') {
+        this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.coBranded == false);
+    } else if(type == 'Cobranded') {
+      this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.coBranded == true);
     }else{
       this.selectedTemplatetype = this.selectedTemplateList;
     }
