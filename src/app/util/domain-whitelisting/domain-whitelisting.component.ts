@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -24,6 +24,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   @Input() isPartnerDomains: boolean;
   @Input() isTeamMemberDomains: boolean;
   @Input() isMyProfileAndDomainWhitelisting: boolean;
+  @Output() notifyLoadPartners = new EventEmitter<any>();
+
   customResponse: CustomResponse = new CustomResponse();
   headerText = "";
   domain = "";
@@ -60,6 +62,9 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   sendTestEmailIconClicked = false;
 
   allPartnerDomains: string[] = [];
+  isDeactivateOrActivateOptionClicked: boolean = false;
+  selectedDeactivateOrActivateDomainId: any;
+  selectedDomain: any;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -460,6 +465,22 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     }
   );
 }
+
+
+ confirmDeativateDomain(domain: any) {
+    this.isDeactivateOrActivateOptionClicked = true;
+    this.selectedDomain = domain;
+  }
+
+  closeModalPopup() {
+    this.isDeactivateOrActivateOptionClicked = false;
+  }
+
+  notifyCloseModalPopup(){
+     this.isDeactivateOrActivateOptionClicked = false;
+    this.findTeamMemberOrPartnerDomains(this.pagination);
+    this.notifyLoadPartners.emit();
+  }
 
 
 }

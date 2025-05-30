@@ -783,5 +783,24 @@ export class ParterService {
         return this.authenticationService.callPutMethod(url, partnershipids);
     }
 
+    findPartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/findPartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+    updatePartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/updatePartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+      deactivatePartners(deactivateUserIds: Array<number>) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        var url = this.URL + "partnership/deactivatePartnerCompanies/" + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, deactivateUserIds);
+    }
+
+
 }
 

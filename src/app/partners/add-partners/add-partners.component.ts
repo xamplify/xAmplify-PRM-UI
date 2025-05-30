@@ -4998,6 +4998,47 @@ triggerUniversalSearch(){
 		}
 	}
 
+	notifyLoadPartners() {
+		this.loadPartnerList(this.pagination);
+	}
+
+	showDeactivateAlert(){
+		if (this.editContactComponent.selectedContactListIds.length != 0) {
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, deactivate it!'
+
+			}).then(function (myData: any) {
+				console.log("ManageContacts showAlert then()" + myData);
+				self.deactivatePartners();
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+		}
+	}
+
+	deactivatePartners() {
+		this.parterService.deactivatePartners(this.editContactComponent.selectedContactListIds)
+			.subscribe(
+				(response: any) => {
+					if (response.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.loadPartnerList(this.pagination);
+						this.editContactComponent.selectedContactListIds = [];
+					}
+				},
+				(error: any) => {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				},
+			);
+  }
+
 	/***** XNFR-988 *****/
 	resetDeleteOptions() {
 		this.sweetAlertParameterDto = new SweetAlertParameterDto();
