@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -56,6 +56,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     properties:Properties = new Properties();
     saveAndCloseButtonText = this.properties.SAVE_AND_CLOSE;
     updatedAndCloseButtonText = this.properties.UPDATE_AND_CLOSE;
+    @Input() isFromOliver: boolean = false;
+    @Output() notifyEmit: EventEmitter<any> = new EventEmitter();
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
@@ -101,6 +103,9 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 (response: any) => {
                     if (response.statusCode == 200) {
                         let landingPage = response.data;
+                        if(this.isFromOliver){
+                             landingPage.jsonBody = JSON.stringify(this.landingPageService.jsonBody);
+                        }
                         let defaultLandingPage = landingPage.defaultLandingPage;
                         this.defaultLandingPage = defaultLandingPage;
                         this.landingPage = new LandingPage();
@@ -432,8 +437,12 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
         if (data.access) {
             if (isSaveAndRedirectButtonClicked) {
-                this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
-                this.navigateToManageSection();
+                if (this.isFromOliver) {
+                    this.notifyEmit.emit("Page created successfully");
+                } else {
+                    this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
+                    this.navigateToManageSection();
+                }
             } else {
                 this.ngxloading = true;
                 this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
@@ -556,11 +565,24 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     navigateBack(){
         let url = this.referenceService.getCurrentRouteUrl();
         let isCreateUrl = url.indexOf("add")>-1;
-        if(isCreateUrl){
+        if(this.isFromOliver){
+             this.notifyEmit.emit();
+        }else{
+            if(isCreateUrl){
             this.router.navigate(["/home/pages/select"]);
         }else{
             this.navigateToManageSection();
         }
+        }
     }
 
+    nagivatetoRouter(urlType: any) {
+        if (urlType == 'home') {
+            this.referenceService.goToRouter(this.referenceService.homeRouter);
+        } else if (urlType == 'selectPage') {
+            this.referenceService.goToRouter('/home/pages/select');
+        } else if (urlType == 'Manage Pages') {
+            this.referenceService.goToRouter(this.routerLink);
+        }
+    }
 }

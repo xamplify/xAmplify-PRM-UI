@@ -35,7 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage  ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage  ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -45,10 +45,11 @@
         (notifyClose)="closeSocialShare($event)"></app-update-status>
       <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
       </app-create-template>
+      <app-add-landing-page *ngIf="showPage" [isFromOliver]="true" (notifyEmit)="closeDesignTemplate($event)"></app-add-landing-page>
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
-          (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
+          (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate && !showPage " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [oliverIntegrationType]="chatGptIntegrationSettingsDto?.oliverIntegrationType" [selectedItemFromOliver]="selectedAssets"
@@ -698,6 +699,7 @@
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
         <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
+        <button *ngIf="authenticationService.module.hasLandingPageAccess" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
         <!-- <button class="share-btn">Design Page</button> -->
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
