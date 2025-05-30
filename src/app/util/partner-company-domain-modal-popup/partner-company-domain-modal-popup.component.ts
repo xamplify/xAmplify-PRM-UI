@@ -14,6 +14,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   partners: any;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() notifyCloseEvent = new EventEmitter<any>();
+  modalPopupLoader :boolean = false;
 
   constructor(public parterService: ParterService ) { }
 
@@ -23,21 +24,24 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   }
 
   findPartnerCompaniesByDomain(selectedDomain: any) {
-
-        this.partnership.domainName = selectedDomain.domainName;
-        this.partnership.domainId = selectedDomain.id;
-        this.partnership.domainDeactivated = selectedDomain.domainDeactivated;
-        this.parterService.findPartnerCompaniesByDomain(this.partnership).subscribe(response => {
-          if (response.statusCode == 200) {
-            this.partners = response.data;
-          } else {
-            // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-          }
-        }, error => {
-          // this.isLoadingList = false;
-          // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        });
+    this.modalPopupLoader = true;
+    this.partnership.domainName = selectedDomain.domainName;
+    this.partnership.domainId = selectedDomain.id;
+    this.partnership.domainDeactivated = selectedDomain.domainDeactivated;
+    if (this.partnership.domainDeactivated) {
+      this.partnership.status = 'deactivated';
+    } else {
+      this.partnership.status = 'approved';
+    }
+    this.parterService.findPartnerCompaniesByDomain(this.partnership).subscribe(response => {
+      if (response.statusCode == 200) {
+        this.partners = response.data;
+        this.modalPopupLoader = false;
       }
+    }, error => {
+      this.modalPopupLoader = false;
+    });
+  }
 
 
   closePartnerCompanyDomainModal(){
@@ -64,6 +68,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   }
 
   deactivateOrActivatePartner() {
+    this.modalPopupLoader = true;
     if(this.partnership.domainDeactivated){
     this.partnership.status = 'approved';
     } else {
@@ -71,8 +76,9 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
     }
     this.parterService.updatePartnerCompaniesByDomain(this.partnership).subscribe(response => {
       if (response.statusCode == 200) {
+        this.modalPopupLoader = false;
       $("#partnerCompanyDomainForm").modal('hide');
-       this.notifyCloseEvent.emit();
+       this.notifyCloseEvent.emit(response.message);
       }});
   }
 

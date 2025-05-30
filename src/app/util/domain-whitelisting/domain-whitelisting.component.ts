@@ -476,9 +476,10 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.isDeactivateOrActivateOptionClicked = false;
   }
 
-  notifyCloseModalPopup(){
-     this.isDeactivateOrActivateOptionClicked = false;
+  notifyCloseModalPopup(event: any){
+    this.isDeactivateOrActivateOptionClicked = false;
     this.findTeamMemberOrPartnerDomains(this.pagination);
+    this.customResponse = new CustomResponse('SUCCESS', event, true);
     this.notifyLoadPartners.emit();
   }
 

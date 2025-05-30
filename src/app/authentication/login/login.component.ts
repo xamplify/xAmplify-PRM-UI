@@ -162,7 +162,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (localStorage.getItem('currentUser')) {
           const currentUser = JSON.parse(localStorage.getItem('currentUser'));
           localStorage.removeItem('isLogout');
-          this.redirectTo(currentUser);
+          if (currentUser.userStatusCode === 400 && !this.authenticationService.vanityURLEnabled) {
+            localStorage.removeItem('currentUser');
+            this.loading = false;
+            this.isPleaseWaitButtonDisplayed = false;
+            this.customResponse = new CustomResponse('ERROR', 'You are not authorized to log in. Your account may be inactive or unassociated.', true);
+          } else {
+            this.redirectTo(currentUser);
+          }
         } else {
           this.loading = false;
           this.isPleaseWaitButtonDisplayed = false;
