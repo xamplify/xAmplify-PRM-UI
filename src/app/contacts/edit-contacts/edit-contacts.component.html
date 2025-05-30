@@ -1026,6 +1026,9 @@
 																			<strong>Please contact admin</strong>
 																		</span>
 																	</ng-container>
+																	<ng-container *ngIf="isPartner && contact?.partnerStatus == 'deactivated'">
+                                                            			<h6 class="green-banner inline-flex ml5">DEACTIVATED</h6>
+                                                        			</ng-container>
 																</td>
 																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.vertical | slice:0:14}}
@@ -1112,75 +1115,73 @@
 																	</div>
 																</td>
 																<td align="center"
-																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
-								  authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
-																	<div class="actions-block override-actions white-space-transform  actions_width"
-																		style="width:170px;">
-																		<a class="custom-icon"
-																			*ngIf="!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)"
-																			data-toggle="tooltip"
-																			data-placement="bottom" title="unsubscribe"
-																			(click)="unsubscribeUser(contact)">
-																			<i class="fa fa-bell-slash-o IconCustomization"
-																				aria-hidden="true"></i>
+																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier 
+																		|| authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() 
+																		|| (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
+																	<div class="actions-block override-actions white-space-transform  actions_width" style="width:170px;">
+																		<a class="custom-icon" *ngIf="!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) 
+																			&& (checkingContactTypeName == 'Contact' || sharedLeads) && contact?.partnerStatus != 'deactivated'"
+																			data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
+																			<i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
-																		<a class="custom-icon"
-																			*ngIf="contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)"
-																			data-toggle="tooltip"
-																			data-placement="bottom" title="subscribe"
-																			(click)="resubscribeUser(contact)">
-																			<i class="fa fa-bell-o IconCustomization"
-																				aria-hidden="true"></i>
+
+																		<a class="custom-icon" *ngIf="contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) 
+																			&& (checkingContactTypeName == 'Contact' || sharedLeads) && contact?.partnerStatus != 'deactivated'"
+																			data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
+																			<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
-																		<a class="custom-icon" data-toggle="tooltip"
-																			data-placement="bottom"
-																			title="{{actionsDescription.contact_edit}}"
-																			(click)="editUserDetails(contact)"
-																			[class.disabled]="masterContactListSync && isDefaultContactList"
-																			*ngIf="((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
-																			<i class="fa fa-pencil-square-o IconCustomization"
-																				aria-hidden="true"></i>
+
+																		<a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}"
+																			(click)="editUserDetails(contact)" [class.disabled]="masterContactListSync && isDefaultContactList"
+																			*ngIf="((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList && contact?.partnerStatus != 'deactivated'">
+																			<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
-																		<a class="custom-icon" data-toggle="tooltip"
-																			data-placement="bottom"
+
+																		<a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
 																			title="{{actionsDescription.contact_delete}}"
 																			[class.disabled]="masterContactListSync && isDefaultContactList"
-																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)"
-																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
-										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
-										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList && ((authenticationService?.module?.adminOrSuperVisor)
-                                        || (loggedInUserId==uploadedUserId))">
-																			<i class="fa fa-trash-o trashIconCustomization"
-																				aria-hidden="true"></i>
+																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)" *ngIf="selectedContactListName!=properties?.activeMasterPartnerList 
+																				&& selectedContactListName!=properties?.inActiveMasterPartnerList && ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') 
+																				|| (assignLeads && !contactService?.assignedToPartner)) && !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList 
+																				&& ((authenticationService?.module?.adminOrSuperVisor) || (loggedInUserId==uploadedUserId))">
+																			<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 																			<div class="del-icon"></div>
 																		</a>
+
 																		<!--XNFR-342---->
-																		<ng-container
-																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList && (authenticationService?.module?.isCampaign ||
-																			authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
-																			|| authenticationService?.module?.playbookAccess)">
-																			<a class="custom-icon" data-toggle="tooltip"
-																				data-placement="top"
+																		<ng-container *ngIf="!assignLeads && !sharedLeads && !isSynchronizationList && (authenticationService?.module?.isCampaign ||
+																			authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess) 
+																			&& contact?.partnerStatus != 'deactivated'">
+																			<a class="custom-icon" data-toggle="tooltip" data-placement="top"
 																				(click)="openUnPublishedContentModalPopUp(contact)"
 																				[title]="(((authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution) && !authenticationService?.module?.damAccess 
-                                                                     && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact')
-                                                                      ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+																                    && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact')
+																                    ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
 																				<i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
-                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'"
-																					aria-hidden="true"></i>
+																                    && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact') 
+																					? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
 																		</ng-container>
+
 																		<!--XNFR-342---->
-																		<a class="custom-icon"
-																			*ngIf="(authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads 
-																				&& (!sharedLeads) && !isSynchronizationList) || (isContactModule && authenticationService.module.isCampaign && (authenticationService?.module?.isPrmAndPartner 
-																				|| authenticationService?.module?.isPrmAndPartnerTeamMember))"
-																			data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+																		<a class="custom-icon" *ngIf="(authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner 
+																			&& !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList) 
+																			|| (isContactModule && authenticationService.module.isCampaign && (authenticationService?.module?.isPrmAndPartner 
+																			|| authenticationService?.module?.isPrmAndPartnerTeamMember))" data-toggle="tooltip"
+																			data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+																			<div class="clickicons"></div>
+																		</a>
+																
+																		<!--- XNFR-988 --->
+																		<a class="custom-icon" *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
+																			data-toggle="tooltip" data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate' : 'Deactivate'"
+																			(click)="confirmDeactivatePartner(contact)"> <i class="fa fa-power-off IconCustomization"
+																				aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
 																	</div>
@@ -2212,3 +2213,7 @@
 	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
+
+<!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
+    (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>

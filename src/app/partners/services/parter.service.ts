@@ -777,10 +777,10 @@ export class ParterService {
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 
-    //XNFR-988
-    updatePartnerShipStatusForPartner(partnership:Partnership) {
-        let url = this.URL +  `partnership/updatePartnerShipStatusForPartner` + `?access_token=${this.authenticationService.access_token}`;
-        return this.authenticationService.callPostMethod(url, partnership);
+    /***** XNFR-988 *****/
+    updatePartnerShipStatusForPartner(partnershipids:any, partnerStatus:string) {
+        let url = this.URL + 'partnership/updatePartnerShipStatusForPartner?partnerStatus=' + partnerStatus + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, partnershipids);
     }
 
     findPartnerCompaniesByDomain(partnership: Partnership) {

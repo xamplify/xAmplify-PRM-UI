@@ -965,6 +965,9 @@
                                                                 <strong>Please contact admin</strong>
                                                             </span>
                                                         </ng-container>
+                                                        <ng-container *ngIf="contact?.partnerStatus == 'deactivated'">
+                                                            <h6 class="green-banner inline-flex ml5">DEACTIVATED</h6>
+                                                        </ng-container>
                                                     </td>
                                                     <!--- XNFR-890-start --->
                                                     <td>
@@ -1003,9 +1006,8 @@
                                                         </div>
                                                     </td>
                                                     <td class="white-space-transform">
-                                                        <div class="actions-block override-actions"
-                                                            style="display: flex;">
-                                                            <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess && contact.partnershipStatus !== 'DEACTIVATED'"
+                                                        <div class="actions-block override-actions" style="display: flex;" *ngIf="contact.partnerStatus != 'deactivated'">
+                                                            <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Update Partner Modules" (click)="editPartnerModulesAccess(contact)">
                                                                 <i class="fa fa-cogs IconCustomization"
@@ -1013,7 +1015,7 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon"
-                                                                *ngIf="!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor && contact.partnershipStatus !== 'DEACTIVATED'"
+                                                                *ngIf="!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Unsubscribe" (click)="unsubscribeUser(contact)">
                                                                 <i class="fa fa-bell-slash-o IconCustomization"
@@ -1021,21 +1023,21 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon"
-                                                                *ngIf="contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor && contact.partnershipStatus !== 'DEACTIVATED'"
+                                                                *ngIf="contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="subscribe" (click)="resubscribeUser(contact)">
                                                                 <i class="fa fa-bell-o IconCustomization"
                                                                     aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
-                                                            <a class="custom-icon" *ngIf="contact.partnershipStatus !== 'DEACTIVATED'" id="envolope_{{i}}"
+                                                            <a class="custom-icon" id="envolope_{{i}}"
                                                                 aria-hidden="true" data-toggle="tooltip"
                                                                 data-placement="bottom" title="Send Email Notification"
                                                                 (click)="sendMail(contact.id)">
                                                                 <i class="fa fa-envelope IconCustomization"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
-                                                            <a class="custom-icon" *ngIf="contact.partnershipStatus !== 'DEACTIVATED'" id="edit_{{i}}" data-toggle="tooltip"
+                                                            <a class="custom-icon" id="edit_{{i}}" data-toggle="tooltip"
                                                                 data-placement="bottom"
                                                                 title="Edit {{authenticationService?.partnerModule?.customName}}"
                                                                 (click)="editUserDetails(contact)"> <i
@@ -1054,7 +1056,7 @@
                                                             <!--XNFR-342-->
                                                             <ng-container *ngIf="(authenticationService?.module?.isCampaign ||
                                                                  authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
-                                                                 || authenticationService?.module?.playbookAccess) && contact.partnershipStatus !== 'DEACTIVATED'">
+                                                                 || authenticationService?.module?.playbookAccess)">
                                                                 <a class="custom-icon" data-toggle="tooltip"
                                                                     data-placement="bottom"
                                                                     title="{{actionsDescription?.shareUnPublishedContent}}"
@@ -1080,19 +1082,36 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
 
-                                                            <!--XNFR-988-->
+                                                            <!--- XNFR-988 --->
                                                             <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip"
-                                                                data-placement="bottom"
-                                                                [title]="contact.partnershipStatus !== 'DEACTIVATED' ? 'Deactivate Partnership' : ' Activate Partnership'"
-                                                                (click)="confirmDeactivatePartner(contact)"> <i
-                                                                    class="fa fa-power-off IconCustomization"
-                                                                    aria-hidden="true"></i>
+                                                                data-placement="bottom" title="Deactivate" (click)="confirmDeactivatePartner(contact)"> <i
+                                                                    class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             
-                                                            <app-login-as-partner *ngIf="contact.partnershipStatus !== 'DEACTIVATED'" [contact]="contact"
-                                                                [showLoginAsButton]="true"></app-login-as-partner>
                                                             <!---XNFR-224--->
+                                                            <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
+                                                        </div>
+                                                        <!----XNFR-988 --->
+                                                        <div class="actions-block override-actions" style="display: flex;" *ngIf="contact.partnerStatus == 'deactivated'">
+                                                            <a class="custom-icon" id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom"
+                                                                title="Delete {{authenticationService?.partnerModule?.customName}}" (click)="deleteUserShowAlert(contact.id)">
+                                                                <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                                                <div class="del-icon"></div>
+                                                            </a>
+                                                        
+                                                            <a class="custom-icon"
+                                                                *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
+                                                                data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)"> <i
+                                                                    class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
+                                                            </a>
+                                                        
+                                                            <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Activate" (click)="confirmDeactivatePartner(contact)"> <i
+                                                                    class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                     <ng-template #NA>N/A</ng-template>
@@ -1998,3 +2017,7 @@
         (notifyUpdateFailed)="showUpdateFailedStatus($event)"></app-partner-module-configurator>
 </ng-template>
 <!-- XNFR-938 -->
+
+<!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
+    (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>

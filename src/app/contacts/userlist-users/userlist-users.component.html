@@ -16,16 +16,18 @@
            </tr>
         </thead>
         <tbody>
-           <ng-container *ngFor="let user of usersPagination.pagedItems ;let i =index">
-              <tr>
-                 <td style="width: 40%;">
-                    <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
-                 </td>
-                 <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.jobTitle}}</td>
-                 <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.address}}</td>
-                 <td style="width: 20%;" *ngIf="isContactModule">{{user.contactStatus}}</td>
-              </tr>
-           </ng-container>
+         <ng-container *ngFor="let user of usersPagination.pagedItems ;let i =index">
+            <tr>
+               <td style="width: 40%;">
+                  <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
+                  <h6 *ngIf="isPartnerModule && user.partnerStatus == 'deactivated'" 
+                     class="green-banner inline-flex" style="margin-left: 65px;">DEACTIVATED</h6>
+               </td>
+               <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.jobTitle}}</td>
+               <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.address}}</td>
+               <td style="width: 20%;" *ngIf="isContactModule">{{user.contactStatus}}</td>
+            </tr>
+         </ng-container>
         </tbody>
      </table>
      <!---Pagination-->   

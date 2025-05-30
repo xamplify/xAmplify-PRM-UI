@@ -335,7 +335,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	contactSubscriptionLimit: number = 0;
 	selfContactCount: number = 0;
 	partnership: Partnership = new Partnership();
-
+	deactivatedPartnerDomains: any;
+	isDeleteOptionClicked: boolean = false;
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -1190,7 +1191,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
 					self.cancelPartners();
 				}
-
+				
 				console.log("ManagePartnerComponent : readFiles() Partners " + JSON.stringify(self.newPartnerUser));
 			}
 		} else {
@@ -4957,46 +4958,44 @@ triggerUniversalSearch(){
 	}
 	/** XNFR-952 end */
 
-
-	/** XNFR-988 start */
+	/***** XNFR-988 *****/
 	confirmDeactivatePartner(partner) {
-		let confirmButtonMessage = partner.partnershipStatus !== 'DEACTIVATED' ? 'Yes, Deactivate it!' : 'Yes, Activate it!';
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: partner.partnershipStatus !== 'DEACTIVATED' ? 'The partner will be Deactivated' : 'The partner will be Activated',
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: confirmButtonMessage
-		}).then(function () {
-			self.deactivatePartner(partner);
-		}, function (dismiss: any) {
-			console.log('You clicked on option: ' + dismiss);
-		});
+		this.user = new User();
+		this.user = partner;
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated' 
+			? 'The partner will be Deactivated' : 'The partner will be Activated';
+		this.sweetAlertParameterDto.confirmButtonText = partner.partnerStatus !== 'deactivated'
+			? 'Yes, Deactivate it!' : 'Yes, Activate it!';
+		this.isDeleteOptionClicked = true;
 	}
 
-	deactivatePartner(partner) {
-		this.isLoadingList = true;
-		this.partnership.id = partner.partnershipId;
-		if (partner.partnershipStatus !== 'DEACTIVATED') {
-			this.partnership.status = 'deactivated';
+	/***** XNFR-988 *****/
+	deactivatePartner(event: any) {
+		if (event) {
+			this.isLoadingList = true;
+			let partnershipIds = [];
+			partnershipIds.push(this.user.partnershipId);
+			let partnerStatus = this.user.partnerStatus;
+			partnerStatus = partnerStatus == 'deactivated' ? 'approved' : 'deactivated';
+			this.parterService.updatePartnerShipStatusForPartner(partnershipIds, partnerStatus)
+				.subscribe(response => {
+					this.isLoadingList = false;
+					this.resetDeleteOptions();
+					if (response.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.loadPartnerList(this.pagination);
+					} else {
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				}, error => {
+					this.resetDeleteOptions();
+					this.isLoadingList = false;
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				});
 		} else {
-			this.partnership.status = 'approved';
+			this.resetDeleteOptions();
 		}
-		this.parterService.updatePartnerShipStatusForPartner(this.partnership).subscribe(response => {
-			this.isLoadingList = false;
-			if (response.statusCode == 200) {
-				this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-				this.loadPartnerList(this.pagination);
-			} else {
-				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-			}
-		}, error => {
-			this.isLoadingList = false;
-			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-		});
 	}
 
 	notifyLoadPartners() {
@@ -5038,6 +5037,13 @@ triggerUniversalSearch(){
 					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 				},
 			);
+  }
+
+	/***** XNFR-988 *****/
+	resetDeleteOptions() {
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		this.isDeleteOptionClicked = false;
+		this.user = new User();
 	}
 
 }

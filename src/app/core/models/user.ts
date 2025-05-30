@@ -86,4 +86,5 @@ export class User {
     countryCode: string;
     contactStatus: string;
     contactStatusId: number;
+	partnerStatus: string;
 }
