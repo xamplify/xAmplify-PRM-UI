@@ -197,4 +197,5 @@ export class Pagination {
 
 	selectedAssetNames: string[] = [];
 	selectedCompanyIds: number[] = [];
+	selectedEmailIds: string[] = [];
 }

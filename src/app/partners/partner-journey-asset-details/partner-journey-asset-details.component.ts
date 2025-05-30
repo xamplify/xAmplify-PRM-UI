@@ -45,16 +45,22 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   filterApplied: boolean = false;
   showFilterOption: boolean = false;
   showFilterDropDown: boolean = false;
+  isCollapsed: boolean = true;
   filterCategoryLoader = false;
   public companyInfoFilterPlaceHolder: string = 'Select Companies';
   public companyNameFilters: Array<any>;
+  public emailInfoFilters: Array<any>;
   public selectedCompanyIds = [];
+  public selectedEmailIds = [];
   public companyInfoFields: any;
   public multiSelectPlaceholderForAsset: string = "Select Asset";
   public selectedAssetNames: any[] = [];
   public assetNameFilters: Array<any>;
   public assetInfoFields: any;
+  public emailInfoFields: any;
   dateFilterText = "Select Date Filter";
+  isFromApprovalModule: boolean = false;
+  public EmailInfoFilterPlaceHolder: string = 'Select Emailids'
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -66,6 +72,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   ngOnInit() {
     this.findCompanyNames();
     this.findAssetNames();
+    //this.findEmailIds();
   }
 
   ngOnChanges() {
@@ -139,15 +146,19 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.referenseService.goToTop();
   }
   
-  showAnalytics(asset: any) {
-    this.navigateToPartnerAnalytics(asset.id);
+  showAnalytics(item: any) {
+    let damPartnerId = item.partnerId;
+     let prefixUrl = "";
+      let url = ""
+    if (this.isDetailedAnalytics) {
+      url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenseService.encodePathVariable(item.id);
+    } else {
+      prefixUrl =  RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['damPartnerAnalytics'];
+      url = prefixUrl + '/' + this.referenseService.encodePathVariable(item.id) + '/' + this.referenseService.encodePathVariable(damPartnerId);
+    }
+    
+    this.referenseService.navigateToRouterByViewTypes(url, 0, '', '', false);
   }
-
-  navigateToPartnerAnalytics(id: number) {
-    let viewType = localStorage.getItem('defaultDisplayType');
-    let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenseService.encodePathVariable(id);
-    this.referenseService.goToRouter(url);
-	}
 
   getAssetDetails(pagination: Pagination) {
     this.getAssetDetailsForPartnerJourney(this.pagination);
@@ -189,6 +200,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     }
     if (isValidSelectedCompanies) {
       this.filterActiveBg = 'filterActiveBg';
+      this.isCollapsed = false;
     }
   }
   clickFilter() {
@@ -207,12 +219,19 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   clearFilter() {
     this.pagination.selectedCompanyIds = [];
     this.pagination.selectedAssetNames = [];
+    this.pagination.criterias = [];
+    this.pagination.searchKey = "";
+    this.pagination.fromDateFilterString = "";
+    this.pagination.toDateFilterString = "";
+    this.selectedCompanyIds = [];
+    this.selectedAssetNames = [];
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.setDateFilterOptions();
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
+    this.isCollapsed = true;
   }
   setDateFilterOptions() {
     let obj = {
@@ -222,6 +241,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   }
    applyFilters() {
     this.filterApplied = true;
+    this.clickFilter();
     this.setDateFilterOptions();
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
@@ -278,4 +298,15 @@ findAssetNames(){
     this.assetNameFilters = [];
   });
 }
+/*findEmailIds(){
+  this.pagination.userId = this.loggedInUserId;
+  this.emailInfoFields = { text: 'email', value: 'email' };
+  this.parterService.getAllPartnerEmailIdsFilter(this.pagination).
+    subscribe(response => {
+      this.emailInfoFilters = response.data;
+    }, error => {
+      this.emailInfoFilters = [];
+      this.filterCategoryLoader = false;
+    });
+}*/
 }

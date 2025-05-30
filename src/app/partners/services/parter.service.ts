@@ -785,5 +785,10 @@ export class ParterService {
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
+    // getAllPartnerEmailIdsFilter(pagination: Pagination) {
+    //     const url = this.URL + 'partner/journey/email/ids/filter?access_token=' + this.authenticationService.access_token;
+    //     return this.httpClient.post(url, pagination)
+    //         .catch(this.handleError);
+    // }
 }
 

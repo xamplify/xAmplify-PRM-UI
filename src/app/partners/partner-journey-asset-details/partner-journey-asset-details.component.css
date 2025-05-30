@@ -45,3 +45,13 @@
     width: 7px;
     height: 7px;
 }
+.search_download_align{
+    display: flex
+;
+    align-items: center;
+    justify-content: space-between;
+}
+span.btn-aligmntCu{
+    display: flex;
+    justify-content: flex-end;
+}

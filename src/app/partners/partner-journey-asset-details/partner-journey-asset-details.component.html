@@ -1,29 +1,9 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
   <div class="panel panel-info panel-bgMain panel-card br-10">
-    <div class="panel-heading panel-heading-custom panel-bg" id="asset-details-div">
+    <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="asset-details-div">
       <h3 class="panel-title mt7">{{headerText}}</h3>
-      <span class="pull-right mt25m mobilesearchdisplay">
-        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
-          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
-            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
-          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-            (click)="searchKey='';search()"></button>
-          <button type="submit" class="search-box-item-click" (click)="search()">
-            <i class="fa fa-search" aria-hidden="true"></i></button>
-        </div>
-      </span>
-      <button class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
-        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
-          data-original-title="Export to Excel"></i>
-      </button>
-      <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.selectedOption"
-        (ngModelChange)="getSortedResults($event)" id="select-dropdown">
-        <option *ngFor="let option of sortOption.assetInteractionDropDownOptions" [ngValue]="option">
-          {{option.name}}
-        </option>
-      </select>
-      <span class="btn btn-xs l-g-view filter-btn {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip"
+      <div class="flex">
+      <span class="btn btn-xs l-g-view filter-btn mr5 {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip"
         title="Filter">
         <div class="btn-group">
           <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
@@ -32,6 +12,31 @@
           </a>
         </div>
       </span>
+        <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4 mr5" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+       <div class="mr5">
+      <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.selectedOption"
+        (ngModelChange)="getSortedResults($event)" id="select-dropdown">
+        <option *ngFor="let option of sortOption.assetInteractionDropDownOptions" [ngValue]="option">
+          {{option.name}}
+        </option>
+      </select>
+      </div>
+       <span class="pull-right mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+            (click)="searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    
+      </div>
     </div>
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
@@ -54,10 +59,14 @@
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
                   [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
                 </ejs-multiselect>
-                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedCompanyIds' [ngModelOptions]="{standalone: true}"
+                <ejs-multiselect *ngIf="!isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedCompanyIds' [ngModelOptions]="{standalone: true}"
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
                   [placeholder]='companyInfoFilterPlaceHolder'>
                 </ejs-multiselect>
+             <!--    <ejs-multiselect *ngIf="isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedEmailIds' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='emailInfoFilters' [fields]='emailInfoFields'
+                  [placeholder]='EmailInfoFilterPlaceHolder'>
+                </ejs-multiselect> -->
                 <div class="portlet box custom_fiter-asset mt10">
                   <div class="row pl10 pr10 pb10">
                     <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
@@ -121,15 +130,12 @@
               <td>{{item?.downloadedCount}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp></td>
-              <td>
-                -
-                <!-- <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+              <td><a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
                       *ngIf="!authenticationService?.module?.isMarketingCompany"
-                      (click)="item.approvalStatus !== approvalStatus.DRAFT && !item?.approvalReferenceId ? showAnalytics(item) : ''">
-                      <i class="fa fa-line-chart IconCustomization" aria-hidden="true"
-                        [ngClass]="(item?.approvalStatus !== approvalStatus.DRAFT && !item?.approvalReferenceId) ? '' : 'disabled gray'"></i>
+                      (click)="showAnalytics(item)">
+                      <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
-                    </a> -->
+                    </a>
               </td>
             </tr>
           </tbody>
