@@ -436,8 +436,24 @@
                      <app-list-loader style="background: white" [rowsCount]="3"
                         *ngIf="isContactListLoader"></app-list-loader>
                      <div class="table-responsive mb_border_none">
-                        <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
+                           <button *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0) && !isDomainWorkflow "
+                              title="Pause or Resume Workflows for Domains" (click)="getDomainDetailsOrPartners()">
+                              <i class="fa fa-cogs"></i>
+                           </button>
+                           <button *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0) && isDomainWorkflow"
+                              title="Go back to {{contactType}}" (click)="getDomainDetailsOrPartners()">
+                              <i class="fa fa-arrow-left"></i>
+                           </button>
+                                                   <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader && isDomainWorkflow">
+                                                      <div class="alert alert-info">
+                     <strong>
+                         **Pause or resume workflows for specific domains. Workflows will be paused or resumed for all recipients within the selected domain in the campaign.
+                     </strong>
+                 </div>
+                           </div>
+                        <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader && !isDomainWorkflow">
                            <div class="input-icon" style="position:relative;right: -11px;margin-bottom: 7px;">
+                              <ng-container *ngIf="!isDomainWorkflow">
                               <input type="text" class="form-control" [(ngModel)]="contactSearchInput"
                                  [ngModelOptions]="{standalone: true}" placeholder="Search"
                                  (keypress)="eventHandlerForSearchUsers($event.keyCode)"
@@ -445,11 +461,50 @@
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                  *ngIf="contactSearchInput"
                                  (click)="contactSearchInput='';searchCampaignUsers();"></button>
-                              <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i
+                              <button type="submit" class="search-box-item-click"  (click)="searchCampaignUsers()"><i
                                     class="fa fa-search" aria-hidden="true"></i></button>
+                              </ng-container>
                            </div>
                         </div>
-                        <table class="table tgrid" aria-describedby=""
+
+
+                        <div class="col-xs-12 p0" *ngIf="isDomainWorkflow && !isContactListLoader">
+                           <div class="col-xs-4" id="margin-bottom">
+                              <label class="default-cursor f-w-600" for="reason">Domains <strong class="red">*</strong></label>
+                              <select class="form-control" name="actionId" [(ngModel)]="selectedDomainName"
+                                 (ngModelChange)="getDomainWorkflowDetails()" >
+                                 <ng-container *ngFor='let option of domainDetials; let i=index'>
+                                    <option value="{{option.domainName}}">{{option.domainName}}</option>
+                                 </ng-container>
+                              </select>
+                           </div>
+                           <div class="col-xs-4">
+                              <label class="default col-xs-12 p0">
+                                 Inactive Count {{selectDomainDetails.inactiveCount}}/{{selectDomainDetails.totalCount}}
+                              </label>
+                                          <button class="btn btn-default workflow-style resume-style"
+                                          [disabled]="selectDomainDetails.totalCount == selectDomainDetails.activeCount"
+                                             (click)="changeCampaignDomainUsersStatus(selectedDomainName,'Resume')">
+                                             <span class="hidden-xs resume-text-style">Resume</span>
+                                             <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                           </div>
+                           <div class="col-xs-4 p0">
+                              <label class="default col-xs-12 p0" for="time">
+                                    Active Count {{selectDomainDetails.activeCount}}/{{selectDomainDetails.totalCount}}
+                              </label>
+                                          <button class="btn btn-default workflow-style pause-style"
+                                             [disabled]="selectDomainDetails.totalCount == selectDomainDetails.inactiveCount"
+                                             (click)="changeCampaignDomainUsersStatus(selectedDomainName,'Pause')">
+                                             <span class="hidden-xs pause-text-style">Pause</span>
+                                             <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                           </div>
+                        </div>
+
+
+
+                        <table *ngIf="!isDomainWorkflow" class="table tgrid" aria-describedby=""
                            [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader"
                            id="campaign-preview-contact-list">
                            <thead>
@@ -500,7 +555,7 @@
                            </tbody>
                         </table>
                      </div>
-                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0">
+                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0 && !isDomainWorkflow">
                         <div *ngIf="campaignPartnersOrContactsPagination.pagedItems.length !== 0">
                            <app-pagination [pagination]="campaignPartnersOrContactsPagination"
                               [type]="'contactsOrPartners'" (notifyParent)="setPage($event)"
@@ -508,7 +563,7 @@
                         </div>
                      </div>
                      <div class="alert alert-info alert-top-padding-xamplify"
-                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader">No
+                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader && isDomainWorkflow">No
                         {{contactType}} found</div>
                   </fieldset>
                </ng-container>

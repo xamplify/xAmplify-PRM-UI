@@ -32,7 +32,7 @@
 <!--ChatGPT Modal-->
 <div
   *ngIf="isChatGptIconDisplayed && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
+  class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
     <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage  ? 'modal-content': 'modal-content oliver-content'">
@@ -52,9 +52,9 @@
       <div *ngIf="!openShareOption && !showTemplate && !selectTemplate && !showPage " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
-          [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
-          [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
-          (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+          [oliverIntegrationType]="chatGptIntegrationSettingsDto?.oliverIntegrationType" [selectedItemFromOliver]="selectedAssets"
+          [selectedFoldersForOliver]="selectedFolders" [isPartnerViewFromOliver]="isPartnerLoggedIn"
+          (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
           <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
@@ -537,6 +537,7 @@
                       <div class="search-wrapper">
                         <input type="text" class="form-control input-sm search-input" [(ngModel)]="chatHistorySortOption.searchKey"
                           (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
+                        <i class="fa fa-times search-icon right_30" (click)="clearSeachKey()"></i>
                         <i class="fa fa-search search-icon" (click)="searchChatHistory()"></i>
                       </div>
                     </div>
@@ -552,6 +553,8 @@
                                 <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT"
                                   class="fa fa-lightbulb-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT"
+                                  class="fa fa-bar-chart mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == GLOBALCHAT"
                                   class="fa fa-file-text mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
@@ -688,10 +691,13 @@
             aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
           </i>
         </div>
-        <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
-            (click)="copyChatGPTText(message.content)"></i></div>
+        <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+            (click)="copyChatGPTText(message.content)"></i></div> -->
+        <button class="footer-icon" #textMobile value="{{message.content}}" (click)="copyResponse(textMobile,index)">
+          <i *ngIf="!isCopied(index)" class="fa fa-clone fs-12"></i>
+          <i *ngIf="isCopied(index)" class="fa fa-check fs-12"></i></button>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
         <button *ngIf="authenticationService.module.hasLandingPageAccess" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
         <!-- <button class="share-btn">Design Page</button> -->

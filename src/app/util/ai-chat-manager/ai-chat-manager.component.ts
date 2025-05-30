@@ -101,6 +101,7 @@ export class AiChatManagerComponent implements OnInit {
   ngOnInit() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityUrlFilter = true;
     }
     this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
     this.fetchOliverActiveIntegration();
@@ -122,9 +123,9 @@ export class AiChatManagerComponent implements OnInit {
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
       }
-      if (this.threadId != undefined && this.threadId != '') {
-        this.getChatHistory();
-      }
+      // if (this.threadId != undefined && this.threadId != '') {
+      //   this.getChatHistory();
+      // }
       this.analyzeCallRecordings();
     } else if (this.callActivity != undefined) {
       this.isFromContactJourney = true;
@@ -198,7 +199,7 @@ export class AiChatManagerComponent implements OnInit {
         this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
         this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
         if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
-          this.getPdfByAssetPath();
+          this.getUploadedFileId();
         }
         this.framePerviewPath();
       }
@@ -389,7 +390,7 @@ export class AiChatManagerComponent implements OnInit {
           self.assetType = self.assetDetailsViewDtoOfPartner.assetType;
           self.framePerviewPath();
           if (!(self.vectorStoreId != undefined && self.vectorStoreId != '')) {
-            this.getPdfByAssetPath();
+            this.getUploadedFileId();
           }
         }
       },
@@ -605,10 +606,10 @@ export class AiChatManagerComponent implements OnInit {
     return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
   }
 
-  getSharedAssetsDetailsByFolderId(categoryId: number) {
+ getSharedAssetsDetailsByFolderId(categoryId: number) {
     this.loading = true;
     this.isPdfUploading = true;
-    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId,this.isPartnerFolderView).subscribe(
+    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId, this.isPartnerFolderView, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response: any) => {
         this.loading = false;
         if (response.statusCode == 200) {
@@ -619,9 +620,9 @@ export class AiChatManagerComponent implements OnInit {
           this.folderFrom = data[0].companyName;
           this.folderAssetCount = data[0].count;
           // if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
-            // this.getPdfByAssetPaths(data);
-            this.pdfFiles = data;
-            this.getUploadedFileIds();
+          // this.getPdfByAssetPaths(data);
+          this.pdfFiles = data;
+          this.getUploadedFileIds();
           // }
         }
       },
@@ -715,8 +716,8 @@ export class AiChatManagerComponent implements OnInit {
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           let data = response.data;
-          this.chatGptSettingDTO.threadId = data.threadId;
-          this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
           this.threadId = data.threadId;
           this.chatHistoryId = data.chatHistoryId;
         }
@@ -878,12 +879,31 @@ export class AiChatManagerComponent implements OnInit {
         }
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
-      }, () => {
-        if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
-          this.getThreadId(this.chatGptIntegrationSettingsDto);
-        }
-      });
+    }, () => {
+      if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
+      }
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined)) {
+        this.getChatHistory();
+      }
+    });
   }
+
+  getFileIcon(): string {
+    const docTypes = ['doc', 'docx', 'csv', 'xlsx', 'ppt', 'pptx'];
+    const imageTypes = ['jpg', 'png', 'jfif', 'ico'];
+
+    if (this.assetType === 'pdf') {
+      return 'assets/images/pdficonAi.svg';
+    } else if (docTypes.includes(this.assetType)) {
+      return 'assets/images/aidocslogo.svg';
+    } else if (imageTypes.includes(this.assetType)) {
+      return 'assets/images/oliverImagelogo.svg';
+    } else {
+      return 'assets/images/aidocslogo.svg';
+    }
+  }
+
   
   /** XNFR-1002 start **/
   desginPage(markdown: any) {

@@ -26,16 +26,8 @@
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
                 <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
-                <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
-                  <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
-                </ng-container>
-                <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
-                                  assetType =='ppt' || assetType =='pptx') ">
-                  <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
-                </ng-container>
-                <ng-container
-                  *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
-                  <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px" height="28px">
+                <ng-container *ngIf="!isPdfUploading">
+                  <img class="mr10" [src]="getFileIcon()" alt="file" width="28px" height="28px">
                 </ng-container>
                 <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
                   {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
@@ -287,18 +279,8 @@
                           <div class="Ai-icon" (click)="showAssetPreview()"[ngStyle]="showPreview ? {'width': '252px'} : {}">
                             <div class="d-flex document_flex">
                               <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
-                              <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
-                                <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px"
-                                  height="28px">
-                              </ng-container>
-                              <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
-                                                              assetType =='ppt' || assetType =='pptx') ">
-                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
-                              </ng-container>
-                              <ng-container
-                                *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
-                                <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px"
-                                  height="28px">
+                              <ng-container *ngIf="!isPdfUploading">
+                                <img class="mr10" [src]="getFileIcon()" alt="file" width="28px" height="28px">
                               </ng-container>
                               <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
                                 {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}

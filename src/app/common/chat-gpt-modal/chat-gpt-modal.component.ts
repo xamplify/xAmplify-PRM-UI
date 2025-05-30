@@ -117,6 +117,9 @@ export class ChatGptModalComponent implements OnInit {
   isReUploadFromPreview: boolean = false;
   showPage: boolean;
   pagination: Pagination = new Pagination();
+  stopClickEvent: boolean;
+  copiedIndexes: number[] = [];
+
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -320,6 +323,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.copiedIndexes = [];
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -776,6 +780,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   fetchHistories(chatHistoryPagination) {
+    this.stopClickEvent = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
@@ -784,8 +789,9 @@ export class ChatGptModalComponent implements OnInit {
           chatHistoryPagination.totalRecords = data.totalRecords;
           this.chatHistories = [...this.chatHistories,...data.list];
         }
+        this.stopClickEvent = false;
       }, error => {
-
+        this.stopClickEvent = false;
       }
     )
   }
@@ -924,7 +930,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0 && !this.stopClickEvent) {
       this.searchChatHistory();
     }
   }
@@ -1201,4 +1207,34 @@ closeDesignTemplate(event: any) {
   }
 
   /** XNFR-1002 End **/
+  
+  copyToClipBoard(inputValue: HTMLElement) {
+    const title = inputValue.getAttribute('value') || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = title;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  copyResponse(inputValue: HTMLElement, index:any) {
+    this.copiedIndexes[index] = 1;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.copiedIndexes[index] = 0;
+    }, 2000)
+  }
+
+  isCopied(index: number): boolean {
+    return !!this.copiedIndexes[index];
+  }
+
+  clearSeachKey() {
+    this.chatHistorySortOption.searchKey = '';
+    this.searchChatHistory();
+  }
+
+
 }
