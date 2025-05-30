@@ -10,6 +10,7 @@
         </div>
       </div>
       <div class="modal-body">
+        <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
         <div class="table-responsive">
           <table class='table tgrid table-hover table-sm'
             aria-describedby="describe">
@@ -43,6 +44,7 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn Btn-Gray" (click)="closePartnerCompanyDomainModal()">Cancel</button>
         <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="confirmAndupdateExcludedDomain()"
           translate>{{partnership.domainDeactivated ? 'Activate' : 'Deactivate'}}</button>
       </div>
