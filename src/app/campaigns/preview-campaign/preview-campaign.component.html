@@ -447,7 +447,7 @@
                                                    <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader && isDomainWorkflow">
                                                       <div class="alert alert-info">
                      <strong>
-                         **Pause or resume workflows for specific domains. Workflows will be paused or resumed for all recipients within the selected domain in the campaign.
+                         **Pause or Resume workflows for specific domains. Workflows will be paused or resumed for all recipients within the selected domain in the campaign.
                      </strong>
                  </div>
                            </div>
@@ -470,7 +470,7 @@
 
                         <div class="col-xs-12 p0" *ngIf="isDomainWorkflow && !isContactListLoader">
                            <div class="col-xs-4" id="margin-bottom">
-                              <label class="default-cursor f-w-600" for="reason">Domains <strong class="red">*</strong></label>
+                              <label class="default-cursor f-w-600" for="reason">Domains</label>
                               <select class="form-control" name="actionId" [(ngModel)]="selectedDomainName"
                                  (ngModelChange)="getDomainWorkflowDetails()" >
                                  <ng-container *ngFor='let option of domainDetials; let i=index'>
@@ -501,8 +501,6 @@
                                           </button>
                            </div>
                         </div>
-
-
 
                         <table *ngIf="!isDomainWorkflow" class="table tgrid" aria-describedby=""
                            [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader"
@@ -563,7 +561,7 @@
                         </div>
                      </div>
                      <div class="alert alert-info alert-top-padding-xamplify"
-                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader && isDomainWorkflow">No
+                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader && !isDomainWorkflow">No
                         {{contactType}} found</div>
                   </fieldset>
                </ng-container>
