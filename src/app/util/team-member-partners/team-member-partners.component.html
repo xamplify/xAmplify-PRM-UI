@@ -62,6 +62,8 @@
                                      </td>
                                     <td>
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner" [hideJobTitle]="true"></app-user-info>
+                                        <h6 class="green-banner inline-flex ml5" *ngIf="partner.partnerStatus === 'deactivated'"
+                                            style="margin-left: 66px !important;">DEACTIVATED</h6>
                                     </td>
                                 </tr>
                             </ng-container>

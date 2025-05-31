@@ -1091,7 +1091,7 @@
                                                             </a>
                                                             
                                                             <!---XNFR-224--->
-                                                            <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
+                                                            <app-login-as-partner *ngIf="contact.partnerStatus != 'deactivated'" [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
                                                         </div>
                                                     </td>
                                                     <ng-template #NA>N/A</ng-template>
