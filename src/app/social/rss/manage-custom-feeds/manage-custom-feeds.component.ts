@@ -46,6 +46,7 @@ export class ManageCustomFeedsComponent implements OnInit {
 	partnerCompanyId = 0;
 	addCollectionError = false;
 	addCollectionErrorMessage: string;
+	mergeTagForGuide = 'social_feeds_partner'; //XNFR-991
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
 		public router: Router, public logger: XtremandLogger,

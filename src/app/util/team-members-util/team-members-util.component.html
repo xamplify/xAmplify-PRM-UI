@@ -18,7 +18,9 @@
       </li>
     </ul>
     <div style="padding: 3px 3px 3px 0px;">
-    <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    <app-user-guide-help-button *ngIf="!showAddTeamMemberDiv" [searchForGuides]="16"></app-user-guide-help-button>
+    <app-user-guide-help-button *ngIf="showAddTeamMemberDiv" [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+
   </div>
     <div
       *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.vanityURLEnabled">

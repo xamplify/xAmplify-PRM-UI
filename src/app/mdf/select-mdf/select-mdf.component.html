@@ -9,6 +9,10 @@
       </li>
       <li><a translate>MDF</a></li>
     </ul>
+     <!-- XNFR-991-->
+        <div style="padding: 3px 0px 0px 0px;" *ngIf="!authenticationService?.module?.isMarketingCompany && !authenticationService.module.isOnlyPartner">
+          <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+        </div>
   </div>
   <div *ngIf="authenticationService?.module?.contentLoader">
     <app-modal-popup-loader></app-modal-popup-loader>
