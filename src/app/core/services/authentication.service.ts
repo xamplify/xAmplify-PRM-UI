@@ -287,7 +287,8 @@ export class AuthenticationService {
             'roles': res.json().roles,
             'campaignAccessDto': res.json().campaignAccessDto,
             'logedInCustomerCompanyNeme': res.json().companyName,
-            'source': res.json().source
+            'source': res.json().source,
+            'userStatusCode': res.json().userStatusCode
           };
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
