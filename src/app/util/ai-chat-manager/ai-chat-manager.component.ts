@@ -149,6 +149,10 @@ export class AiChatManagerComponent implements OnInit {
         // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
+    this.showPromptsButton = false;
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -240,6 +244,7 @@ export class AiChatManagerComponent implements OnInit {
   validateInputText() {
     this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = this.trimmedText != undefined && this.trimmedText.length > 0;
+    this.searchPrompts();
   }
 
   searchDataOnKeyPress(keyCode: any) {
@@ -942,4 +947,76 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
   /** XNFR-1002 End **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+   getRandomOliverSuggestedPromptsByDamId(assetId: number) {
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          this.suggestedPrompts = data || [];
+          this.filteredPrompts = [...this.suggestedPrompts];
+          this.showPromptsButton = this.suggestedPrompts.length > 0;
+        } else if (statusCode === 400) {
+         
+        } else {
+          
+        }
+        this.isPdfUploading = false;
+      }, error => {
+        this.isPdfUploading = false;
+      }, () => {
+       
+      });
+  }
+  showPromptsButton: boolean = false;
+  suggestedPrompts: string[] = [];         // All prompts from backend
+  filteredPrompts: string[] = [];          // Prompts after filtering
+  searchTerm: string = '';
+  showPrompts: boolean = false;
+  showInsightsPrompts:boolean = false;
+
+  openPrompts() {
+    this.searchTerm = "";
+    this.showPrompts = !this.showPrompts;
+  }
+
+
+  searchPrompts() {
+    const term = this.inputText || ''.trim().toLowerCase();
+    if (!term) {
+      this.filteredPrompts = [...this.suggestedPrompts];
+    } else {
+      const searchWords = term.split(/\s+/);
+      this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
+        const lowerPrompt = prompt.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
+      });
+    }
+    const hasMatches = term && this.filteredPrompts.length > 0;
+    if (hasMatches) {
+      this.showInsightsPrompts = true;
+    } else {
+      this.showInsightsPrompts = false;
+    }
+  }
+
 }

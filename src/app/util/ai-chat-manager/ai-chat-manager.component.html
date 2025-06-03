@@ -151,9 +151,30 @@
             <button class="btn btn-pdf" (click)="setInputText('Compare documents')">Compare documents</button>
             <button class="btn btn-pdf" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
-            (click)="submitdata()">Submit</button>
+
+
+
+
+
+
+
+          <div>
+            <button class="image-only-button" style="padding-right: 6px; height: 16px;"
+              (click)="!assetLoader && openPrompts()">
+              <img src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+            </button>
+            <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
+              (click)="submitdata()">Submit</button>
+          </div>
+        
+        
+        
+        
         </div>
+          <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
+            <div class="suggestion-direction"></div>
+            <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+          </div>
       </div>
     </div>
   </div>
@@ -448,8 +469,39 @@
                 <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
                 <button class="action-btn" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
               </div>
-              <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
-                Submit</button>
+
+
+
+
+
+
+
+
+
+
+
+              <div>
+                <button class="image-only-button" style="padding-right: 6px; height: 25px;"
+                  (click)="!assetLoader && openPrompts()">
+                  <img src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                </button>
+              
+                <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
+                  Submit</button>
+              </div>
+              
+            
+            
+            
+            
+            
+            
+            
+            
+            </div>
+              <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
+                 <div class="suggestion-direction"></div>
+                <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
               </div>
           </div>
         </div>
@@ -458,3 +510,13 @@
   </div>
 </div>
 
+
+<ng-template #displayPrompts>
+  <div class="suggestion-box-input mt10" id="suggestionBox">
+    <div class="suggestion-list">
+      <div *ngFor="let prompt of filteredPrompts" (click)="setInputText(prompt)">
+        {{prompt}}
+      </div>
+    </div>
+  </div>
+</ng-template>
