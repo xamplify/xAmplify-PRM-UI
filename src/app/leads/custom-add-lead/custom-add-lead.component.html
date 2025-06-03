@@ -288,7 +288,8 @@
                             </div>
                           </div>
                         </div>
-                        <app-chat [leadId]="commentDealAndLeadDto?.id" [isPreviewDealOrLeadComponent]="true" [editTextArea]="false"  [moduleType]="'lead'" [enableWrite]="true"></app-chat>
+                        <app-chat [leadId]="commentDealAndLeadDto?.id" [isPreviewDealOrLeadComponent]="true" [editTextArea]="false"  
+                        [moduleType]="'lead'" [enableWrite]="true" [partnerStatus]="lead?.partnerStatus"></app-chat>
                       </div>
                     </div>
                   </div>

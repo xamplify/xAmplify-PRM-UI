@@ -417,6 +417,7 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                                 </app-timestamp>
                               </h5>
+                              <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'">DEACTIVATED</h6>
                             </td>
                             <td class="text-center">
                               <!---xnfr-426---->
@@ -675,6 +676,7 @@
                                                 <td>
                                                   <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"
                                                     [isPartnerInfo]="true"></app-user-info>
+                                                  <h6 *ngIf="item?.partnerStatus === 'deactivated'" class="green-banner inline-flex" style="margin-left: 60px;">DEACTIVATED</h6>
                                                 </td>
                                                 <td>
                                                   <a class="custom-icon" (click)="showCampaignLeadsByPartner(item)"

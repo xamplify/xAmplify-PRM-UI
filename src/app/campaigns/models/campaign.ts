@@ -126,4 +126,8 @@ export class Campaign {
 
     totalRecipients: number = 0;
 
+    // XNFR-990
+    notifyTeamMember = false;
+    // XNFR-990
+
 }
