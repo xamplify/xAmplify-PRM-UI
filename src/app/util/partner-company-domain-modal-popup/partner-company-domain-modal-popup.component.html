@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body">
         <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
-        <div class="table-responsive">
+        <div class="table-responsive" *ngIf="!modalPopupLoader">
           <table class='table tgrid table-hover table-sm'
             aria-describedby="describe">
             <thead>
@@ -42,6 +42,9 @@
             </tbody>
           </table>
         </div>
+        <div *ngIf="!modalPopupLoader && partners?.length === 0" class="alert alert-info">
+                      <strong translate>No Partner Companies Found.</strong>
+                    </div>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray" (click)="closePartnerCompanyDomainModal()">Cancel</button>
