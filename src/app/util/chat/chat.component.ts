@@ -21,6 +21,7 @@ export class ChatComponent implements OnInit {
   /*****XNFR-426*****/
   @Input() editTextArea: boolean;
   @Input() isPreviewDealOrLeadComponent:boolean;
+  @Input() partnerStatus: string;
 
   loggedInUserId: number;
   commentList: DealComments[] = [];

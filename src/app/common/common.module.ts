@@ -225,6 +225,7 @@ import { CreateTemplateComponent } from 'app/util/create-template/create-templat
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
+import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
 import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-landing-page.component';
 
 @NgModule({
@@ -270,7 +271,7 @@ import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,AddLandingPageComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent
 	],
 
 
@@ -314,7 +315,7 @@ import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
-		AddDamComponent,AddLandingPageComponent
+		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent
 	]
 
 

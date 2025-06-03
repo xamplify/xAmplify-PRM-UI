@@ -10,6 +10,7 @@ import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 import { PartnerCompanyMetricsDto } from 'app/dashboard/models/partner-company-metrics-dto';
+import { Partnership } from '../models/partnership.model';
 
 @Injectable()
 export class ParterService {
@@ -775,6 +776,31 @@ export class ParterService {
         let findAllUrl = this.WORK_FLOW_PREFIX_URL + '/getWorkflowsByPlaybookId/' + playbookId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(findAllUrl);
     }
+
+    /***** XNFR-988 *****/
+    updatePartnerShipStatusForPartner(partnershipids:any, partnerStatus:string) {
+        let url = this.URL + 'partnership/updatePartnerShipStatusForPartner?partnerStatus=' + partnerStatus + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, partnershipids);
+    }
+
+    findPartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/findPartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+    updatePartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/updatePartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+      deactivatePartners(deactivateUserIds: Array<number>) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        var url = this.URL + "partnership/deactivatePartnerCompanies/" + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, deactivateUserIds);
+    }
+
 
 }
 

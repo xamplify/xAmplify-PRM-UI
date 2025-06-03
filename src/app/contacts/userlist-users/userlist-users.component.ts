@@ -25,12 +25,15 @@ export class UserlistUsersComponent implements OnInit {
 	usersCustomResponse: CustomResponse = new CustomResponse();
 	emptyListMessage: string = "No Data Found.";
 	isContactModule: boolean = false;
+	isPartnerModule: boolean = false;
 
 	constructor(public referenceService: ReferenceService, private pagerService: PagerService,
 		public properties: Properties, public contactService: ContactService, private router: Router) { 
 			let currentUrl = this.router.url;
 			if (currentUrl.includes('home/contacts')) {
 				this.isContactModule = true;
+			} else if (currentUrl.includes('home/partners')) {
+				this.isPartnerModule = true;
 			}
 		}
 
