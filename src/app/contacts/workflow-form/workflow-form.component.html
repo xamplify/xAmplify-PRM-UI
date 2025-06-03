@@ -90,7 +90,7 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group full-width">
-                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId" id="time-phrase" (change)="addCustomDaysTextBox()">
+                  <select class="form-control" name="workflowDto.timePhraseId" [disabled]="isLearningTrackWorkflow" [(ngModel)]="workflowDto.timePhraseId" id="time-phrase" (change)="addCustomDaysTextBox()">
                     <option *ngFor="let timePhrase of timePhrases"
                         [ngValue]="timePhrase.id">
                          {{timePhrase.value}}
@@ -115,7 +115,7 @@
             <ng-container *ngIf="!loadQueryBuilder && !showQueryBuilder">
               <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
             </ng-container>
-            <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
+            <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder && !isLearningTrackWorkflow">
               <query-builder id="queryBuilderCu" [(ngModel)]='workflowDto.filterQueryJson' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
@@ -134,7 +134,7 @@
             <div class="row">
               <!-- table -->
               <app-list-loader *ngIf="partnerListsLoader"></app-list-loader>
-              <div class="col-xs-12" *ngIf="!partnerListsLoader">
+              <div class="col-xs-12" *ngIf="!partnerListsLoader && !isLearningTrackWorkflow">
                 <div class="mt10">
                   <div class="note-vid pull-left" style="padding-top: 8px;">
                     <div class="">Send To
@@ -256,6 +256,11 @@
                   </div>
                 </div>
               </div>
+      <app-tracks-play-book-partner-company-and-lists *ngIf="isLearningTrackWorkflow "
+        [inputId]="workflowDto.learningTrackId" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
+        [selectedPartnerGroupIds]="workflowDto.selectedPartnerListIds" [selectedTeamMemberIds]="workflowDto.selectedPartnerIds"
+        [selectedPartnershipIds]="workflowDto.partnerShipIds" [isWorkflowForm]="true">
+      </app-tracks-play-book-partner-company-and-lists>
               <!--Subject Line--->
               <div class="col-sm-12 mt10">
                 <div class="form-group" [attr.class]="notificationSubjectDivClass">
@@ -344,7 +349,7 @@
             <!-- Action forms row end -->
             <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="showTriggersTab()">Previous</button>
             <button type="submit" class="btn btn Btn-Green float-right mrm-15" [disabled]="!isValidNotificationSubject ||!isValidNotificationMessage || !isValidPreHeader
-              || this.selectedPartnerListIds==0"  (click)="isValidNotificationSubject && this.selectedPartnerListIds.length>0 && isValidNotificationMessage && isValidPreHeader && submitForm()">Submit</button>
+              || (!isLearningTrackWorkflow && this.selectedPartnerListIds==0)"  (click)="isValidNotificationSubject && (isLearningTrackWorkflow || (!isLearningTrackWorkflow && this.selectedPartnerListIds.length>0)) && isValidNotificationMessage && isValidPreHeader && submitForm()">Submit</button>
           </div>
 
         </div>
