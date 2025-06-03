@@ -132,7 +132,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
          this.getCompanyId();
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
-      if (this.router.url.indexOf("/edit") > -1) {
+      if (this.router.url.indexOf("/edit") > -1 && !this.isFromOliverPopup) {
         this.assetId = parseInt(this.route.snapshot.params["id"]);
         if (this.assetId > 0) {
           this.isPartnerView = this.router.url.indexOf("/editp") > -1;
