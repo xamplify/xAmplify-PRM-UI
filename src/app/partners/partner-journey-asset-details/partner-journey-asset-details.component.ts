@@ -173,7 +173,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let sortcolumn = this.pagination.sortcolumn;
     let sortingOrder = this.pagination.sortingOrder;
-    let assetNames = this.pagination.selectedAssetNames.join(',');
+    let assetNames =this.pagination.selectedAssetNames.join(',');
     let emailIds = this.pagination.selectedEmailIds.join(',');    
     let companyIds = this.pagination.selectedCompanyIds.join(',');
     let url = this.authenticationService.REST_URL + "partner/journey/download/asset-details-report?access_token=" + this.authenticationService.access_token
