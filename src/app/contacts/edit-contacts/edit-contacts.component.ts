@@ -206,6 +206,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	contactOption = "";
 	showGDPR: boolean;
 
+	// XNFR-994
+	@Input() selectedType: string;
 
 	commonFilterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
@@ -3884,6 +3886,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias[index].value1 = value.trim();
 	}
 	toggleFilterOption() {
+		if(this.isPartner){
+			this.selectedType = 'Partners';
+		}else if(this.isContactModule){
+			this.selectedType = 'Contacts';
+		}else if(this.assignLeads){
+			this.selectedType = 'AssignLeads'
+		}else if(this.sharedLeads){
+			this.selectedType = 'SharedLeads';
+		}	
 		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
@@ -3892,13 +3903,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.pagination.filterOptionEnable = input['isCriteriasFilter'];
 		this.pagination.customFilterOption = true;
 		this.pagination.pageIndex = 1;
-		if(this.userListPaginationWrapper.userList.contactType == 'active'){
-			this.listOfSelectedContactListByType('active');
-		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
-			this.listOfSelectedContactListByType('non-active');
-		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
-			this.listOfSelectedContactListByType('unsubscribed');
-		}else{
+		this.loadUsersByContactType();
+	}
+	private loadUsersByContactType() {
+		const contactType = this.userListPaginationWrapper.userList.contactType;
+		const validTypes = [
+			'active',
+			'non-active',
+			'unsubscribed',
+			'valid',
+			'excluded',
+			'invalid'
+		];
+		if (validTypes.includes(contactType)) {
+			this.listOfSelectedContactListByType(contactType);
+		} else {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		}
 	}
@@ -3916,16 +3935,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criteria = new Criteria();
 		this.criterias = new Array<Criteria>();
 		this.pagination.criterias = null;
-		if(this.userListPaginationWrapper.userList.contactType == 'active'){
-			this.listOfSelectedContactListByType('active');
-		} else if(this.userListPaginationWrapper.userList.contactType == 'non-active'){
-			this.listOfSelectedContactListByType('non-active');
-		}else if(this.userListPaginationWrapper.userList.contactType == 'unsubscribed'){
-			this.listOfSelectedContactListByType('unsubscribed');
-		}else{
-		this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-		}
-	}
+		this.loadUsersByContactType();
+	 }
 
 	/***** XNFR-988 *****/
 	confirmDeactivatePartner(partner) {

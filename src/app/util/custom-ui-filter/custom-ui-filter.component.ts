@@ -130,7 +130,15 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
 			this.allfilterOptions = this.filterOptions;
 			this.parterViewText = "Onboarded On";
-		}
+		} else if (type == "Contacts") {
+			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.contactFilterOptions];
+			this.allfilterOptions = this.filterOptions;
+			this.parterViewText = "Onboarded On";
+		}else if(type == "AssignLeads" || type == "SharedLeads"){
+			this.filterOptions = [...this.sortOption.commonFilterOptions];
+			this.allfilterOptions = this.filterOptions;
+			this.parterViewText = "Onboarded On";
+		}		
 		
 		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*" && this.criterias.length==0) {
 		   this.addNewRow();

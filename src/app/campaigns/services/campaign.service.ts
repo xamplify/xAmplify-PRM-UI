@@ -1528,4 +1528,22 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    /** XNFR-996 **/
+    getDomainWorkflowStatusDetailsById(campaignId :number) {
+        const url = this.URL + 'campaign/getDomainWorkflowStatusDetailsById/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+changeDomainUserWorkFlowStatus(campaignUser: any) {
+        let url = this.URL + "campaign/";
+        if (campaignUser.status == "Resume") {
+            url += 'resumeWorkFlowForCampaignDomainUser';
+        } else if (campaignUser.status == "Pause") {
+            url += 'pauseWorkFlowForCampaignDomainUser';
+        }
+        return this.http.post(url + "?access_token=" + this.authenticationService.access_token, campaignUser)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+    
 }
