@@ -693,6 +693,7 @@ export class ParterService {
         let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";   
         let assetNames = pagination.selectedAssetNames != undefined ? "&assetNames=" + pagination.selectedAssetNames : "";
         let companyIds = pagination.selectedCompanyIds != undefined ? "&companyIds=" + pagination.selectedCompanyIds : ""
+        let emailIds = pagination.selectedEmailIds != undefined ? "&emailIds=" + pagination.selectedEmailIds : "";
         let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&partnerTeamMemberGroupFilter=true" : "";
         let timeZoneParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
         let partnerCompanyIdRequestParam = partnerCompanyId != null ? "&partnerCompanyId=" + partnerCompanyId : "";
@@ -700,7 +701,7 @@ export class ParterService {
         let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
         let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
         let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
-        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetNames + companyIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetNames + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
         const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
         return this.httpClient.get(url)
             .catch(this.handleError);
@@ -785,10 +786,15 @@ export class ParterService {
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
-    // getAllPartnerEmailIdsFilter(pagination: Pagination) {
-    //     const url = this.URL + 'partner/journey/email/ids/filter?access_token=' + this.authenticationService.access_token;
-    //     return this.httpClient.post(url, pagination)
-    //         .catch(this.handleError);
-    // }
+    getAllPartnerEmailIdsFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/journey/email/ids/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+    getAssetInteractionDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/asset/journey/asset/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
 }
 

@@ -13,7 +13,7 @@
         </div>
       </span>
         <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4 mr5" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
+        [disabled]="pagination.totalRecords==0" (click)="downloadAssetJourneyAssetDetailsReport()">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
       </button>
@@ -41,7 +41,7 @@
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
         [rowsCount]="4"></app-list-loader>
-        <div class="portlet light ht125" *ngIf="showFilterOption && !httpRequestLoader.isLoading">
+        <div class="portlet light ht125" *ngIf="showFilterOption">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <!-- Alert Message Box  -->
@@ -57,14 +57,6 @@
                 <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedAssetNames' [ngModelOptions]="{standalone: true}"
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
                   [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
-                </ejs-multiselect>
-                <ejs-multiselect *ngIf="!isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedCompanyIds' [ngModelOptions]="{standalone: true}"
-                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
-                  [placeholder]='companyInfoFilterPlaceHolder'>
-                </ejs-multiselect>
-                <ejs-multiselect *ngIf="isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedEmailIds' [ngModelOptions]="{standalone: true}"
-                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='emailInfoFilters' [fields]='emailInfoFields'
-                  [placeholder]='EmailInfoFilterPlaceHolder'>
                 </ejs-multiselect>
                 <div class="portlet box custom_fiter-asset mt10">
                   <div class="row pl10 pr10 pb10">
@@ -103,10 +95,6 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team
-                Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name
-              </th>
               <th scope="col">Asset Name</th>
               <th scope="col">Asset Type</th>
               <th scope="col">Created By</th>
@@ -118,11 +106,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info>
-              </td>
-              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
-                  (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
-                    [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
               <td>{{item?.assetType}}</td>
               <td>{{item?.createdByName}}</td>
