@@ -256,14 +256,42 @@
                       brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
                       to
                       your goals.</p>
+
+
+
+
+
+
+                      <div *ngIf="filteredPrompts?.length > 0 && showPrompts && !showPromptsDown">
+                        <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                        <div class="suggestion-direction"></div>
+                      </div>
+
                     <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
+                        
+                        
+                        
+                        
+                        
+                        <button class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
+                          <img src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        </button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
+                   
+                   
+                   
+                   
+                    <div *ngIf="filteredPrompts?.length > 0 && showPromptsDown && !showPrompts">
+                      <div class="suggestion-direction"></div>
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                    </div>
+					
                     <!--  -->
                     <!-- <div class="action-buttons mt10">
                       <button class="action-btn">Analyze Asset</button>
@@ -420,6 +448,15 @@
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
+                            
+                            
+                            
+                            
+                            
+                            
+                            <button class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
+                              <img src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                            </button>
                             <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
                           </div>
                         </div>
@@ -438,10 +475,39 @@
                         <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()" class="btn btn-submit">Submit</button>
                       </div>
                     </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <div *ngIf="filteredPrompts?.length > 0 && showPromptsDown && !showPrompts || showInsightsPrompts">
+                      <div class="suggestion-direction"></div>
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                    </div>
+                    <div *ngIf="filteredPrompts?.length > 0 && showPrompts && !showPromptsDown || showInsightsPromptsDown">
+                      <ng-container  *ngTemplateOutlet="displayPrompts"></ng-container>
+                      <div class="suggestion-direction"></div>
+                    </div>
                     <div *ngIf="showOpenHistory" class="oliver_input mt10">
                       <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <button class="image-only-button" style="padding-right: 6px; height: 25px;" 
+                          (click)="!assetLoader && openPrompts()">
+                          <img src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        </button>
                         <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -724,5 +790,24 @@
       <circle r="14" cy="17" cx="17" class="front"></circle>
     </svg>
     <div class="text" data-text="Searching"></div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #displayPrompts>
+  <div class="suggestion-box-input mt10" id="suggestionBox">
+    <div class="d-flex justify-content-end mb10" *ngIf="activeTab !== 'askpdf'">
+      <div class="search-wrapper">
+        <input type="text" class="form-control input-sm search-input" placeholder="Search" [(ngModel)]="searchTerm"
+          (input)="searchPrompts()" />
+        <i class="fa fa-search search-icon"></i>
+      </div>
+    </div>
+    <div class="suggestion-list">
+      <div *ngFor="let prompt of filteredPrompts" (click)="setInputText(prompt)">
+        {{prompt}}
+      </div>
+    </div>
   </div>
 </ng-template>

@@ -238,4 +238,21 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
+
+  getSuggestedPromptsResponse(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + '/getSuggestedPromptsResponse?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);;
+  }
+
+  getSuggestedPromptsForGlobalSearch() {
+    let loggedInUserId = this.authenticationService.getUserId()
+    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT' + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getRandomOliverSuggestedPromptsByDamId(damId: number) {
+    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

@@ -114,6 +114,12 @@ export class ChatGptModalComponent implements OnInit {
   uploadedAssets: any;
   isReUploadFromPreview: boolean = false;
 
+  showPrompts: boolean = false;
+  suggestedPrompts: string[] = [];         // All prompts from backend
+  filteredPrompts: string[] = [];          // Prompts after filtering
+  searchTerm: string = '';                 // Search input text
+  showPromptsDown: boolean  = false;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
     private emailTemplateService: EmailTemplateService, public pagerService: PagerService) {
@@ -129,6 +135,9 @@ export class ChatGptModalComponent implements OnInit {
   validateInputText() {
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText != undefined && trimmedText.length > 0;
+     if (this.activeTab == 'askpdf') { 
+      this.searchPrompts();
+    }
   }
 
   ngOnDestroy() {
@@ -252,6 +261,10 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+
+    this.showPrompts = false;
+    this.showPromptsDown = false;
+    this.getSuggestedPromptsForGlobalSearch();
   }
 
   private checkDamAccess() {
@@ -316,6 +329,10 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+
+    if (tab == 'globalchat') {
+      this.getSuggestedPromptsForGlobalSearch();
+    }
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -619,6 +636,9 @@ export class ChatGptModalComponent implements OnInit {
 
 
   getUploadedFileIds() {
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    this.chatGptIntegrationSettingsDto.loggedInUserId = this.loggedInUserId;
     this.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
     // this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
     this.chatGptIntegrationSettingsDto.threadId = this.threadId;
@@ -650,6 +670,9 @@ export class ChatGptModalComponent implements OnInit {
           }, 1000);
           self.showOpenHistory = true;
         }
+        this.suggestedPrompts = data.suggestedPrompts || [];
+        this.filteredPrompts = [...this.suggestedPrompts];  // Copy for filtering
+        // this.showPromptsDown = this.filteredPrompts.length > 0;
       },
       (error: string) => {
         this.assetLoader = false;
@@ -667,6 +690,11 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   AskAiTogetData() {
+    this.searchTerm = "";
+    this.showPromptsDown = false;
+    this.showPrompts = false;
+    this.showInsightsPromptsDown = false;
+    this.showInsightsPrompts = false;
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
@@ -1154,6 +1182,151 @@ closeDesignTemplate(event: any) {
     this.isReUpload = true;
     this.isReUploadFromPreview = true;
     this.openAssetsPage();
+  }
+
+
+
+  
+
+
+
+    // searchPrompts() {
+  //   const term = this.searchTerm.trim().toLowerCase();
+  //   if (term === '') {
+  //     this.filteredPrompts = [...this.suggestedPrompts];
+  //   } else {
+  //     this.filteredPrompts = this.suggestedPrompts.filter(p =>
+  //       p.toLowerCase().includes(term)
+  //     );
+  //   }
+  // }
+
+  showInsightsPromptsDown: boolean = false;
+  showInsightsPrompts: boolean = false;
+
+
+
+  searchPrompts(): void {
+  const isAskPdf = this.activeTab === 'askpdf';
+  const term = (isAskPdf ? this.inputText : this.searchTerm || '').trim().toLowerCase();
+
+  if (!term) {
+    this.filteredPrompts = [...this.suggestedPrompts];
+  } else {
+    const searchWords = term.split(/\s+/);
+    this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
+      const lowerPrompt = prompt.toLowerCase();
+      return searchWords.every(word => lowerPrompt.includes(word));
+    });
+  }
+
+  const hasMatches = term && this.filteredPrompts.length > 0;
+
+  if (isAskPdf && hasMatches) {
+    this.showInsightsPromptsDown = this.showOpenHistory;
+    this.showInsightsPrompts = !this.showOpenHistory;
+  } else {
+    this.showInsightsPromptsDown = false;
+    this.showInsightsPrompts = false;
+  }
+}
+
+
+
+  // searchPrompts() {
+  //   let term = '';
+  //   if (this.activeTab == 'askpdf') {
+  //     term = this.inputText.trim().toLowerCase();
+  //   } else {
+  //     term = this.searchTerm.trim().toLowerCase();
+  //   }
+  //    if (term === '') {
+  //     this.filteredPrompts = [...this.suggestedPrompts];
+      
+  //   } else {
+  //     const searchWords = term.split(/\s+/);
+  //     this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
+  //       const lowerPrompt = prompt.toLowerCase();
+  //       return searchWords.every(word => lowerPrompt.includes(word));
+  //     });
+  //   }
+
+  //   if (term != '' && term != undefined && this.filteredPrompts.length > 0 && this.activeTab == 'askpdf') {
+  //     if (this.showOpenHistory) {
+  //       this.showInsightsPromptsDown = true;
+  //       this.showInsightsPrompts = false;
+  //     } else {
+  //       this.showInsightsPromptsDown = false;
+  //       this.showInsightsPrompts = true;
+  //     }
+  //   } else {
+  //     this.showInsightsPromptsDown = false;
+  //     this.showInsightsPrompts = false;
+  //   }
+  // }
+
+  //  handle loaders.
+  getSuggestedPromptsForGlobalSearch() {
+    this.customResponse = new CustomResponse();
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    this.chatGptSettingsService.getSuggestedPromptsForGlobalSearch().subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          this.suggestedPrompts = data || [];
+          this.filteredPrompts = [...this.suggestedPrompts];
+        } else if (statusCode === 400) {
+         
+        } else {
+          
+        }
+      }, error => {
+         
+      }, () => {
+       
+      });
+  }
+
+
+  // getSuggestedPromptsResponse() {
+  //   this.customResponse = new CustomResponse();
+  //   this.messages = [];
+  //   this.chatGptSettingsService.getSuggestedPromptsResponse(this.chatGptIntegrationSettingsDto).subscribe(
+  //     response => {
+  //       let statusCode = response.statusCode;
+  //       let data = response.data;
+  //       alert(data);
+  //       if (statusCode === 200) {
+  //         let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
+  //         alert(chatGptGeneratedText);
+  //       } else if (statusCode === 400) {
+         
+  //       } else {
+          
+  //       }
+  //     }, error => {
+         
+  //     }, () => {
+  //       if (this.activeTab == 'history') {
+  //         this.showChatHistories();
+  //       }
+  //     });
+  // }
+
+  openPrompts() {
+    this.showInsightsPromptsDown = false;
+    this.showInsightsPrompts = false;
+    this.searchTerm = "";
+    this.showPrompts = !this.showPrompts;
+  }
+
+  openPromptsDown() {
+    this.showInsightsPromptsDown = false;
+    this.showInsightsPrompts = false;
+    this.searchTerm = "";
+    this.showPromptsDown = !this.showPromptsDown;
   }
 
 }
