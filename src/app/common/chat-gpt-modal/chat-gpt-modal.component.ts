@@ -259,6 +259,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.isCopyButtonDisplayed = false;
   }
 
   private checkDamAccess() {
@@ -682,6 +683,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
+    this.isCopyButtonDisplayed = false;
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
@@ -718,6 +720,7 @@ export class ChatGptModalComponent implements OnInit {
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
+          self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -1114,6 +1117,12 @@ closeDesignTemplate(event: any) {
       this.openDesignTemplate(event);
       this.templateLoader = true;
     } else {
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.selectedTemplateList = [];
+        this.landingPageService.jsonBody = "";
+        this.showDefaultTemplates();
+        this.chatGptIntegrationSettingsDto.designPage = false;
+      }
       this.selectTemplate = false;
     }
   } 

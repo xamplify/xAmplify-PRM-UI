@@ -845,6 +845,12 @@ export class AiChatManagerComponent implements OnInit {
        this.ngxLoading = true;
       this.openDesignTemplate(event);
     } else{
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.selectedTemplateList = [];
+        this.landingPageService.jsonBody = "";
+        this.showDefaultTemplates();
+        this.chatGptIntegrationSettingsDto.designPage = false;
+      }
       this.selectTemplate = false;
     }
   }
