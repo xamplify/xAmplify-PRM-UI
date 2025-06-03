@@ -72,7 +72,8 @@
                     <h4 class="mt5 mb5 f-w-600 analytics-tooltip" data-toggle="tooltip" data-placement="bottom" title="{{company.companyName}}">
                       <span><strong>{{company.companyName}}</strong></span>
                     </h4><br>
-                    <h6 class="green-banner inline-flex" *ngIf="company?.partnerStatus === 'deactivated'">DEACTIVATED</h6>
+                    <h6 class="green-banner inline-flex" *ngIf="company?.partnerStatus === 'deactivated'" data-toggle="tooltip"
+                      data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                   </td>
                   <td class="text-center"> {{company.viewCount}} / {{company.count}}</td>
                   <td class="mtext-center" id="actions-row">

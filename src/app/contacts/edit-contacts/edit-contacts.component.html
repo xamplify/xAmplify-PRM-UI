@@ -1027,7 +1027,8 @@
 																		</span>
 																	</ng-container>
 																	<ng-container *ngIf="isPartner && contact?.partnerStatus == 'deactivated'">
-                                                            			<h6 class="green-banner inline-flex ml5">DEACTIVATED</h6>
+                                                            			<h6 class="green-banner inline-flex ml5" data-toggle="tooltip"
+                                                                		data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                                                         			</ng-container>
 																</td>
 																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
@@ -1179,7 +1180,7 @@
 																
 																		<!--- XNFR-988 --->
 																		<a class="custom-icon" *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
-																			data-toggle="tooltip" data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate' : 'Deactivate'"
+																			data-toggle="tooltip" data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate Partnership' : 'Deactivate Partnership'"
 																			(click)="confirmDeactivatePartner(contact)"> <i class="fa fa-power-off IconCustomization"
 																				aria-hidden="true"></i>
 																			<div class="clickicons"></div>
@@ -1559,6 +1560,10 @@
 															<span class="inactive-status">
 																<strong>Please contact admin</strong>
 															</span>
+														</ng-container>
+														<ng-container *ngIf="isPartner && allcontacts?.partnerStatus == 'deactivated'">
+															<h6 class="green-banner inline-flex ml5" data-toggle="tooltip" data-placement="bottom"
+																title="Partnership is deactivated">DEACTIVATED</h6>
 														</ng-container>
 													</td>
 													<td [ngClass]="(isContactModule)?'text-line':''" *ngIf="!isPartner"

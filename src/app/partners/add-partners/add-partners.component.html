@@ -966,7 +966,8 @@
                                                             </span>
                                                         </ng-container>
                                                         <ng-container *ngIf="contact?.partnerStatus == 'deactivated'">
-                                                            <h6 class="green-banner inline-flex ml5">DEACTIVATED</h6>
+                                                            <h6 class="green-banner inline-flex ml5" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                                                         </ng-container>
                                                     </td>
                                                     <!--- XNFR-890-start --->
@@ -1084,7 +1085,7 @@
 
                                                             <!--- XNFR-988 --->
                                                             <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip"
-                                                                data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate' : 'Deactivate'" 
+                                                                data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate Partnership' : 'Deactivate Partnership'" 
                                                                 (click)="confirmDeactivatePartner(contact)"> 
                                                                 <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
