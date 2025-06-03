@@ -1117,6 +1117,12 @@ closeDesignTemplate(event: any) {
       this.openDesignTemplate(event);
       this.templateLoader = true;
     } else {
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.selectedTemplateList = [];
+        this.landingPageService.jsonBody = "";
+        this.showDefaultTemplates();
+        this.chatGptIntegrationSettingsDto.designPage = false;
+      }
       this.selectTemplate = false;
     }
   } 
