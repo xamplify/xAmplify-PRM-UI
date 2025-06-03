@@ -15,6 +15,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Output() notifyCloseEvent = new EventEmitter<any>();
   modalPopupLoader :boolean = false;
+  domainDeactivatingDescription : any;
 
   constructor(public parterService: ParterService ) { }
 
@@ -30,8 +31,10 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
     this.partnership.domainDeactivated = selectedDomain.domainDeactivated;
     if (this.partnership.domainDeactivated) {
       this.partnership.status = 'deactivated';
+      this.domainDeactivatingDescription = 'The partnership with all the companies listed below will be activated.';
     } else {
       this.partnership.status = 'approved';
+      this.domainDeactivatingDescription = 'The partnership with all the companies listed below will be deactivated.';
     }
     this.parterService.findPartnerCompaniesByDomain(this.partnership).subscribe(response => {
       if (response.statusCode == 200) {
@@ -54,7 +57,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: this.partnership.domainDeactivated ? 'The partners will be Activated' : 'The partners will be Deactivated',
+			text: this.partnership.domainDeactivated ? 'The partnerships will be Activated' : 'The partnerships will be Deactivated',
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
