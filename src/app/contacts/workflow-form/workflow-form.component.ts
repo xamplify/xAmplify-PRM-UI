@@ -131,14 +131,16 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   isSubmitButtonClicked = false;
   loggedInUserId = 0;
   /****Send To*******/
-  
+  //XNFR-993
+  isLearningTrackWorkflow = false;
+  loggedInUserCompanyId = 0;
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
       this.loggedInUserId = this.authenticationService.getUserId();
-      
+      this.getCompanyId();
     }
 
   ngOnInit() {
@@ -218,7 +220,11 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
         this.editedTriggerTitle = this.workflowDto.title;
         let jsonString = this.workflowDto.queryBuilderInputString;
         let isValidJson = this.utilService.isValidJsonString(jsonString);
-        if (isValidJson) {
+        let learningTrackId = this.workflowDto.learningTrackId;
+        if(learningTrackId && learningTrackId>0){
+          this.isLearningTrackWorkflow = true;
+        }
+          if (isValidJson) {
           let json = this.utilService.convertJsonStringToJsonObject(jsonString);
           this.workflowDto.filterQueryJson = json;
         } else {
@@ -361,7 +367,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
 
   addCustomDaysTextBox(){
     let conditionCheckWithText = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
-    let conditionCheckWithId = this.workflowDto.timePhraseId == 106;
+    let conditionCheckWithId = this.workflowDto.timePhraseId == 20;
     this.isCustomOptionSelected = conditionCheckWithText || conditionCheckWithId;
 
   }
@@ -607,13 +613,20 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
     this.validateNotificationSubject();
     this.validatePreHeader();
     this.validateNotificationMessage(false);
-    if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
+    if(this.isValidNotificationMessage && this.isValidNotificationSubject 
+      && (this.isLearningTrackWorkflow ||(!this.isLearningTrackWorkflow && this.selectedPartnerListIds.length>0))){
      this.triggerLoader = true;
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
-     this.workflowDto.queryBuilderInputString  = this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
+
+     if(this.isLearningTrackWorkflow){
+      this.workflowDto.filterQueryJson = null;
+     }
+     this.workflowDto.queryBuilderInputString  = this.workflowDto.filterQueryJson == null||this.workflowDto.filterQueryJson == ""  ? null: this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
      this.workflowDto.id = this.id;
      this.workflowDto.isAdd = this.isAdd;
-     this.workflowDto.partnerGroupSelected =true;
+     if(this.isAdd){
+      this.workflowDto.partnerGroupSelected =true;
+     }
         this.parterService.saveOrUpdateWorkflow(this.workflowDto).subscribe(
             response=>{
               this.titleDivClass = this.successClass;
@@ -712,6 +725,16 @@ appendValueToSubjectLine(event: any) {
       this.authenticationService.stopLoaders();
       return this.isSubmitButtonClicked || this.authenticationService.module.logoutButtonClicked;
   }
+  //XNFR-993
+  getCompanyId() {
+    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+      (result: any) => {
+        this.loggedInUserCompanyId = result;
+      }, (error: any) => {
+        this.xtremandLogger.errorPage(error);
+      }
+);
 
+  }
  
 }

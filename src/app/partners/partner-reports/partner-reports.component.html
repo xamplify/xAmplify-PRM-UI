@@ -1004,6 +1004,12 @@
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-partner-journey-asset-details>
   </div>
+   <div class="row rowPaddingCustomization2">
+    <app-asset-journey-asset-details [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-asset-journey-asset-details>
+  </div>
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization2">
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
