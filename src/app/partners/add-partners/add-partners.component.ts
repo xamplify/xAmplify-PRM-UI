@@ -709,7 +709,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
-			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length)) {
+			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length) && !this.isPartner) {
 				this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
 			}
 			if (existedEmails.length === 0) {
