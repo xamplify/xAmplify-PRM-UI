@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import{FormsModule } from '@angular/forms';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-choose-emailtemplate',
@@ -15,7 +16,7 @@ selectedTemplate : any;
  selectedTemplatetype: any[] = [];
   filterType: string;
 @Input() pageView : boolean = false;
-  constructor() { }
+  constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     if(this.pageView){
@@ -54,8 +55,14 @@ selectedTemplate : any;
         this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.coBranded == false);
     } else if(type == 'Cobranded') {
       this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.coBranded == true);
-    }else{
+    } else {
       this.selectedTemplatetype = this.selectedTemplateList;
+      if (this.authenticationService.module.isMarketing || this.authenticationService.module.isMarketingCompany || this.authenticationService.module.isMarektingAndPartner ||
+        this.authenticationService.module.isMarketingAndPartnerTeamMember || this.authenticationService.module.isMarketingTeamMember) {
+        this.selectedTemplatetype = this.selectedTemplatetype.filter(
+          (item: any) => item.coBranded !== true
+        );
+      }
     }
   }
 }
