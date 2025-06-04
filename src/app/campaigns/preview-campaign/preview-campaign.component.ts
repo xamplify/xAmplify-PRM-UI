@@ -163,6 +163,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     domainDetials:any[];
     selectDomainDetails:any = null;
     selectedDomainName:string="";
+    // XNFR-990
+    notifyPartnersTeamMembersLabelText = "Notify Partner Team Members?"
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,

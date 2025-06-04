@@ -241,6 +241,24 @@
                      </div>
                   </ng-container>
 
+                  <ng-container  *ngIf="campaign?.emailNotification && campaign?.campaignTypeInString=='VIDEO' || campaign?.campaignTypeInString=='EMAIL'">
+                      <div class="media col-xs-12">
+                     <!--Notify Partner Team Member-->
+                         <div class="col-xs-6 col-sm-6">
+                           <div class="ml10">
+                              <h5>{{notifyPartnersTeamMembersLabelText}}</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.emailNotification"
+                                 [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                 [onColor]="callActionSwitch.onGreenColorSwitch"
+                                 [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                 [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                        </div> 
+                  </ng-container>
                </fieldset>
                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
                   <legend class="scheduler-border">Social Accounts</legend>
