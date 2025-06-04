@@ -65,7 +65,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: this.partnership.domainDeactivated ? `The domain and the ${this.count} partnerships associated with it will be activated` : `The domain and the ${this.count} partnerships associated with it will be deactivated`,
+			text: this.partnership.domainDeactivated ? `The domain and the <strong style="font-weight: bold; color: #ff5733;">${this.count}</strong> partnerships associated with it will be activated` : `The domain and the <strong style="font-weight: bold; color: #ff5733;">${this.count}</strong> partnerships associated with it will be deactivated`,
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
