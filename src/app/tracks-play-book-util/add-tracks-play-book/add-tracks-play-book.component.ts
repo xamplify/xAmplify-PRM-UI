@@ -1938,14 +1938,8 @@ addTagsCondition(selectedTags:any[]) {
         workFlowDto.fromEmailUserId = workflow.fromEmailUserId;
         workFlowDto.fromEmail = workflow.fromEmail;
         workFlowDto.fromName = workflow.fromName;
-        workFlowDto.fromName
-        if (this.tracksPlayBook.groupIds != null && this.tracksPlayBook.groupIds.length > 0) {
-          workFlowDto.partnerGroupSelected = true;
-          workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds
-        } else {
-          workFlowDto.partnerGroupSelected = false;
-          workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
-        }
+        workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds;
+        workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
         workFlowDtos.push(workFlowDto)
       }
       this.tracksPlayBook.workflowDtos = workFlowDtos;
