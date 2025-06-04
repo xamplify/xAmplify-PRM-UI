@@ -39,7 +39,7 @@
         </span>
         <br>
         <div class="form-group">
-          <h4 *ngIf="deal != undefined" class="modal-title" translate>Comments</h4>
+          <h4 *ngIf="deal != undefined" translate>Comments</h4>
           <textarea class="form-control" placeholder="Write your comment here" name="comment" rows="5"
             [(ngModel)]="comment" maxlength="250" (input)="validateComment(comment)"></textarea>
           <span>{{remainingCharsLeft}} characters left...</span>
