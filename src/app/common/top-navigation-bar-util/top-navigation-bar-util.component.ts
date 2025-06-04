@@ -856,6 +856,7 @@ private beforeAdd(tag: any) {
 		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
 		this.authenticationService.contactsCount = data.contactsCount;
 		module.damAccess = data.dam;
+    module.sharedLeads = data.sharedLeads;
 		module.damAccessAsPartner = data.damAccessAsPartner;
 		module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
 		let roleDisplayDto = data.roleDisplayDto;
