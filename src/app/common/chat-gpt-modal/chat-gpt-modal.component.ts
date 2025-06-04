@@ -1107,14 +1107,17 @@ closeDesignTemplate(event: any) {
 
   closeSelectionTemplate(event: any) {
     if (event) {
+       const selectedTemplate = event.selectedTemplate;
+       const isConfirmed = event.isConfirmed;
+       this.chatGptIntegrationSettingsDto.addBrandColors = isConfirmed;
       // this.emailTemplateService.emailTemplate.jsonBody = "";
       if (this.chatGptIntegrationSettingsDto.designPage) {
-        this.landingPageService.id = event.id;
+        this.landingPageService.id = selectedTemplate.id;
       } else {
-        this.emailTemplateService.emailTemplate = event;
+        this.emailTemplateService.emailTemplate = selectedTemplate;
       }
-      this.chatGptIntegrationSettingsDto.templateId = event.id;
-      this.openDesignTemplate(event);
+      this.chatGptIntegrationSettingsDto.templateId = selectedTemplate.id;
+      this.openDesignTemplate(selectedTemplate);
       this.templateLoader = true;
     } else {
       if (this.chatGptIntegrationSettingsDto.designPage) {
@@ -1245,5 +1248,23 @@ closeDesignTemplate(event: any) {
     this.searchChatHistory();
   }
 
-
+showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
+    let self = this;
+    swal({
+      title: 'Do you want to save the History?',
+      text: 'If not the history will be deleted permanently',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(function () {
+      if (isClosingModelPopup) {
+        self.showIcon = true;
+      }
+    }, function (dismiss: any) {
+    })
+    self.activeTab = tab;
+  }
 }

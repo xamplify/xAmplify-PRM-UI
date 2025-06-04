@@ -836,14 +836,17 @@ export class AiChatManagerComponent implements OnInit {
   closeSelectionTemplate(event: any) {
     if (event) {
       // this.emailTemplateService.emailTemplate.jsonBody = "";
+       const selectedTemplate = event.selectedTemplate;
+       const isConfirmed = event.isConfirmed;
+       this.chatGptIntegrationSettingsDto.addBrandColors = isConfirmed;
       if(this.chatGptIntegrationSettingsDto.designPage){
-        this.landingPageService.id = event.id;
+        this.landingPageService.id = selectedTemplate.id;
       }else{
-           this.emailTemplateService.emailTemplate = event;
+           this.emailTemplateService.emailTemplate = selectedTemplate;
       }
-      this.chatGptIntegrationSettingsDto.templateId = event.id;
+      this.chatGptIntegrationSettingsDto.templateId = selectedTemplate.id;
        this.ngxLoading = true;
-      this.openDesignTemplate(event);
+      this.openDesignTemplate(selectedTemplate);
     } else{
       if (this.chatGptIntegrationSettingsDto.designPage) {
         this.selectedTemplateList = [];
