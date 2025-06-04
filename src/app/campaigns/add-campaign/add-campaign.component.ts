@@ -631,7 +631,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 /***XNFR-382 */
                 this.notifyWorkflowToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign workflows";
                  //  XNFR-990
-                this.notifyPartnerTeamMemberToolTipMessage = "Send email notifications to your Partner "+this.teamMemberCustomName+" about your campaign workflow";
+                this.notifyPartnerTeamMemberToolTipMessage = "Send email notifications to your Partner "+this.teamMemberCustomName+" about your campaign";
                 this.removeBlur();
             },(error:any)=>{
                 let errorMessage = this.referenceService.showHttpErrorMessage(error);
