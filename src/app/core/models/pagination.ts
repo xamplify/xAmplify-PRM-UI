@@ -194,4 +194,8 @@ export class Pagination {
 	selectedStatusIds: any[] = [];
 	fromPartnerAnalytics : boolean = false;
 	category: string;
+
+	selectedAssetNames: string[] = [];
+	selectedCompanyIds: number[] = [];
+	selectedEmailIds: string[] = [];
 }

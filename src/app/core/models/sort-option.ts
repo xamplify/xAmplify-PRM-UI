@@ -627,8 +627,14 @@ export class SortOption {
 		{ 'name': 'Medium-long (1000–2000 words)', 'value': 'medium-long' },
 		{ 'name': 'Long (2000–3000+ words)', 'value': 'long' }
 	];
-  
-	
+
+	assetInteractionDropDownOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'View Count(ASC)', 'value': 'viewCount-Asc' },
+		{ 'name': 'View Count(DESC)', 'value': 'viewCount-Desc' },
+		{ 'name': 'Download Count(ASC)', 'value': 'downloadCount-Asc' },
+		{ 'name': 'Download Count(DESC)', 'value': 'downloadCount-Desc' }
+	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -744,6 +750,6 @@ export class SortOption {
 
 	selectWordDropDownForOliver = this.wordOptionsForOliver[0];
 
-
+	selectedOption = this.assetInteractionDropDownOptions[0];
 
 }
