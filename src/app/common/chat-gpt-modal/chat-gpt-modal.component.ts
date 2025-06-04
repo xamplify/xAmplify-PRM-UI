@@ -478,6 +478,7 @@ export class ChatGptModalComponent implements OnInit {
     this.landingPageService.id = 0;
     this.showPage = false;
     this.selectTemplate = false;
+    this.resetPageData();
   }
 
   speakTextOn(index: number, element: any) {
@@ -1120,12 +1121,7 @@ closeDesignTemplate(event: any) {
       this.openDesignTemplate(selectedTemplate);
       this.templateLoader = true;
     } else {
-      if (this.chatGptIntegrationSettingsDto.designPage) {
-        this.selectedTemplateList = [];
-        this.landingPageService.jsonBody = "";
-        this.showDefaultTemplates();
-        this.chatGptIntegrationSettingsDto.designPage = false;
-      }
+      this.resetPageData();
       this.selectTemplate = false;
     }
   } 
@@ -1267,4 +1263,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     })
     self.activeTab = tab;
   }
+
+  resetPageData() {
+    if (this.chatGptIntegrationSettingsDto.designPage) {
+      this.selectedTemplateList = [];
+      this.landingPageService.jsonBody = "";
+      this.showDefaultTemplates();
+      this.chatGptIntegrationSettingsDto.designPage = false;
+    }
+  }
+
 }

@@ -809,6 +809,7 @@ export class AiChatManagerComponent implements OnInit {
     this.landingPageService.id = 0;
     this.showPage = false;
     this.selectTemplate = false;
+    this.resetPageData();
   }
   private checkDamAccess() {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -848,12 +849,7 @@ export class AiChatManagerComponent implements OnInit {
        this.ngxLoading = true;
       this.openDesignTemplate(selectedTemplate);
     } else{
-      if (this.chatGptIntegrationSettingsDto.designPage) {
-        this.selectedTemplateList = [];
-        this.landingPageService.jsonBody = "";
-        this.showDefaultTemplates();
-        this.chatGptIntegrationSettingsDto.designPage = false;
-      }
+      this.resetPageData();
       this.selectTemplate = false;
     }
   }
@@ -945,4 +941,14 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
   /** XNFR-1002 End **/
+
+  resetPageData() {
+    if (this.chatGptIntegrationSettingsDto.designPage) {
+      this.selectedTemplateList = [];
+      this.landingPageService.jsonBody = "";
+      this.showDefaultTemplates();
+      this.chatGptIntegrationSettingsDto.designPage = false;
+    }
+  }
+
 }
