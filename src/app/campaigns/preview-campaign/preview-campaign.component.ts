@@ -158,6 +158,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     @Input() categoryId:number;
     /****XNFR-125**/
     callOneClickLaunchPreviewComponent = false;
+    //XNFR-996
+    isDomainWorkflow:boolean = false;
+    domainDetials:any[];
+    selectDomainDetails:any = null;
+    selectedDomainName:string="";
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -1721,6 +1726,79 @@ openPageInNewTab(id:number){
   this.referenceService.previewPageInNewTab(id);
 }
 
+//XNFR996
+getDomainDetailsOrPartners(){
+  this.isDomainWorkflow = !this.isDomainWorkflow
+  if(this.isDomainWorkflow){
+  this.getCampaignUserDomainsByCampaignId();
+  }else{
+    this.searchCampaignUsers();
+  }
+}
 
+  private getCampaignUserDomainsByCampaignId() {
+    this.isContactListLoader = true;
+    this.campaignService.getDomainWorkflowStatusDetailsById(this.previewCampaignId).subscribe(
+      (data: any) => {
+        this.domainDetials = data.data;
+        if (!this.selectedDomainName) {
+          this.selectDomainDetails = this.domainDetials[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        } else {
+          this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        }
+        this.isContactListLoader = false;
+      },
+      error => {
+        this.isContactListLoader = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
+  }
 
+getDomainWorkflowDetails(){
+    this.selectDomainDetails = this.domainDetials.filter(det=>det.domainName === this.selectedDomainName )[0];
+    console.log(this.selectDomainDetails)
+}
+
+   changeCampaignDomainUsersStatus(domainName:string,status:string){
+     let campaignDomainUser = {
+       "domainName": domainName,
+       "status": status,
+       "loggedInUserId": this.loggedInUserId,
+       "campaignId": this.previewCampaignId
+     }
+     let self = this;
+     swal({
+         title: 'Are you sure to '+status+'?',
+         text:'This will '+status+' the workflow for @'+domainName+' Domain Users',
+         type: 'warning',
+         showCancelButton: true,
+         swalConfirmButtonColor: '#54a7e9',
+         swalCancelButtonColor: '#999',
+         confirmButtonText: 'Yes, '+status+' it!',
+         allowOutsideClick: false
+     }).then(function () {
+        self.changeDomainUserWorkFlowStatus(campaignDomainUser);
+       
+     }, function (dismiss: any) {
+         console.log('you clicked on option' + dismiss);
+     });
+   }
+
+   changeDomainUserWorkFlowStatus(campaignUser:any){
+    this.ngxloading = true;
+    this.campaignService.changeDomainUserWorkFlowStatus(campaignUser).subscribe(
+      ( data: any ) => {
+          this.referenceService.showSweetAlertSuccessMessage(data.message);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        },
+      () => {
+        this.getCampaignUserDomainsByCampaignId();
+      });
+  }
 }

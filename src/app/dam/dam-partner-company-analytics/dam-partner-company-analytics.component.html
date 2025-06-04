@@ -107,6 +107,7 @@
                         <span *ngIf="company?.partnerSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature && !company?.vendorSignatureCompleted"
 													class="view-banner bgc-orange" style="margin-right: 5px;">My Signature pending
 												</span>
+                        <h6 class="green-banner inline-flex" *ngIf="company?.partnerStatus === 'deactivated'">DEACTIVATED</h6>
                       </td>
                       <td class="text-center">{{company?.viewCount}}</td>
                       <td class="text-center">{{company?.downloadCount}}</td>

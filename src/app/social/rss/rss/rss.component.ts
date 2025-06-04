@@ -23,7 +23,7 @@ export class RssComponent implements OnInit {
   roleDto:any;
   roleName: Roles = new Roles();
   prm: boolean;
-
+  mergeTagForGuide = ''; //XNFR-991
   constructor(private rssService: RssService, private authenticationService: AuthenticationService, private router: Router, private referenceService: ReferenceService,public properties:Properties) { }
   
   ngOnInit() {
@@ -35,6 +35,7 @@ export class RssComponent implements OnInit {
           data => {
             this.roleDto = data; 
             if(!this.roleDto.partner && !this.roleDto.partnerTeamMember){
+                this.mergeTagForGuide = !data.marketingOrMarketingAndPartnerCompany ?  'social_feeds_vendor' : 'social_feeds_partner';//XNFR-991
               this.getHomeFeeds(this.userId);
             }else{
               this.loading = false;

@@ -29,7 +29,7 @@
             <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 col-md-6 mb-flex">
               <div class="pull-right">
                 <button class="btn btn-danger margin-space"
-                  *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
+                  *ngIf="!isWorkflowForm && (selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
                   (click)="clearAll('partners')">Clear All</button>
               </div>
               <div class="btn-group pull-right">
@@ -147,7 +147,7 @@
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input type="checkbox" class="pointer checkBox_shadow"
+                                      <input type="checkbox" class="pointer checkBox_shadow" [disabled]="isWorkflowForm"
                                         [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                     </th>
@@ -161,7 +161,7 @@
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
                                       <input type="checkbox" class="pointer checkBox_shadow"
-                                        id="{{adminAndTeamMember.userId}}"
+                                        id="{{adminAndTeamMember.userId}}" [disabled]="isWorkflowForm"
                                         [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -248,7 +248,7 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">
-                    <input type="checkbox" class="pointer checkBox_shadow"
+                    <input type="checkbox" class="pointer checkBox_shadow" [disabled]="isWorkflowForm"
                       [(ngModel)]="isParnterGroupHeaderCheckBoxChecked" id="parnterGroupsHeaderCheckBox"
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)">
                   </th>
@@ -265,7 +265,8 @@
                     [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input type="checkbox" class="pointer checkBox_shadow" id="{{partnerGroup.id}}"
+                      <input type="checkbox" class="pointer checkBox_shadow" id="{{partnerGroup.id}}" [disabled]="isWorkflowForm"
+                        [(ngModel)]="isParnterGroupCheckBoxChecked"
                         [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" name="partnerGroupsCheckBox[]"
                         value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
@@ -333,5 +334,5 @@
 
 <!--XNFR-326---->
 <ng-template #emailNotificationTemplate>
-  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
+  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification && !isWorkflowForm" class="required float-right">No emails will be sent.</span>
 </ng-template>

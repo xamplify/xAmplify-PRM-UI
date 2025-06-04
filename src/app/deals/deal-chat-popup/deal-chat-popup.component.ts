@@ -31,6 +31,7 @@ export class DealChatPopupComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showLeadInfo = false;
   detailsTitle = 'Lead Details';
+  partnerStatus: string;
   constructor() { }
 
   ngOnInit() {     
@@ -42,7 +43,8 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByEmail = this.deal.createdByEmail;
       this.createdByName = this.deal.createdByName;
       this.createdTime = this.deal.createdTime;
-      this.referenceId = this.deal.referenceId
+      this.referenceId = this.deal.referenceId;
+      this.partnerStatus = this.deal.partnerStatus;
       let leadDetails = this.deal['associatedContact'];
       if (this.deal.associatedContactId != undefined) {
         this.detailsTitle = 'Contact Details';
@@ -59,6 +61,7 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByEmail = this.lead.createdByEmail;
       this.createdByName = this.lead.createdByName;
       this.createdTime = this.lead.createdTime;
+      this.partnerStatus = this.lead.partnerStatus;
     }
     $('#chatModelPopup').modal('show');
   }

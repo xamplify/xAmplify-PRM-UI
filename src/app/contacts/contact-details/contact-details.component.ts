@@ -27,6 +27,7 @@ import { CallIntegrationService } from 'app/core/services/call-integration.servi
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 declare var $: any, swal: any;
 
 @Component({
@@ -152,9 +153,10 @@ export class ContactDetailsComponent implements OnInit {
   mobileNumber: any;
   enableDialButton: boolean = false;
   showAskOliverModalPopup: boolean;
-  chatGptSettingDTO: any;
+  chatGptSettingDTO = new ChatGptIntegrationSettingsDto();
   contact: any;
   callActivity: any;
+  chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -199,7 +201,7 @@ export class ContactDetailsComponent implements OnInit {
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
       this.getVendorRegisterDealValue();
-      this.fetchThreadIdAndVectorStoreId();
+      this.fetchOliverActiveIntegration();
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
@@ -1034,11 +1036,13 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchThreadIdAndVectorStoreId() {
     this.ngxLoading = true;
-    this.chatgptSettingsService.getThreadIdAndVectorStoreIdByContactIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
+    this.chatgptSettingsService.getThreadIdAndVectorStoreIdByContactIdAndUserListId(this.contactId, this.selectedContactListId, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.chatGptSettingDTO = response.data;
           this.chatGptSettingDTO.contactId = this.contactId;
+          this.chatGptSettingDTO.oliverIntegrationType = this.chatGptIntegrationSettingsDto.oliverIntegrationType;
+          this.chatGptSettingDTO.accessToken = this.chatGptIntegrationSettingsDto.accessToken;
           this.chatGptSettingDTO.userListId = this.selectedContactListId;
         }
         this.ngxLoading = false;
@@ -1056,6 +1060,26 @@ export class ContactDetailsComponent implements OnInit {
     this.callActivity.contactId = this.selectedContact.id;
     this.callActivity.userListId = this.selectedContactListId;
     this.showAskOliverModalPopup = true;
+  }
+
+  fetchOliverActiveIntegration() {
+    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityLoginDto.vanityUrlFilter;
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+          if (data != null && data != undefined) {
+            this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
+            this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
+            this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
+            this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+            this.fetchThreadIdAndVectorStoreId();
+          }
+        }
+      }, error => {
+        console.log('Error in fetchOliverActiveIntegration() ', error);
+      });
   }
   
 }

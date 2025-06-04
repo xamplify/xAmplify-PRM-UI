@@ -8,6 +8,11 @@
             </li>
             <li><i class="fa fa-rss" aria-hidden="true"></i>RSS <sup>(Beta)</sup></li>
         </ul>
+     <!-- XNFR-991 -->
+    <div style="padding: 3px 0px 0px 0px;">
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    </div>
+    <!-- XNFR-991 -->
     </div>
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="row">

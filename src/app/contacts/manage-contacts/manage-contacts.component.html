@@ -1113,12 +1113,12 @@
                         <ng-template #filterButton>
                            <div class="btn-group" style="margin-right: 10px;">
                               <div class="inputs" style="float: right;display: flex;">
-                                 <div *ngIf="isPartner" class="btn btn-xs l-g-view margin-space mt3 pull-right" (click)="toggleFilterOption()">
+                                 <div class="btn btn-xs l-g-view margin-space mt3 pull-right mr5" (click)="toggleFilterOption()">
 												<span data-placement="left" data-toggle="tooltip" title="Filter">
 													<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 												</span>
 											</div>
-                                 <div *ngIf="!isPartner && !isSegmentation" (click)="modelForSeg()"
+                                 <!-- <div *ngIf="!isPartner && !isSegmentation" (click)="modelForSeg()"
                                     style="float: left; cursor: pointer; margin-right: 15px" data-toggle="modal"
                                     data-target="#filterModal">
                                     <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
@@ -1132,7 +1132,7 @@
                                        style="color: red; font-size: 30px; margin-top: 10px;"></i>
                                     <i class="fa fa-times" aria-hidden="true"
                                        style="color: red; margin-left: -8px;margin-top: 15px;"></i>
-                                 </div>
+                                 </div> -->
                                  <div
                                     [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
                                     <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
@@ -1969,7 +1969,7 @@
 
 
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter [showDateFilters] ="showFilterOption" *ngIf="showFilterOption" [type]="'Partners'" 
+	<app-custom-ui-filter [showDateFilters] ="showFilterOption" *ngIf="showFilterOption" [type]="selectedType" 
 	 (filterConditionsEmitter)="partnersFilter($event)" [criteria]="criteria"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>

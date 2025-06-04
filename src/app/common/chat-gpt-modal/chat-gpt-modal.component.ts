@@ -17,8 +17,10 @@ import { EmailTemplateService } from 'app/email-template/services/email-template
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
+
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -113,10 +115,15 @@ export class ChatGptModalComponent implements OnInit {
   integrationType: any;
   uploadedAssets: any;
   isReUploadFromPreview: boolean = false;
+  showPage: boolean;
+  pagination: Pagination = new Pagination();
+  stopClickEvent: boolean;
+  copiedIndexes: number[] = [];
+
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
-    private emailTemplateService: EmailTemplateService, public pagerService: PagerService) {
+    private emailTemplateService: EmailTemplateService, public pagerService: PagerService,private landingPageService: LandingPageService) {
   }
 
   ngOnInit() {
@@ -252,6 +259,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.isCopyButtonDisplayed = false;
   }
 
   private checkDamAccess() {
@@ -316,6 +324,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.copiedIndexes = [];
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -451,7 +460,7 @@ export class ChatGptModalComponent implements OnInit {
     this.emitterData(event);
   }
 
- private emitterData(event: any) {
+  private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
@@ -465,6 +474,10 @@ export class ChatGptModalComponent implements OnInit {
     this.openShareOption = false;
     this.openAssetPage = false;
     this.showTemplate = false;
+    this.landingPageService.jsonBody = "";
+    this.landingPageService.id = 0;
+    this.showPage = false;
+    this.selectTemplate = false;
   }
 
   speakTextOn(index: number, element: any) {
@@ -670,6 +683,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
+    this.isCopyButtonDisplayed = false;
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
@@ -706,6 +720,7 @@ export class ChatGptModalComponent implements OnInit {
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
+          self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -768,6 +783,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   fetchHistories(chatHistoryPagination) {
+    this.stopClickEvent = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
@@ -776,8 +792,9 @@ export class ChatGptModalComponent implements OnInit {
           chatHistoryPagination.totalRecords = data.totalRecords;
           this.chatHistories = [...this.chatHistories,...data.list];
         }
+        this.stopClickEvent = false;
       }, error => {
-
+        this.stopClickEvent = false;
       }
     )
   }
@@ -916,7 +933,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0 && !this.stopClickEvent) {
       this.searchChatHistory();
     }
   }
@@ -949,7 +966,6 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (!this.emailTemplateService.emailTemplate) {
           this.emailTemplateService.emailTemplate = new EmailTemplate();
-          alert("Template created successfully.");
           this.showTemplate = false;
           this.selectTemplate = true;
           this.templateLoader = false;
@@ -957,6 +973,9 @@ export class ChatGptModalComponent implements OnInit {
         if (this.chatGptIntegrationSettingsDto.designPdf) {
           this.emittdata = JSON.stringify(response.data);
           this.openAssetPage = true;
+        } else if (this.chatGptIntegrationSettingsDto.designPage) {
+          this.showPage = true;
+          this.landingPageService.jsonBody = JSON.stringify(response.data);
         } else {
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
           this.showTemplate = true;
@@ -1086,14 +1105,24 @@ closeDesignTemplate(event: any) {
   }
     /** XNFR-982 end **/
 
-    closeSelectionTemplate(event: any) {
+  closeSelectionTemplate(event: any) {
     if (event) {
       // this.emailTemplateService.emailTemplate.jsonBody = "";
-      this.emailTemplateService.emailTemplate = event;
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.landingPageService.id = event.id;
+      } else {
+        this.emailTemplateService.emailTemplate = event;
+      }
       this.chatGptIntegrationSettingsDto.templateId = event.id;
       this.openDesignTemplate(event);
       this.templateLoader = true;
-    } else{
+    } else {
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.selectedTemplateList = [];
+        this.landingPageService.jsonBody = "";
+        this.showDefaultTemplates();
+        this.chatGptIntegrationSettingsDto.designPage = false;
+      }
       this.selectTemplate = false;
     }
   } 
@@ -1155,5 +1184,66 @@ closeDesignTemplate(event: any) {
     this.isReUploadFromPreview = true;
     this.openAssetsPage();
   }
+
+  /** XNFR-1002 start **/
+  desginPage(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.pagination.source = "OLIVER_DEFAULT_PAGE";
+    this.listLandingPages(this.pagination);
+    this.chatGptIntegrationSettingsDto.designPage = true;
+  }
+
+  listLandingPages(pagination: Pagination) {
+    this.referenceService.goToTop();
+    this.landingPageService.listDefault(pagination).subscribe(
+      (response: any) => {
+        if (response.access) {
+          let data = response.data;
+          if (response.statusCode == 200) {
+            pagination.totalRecords = data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+            this.selectedTemplateList = pagination.pagedItems;
+            this.selectTemplate = true;
+          }
+        } else {
+          this.authenticationService.forceToLogout();
+        }
+
+      },
+      (error: any) => {
+        console.error("Error in listLandingPages():", error);});
+  }
+
+  /** XNFR-1002 End **/
+  
+  copyToClipBoard(inputValue: HTMLElement) {
+    const title = inputValue.getAttribute('value') || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = title;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  copyResponse(inputValue: HTMLElement, index:any) {
+    this.copiedIndexes[index] = 1;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.copiedIndexes[index] = 0;
+    }, 2000)
+  }
+
+  isCopied(index: number): boolean {
+    return !!this.copiedIndexes[index];
+  }
+
+  clearSeachKey() {
+    this.chatHistorySortOption.searchKey = '';
+    this.searchChatHistory();
+  }
+
 
 }
