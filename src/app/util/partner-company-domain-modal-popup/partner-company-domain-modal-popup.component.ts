@@ -24,6 +24,12 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
      this.findPartnerCompaniesByDomain(this.selectedDomain);
   }
 
+    ngOnDestroy(){
+    $('#partnerCompanyDomainForm').modal('hide');
+  }
+
+  
+
   findPartnerCompaniesByDomain(selectedDomain: any) {
     this.modalPopupLoader = true;
     this.partnership.domainName = selectedDomain.domainName;
