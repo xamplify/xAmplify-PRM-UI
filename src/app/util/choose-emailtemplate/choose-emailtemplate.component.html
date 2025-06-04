@@ -5,7 +5,7 @@
       <ul *ngIf="!pageView" class="mix-filter">
           <li class="filter" [class.active]="filterType === 'All'" (click)="showEmailTemplates('All')" translate>All </li>
           <li class="filter" [class.active]="filterType === 'Email'" (click)="showEmailTemplates('Email')" translate>Email</li>
-          <li class="filter"[class.active]="filterType === 'EmailCo-branding'"  (click)="showEmailTemplates('EmailCo-branding')" translate>Email Co-Branding</li>
+          <li *ngIf="!authenticationService.module.isMarketingCompany" class="filter"[class.active]="filterType === 'EmailCo-branding'"  (click)="showEmailTemplates('EmailCo-branding')" translate>Email Co-Branding</li>
         </ul>
         <ul *ngIf="pageView" class="mix-filter">
           <li class="filter" [class.active]="filterType === 'All'" (click)="showPageTemplates('All')" translate>All </li>

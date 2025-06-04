@@ -46,6 +46,12 @@ selectedTemplate : any;
       this.selectedTemplatetype = this.selectedTemplateList.filter((item: any) => item.regularCoBrandingTemplate == true);
     }else{
       this.selectedTemplatetype = this.selectedTemplateList;
+      if (this.authenticationService.module.isMarketing || this.authenticationService.module.isMarketingCompany || this.authenticationService.module.isMarektingAndPartner ||
+        this.authenticationService.module.isMarketingAndPartnerTeamMember || this.authenticationService.module.isMarketingTeamMember) {
+        this.selectedTemplatetype = this.selectedTemplatetype.filter(
+          (item: any) => item.regularCoBrandingTemplate !== true
+        );
+      }
     }
   }
 
