@@ -394,7 +394,7 @@
 												</li>
 												<!---XNFR-988-->
 												<li>
-													<a id="exportToExcel" *ngIf="isPartner && selectedContactListIds?.length != 0" (click)="confirmDeactivate(selectedContactListIds)" translate>Deactivate</a>
+													<a id="exportToExcel" *ngIf="isPartner && selectedContactListIds?.length != 0 && (authenticationService?.module?.adminOrSuperVisor || hasAllAcces)" (click)="confirmDeactivate(selectedContactListIds)" translate>Deactivate</a>
 												</li>
 												<!---XNFR-278-->
 												<li
