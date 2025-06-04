@@ -32,8 +32,10 @@ export class UserlistUsersComponent implements OnInit {
 			let currentUrl = this.router.url;
 			if (currentUrl.includes('home/contacts')) {
 				this.isContactModule = true;
+				this.isPartnerModule = false;
 			} else if (currentUrl.includes('home/partners')) {
 				this.isPartnerModule = true;
+				this.isContactModule = false;
 			}
 		}
 

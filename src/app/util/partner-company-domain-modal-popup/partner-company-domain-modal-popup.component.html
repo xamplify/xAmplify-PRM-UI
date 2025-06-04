@@ -11,6 +11,7 @@
       </div>
       <div class="modal-body">
         <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
+        <div *ngIf="!modalPopupLoader" class="alert alert-info mt5">{{domainDeactivatingDescription}}</div>
         <div class="table-responsive" *ngIf="!modalPopupLoader">
           <table class='table tgrid table-hover table-sm'
             aria-describedby="describe">

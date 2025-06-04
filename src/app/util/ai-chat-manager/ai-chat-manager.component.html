@@ -231,11 +231,11 @@
                     <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
                   </div> -->
-                  <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn"
+                  <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn"
                     (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
                   <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design
                     Pdf</button>
-                  <button *ngIf="authenticationService.module.hasLandingPageAccess" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+                  <button *ngIf="authenticationService.module.hasLandingPageAccess &&!authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                   <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                   </div>

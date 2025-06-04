@@ -4964,7 +4964,7 @@ triggerUniversalSearch(){
 		this.user = partner;
 		this.sweetAlertParameterDto = new SweetAlertParameterDto();
 		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated' 
-			? 'The partner will be Deactivated' : 'The partner will be Activated';
+			? 'Partnership will be Deactivated' : 'Partnership will be Activated';
 		this.sweetAlertParameterDto.confirmButtonText = partner.partnerStatus !== 'deactivated'
 			? 'Yes, Deactivate it!' : 'Yes, Activate it!';
 		this.isDeleteOptionClicked = true;

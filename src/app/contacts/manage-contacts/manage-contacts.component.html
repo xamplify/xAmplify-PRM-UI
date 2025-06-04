@@ -1378,6 +1378,10 @@
                                                       <strong>Please contact admin</strong>
                                                    </span>
                                                 </ng-container>
+                                                <ng-container *ngIf="isPartner && contact?.partnerStatus == 'deactivated'">
+                                                   <h6 class="green-banner inline-flex ml5" data-toggle="tooltip" data-placement="bottom"
+                                                      title="Partnership is deactivated">DEACTIVATED</h6>
+                                                </ng-container>
                                              </td>
                                              <td *ngIf="!isPartner" [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''"
                                                 (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">

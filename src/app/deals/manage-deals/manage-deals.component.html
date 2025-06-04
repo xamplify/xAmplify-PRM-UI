@@ -405,7 +405,8 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                                 </app-timestamp>
                               </h5>
-                              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex">DEACTIVATED</h6>
+                              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
+                                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                             </td>
                             <td style="width: 20%;">
                               <span class="comment-color" translate>
@@ -664,7 +665,8 @@
                                                 <td>
                                                   <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"
                                                     [isPartnerInfo]="true"></app-user-info>
-                                                  <h6 *ngIf="item?.partnerStatus === 'deactivated'" class="green-banner inline-flex" style="margin-left: 60px;">DEACTIVATED</h6>
+                                                  <h6 *ngIf="item?.partnerStatus === 'deactivated'" class="green-banner inline-flex" style="margin-left: 60px;" 
+                                                    data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                                                 </td>
                                                 <td>
                                                   <a class="custom-icon" (click)="showCampaignDealsByPartner(item)"

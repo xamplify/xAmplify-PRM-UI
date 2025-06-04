@@ -183,7 +183,8 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                 </app-timestamp>
               </h5>
-              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex">DEACTIVATED</h6>
+              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
+                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
             </td>
             <td style="width: 10%;">
               <!-- xnfr-426-->

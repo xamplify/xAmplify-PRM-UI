@@ -166,7 +166,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             localStorage.removeItem('currentUser');
             this.loading = false;
             this.isPleaseWaitButtonDisplayed = false;
-            this.customResponse = new CustomResponse('ERROR', 'You are not authorized to log in. Your account may be inactive or unassociated.', true);
+            this.customResponse = new CustomResponse('ERROR', `You are not authorized to log in. Please contact <a href="mailto:${'support@xampliy.com'}">${'support@xampliy.com'}</a>.`, true);
           } else {
             this.redirectTo(currentUser);
           }

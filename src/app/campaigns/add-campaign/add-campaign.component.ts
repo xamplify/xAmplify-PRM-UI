@@ -261,7 +261,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   maxRecipientCount: number = 0;
   restrictRecipientCount: boolean = false;
 
-  notifyPartnersTeamMembersLabelText = "Notify Team Members?"
+  notifyPartnersTeamMembersLabelText = "Notify Partner Team Members?"
   notifyPartnerTeamMemberToolTipMessage = "";
   teamMemberCustomName = "Team Member";
 
@@ -631,7 +631,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 /***XNFR-382 */
                 this.notifyWorkflowToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign workflows";
                  //  XNFR-990
-                this.notifyPartnerTeamMemberToolTipMessage = "Send email notifications to your "+this.teamMemberCustomName+" about your campaign workflow";
+                this.notifyPartnerTeamMemberToolTipMessage = "Send email notifications to your Partner "+this.teamMemberCustomName+" about your campaign workflow";
                 this.removeBlur();
             },(error:any)=>{
                 let errorMessage = this.referenceService.showHttpErrorMessage(error);
