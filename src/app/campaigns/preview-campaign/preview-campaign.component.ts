@@ -165,6 +165,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     selectedDomainName:string="";
     // XNFR-990
     notifyPartnersTeamMembersLabelText = "Notify Partner Team Members?"
+    domains: any[] = [];
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -1738,31 +1739,6 @@ getDomainDetailsOrPartners(){
   }
 }
 
-  private getCampaignUserDomainsByCampaignId() {
-    this.isContactListLoader = true;
-    this.campaignService.getDomainWorkflowStatusDetailsById(this.previewCampaignId).subscribe(
-      (data: any) => {
-        this.domainDetials = data.data;
-        if (!this.selectedDomainName) {
-          this.selectDomainDetails = this.domainDetials[0];
-          this.selectedDomainName = this.selectDomainDetails.domainName;
-        } else {
-          this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
-          this.selectedDomainName = this.selectDomainDetails.domainName;
-        }
-        this.isContactListLoader = false;
-      },
-      error => {
-        this.isContactListLoader = false;
-        this.referenceService.showSweetAlertServerErrorMessage();
-      });
-  }
-
-getDomainWorkflowDetails(){
-    this.selectDomainDetails = this.domainDetials.filter(det=>det.domainName === this.selectedDomainName )[0];
-    console.log(this.selectDomainDetails)
-}
-
    changeCampaignDomainUsersStatus(domainName:string,status:string){
      let campaignDomainUser = {
        "domainName": domainName,
@@ -1803,4 +1779,69 @@ getDomainWorkflowDetails(){
         this.getCampaignUserDomainsByCampaignId();
       });
   }
+
+    private getCampaignUserDomainsByCampaignId() {
+    this.isContactListLoader = true;
+    let self = this;
+    this.selectDomainDetails = {
+      "inactiveCount": 0,
+      "activeCount": 0,
+      "totalCount": 0,
+    };
+    this.campaignService.getDomainWorkflowStatusDetailsById(this.previewCampaignId).subscribe(
+      (data: any) => {
+        this.domainDetials = data.data;
+/*         if (!this.selectedDomainName) {
+          this.selectDomainDetails = this.domainDetials[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        } else {
+          this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        } */
+       this.addDomainNameDropDown(this.domainDetials, self);
+        this.isContactListLoader = false;
+      },
+      error => {
+        this.isContactListLoader = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
+  }
+
+  getDomainWorkflowDetails() {
+    if (!this.selectedDomainName) {
+      this.selectDomainDetails = {
+        "domainName": "",
+        "inactiveCount": 0,
+        "activeCount": 0,
+        "totalCount": 0,
+      };
+    } else {
+      this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
+    }
+
+  }
+
+
+    selectedMappedColumn(event: any) {
+      if (event['itemName'] == '-- Select Domain --') {
+        this.selectedDomainName = "";
+      } else if (event != undefined) {
+        this.selectedDomainName = event['itemName'];
+      } else {
+        this.selectedDomainName = "";
+      }
+      this.getDomainWorkflowDetails();
+    }
+
+    private addDomainNameDropDown(headers: any, self: this) {
+      this.domains = [];
+    $.each(headers, function (index: number, detail: any) {
+        let customCsvHeader = {};
+        customCsvHeader['id'] = index;
+        customCsvHeader['itemName'] = detail.domainName;
+        self.domains.push(customCsvHeader);
+    });
+  }
+
+
 }

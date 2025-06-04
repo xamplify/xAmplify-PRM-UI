@@ -484,17 +484,13 @@
                               </ng-container>
                            </div>
                         </div>
-
-
                         <div class="col-xs-12 p0" *ngIf="isDomainWorkflow && !isContactListLoader">
                            <div class="col-xs-4" id="margin-bottom">
                               <label class="default-cursor f-w-600" for="reason">Domains</label>
-                              <select class="form-control" name="actionId" [(ngModel)]="selectedDomainName"
-                                 (ngModelChange)="getDomainWorkflowDetails()" >
-                                 <ng-container *ngFor='let option of domainDetials; let i=index'>
-                                    <option value="{{option.domainName}}">{{option.domainName}}</option>
-                                 </ng-container>
-                              </select>
+                              <app-multi-select-dropdown [dropdownList]="domains" [singleSelection]="true"
+                                 (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event)"
+                                 [displayText]="'-- Select Domain --'">
+                              </app-multi-select-dropdown>
                            </div>
                            <div class="col-xs-4">
                               <label class="default col-xs-12 p0">
