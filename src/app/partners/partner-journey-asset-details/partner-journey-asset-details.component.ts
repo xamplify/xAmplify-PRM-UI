@@ -96,11 +96,11 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
     this.pagination.selectedEmailIds = this.pagination.selectedEmailIds;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.parterService.getAssetDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
+          this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
           if(pagination.totalRecords == 0){
             this.scrollClass = 'noData';
@@ -135,6 +135,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, pagination);
     this.getAssetDetails(pagination);
   }
 
@@ -158,7 +159,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   }
 
   getAssetDetails(pagination: Pagination) {
-    this.getAssetDetailsForPartnerJourney(this.pagination);
+    this.getAssetDetailsForPartnerJourney(pagination);
   }
 
   downloadAssetDetailsReport() {
@@ -240,6 +241,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
    applyFilters() {
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.getAssetDetails(this.pagination);
   }
   validateDateFilter() {
