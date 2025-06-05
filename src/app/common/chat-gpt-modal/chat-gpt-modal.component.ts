@@ -122,10 +122,12 @@ export class ChatGptModalComponent implements OnInit {
 
 
   showPrompts: boolean = false;
-  suggestedPrompts: string[] = [];         // All prompts from backend
-  filteredPrompts: string[] = [];          // Prompts after filtering
-  searchTerm: string = '';                 // Search input text
+  suggestedPrompts: string[] = [];         
+  filteredPrompts: string[] = [];          
+  searchTerm: string = '';                 
   showPromptsDown: boolean  = false;
+  showGlobalPromptsDown: boolean;
+  showGlobalPrompts: boolean;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -142,7 +144,7 @@ export class ChatGptModalComponent implements OnInit {
   validateInputText() {
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText != undefined && trimmedText.length > 0;
-     if (this.activeTab == 'askpdf') { 
+     if (this.activeTab == 'askpdf' || this.activeTab == 'globalchat' ) { 
       this.searchPrompts();
     }
   }
@@ -300,6 +302,15 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   setActiveTab(tab: string) {
+    this.searchTerm = "";
+    this.showPromptsDown = false;
+    this.showPrompts = false;
+    this.showInsightsPromptsDown = false;
+    this.showInsightsPrompts = false;
+    this.showGlobalPromptsDown = false;
+    this.showGlobalPrompts = false;
+    this.filteredPrompts = this.suggestedPrompts;
+    this.filteredPrompts = [...this.suggestedPrompts];
     this.isValidInputText = false;
     this.inputText = "";
     if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
@@ -706,6 +717,10 @@ export class ChatGptModalComponent implements OnInit {
     this.showPrompts = false;
     this.showInsightsPromptsDown = false;
     this.showInsightsPrompts = false;
+    this.showGlobalPromptsDown = false;
+    this.showGlobalPrompts = false;
+    this.filteredPrompts = this.suggestedPrompts;
+    this.filteredPrompts = [...this.suggestedPrompts];
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
@@ -1272,22 +1287,16 @@ closeDesignTemplate(event: any) {
   }
 
 
-
-
-  
-
-
-
-    // searchPrompts() {
-  //   const term = this.searchTerm.trim().toLowerCase();
-  //   if (term === '') {
-  //     this.filteredPrompts = [...this.suggestedPrompts];
-  //   } else {
-  //     this.filteredPrompts = this.suggestedPrompts.filter(p =>
-  //       p.toLowerCase().includes(term)
-  //     );
-  //   }
-  // }
+    searchPromptsBasic() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (term === '') {
+      this.filteredPrompts = [...this.suggestedPrompts];
+    } else {
+      this.filteredPrompts = this.suggestedPrompts.filter(p =>
+        p.toLowerCase().includes(term)
+      );
+    }
+  }
 
   showInsightsPromptsDown: boolean = false;
   showInsightsPrompts: boolean = false;
@@ -1296,7 +1305,8 @@ closeDesignTemplate(event: any) {
 
   searchPrompts(): void {
   const isAskPdf = this.activeTab === 'askpdf';
-  const term = (isAskPdf ? this.inputText : this.searchTerm || '').trim().toLowerCase();
+  const isGlobalChat = this.activeTab === 'globalchat';
+  const term = (isAskPdf || isGlobalChat ? this.inputText : this.searchTerm || '').trim().toLowerCase();
 
   if (!term) {
     this.filteredPrompts = [...this.suggestedPrompts];
@@ -1313,47 +1323,20 @@ closeDesignTemplate(event: any) {
   if (isAskPdf && hasMatches) {
     this.showInsightsPromptsDown = this.showOpenHistory;
     this.showInsightsPrompts = !this.showOpenHistory;
+  } else if (isGlobalChat && hasMatches) {
+    this.showGlobalPromptsDown = this.showOpenHistory;
+    this.showGlobalPrompts = !this.showOpenHistory;
   } else {
+    this.showPromptsDown = false;
+    this.showPrompts = false;
     this.showInsightsPromptsDown = false;
     this.showInsightsPrompts = false;
+    this.showGlobalPromptsDown = false;
+    this.showGlobalPrompts = false;
+    this.filteredPrompts = [...this.suggestedPrompts];
   }
-}
+  }
 
-
-
-  // searchPrompts() {
-  //   let term = '';
-  //   if (this.activeTab == 'askpdf') {
-  //     term = this.inputText.trim().toLowerCase();
-  //   } else {
-  //     term = this.searchTerm.trim().toLowerCase();
-  //   }
-  //    if (term === '') {
-  //     this.filteredPrompts = [...this.suggestedPrompts];
-      
-  //   } else {
-  //     const searchWords = term.split(/\s+/);
-  //     this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
-  //       const lowerPrompt = prompt.toLowerCase();
-  //       return searchWords.every(word => lowerPrompt.includes(word));
-  //     });
-  //   }
-
-  //   if (term != '' && term != undefined && this.filteredPrompts.length > 0 && this.activeTab == 'askpdf') {
-  //     if (this.showOpenHistory) {
-  //       this.showInsightsPromptsDown = true;
-  //       this.showInsightsPrompts = false;
-  //     } else {
-  //       this.showInsightsPromptsDown = false;
-  //       this.showInsightsPrompts = true;
-  //     }
-  //   } else {
-  //     this.showInsightsPromptsDown = false;
-  //     this.showInsightsPrompts = false;
-  //   }
-  // }
-
-  //  handle loaders.
   getSuggestedPromptsForGlobalSearch() {
     this.customResponse = new CustomResponse();
     this.filteredPrompts = [];
@@ -1377,37 +1360,14 @@ closeDesignTemplate(event: any) {
       });
   }
 
-
-  // getSuggestedPromptsResponse() {
-  //   this.customResponse = new CustomResponse();
-  //   this.messages = [];
-  //   this.chatGptSettingsService.getSuggestedPromptsResponse(this.chatGptIntegrationSettingsDto).subscribe(
-  //     response => {
-  //       let statusCode = response.statusCode;
-  //       let data = response.data;
-  //       alert(data);
-  //       if (statusCode === 200) {
-  //         let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
-  //         alert(chatGptGeneratedText);
-  //       } else if (statusCode === 400) {
-         
-  //       } else {
-          
-  //       }
-  //     }, error => {
-         
-  //     }, () => {
-  //       if (this.activeTab == 'history') {
-  //         this.showChatHistories();
-  //       }
-  //     });
-  // }
-
   openPrompts() {
     this.showInsightsPromptsDown = false;
     this.showInsightsPrompts = false;
     this.searchTerm = "";
     this.showPrompts = !this.showPrompts;
+    this.showGlobalPromptsDown = false;
+    this.showGlobalPrompts = false;
+    this.filteredPrompts = [...this.suggestedPrompts];
   }
 
   openPromptsDown() {
@@ -1415,6 +1375,9 @@ closeDesignTemplate(event: any) {
     this.showInsightsPrompts = false;
     this.searchTerm = "";
     this.showPromptsDown = !this.showPromptsDown;
+    this.showGlobalPromptsDown = false;
+    this.showGlobalPrompts = false;
+    this.filteredPrompts = [...this.suggestedPrompts];
   }
 
 }

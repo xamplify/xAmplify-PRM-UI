@@ -94,6 +94,14 @@ export class AiChatManagerComponent implements OnInit {
   vendorCompanyProfileName: string;
   showPage: boolean;
   pagination: Pagination = new Pagination();
+
+  showPromptsButton: boolean = false;
+  suggestedPrompts: string[] = [];         
+  filteredPrompts: string[] = [];        
+  searchTerm: string = '';
+  showPrompts: boolean = false;
+  showInsightsPrompts:boolean = false;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
@@ -948,22 +956,7 @@ export class AiChatManagerComponent implements OnInit {
   }
   /** XNFR-1002 End **/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-   getRandomOliverSuggestedPromptsByDamId(assetId: number) {
+  getRandomOliverSuggestedPromptsByDamId(assetId: number) {
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
     this.isPdfUploading = true;
@@ -975,31 +968,16 @@ export class AiChatManagerComponent implements OnInit {
           this.suggestedPrompts = data || [];
           this.filteredPrompts = [...this.suggestedPrompts];
           this.showPromptsButton = this.suggestedPrompts.length > 0;
-        } else if (statusCode === 400) {
-         
-        } else {
-          
         }
         this.isPdfUploading = false;
       }, error => {
         this.isPdfUploading = false;
       }, () => {
-       
+
       });
   }
-  showPromptsButton: boolean = false;
-  suggestedPrompts: string[] = [];         // All prompts from backend
-  filteredPrompts: string[] = [];          // Prompts after filtering
-  searchTerm: string = '';
-  showPrompts: boolean = false;
-  showInsightsPrompts:boolean = false;
 
-  openPrompts() {
-    this.searchTerm = "";
-    this.showPrompts = !this.showPrompts;
-  }
-
-
+  /** XNFR-986 **/
   searchPrompts() {
     const term = this.inputText || ''.trim().toLowerCase();
     if (!term) {
@@ -1016,7 +994,16 @@ export class AiChatManagerComponent implements OnInit {
       this.showInsightsPrompts = true;
     } else {
       this.showInsightsPrompts = false;
+      this.showPrompts = false;
+      this.filteredPrompts = [...this.suggestedPrompts];
     }
+  }
+
+  openPrompts() {
+    this.searchTerm = "";
+    this.showPrompts = !this.showPrompts;
+    this.showInsightsPrompts = false;
+    this.filteredPrompts = [...this.suggestedPrompts];
   }
 
 }
