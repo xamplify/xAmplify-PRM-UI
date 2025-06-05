@@ -89,6 +89,10 @@
                                                          <span
                                                             class="label label-warning">{{columnValue?.values[4]}}</span>
                                                       </label><br>
+                                                      <label *ngIf="columnValue?.values[7] === 'deactivated'" class="mb0">
+                                                         <label data-toggle="tooltip" data-placement="top" title="Partnership is deactivated"><span
+                                                               class="green-banner inline-flex">DEACTIVATED</span></label>
+                                                      </label>
                                                    </div>
                                                 </div>
                                              </div>
@@ -278,8 +282,9 @@
                </div>
                <div class="write-new request-comment-text-area">
                   <textarea placeholder="Write your comment here" [(ngModel)]="mdfRequestCommentDto.comment"
-                     [ngModelOptions]="{standalone: true}" maxlength="1000"
-                     (input)="validateComment(mdfRequestCommentDto)"></textarea>
+                     [ngModelOptions]="{standalone: true}" maxlength="1000" data-toggle="tooltip" data-placement="top"
+                     [title]="(selectedRequestDetails[7] === 'deactivated') ? 'Partnership is deactivated' : ''"
+                     (input)="validateComment(mdfRequestCommentDto)" [disabled]="selectedRequestDetails[7] === 'deactivated'"></textarea>
                   <div>
                      <button (click)="saveComment()" [disabled]="invalidComment"
                         [style.pointer-events]="invalidComment ? 'none' : 'auto' "

@@ -2356,8 +2356,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				} else {
 					for (let j = 0; j < this.pagedItems.length; j++) {
 						var paginationEmail = this.pagedItems[j].emailId;
-						// this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
-						this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
+						this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+						// this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
 					}
 					let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
 					this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
@@ -3202,8 +3202,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			} else {
 				for (let j = 0; j < this.pagedItems.length; j++) {
 					var paginationEmail = this.pagedItems[j].emailId;
-					// this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
-					this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
+					this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+					// this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
 				}
 				let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
 				this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);

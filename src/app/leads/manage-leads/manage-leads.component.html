@@ -465,7 +465,9 @@
                                   </div>
                                 </div>
                                 <div class="buttons"
-                                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection && !this.isLoggedAsPartner">
+                                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && 
+                                  lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection && !this.isLoggedAsPartner 
+                                  && lead?.partnerStatus !== 'deactivated'">
                                   <button type="button" class="button_blue bgcolor-unset" translate
                                     (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
                                       class="btn btn-primary transition txt_pd-top3">Approve</span></button>
