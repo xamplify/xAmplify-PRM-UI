@@ -697,10 +697,22 @@
           <i *ngIf="!isCopied(index)" class="fa fa-clone fs-12"></i>
           <i *ngIf="isCopied(index)" class="fa fa-check fs-12"></i></button>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <!-- <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
-        <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+        <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button> -->
         <!-- <button class="share-btn">Design Page</button> -->
+        <div class="dropdown-container">
+          <button class="share-btn dropdown-toggle">Design</button>
+          <div class="dropdown-menu">
+            <button
+              *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany"
+              class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+            <button *ngIf="authenticationService.module.damAccess" class="share-btn"
+              (click)="createAsset(markdownComponent)">Design Pdf</button>
+            <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
+              class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+          </div>
+        </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
       </div>

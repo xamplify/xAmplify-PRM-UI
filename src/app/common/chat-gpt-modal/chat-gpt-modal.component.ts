@@ -119,6 +119,7 @@ export class ChatGptModalComponent implements OnInit {
   pagination: Pagination = new Pagination();
   stopClickEvent: boolean;
   copiedIndexes: number[] = [];
+  showButtons = false;
 
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,

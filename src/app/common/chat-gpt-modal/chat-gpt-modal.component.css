@@ -1668,3 +1668,70 @@ circle.front {
 .right_30 {
   right: 30px;
 }
+
+/* Template Dropdown*/
+.share-btn {
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0;
+}
+
+.share-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle::after {
+  content: " ▼";
+  font-size: 10px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  /* bottom: 100%; */
+  top: -129px;
+  left: 0;
+  background-color: white;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  z-index: 1;
+  min-width: 140px;
+  padding: 5px 0;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-container:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu .share-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-radius: 0;
+  padding: 8px 12px;
+  margin: 0;
+  background-color: white;
+}
+
+.dropdown-menu .share-btn:hover {
+  background-color: #e9f2ff;
+  color: #0056b3;
+}

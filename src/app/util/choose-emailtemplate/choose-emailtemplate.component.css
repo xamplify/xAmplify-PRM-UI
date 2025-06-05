@@ -267,3 +267,14 @@ input.radio-custimization:checked:before {
     content: "\F00C";
     background-color: #54a7e9;
 }
+.ribbon {
+    left: -10px;
+    top: 12px;
+    width: 150px;
+    height: 150px;
+}
+.ribbon span {
+    width: 135px;
+    top: 24px;
+    left: -6px;
+}
