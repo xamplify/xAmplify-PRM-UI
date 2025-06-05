@@ -1,14 +1,13 @@
 <div class="panel with-nav-tabs panel-default">
   <div class="panel-heading" id="company-and-group-tabs">
     <ul class="nav nav-tabs">
-      <li id="partners-li">
+      <li id="partners-li" *ngIf="!isWorkflowForm || (isWorkflowForm && selectedPartnershipIds != null && selectedPartnershipIds.length > 0)">
         <a class="partnersC" data-placement="top" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners"
           data-toggle="tab" (click)="isPartnerCompaniesTabSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
           <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
         </a>
       </li>
-      <li id="partnerGroups-li">
-
+      <li id="partnerGroups-li" *ngIf="!isWorkflowForm || (isWorkflowForm && selectedPartnerGroupIds != null && selectedPartnerGroupIds.length > 0)">
         <a class="partnerGroupsC" data-placement="bottom" title="Click to see group of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
           data-toggle="tab" (click)="isPartnerCompaniesTabSelected = false;findPartnerGroups(partnerGroupsPagination)">Group Of {{authenticationService?.partnerModule?.customName}}
           <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
@@ -266,7 +265,6 @@
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
                       <input type="checkbox" class="pointer checkBox_shadow" id="{{partnerGroup.id}}" [disabled]="isWorkflowForm"
-                        [(ngModel)]="isParnterGroupCheckBoxChecked"
                         [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" name="partnerGroupsCheckBox[]"
                         value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">

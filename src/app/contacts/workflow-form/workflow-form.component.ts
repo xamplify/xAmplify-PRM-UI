@@ -223,6 +223,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
         let learningTrackId = this.workflowDto.learningTrackId;
         if(learningTrackId && learningTrackId>0){
           this.isLearningTrackWorkflow = true;
+          this.actions = this.actions.filter(subj => subj.value.toLowerCase().includes('playbook'));
         }
           if (isValidJson) {
           let json = this.utilService.convertJsonStringToJsonObject(jsonString);
