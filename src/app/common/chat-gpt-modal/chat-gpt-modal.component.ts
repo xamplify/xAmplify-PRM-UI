@@ -128,6 +128,8 @@ export class ChatGptModalComponent implements OnInit {
   showPromptsDown: boolean  = false;
   showGlobalPromptsDown: boolean;
   showGlobalPrompts: boolean;
+  showInsightsPromptsDown: boolean = false;
+  showInsightsPrompts: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -1297,11 +1299,6 @@ closeDesignTemplate(event: any) {
       );
     }
   }
-
-  showInsightsPromptsDown: boolean = false;
-  showInsightsPrompts: boolean = false;
-
-
 
   searchPrompts(): void {
   const isAskPdf = this.activeTab === 'askpdf';
