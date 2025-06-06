@@ -197,14 +197,14 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       if ( !this.isPlaybookWorkflow && reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !==25 && reply.actionId !==26 && reply.actionId !==27 && reply.actionId !==28 ) {
         this.validateReplyInDays(reply);
         this.validateEmailTemplateForAddReply(reply);
-      } else {
+      } else if(this.isPlaybookWorkflow) {
         this.validateReplyInDays(reply);
+        this.validateReplyPreHeader(reply);
         this.validateEmailTemplateForAddReply(reply);
       }
 
-      
       let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-     
+
     }
   }
 
@@ -394,6 +394,15 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     this.InfoCustomResponse = new CustomResponse('INFO', "The auto-response may not trigger because the scheduled send date ('Send in X days') is beyond the playbook expiry date. Please update it to fall within the expiry period.", true);
   }
 }
+
+validateReplyPreHeader(reply: Reply) {
+    if (reply.preHeader == null || reply.preHeader === undefined || $.trim(reply.preHeader).length === 0) {
+      this.addReplyDivError(reply.divId);
+      console.log("Added Reply Pre Header Eror");
+      $('#reply-preHeader-' + reply.divId).css('color', 'red');
+    }
+  }
+
 
 }
 
