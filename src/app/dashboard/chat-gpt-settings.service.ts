@@ -249,14 +249,14 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPutMethod(url, chatGptSettings);;
   }
 
-  getSuggestedPromptsForGlobalSearch() {
+  getSuggestedPromptsForGlobalSearch(companyProfileName: string) {
     let loggedInUserId = this.authenticationService.getUserId()
-    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT' + '?access_token=' + this.authenticationService.access_token;
+    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
-  getRandomOliverSuggestedPromptsByDamId(damId: number) {
-    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
+  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string) {
+    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 

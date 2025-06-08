@@ -6,5 +6,7 @@ export class OliverPromptSuggestionDTO {
   companyId: number;
   createdTimeInString: string = "";
   updatedTimeInString: string = "";
-
+  agentTypeInString: string = "";
+  sourceIntegrationType: string = "";
+  
 }

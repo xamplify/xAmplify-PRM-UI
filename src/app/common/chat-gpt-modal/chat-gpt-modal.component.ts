@@ -20,6 +20,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
+import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -122,7 +123,10 @@ export class ChatGptModalComponent implements OnInit {
 
 
   showPrompts: boolean = false;
-  suggestedPrompts: string[] = [];         
+  suggestedPrompts: string[] = [];  
+
+  oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
+
   filteredPrompts: string[] = [];          
   searchTerm: string = '';                 
   showPromptsDown: boolean  = false;
@@ -694,9 +698,9 @@ export class ChatGptModalComponent implements OnInit {
           }, 1000);
           self.showOpenHistory = true;
         }
-        this.suggestedPrompts = data.suggestedPrompts || [];
-        this.filteredPrompts = [...this.suggestedPrompts];  // Copy for filtering
-        // this.showPromptsDown = this.filteredPrompts.length > 0;
+        this.oliverPromptSuggestionDTOs = data.suggestedPrompts || [];
+        this.suggestedPrompts = data.suggestedPrompts.map((item: { promptMessage: any; }) => item.promptMessage);
+        this.filteredPrompts = [...this.suggestedPrompts];
       },
       (error: string) => {
         this.assetLoader = false;
@@ -802,7 +806,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = true;
   }
 
-  handleFolders(event) {
+  handleFolders(event: any[]) {
     this.selectedFolders = event;
   }
 
@@ -825,7 +829,7 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
-  fetchHistories(chatHistoryPagination) {
+  fetchHistories(chatHistoryPagination: Pagination) {
     this.stopClickEvent = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
@@ -858,7 +862,7 @@ export class ChatGptModalComponent implements OnInit {
     this.getChatHistory(history.oliverChatHistoryType);
   }
 
-  getTabName(tab): string {
+  getTabName(tab: any): string {
     switch (tab) {
       case this.BRAINSTORMAGENT:
         return "new-chat";
@@ -1289,14 +1293,17 @@ closeDesignTemplate(event: any) {
   }
 
 
-    searchPromptsBasic() {
+  searchPromptsBasic() {
     const term = this.searchTerm.trim().toLowerCase();
     if (term === '') {
-      this.filteredPrompts = [...this.suggestedPrompts];
+      this.filteredPrompts = this.suggestedPrompts
+        .slice().sort(() => Math.random() - 0.5).slice(0, 15);
     } else {
-      this.filteredPrompts = this.suggestedPrompts.filter(p =>
-        p.toLowerCase().includes(term)
-      );
+      const term = this.searchTerm.split(/\s+/);
+      this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
+        const lowerPrompt = prompt.toLowerCase();
+        return term.every((word: string) => lowerPrompt.includes(word));
+      });
     }
   }
 
@@ -1338,12 +1345,18 @@ closeDesignTemplate(event: any) {
     this.customResponse = new CustomResponse();
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
-    this.chatGptSettingsService.getSuggestedPromptsForGlobalSearch().subscribe(
+    let companyProfileName = '';
+    if (this.authenticationService.companyProfileName !== undefined && 
+      this.authenticationService.companyProfileName !== '') {
+      companyProfileName = this.authenticationService.companyProfileName;
+    }
+    this.chatGptSettingsService.getSuggestedPromptsForGlobalSearch(companyProfileName).subscribe(
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
         if (statusCode === 200) {
-          this.suggestedPrompts = data || [];
+          this.oliverPromptSuggestionDTOs = data || [];
+          this.suggestedPrompts = this.oliverPromptSuggestionDTOs.map(item => item.promptMessage);
           this.filteredPrompts = [...this.suggestedPrompts];
         } else if (statusCode === 400) {
          
@@ -1364,7 +1377,8 @@ closeDesignTemplate(event: any) {
     this.showPrompts = !this.showPrompts;
     this.showGlobalPromptsDown = false;
     this.showGlobalPrompts = false;
-    this.filteredPrompts = [...this.suggestedPrompts];
+    this.filteredPrompts = this.suggestedPrompts
+    .slice().sort(() => Math.random() - 0.5).slice(0, 15);
   }
 
   openPromptsDown() {
@@ -1374,7 +1388,8 @@ closeDesignTemplate(event: any) {
     this.showPromptsDown = !this.showPromptsDown;
     this.showGlobalPromptsDown = false;
     this.showGlobalPrompts = false;
-    this.filteredPrompts = [...this.suggestedPrompts];
+    this.filteredPrompts = this.suggestedPrompts
+    .slice().sort(() => Math.random() - 0.5).slice(0, 15);
   }
 
 }

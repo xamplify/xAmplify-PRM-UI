@@ -95,7 +95,6 @@ export class AiChatManagerComponent implements OnInit {
   showPage: boolean;
   pagination: Pagination = new Pagination();
 
-  showPromptsButton: boolean = false;
   suggestedPrompts: string[] = [];         
   filteredPrompts: string[] = [];        
   searchTerm: string = '';
@@ -157,10 +156,19 @@ export class AiChatManagerComponent implements OnInit {
         // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
-    this.showPromptsButton = false;
+    
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
-    this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    // if (this.authenticationService.companyProfileName !== undefined && 
+    //   this.authenticationService.companyProfileName !== '' && this.asset != null &&
+    //    this.asset != undefined && this.asset.damId) {
+    //      this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    // } else if (this.asset != null && this.asset != undefined && this.asset.id) {
+    //   this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    // }
+
+    this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -959,22 +967,23 @@ export class AiChatManagerComponent implements OnInit {
   getRandomOliverSuggestedPromptsByDamId(assetId: number) {
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
-    this.isPdfUploading = true;
-    this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId).subscribe(
-      response => {
-        let statusCode = response.statusCode;
-        let data = response.data;
-        if (statusCode === 200) {
-          this.suggestedPrompts = data || [];
-          this.filteredPrompts = [...this.suggestedPrompts];
-          this.showPromptsButton = this.suggestedPrompts.length > 0;
-        }
-        this.isPdfUploading = false;
-      }, error => {
-        this.isPdfUploading = false;
-      }, () => {
+    if (assetId) {
+      this.isPdfUploading = true;
+      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName).subscribe(
+        response => {
+          let statusCode = response.statusCode;
+          let data = response.data;
+          if (statusCode === 200) {
+            this.suggestedPrompts = data.map((item: { promptMessage: any; }) => item.promptMessage);
+            this.filteredPrompts = [...this.suggestedPrompts];
+          }
+          this.isPdfUploading = false;
+        }, error => {
+          this.isPdfUploading = false;
+        }, () => {
 
-      });
+        });
+    }
   }
 
   /** XNFR-986 **/

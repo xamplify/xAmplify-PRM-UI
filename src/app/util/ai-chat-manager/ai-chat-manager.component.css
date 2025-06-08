@@ -1292,8 +1292,8 @@ button.image-only-button img {
   
 .suggestion-direction{
   position: absolute;
- bottom: 262px;
-    right: 82px;
+  bottom: 251px;
+  right: 82px;
   width: 0;
   height: 0;
   border-left: 12px solid transparent;

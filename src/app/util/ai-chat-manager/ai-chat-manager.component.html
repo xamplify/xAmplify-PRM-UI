@@ -154,7 +154,7 @@
 
 
           <div>
-            <button class="image-only-button" style="padding-right: 6px; height: 16px;"
+            <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 16px;"
               (click)="!assetLoader && openPrompts()">
               <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions" 
                 src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
@@ -465,7 +465,7 @@
 
               <div>
                 <!-- XNFR-986 -->
-                <button class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
+                <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
                   <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
                     src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                 </button>
