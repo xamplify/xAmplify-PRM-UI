@@ -251,12 +251,22 @@ listDefaultTemplates(userId:any){
 
   getSuggestedPromptsForGlobalSearch(companyProfileName: string) {
     let loggedInUserId = this.authenticationService.getUserId()
-    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    let url = '';
+    if (companyProfileName != '' && companyProfileName) {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    } else {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT' + '?access_token=' + this.authenticationService.access_token;
+    }
     return this.authenticationService.callGetMethod(url);
   }
 
   getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string) {
-    let url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    let url = '';
+    if (companyProfileName != '' && companyProfileName) {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    } else {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
+    }
     return this.authenticationService.callGetMethod(url);
   }
 
