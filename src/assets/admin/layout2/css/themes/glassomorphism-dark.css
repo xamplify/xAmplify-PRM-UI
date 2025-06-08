@@ -189,7 +189,7 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgba(16 18 27 / 40%) !important;
 }
 .form-control,
-.col-item {
+.col-item,.message-auto,.domain-field-text  {
     color: white !important;
     background-color: rgba(255, 255, 255, 0.2) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -1115,7 +1115,7 @@ input#copy-link {
 }
 .message-auto {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #22313a !important;
+  /* background-color: #22313a !important; */
 }
 .border-right,
 .right-border {
@@ -2368,7 +2368,7 @@ button.fa.fa-th-list.btn.btn-xs.l-g-view,
 button.fa.fa-th-large.btn.btn-xs.l-g-view,
 button.btn.btn-xs.l-g-view.folder-list-span-custom-width,
 button.btn.btn-xs.l-g-view,
-button.btn.btn-xs.l-g-view.disabled {
+button.btn.btn-xs.l-g-view.disabled,.domain-btn {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 13%) !important;
 }
@@ -4458,4 +4458,10 @@ markdown pre,.aligin-para{
 .submenu-toggle::after{
   border-right: 2px solid #ffffff!important;
   border-bottom: 2px solid #ffffff!important;
+}
+.dropdown-menu button.share-btn {
+  border: none !important;
+}
+.dropdown-menu button.share-btn:hover{
+  box-shadow: none !important;
 }

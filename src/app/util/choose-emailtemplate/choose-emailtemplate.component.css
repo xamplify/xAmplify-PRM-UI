@@ -267,7 +267,7 @@ input.radio-custimization:checked:before {
     content: "\F00C";
     background-color: #54a7e9;
 }
-.ribbon {
+/* .ribbon {
     left: -10px;
     top: 12px;
     width: 150px;
@@ -277,4 +277,43 @@ input.radio-custimization:checked:before {
     width: 135px;
     top: 24px;
     left: -6px;
-}
+} */
+
+.ribbon {
+    position: absolute;
+    top: 12px;
+    left: 11px;
+    width: 94px;
+    height: 94px;
+    overflow: hidden;
+    z-index: 10;
+  }
+  
+  .ribbon span {
+    width: 144px;
+    padding: 1px 0;
+    top: 25px;
+    left: -35px;
+  }
+  
+  .ribbon span::before,
+  .ribbon span::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    border: 3px solid transparent;
+    z-index: -1;
+  }
+  
+  .ribbon span::before {
+    left: 9px;
+    border-top: 3px solid #5ab1eb;
+    border-left: 3px solid #5ab1eb;
+  }
+  
+  .ribbon span::after {
+    right: 8px;
+    border-top: 3px solid #5ab1eb;
+    border-right: 3px solid #5ab1eb;
+  }
+  

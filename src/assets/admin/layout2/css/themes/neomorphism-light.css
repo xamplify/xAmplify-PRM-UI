@@ -195,7 +195,7 @@ h6 {
   color:#fff !important;
 }
 .form-control,
-.col-item {
+.col-item,.message-auto,.domain-field-text {
   color: #000 !important;
   background-color: #f0f5fa !important;
   border: 0px solid #191b1e !important;
@@ -1129,10 +1129,10 @@ input#copy-link {
   .e-input-in-wrap {
   border-color: #191b1e !important;
 }
-.message-auto {
+/* .message-auto {
   border: 1px solid #2f4857 !important;
   background-color: #22313a !important;
-}
+} */
 .border-right,
 .right-border {
   border-right: 1px solid #d0d5db !important;
@@ -1263,9 +1263,9 @@ div#box-dark-defalut-clr {
 .has-error {
   box-shadow: none !important;
 }
-.message-auto {
+/* .message-auto {
   border: 1px solid #000 !important;
-}
+} */
 /* 30-5-2023 sudha sri */
 input.field-border-customization {
   border: 2px solid #2f4857 !important;
@@ -2367,7 +2367,7 @@ button.fa.fa-th-list.btn.btn-xs.l-g-view,
 button.fa.fa-th-large.btn.btn-xs.l-g-view,
 button.btn.btn-xs.l-g-view.folder-list-span-custom-width,
 button.btn.btn-xs.l-g-view,
-button.btn.btn-xs.l-g-view.disabled {
+button.btn.btn-xs.l-g-view.disabled,.domain-btn {
   box-shadow : inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   border: 1px solid #d0d5db !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
@@ -4587,6 +4587,9 @@ input:checked + .toggle-slider {
 .action-btn:hover {
   background-color: #f0f7ff !important;
 }
+.share-btn:hover{
+  color: #333;
+}
 .btn-pdf:focus {
   color: rgba(2, 118, 255, 1) !important;
 }
@@ -4642,3 +4645,9 @@ input:checked + .toggle-slider {
 .nav .submenu-parent.open > .submenu-toggle{
   border-color: transparent !important;
   border: 1px solid #d0d5db;}
+  .dropdown-menu button.share-btn {
+    border: none !important;
+  }
+  .dropdown-menu button.share-btn:hover{
+    box-shadow: none !important;
+  }
