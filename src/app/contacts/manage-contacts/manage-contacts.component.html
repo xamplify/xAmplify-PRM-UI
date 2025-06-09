@@ -169,7 +169,7 @@
                         [ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
                         <button class="btn-block dashboard-stat purple"
                            [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
-                           (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('valid')"
+                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;listContactsByType('valid')"
                            [disabled]="contactsByType.validContactsCount == 0">
                            <div class="visual">
                               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -196,7 +196,7 @@
                         [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                         <button class="btn-block dashboard-stat yellow-gold"
                            [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'excluded'"
-                           (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('excluded')"
+                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;listContactsByType('excluded')"
                            [disabled]="contactsByType.excludedContactsCount == 0">
                            <div class="visual">
                               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
