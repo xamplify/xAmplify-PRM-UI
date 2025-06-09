@@ -151,9 +151,23 @@
             <button class="btn btn-pdf" (click)="setInputText('Compare documents')">Compare documents</button>
             <button class="btn btn-pdf" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
-            (click)="submitdata()">Submit</button>
+
+
+          <div>
+            <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 16px;"
+              (click)="!assetLoader && openPrompts()">
+              <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions" 
+                src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+            </button>
+            <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
+              (click)="submitdata()">Submit</button>
+          </div>
+        
         </div>
+          <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
+            <div class="suggestion-direction"></div>
+            <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+          </div>
       </div>
     </div>
   </div>
@@ -448,8 +462,24 @@
                 <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
                 <button class="action-btn" (click)="setInputText('Give an overview of documents')">Give an overview of documents</button>
               </div>
-              <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
-                Submit</button>
+
+              <div>
+                <!-- XNFR-986 -->
+                <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
+                  <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
+                    src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                </button>
+              
+                <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
+                  Submit</button>
+              </div>
+              
+            
+            
+            </div>
+              <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
+                 <div class="suggestion-direction"></div>
+                <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
               </div>
           </div>
         </div>
@@ -458,3 +488,13 @@
   </div>
 </div>
 
+<!-- XNFR-986 -->
+<ng-template #displayPrompts>
+  <div style="margin-top: 8px;" class="suggestion-box-input" id="suggestionBox">
+    <div class="suggestion-list">
+      <div *ngFor="let prompt of filteredPrompts" (click)="setInputText(prompt)">
+        {{prompt}}
+      </div>
+    </div>
+  </div>
+</ng-template>
