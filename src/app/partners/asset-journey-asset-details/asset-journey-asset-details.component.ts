@@ -76,7 +76,6 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.parterService.getAssetInteractionDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -109,6 +108,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.getAssetDetails(pagination);
   }
 
@@ -203,6 +203,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
    applyFilters() {
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.getAssetDetails(this.pagination);
   }
   validateDateFilter() {

@@ -80,7 +80,6 @@ input {
     border-right: 1px solid #ddd;
     margin-bottom: 10px;
     background: #fff;
-    border-bottom: 1px solid #ddd;
     padding: 0 10px;
   }
   .disabled {
@@ -100,6 +99,7 @@ input {
 li.disabled.active a {
     border-bottom: none !important;
   }
+  
   
 
   

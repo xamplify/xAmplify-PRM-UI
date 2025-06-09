@@ -2,6 +2,7 @@
   <div class="panel panel-info panel-bgMain panel-card br-10">
     <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="asset-details-div">
       <h3 class="panel-title mt7">{{headerText}}</h3>
+      <div class="btn-group pull-right">
       <div class="flex">
       <span class="btn btn-xs l-g-view filter-btn mr5 {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip"
         title="Filter">
@@ -35,7 +36,7 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
-    
+      </div>
       </div>
     </div>
     <div class="panel-body">
@@ -58,13 +59,13 @@
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
                   [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
                 </ejs-multiselect>
-                <div class="portlet box custom_fiter-asset mt10">
+                <div class="portlet box custom_fiter-asset template_box mt10">
                   <div class="row pl10 pr10 pb10">
                     <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
                       <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
                         <div class="control-label" style="font-size:15px">{{dateFilterText}}
                           <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
-                            title="Select the Date Range to View Analytics"></i>
+                            title="Select Date Filter"></i>
                         </div>
                       </div>
                       <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
@@ -96,29 +97,43 @@
           <thead>
             <tr>
               <th scope="col">Asset Name</th>
-              <th scope="col">Asset Type</th>
-              <th scope="col">Created By</th>
-              <th scope="col">View Count</th>
-              <th scope="col">Download Count</th>
-              <th scope="col">Published On</th>
-              <th scope="col">Actions</th>
+              <th scope="col" class="text-center">Asset Type</th>
+              <th scope="col" class="text-center">Created By</th>
+              <th scope="col" class="text-center">View Count</th>
+              <th scope="col" class="text-center">Download Count</th>
+              <th scope="col" class="text-center">Published On</th>
+              <th scope="col" class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td>{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
-              <td>{{item?.assetType}}</td>
-              <td>{{item?.createdByName}}</td>
-              <td>{{item?.viewedCount}}</td>
-              <td>{{item?.downloadedCount}}</td>
-              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
+              <td class="text-center">{{item?.assetType}}</td>
+              <td class="text-center">{{item?.createdByName}}</td>
+              <td class="text-center">
+                <div class="custom-icon">
+                  <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">
+                    <strong> {{item?.viewedCount}}</strong></i>
+                  <div class="clickicons"></div>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="custom-icon">
+                  <i class="circled-number IconodownloadedCount fontStyleNormal IconCustomization">
+                    <strong>{{item?.downloadedCount}}</strong></i>
+                  <div class="clickicons"></div>
+                </div>
+              </td>
+              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp></td>
-              <td><a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
-                      *ngIf="!authenticationService?.module?.isMarketingCompany"
-                      (click)="showAnalytics(item)">
-                      <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                      <div class="clickicons"></div>
-                    </a>
+              <td class="text-center">
+                <div class="actions-block override-actions ActionAlign action_inline">
+                  <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+                    *ngIf="!authenticationService?.module?.isMarketingCompany" (click)="showAnalytics(item)">
+                    <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                  </div>
               </td>
             </tr>
           </tbody>

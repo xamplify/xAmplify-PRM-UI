@@ -122,6 +122,7 @@ fieldset img {
   padding: 5px 8px;
   background: #ebebe4;
   overflow: auto;
+  border-radius: 3px;
 }
 .workflow-style {
   border-radius: 3px !important;
@@ -182,4 +183,11 @@ legend.scheduler-border {
 .status-message {height:auto !important;}
 .popup_width {
   width: 55% !important;
+}
+.btn-radius{
+  border-radius: 4px;
+}
+.domain-field-text {
+  padding: 5px;
+  border-radius: 3px;
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import{FormsModule } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-
+declare var swal:any;
 @Component({
   selector: 'app-choose-emailtemplate',
   templateUrl: './choose-emailtemplate.component.html',
@@ -16,6 +16,10 @@ selectedTemplate : any;
  selectedTemplatetype: any[] = [];
   filterType: string;
 @Input() pageView : boolean = false;
+TemplateColorSelection = ['Default Colors', 'Brand Colors'];
+isOliverCreateUrl: boolean;
+selectedType: any = this.TemplateColorSelection[0];
+  isConfirmed: boolean;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -27,7 +31,12 @@ selectedTemplate : any;
   }
 
   generateEmailTemplate() {
-    this.notifyData.emit(this.selectedTemplate);
+    this.notifyData.emit({
+      selectedTemplate: this.selectedTemplate,
+      isConfirmed: this.isConfirmed
+    });
+    this.isConfirmed = false;
+
   }
   selectEmailTemplate(emailTemplate: any) {
     this.selectedEmailTemplateRow = emailTemplate.id;
@@ -71,4 +80,24 @@ selectedTemplate : any;
       }
     }
   }
+  
+  showSweetAlertForBrandColors() {
+  let self = this;
+  swal({
+    title: 'Generate Template',
+    text: 'Do you want to generate this template with brand colors?',
+    type: 'info',
+    showCancelButton: true,
+    confirmButtonColor: '#54a7e9',
+    cancelButtonColor: '#999',
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then(function (result: any) {
+    self.isConfirmed = true;
+    self.generateEmailTemplate();
+  }, function (dismiss: any) {
+    self.isConfirmed = false;
+    self.generateEmailTemplate();
+  });
+}
 }

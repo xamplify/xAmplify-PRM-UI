@@ -32,10 +32,10 @@
                       
                         </ul>
                       </div>
-                     <div class="tab-content tab-bg">
-                        <div id="Register" class="tab-pane fade in active pt-5 integration-profile">
+                     <div class="tab-content tab-bg" *ngIf="(registerNowItems?.length > 0 || activateNowItems?.length > 0)">
+                        <div id="Register" class="tab-pane fade in active  integration-profile" *ngIf="registerNowItems?.length > 0">
                         </div>
-                        <div id="Activate" class="tab-pane fade in  pt-5">
+                        <div id="Activate" class="tab-pane fade in " *ngIf="activateNowItems?.length > 0">
                         </div>
                      </div>
                      <div class="form-group">

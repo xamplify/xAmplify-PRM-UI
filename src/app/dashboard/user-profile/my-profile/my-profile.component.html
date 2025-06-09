@@ -219,7 +219,7 @@
                                             </a>
                                          </li>
                                         <!--XNFR-628 ChatGPT Settings-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.isOliverActive" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == chatGptSettingsMenuHeader}" (click)="activateTab(chatGptSettingsMenuHeader);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':chatGptSettingsMenuHeader}"></ng-template>
@@ -3550,12 +3550,18 @@
                                             [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-2">
-                                        <span style="cursor: pointer;color: #54a7e9;">
-                                            <i class="fa fa-question-circle icon-fstpx" data-html="true"
-                                                data-toggle="tooltip" data-placement="right"
-                                                title="{{subjectLineTooltipText}}"></i>
+                                        <span style="cursor: pointer; color: #54a7e9;">
+                                          <i 
+                                            class="fa fa-question-circle icon-fstpx" 
+                                            data-html="true"
+                                            data-toggle="tooltip" 
+                                            data-placement="right"
+                                            [attr.title]="xamplifyDefaultTemplate.typeInString === 'ONE_CLICK_LAUNCH' 
+                                              ? 'The subject line cannot be edited for One-Click Launch campaigns.' 
+                                              : subjectLineTooltipText">
+                                          </i>
                                         </span>
-                                    </div>
+                                      </div>
                                 </div>
                                 <div class="alert alert-info" *ngIf="xamplifyDefaultTemplate.typeInString == 'LEAD_DETAILS_UPDATE'">
                                     <p class="fsfpx">{{authenticationService?.module?.isMarketingCompany ?

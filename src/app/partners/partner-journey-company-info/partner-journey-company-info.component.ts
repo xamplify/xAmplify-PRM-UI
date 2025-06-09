@@ -54,6 +54,9 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
             this.isInfonull = true;
             this.errorMessage = " Partnership has been deleted ";
           }
+          if (response.message === 'deactivated') {
+            this.errorMessage = " Partnership has been deactivated ";
+          }
         }        	
 			},
 			(_error: any) => {

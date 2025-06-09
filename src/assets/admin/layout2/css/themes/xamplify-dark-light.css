@@ -137,7 +137,7 @@ h6 {
   background: #22313a !important;
 }
 .form-control,
-.col-item {
+.col-item,.domain-field-text {
   color: white !important;
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
@@ -231,7 +231,7 @@ ul.alt-row-style1 li:hover,
 .alert-success,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
-.btn.btn-secondary {
+.btn.btn-secondary,.domain-btn {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
@@ -2823,4 +2823,10 @@ markdown pre,.aligin-para{
 .agent-card:hover {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3)!important;
   transition: box-shadow 0.3s ease;
+}
+.dropdown-menu button.share-btn {
+  border: none !important;
+}
+.dropdown-menu button.share-btn:hover{
+  box-shadow: none !important;
 }

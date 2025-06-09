@@ -392,6 +392,10 @@
 														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)"
 														translate> Delete</a>
 												</li>
+												<!---XNFR-988-->
+												<li>
+													<a id="exportToExcel" *ngIf="isPartner && selectedContactListIds?.length != 0 && (authenticationService?.module?.adminOrSuperVisor || hasAllAcces)" (click)="confirmDeactivate(selectedContactListIds)" translate>Deactivate</a>
+												</li>
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">

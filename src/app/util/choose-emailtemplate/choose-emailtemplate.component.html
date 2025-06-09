@@ -14,6 +14,10 @@
         </ul>
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
         *ngFor="let emailTemplate of selectedTemplatetype; let i = index">
+        <div class="ribbon tab-ribbon">
+          <span *ngIf="emailTemplate.regularCoBrandingTemplate && !pageView">Co-Branded</span>
+          <span *ngIf="emailTemplate.coBranded && pageView">Co-Branded</span>
+        </div>
         <div class="grid-box imgage-paddings grid-email-card pointer"
           [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' : ''"
           (click)="selectEmailTemplate(emailTemplate)">
@@ -52,7 +56,7 @@
     </div>
   </div>
   <div [ngClass]= "fromOliverPopup ? 'modal-footer' : 'pull-right save-template' " *ngIf="selectedEmailTemplateRow">
-    <button class="btn btn-primary" (click)="generateEmailTemplate()">Generate{{pageView ? ' Page':' Template'}}</button>
+    <button class="btn btn-primary" (click)="pageView ? generateEmailTemplate() : showSweetAlertForBrandColors()">Generate{{pageView ? ' Page':' Template'}}</button>
   </div>
 
   <div *ngIf="!selectedTemplateList || selectedTemplateList.length === 0" class="alert alert-info text-center mt-3">

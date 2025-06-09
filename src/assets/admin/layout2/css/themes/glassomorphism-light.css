@@ -191,7 +191,7 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
 .form-control,.l-g-view,
 .col-item,
 button.fa.fa-th-large.btn-xs.l-g-view,
-button.btn.btn-xs.l-g-view {
+button.btn.btn-xs.l-g-view,.message-auto,.domain-field-text {
     color: #000 !important;
     background-color: rgb(255 255 255 / 31%) !important;
     border: 1px solid rgb(255 255 255 / 35%) !important;
@@ -1130,7 +1130,7 @@ input#copy-link {
 }
 .message-auto {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #22313a !important;
+  /* background-color: #22313a !important; */
 }
 .border-right,
 .right-border {
@@ -4730,3 +4730,9 @@ input:checked + .toggle-slider {
   }
   .fixed-update-button {bottom: 44px!important;}
   .templateui {padding: 20px 100px 12px 54px!important;}
+  .dropdown-menu button.share-btn {
+    border: none !important;
+  }
+  .dropdown-menu button.share-btn:hover{
+    box-shadow: none !important;
+  }

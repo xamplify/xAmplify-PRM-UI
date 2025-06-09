@@ -193,7 +193,7 @@
                     <!-- <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" name="campaignEndDatePicker" [value]="tracksPlayBook.expireDate" /> -->
                     <app-flatpickr #endDatePickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
                   </app-flatpickr>
-                      <button class="btn btn-default" type="button"  (click)="clearEndDate();endDatePickr.clearEndDate()">
+                      <button class="btn btn-default" type="button" style="border-radius: 0px 6px 6px 0px;margin-left:-1px;"  (click)="clearEndDate();endDatePickr.clearEndDate()">
                         <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
                           <i class="fa fa-refresh npcfs" aria-hidden="true"></i>
                         </span>

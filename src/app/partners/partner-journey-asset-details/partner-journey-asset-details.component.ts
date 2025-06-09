@@ -96,11 +96,11 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
     this.pagination.selectedEmailIds = this.pagination.selectedEmailIds;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.parterService.getAssetDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
+          this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
           if(pagination.totalRecords == 0){
             this.scrollClass = 'noData';
@@ -135,6 +135,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, pagination);
     this.getAssetDetails(pagination);
   }
 
@@ -158,7 +159,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   }
 
   getAssetDetails(pagination: Pagination) {
-    this.getAssetDetailsForPartnerJourney(this.pagination);
+    this.getAssetDetailsForPartnerJourney(pagination);
   }
 
   downloadAssetDetailsReport() {
@@ -187,20 +188,24 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
       this.sortOption.selectedOption = text;
       this.getAssetDetails(this.pagination);
     }
-    setFilterColor() {
-    let isValidSelectedCompanies = this.pagination.selectedCompanyIds != undefined && this.pagination.selectedCompanyIds.length > 0;
-    let isValidSelectedAssetNames = this.pagination.selectedAssetNames != undefined && this.pagination.selectedAssetNames.length > 0;
-    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter.length > 0;
-    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter.length > 0;
-    if (isValidSelectedCompanies && isValidSelectedAssetNames && isValidFromDateFilter && isValidToDateFilter) {
-      this.filterActiveBg = 'filterActiveBg';
-      this.filterApplied = true;
-    }
-    if (isValidSelectedCompanies) {
-      this.filterActiveBg = 'filterActiveBg';
-      this.isCollapsed = false;
-    }
+ setFilterColor() {
+  const hasSelectedAssets = this.pagination.selectedAssetNames && this.pagination.selectedAssetNames.length > 0;
+  const hasSelectedCompanies = this.pagination.selectedCompanyIds && this.pagination.selectedCompanyIds.length > 0;
+  const hasSelectedEmails = this.pagination.selectedEmailIds && this.pagination.selectedEmailIds.length > 0;
+
+  const isValidFromDateFilter = this.pagination.fromDateFilterString && this.pagination.fromDateFilterString.length > 0;
+  const isValidToDateFilter = this.pagination.toDateFilterString && this.pagination.toDateFilterString.length > 0;
+
+  const isAnyFilterActive = hasSelectedAssets || hasSelectedCompanies || hasSelectedEmails || isValidFromDateFilter || isValidToDateFilter;
+
+  if (isAnyFilterActive) {
+    this.filterActiveBg = 'filterActiveBg';
+    this.isCollapsed = false;  
+  } else {
+    this.filterActiveBg = 'defaultFilterACtiveBg';  
   }
+}
+
   clickFilter() {
     this.showFilterOption = !this.showFilterOption;  
     this.customResponse.isVisible = false;
@@ -238,8 +243,9 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     }
   }
    applyFilters() {
-    this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
+    this.showFilterOption = false;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedOption, this.pagination);
     this.getAssetDetails(this.pagination);
   }
   validateDateFilter() {

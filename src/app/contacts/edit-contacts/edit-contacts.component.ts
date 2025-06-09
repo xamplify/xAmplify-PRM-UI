@@ -3985,4 +3985,41 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.addContactuser = new User();
 	}
 
+	confirmDeactivate(){
+		if (this.selectedContactListIds.length != 0) {
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, deactivate it!'
+
+			}).then(function (myData: any) {
+				console.log("ManageContacts showAlert then()" + myData);
+				self.deactivatePartners();
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+		}
+	}
+
+	deactivatePartners() {
+			this.partnerService.deactivatePartners(this.selectedContactListIds)
+				.subscribe(
+					(response: any) => {
+						if (response.statusCode == 200) {
+							this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							this.selectedContactListIds = [];
+						}
+					},
+					(error: any) => {
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					},
+				);
+	  }
+
 }

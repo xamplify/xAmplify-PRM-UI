@@ -120,6 +120,7 @@ export class ChatGptModalComponent implements OnInit {
   pagination: Pagination = new Pagination();
   stopClickEvent: boolean;
   copiedIndexes: number[] = [];
+  showButtons = false;
 
 
   showPrompts: boolean = false;
@@ -510,6 +511,7 @@ export class ChatGptModalComponent implements OnInit {
     this.landingPageService.id = 0;
     this.showPage = false;
     this.selectTemplate = false;
+    this.resetPageData();
   }
 
   speakTextOn(index: number, element: any) {
@@ -1154,22 +1156,20 @@ closeDesignTemplate(event: any) {
 
   closeSelectionTemplate(event: any) {
     if (event) {
+       const selectedTemplate = event.selectedTemplate;
+       const isConfirmed = event.isConfirmed;
+       this.chatGptIntegrationSettingsDto.addBrandColors = isConfirmed;
       // this.emailTemplateService.emailTemplate.jsonBody = "";
       if (this.chatGptIntegrationSettingsDto.designPage) {
-        this.landingPageService.id = event.id;
+        this.landingPageService.id = selectedTemplate.id;
       } else {
-        this.emailTemplateService.emailTemplate = event;
+        this.emailTemplateService.emailTemplate = selectedTemplate;
       }
-      this.chatGptIntegrationSettingsDto.templateId = event.id;
-      this.openDesignTemplate(event);
+      this.chatGptIntegrationSettingsDto.templateId = selectedTemplate.id;
+      this.openDesignTemplate(selectedTemplate);
       this.templateLoader = true;
     } else {
-      if (this.chatGptIntegrationSettingsDto.designPage) {
-        this.selectedTemplateList = [];
-        this.landingPageService.jsonBody = "";
-        this.showDefaultTemplates();
-        this.chatGptIntegrationSettingsDto.designPage = false;
-      }
+      this.resetPageData();
       this.selectTemplate = false;
     }
   } 
@@ -1292,6 +1292,34 @@ closeDesignTemplate(event: any) {
     this.searchChatHistory();
   }
 
+showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
+    let self = this;
+    swal({
+      title: 'Do you want to save the History?',
+      text: 'If not the history will be deleted permanently',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(function () {
+      if (isClosingModelPopup) {
+        self.showIcon = true;
+      }
+    }, function (dismiss: any) {
+    })
+    self.activeTab = tab;
+  }
+
+  resetPageData() {
+    if (this.chatGptIntegrationSettingsDto.designPage) {
+      this.selectedTemplateList = [];
+      this.landingPageService.jsonBody = "";
+      this.showDefaultTemplates();
+      this.chatGptIntegrationSettingsDto.designPage = false;
+    }
+  }
 
   searchPromptsBasic() {
     const term = this.searchTerm.trim().toLowerCase();

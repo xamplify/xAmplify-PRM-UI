@@ -255,6 +255,9 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 	/************Partner Company Checkbox related code starts here****************/
 	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId: number, partnershipId: number, event: any) {
+		if(this.isWorkflowForm) {
+			return;	
+		}		
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			$('#publishToPartners' + teamMemberId).addClass('row-selected');
@@ -282,6 +285,9 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 
 	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number, event: any) {
+		if(this.isWorkflowForm) {
+			return;	
+		}
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			//Removing Highlighted Row
@@ -385,13 +391,17 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 
 	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
-		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
-		this.notifyParent();
+		if (!this.isWorkflowForm) {
+			this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+			this.notifyParent();
+		}
 	}
 
 	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
-		this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
-		this.notifyParent();
+		if (!this.isWorkflowForm) {
+			this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+			this.notifyParent();
+		}
 	}
 
 	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event: any) {
