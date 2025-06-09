@@ -44,10 +44,10 @@
                   <th class="" style="width: 35%" id="border-bottom">
                     <span class="gridHeader" translate>{{authenticationService?.partnerModule?.customName}}</span>
                   </th>
-                  <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 35%" translate>
+                  <th *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center" style="width: 35%" translate>
                     Progress</th>
-                  <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" translate>QUiz Score</th>
-                  <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center" translate>Updated On</th>
+                  <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 35%" translate>QUiz Score</th>
+                  <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center" style="width: 35%" translate>Updated On</th>
                   <th class="text-center" id="min-width" translate>Actions</th>
                 </tr>
               </thead>
@@ -57,7 +57,7 @@
                     <td>
                       <app-user-info [userInfo]="partner"> </app-user-info>
                     </td>
-                    <td *ngIf="type == undefined || type == 'TRACK'" class="text-center">
+                    <td *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center">
                       <div class="progress" style="width: 50%; margin: 0px 25%;">
                         <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                           title="{{partner.learningTrackProgress}}%"
