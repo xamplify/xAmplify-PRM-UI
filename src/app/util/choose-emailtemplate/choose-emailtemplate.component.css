@@ -317,3 +317,13 @@ input.radio-custimization:checked:before {
     border-right: 3px solid #5ab1eb;
   }
   
+  input:active,
+  input:focus {
+      outline: none !important;
+  }
+
+  input.radio-custimization {
+      margin: 3px 3px !important;
+      z-index: 99;
+      position: relative;
+  }
