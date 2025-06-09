@@ -1523,6 +1523,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	loadContactsByType(contactType: string) {
+		this.showFilterOption = false;
+		this.criterias = [];
+		this.criteria = new Criteria();
 		this.contactsByType.pagination.pageIndex = 1;
 		this.contactsByType.pagination.maxResults = 12;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
@@ -1541,6 +1544,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType: string) {
+		if(!this.showFilterOption){
+			this.criterias = [];
+			this.criteria = new Criteria();
+			this.showFilterOption = false;
+		}
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.selectedCategory = contactType;

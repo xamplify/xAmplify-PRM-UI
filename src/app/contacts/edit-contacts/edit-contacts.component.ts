@@ -1677,6 +1677,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
+		this.showFilterOption = false;
+		this.criterias = [];
+		this.criteria = new Criteria();
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1982,7 +1985,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	showingContactDetails(contactType: string) {
 		this.resetResponse();
+		this.criterias = [];
+		this.criteria = new Criteria();
 		this.contactsByType.pagination = new Pagination();
+		this.showFilterOption = false;
 		this.contactsByType.selectedCategory = contactType;
 		this.selectedFilterIndex = 1;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
