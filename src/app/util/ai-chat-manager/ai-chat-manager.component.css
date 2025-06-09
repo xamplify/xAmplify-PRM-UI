@@ -1288,3 +1288,83 @@ span.icon-alignments {
   background-color: #e9f2ff;
   color: #0056b3;
 }
+
+button.image-only-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+button.image-only-button img {
+  display: block;
+  width: 24px; /* adjust as needed */
+  height: 24px; /* adjust as needed */
+  object-fit: contain;
+}
+
+
+ .suggestion-box {
+    background: white;
+    border-radius: 20px;
+    max-height: 300px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+    box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15);
+    /* background: linear-gradient(to bottom right, #f3f9ff, #e3efff);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); */
+    padding: 16px;
+    flex-direction: column;
+  }
+  .suggestion-box-input{
+    background: white;
+    position: relative;
+    bottom: 0px;
+    border-radius: 20px;
+    max-height: 300px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+    /* box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15); */
+    padding: 16px;
+    flex-direction: column;
+  }
+  .suggestion-search-container {
+    position: relative;
+    margin-bottom: 10px;
+  }
+.suggestion-list {
+    overflow-y: auto;
+    max-height: 220px;
+  }
+ .suggestion-list div {
+    padding: 10px;
+    border-bottom: 1px solid rgba(195, 218, 250, 1);
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .suggestion-box div:last-child {
+    border-bottom: none;
+  }
+  .suggestion-list div:hover {
+    background-color:#fbfdff;
+  }
+  .suggestion-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .justify-content-end{
+    justify-content: end;
+  }
+
+  
+.suggestion-direction{
+  position: absolute;
+  bottom: 251px;
+  right: 82px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid #e7f0fc;
+  z-index: 9999999;
+}

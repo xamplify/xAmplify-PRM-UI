@@ -94,6 +94,13 @@ export class AiChatManagerComponent implements OnInit {
   vendorCompanyProfileName: string;
   showPage: boolean;
   pagination: Pagination = new Pagination();
+
+  suggestedPrompts: string[] = [];         
+  filteredPrompts: string[] = [];        
+  searchTerm: string = '';
+  showPrompts: boolean = false;
+  showInsightsPrompts:boolean = false;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
@@ -149,6 +156,19 @@ export class AiChatManagerComponent implements OnInit {
         // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
+    
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    // if (this.authenticationService.companyProfileName !== undefined && 
+    //   this.authenticationService.companyProfileName !== '' && this.asset != null &&
+    //    this.asset != undefined && this.asset.damId) {
+    //      this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    // } else if (this.asset != null && this.asset != undefined && this.asset.id) {
+    //   this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    // }
+
+    this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -240,6 +260,7 @@ export class AiChatManagerComponent implements OnInit {
   validateInputText() {
     this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = this.trimmedText != undefined && this.trimmedText.length > 0;
+    this.searchPrompts();
   }
 
   searchDataOnKeyPress(keyCode: any) {
@@ -949,6 +970,56 @@ export class AiChatManagerComponent implements OnInit {
       this.showDefaultTemplates();
       this.chatGptIntegrationSettingsDto.designPage = false;
     }
+
+  getRandomOliverSuggestedPromptsByDamId(assetId: number) {
+    this.filteredPrompts = [];
+    this.suggestedPrompts = [];
+    if (assetId) {
+      this.isPdfUploading = true;
+      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName).subscribe(
+        response => {
+          let statusCode = response.statusCode;
+          let data = response.data;
+          if (statusCode === 200) {
+            this.suggestedPrompts = data.map((item: { promptMessage: any; }) => item.promptMessage);
+            this.filteredPrompts = [...this.suggestedPrompts];
+          }
+          this.isPdfUploading = false;
+        }, error => {
+          this.isPdfUploading = false;
+        }, () => {
+
+        });
+    }
+  }
+
+  /** XNFR-986 **/
+  searchPrompts() {
+    const term = this.inputText || ''.trim().toLowerCase();
+    if (!term) {
+      this.filteredPrompts = [...this.suggestedPrompts];
+    } else {
+      const searchWords = term.split(/\s+/);
+      this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
+        const lowerPrompt = prompt.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
+      });
+    }
+    const hasMatches = term && this.filteredPrompts.length > 0;
+    if (hasMatches) {
+      this.showInsightsPrompts = true;
+    } else {
+      this.showInsightsPrompts = false;
+      this.showPrompts = false;
+      this.filteredPrompts = [...this.suggestedPrompts];
+    }
+  }
+
+  openPrompts() {
+    this.searchTerm = "";
+    this.showPrompts = !this.showPrompts;
+    this.showInsightsPrompts = false;
+    this.filteredPrompts = [...this.suggestedPrompts];
   }
 
 }
