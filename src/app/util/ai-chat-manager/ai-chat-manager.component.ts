@@ -970,8 +970,9 @@ export class AiChatManagerComponent implements OnInit {
       this.showDefaultTemplates();
       this.chatGptIntegrationSettingsDto.designPage = false;
     }
+  }
 
-  getRandomOliverSuggestedPromptsByDamId(assetId: number) {
+  getRandomOliverSuggestedPromptsByDamId(assetId: any) {
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
     if (assetId) {
