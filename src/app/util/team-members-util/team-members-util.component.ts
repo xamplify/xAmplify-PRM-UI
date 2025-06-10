@@ -1318,16 +1318,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   downloadCsv() {
     let csvName = "team_Members.csv";
     this.downloadDataList = this.csvPagination.csvPagedItems.map(item => {
-      return {
+      let row = {
         "FIRSTNAME": item.firstName,
         "LASTNAME": item.lastName,
         "EMAILID": item.emailId,
         "GROUP": item.primaryAdmin ? "N/A" : `"${item.teamMemberGroupName}"`,
         "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
-        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive",
+        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive"
       };
+      if (this.isVendorRole || this.isOrgAdmin || this.isPrm) {
+        row["TOTAL PARTNERS"] =
+          (item.partnersCount === "" || item.partnersCount === null || item.partnersCount === undefined)
+            ? "N/A"
+            : item.partnersCount;
+      }
+      return row;
     });
-
     this.downloadCsvFile(this.downloadDataList, csvName);
   }
 

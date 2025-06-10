@@ -76,4 +76,7 @@ export class CampaignAccess {
   oliverParaphraserEnabled: boolean = false;
   oliverIntegrationType: string = '';
 
+    /** XNFR-987 **/
+  nonVanityAccessEnabled: boolean = false;
+
 }
