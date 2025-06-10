@@ -155,6 +155,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   inviteTeamMemberHtmlBody: any;
   inviteTeamMemberResponse: CustomResponse = new CustomResponse();
   tableHeader: string = "";
+  showTeamMemberName: any;
   /***** XNFR-805 *****/
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
@@ -1095,6 +1096,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   showPartners(teamMember: any) {
+    const fullName = ((teamMember.firstName || '') + ' ' + (teamMember.lastName || '')).trim();
+    this.showTeamMemberName = fullName ? fullName : (teamMember.emailId || '');
     this.showPartnersPopup = true;
     this.selectedTeamMemberId = teamMember.teamMemberId;
   }

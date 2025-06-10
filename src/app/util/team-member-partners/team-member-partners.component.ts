@@ -37,6 +37,11 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
   refershTeamMemberList = false;
   learingTrackIds = [];
+
+  // XNFR-998
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  @Input() fullName: any;
+
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public teamMemberService: TeamMemberService,
     public xtremandLogger: XtremandLogger, public pagerService: PagerService, public utilService: UtilService,public properties:Properties) { }
   
@@ -180,5 +185,32 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
     this.partnersPagination.pageIndex = 1;
     this.partnersPagination.maxResults = 12;
     this.findPartners(this.partnersPagination);
+  }
+   // XNFR-998
+  downloadTeamMemberCsv() {
+   const url = `${this.authenticationService.REST_URL}teamMember/downloadCSV`;
+    const headers = {
+      'Authorization': `Bearer ${this.authenticationService.access_token}`,
+      'Content-Type': 'application/json'
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(this.partnersPagination)
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = this.fullName +'(Associated-Partners).csv';
+        a.click();
+      }, (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.xtremandLogger.error(_error);
+        this.customResponse = new CustomResponse('ERROR', "Failed to Download", true);
+      });
   }
 }
