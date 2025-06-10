@@ -24,7 +24,7 @@
           </div>
           <div class="alert alert-info">
             <strong>
-              **Please be noted that you will only see a list of unshared {{selectedModule}}. <br />
+              **Please be noted that you will only see a list of unshared {{selectedModule}}. <br/>
               **{{selectedModule}} that have been chosen will be shared with the
               <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
               <span *ngIf="selectedModule=='Tracks' || selectedModule=='Play Books'"> and previously selected
@@ -32,6 +32,7 @@
                 {{authenticationService?.partnerModule?.customName}} will be removed</span>
               <span *ngIf="!isPartnersRouter">contact</span>.
               It will take some time to process everything. There is no need to reshare it.
+              **The selected {{selectedModule}} will be shared with active partners only; deactivated partners will be excluded.
             </strong>
           </div>
           <!--Campaigns/Assets/Tracks/Playbooks-->

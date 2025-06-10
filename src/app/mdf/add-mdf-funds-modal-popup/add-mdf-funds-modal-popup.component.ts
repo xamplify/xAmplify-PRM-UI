@@ -134,9 +134,11 @@ export class AddMdfFundsModalPopupComponent implements OnInit,OnDestroy {
 				this.referenceService.showSweetAlertSuccessMessage("Fund Removed Successfully");
 			  }
 			 this.updateParentComponent();
+			} else if (result.statusCode == 401) {
+				this.customResponse = new CustomResponse('ERROR', result.message, true);
 			} else {
-			  this.errorResponses = result.errorResponses;
-			  this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
+				this.errorResponses = result.errorResponses;
+				this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
 			}
 			this.modalPopupLoader = false;
 		  }, error => {
