@@ -159,16 +159,13 @@ export class AiChatManagerComponent implements OnInit {
     
     this.filteredPrompts = [];
     this.suggestedPrompts = [];
-    // if (this.authenticationService.companyProfileName !== undefined && 
-    //   this.authenticationService.companyProfileName !== '' && this.asset != null &&
-    //    this.asset != undefined && this.asset.damId) {
-    //      this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
-    // } else if (this.asset != null && this.asset != undefined && this.asset.id) {
-    //   this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
-    // }
 
-    this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
-
+    if (this.authenticationService.companyProfileName !== undefined &&
+      this.authenticationService.companyProfileName !== '') {
+      this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+    } else if (this.asset != null && this.asset != undefined && this.asset.id) {
+      this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+    }
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
