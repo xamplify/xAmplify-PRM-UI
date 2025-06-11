@@ -3466,3 +3466,7 @@ h5.oliver-heading-color{
 .close_popup{
   width: 30px!important;height: 30px!important;
 }
+/* suggestion prompt css*/
+.suggestion-list-global-chat {
+  max-height: 160px !important;
+}

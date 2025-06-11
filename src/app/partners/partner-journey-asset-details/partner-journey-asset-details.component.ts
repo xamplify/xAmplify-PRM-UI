@@ -71,13 +71,15 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.findCompanyNames();
-    this.findAssetNames();
-    this.findEmailIds();
   }
 
   ngOnChanges() {
+     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.pageIndex = 1;
+    this.findAssetNames();
+    this.findEmailIds();
     this.getAssetDetails(this.pagination);
     this.setFilterColor();
   }

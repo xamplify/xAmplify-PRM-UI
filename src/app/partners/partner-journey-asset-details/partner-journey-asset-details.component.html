@@ -73,7 +73,7 @@
                       <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
                         <div class="control-label" style="font-size:15px">{{dateFilterText}}
                           <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
-                            title="Select Date Filter"></i>
+                            title="Filter applies to Viewed and Downloaded dates only."></i>
                         </div>
                       </div>
                       <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
@@ -124,9 +124,16 @@
               <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
                   (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
                     [userInfo]="item"></app-user-info></a></td>
-              <td class="text-center" >{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
-              <td class="text-center">{{item?.assetType}}</td>
-              <td class="text-center">{{item?.createdByName}}</td>
+              <td class="text-center">
+                <p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
+                    <span *ngIf="item.assetName?.length>30">...</span>
+                  </p>
+              </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetType}}">{{item.assetType | slice:0:30}}   
+                    <span *ngIf="item.assetType?.length>30">...</span>
+                  </p> </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.createdByName}}">{{item.createdByName}}   
+                  </p></td>
               <td class="text-center">
                 <div class="custom-icon">
                   <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">

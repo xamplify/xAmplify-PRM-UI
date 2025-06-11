@@ -268,3 +268,11 @@ img.brand-logo-custom {
 .page-bar .page-breadcrumb {
   padding: 8px !important;
 }
+.filter_close {
+  width: 0px;
+  height: 0px;
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
