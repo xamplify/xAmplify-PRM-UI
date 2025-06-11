@@ -1,0 +1,15 @@
+<div class="theme-settings">
+  <h3>Custom Theme Settings</h3>
+  <div *ngIf="message" class="alert alert-warning">{{ message }}</div>
+  <form #themeForm="ngForm" *ngIf="!message && theme">
+    <div class="form-group"
+      *ngFor="let key of ['backgroundColor', 'headerColor', 'footerColor', 'textColor', 'buttonColor']">
+      <label>{{ key }}</label>
+      <input type="color" [ngModel]="theme[key]" (ngModelChange)="theme[key] = $event" name="{{key}}"
+        class="form-control" />
+    </div>
+    <button class="btn btn-primary mt-3" (click)="updateTheme()" [disabled]="!themeForm.valid">
+      Update
+    </button>
+  </form>
+</div>
