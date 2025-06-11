@@ -19,12 +19,15 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 	@Input() selectedPartnerCompanyIds: any = [];
 	@Output() notifyShowDetailedAnalytics = new EventEmitter();
 	@Input() fromDateFilter: string = '';
-	@Input() toDateFilter: string = '';
-	activePartnersSearchKey: string = "";
+        @Input() toDateFilter: string = '';
+        @Input() fromActivePartnersDiv: boolean = false;
+        @Input() fromDeactivatedPartnersDiv: boolean = false;
+        activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-	loggedInUserId: number = 0;
-	scrollClass: string;
+        loggedInUserId: number = 0;
+        scrollClass: string;
+        partnershipStatus: any;
 	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService,public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -32,10 +35,15 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	ngOnChanges() {
-		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-		this.getActivePartnerReports();
-	}
+        ngOnChanges() {
+                if(this.fromActivePartnersDiv){
+                        this.partnershipStatus = 'approved';
+                } else if(this.fromDeactivatedPartnersDiv){
+                        this.partnershipStatus = 'deactivated';
+                }
+                this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+                this.getActivePartnerReports();
+        }
 
 	activePartnerSearch(keyCode: any) { if (keyCode === 13) { this.searchActivePartnerAnalytics(); } }
 
@@ -51,11 +59,12 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		if (this.authenticationService.isSuperAdmin()) {
 			this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
 		}
-		this.activePartnersPagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-		this.activePartnersPagination.fromDateFilterString = this.fromDateFilter;
-		this.activePartnersPagination.toDateFilterString = this.toDateFilter;
-		this.activePartnersPagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-		this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
+                this.activePartnersPagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+                this.activePartnersPagination.fromDateFilterString = this.fromDateFilter;
+                this.activePartnersPagination.toDateFilterString = this.toDateFilter;
+                this.activePartnersPagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                this.activePartnersPagination.partnershipStatus = this.partnershipStatus;
+                this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
 			(response: any) => {
 				for (var i in response.activePartnesList) {
 					response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
