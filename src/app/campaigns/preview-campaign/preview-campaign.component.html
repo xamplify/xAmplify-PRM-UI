@@ -494,7 +494,7 @@
                            </div>
                            <div class="col-xs-4">
                               <label class="default col-xs-12 p0">
-                                 Inactive Count {{selectDomainDetails.inactiveCount}}/{{selectDomainDetails.totalCount}}
+                                 Inactive Recipients Count {{selectDomainDetails.inactiveCount}}/{{selectDomainDetails.totalCount}}
                               </label>
                                           <button class="btn btn-default workflow-style resume-style"
                                           [disabled]="selectDomainDetails.totalCount == selectDomainDetails.activeCount"
@@ -505,7 +505,7 @@
                            </div>
                            <div class="col-xs-4 p0">
                               <label class="default col-xs-12 p0" for="time">
-                                    Active Count {{selectDomainDetails.activeCount}}/{{selectDomainDetails.totalCount}}
+                                    Active Recipients Count {{selectDomainDetails.activeCount}}/{{selectDomainDetails.totalCount}}
                               </label>
                                           <button class="btn btn-default workflow-style pause-style"
                                              [disabled]="selectDomainDetails.totalCount == selectDomainDetails.inactiveCount"
