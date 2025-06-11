@@ -29,6 +29,8 @@ export class TrackAssetDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -36,6 +38,7 @@ export class TrackAssetDetailsComponent implements OnInit {
   searchKey: string = "";
   pagination: Pagination = new Pagination();
   scrollClass: any;
+  partnershipStatus: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -48,6 +51,11 @@ export class TrackAssetDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     this.getTrackAssetDetails(this.pagination);
   }
@@ -63,6 +71,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getTrackAssetDetails(this.pagination).subscribe(
       (response: any) => {
@@ -204,6 +213,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     }
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 

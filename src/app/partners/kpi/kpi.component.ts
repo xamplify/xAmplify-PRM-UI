@@ -32,8 +32,11 @@ export class KpiComponent implements OnInit {
   headerText = "";
   loader = false;
   @Input() applyTeamMemberFilter:boolean;
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   vanityLogin: boolean;
+  partnershipStatus: any;
 
   constructor(public dashboardService:DashboardService,public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
@@ -48,6 +51,14 @@ export class KpiComponent implements OnInit {
 
   ngOnInit() {
     this.refreshKpis();
+  }
+
+  ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
   }
 
   refreshKpis(){
