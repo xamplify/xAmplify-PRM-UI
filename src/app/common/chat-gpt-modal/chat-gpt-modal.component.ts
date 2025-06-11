@@ -122,19 +122,17 @@ export class ChatGptModalComponent implements OnInit {
   copiedIndexes: number[] = [];
   showButtons = false;
 
-
-  showPrompts: boolean = false;
-  suggestedPrompts: string[] = [];  
-
+  /** XNFR-1009 **/
+  showPromptBoxAbove: boolean = false;
   oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
-
-  filteredPrompts: string[] = [];          
+  suggestedPromptDTOs: OliverPromptSuggestionDTO[] = [];
   searchTerm: string = '';                 
-  showPromptsDown: boolean  = false;
-  showGlobalPromptsDown: boolean;
-  showGlobalPrompts: boolean;
-  showInsightsPromptsDown: boolean = false;
-  showInsightsPrompts: boolean = false;
+  showPromptBoxBelow: boolean  = false;
+  showGlobalPromptBoxBelow: boolean;
+  showGlobalPromptBoxAbove: boolean;
+  showInsightPromptBoxBelow: boolean = false;
+  showInsightPromptBoxAbove: boolean = false;
+  selectedPromptId: number
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -146,13 +144,11 @@ export class ChatGptModalComponent implements OnInit {
     this.sortBy(this.selectedValueForWork);
   }
 
-
-
   validateInputText() {
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText != undefined && trimmedText.length > 0;
      if (this.activeTab == 'askpdf' || this.activeTab == 'globalchat' ) { 
-      this.searchPrompts();
+      this.searchPromptsOnKeyPress();
     }
   }
 
@@ -278,8 +274,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
     this.isCopyButtonDisplayed = false;
-    this.showPrompts = false;
-    this.showPromptsDown = false;
+    this.resetAllPromptBoxes();
     this.getSuggestedPromptsForGlobalSearch();
   }
 
@@ -310,14 +305,12 @@ export class ChatGptModalComponent implements OnInit {
 
   setActiveTab(tab: string) {
     this.searchTerm = "";
-    this.showPromptsDown = false;
-    this.showPrompts = false;
-    this.showInsightsPromptsDown = false;
-    this.showInsightsPrompts = false;
-    this.showGlobalPromptsDown = false;
-    this.showGlobalPrompts = false;
-    this.filteredPrompts = this.suggestedPrompts;
-    this.filteredPrompts = [...this.suggestedPrompts];
+    this.showPromptBoxBelow = false;
+    this.showPromptBoxAbove = false;
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
     this.isValidInputText = false;
     this.inputText = "";
     if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
@@ -666,8 +659,8 @@ export class ChatGptModalComponent implements OnInit {
 
 
   getUploadedFileIds() {
-    this.filteredPrompts = [];
-    this.suggestedPrompts = [];
+    this.oliverPromptSuggestionDTOs = [];
+    this.suggestedPromptDTOs = [];
     this.chatGptIntegrationSettingsDto.loggedInUserId = this.loggedInUserId;
     this.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
     // this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
@@ -701,8 +694,7 @@ export class ChatGptModalComponent implements OnInit {
           self.showOpenHistory = true;
         }
         this.oliverPromptSuggestionDTOs = data.suggestedPrompts || [];
-        this.suggestedPrompts = data.suggestedPrompts.map((item: { promptMessage: any; }) => item.promptMessage);
-        this.filteredPrompts = [...this.suggestedPrompts];
+        this.suggestedPromptDTOs = [...this.oliverPromptSuggestionDTOs];
       },
       (error: string) => {
         this.assetLoader = false;
@@ -721,18 +713,12 @@ export class ChatGptModalComponent implements OnInit {
 
   AskAiTogetData() {
     this.searchTerm = "";
-    this.showPromptsDown = false;
-    this.showPrompts = false;
-    this.showInsightsPromptsDown = false;
-    this.showInsightsPrompts = false;
-    this.showGlobalPromptsDown = false;
-    this.showGlobalPrompts = false;
-    this.filteredPrompts = this.suggestedPrompts;
-    this.filteredPrompts = [...this.suggestedPrompts];
+    this.resetAllPromptBoxes();
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
     this.isCopyButtonDisplayed = false;
+    this.chatGptIntegrationSettingsDto.promptId = this.selectedPromptId;
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
@@ -774,10 +760,12 @@ export class ChatGptModalComponent implements OnInit {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
         this.trimmedText = '';
+        self.selectedPromptId = null;
       },
       function (error) {
         console.log('API Error:', error);
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.selectedPromptId = null;
       }
     );
   }
@@ -1321,103 +1309,102 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     }
   }
 
-  searchPromptsBasic() {
+  /** XNFR-1009 start **/
+  searchPrompts() {
     const term = this.searchTerm.trim().toLowerCase();
     if (term === '') {
-      this.filteredPrompts = this.suggestedPrompts
-        .slice().sort(() => Math.random() - 0.5).slice(0, 15);
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
     } else {
-      const term = this.searchTerm.split(/\s+/);
-      this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
-        const lowerPrompt = prompt.toLowerCase();
-        return term.every((word: string) => lowerPrompt.includes(word));
+      const searchWords = term.split(/\s+/);
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.filter(dto => {
+        const lowerPrompt = dto.promptMessage.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
       });
     }
   }
 
-  searchPrompts(): void {
-  const isAskPdf = this.activeTab === 'askpdf';
-  const isGlobalChat = this.activeTab === 'globalchat';
-  const term = (isAskPdf || isGlobalChat ? this.inputText : this.searchTerm || '').trim().toLowerCase();
-
-  if (!term) {
-    this.filteredPrompts = [...this.suggestedPrompts];
-  } else {
-    const searchWords = term.split(/\s+/);
-    this.filteredPrompts = this.suggestedPrompts.filter(prompt => {
-      const lowerPrompt = prompt.toLowerCase();
-      return searchWords.every(word => lowerPrompt.includes(word));
-    });
-  }
-
-  const hasMatches = term && this.filteredPrompts.length > 0;
-
-  if (isAskPdf && hasMatches) {
-    this.showInsightsPromptsDown = this.showOpenHistory;
-    this.showInsightsPrompts = !this.showOpenHistory;
-  } else if (isGlobalChat && hasMatches) {
-    this.showGlobalPromptsDown = this.showOpenHistory;
-    this.showGlobalPrompts = !this.showOpenHistory;
-  } else {
-    this.showPromptsDown = false;
-    this.showPrompts = false;
-    this.showInsightsPromptsDown = false;
-    this.showInsightsPrompts = false;
-    this.showGlobalPromptsDown = false;
-    this.showGlobalPrompts = false;
-    this.filteredPrompts = [...this.suggestedPrompts];
-  }
+  searchPromptsOnKeyPress(): void {
+    const isAskPdf = this.activeTab === 'askpdf';
+    const isGlobalChat = this.activeTab === 'globalchat';
+    const term = (isAskPdf || isGlobalChat ? this.inputText : this.searchTerm || '').trim().toLowerCase();
+    if (!term) {
+      this.oliverPromptSuggestionDTOs = [...this.suggestedPromptDTOs];
+    } else {
+      const searchWords = term.split(/\s+/);
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.filter(prompt => {
+        const lowerPrompt = prompt.promptMessage.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
+      });
+    }
+    const hasMatches = term && this.oliverPromptSuggestionDTOs.length > 0;
+    if (isAskPdf && hasMatches) {
+      this.showInsightPromptBoxBelow = this.showOpenHistory;
+      this.showInsightPromptBoxAbove = !this.showOpenHistory;
+    } else if (isGlobalChat && hasMatches) {
+      this.showGlobalPromptBoxBelow = this.showOpenHistory;
+      this.showGlobalPromptBoxAbove = !this.showOpenHistory;
+    } else {
+      this.resetAllPromptBoxes();
+      this.oliverPromptSuggestionDTOs = [...this.suggestedPromptDTOs];
+    }
   }
 
   getSuggestedPromptsForGlobalSearch() {
+    this.oliverPromptSuggestionDTOs = [];
+    this.suggestedPromptDTOs = [];
     this.customResponse = new CustomResponse();
-    this.filteredPrompts = [];
-    this.suggestedPrompts = [];
-    let companyProfileName = '';
-    if (this.authenticationService.companyProfileName !== undefined && 
-      this.authenticationService.companyProfileName !== '') {
-      companyProfileName = this.authenticationService.companyProfileName;
-    }
+    const companyProfileName = this.authenticationService.companyProfileName.trim() || '';
     this.chatGptSettingsService.getSuggestedPromptsForGlobalSearch(companyProfileName).subscribe(
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
         if (statusCode === 200) {
           this.oliverPromptSuggestionDTOs = data || [];
-          this.suggestedPrompts = this.oliverPromptSuggestionDTOs.map(item => item.promptMessage);
-          this.filteredPrompts = [...this.suggestedPrompts];
-        } else if (statusCode === 400) {
-         
-        } else {
-          
+          this.suggestedPromptDTOs = [...this.oliverPromptSuggestionDTOs];
         }
       }, error => {
-         
+
       }, () => {
-       
+
       });
   }
 
-  openPrompts() {
-    this.showInsightsPromptsDown = false;
-    this.showInsightsPrompts = false;
+  setSuggestedInputText(text: string, promptId: number): void {
+    this.inputText = text;
+    this.selectedPromptId = promptId;
+    this.isValidInputText = true;
     this.searchTerm = "";
-    this.showPrompts = !this.showPrompts;
-    this.showGlobalPromptsDown = false;
-    this.showGlobalPrompts = false;
-    this.filteredPrompts = this.suggestedPrompts
-    .slice().sort(() => Math.random() - 0.5).slice(0, 15);
+    this.resetAllPromptBoxes();
+  }
+
+ openPrompts() {
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
+    this.searchTerm = "";
+    this.showPromptBoxAbove = !this.showPromptBoxAbove;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
   }
 
   openPromptsDown() {
-    this.showInsightsPromptsDown = false;
-    this.showInsightsPrompts = false;
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
     this.searchTerm = "";
-    this.showPromptsDown = !this.showPromptsDown;
-    this.showGlobalPromptsDown = false;
-    this.showGlobalPrompts = false;
-    this.filteredPrompts = this.suggestedPrompts
-    .slice().sort(() => Math.random() - 0.5).slice(0, 15);
+    this.showPromptBoxBelow = !this.showPromptBoxBelow;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
   }
+
+  resetAllPromptBoxes(): void {
+    this.showInsightPromptBoxAbove = false;
+    this.showInsightPromptBoxBelow = false;
+    this.showPromptBoxAbove = false;
+    this.showPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.showGlobalPromptBoxBelow = false;
+  }
+  /** XNFR-1009 end **/
 
 }
