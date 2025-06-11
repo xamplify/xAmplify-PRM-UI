@@ -273,7 +273,7 @@
                         
                         <button *ngIf="suggestedPrompts.length > 0"
                          class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
-                          <img data-toggle="tooltip" data-placement="top" title="prompt suggestions" 
+                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions" 
                           src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                         </button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
@@ -444,7 +444,7 @@
                           <div class="btn-wrapper">
                           
                             <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
-                              <img data-toggle="tooltip" data-placement="bottom" title="prompt suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                              <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                             </button>
                             <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
                           </div>
@@ -483,7 +483,7 @@
                         
                         <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;"  
                           (click)="!assetLoader && openPrompts()">
-                          <img data-toggle="tooltip" data-placement="bottom" title="prompt suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                          <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                         </button>
 
                         <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>

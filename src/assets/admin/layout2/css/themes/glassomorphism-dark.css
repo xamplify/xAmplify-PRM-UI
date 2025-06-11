@@ -155,8 +155,9 @@ h6 {
   border-left: 0px solid rgba(255, 255, 255, 0.1) !important;
 }
 .bar,
-.tile,
-.progress {
+.tile
+/* ,.progress  */
+{
   background: rgba(16 18 27 / 40%) !important;
 }
 .heading-top {
@@ -4464,4 +4465,32 @@ markdown pre,.aligin-para{
 }
 .dropdown-menu button.share-btn:hover{
   box-shadow: none !important;
+}
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background: rgb(16 18 27 / 95%) !important;
+  backdrop-filter: blur(15px);
+}
+.suggestion-list div{
+  border-bottom: 1px solid #ffffff33 !important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid #2f252a!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid #2f252a!important;
+}
+.suggestion-list-global-chat {
+  max-height: 135px !important;
+}
+.suggestion-direction{
+  bottom: 87px!important;
+}
+.suggestion-direction-global-chat-down{
+  bottom: 51px!important;
+}
+.templateui{
+  bottom: 46px!important;
+}
+.suggestion-list div:hover{
+  background-color: rgb(51 55 70 / 40%) !important;
 }

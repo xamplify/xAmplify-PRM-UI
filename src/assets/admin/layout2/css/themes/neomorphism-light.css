@@ -4651,3 +4651,15 @@ input:checked + .toggle-slider {
   .dropdown-menu button.share-btn:hover{
     box-shadow: none !important;
   }
+  .suggestion-list-global-chat {
+    max-height: 135px !important;
+  }
+  .suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+    background:#edf2f8!important;
+  }
+  .suggestion-direction-global-chat-down,.suggestion-direction{
+    border-top: 12px solid #f0f5fa!important;
+  }
+  .suggestion-direction-global-chat{
+    border-bottom: 12px solid #f0f5fa!important;
+  }
