@@ -141,10 +141,10 @@
                                             <span *ngIf="!isPartnerView">Created On</span>
                                         </th>
                                         <ng-container *ngIf="isPartnerView">
-                                            <th *ngIf="type == undefined || type == 'TRACK'" class="text-center"
+                                            <th *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center"
                                                 style="width: 15%;" translate id="border-bottom">Progress</th>
-                                            <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"
-                                                id="border-bottom"></th>
+                                            <!-- <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"
+                                                id="border-bottom"></th> -->
                                         </ng-container>
                                         <ng-container *ngIf="!isPartnerView">
                                             <th class="text-center" id="border-bottom"></th>
@@ -224,7 +224,7 @@
                                             <!---XNFR-327-->
                                         </td>
                                         <td>
-                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')">
+                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"  class="text-center">
                                                 <div class="progress">
                                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                                         title="{{learningTrack.progress}}%"
@@ -326,8 +326,8 @@
                                 <span *ngIf="learningTrack.title?.length>59">...</span>
                             </h4>
                             <div class="mt5">
-                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')"
-                                    style="margin: 10px 15px 0px 15px;">
+                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                    style="margin: 10px 15px 0px 15px;"  class="text-center">
                                     <div class="progress">
                                         <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                             title="{{learningTrack.progress}}%"
