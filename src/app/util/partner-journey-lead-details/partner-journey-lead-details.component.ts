@@ -30,12 +30,15 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
+  partnershipStatus: any;
   scrollClass: string;
 
   constructor(public authenticationService: AuthenticationService,
@@ -49,6 +52,11 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -68,6 +76,7 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getLeadDetails(this.pagination).subscribe(
       (response: any) => {
@@ -201,6 +210,7 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (!this.isVendorVersion) {
       this.pagination.vanityUrlFilter = this.vanityUrlFilter;

@@ -1031,12 +1031,14 @@
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isDetailedAnalytics]="false"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-partner-journey-asset-details>
   </div>
    <div class="row rowPaddingCustomization2">
     <app-asset-journey-asset-details [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-asset-journey-asset-details>
   </div>
   <!--******************Track Assets Detailed Report*******************-->
@@ -1055,12 +1057,14 @@
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         *ngIf="authenticationService?.lmsAccess || authenticationService?.module?.showContent"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-track-asset-details>
     </div>
   </div>
@@ -1070,6 +1074,7 @@
     <app-partner-journey-team-member-high-level-analytics-table *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)">
     </app-partner-journey-team-member-high-level-analytics-table>
   </div>
@@ -1078,6 +1083,7 @@
     <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-share-lead-details>
   </div>
 
@@ -1086,20 +1092,21 @@
     <!-- <ng-container *ngIf="reloadWithFilter"> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="partnerfromDateFilter"
-      [toDateFilter]="partnertoDateFilter"
+      [toDateFilter]="partnertoDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService?.enableLeads"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'redistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="partnerfromDateFilter"
-      [toDateFilter]="partnertoDateFilter"
+      [toDateFilter]="partnertoDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
           [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'top10LeadsAndDealsBarChart'" [fromDateFilter]="partnerfromDateFilter"
-      [toDateFilter]="partnertoDateFilter"
+      [toDateFilter]="partnertoDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)  && authenticationService?.enableLeads"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- </ng-container> -->
   </div>
@@ -1113,12 +1120,14 @@
           (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isDetailedAnalytics]="false"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
           [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+          [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
           *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-pie-chart>
       </div>
       <app-redistributed-campaign-details [partnerCompanyId]="'0'" [campaignTypeFilter]="selectedCampaignType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
     </div>
   </div>
@@ -1129,6 +1138,7 @@
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService?.enableLeads"></app-partner-journey-lead-details>
   </div>
   <!--******************Deal Details*******************-->
@@ -1137,17 +1147,19 @@
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService?.enableLeads"></app-partner-journey-deal-details>
   </div>
 
   <div class="row responsivepaddding1">
-    <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-kpi>
+    <app-kpi [applyTeamMemberFilter]="applyFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv" *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-kpi>
 
     <!--******************MDF Details*******************-->
 
     <app-mdf-detail-analytics *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && authenticationService?.mdf"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-mdf-detail-analytics>
   </div>
   <app-scroll-top></app-scroll-top>
