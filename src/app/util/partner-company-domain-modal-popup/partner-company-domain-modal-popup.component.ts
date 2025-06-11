@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Properties } from 'app/common/models/properties';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Partnership } from 'app/partners/models/partnership.model';
 import { ParterService } from 'app/partners/services/parter.service';
 declare var $, swal: any;
 @Component({
   selector: 'app-partner-company-domain-modal-popup',
   templateUrl: './partner-company-domain-modal-popup.component.html',
-  styleUrls: ['./partner-company-domain-modal-popup.component.css']
+  styleUrls: ['./partner-company-domain-modal-popup.component.css'],
+  providers: [Properties]
 })
 export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   domainId: any;
@@ -18,7 +21,7 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
   domainDeactivatingDescription : any;
   count: any;
 
-  constructor(public parterService: ParterService ) { }
+  constructor(public parterService: ParterService, private authenticationService: AuthenticationService, private properties: Properties ) { }
 
   ngOnInit() {
      $("#partnerCompanyDomainForm").modal('show');
@@ -36,12 +39,13 @@ export class PartnerCompanyDomainModalPopupComponent implements OnInit {
     this.partnership.domainName = selectedDomain.domainName;
     this.partnership.domainId = selectedDomain.id;
     this.partnership.domainDeactivated = selectedDomain.domainDeactivated;
+    let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
     if (this.partnership.domainDeactivated) {
       this.partnership.status = 'deactivated';
-      this.domainDeactivatingDescription = 'The partnership with all the companies listed below will be activated.';
+      this.domainDeactivatingDescription = this.properties.DOMAIN_WHITELISTING_ACTIVATE_DOMAIN + suffexMessage;
     } else {
       this.partnership.status = 'approved';
-      this.domainDeactivatingDescription = 'The partnership with all the companies listed below will be deactivated.';
+      this.domainDeactivatingDescription = this.properties.DOMAIN_WHITELISTING_DEACTIVATE_DOMAIN + suffexMessage;
     }
     this.parterService.findPartnerCompaniesByDomain(this.partnership).subscribe(response => {
       if (response.statusCode == 200) {
