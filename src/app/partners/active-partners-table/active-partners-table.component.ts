@@ -42,6 +42,10 @@ export class ActivePartnersTableComponent implements OnInit {
   dateFilterText = "Select Date Filter";
   @Input() fromDateFilter: any = "";
   @Input() toDateFilter: any = "";
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
+  partnershipStatus: any;
+
 
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
@@ -57,6 +61,11 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   ngOnChanges(){
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;  
     this.sortOption.searchKey = "";/*** XNFR-835 ***/
     this.getActivePartners(this.pagination);
@@ -68,6 +77,7 @@ export class ActivePartnersTableComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getActivePartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

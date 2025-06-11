@@ -822,6 +822,10 @@ export class ParterService {
         return this.authenticationService.callPostMethod(url, deactivateUserIds);
     }
 
+    //XNFR-1006
+      findTotalDeactivatePartnersCount(loggedInUserId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findTotalDeactivatePartnersCount", loggedInUserId, applyFilter);
+    }
 
 }
 

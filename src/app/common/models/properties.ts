@@ -477,6 +477,7 @@ export class Properties {
 	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 	totalPartnersDescription = "Total Onboarded Partners."
+	totalDeactivatePartnersDescription = "Total Deactivated Partners."
 	/** XNFR-745 **/
 	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Playbook";
 	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
