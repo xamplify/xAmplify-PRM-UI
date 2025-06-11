@@ -323,7 +323,7 @@
   <!--******************All Counts - Tiles*******************-->
   <app-partner-journey-count-tiles [partnerCompanyId]="'0'" [applyFilter]="applyFilter" [isDetailedAnalytics]="false"
     [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
-    [toDateFilter]="partnertoDateFilter"
+    [toDateFilter]="partnertoDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
     *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
@@ -370,6 +370,7 @@
       <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [applyFilter]="applyFilter" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-campaigns-launched-by-partners>
     </div>
   </div>
@@ -1015,12 +1016,13 @@
       <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter" [applyFilter]="applyFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         *ngIf="authenticationService?.lmsAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
 
       <!--******************Company wise Playbook Counts******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-        [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
+        [applyFilter]="applyFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv" *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
     </div>
   </div>
 
@@ -1042,6 +1044,7 @@
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
       *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && (authenticationService?.lmsAccess || authenticationService?.module?.showContent)"></app-userwise-track-details>
   </div>
 
