@@ -102,7 +102,8 @@
                       </td>
                       <td class="text-center">
                         <span>{{partner?.companyName | slice:0:20}}</span>
-                        <span *ngIf="partner?.companyName.length>20">...</span>
+                        <span *ngIf="partner?.companyName.length>20">...</span><br>
+                        <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex mt5" title="Partnership is deactivated">DEACTIVATED</h6>
                       </td>
                       <td>
                         <app-timestamp [dateAndTime]="partner?.displayTime">
