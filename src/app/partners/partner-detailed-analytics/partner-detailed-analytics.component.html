@@ -26,7 +26,7 @@
   <!--******************Company Info*******************-->
   <div class="row customeRow">
     <app-partner-journey-company-info [partnerCompanyId]="partnerCompanyId"
-    (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-partner-journey-company-info>
+    (notifySelectedDateFilters)="getDateFilterOptions($event)" (notifyPartnerStatus)="getPartnerStatus($event)"></app-partner-journey-company-info>
   </div>
 
   <!--******************Campaign Counts - Tiles*******************-->
@@ -44,8 +44,8 @@
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
     <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
-      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)" [fromDateFilter]="fromDateFilter"
-      [toDateFilter]="toDateFilter">
+      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)" [partnerStatus]="partnerStatus" 
+      [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
     </app-partner-journey-team-members-table>
   </div>
 

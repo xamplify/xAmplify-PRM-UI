@@ -4963,8 +4963,10 @@ triggerUniversalSearch(){
 		this.user = new User();
 		this.user = partner;
 		this.sweetAlertParameterDto = new SweetAlertParameterDto();
-		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated' 
-			? 'Partnership will be Deactivated' : 'Partnership will be Activated';
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated'
+			? this.properties.SINGLE_DEACTIVATE_PARTNER + suffexMessage
+			: this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
 		this.sweetAlertParameterDto.confirmButtonText = partner.partnerStatus !== 'deactivated'
 			? 'Yes, Deactivate it!' : 'Yes, Activate it!';
 		this.isDeleteOptionClicked = true;
@@ -5002,18 +5004,19 @@ triggerUniversalSearch(){
 		this.loadPartnerList(this.pagination);
 	}
 
-	showDeactivateAlert(){
+	showDeactivateAlert() {
 		if (this.editContactComponent.selectedContactListIds.length != 0) {
+			let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+			let message = this.properties.MULTI_SELECT_DEACTIVATE_PARTNERS + suffexMessage;
 			let self = this;
 			swal({
 				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
+				text: message,
 				type: 'warning',
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
 				swalCancelButtonColor: '#999',
 				confirmButtonText: 'Yes, deactivate it!'
-
 			}).then(function (myData: any) {
 				console.log("ManageContacts showAlert then()" + myData);
 				self.deactivatePartners();
