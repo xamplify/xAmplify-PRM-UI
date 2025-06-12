@@ -60,11 +60,13 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.findAssetNames();
+   
   }
 
   ngOnChanges() {
     this.pagination.pageIndex = 1;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.findAssetNames();
     this.getAssetDetails(this.pagination);
     this.setFilterColor();
   }

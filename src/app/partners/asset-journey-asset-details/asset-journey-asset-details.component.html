@@ -107,9 +107,19 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td>{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
-              <td class="text-center">{{item?.assetType}}</td>
-              <td class="text-center">{{item?.createdByName}}</td>
+              <td><p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
+                    <span *ngIf="item.assetName?.length>30">...</span>
+                  </p></td>
+               <td class="text-center">
+                <p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetType}}">{{item.assetType | slice:0:30}} 
+                    <span *ngIf="item.assetType?.length>30">...</span>
+                  </p>
+               </td>
+               <td class="text-center">
+                  <p data-toggle="tooltip" data-placement="bottom" title="{{item?.createdByName}}">{{item.createdByName | slice:0:30}} 
+                    <span *ngIf="item.createdByName?.length>30">...</span>
+                  </p>
+               </td>
               <td class="text-center">
                 <div class="custom-icon">
                   <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">

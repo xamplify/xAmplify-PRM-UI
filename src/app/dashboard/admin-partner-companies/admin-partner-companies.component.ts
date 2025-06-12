@@ -168,7 +168,30 @@ findMaximumAdminsLimitDetails(partnerCompany:any){
 		this.campaignAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
 		this.campaignAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
 		this.campaignAccess.maxAdmins = partnerCompany.maxAdmins;
+		this.campaignAccess.nonVanityAccessEnabled =  partnerCompany.nonVanityAccessEnabled;
 	  }
 	);
   }
+
+onNonVanityAccessToggle(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const newValue = input.checked;
+  const actionText = newValue ? 'enable' : 'disable';
+
+  swal({
+    title: 'Are you sure?',
+    text: `Do you want to ${actionText} Non Vanity Access?`,
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#54a7e9',
+    cancelButtonColor: '#999',
+    confirmButtonText: `Yes, ${actionText} it!`
+  }).then(() => {
+    this.campaignAccess.nonVanityAccessEnabled = newValue;
+  }, (dismiss: any) => {
+    (event.target as HTMLInputElement).checked = !newValue;
+  });
+}
+
+
 }

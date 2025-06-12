@@ -1764,17 +1764,71 @@ circle.front {
   margin-bottom: 10px;
 }
 
+ .suggestion-box {
+    border-radius: 20px;
+    max-height: 300px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+    box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15);
+    /* background: linear-gradient(to bottom right, #f3f9ff, #e3efff);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); */
+    padding: 16px;
+    flex-direction: column;
+  }
+  .suggestion-box-input{
+    position: relative;
+    bottom: -10px;
+    border-radius: 20px;
+    max-height: 300px;
+    /* max-height: 200px; */
+    overflow: hidden;
+    background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+    /* box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15); */
+    padding: 16px;
+    flex-direction: column;
+  }
+  .suggestion-box-input-prompt{
+    position: relative;
+    bottom: 0px;
+    border-radius:10px 10px 15px 15px;
+    /* max-height: 300px; */
+    max-height: 200px;
+    overflow: hidden;
+    /* background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%); */
+    background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);
+    /* box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15); */
+    padding: 16px;
+    flex-direction: column;
+  }
+  .suggestion-search-container {
+    position: relative;
+    margin-bottom: 10px;
+  }
+
 .suggestion-list {
   overflow-y: auto;
   max-height: 180px;
 }
 
-.suggestion-list div {
-  padding: 10px;
-  border-bottom: 1px solid rgba(195, 218, 250, 1);
-  font-size: 15px;
-  cursor: pointer;
-}
+ .suggestion-list div {
+    padding: 10px;
+    border-bottom: 1px solid rgba(195, 218, 250, 1);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .suggestion-box div:last-child {
+    border-bottom: none;
+  }
+  .suggestion-list div:hover {
+    background-color:#fbfdff;
+  }
+  .suggestion-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .justify-content-end{
+    justify-content: end;
+  }
+
 
 .suggestion-box div:last-child {
   border-bottom: none;
@@ -1794,7 +1848,7 @@ circle.front {
 
 .suggestion-direction {
   position: absolute;
-  bottom: 82px;
+  bottom: 83px;
   right: 235px;
   width: 0;
   height: 0;
@@ -1812,9 +1866,10 @@ circle.front {
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-bottom: 12px solid #e4ebf5;
+  border-bottom: 12px solid #dfecff;
   z-index: 9999999;
 }
+
 
 .suggestion-direction-global-chat-down {
   position: absolute;
@@ -1862,3 +1917,4 @@ button.image-only-button img {
 .suggestion-list-global-chat {
   max-height: 132px !important;
 }
+
