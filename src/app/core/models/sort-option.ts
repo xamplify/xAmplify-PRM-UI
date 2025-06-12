@@ -635,6 +635,13 @@ export class SortOption {
 		{ 'name': 'Download Count(ASC)', 'value': 'downloadCount-Asc' },
 		{ 'name': 'Download Count(DESC)', 'value': 'downloadCount-Desc' }
 	];
+	playbookInteractionDropDownOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'View Count(ASC)', 'value': 'viewCount-Asc' },
+		{ 'name': 'View Count(DESC)', 'value': 'viewCount-Desc' },
+		{ 'name': 'Completed Count(ASC)', 'value': 'completedCount-Asc' },
+		{ 'name': 'Completed Count(DESC)', 'value': 'completedCount-Desc' }
+	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -751,5 +758,7 @@ export class SortOption {
 	selectWordDropDownForOliver = this.wordOptionsForOliver[0];
 
 	selectedOption = this.assetInteractionDropDownOptions[0];
+
+	selectedOptionForPlaybookInteraction = this.playbookInteractionDropDownOptions[0];
 
 }

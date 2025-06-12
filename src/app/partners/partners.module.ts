@@ -26,6 +26,7 @@ import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './part
 import { PartnerJourneyAssetDetailsComponent } from './partner-journey-asset-details/partner-journey-asset-details.component';
 import { PartnerModuleConfiguratorComponent } from './partner-module-configurator/partner-module-configurator.component';
 import { AssetJourneyAssetDetailsComponent } from './asset-journey-asset-details/asset-journey-asset-details.component';
+import { PlayBookJourneyInteractionComponent } from './play-book-journey-interaction/play-book-journey-interaction.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,6 @@ import { AssetJourneyAssetDetailsComponent } from './asset-journey-asset-details
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent]
 })
 export class PartnersModule { }

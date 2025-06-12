@@ -821,7 +821,16 @@ export class ParterService {
         var url = this.URL + "partnership/deactivatePartnerCompanies/" + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, deactivateUserIds);
     }
+    getPlaybookInteractionDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/journey/interaction/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
 
-
+    getAllPlaybookNamesFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/names/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
 }
 
