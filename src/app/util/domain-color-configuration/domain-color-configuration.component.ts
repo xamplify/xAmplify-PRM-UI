@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
-
+declare var $: any;
 @Component({
   selector: 'app-domain-color-configuration',
   templateUrl: './domain-color-configuration.component.html',
@@ -11,11 +11,10 @@ export class DomainColorConfigurationComponent implements OnInit {
   message: string = '';
 
   colorFields = [
-    { label: 'background', key: 'backgroundColor' },
-    { label: 'button-text', key: 'buttonColor' },
-    { label: 'footer-bg', key: 'footerColor' },
-    { label: 'footer-text', key: 'textColor' },
-    { label: 'header-text', key: 'headerColor' }
+    { key: 'backgroundColor', label: 'Background Color', placeholder: '#b1e4e4' },
+    { key: 'buttonColor', label: 'Button Color', placeholder: '#59d77c' },
+    { key: 'footerColor', label: 'Button Border Color', placeholder: '#2469ad' },
+    { key: 'textColor', label: 'Button Text & Icon Color', placeholder: '#0e0b0b' }
   ];
 
   constructor(public chatGptSettingsService: ChatGptSettingsService) {}
@@ -46,7 +45,6 @@ export class DomainColorConfigurationComponent implements OnInit {
 
   updateTheme() {
     if (!this.theme) return;
-    console.log('Updating theme:', this.theme);
     this.chatGptSettingsService.updateDomainColorConfiguration(this.theme).subscribe(
       (res: any) => {
         if (res && res.statusCode === 200) {
@@ -56,7 +54,7 @@ export class DomainColorConfigurationComponent implements OnInit {
         }
       },
       (error) => {
-        console.error('Update failed:', error);
+        this.handleError('Update failed', error);
       }
     );
   }
@@ -77,10 +75,12 @@ export class DomainColorConfigurationComponent implements OnInit {
   }
 
   onHexChange(key: string, value: string) {
-  const hexRegex = /^#([A-Fa-f0-9]{6})$/;
-  if (value && hexRegex.test(value)) {
-    this.theme[key] = value;
+    const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+    if (value && hexRegex.test(value)) {
+      this.theme[key] = value;
+    }
   }
-}
-
+  toggleClass(id: string) {
+    $("i#" + id).toggleClass("fa-minus fa-plus");
+  }
 }

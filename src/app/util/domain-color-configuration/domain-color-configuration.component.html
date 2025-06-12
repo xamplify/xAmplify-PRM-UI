@@ -1,26 +1,27 @@
-<form #themeForm="ngForm" *ngIf="!message && theme" (ngSubmit)="updateTheme()" novalidate>
-  <div class="simple-color-grid">
-    <div *ngFor="let field of colorFields" class="simple-color-block">
-      <div class="label">{{ field.label }}</div>
-
-      <!-- Color Picker Input -->
-      <label class="color-box">
-        <input type="color" [(ngModel)]="theme[field.key]" name="{{ field.key }}_color" class="hidden-color-picker"
-          (change)="onHexChange(field.key, theme[field.key])" />
-        <div class="preview" [style.backgroundColor]="theme[field.key]"></div>
-      </label>
-
-      <!-- Hex Code Input -->
-      <input type="text" [(ngModel)]="theme[field.key]" name="{{ field.key }}" maxlength="7"
-        pattern="^#([A-Fa-f0-9]{6})$" placeholder="#000000" required class="hex-code-input"
-        (input)="onHexChange(field.key, theme[field.key])" />
+<div class="lead_details">
+<h3>Domain Color Configuration
+  <a data-toggle="collapse" (click)="toggleClass('color-details')" style="float: right;"
+    href="javascript:;#colorDetailsDropdown">
+    <i id="color-details" class="fa fa-minus" aria-hidden="true"></i>
+  </a>
+</h3>
+</div>
+<div class="color-settings-container nav collapse in " id="colorDetailsDropdown">
+  <div *ngFor="let field of colorFields" class="color-field">
+    <label>{{ field.label }}</label>
+    <div class="color-input-row">
+      <div class="color-preview" [style.background]="theme[field.key] || field.placeholder"></div>
+      <input
+        type="text"
+        [placeholder]="field.placeholder"
+        [(ngModel)]="theme[field.key]"
+        (ngModelChange)="onHexChange(field.key, $event)"
+        maxlength="7"
+      />
     </div>
   </div>
-
-  <!-- Update Button -->
-  <div class="text-center mt-4">
-    <button class="btn btn-primary update-btn" type="submit" [disabled]="!isThemeValid()">
-      Update
-    </button>
-  </div>
-</form>
+  <!-- <div class="col-lg-12 p0 d-flex justify-content-end">
+    <button  class="btn btn-primary"[disabled]="!isThemeValid()" (click)="updateTheme()">Update</button>
+  </div> -->
+  <div *ngIf="message" class="error-message">{{ message }}</div>
+</div>

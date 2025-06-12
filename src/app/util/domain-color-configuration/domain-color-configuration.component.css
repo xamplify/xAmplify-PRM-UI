@@ -1,79 +1,75 @@
-.simple-color-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: flex-start;
-  margin-bottom: 24px;
+.color-settings-container {
+  /* background: #f5f8fa;
+  border-radius: 8px; */
+  padding: 10px;
+  /* width: 340px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: Arial, sans-serif; */
 }
 
-.simple-color-block {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  width: 220px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease;
+.color-field {
+  margin-bottom: 20px;
 }
 
-.simple-color-block:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.color-field label {
+  display: block;
+  color: #888;
+  font-size: 15px;
+  margin-bottom: 6px;
 }
 
-.label {
-  font-weight: 600;
-  margin-bottom: 8px;
-  text-transform: capitalize;
-}
-
-.color-box {
+.color-input-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
 }
 
-.hidden-color-picker {
-  border: none;
-  background: transparent;
-  width: 40px;
-  height: 32px;
-  padding: 0;
-  cursor: pointer;
-}
-
-.preview {
+.color-preview {
   width: 32px;
   height: 32px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  pointer-events: none;
-}
-
-.hex-code-input {
-  width: 100%;
-  padding: 6px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-family: monospace;
-}
-
-.hex-code-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
-}
-
-.update-btn {
-  padding: 10px 24px;
-  font-size: 16px;
+  border: 2px solid #e0e0e0;
   border-radius: 6px;
-  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  box-sizing: border-box;
 }
 
-.update-btn:disabled {
-  background-color: #cccccc;
+input[type="text"] {
+  font-size: 16px;
+  padding: 6px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  width: 170px;
+}
+
+/* button {
+  margin-top: 16px;
+  padding: 8px 24px;
+  background: #59d77c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+} */
+
+button:disabled {
+  background: #c8e6c9;
   cursor: not-allowed;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 10px;
+}
+
+.lead_details h3 {
+    font-size: 16px;
+    margin: 0px;
+    padding: 9px 4px;
+    /* background-color: #f5f8fa; */
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+}
+
+.justify-content-end{
+    justify-content: end;
 }

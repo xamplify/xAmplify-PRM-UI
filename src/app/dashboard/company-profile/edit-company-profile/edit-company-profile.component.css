@@ -238,3 +238,7 @@ button.btn-info.aspect_ratio:disabled {
 .cursor-not-allowed{
   cursor: not-allowed !important;
 }
+
+.profile_headers{
+    border-radius: 10px;
+}
