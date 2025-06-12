@@ -160,7 +160,7 @@
                         <tbody>
                           <ng-container>
                             <tr class="edit_label">
-                              <td class="p10" style="width:25%;">
+                              <td class="p10 border-none" style="width:25%;">
                                 <span
                                   *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO')"
                                   class="alignMiddle">Required
@@ -180,7 +180,7 @@
                                   </label>
                                 </span>
                               </td>
-                              <td class="p10" style="width:25%;">
+                              <td class="p10 border-none" style="width:25%;">
                                 <label
                                   *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO')"
                                   for="html" style="float: left;">Display Name</label>
@@ -189,7 +189,7 @@
                                   type="text" class="form-control" [(ngModel)]="sfCustomField.displayName"
                                   [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                               </td>
-                              <td class="p10" style="width:25%;">
+                              <td class="p10 border-none" style="width:25%;">
                                 <label
                                   *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO')"
                                   for="html" style="float: left;">PlaceHolder</label>

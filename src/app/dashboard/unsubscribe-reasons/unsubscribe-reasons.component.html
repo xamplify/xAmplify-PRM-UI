@@ -142,10 +142,10 @@
       <div class="table-responsive">
         <table style="width:55%" class='table tgrid table-hover' aria-describedby="">
           <tr>
-            <th scope="row" [ngClass]="unsubscribeReason?.customReasonClass">
+            <th scope="row" [ngClass]="unsubscribeReason?.customReasonClass" style="border: none!important;">
               Custom Reason
             </th>
-            <td>
+            <td style="border: none!important;">
               <switch class="switchbtns" [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue"
                 [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
@@ -177,7 +177,7 @@
         <div class="table-responsive">
           <table class='table tgrid table-hover' aria-describedby="">
             <tr>
-              <th scope="row" class="shfw">
+              <th scope="row" class="shfw" style="border: none!important;">
                 Show Header Text
                 <switch class="switchbtns" [status]="!unsubscribePageDetails.hideHeaderText" [onText]="callActionSwitch.onTextValue"
                   [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -201,7 +201,7 @@
         <div class="table-responsive">
           <table class='table tgrid table-hover' aria-describedby="">
             <tr>
-              <th scope="row" class="shfw">
+              <th scope="row" class="shfw" style="border: none!important;">
                 Show Footer Text
                 <switch class="switchbtns" [status]="!unsubscribePageDetails.hideFooterText" [onText]="callActionSwitch.onTextValue"
                   [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
