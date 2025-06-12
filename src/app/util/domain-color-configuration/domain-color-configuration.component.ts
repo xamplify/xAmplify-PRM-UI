@@ -11,14 +11,14 @@ export class DomainColorConfigurationComponent implements OnInit {
   message: string = '';
 
   colorFields = [
-    { label: 'Background Color', key: 'backgroundColor' },
-    { label: 'Header Color', key: 'headerColor' },
-    { label: 'Footer Color', key: 'footerColor' },
-    { label: 'Text Color', key: 'textColor' },
-    { label: 'Button Color', key: 'buttonColor' }
+    { label: 'background', key: 'backgroundColor' },
+    { label: 'button-text', key: 'buttonColor' },
+    { label: 'footer-bg', key: 'footerColor' },
+    { label: 'footer-text', key: 'textColor' },
+    { label: 'header-text', key: 'headerColor' }
   ];
 
-  constructor(public chatGptSettingsService: ChatGptSettingsService) { }
+  constructor(public chatGptSettingsService: ChatGptSettingsService) {}
 
   ngOnInit() {
     this.loadColorConfiguration();
@@ -29,11 +29,11 @@ export class DomainColorConfigurationComponent implements OnInit {
       (res: any) => {
         if (res && res.statusCode === 200 && res.data) {
           this.theme = {
-            backgroundColor: res.data.backgroundColor ,
-            headerColor: res.data.headerColor,
+            backgroundColor: res.data.backgroundColor,
+            buttonColor: res.data.buttonColor,
             footerColor: res.data.footerColor,
             textColor: res.data.textColor,
-            buttonColor: res.data.buttonColor
+            headerColor: res.data.headerColor
           };
           this.message = '';
         } else {
@@ -45,22 +45,21 @@ export class DomainColorConfigurationComponent implements OnInit {
   }
 
   updateTheme() {
-  console.log(this.theme); 
-  this.chatGptSettingsService.updateDomainColorConfiguration(this.theme).subscribe(
-    (res: any) => {
-      if (res && res.statusCode === 200) {
-         this.loadColorConfiguration();
-      } else {
-        this.handleError('Failed to update color', res);
+    if (!this.theme) return;
+    console.log('Updating theme:', this.theme);
+    this.chatGptSettingsService.updateDomainColorConfiguration(this.theme).subscribe(
+      (res: any) => {
+        if (res && res.statusCode === 200) {
+          this.loadColorConfiguration();
+        } else {
+          this.handleError('Failed to update color', res);
+        }
+      },
+      (error) => {
+        console.error('Update failed:', error);
       }
-    },
-    (error) => {
-      console.error('Update failed:', error);
-      alert('Error while updating theme');
-    }
-  );
-}
-
+    );
+  }
 
   private handleError(message: string, error: any): void {
     this.message = message;
@@ -69,4 +68,19 @@ export class DomainColorConfigurationComponent implements OnInit {
       console.error(message, error);
     }
   }
+
+  isThemeValid(): boolean {
+    const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+    return this.colorFields.every(field =>
+      this.theme[field.key] && hexRegex.test(this.theme[field.key])
+    );
+  }
+
+  onHexChange(key: string, value: string) {
+  const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+  if (value && hexRegex.test(value)) {
+    this.theme[key] = value;
+  }
+}
+
 }

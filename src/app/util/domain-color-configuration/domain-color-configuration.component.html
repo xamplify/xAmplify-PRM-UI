@@ -1,15 +1,26 @@
-<div class="theme-settings">
-  <h3>Custom Theme Settings</h3>
-  <div *ngIf="message" class="alert alert-warning">{{ message }}</div>
-  <form #themeForm="ngForm" *ngIf="!message && theme">
-    <div class="form-group"
-      *ngFor="let key of ['backgroundColor', 'headerColor', 'footerColor', 'textColor', 'buttonColor']">
-      <label>{{ key }}</label>
-      <input type="color" [ngModel]="theme[key]" (ngModelChange)="theme[key] = $event" name="{{key}}"
-        class="form-control" />
+<form #themeForm="ngForm" *ngIf="!message && theme" (ngSubmit)="updateTheme()" novalidate>
+  <div class="simple-color-grid">
+    <div *ngFor="let field of colorFields" class="simple-color-block">
+      <div class="label">{{ field.label }}</div>
+
+      <!-- Color Picker Input -->
+      <label class="color-box">
+        <input type="color" [(ngModel)]="theme[field.key]" name="{{ field.key }}_color" class="hidden-color-picker"
+          (change)="onHexChange(field.key, theme[field.key])" />
+        <div class="preview" [style.backgroundColor]="theme[field.key]"></div>
+      </label>
+
+      <!-- Hex Code Input -->
+      <input type="text" [(ngModel)]="theme[field.key]" name="{{ field.key }}" maxlength="7"
+        pattern="^#([A-Fa-f0-9]{6})$" placeholder="#000000" required class="hex-code-input"
+        (input)="onHexChange(field.key, theme[field.key])" />
     </div>
-    <button class="btn btn-primary mt-3" (click)="updateTheme()" [disabled]="!themeForm.valid">
+  </div>
+
+  <!-- Update Button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary update-btn" type="submit" [disabled]="!isThemeValid()">
       Update
     </button>
-  </form>
-</div>
+  </div>
+</form>
