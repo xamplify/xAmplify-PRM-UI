@@ -23,8 +23,8 @@
                         <strong>Selected Rows: {{selectedPartnerTeamMemberGroupMappingIds?.length}}</strong>
                      </div>
                         <div class="btn-group pull-right">
-                            <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view mr10" data-toggle="tooltip"
-                                title="Export to Excel" (click)="downloadTeamMemberCsv()">
+                            <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr10" data-toggle="tooltip"
+                                title="Export to Excel" [disabled]="!(partnersPagination.pagedItems?.length > 0)" (click)="downloadTeamMemberCsv()">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
                            <div class="inputs float-right" style="display: inline-flex;">
