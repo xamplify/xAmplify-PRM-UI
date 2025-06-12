@@ -80,7 +80,16 @@ export class DomainColorConfigurationComponent implements OnInit {
       this.theme[key] = value;
     }
   }
+
   toggleClass(id: string) {
     $("i#" + id).toggleClass("fa-minus fa-plus");
   }
+
+  openColorPicker(fieldKey: string): void {
+  const input = document.getElementById('color-picker-' + fieldKey) as HTMLInputElement;
+  if (input) {
+    input.click();
+  }
+}
+
 }
