@@ -70,6 +70,7 @@
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
+              <h6 *ngIf="teamMember?.primaryAdmin && partnerStatus === 'deactivated'" class="green-banner inline-flex">DEACTIVATED</h6>
             </td>
             <td class="text-center">
               <span *ngIf="teamMember.status === 'UNAPPROVED'">-</span>

@@ -225,7 +225,7 @@
             </button>
             <div
               [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' ) ? 'd-flex align-templateui' : 
-              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  ((filteredPrompts?.length > 0 && showPromptsDown && !showPrompts || showGlobalPrompts) && activeTab == 'globalchat') ? 'd-flex align-for-prompts-global' : (filteredPrompts?.length > 0 && showPromptsDown && !showPrompts || showInsightsPrompts) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
+              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  ((filteredPrompts?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') ? 'd-flex align-for-prompts-global' : (filteredPrompts?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
                 
@@ -242,10 +242,10 @@
                     </div>
                   </ng-container>
                   <div [ngClass]="{
-                                  'fixed_oliver_input': !isSidebarVisible && showOpenHistory,
-                                  'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
-                                  'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
-                                }">
+                        'fixed_oliver_input': !isSidebarVisible && showOpenHistory,
+                        'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
+                        'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
+                      }">
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
                       <span class="oliver_heading">Ask Oliver</span>
                       <div class="oliver-container">
@@ -257,42 +257,37 @@
                       brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
                       to
                       your goals.</p>
-
-
-
-                      <div *ngIf="showPrompts && !showPromptsDown || showGlobalPromptsDown">
-                        <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
-                        <div class="suggestion-direction-global-chat-down"></div>
-                      </div>
-
+                    <div *ngIf="showPromptBoxAbove && !showPromptBoxBelow || showGlobalPromptBoxBelow">
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                      <div class="suggestion-direction-global-chat-down"></div>
+                    </div>
+                  
                     <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        
-                        
-                        <button *ngIf="suggestedPrompts.length > 0"
-                         class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
-                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions" 
-                          src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button"
+                          style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
+                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                         </button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
-                   
-                    <div *ngIf="showPromptsDown && !showPrompts || showGlobalPrompts">
+                  
+                    <div *ngIf="showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove">
                       <div class="suggestion-direction-global-chat"></div>
                       <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
                     </div>
-					
+                  
                     <!--  -->
                     <!-- <div class="action-buttons mt10">
-                      <button class="action-btn">Analyze Asset</button>
-                      <button class="action-btn">Summarize in detail</button>
-                      <button class="action-btn">Summarize with Key
-                        Quotes</button>
-                    </div> -->
+                                        <button class="action-btn">Analyze Asset</button>
+                                        <button class="action-btn">Summarize in detail</button>
+                                        <button class="action-btn">Summarize with Key
+                                          Quotes</button>
+                                      </div> -->
                     <!--  -->
                   </div>
                 </div>
@@ -442,8 +437,7 @@
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
-                          
-                            <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
+                            <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
                               <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                             </button>
                             <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
@@ -465,13 +459,11 @@
                       </div>
                     </div>
                     
-                    
-                    
-                    <div *ngIf="showPromptsDown && !showPrompts || showInsightsPrompts">
+                    <div *ngIf="showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove">
                       <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
                     </div>
 
-                    <div *ngIf="showPrompts && !showPromptsDown || showInsightsPromptsDown">
+                    <div *ngIf="showPromptBoxAbove && !showPromptBoxBelow || showInsightPromptBoxBelow">
                       <ng-container  *ngTemplateOutlet="displayPrompts"></ng-container>
                       <div class="suggestion-direction"></div>
                     </div>
@@ -481,7 +473,7 @@
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
                         
-                        <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;"  
+                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;"  
                           (click)="!assetLoader && openPrompts()">
                           <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                         </button>
@@ -791,19 +783,19 @@
 </ng-template>
 
 
-
+<!-- XNFR-986 -->
 <ng-template #displayPrompts>
-  <div [ngClass]="(showPromptsDown && !showPrompts || showInsightsPrompts) ? 'suggestion-box-input-prompt' : 'suggestion-box-input mt10' "    id="suggestionBox">
+  <div [ngClass]="(showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'suggestion-box-input-prompt' : 'suggestion-box-input mt10' "    id="suggestionBox">
     <div class="d-flex justify-content-end mb10" *ngIf="activeTab !== 'askpdf'">
       <div class="search-wrapper">
         <input type="text" class="form-control input-sm search-input" placeholder="Search" [(ngModel)]="searchTerm"
-          (input)="searchPromptsBasic()" />
+          (input)="searchPrompts()" />
         <i class="fa fa-search search-icon"></i>
       </div>
     </div>
     <div  [ngClass]="activeTab == 'globalchat' ? 'suggestion-list suggestion-list-global-chat' : 'suggestion-list'">
-      <div *ngFor="let prompt of filteredPrompts" (click)="setInputText(prompt)">
-        {{prompt}}
+      <div *ngFor="let prompt of oliverPromptSuggestionDTOs" (click)="setSuggestedInputText(prompt.promptMessage, prompt.id)">
+        {{prompt.promptMessage}}
       </div>
     </div>
   </div>

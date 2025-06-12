@@ -25,6 +25,7 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
   selectedAssetType: any = "";
   toDateFilter: any;
   fromDateFilter: any;
+  partnerStatus: string;
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -137,5 +138,9 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
     }
   }
   /*** XNFR-914 ***/
-  
+
+  getPartnerStatus(event: any) {
+    this.partnerStatus = event;
+  }
+
 }
