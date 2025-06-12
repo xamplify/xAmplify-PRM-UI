@@ -56,7 +56,7 @@
     </div>
   </div>
   <div [ngClass]= "fromOliverPopup ? 'modal-footer' : 'pull-right save-template' " *ngIf="selectedEmailTemplateRow">
-    <button class="btn btn-primary" (click)="pageView ? generateEmailTemplate() : showSweetAlertForBrandColors()">Generate{{pageView ? ' Page':' Template'}}</button>
+    <button class="btn btn-primary" (click)="showSweetAlertForBrandColors()">Generate{{pageView ? ' Page':' Template'}}</button>
   </div>
 
   <div *ngIf="!selectedTemplateList || selectedTemplateList.length === 0" class="alert alert-info text-center mt-3">
