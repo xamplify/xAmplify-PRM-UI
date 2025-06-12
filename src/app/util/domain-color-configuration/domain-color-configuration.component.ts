@@ -11,10 +11,11 @@ export class DomainColorConfigurationComponent implements OnInit {
   message: string = '';
 
   colorFields = [
-    { key: 'backgroundColor', label: 'Background Color', placeholder: '#b1e4e4' },
-    { key: 'buttonColor', label: 'Button Color', placeholder: '#59d77c' },
-    { key: 'footerColor', label: 'Button Border Color', placeholder: '#2469ad' },
-    { key: 'textColor', label: 'Button Text & Icon Color', placeholder: '#0e0b0b' }
+    { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee'},
+    { key: 'headerColor', label: 'Header Color', placeholder: '#eeeeee'},
+    { key: 'footerColor', label: 'Footer Color', placeholder: '#eeeeee' },
+    { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee' },
+    { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee' }
   ];
 
   constructor(public chatGptSettingsService: ChatGptSettingsService) {}
