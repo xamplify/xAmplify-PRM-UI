@@ -89,8 +89,9 @@
                                             <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
                                         </ng-container>
                                         <!---XNFR-255-->
-                                        <span
-                                            class="view-banner display-ib margin-0-auto green-btn-cu">{{landingPage.type}}</span>
+                                        <span class="green-banner inline-flex">{{landingPage.type}}</span>
+                                        <span class="green-banner inline-flex ml5" *ngIf="landingPage?.partnerStatus === 'deactivated'"
+                                            data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</span>
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto"
@@ -481,8 +482,9 @@
 <!--Preview-->
 <ng-template #previewIcon let-landingPage="landingPage">
     <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-        (click)="showPreview(landingPage)">
-        <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
+        (click)="(landingPage?.partnerStatus === 'deactivated') ? '' : showPreview(landingPage)">
+        <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView,
+            'disabled gray': landingPage?.partnerStatus === 'deactivated'}" aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
 </ng-template>
@@ -490,9 +492,9 @@
 <ng-template #copyOrEmbedLinkIcon let-landingPage="landingPage">
     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
         <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
-            (click)="showPageLinkPopup(landingPage)">
-            <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
-                aria-hidden="true"></i>
+            (click)="(landingPage?.partnerStatus === 'deactivated') ? '' : showPageLinkPopup(landingPage)">
+            <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView,
+                'disabled gray': landingPage?.partnerStatus === 'deactivated'}" aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
     </ng-container>

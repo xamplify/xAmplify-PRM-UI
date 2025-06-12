@@ -61,7 +61,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   domainId = 0;
   sendTestEmailIconClicked = false;
 
-  allPartnerDomains: string[] = [];
+  allPartnerDomains: any;
   isDeactivateOrActivateOptionClicked: boolean = false;
   selectedDeactivateOrActivateDomainId: any;
   selectedDomain: any;
@@ -443,29 +443,41 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   setIsDomainAllowed(event: any) {
     this.isDomainAllowedToAddToSamePartnerAccount = event;
   }
+
   addWelcomeMailModalOpen() {
     this.getAllPartnerDomainNames();
   }
+
   sendWelcomeMailModalPopupEventReceiver() {
     this.sendTestEmailIconClicked = false;
   }
-  getAllPartnerDomainNames(): void {
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dashboardService.getAllPartnerDomainNames(this.selectedTab).subscribe(
-    (response: any) => {
-      if (response && response.data) {
-        this.allPartnerDomains = response.data; 
-        this.sendTestEmailIconClicked = true;
-      }
-      this.referenceService.loading(this.httpRequestLoader, false);
-    },
-    error => {
-      this.xtremandLogger.errorPage(error);
-      this.referenceService.loading(this.httpRequestLoader, false);
-    }
-  );
-}
 
+  getAllPartnerDomainNames(): void {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dashboardService.getAllPartnerDomainNames(this.selectedTab).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200 && response.data) {
+          this.xtremandLogger.info("Fetched all partner domains successfully.");
+          this.xtremandLogger.info(response.data);
+          this.allPartnerDomains = response.data.map(d => ({
+            name: d.domainName.toLowerCase().trim(),
+            deactivated: d.domainDeactivated
+          }));
+          this.sendTestEmailIconClicked = true;
+        } else {
+          this.allPartnerDomains = [];
+          this.xtremandLogger.error(response.message);
+          this.xtremandLogger.error("Failed to fetch partner domains.");
+          this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      error => {
+        this.xtremandLogger.errorPage(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
+  }
 
  confirmDeativateDomain(domain: any) {
     this.isDeactivateOrActivateOptionClicked = true;
@@ -482,6 +494,5 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.customResponse = new CustomResponse('SUCCESS', event, true);
     this.notifyLoadPartners.emit();
   }
-
 
 }
