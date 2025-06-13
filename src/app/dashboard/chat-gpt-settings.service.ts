@@ -283,4 +283,10 @@ listDefaultTemplates(userId:any){
   return this.authenticationService.callPutMethod(url, theme);
 }
 
+ checkDomainColorConfigurationExists() {
+    const userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'checkDomainColorsExists/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

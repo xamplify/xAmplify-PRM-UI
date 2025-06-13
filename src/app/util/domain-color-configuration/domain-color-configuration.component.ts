@@ -17,6 +17,7 @@ export class DomainColorConfigurationComponent implements OnInit {
     { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee' },
     { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee' }
   ];
+  companyProfile: any;
 
   constructor(public chatGptSettingsService: ChatGptSettingsService) {}
 
@@ -92,5 +93,21 @@ export class DomainColorConfigurationComponent implements OnInit {
     input.click();
   }
 }
+getCompanyProfile(companyProfile: any) {
+  this.companyProfile = companyProfile;
+}
+
+  getColorsByReferesh() {
+    this.chatGptSettingsService.checkDomainColorConfigurationExists().subscribe(
+      (res: any) => {
+        if (res && res.statusCode === 200 && res.access == true) {
+          this.loadColorConfiguration();
+        } else {
+          this.handleError('No colors found for the user', null);
+        }
+      },
+      (error) => this.handleError('Error fetching color data', error)
+    );
+  }
 
 }

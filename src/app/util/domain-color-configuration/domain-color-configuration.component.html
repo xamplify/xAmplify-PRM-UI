@@ -24,6 +24,7 @@
         (ngModelChange)="onHexChange(field.key, $event)" [placeholder]="field.placeholder" maxlength="7" />
     </div>
   </div>
+  <button class="btn btn-secondary" (click)="getColorsByReferesh()">Reset</button>
 
   <div *ngIf="message" class="error-message">{{ message }}</div>
 </div>
