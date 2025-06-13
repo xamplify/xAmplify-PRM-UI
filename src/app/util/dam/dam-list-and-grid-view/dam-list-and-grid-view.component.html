@@ -127,8 +127,7 @@
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
-												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
-											</span>
+												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled</span>
 												<span *ngIf="authenticationService?.isOliverActive && asset.disableAccessForOliver && FromOliverPopUp" class="view-banner bgc-red">Access Disabled</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
@@ -159,6 +158,8 @@
 														</ng-container>
 
 												</h6>
+												<h6 *ngIf="isPartnerView && asset?.partnerStatus === 'deactivated'" class="green-banner inline-flex"
+													data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</h6>
 											</td>
 											<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}}</span></td>
 											<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
@@ -232,8 +233,8 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Details-->
-															<a class="custom-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="View Details" (click)="viewDetails(asset)">
-																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="View Details" (click)="asset?.partnerStatus === 'deactivated' ? '' : viewDetails(asset)">
+																<i class="fa fa-eye IconCustomization" aria-hidden="true" [ngClass]="(asset?.partnerStatus === 'deactivated') ? 'disabled gray' : ''"></i>
 																<div class="clickicons"></div>
 															</a>
 															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">

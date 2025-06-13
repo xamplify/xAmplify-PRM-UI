@@ -225,7 +225,14 @@
             </button>
             <div
               [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' ) ? 'd-flex align-templateui' : 
-              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  ((filteredPrompts?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') ? 'd-flex align-for-prompts-global' : (filteredPrompts?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
+              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  
+
+              (oliverPromptSuggestionDTOs?.length > 0 && isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
+              ? 'd-flex align-for-prompts-global' :
+              (oliverPromptSuggestionDTOs?.length > 0 && !isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
+              ? 'd-flex align-center align_tab_view'             
+               : 
+               (oliverPromptSuggestionDTOs?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
                 
@@ -252,6 +259,9 @@
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
+
+{{"isSidebarVisible - "+isSidebarVisible + "  showPromptBoxBelow - " + showPromptBoxBelow+ "  showPromptBoxAbove - " + showPromptBoxAbove + "  showGlobalPromptBoxAbove - "+ showGlobalPromptBoxAbove}}
+
                     <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your
                       solution and audience. Specializes in creative
                       brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
@@ -781,6 +791,8 @@
     <div class="text" data-text="Searching"></div>
   </div>
 </ng-template>
+
+
 
 
 <!-- XNFR-986 -->

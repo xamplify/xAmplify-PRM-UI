@@ -392,10 +392,6 @@
 														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)"
 														translate> Delete</a>
 												</li>
-												<!---XNFR-988-->
-												<li>
-													<a id="exportToExcel" *ngIf="isPartner && selectedContactListIds?.length != 0 && (authenticationService?.module?.adminOrSuperVisor || hasAllAcces)" (click)="confirmDeactivate(selectedContactListIds)" translate>Deactivate</a>
-												</li>
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
@@ -1179,14 +1175,6 @@
 																			|| authenticationService?.module?.isPrmAndPartnerTeamMember))" data-toggle="tooltip"
 																			data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-																			<div class="clickicons"></div>
-																		</a>
-																
-																		<!--- XNFR-988 --->
-																		<a class="custom-icon" *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
-																			data-toggle="tooltip" data-placement="bottom" [title]="contact.partnerStatus == 'deactivated' ? 'Activate Partnership' : 'Deactivate Partnership'"
-																			(click)="confirmDeactivatePartner(contact)"> <i class="fa fa-power-off IconCustomization"
-																				aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
 																	</div>
@@ -2222,7 +2210,3 @@
 	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
-
-<!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
-<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
-    (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>

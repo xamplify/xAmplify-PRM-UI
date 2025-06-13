@@ -1792,7 +1792,7 @@ circle.front {
     bottom: 0px;
     border-radius:10px 10px 15px 15px;
     /* max-height: 300px; */
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
     /* background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%); */
     background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);
