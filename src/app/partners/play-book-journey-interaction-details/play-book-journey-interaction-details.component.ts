@@ -78,6 +78,7 @@ export class PlayBookJourneyInteractionDetailsComponent implements OnInit {
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.selectedPlaybookNames = this.pagination.selectedPlaybookNames;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getPlaybookInteractionDetails(this.pagination).subscribe(
