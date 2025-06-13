@@ -120,7 +120,11 @@
         [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"></app-typewise-track-content-details>
     </div>
   </div>
-
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
+    <app-play-book-journey-interaction-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
+      *ngIf="authenticationService?.module?.damAccess"></app-play-book-journey-interaction-details>
+  </div>
   <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
     <app-partner-journey-asset-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
