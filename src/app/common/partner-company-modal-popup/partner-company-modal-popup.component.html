@@ -51,7 +51,8 @@
                      <br /><br />
                      <ng-container *ngIf="!sendSuccess">
                         <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
-                           <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong>
+                           <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong><br>
+                           Note: Deactivated partner(s) will be excluded.
                         </div>
                         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
@@ -94,7 +95,9 @@
                                              <span data-toggle="tooltip" data-placement="bottom"
                                                 title="{{partner?.companyName}}">{{partner?.companyName |
                                                 slice:0:20}}</span>
-                                             <span *ngIf="partner?.companyName.length>20">...</span>
+                                             <span *ngIf="partner?.companyName.length>20">...</span><br>
+                                             <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex mt5" data-toggle="tooltip"
+                                                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                                           </td>
                                           <td>
                                              <app-timestamp [dateAndTime]="partner?.displayTime">
