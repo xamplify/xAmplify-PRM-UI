@@ -1,6 +1,6 @@
 <div class="modal right rmv-overflow" id="edit-template-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog  modal-sm popup-align">
-      <div class="modal-content mPad col-lg-12 col-md-12">
+      <div class="modal-content mPad col-lg-12 col-md-12 p0">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-header">
             <ng-container *ngIf="isFromDomainWhiteListing">
@@ -21,7 +21,7 @@
                     <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     </div>
                 </div>
-              <div class="portlet-body clearfix">
+              <div class="portlet-body clearfix template-body-scroll">
                   <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
                         <strong>{{templateUpdateMessage}}</strong>
                   </div>
