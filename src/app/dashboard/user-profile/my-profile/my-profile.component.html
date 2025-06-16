@@ -555,8 +555,7 @@
                                             activeTabName == properties?.addDomainsText ? 'show':'',
                                             activeTabName == 'masterLandingPageCategories' ? 'show':'',
                                             activeTabName == flexiFieldsMenuHeader ? 'show':'',
-                                            activeTabName == 'contactUploadManagementSettings' ? 'show':'',
-                                            activeTabName == 'domainColorConfiguration' ? 'show':'']">
+                                            activeTabName == 'contactUploadManagementSettings' ? 'show':'']">
                                         <span translate>Admin</span>
                                         <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
                                             <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
@@ -728,17 +727,6 @@
                                                 </a>
                                             </li>
                                         </ng-container>
-
-                                        <ng-container>
-                                            <li [ngClass]="{'active-tab': activeTabName == 'domainColorConfiguration'}">
-                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'domainColorConfiguration'}"
-                                                    (click)="activateTab('domainColorConfiguration');clearCustomResponse()"> DomainColorConfiguration 
-                                                    <ng-template [ngTemplateOutlet]="activeIcon"
-                                                        [ngTemplateOutletContext]="{'moduleName':'domainColorConfiguration'}"></ng-template>
-                                                </a>
-                                            </li>
-                                        </ng-container>
-
                                     </ul>
                                 </ng-container>
                             </ul>
@@ -3463,11 +3451,7 @@
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"
                                                 [moduleType]="properties.vendorMarketplacePages"></app-vendor-journey>
-                                        </div>
-                                        <div class="tab-pane" *ngIf="activeTabName == 'domainColorConfiguration'" 
-                                            [ngClass]="{'active': activeTabName == 'domainColorConfiguration'}">
-                                            <app-domain-color-configuration></app-domain-color-configuration>
-                                        </div>                                        
+                                        </div>                                     
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>

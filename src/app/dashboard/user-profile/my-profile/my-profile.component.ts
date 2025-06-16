@@ -402,7 +402,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isContactStatusOptionClicked: boolean = false;
 
 	contactUploadManagementSettings: boolean = false;
-	domainColorConfiguration: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2325,8 +2324,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
 			// XNFR-967 Contact Status
 			this.activateContactStatusMenuHeader();
-		} else if( this.activeTabName == 'domainColorConfiguration') {
-			this.activateDomainColorMenuHeader();
 		}
 		if (this.integrationTabIndex == 5) {
 			this.integrationTabIndex = 0;
@@ -5212,16 +5209,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.stopNgxLoader();
 		}, 500);
 		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER;
-	}
-	private activateDomainColorMenuHeader() {
-		this.startNgxLoader();
-		this.domainColorConfiguration = false;
-		let self = this;
-		setTimeout(() => {
-			self.domainColorConfiguration = true;
-			self.stopNgxLoader();
-		}, 500);
-		this.activeTabHeader = 'DomainColorConfiguration';
 	}
 
 }
