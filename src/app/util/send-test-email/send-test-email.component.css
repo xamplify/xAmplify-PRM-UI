@@ -100,7 +100,13 @@ li.disabled.active a {
     border-bottom: none !important;
   }
   
-  
+ .custom-file-label {
+    color: white !important;
+} 
+.file-input {
+    display: none;
+}
+
 
   
   
