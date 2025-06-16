@@ -19,9 +19,10 @@
                   <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
                         <strong>{{templateUpdateMessage}}</strong>
                   </div>
-                  <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
-                  <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput"
-                   (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+                <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
+                <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup && !isFromDomainWhiteListing" [beeContainerInput]="beeContainerInput"
+                    (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+                <app-xamplify-default-templates *ngIf="!isEditTemplateLoader && isFromDomainWhiteListing" [xamplifyDefaultTemplate]="xamplifyDefaultTemplate"></app-xamplify-default-templates>
             </div>
             </div>
           </div>

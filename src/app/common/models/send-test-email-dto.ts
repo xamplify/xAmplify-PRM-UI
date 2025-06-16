@@ -16,4 +16,6 @@ export class SendTestEmailDto {
   bccEmailIds = [];
   toEmailIds = [];
   companyProfileName: string = "";
+  emailAttachmentDTOs = [];
+
 }
