@@ -30,7 +30,7 @@
                            <div class="inputs float-right" style="display: inline-flex;">
                             <div>
                                 <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedActiveUsersSortOption" (ngModelChange)="sortBy($event)">
-                                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                                    <option *ngFor="let option of filteredSortOptions" [ngValue]="option">
                                         {{option.name}}
                                     </option>
                                  </select>

@@ -82,9 +82,8 @@
                                             <input type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
                                                 id="copy-group-users-header-checkbox-id"
                                                 (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
-                                        </th>
-                                        <th *ngIf="isContactModule" class="text-center">Logo</th>
-                                        <th class="text-center">{{isContactModule ? 'List Name' : 'Name'}}</th>
+                                        </th>                      
+                                        <th colspan="2">{{isContactModule ? 'List Name' : 'Name'}}</th>
                                         <th class="text-center">Count</th>
                                         <th class="text-center">Created On</th>
                                         <th class="text-center">Preview</th>
