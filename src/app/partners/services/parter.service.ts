@@ -142,7 +142,8 @@ export class ParterService {
         let filterTypeRequestParam = partnerJourneyRequest.filterType != undefined ? "&filterType=" + partnerJourneyRequest.filterType : "&filterType= =''"
         let partnerTeamMemberGroupFilterRequestParm = "&partnerTeamMemberGroupFilter=" + partnerJourneyRequest.partnerTeamMemberGroupFilter
         let teamMemberIdRequestParam = partnerJourneyRequest.teamMemberUserId != undefined ? "&teamMemberUserId=" + partnerJourneyRequest.teamMemberUserId : "&teamMemberUserId=0"
-        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam 
+        let partnershipStatus = "&partnershipStatus=" + partnerJourneyRequest.partnershipStatus ;
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam + partnershipStatus
         + filterTypeRequestParam + partnerTeamMemberGroupFilterRequestParm + teamMemberIdRequestParam;
         if (chartId == "redistributeCampaignsAndLeadsCountBarChart") {
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
@@ -697,12 +698,13 @@ export class ParterService {
         let emailIds = pagination.selectedEmailIds != undefined ? "&emailIds=" + pagination.selectedEmailIds : "";
         let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&partnerTeamMemberGroupFilter=true" : "";
         let timeZoneParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
+        let partnershipStatus = "&partnershipStatus=" + pagination.partnershipStatus ;
         let partnerCompanyIdRequestParam = partnerCompanyId != null ? "&partnerCompanyId=" + partnerCompanyId : "";
         let selectedPartnerCompanyIdsRequestParam = pagination.selectedPartnerCompanyIds != undefined ? "&selectedPartnerCompanyIds=" + pagination.selectedPartnerCompanyIds : "";
         let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
         let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
         let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
-        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetNames + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetNames + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + partnershipStatus + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
         const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
         return this.httpClient.get(url)
             .catch(this.handleError);

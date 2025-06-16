@@ -328,7 +328,7 @@
 
   <!-- --------------------Active Partners Analytics-------- -->
   <div 
-    *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && isActivePartnerDiv"
+    *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && (isActivePartnerDiv || isdeactivatePartnersDiv)"
     style="padding-right: 12px;">
     <div class="row">
       <div class="">
@@ -976,6 +976,7 @@
           [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
           [toDateFilter]="partnertoDateFilter"
+          [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
       </div>
 
@@ -983,6 +984,7 @@
       <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-interacted-not-interacted-track-details>
     </div>
   </div>
@@ -998,6 +1000,7 @@
           (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
           [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+          [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
           (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
       </div>
 
@@ -1005,6 +1008,7 @@
       <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         [applyFilter]="applyFilter" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+        [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-typewise-track-content-details>
     </div>
   </div>

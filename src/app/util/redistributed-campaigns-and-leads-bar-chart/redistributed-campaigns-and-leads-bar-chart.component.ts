@@ -29,16 +29,25 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
     @Input() vendorCompanyProfileName: string = '';
     @Input() fromDateFilter: string = '';
     @Input() toDateFilter: string = '';
+    @Input() fromActivePartnersDiv: boolean = false;
+    @Input() fromDeactivatedPartnersDiv: boolean = false;
+
 
     hasLeadsAndDealsAccess = false;
     headerText = "";
     filterValue = 'r';
     hideLeadsAndDealsChart = false;
+    partnershipStatus: string;
     constructor(public authenticationService: AuthenticationService, public partnerService: ParterService, public xtremandLogger: XtremandLogger, public properties: Properties) { }
     ngOnInit() {
     }
 
     ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
         this.refreshChart();
     }
     refreshChart() {
@@ -99,6 +108,7 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
             partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
             partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
             partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
             this.partnerService.getPartnerJourneyLeadDealCounts(this.chartId, partnerJourneyRequest).subscribe(
                 response => {
                     this.processResponse(response);
@@ -118,6 +128,7 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
                 partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyTeamMemberFilter;
                 partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 partnerJourneyRequest.filterType = this.filterValue;
+                partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
                 this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(partnerJourneyRequest,this.chartId).subscribe(
                     response => {
                         this.processResponse(response);

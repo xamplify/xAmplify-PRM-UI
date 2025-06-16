@@ -31,6 +31,8 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -39,6 +41,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   colClass: any;
   scrollClass: any;
   headerText: string = 'Redistributed Campaign Details';
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -51,6 +54,12 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+     if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
+
     this.pagination.pageIndex = 1;
     if (this.isDetailedAnalytics) {
       this.colClass = "col-sm-12 col-md-12 col-lg-12 ml15m";
@@ -79,6 +88,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getRedistributedCampaignDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

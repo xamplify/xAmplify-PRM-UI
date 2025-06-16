@@ -32,6 +32,8 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -39,6 +41,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
   scrollClass: any;
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -51,7 +54,12 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     
   }
 
-  ngOnChanges() {   
+  ngOnChanges() { 
+     if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }  
     this.pagination.pageIndex = 1; 
     this.getTypeWiseTrackContentDetails(this.pagination);
   }
@@ -69,6 +77,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getTypeWiseTrackContentDetails(this.pagination).subscribe(
       (response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

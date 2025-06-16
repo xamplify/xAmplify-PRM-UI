@@ -31,6 +31,8 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -39,6 +41,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   pagination: Pagination = new Pagination();
   heading: any = "Interacted & Not Interacted Track Details";
   scrollClass: any;
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -51,6 +54,11 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+      if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     this.setHeading();
     this.getInteractedNotInteractedTrackDetails(this.pagination);
@@ -85,6 +93,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getPartnerJourneyTrackDetailsByInteraction(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

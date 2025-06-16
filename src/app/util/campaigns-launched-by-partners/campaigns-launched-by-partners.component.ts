@@ -42,6 +42,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
                         this.partnershipStatus = 'deactivated';
                 }
                 this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+				this.activePartnersPagination.partnershipStatus = this.partnershipStatus;
                 this.getActivePartnerReports();
         }
 
@@ -63,7 +64,6 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
                 this.activePartnersPagination.fromDateFilterString = this.fromDateFilter;
                 this.activePartnersPagination.toDateFilterString = this.toDateFilter;
                 this.activePartnersPagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                this.activePartnersPagination.partnershipStatus = this.partnershipStatus;
                 this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
 			(response: any) => {
 				for (var i in response.activePartnesList) {

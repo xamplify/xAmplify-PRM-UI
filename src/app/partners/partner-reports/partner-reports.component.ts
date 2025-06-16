@@ -183,9 +183,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getPartnersRedistributedCampaignsData() {
         this.barChartLoader = true;
         let partnerJourneyRequest = new PartnerJourneyRequest();
+        let partnershipStatus: any;
         partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
         partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
         partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+         if(this.isActivePartnerDiv){
+         partnershipStatus = 'approved';
+         } else if (this.isdeactivatePartnersDiv) {
+          partnershipStatus = 'deactivated';
+         }
+         partnerJourneyRequest.partnershipStatus = partnershipStatus;
         this.parterService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
             (data: any) => {
                 const campaignData = [];
@@ -1658,17 +1665,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     
     //XNFR-1006
     findTotalDeactivatePartnersCount() {
-        this.totalDeactivatePartnersCountLoader = false;
-        this.totalDeactivatePartnersCount = 10;
-        // this.parterService.findTotalDeactivatePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
-        //     (result: any) => {
-        //         this.totalDeactivatePartnersCount = result.data.totalDeactivatePartnersCount;
-        //         this.totalDeactivatePartnersCountLoader = false;
-        //     },
-        //     (error: any) => {
-        //         this.xtremandLogger.error(error);
-        //         this.totalDeactivatePartnersCountLoader = false;
-        //     });
+        this.totalDeactivatePartnersCountLoader = true;
+        this.parterService.findTotalDeactivatePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (result: any) => {
+                this.totalDeactivatePartnersCount = result.data.totalDeactivatePartnersCount;
+                this.totalDeactivatePartnersCountLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.totalDeactivatePartnersCountLoader = false;
+            });
     }
 
  goToDeactivatePartnersDiv(){
@@ -1685,6 +1691,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.totalPartnersDiv = false;
          this.getActivePartnerReports();
          this.loadCountryData();
+         this.getPartnersRedistributedCampaignsData();
         //  this.allPartnersStatusForMail();
     }
 

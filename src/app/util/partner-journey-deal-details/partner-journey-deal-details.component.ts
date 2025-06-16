@@ -30,12 +30,15 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
   scrollClass: string;
+  partnershipStatus: string;
 
 
   constructor(public authenticationService: AuthenticationService,
@@ -49,6 +52,12 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
+
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -69,6 +78,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getDealDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

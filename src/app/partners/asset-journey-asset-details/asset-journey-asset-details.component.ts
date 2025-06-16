@@ -29,6 +29,8 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -51,6 +53,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   public assetInfoFields: any;
   dateFilterText = "Select Date Filter";
   isFromApprovalModule: boolean = false;
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -64,6 +67,12 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
+
     this.pagination.pageIndex = 1;
     this.getAssetDetails(this.pagination);
     this.setFilterColor();
@@ -76,6 +85,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getAssetInteractionDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
