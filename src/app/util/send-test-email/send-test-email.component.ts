@@ -97,7 +97,8 @@ export class SendTestEmailComponent implements OnInit {
   isValidFile: boolean = true;
   formData: FormData = new FormData();
   openEditTemplateModalPopup: boolean = false;
-  @Output() openEditModalPopup = new EventEmitter();
+  @Output() openEditModalPopup = new EventEmitter<File[]>();
+  @Input() sendTestEmailDtoAttachments: any[] = [];
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -130,6 +131,7 @@ export class SendTestEmailComponent implements OnInit {
       this.findSendReminderLeadEmailTemplate();
     }else if(this.isFromDomainWhiteListing){
       this.headerTitle = "Send Welcome Mail";
+      this.files = this.sendTestEmailDtoAttachments;
       this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
@@ -751,6 +753,6 @@ export class SendTestEmailComponent implements OnInit {
     });
   }
   openEditTemplatePopup() {
-    this.openEditModalPopup.emit();
+    this.openEditModalPopup.emit(this.files);
   }
 }
