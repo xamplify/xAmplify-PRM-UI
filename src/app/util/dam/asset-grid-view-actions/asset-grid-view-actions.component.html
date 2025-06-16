@@ -40,7 +40,9 @@
 			class="fa fa-line-chart" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
-		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
+		title="View Details" (click)="asset?.partnerStatus === 'deactivated' ? '' : viewDetails(asset)"
+		[ngClass]="asset?.partnerStatus === 'deactivated' ? 'disabled gray' : ''">
+		<i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">

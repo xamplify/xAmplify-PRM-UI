@@ -300,3 +300,8 @@
 .digital-sign-banner{
   width: auto!important;
 }
+
+.asset-deactivated {
+  float: left;
+  margin-left: 12px;
+}
