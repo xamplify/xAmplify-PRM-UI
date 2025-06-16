@@ -18,6 +18,7 @@ export class DomainColorConfigurationComponent implements OnInit {
     { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee' }
   ];
   companyProfile: any;
+  selectedRefereshButton: boolean;
 
   constructor(public chatGptSettingsService: ChatGptSettingsService) {}
 
@@ -64,6 +65,7 @@ export class DomainColorConfigurationComponent implements OnInit {
   private handleError(message: string, error: any): void {
     this.message = message;
     this.theme = {};
+     this.selectedRefereshButton= false;
     if (error) {
       console.error(message, error);
     }
@@ -98,12 +100,15 @@ getCompanyProfile(companyProfile: any) {
 }
 
   getColorsByReferesh() {
+    this.selectedRefereshButton= true;
     this.chatGptSettingsService.checkDomainColorConfigurationExists().subscribe(
       (res: any) => {
         if (res && res.statusCode === 200 && res.access == true) {
+          this.selectedRefereshButton= false;
           this.loadColorConfiguration();
         } else {
           this.handleError('No colors found for the user', null);
+           this.selectedRefereshButton= false;
         }
       },
       (error) => this.handleError('Error fetching color data', error)
