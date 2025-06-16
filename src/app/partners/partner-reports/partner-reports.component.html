@@ -995,7 +995,12 @@
         [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
     </div>
   </div>
-
+  <div class="row rowPaddingCustomization2">
+    <app-play-book-journey-interaction [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-play-book-journey-interaction>
+  </div>
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-asset-details [partnerCompanyId]="'0'"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isDetailedAnalytics]="false"
