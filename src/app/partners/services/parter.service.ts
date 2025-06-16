@@ -260,7 +260,7 @@ export class ParterService {
     }
 
     getDeactivatedPartners(pagination: Pagination) {
-        const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'partner/deactivated-partners?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
