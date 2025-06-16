@@ -1,7 +1,10 @@
 <div class="modal fade right" id="teamMemberPartnersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMemberPartnersPreviewPopup" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" [ngClass]="isModalPopupshow ? '' : 'full-width-modal-popup'" role="document">
       <div class="modal-content">
-          <div class="modal-header" >
+          <div class="modal-header">
+            <button type="button" class="close-circle" (click)="closePartnersPreviewPopup()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
               <h4 class="modal-title popup-header-title-font text-center" translate>{{authenticationService?.partnerModule?.customName}}</h4>
           </div>
           <ng-container *ngIf="!apiError">
@@ -20,6 +23,10 @@
                         <strong>Selected Rows: {{selectedPartnerTeamMemberGroupMappingIds?.length}}</strong>
                      </div>
                         <div class="btn-group pull-right">
+                            <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr10" data-toggle="tooltip"
+                                title="Export to Excel" [disabled]="!(partnersPagination.pagedItems?.length > 0)" (click)="downloadTeamMemberCsv()">
+                                <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                            </button>
                            <div class="inputs float-right" style="display: inline-flex;">
                             <div>
                                 <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedActiveUsersSortOption" (ngModelChange)="sortBy($event)">
@@ -85,7 +92,6 @@
             <div class="modal-footer" *ngIf="!partnersLoader.isLoading">
                 <button type="submit" [disabled]="selectedPartnerTeamMemberGroupMappingIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedPartners()" translate>Clear</button>
                 <button type="submit" [disabled]="selectedPartnerTeamMemberGroupMappingIds?.length==0" class="btn btn-danger"  (click)="openSweetAlert()" translate>Delete</button>
-                <button type="submit" class="btn Btn-Gray"  (click)="closePartnersPreviewPopup()" translate>Close</button>
               </div>
           </ng-container>
          <ng-container *ngIf="apiError">

@@ -131,6 +131,7 @@
                      <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
                   </strong>
                </h5>
+               <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex" title="Partnership is deactivated">DEACTIVATED</h6>
               </td>
               <td>
                 <app-timestamp [dateAndTime]="partner?.displayTime">

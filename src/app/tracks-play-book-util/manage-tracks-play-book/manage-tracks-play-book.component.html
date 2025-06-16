@@ -141,10 +141,10 @@
                                             <span *ngIf="!isPartnerView">Created On</span>
                                         </th>
                                         <ng-container *ngIf="isPartnerView">
-                                            <th *ngIf="type == undefined || type == 'TRACK'" class="text-center"
+                                            <th *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center"
                                                 style="width: 15%;" translate id="border-bottom">Progress</th>
-                                            <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"
-                                                id="border-bottom"></th>
+                                            <!-- <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"
+                                                id="border-bottom"></th> -->
                                         </ng-container>
                                         <ng-container *ngIf="!isPartnerView">
                                             <th class="text-center" id="border-bottom"></th>
@@ -195,7 +195,8 @@
 												class="view-banner asset-approval-labele-spacing bgc-red" translate>
 												{{getApprovalStatusText(learningTrack.approvalStatus)}}
 											</span>
-
+                                            <h6 *ngIf="isPartnerView && learningTrack?.partnerStatus === 'deactivated'" class="green-banner inline-flex"
+                                                data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
@@ -224,7 +225,7 @@
                                             <!---XNFR-327-->
                                         </td>
                                         <td>
-                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')">
+                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"  class="text-center">
                                                 <div class="progress">
                                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                                         title="{{learningTrack.progress}}%"
@@ -267,8 +268,8 @@
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
-                                                    title="View" (click)="view(learningTrack)">
-                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                    title="View" (click)="isPartnerView && learningTrack?.partnerStatus === 'deactivated' ? '' : view(learningTrack)">
+                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true" [ngClass]="(isPartnerView && learningTrack?.partnerStatus === 'deactivated') ? 'disabled gray' : ''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
@@ -326,8 +327,8 @@
                                 <span *ngIf="learningTrack.title?.length>59">...</span>
                             </h4>
                             <div class="mt5">
-                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')"
-                                    style="margin: 10px 15px 0px 15px;">
+                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                    style="margin: 10px 15px 0px 15px;"  class="text-center">
                                     <div class="progress">
                                         <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                             title="{{learningTrack.progress}}%"

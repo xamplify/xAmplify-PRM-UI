@@ -155,6 +155,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   inviteTeamMemberHtmlBody: any;
   inviteTeamMemberResponse: CustomResponse = new CustomResponse();
   tableHeader: string = "";
+  showTeamMemberName: any;
   /***** XNFR-805 *****/
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
@@ -1095,6 +1096,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   showPartners(teamMember: any) {
+    const fullName = ((teamMember.firstName || '') + ' ' + (teamMember.lastName || '')).trim();
+    this.showTeamMemberName = fullName ? fullName : (teamMember.emailId || '');
     this.showPartnersPopup = true;
     this.selectedTeamMemberId = teamMember.teamMemberId;
   }
@@ -1318,16 +1321,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   downloadCsv() {
     let csvName = "team_Members.csv";
     this.downloadDataList = this.csvPagination.csvPagedItems.map(item => {
-      return {
+      let row = {
         "FIRSTNAME": item.firstName,
         "LASTNAME": item.lastName,
         "EMAILID": item.emailId,
         "GROUP": item.primaryAdmin ? "N/A" : `"${item.teamMemberGroupName}"`,
         "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
-        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive",
+        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive"
       };
+      if (this.isVendorRole || this.isOrgAdmin || this.isPrm) {
+        row["TOTAL PARTNERS"] =
+          (item.partnersCount === "" || item.partnersCount === null || item.partnersCount === undefined)
+            ? "N/A"
+            : item.partnersCount;
+      }
+      return row;
     });
-
     this.downloadCsvFile(this.downloadDataList, csvName);
   }
 
