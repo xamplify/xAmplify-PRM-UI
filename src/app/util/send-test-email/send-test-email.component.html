@@ -72,8 +72,8 @@
                      </div>
                      <div class="form-group">
                         <label>Email Body</label>
+                        <button class="btn btn-primary pull-right" *ngIf="isFromDomainWhiteListing" (click)="openEditTemplatePopup()"><i class="fa fa-edit mr5"></i>Edit</button>
                      </div>
-                     <button class="btn neg_mrg_top4" *ngIf="isFromDomainWhiteListing" (click)="openEditTemplatePopup()">Edit</button>
                   </div>
                   <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                      <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
@@ -81,7 +81,7 @@
                      <div id="sendTestEmailHtmlBody" class="plspx"></div>
                      
                      
-                     <div class="form-group" *ngIf="isFromDomainWhiteListing">
+                     <div class="form-group mt10" *ngIf="isFromDomainWhiteListing">
                         <p *ngIf="showAttachmentErrorMessage" class="text-danger">The attachment exceeds the maximum allowed file size of
                            20MB. You can upload large files to a cloud storage service (e.g., Amazon S3, Google Drive) and share the download
                            link.</p>
