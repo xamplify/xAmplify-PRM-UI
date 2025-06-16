@@ -87,6 +87,16 @@ export class SendTestEmailComponent implements OnInit {
     'invalid_domain': 'Email domain is not whitelisted'
    };
   validators = [this.mustBeEmail.bind(this)];
+//XNFR-1008
+  showAttachmentErrorMessage: boolean = false;
+  files: File[] = [];
+  showFileTypeError: boolean = false;
+  showFilePathError: boolean = false;
+  restrictedFileTypes = ["exe"];
+  isValidFile: boolean = true;
+  formData: FormData = new FormData();
+  openEditTemplateModalPopup: boolean = false;
+  @Output() openEditModalPopup = new EventEmitter();
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -602,7 +612,8 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
     this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
     this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
-    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto).subscribe(
+    this.prepareFormData();
+    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto, this.formData).subscribe(
       response => {
         if (response.statusCode === 200) {
           this.processing = false;
@@ -683,5 +694,56 @@ export class SendTestEmailComponent implements OnInit {
 
     return false;
   }
+//XNFR-1008
+  onFileChange(event: any): void {
+    const selectedFiles: FileList = event.target.files;    
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.files.push(selectedFiles[i]);
+      }
+      event.target.value = '';
+      this.validateAttachments();
+    }
+  }
 
+    validateAttachments() {
+    let sizeInKb = 0;
+    let maxFileSizeInKb = 1024 * 20;
+    this.showFileTypeError = false;
+    for ( let file of this.files) {
+      sizeInKb = sizeInKb + (file.size / 1024);
+      let fileType = this.getFileExtension(file.name);
+      if (this.restrictedFileTypes.includes(fileType)) {
+        this.isValidFile = false;
+        this.showFileTypeError = true;
+        break;
+      }
+    }
+    if (sizeInKb>maxFileSizeInKb) {
+      this.showAttachmentErrorMessage = true;
+      this.isValidFile = false;
+    } else {
+      this.showAttachmentErrorMessage = false;
+      this.isValidFile = true;
+    }
+  }
+
+  getFileExtension(fileName: string): string {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : '';
+  }
+
+  removeFile(index: number): void {
+    this.files.splice(index, 1);
+    this.validateAttachments();
+  }
+
+  prepareFormData(): void {
+    this.files.forEach(file => {
+      this.formData.append("uploadedFiles", file, file['name']);
+    });
+  }
+  openEditTemplatePopup() {
+    this.openEditModalPopup.emit();
+  }
 }

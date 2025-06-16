@@ -65,6 +65,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   isDeactivateOrActivateOptionClicked: boolean = false;
   selectedDeactivateOrActivateDomainId: any;
   selectedDomain: any;
+  openEditTemplateModalPopup: boolean = false;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -484,4 +485,9 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   }
 
 
+ //XNFR-1008
+    openEditModalPopup(){
+      this.sendTestEmailIconClicked = false;
+    this.openEditTemplateModalPopup = true
+  }
 }

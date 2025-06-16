@@ -1,4 +1,4 @@
-<div class="modal fade right" id="send-test-email-modal-popup" tabindex="-1" role="dialog"
+<div class="modal fade right" id="send-test-email-modal-popup" role="dialog" tabindex="-1"
    aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog  modal-sm popup-align" role="document">
       <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -73,12 +73,47 @@
                      <div class="form-group">
                         <label>Email Body</label>
                      </div>
+                     <button class="btn neg_mrg_top4" *ngIf="isFromDomainWhiteListing" (click)="openEditTemplatePopup()">Edit</button>
                   </div>
                   <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                      <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
-                  </ng-container>
-                  <div id="sendTestEmailHtmlBody" class="plspx"></div>
-               </div>
+                     </ng-container>
+                     <div id="sendTestEmailHtmlBody" class="plspx"></div>
+                     
+                     
+                     <div class="form-group" *ngIf="isFromDomainWhiteListing">
+                        <p *ngIf="showAttachmentErrorMessage" class="text-danger">The attachment exceeds the maximum allowed file size of
+                           20MB. You can upload large files to a cloud storage service (e.g., Amazon S3, Google Drive) and share the download
+                           link.</p>
+                        <label for="attachments">Attachments:</label>
+                        <input *ngIf="isFromDomainWhiteListing" id="fileInput" class="file-input" type="file" (change)="onFileChange($event)" multiple>
+                        <label for="fileInput" class="btn Btn-Green custom-file-label">
+                           Choose a file
+                        </label>
+                        <p *ngIf="showFileTypeError" class="text-danger">The selected file type is not supported. Please upload a file with a
+                           valid format.</p>
+                        <div *ngIf="isFromDomainWhiteListing && (files.length > 0)">
+                           <ul>
+                              <li *ngFor="let file of files; let i = index">
+                                 {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                                 <button class="m5" type="button" (click)="removeFile(i)"><i class="fa fa-times"></i></button>
+                              </li>
+                           </ul>
+                        </div>
+                        <div *ngIf="isFromDomainWhiteListing">
+                           <ul>
+                              <li *ngFor="let emailAttachmentDTO of sendTestEmailDto.emailAttachmentDTOs; let i = index">
+                                 <a *ngIf="emailAttachmentDTO.filePath != undefined" target="_blank"
+                                    href="{{emailAttachmentDTO.filePath}}">{{emailAttachmentDTO.fileName}}</a>
+                                 <a *ngIf="emailAttachmentDTO.filePath == undefined"
+                                    (click)="showFilePathError = 'true'">{{emailAttachmentDTO.fileName}}</a>
+                                 <span *ngIf="showFilePathError" class="text-danger" id="filePathError">Unable to load the file. <p
+                                       (click)="showFilePathError = 'false'"><i class="fa fa-times"></i></p></span>
+                              </li>
+                           </ul>
+                        </div>
+                     
+                     </div>
             </div>
 
          </div>
@@ -89,7 +124,7 @@
                <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked || teamMemberReminder ||sendSignatureRemainder) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
                      aria-hidden="true"></i></span>
             </button>
-            <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0"
+            <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0 || !isValidFile"
                (click)="sendWelcomeMailRemainder()">
                <span class="btn btn-primary transition txt_pd-top3">Send<i aria-hidden="true"
                      class="fa fa-send"></i></span>
@@ -102,7 +137,7 @@
 <app-campaign-mdf-requests-emails-sent-history #campaignMdfRequestsEmailsSentHistoryComponent></app-campaign-mdf-requests-emails-sent-history>
 
 <!--- XNFR-970 Lead-Status-Reminder --->
-<div class="modal fade right" id="LEAD-STATUS-REMINDER-MODAL-POPUP" tabindex="-1" role="dialog"
+<div class="modal fade right" id="LEAD-STATUS-REMINDER-MODAL-POPUP" role="dialog" tabindex="-1"
    aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -149,3 +184,4 @@
       </div>
    </div>
 </div>
+
