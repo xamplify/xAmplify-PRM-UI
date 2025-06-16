@@ -2,10 +2,16 @@
   <div class="modal-dialog  modal-sm popup-align">
       <div class="modal-content mPad col-lg-12 col-md-12">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-          <div class="modal-header">
-              <button type="button" class="close-circle"  (click)="closeModal()">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-              </button>               
+        <div class="modal-header">
+            <ng-container *ngIf="isFromDomainWhiteListing">
+                <a class="close-circle" (click)="closeModal()" data-dismiss="modal"><i class="fa fa-times"></i></a>
+                <h4 class="modal-title left" id="myModalLabel">Edit Welcome Mail</h4>
+            </ng-container>
+            <ng-container *ngIf="!isFromDomainWhiteListing">
+                <button type="button" class="close-circle" (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </ng-container>
           </div>
           <div class="modal-body" *ngIf="!ngxloading">
             <div class="portlet light shadow">
