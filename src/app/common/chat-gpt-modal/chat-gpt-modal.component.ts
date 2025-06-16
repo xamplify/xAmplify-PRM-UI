@@ -81,6 +81,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly GLOBALCHAT = "GLOBALCHAT";
+  private readonly CONTACTAGENT = "CONTACTAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -748,6 +749,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARAPHRASERAGENT;
     } else if (this.activeTab == 'globalchat') {
       this.chatGptIntegrationSettingsDto.agentType = this.GLOBALCHAT;
+    } else if (this.activeTab == 'contactagent') {
+      this.chatGptIntegrationSettingsDto.agentType = this.CONTACTAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -858,7 +861,8 @@ export class ChatGptModalComponent implements OnInit {
     this.isSaveHistoryPopUpVisible = false;
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
-      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)) {
+      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
+      || (history.oliverChatHistoryType == this.CONTACTAGENT)) {
       this.isAgentSubmenuOpen = true;
     }
     this.getChatHistory(history.oliverChatHistoryType);
@@ -876,6 +880,8 @@ export class ChatGptModalComponent implements OnInit {
         return "paraphraser";
       case this.GLOBALCHAT:
         return "globalchat";
+      case this.CONTACTAGENT:
+        return "contactagent";
     }
   }
 
@@ -1219,6 +1225,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+            this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
           }
         }
       }, error => {

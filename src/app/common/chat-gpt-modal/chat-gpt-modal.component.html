@@ -182,6 +182,12 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
+                    <li *ngIf="true"
+                      [ngClass]="{'active': activeTab === 'contactagent'}">
+                      <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
+                        <i class="fa fa-lightbulb-o"></i> Contact Agent
+                      </a>
+                    </li>
                   </ul>
                 </li>
             
@@ -224,7 +230,7 @@
               <span *ngIf="isSidebarVisible">&#9776;</span>
             </button>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' ) ? 'd-flex align-templateui' : 
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' || activeTab == 'contactagent' ) ? 'd-flex align-templateui' : 
               ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  ((filteredPrompts?.length > 0 && showPromptsDown && !showPrompts || showGlobalPrompts) && activeTab == 'globalchat') ? 'd-flex align-for-prompts-global' : (filteredPrompts?.length > 0 && showPromptsDown && !showPrompts || showInsightsPrompts) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
@@ -692,6 +698,49 @@
                 </div> -->
               </div>
             </div>
+
+                <!-- XNFR-1012 -->
+                <!-- Contact Agent Tab -->
+                 <!-- Start New Chat -->
+                <div role="tabpanel"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'contactagent', 'tab-pane fade': activeTab !== 'contactagent'}"
+                  id="contactagent">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'contactagent'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'contactagent',
+                                      'container-ui': !(showOpenHistory && activeTab === 'contactagent'),
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
+                                    }">
+                    <!-- Heading -->
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Contact Agent</span>
+                      <!-- Oliver Image Positioned Correctly -->
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign
+                      directions with guided ideation.</p>
+                    <!-- Input Section -->
+                    <div class="oliver_input mt10">
+                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                      <div class="btn-wrapper">
+                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             <!-- -add changes- -->
           </div>
           <!--  -->
