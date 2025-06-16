@@ -14,6 +14,7 @@ import { RedistributedCampaignsComponent } from './redistributed-campaigns/redis
 import { ViewPartnersComponent } from './view-partners/view-partners.component';
 import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
 import { ActivePartnersTableComponent } from './active-partners-table/active-partners-table.component';
+import { DeactivatedPartnersTableComponent } from './deactivated-partners-table/deactivated-partners-table.component';
 import { PartnerDetailedAnalyticsComponent } from './partner-detailed-analytics/partner-detailed-analytics.component';
 import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-members-table/partner-journey-team-members-table.component';
 import { PartnerJourneyContactDetailsComponent } from './partner-journey-contact-details/partner-journey-contact-details.component';
@@ -33,6 +34,6 @@ import { AssetJourneyAssetDetailsComponent } from './asset-journey-asset-details
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent]
 })
 export class PartnersModule { }
