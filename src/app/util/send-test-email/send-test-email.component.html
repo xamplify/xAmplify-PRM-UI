@@ -29,6 +29,20 @@
                               Activate Now <span *ngIf="activateNowItems?.length > 0">({{ activateNowItems.length }})</span>
                             </a>
                           </li>
+                          <!-- XNFR-1015 -->
+                           <li *ngIf="isAllPartners && loginNowItems?.length > 0" [ngClass]="{'active': loginNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': loginNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#logIn"
+                               (click)="loginNowItems?.length > 0 && activeTab('logIn')">
+                              Login Now <span *ngIf="loginNowItems?.length > 0">({{ loginNowItems.length }})</span>
+                            </a>
+                          </li>
+                          <li *ngIf="isAllPartners && dormantPartnerItems?.length > 0" [ngClass]="{'active': dormantPartnerItems?.length > 0 && registerNowItems?.length == 0, 'disabled': dormantPartnerItems?.length == 0}">
+                            <a data-toggle="tab" href="#interacted"
+                               (click)="dormantPartnerItems?.length > 0 && activeTab('interacted')">
+                              Interacted Now <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
+                            </a>
+                          </li>
+                           <!-- XNFR-1015-->
                       
                         </ul>
                       </div>
@@ -37,6 +51,12 @@
                         </div>
                         <div id="Activate" class="tab-pane fade in " *ngIf="activateNowItems?.length > 0">
                         </div>
+                        <!-- XNFR-1015 -->
+                        <div id="logIn" class="tab-pane fade in " *ngIf="loginNowItems?.length > 0">
+                        </div>
+                        <div id="interacted" class="tab-pane fade in " *ngIf="dormantPartnerItems?.length > 0">
+                        </div>
+                        <!-- XNFR-1015 -->
                      </div>
                      <div class="form-group">
                         <label>Email Address<span class="required">*</span></label>

@@ -1487,11 +1487,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     modelPopUpMultipleSelectedEmails(emailIds: any) {
         this.selectedEmailId = emailIds;
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.isDormantStatus) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
+                        if(this.isAllPartners) {
+                            this.selectedDormantEmailTemplateId = response.data;
+                        }
                         this.sendTestEmailIconClicked = true;
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
@@ -1505,11 +1508,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        else if (this.isIncompleteCompanyProfileDiv) {
+        else if (this.isIncompleteCompanyProfileDiv || this.isIncompleteCompanyProfile) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
+                        if(this.isAllPartners) {
+                            this.selectedIncompleteEmailTemplateId = response.data;
+                        }
                         this.sendTestEmailIconClicked = true;
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
@@ -1523,7 +1529,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        else if (this.isSingUpPendingDiv) {
+        else if (this.isSingUpPendingDiv || this.isPendingStatus) {
             this.sendTestEmailIconClicked = true;
             this.vanityTemplates = true;
         }
@@ -1533,6 +1539,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
+        this.isAllPartners = false;
+        this.selectedDormantEmailTemplateId = 0;
+        this.selectedIncompleteEmailTemplateId = 0;
       }
     emittedMethod(event: any) {
         if (this.isInactivePartnersDiv || this.isDormantStatus) {
@@ -1639,4 +1648,37 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
         this.updateSelectionIncomplete(pagedItems);
     }
+
+    /*** XNFR-1015 */
+    isAllPartners: boolean = false;
+    selectedDormantEmailTemplateId:any;
+    selectedIncompleteEmailTemplateId:any;
+    openSendTestPopupFromAllPartner(items: any[]): void {
+        this.isAllPartners = true;
+        this.allItems = items;
+        const partnerIds = Array.from(new Set(items.map(item => item.partnerId)));
+        const hasIncompleteProfile = items.some(item => item.status === 'IncompleteCompanyProfile');
+        const hasPendingSignup = items.some(item => item.status === 'Pending Signup');
+        const hasDormantPartner = items.some(item => item.status === 'Dormant');
+        this.allPartnersStatusForMail();
+        this.isIncompleteCompanyProfile = hasIncompleteProfile;
+        this.isPendingStatus = hasPendingSignup;
+        this.isDormantStatus = hasDormantPartner;
+        if (this.isIncompleteCompanyProfile || this.isPendingStatus) {
+            this.isInactivePartnersDiv  = false;
+            this.isDormantStatus = false;
+            this.isIncompleteCompanyProfile = hasIncompleteProfile;
+            this.isPendingStatus = hasPendingSignup;
+            this.pagination.selectedPartnerIds = Array.from(new Set([...this.pagination.selectedPartnerIds, ...partnerIds]));
+            this.sendReminderForIncompleteProfiles();
+        }
+        if (hasDormantPartner) {
+            this.isIncompleteCompanyProfileDiv = false;
+            this.isIncompleteCompanyProfile = false;
+            this.isDormantStatus = hasDormantPartner;
+            this.selectedPartnerIds = partnerIds;
+            this.sendReminderForInactivePartners();
+        }
+    }
+    /*** XNFR-1015 */
 }

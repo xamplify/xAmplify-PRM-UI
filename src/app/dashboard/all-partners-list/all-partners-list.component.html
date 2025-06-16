@@ -3,6 +3,12 @@
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m  mobilesearchdisplay">
+        <!-- XNFR-1015-->
+        <button class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="sendSeletedPartners()">
+          <i aria-hidden=" true" class="fa fa-envelope p10" data-toggle="tooltip" title="Send reminder email"
+            data-original-title="Send reminder email"></i>
+        </button>
+      <!-- XNFR-1015 -->
         <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}} mr5" data-placement="bottom" data-toggle="tooltip" title="Filter">
           <div class="btn-group">
             <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
@@ -96,6 +102,11 @@
         <table *ngIf="pagination.totalRecords!=0" class="table" >
           <thead>
             <tr>
+              <!--XNFR-1015-->
+              <th scope="col" style="width: 40px;">
+                <input type="checkbox" [checked]="isPageFullySelected()" (change)="togglePageSelection($event)" />
+              </th>
+              <!--XNFR-1015-->
               <th scope="col">Partner Details</th>
               <th scope="col">Region</th>
               <th scope="col">Onboarded On</th>
@@ -106,6 +117,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <!--XNFR-1015-->
+              <td>
+                <input *ngIf="item.status !== 'Active'" type="checkbox" [checked]="isSelected(item)"
+                  (change)="toggleSelection(item, $event)" />
+              </td>
+              <!--XNFR-1015-->
               <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
               <td>{{item.region}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>

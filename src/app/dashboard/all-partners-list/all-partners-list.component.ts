@@ -257,7 +257,6 @@ applyFilters(pagination: Pagination) {
       this.pagination.selectedRegionIds = [];
     }
     this.getAllPartnersDetailsList(this.pagination);
-    
   }
   getAllPartnersDetailsList(pagination: Pagination){
    pagination.partnerTeamMemberGroupFilter = this.applyFilter;
@@ -299,4 +298,71 @@ applyFilters(pagination: Pagination) {
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
       + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+"&selectedRegionIds="+selectedRegionIds+"&selectedStatusIds="+selectedStatusIds+"&access_token=" + this.authenticationService.access_token + pageableUrl;
    }
+  /****** XNFR-1015 *****/
+  selectedItems: Set<any> = new Set<any>();
+  @Output() triggerSendTestComp = new EventEmitter<any>();
+  allSelectedItems: any[] = [];
+  getItemUniqueId(item: any): string {
+    return item.emailId;
+  }
+
+  isSelected(item: any): boolean {
+    return this.selectedItems.has(this.getItemUniqueId(item));
+  }
+  toggleSelection(item: any, event: any): void {
+    const itemId = this.getItemUniqueId(item);
+    if (event.target.checked) {
+      this.selectedItems.add(itemId);
+      item.isSelected = true;
+      if (!this.allSelectedItems.find(i => this.getItemUniqueId(i) === itemId)) {
+        this.allSelectedItems.push(item);
+      }
+    } else {
+      this.selectedItems.delete(itemId);
+      item.isSelected = false;
+      this.allSelectedItems = this.allSelectedItems.filter(i => this.getItemUniqueId(i) !== itemId);
+    }
+
+    console.log(this.selectedItems, "selectedItems Set");
+    console.log(this.allSelectedItems, "allSelectedItems Array");
+  }
+
+  isSelectable(item: any): boolean {
+    return item.status !== 'Active';
+  }
+  isPageFullySelected(): boolean {
+    return this.pagination.pagedItems
+      .filter(item => this.isSelectable(item))
+      .every(item => this.isSelected(item));
+  }
+  togglePageSelection(event: any): void {
+    const isChecked = event.target.checked;
+    this.pagination.pagedItems.forEach(item => {
+      if (this.isSelectable(item)) {
+        item.isSelected = isChecked;
+        if (isChecked) {
+          const itemId = this.getItemUniqueId(item);
+          this.selectedItems.add(itemId)
+          if (!this.allSelectedItems.some(i => this.getItemUniqueId(i) === itemId)) {
+            this.allSelectedItems.push(item);
+          }
+        } else {
+          this.selectedItems.delete(item);
+          this.allSelectedItems = this.allSelectedItems.filter(i => this.getItemUniqueId(i) !== item.emailId);
+        }
+      }
+    });
+  }
+  sendSeletedPartners() {
+    console.log(this.allSelectedItems, "Full selected partner objects");
+    this.allSelectedItems = this.allSelectedItems
+      .filter(item => item.isSelected)
+      .map(item => ({
+        ...item,
+        vanityUrlDomain: item.status != 'Dormant'
+      }));
+
+    this.triggerSendTestComp.emit(this.allSelectedItems);
+  }
+  /***** XNFR-1015 *****/
 }
