@@ -83,7 +83,8 @@
   <!--Banner Message-->
   <div  class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0 && !httpRequestLoader.isLoading">
     <strong>
-      Selected Companies : {{selectedPartnershipIds?.length}}
+      Selected Companies : {{selectedPartnershipIds?.length}} <br>
+      Note: Deactivated partner(s) will be excluded from publishing the {{ findModuleName() }}
     </strong>
     <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
   </div>
@@ -264,7 +265,8 @@
   <br>
   <div  class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0 && !httpRequestLoader.isLoading">
     <strong>
-      Selected Groups : {{selectedPartnerGroupIds?.length}}
+      Selected Groups : {{selectedPartnerGroupIds?.length}} <br>
+      Note: Deactivated partner(s) will be excluded from publishing the {{ findModuleName() }}
     </strong>
     <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
   </div>
@@ -363,7 +365,7 @@
 
 <ng-template #clearAllSelectedRowsTemplate>
    <button data-toggle="tooltip" data-placement="bottom" title="Clear" type="button" (click)="$event.stopPropagation();clearAll()"
-    class="btn btn-danger btn-xs margin-left-one-per float-right">
+    class="btn btn-danger btn-xs margin-left-one-per float-right" style="margin-top: -10px;">
     <i class="fa fa-times-circle-o"></i>
   </button>
 

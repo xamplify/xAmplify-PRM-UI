@@ -664,5 +664,15 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			return status;
 		}
  
+	findModuleName() {
+		if (this.isDamModule) {
+			return 'Asset.';
+		} else if (this.isDashboardButtonsModule) {
+			return 'Dashboard Button.';
+		} else if (this.vendorJourney) {
+			return 'Vendor Journey Page.';
+		}
+		return this.moduleName + '.';
+	}
 	
 }
