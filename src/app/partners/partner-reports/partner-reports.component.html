@@ -314,10 +314,14 @@
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
   <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
     <ng-container *ngIf="reloadWithFilter && !loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9 )">
-      <app-active-partners-table [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
+      <app-active-partners-table *ngIf="isActivePartnerDiv" [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [fromActivePartnersDiv]="isActivePartnerDiv"
         [toDateFilter]="partnertoDateFilter" (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
         (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-active-partners-table>
+      <app-deactivated-partners-table *ngIf="isdeactivatePartnersDiv" [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv"
+        [toDateFilter]="partnertoDateFilter" (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
+        (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-deactivated-partners-table>
     </ng-container>
   </div>
   <!--******************All Counts - Tiles*******************-->

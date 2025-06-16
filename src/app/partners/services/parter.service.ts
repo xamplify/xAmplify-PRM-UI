@@ -259,6 +259,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    getDeactivatedPartners(pagination: Pagination) {
+        const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
     getPartnerJourneyCompanyInfo(partnerCompanyId: any, loggedInUserId: number) {
         const url = this.URL + 'partner/journey/company/info/' + partnerCompanyId + '/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
         return this.httpClient.get(url)
