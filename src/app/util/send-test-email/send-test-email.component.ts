@@ -621,13 +621,15 @@ export class SendTestEmailComponent implements OnInit {
     this.prepareFormData();
     this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto, this.formData).subscribe(
       response => {
+        this.processing = false;
         if (response.statusCode === 200) {
-          this.processing = false;
           this.callEventEmitter();
           this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
         } else if (response.statusCode === 401) {
-          this.processing = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        } else if (response.statusCode === 402) {
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
       }, error => {
         this.processing = false;
