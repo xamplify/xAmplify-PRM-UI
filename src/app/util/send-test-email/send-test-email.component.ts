@@ -97,7 +97,9 @@ export class SendTestEmailComponent implements OnInit {
   isValidFile: boolean = true;
   formData: FormData = new FormData();
   openEditTemplateModalPopup: boolean = false;
-  @Output() openEditModalPopup = new EventEmitter();
+  @Output() openEditModalPopup = new EventEmitter<File[]>();
+  @Input() sendTestEmailDtoAttachments: any[] = [];
+  hasVanityAccess: boolean = false;
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -130,6 +132,8 @@ export class SendTestEmailComponent implements OnInit {
       this.findSendReminderLeadEmailTemplate();
     }else if(this.isFromDomainWhiteListing){
       this.headerTitle = "Send Welcome Mail";
+      this.files = this.sendTestEmailDtoAttachments;
+      this.checkVanityAccess();
       this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
@@ -619,13 +623,15 @@ export class SendTestEmailComponent implements OnInit {
     this.prepareFormData();
     this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto, this.formData).subscribe(
       response => {
+        this.processing = false;
         if (response.statusCode === 200) {
-          this.processing = false;
           this.callEventEmitter();
           this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
         } else if (response.statusCode === 401) {
-          this.processing = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        } else if (response.statusCode === 402) {
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
       }, error => {
         this.processing = false;
@@ -751,6 +757,16 @@ export class SendTestEmailComponent implements OnInit {
     });
   }
   openEditTemplatePopup() {
-    this.openEditModalPopup.emit();
+    this.openEditModalPopup.emit(this.files);
   }
+
+  checkVanityAccess() {
+		this.referenceService.hasVanityAccess().subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.hasVanityAccess = response.data;
+				}
+			}
+		);
+	}
 }

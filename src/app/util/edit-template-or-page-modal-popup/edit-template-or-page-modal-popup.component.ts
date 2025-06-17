@@ -156,4 +156,7 @@ export class EditTemplateOrPageModalPopupComponent implements OnInit {
     );
   }
 
+    ngOnDestroy(){
+    this.closeModal();
+  }
 }

@@ -66,6 +66,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   selectedDeactivateOrActivateDomainId: any;
   selectedDomain: any;
   openEditTemplateModalPopup: boolean = false;
+  attachments: File[] = [];
+  isEditTemplateClicked: boolean;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -450,6 +452,11 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   }
 
   sendWelcomeMailModalPopupEventReceiver() {
+    if(this.isEditTemplateClicked){
+      this.isEditTemplateClicked = false;
+    }else{
+      this.attachments = [];
+    }
     this.sendTestEmailIconClicked = false;
   }
 
@@ -498,9 +505,15 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
 
 
  //XNFR-1008
-    openEditModalPopup(){
-      this.sendTestEmailIconClicked = false;
+    openEditModalPopup(event: any) {
+    this.isEditTemplateClicked = true;
+    this.attachments = event || [];
+    this.sendTestEmailIconClicked = false;
     this.openEditTemplateModalPopup = true
   }
 
+    closeEditTemplateModalPopup() {
+      this.openEditTemplateModalPopup = false;
+      this.addWelcomeMailModalOpen();
+  }
 }

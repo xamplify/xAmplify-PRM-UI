@@ -240,16 +240,18 @@ export class PlayBookJourneyInteractionDetailsComponent implements OnInit {
       this.applyFilters();
     }
   }
-findPlaybookNames(){
-  this.pagination.userId = this.loggedInUserId;  
-  this.playbookInfoFields = { text: 'playbook', value: 'playbook' };
-  this.parterService.getAllPlaybookNamesFilter(this.pagination).
-  subscribe(response => {
-    this.playbookFilters = response.data;
-  }, error => {
-    this.playbookFilters = [];
-  });
-}
- 
+
+  findPlaybookNames() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.playbookInfoFields = { text: 'playbook', value: 'playbook' };
+    this.parterService.getAllPlaybookNamesFilter(this.pagination).
+      subscribe(response => {
+        this.playbookFilters = response.data;
+      }, error => {
+        this.playbookFilters = [];
+      });
+  }
 
 }

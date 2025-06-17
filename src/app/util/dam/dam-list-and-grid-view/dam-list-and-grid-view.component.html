@@ -607,6 +607,10 @@
 											title="{{asset?.vendorCompanyName}}">
 											<b>From:</b><span>{{asset?.vendorCompanyName}}</span>
 										</h6>
+										<span *ngIf="isPartnerView && asset?.partnerStatus === 'deactivated'" data-toggle="tooltip" data-placement="top"
+											title="Partnership is deactivated" class="green-banner inline-flex asset-deactivated">
+											DEACTIVATED
+										</span>
 									</div>
 									<div class="ribbon tab-ribbon">
 										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
