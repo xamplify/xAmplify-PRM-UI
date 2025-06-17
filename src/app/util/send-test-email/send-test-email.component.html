@@ -33,13 +33,14 @@
                            <li *ngIf="isAllPartners && loginNowItems?.length > 0" [ngClass]="{'active': loginNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': loginNowItems?.length == 0}">
                             <a data-toggle="tab" href="#logIn"
                                (click)="loginNowItems?.length > 0 && activeTab('logIn')">
-                              Login Now <span *ngIf="loginNowItems?.length > 0">({{ loginNowItems.length }})</span>
+                              Company Profile Incomplete <span *ngIf="loginNowItems?.length > 0">({{ loginNowItems.length }})</span>
                             </a>
                           </li>
                           <li *ngIf="isAllPartners && dormantPartnerItems?.length > 0" [ngClass]="{'active': dormantPartnerItems?.length > 0 && registerNowItems?.length == 0, 'disabled': dormantPartnerItems?.length == 0}">
                             <a data-toggle="tab" href="#interacted"
                                (click)="dormantPartnerItems?.length > 0 && activeTab('interacted')">
-                              Interacted Now <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
+                              Dormant
+                              {{authenticationService?.partnerModule?.customName | slice:0:10}} <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
                             </a>
                           </li>
                            <!-- XNFR-1015-->

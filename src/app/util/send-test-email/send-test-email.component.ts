@@ -435,6 +435,8 @@ export class SendTestEmailComponent implements OnInit {
   callEventEmitter() {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.modalPopupId);
+    this.selectedDormantEmailTemplateId = 0;//XNFR-1015
+    this.selectedIncompleteEmailTemplateId = 0; //XNFR-1015
     this.sendTestEmailComponentEventEmitter.emit();
     this.sendTestEmailComponentTeamMemberEventEmitter.emit();
   }
@@ -452,7 +454,6 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   activeTab(tabName: string) {
-    let self = this;
     if (this.selectedItem) {
       let selectedItemsArray = Array.isArray(this.selectedItem)
         ? this.selectedItem
@@ -521,14 +522,16 @@ export class SendTestEmailComponent implements OnInit {
       }
     } 
     /*** XNFR-1015 */
-   else if(hasDormantPartnerItems) {
-      this.toEmailId = this.dormantPartnerItems.map(item => item.emailId).join(', ');
-      this.id = this.selectedDormantEmailTemplateId;
+    else if (hasDormantPartnerItems || hasIncompleItems) {
+      const isDormant = hasDormantPartnerItems;
+      const partnerItems = isDormant ? this.dormantPartnerItems : this.loginNowItems;
+      this.toEmailId = partnerItems.map(item => item.emailId).join(', ');
+      this.id = isDormant ? this.selectedDormantEmailTemplateId : this.selectedIncompleteEmailTemplateId;
     }
-    else if(hasIncompleItems) {
-      this.toEmailId = this.loginNowItems.map(item => item.emailId).join(', ');
-      this.id = this.selectedIncompleteEmailTemplateId;
-    }
+    // else if(hasIncompleItems) {
+    //   this.toEmailId = this.loginNowItems.map(item => item.emailId).join(', ');
+    //   this.id = this.selectedIncompleteEmailTemplateId;
+    // }
     /*** XNFR-1015 */
     else {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
@@ -605,7 +608,7 @@ export class SendTestEmailComponent implements OnInit {
     this.referenceService.closeModalPopup(this.leadStatusModalId);
     this.referenceService.closeModalPopup(this.modalPopupId);
     this.selectedDormantEmailTemplateId = 0;
-    this.selectedIncompleteEmailTemplateId = 0;
+    this.selectedIncompleteEmailTemplateId = 0;   
     this.sendTestEmailComponentEventEmitter.emit();
   }
 

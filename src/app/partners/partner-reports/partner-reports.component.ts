@@ -314,7 +314,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
-
+        this.isAllPartners = false; //XNFR-1015
         this.getActivePartnerReports();
         this.loadCountryData();
         setTimeout(() => {
@@ -323,11 +323,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
              this.loadAllCharts = false;
         }, 500);
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.allPartnersStatusForMail();
 
     }
     goToAllPartnersDiv(){
         this.totalPartnersDiv = true;
+        this.isAllPartners = false; //XNFR-1015
          this.loadAllCharts = false;
         this.selectedTabIndex = 8;
          this.isThroughPartnerDiv = false;
@@ -355,7 +357,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
-        
+        this.isAllPartners = false; //XNFR-1015
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
         this.allPartnersStatusForMail();
@@ -375,6 +377,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.allPartnersStatusForMail();
     }
 
@@ -500,6 +503,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.inActivePartnersSearchKey = "";
 
         this.inActivePartnersPagination.pageIndex = 1;
@@ -524,6 +528,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
         this.allPartnersStatusForMail();
@@ -648,6 +653,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.pagination.selectedPartnerIds = [];
         this.isSendReminderEnabled = false;
         this.isHeaderCheckBoxChecked = false;
+        this.isSentEmailNotification = true;//XNFR-1015
     }
     
     sendPartnerReminder(item: any) {
@@ -676,10 +682,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.getInActivePartnerReports(this.inActivePartnersPagination);
                 }
                 this.sendTestEmailIconClicked = false;
+                this.isSentEmailNotification = false; //XNFR-1015
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
                 this.sendTestEmailIconClicked = false;
+                this.isSentEmailNotification = false; //XNFR-1015
                 this.referenseService.loading(this.httpRequestLoader, false);
                 this.xtremandLogger.showClientErrors("partner-reports", "sendPartnerReminder()", error.error.message);
                 this.customResponse = new CustomResponse('ERROR', 'Something went wrong in sending an email.', true);
@@ -1170,6 +1178,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = true;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
 
@@ -1197,6 +1206,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = true;
         this.totalPartnersDiv = false;
+        this.isAllPartners = false; //XNFR-1015
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
@@ -1308,6 +1318,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }
                     this.sendTestEmailIconClicked = false;
+                    this.isSentEmailNotification = false; //XNFR-1015
                     this.referenseService.goToTop();
                 } else {
                     this.authenticationService.forceToLogout();
@@ -1315,6 +1326,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 this.sendTestEmailIconClicked = false;
+                this.isSentEmailNotification = false; //XNFR-1015
                 this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
                 this.xtremandLogger.error(error);
                 this.referenseService.loading(this.httpRequestLoader, false);
@@ -1353,6 +1365,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
+                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1372,6 +1385,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
+                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1390,6 +1404,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
+                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1496,6 +1511,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.selectedDormantEmailTemplateId = response.data;
                         }
                         this.sendTestEmailIconClicked = true;
+                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1517,6 +1533,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.selectedIncompleteEmailTemplateId = response.data;
                         }
                         this.sendTestEmailIconClicked = true;
+                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1531,17 +1548,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         }
         else if (this.isSingUpPendingDiv || this.isPendingStatus) {
             this.sendTestEmailIconClicked = true;
+            this.isSentEmailNotification = true; //XNFR-1015
             this.vanityTemplates = true;
         }
     }
-    
     sendTestEmailModalPopupEventReceiver(){
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
-        this.isAllPartners = false;
-        this.selectedDormantEmailTemplateId = 0;
-        this.selectedIncompleteEmailTemplateId = 0;
       }
     emittedMethod(event: any) {
         if (this.isInactivePartnersDiv || this.isDormantStatus) {
@@ -1562,7 +1576,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         } 
         else {
             this.sendmail(event);
+            this.isSentEmailNotification = false;
         }
+
     }
 
     getDateFilterOptions(event: any) {
@@ -1651,8 +1667,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     /*** XNFR-1015 */
     isAllPartners: boolean = false;
-    selectedDormantEmailTemplateId:any;
-    selectedIncompleteEmailTemplateId:any;
+    selectedDormantEmailTemplateId: any;
+    selectedIncompleteEmailTemplateId: any;
+    isSentEmailNotification:boolean = false;
     openSendTestPopupFromAllPartner(items: any[]): void {
         this.isAllPartners = true;
         this.allItems = items;
@@ -1661,10 +1678,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         const hasPendingSignup = items.some(item => item.status === 'Pending Signup');
         const hasDormantPartner = items.some(item => item.status === 'Dormant');
         this.allPartnersStatusForMail();
-        this.isIncompleteCompanyProfile = hasIncompleteProfile;
-        this.isPendingStatus = hasPendingSignup;
-        this.isDormantStatus = hasDormantPartner;
-        if (this.isIncompleteCompanyProfile || this.isPendingStatus) {
+        if (hasIncompleteProfile) {
             this.isDormantStatus = false;
             this.isPendingStatus = false;
             this.isIncompleteCompanyProfile = hasIncompleteProfile;
@@ -1678,10 +1692,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.selectedPartnerIds = partnerIds;
             this.sendReminderForInactivePartners();
         }
-        if(hasPendingSignup) {
+        if (hasPendingSignup) {
+            this.pagination.selectedPartnerIds = Array.from(new Set([...this.pagination.selectedPartnerIds, ...partnerIds]));
             this.isIncompleteCompanyProfile = false;
             this.isDormantStatus = false;
             this.isPendingStatus = hasPendingSignup;
+            this.sendReminderForIncompleteProfiles();
         }
     }
     /*** XNFR-1015 */

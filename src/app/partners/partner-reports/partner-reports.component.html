@@ -933,7 +933,7 @@
     </div>
     <div class="ml15m">
       <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
-      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (triggerSendTestComp)="openSendTestPopupFromAllPartner($event)"></app-all-partners-list>
+      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (partnersSelected)="openSendTestPopupFromAllPartner($event)" [isSentEmailNotification]="isSentEmailNotification" ></app-all-partners-list>
     </div>
   </div>
 
