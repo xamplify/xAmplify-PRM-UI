@@ -17,11 +17,11 @@ export class Properties {
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS
 	FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
-	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
-	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
-	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
+	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
+	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
+	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
 	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
-	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully";
+	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
 
 	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
 	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
