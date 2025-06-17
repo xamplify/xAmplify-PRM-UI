@@ -99,6 +99,7 @@ export class SendTestEmailComponent implements OnInit {
   openEditTemplateModalPopup: boolean = false;
   @Output() openEditModalPopup = new EventEmitter<File[]>();
   @Input() sendTestEmailDtoAttachments: any[] = [];
+  hasVanityAccess: boolean = false;
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -132,6 +133,7 @@ export class SendTestEmailComponent implements OnInit {
     }else if(this.isFromDomainWhiteListing){
       this.headerTitle = "Send Welcome Mail";
       this.files = this.sendTestEmailDtoAttachments;
+      this.checkVanityAccess();
       this.findWelcomeMailTemplate();
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
@@ -757,4 +759,14 @@ export class SendTestEmailComponent implements OnInit {
   openEditTemplatePopup() {
     this.openEditModalPopup.emit(this.files);
   }
+
+  checkVanityAccess() {
+		this.referenceService.hasVanityAccess().subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.hasVanityAccess = response.data;
+				}
+			}
+		);
+	}
 }
