@@ -61,7 +61,7 @@ export class AllPartnersListComponent implements OnInit {
   public multiSelectPlaceholderForStatus: string = "Select Status";
   /*** XNFR-1015 */
   @Output() partnersSelected = new EventEmitter<any[]>();
-  @Input() isSentEmailNotification = false;
+  @Input() isSentEmailNotification:boolean = false;
   private selectedIds = new Set<string>();
   private selectedPartnersMap = new Map<string, any>();
   /**** XNFR-1015 */
@@ -96,7 +96,7 @@ export class AllPartnersListComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (!this.isSentEmailNotification) {
+    if (this.isSentEmailNotification) {
       this.selectedIds.clear();
       this.selectedPartnersMap.clear();
     }
@@ -309,14 +309,15 @@ applyFilters(pagination: Pagination) {
    }
   /****** XNFR-1015 *****/
   getUniqueId(item: any): string {
-    return item.emailId;
+    return item.partnerId;
   }
 
   isItemSelected(item: any): boolean {
     return this.selectedIds.has(this.getUniqueId(item));
   }
 
-  toggleItemSelection(item: any, isChecked: boolean): void {
+  toggleItemSelection(item: any, event:any): void {
+    const isChecked = event.target.checked;
     const id = this.getUniqueId(item);
     item.isSelected = isChecked;
     if (isChecked) {
@@ -342,16 +343,16 @@ applyFilters(pagination: Pagination) {
       .every(item => this.isItemSelected(item));
   }
 
-  toggleSelectionForPage(isChecked: boolean): void {
+  toggleSelectionForPage(event:any): void {
     this.pagination.pagedItems.forEach(item => {
       if (this.isItemSelectable(item)) {
-        this.toggleItemSelection(item, isChecked);
+        this.toggleItemSelection(item, event);
       }
     });
   }
 
   emitSelectedPartners(): void {
-    const selectedPartners = Array.from(this.selectedPartnersMap.values()).filter(item => item.isSelected);
+    const selectedPartners = Array.from(this.selectedPartnersMap.values()).filter(item => this.isItemSelected(item));
     console.log(selectedPartners,"selectedPartners");
     this.partnersSelected.emit(selectedPartners);
   }

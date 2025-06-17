@@ -132,6 +132,7 @@ export class SendTestEmailComponent implements OnInit {
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
+    this.setTabName();
   }
   ngOnDestroy(){
     $('td a').css({
@@ -523,10 +524,10 @@ export class SendTestEmailComponent implements OnInit {
     } 
     /*** XNFR-1015 */
     else if (hasDormantPartnerItems || hasIncompleItems) {
-      const isDormant = hasDormantPartnerItems;
-      const partnerItems = isDormant ? this.dormantPartnerItems : this.loginNowItems;
+      const isIncompleteItems = hasIncompleItems;
+      const partnerItems = isIncompleteItems ?  this.loginNowItems : this.dormantPartnerItems ;
       this.toEmailId = partnerItems.map(item => item.emailId).join(', ');
-      this.id = isDormant ? this.selectedDormantEmailTemplateId : this.selectedIncompleteEmailTemplateId;
+      this.id = isIncompleteItems ?  this.selectedIncompleteEmailTemplateId : this.selectedDormantEmailTemplateId ;
     }
     // else if(hasIncompleItems) {
     //   this.toEmailId = this.loginNowItems.map(item => item.emailId).join(', ');
@@ -734,5 +735,16 @@ export class SendTestEmailComponent implements OnInit {
 
     return false;
   }
-
+  tabId:any;
+  setTabName(){
+    if(this.registerNowItems.length > 0) {
+       this.tabId = 'Register';
+    } else if(this.activateNowItems.length > 0) {
+      this.tabId = 'Activate';
+    } else if(this.loginNowItems.length > 0) {
+      this.tabId = 'logIn';
+    } else if(this.dormantPartnerItems.length > 0) {
+      this.tabId = 'interacted';
+    }
+  }
 }

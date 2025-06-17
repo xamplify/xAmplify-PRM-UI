@@ -121,7 +121,7 @@
               <td *ngIf="hasSelectableItems()">
                 <input *ngIf="isItemSelectable(item)" type="checkbox" [checked]="isItemSelected(item)"
                 [disabled]="!isItemSelectable(item)"
-                (change)="toggleItemSelection(item, $event.target.checked)" />
+                (change)="toggleItemSelection(item, $event)" />
               </td>
               <!--XNFR-1015-->
               <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>

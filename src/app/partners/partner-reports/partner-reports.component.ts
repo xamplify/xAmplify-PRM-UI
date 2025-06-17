@@ -653,7 +653,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.pagination.selectedPartnerIds = [];
         this.isSendReminderEnabled = false;
         this.isHeaderCheckBoxChecked = false;
-        this.isSentEmailNotification = true;//XNFR-1015
     }
     
     sendPartnerReminder(item: any) {
@@ -682,12 +681,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.getInActivePartnerReports(this.inActivePartnersPagination);
                 }
                 this.sendTestEmailIconClicked = false;
-                this.isSentEmailNotification = false; //XNFR-1015
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
                 this.sendTestEmailIconClicked = false;
-                this.isSentEmailNotification = false; //XNFR-1015
                 this.referenseService.loading(this.httpRequestLoader, false);
                 this.xtremandLogger.showClientErrors("partner-reports", "sendPartnerReminder()", error.error.message);
                 this.customResponse = new CustomResponse('ERROR', 'Something went wrong in sending an email.', true);
@@ -1318,7 +1315,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }
                     this.sendTestEmailIconClicked = false;
-                    this.isSentEmailNotification = false; //XNFR-1015
                     this.referenseService.goToTop();
                 } else {
                     this.authenticationService.forceToLogout();
@@ -1326,12 +1322,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 this.sendTestEmailIconClicked = false;
-                this.isSentEmailNotification = false; //XNFR-1015
                 this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
                 this.xtremandLogger.error(error);
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
-            () => this.xtremandLogger.log(" Partner-reports component Mail send method successfull")
+            () => { this.isSentEmailNotification = true; //XNFR-1015;
+                   this.xtremandLogger.log(" Partner-reports component Mail send method successfull")
+            }
         );
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
@@ -1365,7 +1362,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
-                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1385,7 +1381,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
-                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1404,7 +1399,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
-                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1452,6 +1446,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
         const emailIds = selectedPartners.map(partner => partner.emailId);
         const emailIdsString = emailIds.join(', ');
+        if (this.isAllPartners) {
+            this.selectedItem = this.allItems.filter(item => item.isSelected);
+        }
         this.modelPopUpMultipleSelectedEmails(emailIdsString);
     }
     updateSelectionState(): void {
@@ -1511,7 +1508,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.selectedDormantEmailTemplateId = response.data;
                         }
                         this.sendTestEmailIconClicked = true;
-                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1533,7 +1529,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.selectedIncompleteEmailTemplateId = response.data;
                         }
                         this.sendTestEmailIconClicked = true;
-                        this.isSentEmailNotification = true; //XNFR-1015
                         this.vanityTemplates = true;
                     } else if (response.statusCode === 400) {
                         console.error("Error: Invalid email ID or other bad request.");
@@ -1548,7 +1543,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         }
         else if (this.isSingUpPendingDiv || this.isPendingStatus) {
             this.sendTestEmailIconClicked = true;
-            this.isSentEmailNotification = true; //XNFR-1015
             this.vanityTemplates = true;
         }
     }
@@ -1556,6 +1550,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
+        this.isAllPartners = false;
       }
     emittedMethod(event: any) {
         if (this.isInactivePartnersDiv || this.isDormantStatus) {
@@ -1565,6 +1560,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.sendPartnerReminder(event);
             }
             this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
+            this.isSentEmailNotification = true; //XNFR-1015
         }
          else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv || this.isIncompleteCompanyProfile || this.isPendingStatus) {
             if (Array.isArray(event)) {
@@ -1576,7 +1572,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         } 
         else {
             this.sendmail(event);
-            this.isSentEmailNotification = false;
         }
 
     }
@@ -1699,6 +1694,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.isPendingStatus = hasPendingSignup;
             this.sendReminderForIncompleteProfiles();
         }
+        this.isSentEmailNotification = false;
     }
     /*** XNFR-1015 */
 }

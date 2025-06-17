@@ -16,27 +16,27 @@
                   <div *ngIf="!isPreviewEmailTemplate">       
                      <div class="scrollbar-x" *ngIf="vanityTemplatesPartnerAnalytics && tabsEnabled">
                         <ul class="nav nav-tabs hideBorder">
-                          <li [ngClass]="{'active': registerNowItems?.length > 0, 'disabled': registerNowItems?.length == 0}">
+                          <li *ngIf="registerNowItems?.length > 0" [ngClass]="{'active': tabId === 'Register', 'disabled': registerNowItems?.length == 0}">
                             <a data-toggle="tab" href="#Register"
                                (click)="registerNowItems?.length > 0 && activeTab('registerNow')">
                               Register Now <span *ngIf="registerNowItems?.length > 0">({{ registerNowItems.length }})</span>
                             </a>
                           </li>
                
-                          <li [ngClass]="{'active': activateNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': activateNowItems?.length == 0}">
+                          <li *ngIf="activateNowItems?.length > 0"  [ngClass]="{'active': tabId === 'Activate', 'disabled': activateNowItems?.length == 0}">
                             <a data-toggle="tab" href="#Activate"
                                (click)="activateNowItems?.length > 0 && activeTab('activateNow')">
                               Activate Now <span *ngIf="activateNowItems?.length > 0">({{ activateNowItems.length }})</span>
                             </a>
                           </li>
                           <!-- XNFR-1015 -->
-                           <li *ngIf="isAllPartners && loginNowItems?.length > 0" [ngClass]="{'active': loginNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': loginNowItems?.length == 0}">
+                           <li *ngIf="isAllPartners && loginNowItems?.length > 0" [ngClass]="{'active': tabId === 'logIn' , 'disabled': loginNowItems?.length == 0}">
                             <a data-toggle="tab" href="#logIn"
                                (click)="loginNowItems?.length > 0 && activeTab('logIn')">
                               Company Profile Incomplete <span *ngIf="loginNowItems?.length > 0">({{ loginNowItems.length }})</span>
                             </a>
                           </li>
-                          <li *ngIf="isAllPartners && dormantPartnerItems?.length > 0" [ngClass]="{'active': dormantPartnerItems?.length > 0 && registerNowItems?.length == 0, 'disabled': dormantPartnerItems?.length == 0}">
+                          <li *ngIf="isAllPartners && dormantPartnerItems?.length > 0" [ngClass]="{'active': tabId === 'interacted' &&  activateNowItems?.length == 0 , 'disabled': dormantPartnerItems?.length == 0}">
                             <a data-toggle="tab" href="#interacted"
                                (click)="dormantPartnerItems?.length > 0 && activeTab('interacted')">
                               Dormant
