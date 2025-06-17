@@ -604,6 +604,8 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.leadStatusModalId);
     this.referenceService.closeModalPopup(this.modalPopupId);
+    this.selectedDormantEmailTemplateId = 0;
+    this.selectedIncompleteEmailTemplateId = 0;
     this.sendTestEmailComponentEventEmitter.emit();
   }
 

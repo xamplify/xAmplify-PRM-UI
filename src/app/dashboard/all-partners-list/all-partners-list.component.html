@@ -4,7 +4,7 @@
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m  mobilesearchdisplay">
         <!-- XNFR-1015-->
-        <button class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="sendSeletedPartners()">
+        <button *ngIf="allSelectedItems?.length > 0" class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="sendSeletedPartners()">
           <i aria-hidden=" true" class="fa fa-envelope p10" data-toggle="tooltip" title="Send reminder email"
             data-original-title="Send reminder email"></i>
         </button>

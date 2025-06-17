@@ -1665,19 +1665,23 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isPendingStatus = hasPendingSignup;
         this.isDormantStatus = hasDormantPartner;
         if (this.isIncompleteCompanyProfile || this.isPendingStatus) {
-            this.isInactivePartnersDiv  = false;
             this.isDormantStatus = false;
+            this.isPendingStatus = false;
             this.isIncompleteCompanyProfile = hasIncompleteProfile;
-            this.isPendingStatus = hasPendingSignup;
             this.pagination.selectedPartnerIds = Array.from(new Set([...this.pagination.selectedPartnerIds, ...partnerIds]));
             this.sendReminderForIncompleteProfiles();
         }
         if (hasDormantPartner) {
-            this.isIncompleteCompanyProfileDiv = false;
             this.isIncompleteCompanyProfile = false;
+            this.isPendingStatus = false;
             this.isDormantStatus = hasDormantPartner;
             this.selectedPartnerIds = partnerIds;
             this.sendReminderForInactivePartners();
+        }
+        if(hasPendingSignup) {
+            this.isIncompleteCompanyProfile = false;
+            this.isDormantStatus = false;
+            this.isPendingStatus = hasPendingSignup;
         }
     }
     /*** XNFR-1015 */

@@ -340,14 +340,14 @@ applyFilters(pagination: Pagination) {
     this.pagination.pagedItems.forEach(item => {
       if (this.isSelectable(item)) {
         item.isSelected = isChecked;
+        const itemId = this.getItemUniqueId(item);
         if (isChecked) {
-          const itemId = this.getItemUniqueId(item);
           this.selectedItems.add(itemId)
           if (!this.allSelectedItems.some(i => this.getItemUniqueId(i) === itemId)) {
             this.allSelectedItems.push(item);
           }
         } else {
-          this.selectedItems.delete(item);
+          this.selectedItems.delete(itemId);
           this.allSelectedItems = this.allSelectedItems.filter(i => this.getItemUniqueId(i) !== item.emailId);
         }
       }
@@ -356,11 +356,11 @@ applyFilters(pagination: Pagination) {
   sendSeletedPartners() {
     console.log(this.allSelectedItems, "Full selected partner objects");
     this.allSelectedItems = this.allSelectedItems
-      .filter(item => item.isSelected)
-      .map(item => ({
-        ...item,
-        vanityUrlDomain: item.status != 'Dormant'
-      }));
+      .filter(item => item.isSelected);
+      // .map(item => ({
+      //   ...item,
+      //   vanityUrlDomain: item.status != 'Dormant'
+      // }));
 
     this.triggerSendTestComp.emit(this.allSelectedItems);
   }
