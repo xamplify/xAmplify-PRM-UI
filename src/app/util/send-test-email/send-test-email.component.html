@@ -40,14 +40,16 @@
                             <a data-toggle="tab" href="#interacted"
                                (click)="dormantPartnerItems?.length > 0 && activeTab('interacted')">
                               Dormant
-                              {{authenticationService?.partnerModule?.customName | slice:0:10}} <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
+                              {{authenticationService?.partnerModule?.customName | slice:0:10}}
+                               <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span> 
+                              <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
                             </a>
                           </li>
                            <!-- XNFR-1015-->
                       
                         </ul>
                       </div>
-                     <div class="tab-content tab-bg" *ngIf="(registerNowItems?.length > 0 || activateNowItems?.length > 0)">
+                     <div class="tab-content tab-bg" *ngIf="(registerNowItems?.length > 0 || activateNowItems?.length > 0 || dormantPartnerItems?.length > 0 || loginNowItems?.length > 0)">
                         <div id="Register" class="tab-pane fade in active  integration-profile" *ngIf="registerNowItems?.length > 0">
                         </div>
                         <div id="Activate" class="tab-pane fade in " *ngIf="activateNowItems?.length > 0">
