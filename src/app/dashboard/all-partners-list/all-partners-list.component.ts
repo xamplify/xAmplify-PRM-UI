@@ -62,8 +62,8 @@ export class AllPartnersListComponent implements OnInit {
   /*** XNFR-1015 */
   @Output() partnersSelected = new EventEmitter<any[]>();
   @Input() isSentEmailNotification:boolean = false;
-  private selectedIds = new Set<string>();
-  private selectedPartnersMap = new Map<string, any>();
+   selectedIds = new Set<string>();
+   selectedPartnersMap = new Map<string, any>();
   /**** XNFR-1015 */
   statusOptions = [
     { text: 'IncompleteCompanyProfile', value: 'IncompleteCompanyProfile' },
