@@ -1,215 +1,63 @@
-export interface OliverReportClientDTO {
-  contactDetails: ContactDetails;
-  campaignEngagementPerformance: CampaignEngagementPerformance;
-  leadLifecycleFunnelMetrics: LeadLifecycleFunnelMetrics;
-  dealInteractionsRevenueAttribution: DealInteractionsRevenueAttribution;
-  partnerJourneyBehavioralInsights: PartnerJourneyBehavioralInsights;
-  keyTakeaways: string[];
-  strategicRecommendations: string[];
+export class ReportData {
+  contact_details: ContactDetails;
+  leads: Leads;
+  deals: Deals;
+  campaigns: Campaigns;
+  key_takeaways: string[];
+  strategic_recommendations: string[];
 }
-
-export interface ContactDetails {
-  email: string[];
-  phone: string[];
-  company: string[];
-  address: string;
-  city: string[];
-  state: string;
-  country: string;
-}
-
-export interface CampaignEngagementPerformance {
-  engagedCampaigns: Campaign[];
-  activeCampaigns: ActiveCampaign[];
-}
-
-export interface Campaign {
+interface ContactDetails {
   name: string;
-  type: string;
-  amountGenerated: number;
+  email: string;
+  phone_numbers: string[];
+  company: string;
+  address: string;
+  additional_info: string;
 }
 
-export interface ActiveCampaign extends Campaign {
-  closeDate: string;
+interface LeadRecord {
+  id: string;
+  first_name?: string;
+  last_name: string;
+  company: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  campaign: string;
+  created_time?: string;
+  pipeline_stage: string;
 }
 
-export interface LeadLifecycleFunnelMetrics {
-  pipelineStage: string;
-  topLeadCampaigns: string[];
+interface Leads {
+  summary: string;
+  lead_records: LeadRecord[];
 }
 
-export interface DealInteractionsRevenueAttribution {
-  dealsClosed: Deal[];
-  recentClosedDealsDates: string[];
-}
-
-export interface Deal {
+interface DealRecord {
   title: string;
   amount: number;
-  companyName: string;
-  pipelineStage: string;
+  close_date: string;
+  associated_lead_id?: string;
+  campaign: string;
+  created_by?: string;
+  pipeline: string;
+  stage: string;
 }
 
-export interface PartnerJourneyBehavioralInsights {
-  associatedCompanies: string[];
-  interactionFrequency: string;
+interface Deals {
+  summary: string;
+  deal_records: DealRecord[];
 }
 
-// Chart specific types (can be used with ngx-charts or similar)
-export interface SimpleChartData { // Renamed from ChartData
+interface CampaignRecord {
   name: string;
-  value: number;
+  campaign_type: string;
+  launch_time: string;
+  associated_with: string;
+  details: string;
 }
 
-export interface CampaignTypeChartData {
-    name: string; // Campaign Type
-    value: number; // Count
+interface Campaigns {
+  summary: string;
+  campaign_records: CampaignRecord[];
 }
-
-
-
-
-
-
-
-
-
-
-// export interface OliverReportClientDTO {
-//   contactDetails: ContactDetails;
-//   campaignEngagementPerformance: CampaignEngagementPerformance;
-//   leadLifecycleFunnelMetrics: LeadLifecycleFunnelMetrics;
-//   dealInteractionsRevenueAttribution: DealInteractionsRevenueAttribution;
-//   partnerJourneyBehavioralInsights: PartnerJourneyBehavioralInsights;
-//   keyTakeaways: string[];
-//   strategicRecommendations: string[];
-// }
-
-// export interface ContactDetails {
-//   email: string[];
-//   phone: string[];
-//   company: string[];
-//   address: string;
-//   city: string[];
-//   state: string;
-//   country: string;
-// }
-
-// export interface CampaignEngagementPerformance {
-//   engagedCampaigns: Campaign[];
-//   activeCampaigns: ActiveCampaign[];
-// }
-
-// export interface Campaign {
-//   name: string;
-//   type: string;
-//   amountGenerated: number;
-// }
-
-// export interface ActiveCampaign extends Campaign {
-//   closeDate: string;
-// }
-
-// export interface LeadLifecycleFunnelMetrics {
-//   pipelineStage: string;
-//   topLeadCampaigns: string[];
-// }
-
-// export interface DealInteractionsRevenueAttribution {
-//   dealsClosed: Deal[];
-//   recentClosedDealsDates: string[];
-// }
-
-// export interface Deal {
-//   title: string;
-//   amount: number;
-//   companyName: string;
-//   pipelineStage: string;
-// }
-
-// export interface PartnerJourneyBehavioralInsights {
-//   associatedCompanies: string[];
-//   interactionFrequency: string;
-// }
-
-// // Chart specific types (can be used with ngx-charts or similar)
-// export interface ChartData {
-//   name: string;
-//   value: number;
-// }
-
-// export interface CampaignTypeChartData {
-//     name: string; // Campaign Type
-//     value: number; // Count
-// }
-
-
-
-
-// export interface OliverReportClientDTO {
-//   contactDetails: ContactDetails;
-//   campaignEngagementPerformance: CampaignEngagementPerformance;
-//   leadLifecycleFunnelMetrics: LeadLifecycleFunnelMetrics;
-//   dealInteractionsRevenueAttribution: DealInteractionsRevenueAttribution;
-//   partnerJourneyBehavioralInsights: PartnerJourneyBehavioralInsights;
-//   keyTakeaways: string[];
-//   strategicRecommendations: string[];
-// }
-
-// export interface ContactDetails {
-//   email: string[];
-//   phone: string[];
-//   company: string[];
-//   address: string;
-//   city: string[];
-//   state: string;
-//   country: string;
-// }
-
-// export interface CampaignEngagementPerformance {
-//   engagedCampaigns: Campaign[];
-//   activeCampaigns: ActiveCampaign[];
-// }
-
-// export interface Campaign {
-//   name: string;
-//   type: string;
-//   amountGenerated: number;
-// }
-
-// export interface ActiveCampaign extends Campaign {
-//   closeDate: string;
-// }
-
-// export interface LeadLifecycleFunnelMetrics {
-//   pipelineStage: string;
-//   topLeadCampaigns: string[];
-// }
-
-// export interface DealInteractionsRevenueAttribution {
-//   dealsClosed: Deal[];
-//   recentClosedDealsDates: string[];
-// }
-
-// export interface Deal {
-//   title: string;
-//   amount: number;
-//   companyName: string;
-//   pipelineStage: string;
-// }
-
-// export interface PartnerJourneyBehavioralInsights {
-//   associatedCompanies: string[];
-//   interactionFrequency: string;
-// }
-
-// // Chart specific types (can be used with ngx-charts or similar)
-// export interface SimpleChartData { // Renamed from ChartData
-//   name: string;
-//   value: number;
-// }
-
-// export interface CampaignTypeChartData {
-//     name: string; // Campaign Type
-//     value: number; // Count
-// }

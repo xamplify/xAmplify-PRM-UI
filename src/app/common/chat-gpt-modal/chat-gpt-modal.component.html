@@ -774,7 +774,7 @@
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
             <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-             <app-executive-summary-report  *ngIf="showMEEEEE">
+             <app-executive-summary-report   *ngIf="message?.isReport == 'true'" [reportData]="message.content">
              </app-executive-summary-report>
           </div>
         </div>

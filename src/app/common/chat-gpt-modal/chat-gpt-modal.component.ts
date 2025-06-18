@@ -21,7 +21,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
-import { OliverReportClientDTO } from '../models/oliver-report-dto';
+import { ReportData } from '../models/oliver-report-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -129,8 +129,8 @@ export class ChatGptModalComponent implements OnInit {
   suggestedPrompts: string[] = [];  
 
   showReport: boolean= false;
-  reportData: OliverReportClientDTO;
-  repoData: OliverReportClientDTO;
+  reportData: ReportData;
+  repoData: ReportData;
 
   oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
 
@@ -790,6 +790,7 @@ export class ChatGptModalComponent implements OnInit {
               message = self.chatGptGeneratedText;
             }
           }
+
           self.messages.push({ role: 'assistant', content: message,  isReport: isReport});
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
@@ -921,6 +922,9 @@ export class ChatGptModalComponent implements OnInit {
           messages.forEach((message: any) => {
 
             if (message.role === 'assistant') {
+              if (isReport == 'true') {
+                message.content = this.parseOliverReport(message.content);
+              }
               this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
@@ -1490,53 +1494,58 @@ extractJsonString(raw: string): string {
 }
 
 
-parseOliverReport(jsonStr: string): OliverReportClientDTO {
+parseOliverReport(jsonStr: string): ReportData {
   const jsonObject = JSON.parse(jsonStr);
-  let dto: OliverReportClientDTO;
-
-  if (jsonObject.contactDetails) {
-    dto.contactDetails = {
-      email: jsonObject.contactDetails.email || [],
-      phone: jsonObject.contactDetails.phone || [],
-      company: jsonObject.contactDetails.company || [],
-      address: jsonObject.contactDetails.address || '',
-      city: jsonObject.contactDetails.city || [],
-      state: jsonObject.contactDetails.state || '',
-      country: jsonObject.contactDetails.country || ''
-    };
-  }
-
-  if (jsonObject.campaignEngagementPerformance) {
-    dto.campaignEngagementPerformance = {
-      engagedCampaigns: jsonObject.campaignEngagementPerformance.engagedCampaigns || [],
-      activeCampaigns: jsonObject.campaignEngagementPerformance.activeCampaigns || []
-    };
-  }
-
-  if (jsonObject.leadLifecycleFunnelMetrics) {
-    dto.leadLifecycleFunnelMetrics = {
-      pipelineStage: jsonObject.leadLifecycleFunnelMetrics.pipelineStage || '',
-      topLeadCampaigns: jsonObject.leadLifecycleFunnelMetrics.topLeadCampaigns || []
-    };
-  }
-
-  if (jsonObject.dealInteractionsRevenueAttribution) {
-    dto.dealInteractionsRevenueAttribution = {
-      dealsClosed: jsonObject.dealInteractionsRevenueAttribution.dealsClosed || [],
-      recentClosedDealsDates: jsonObject.dealInteractionsRevenueAttribution.recentClosedDealsDates || []
-    };
-  }
-
-  if (jsonObject.partnerJourneyBehavioralInsights) {
-    dto.partnerJourneyBehavioralInsights = {
-      associatedCompanies: jsonObject.partnerJourneyBehavioralInsights.associatedCompanies || [],
-      interactionFrequency: jsonObject.partnerJourneyBehavioralInsights.interactionFrequency || ''
-    };
-  }
-
-  dto.keyTakeaways = jsonObject.keyTakeaways || [];
-  dto.strategicRecommendations = jsonObject.strategicRecommendations || [];
-
+  const dto: ReportData = {
+    contact_details: {
+      name: jsonObject.contact_detailsname || '',
+      email: jsonObject.contact_detailsemail || '',
+      phone_numbers: jsonObject.contact_detailsphone_numbers || [],
+      company: jsonObject.contact_detailscompany || '',
+      address: jsonObject.contact_detailsaddress || '',
+      additional_info: jsonObject.contact_detailsadditional_info || ''
+    },
+    leads: {
+      summary: jsonObject.leadssummary || '',
+      lead_records: (jsonObject.leadslead_records || []).map((record: any) => ({
+        id: record.id,
+        first_name: record.first_name || '',
+        last_name: record.last_name || '',
+        company: record.company || '',
+        email: record.email || '',
+        phone: record.phone || '',
+        address: record.address || '',
+        campaign: record.campaign || '',
+        created_time: record.created_time || '',
+        pipeline_stage: record.pipeline_stage || ''
+      }))
+    },
+    deals: {
+      summary: jsonObject.dealssummary || '',
+      deal_records: (jsonObject.dealsdeal_records || []).map((record: any) => ({
+        title: record.title || '',
+        amount: record.amount || 0,
+        close_date: record.close_date || '',
+        associated_lead_id: record.associated_lead_id || '',
+        campaign: record.campaign || '',
+        created_by: record.created_by || '',
+        pipeline: record.pipeline || '',
+        stage: record.stage || ''
+      }))
+    },
+    campaigns: {
+      summary: jsonObject.campaignssummary || '',
+      campaign_records: (jsonObject.campaignscampaign_records || []).map((record: any) => ({
+        name: record.name || '',
+        campaign_type: record.campaign_type || '',
+        launch_time: record.launch_time || '',
+        associated_with: record.associated_with || '',
+        details: record.details || ''
+      }))
+    },
+    key_takeaways: jsonObject.key_takeaways || [],
+    strategic_recommendations: jsonObject.strategic_recommendations || []
+  };
   return dto;
 }
 
