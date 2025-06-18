@@ -23,14 +23,14 @@
                         <strong>Selected Rows: {{selectedPartnerTeamMemberGroupMappingIds?.length}}</strong>
                      </div>
                         <div class="btn-group pull-right">
-                            <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view mr10" data-toggle="tooltip"
-                                title="Export to Excel" (click)="downloadTeamMemberCsv()">
+                            <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr10" data-toggle="tooltip"
+                                title="Export to Excel" [disabled]="!(partnersPagination.pagedItems?.length > 0)" (click)="downloadTeamMemberCsv()">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
                            <div class="inputs float-right" style="display: inline-flex;">
                             <div>
                                 <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedActiveUsersSortOption" (ngModelChange)="sortBy($event)">
-                                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                                    <option *ngFor="let option of filteredSortOptions" [ngValue]="option">
                                         {{option.name}}
                                     </option>
                                  </select>

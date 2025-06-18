@@ -593,6 +593,16 @@ export class Properties {
 	/**XNFR-921**/
 	ADD_AUTO_RESPONSE_PLAYBOOK= 'Auto-Responses to Your Playbook'
 
+	SINGLE_DEACTIVATE_PARTNER = "The partnership will be deactivated. A deactivated partner will lose access to the application and be excluded from content";
+
+	SINGLE_ACTIVATE_PARTNER = "The partnership will be activated. An activated partner will gain access to the application and be included in content";
+
+	MULTI_SELECT_DEACTIVATE_PARTNERS = "The partnerships will be deactivated. Deactivated partners will no longer have access to the application and will be excluded from content";
+
+	DOMAIN_WHITELISTING_DEACTIVATE_DOMAIN = "The partnership with all the companies listed below will be deactivated. Once deactivated, the partner(s) will lose access to the application and be excluded from content";
+
+	DOMAIN_WHITELISTING_ACTIVATE_DOMAIN = "The partnership with all the companies listed below will be activated. Once activated, the partner(s) will gain access to the application and be included in content";
+
 
 }
 

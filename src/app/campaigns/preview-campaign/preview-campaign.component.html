@@ -246,10 +246,10 @@
                      <!--Notify Partner Team Member-->
                          <div class="col-xs-6 col-sm-6">
                            <div class="ml10">
-                              <h5>{{notifyPartnersTeamMembersLabelText}}</h5>
+                              <h5>Notify {{authenticationService?.partnerModule?.customName}} Team Member ?</h5>
                            </div>
                            <div class="media-body pt5">
-                              <switch class="ml10" [disabled]="true" [status]="campaign?.emailNotification"
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.notifyTeamMember"
                                  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                  [onColor]="callActionSwitch.onGreenColorSwitch"
                                  [offColor]="callActionSwitch.onDefaultColorSwitch"

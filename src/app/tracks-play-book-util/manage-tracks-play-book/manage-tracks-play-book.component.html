@@ -195,7 +195,8 @@
 												class="view-banner asset-approval-labele-spacing bgc-red" translate>
 												{{getApprovalStatusText(learningTrack.approvalStatus)}}
 											</span>
-
+                                            <h6 *ngIf="isPartnerView && learningTrack?.partnerStatus === 'deactivated'" class="green-banner inline-flex"
+                                                data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
@@ -267,8 +268,8 @@
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
-                                                    title="View" (click)="view(learningTrack)">
-                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                    title="View" (click)="isPartnerView && learningTrack?.partnerStatus === 'deactivated' ? '' : view(learningTrack)">
+                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true" [ngClass]="(isPartnerView && learningTrack?.partnerStatus === 'deactivated') ? 'disabled gray' : ''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
@@ -371,6 +372,10 @@
                                     class="view-banner asset-approval-labele-spacing bgc-red" translate>
                                     {{getApprovalStatusText(learningTrack.approvalStatus)}}
                                 </span>
+                                <span *ngIf="isPartnerView && learningTrack?.partnerStatus === 'deactivated'" data-toggle="tooltip" data-placement="top"
+                                    title="Partnership is deactivated" class="green-banner inline-flex track-deactivated">
+                                    DEACTIVATED
+                                </span>
                             </div>
                             <!---XNFR-327--->
                             <div class="ribbon tab-ribbon">
@@ -411,8 +416,10 @@
                                     </a>
                                 </div>
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
-                                    <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
-                                        title="View" (click)="view(learningTrack)">
+                                    <a class="Iconhover custom-grid-icon"
+                                        [ngClass]="(learningTrack?.partnerStatus === 'deactivated' && isPartnerView) ? 'disabled gray' : ''"
+                                        data-toggle="tooltip" data-placement="top" title="View"
+                                        (click)="(learningTrack?.partnerStatus === 'deactivated' && isPartnerView) ? '' : view(learningTrack)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>

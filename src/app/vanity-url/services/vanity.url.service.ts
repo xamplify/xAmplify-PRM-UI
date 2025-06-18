@@ -458,8 +458,20 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     const url = this.authenticationService.REST_URL + "v_url/getWelcomeTemplateForPartnerDomainWhitelisting/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
-  sendWelcomeEmail(sendTestEmailDto: SendTestEmailDto) {
-    const url = this.authenticationService.REST_URL + "v_url/sendWelcomeMailForPartnerDomainWhitelisting?access_token=" + this.authenticationService.access_token;
-    return this.authenticationService.callPostMethod(url, sendTestEmailDto);
+//XNFR-1008
+  sendWelcomeEmail(sendTestEmailDto: SendTestEmailDto, formData: FormData) {
+    formData.delete('sendTestEmailDto');
+    formData.append('sendTestEmailDto', new Blob([JSON.stringify(sendTestEmailDto)],
+      {
+        type: "application/json"
+      }));
+    let url = this.authenticationService.REST_URL + "v_url/sendWelcomeMailForPartnerDomainWhitelisting?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, formData);
   }
+
+  getEmailTemplateByType(type: string, loggedInUserId: number) {
+    const url = this.authenticationService.REST_URL + "v_url/getEmailTemplateByType/" + type + "/loggedInUserId/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

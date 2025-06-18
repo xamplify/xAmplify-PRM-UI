@@ -321,12 +321,14 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   }
 
     loadPromptAndNotificationTabsData(){
+    this.loader.isLoading = true;
     this.parterService.findDefaultTriggerOptions().subscribe(
       response=>{
         let data = response.data;
         this.subjects = data.subjects
         this.actions = data.actions.filter(subj=>subj.value.toLowerCase().includes('playbook'));
         this.timePhrases = data.timePhrases;
+        this.loader.isLoading = false;
       }
     );
   }

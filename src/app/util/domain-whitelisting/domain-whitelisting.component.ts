@@ -61,10 +61,13 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   domainId = 0;
   sendTestEmailIconClicked = false;
 
-  allPartnerDomains: string[] = [];
+  allPartnerDomains: any;
   isDeactivateOrActivateOptionClicked: boolean = false;
   selectedDeactivateOrActivateDomainId: any;
   selectedDomain: any;
+  openEditTemplateModalPopup: boolean = false;
+  attachments: File[] = [];
+  isEditTemplateClicked: boolean;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -443,29 +446,46 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   setIsDomainAllowed(event: any) {
     this.isDomainAllowedToAddToSamePartnerAccount = event;
   }
+
   addWelcomeMailModalOpen() {
     this.getAllPartnerDomainNames();
   }
+
   sendWelcomeMailModalPopupEventReceiver() {
+    if(this.isEditTemplateClicked){
+      this.isEditTemplateClicked = false;
+    }else{
+      this.attachments = [];
+    }
     this.sendTestEmailIconClicked = false;
   }
-  getAllPartnerDomainNames(): void {
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dashboardService.getAllPartnerDomainNames(this.selectedTab).subscribe(
-    (response: any) => {
-      if (response && response.data) {
-        this.allPartnerDomains = response.data; 
-        this.sendTestEmailIconClicked = true;
-      }
-      this.referenceService.loading(this.httpRequestLoader, false);
-    },
-    error => {
-      this.xtremandLogger.errorPage(error);
-      this.referenceService.loading(this.httpRequestLoader, false);
-    }
-  );
-}
 
+  getAllPartnerDomainNames(): void {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dashboardService.getAllPartnerDomainNames(this.selectedTab).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200 && response.data) {
+          this.xtremandLogger.info("Fetched all partner domains successfully.");
+          this.xtremandLogger.info(response.data);
+          this.allPartnerDomains = response.data.map(d => ({
+            name: d.domainName.toLowerCase().trim(),
+            deactivated: d.domainDeactivated
+          }));
+          this.sendTestEmailIconClicked = true;
+        } else {
+          this.allPartnerDomains = [];
+          this.xtremandLogger.error(response.message);
+          this.xtremandLogger.error("Failed to fetch partner domains.");
+          this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      error => {
+        this.xtremandLogger.errorPage(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
+  }
 
  confirmDeativateDomain(domain: any) {
     this.isDeactivateOrActivateOptionClicked = true;
@@ -484,4 +504,16 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   }
 
 
+ //XNFR-1008
+    openEditModalPopup(event: any) {
+    this.isEditTemplateClicked = true;
+    this.attachments = event || [];
+    this.sendTestEmailIconClicked = false;
+    this.openEditTemplateModalPopup = true
+  }
+
+    closeEditTemplateModalPopup() {
+      this.openEditTemplateModalPopup = false;
+      this.addWelcomeMailModalOpen();
+  }
 }

@@ -745,6 +745,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.closeRequestModal();
                             if (data.statusCode == 200) {
                                 this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                            } else if (data.statusCode == 401) {
+                                this.customResponse = new CustomResponse('ERROR', data.message, true);
                             } else {
                                 this.customResponse = new CustomResponse('ERROR', "Something went wrong, Please try after some time.", true);
                             }

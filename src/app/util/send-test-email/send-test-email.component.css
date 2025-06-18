@@ -100,8 +100,21 @@ li.disabled.active a {
     border-bottom: none !important;
   }
   
-  
-
-  
+ .custom-file-label {
+    color: white !important;
+} 
+.file-input {
+    display: none;
+}
+.send-email-footer{
+    position: absolute;
+    width: 100%;
+}
+.l-g-view {
+    height: 29px;
+    width: 29px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
   
  

@@ -1,11 +1,17 @@
 <div class="modal right rmv-overflow" id="edit-template-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog  modal-sm popup-align">
-      <div class="modal-content mPad col-lg-12 col-md-12">
+      <div class="modal-content mPad col-lg-12 col-md-12 p0">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-          <div class="modal-header">
-              <button type="button" class="close-circle"  (click)="closeModal()">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-              </button>               
+        <div class="modal-header">
+            <ng-container *ngIf="isFromDomainWhiteListing">
+                <a class="close-circle" (click)="closeModal()" data-dismiss="modal"><i class="fa fa-times"></i></a>
+                <h4 class="modal-title left" id="myModalLabel">Edit Welcome Mail</h4>
+            </ng-container>
+            <ng-container *ngIf="!isFromDomainWhiteListing">
+                <button type="button" class="close-circle" (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </ng-container>
           </div>
           <div class="modal-body" *ngIf="!ngxloading">
             <div class="portlet light shadow">
@@ -15,13 +21,14 @@
                     <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     </div>
                 </div>
-              <div class="portlet-body clearfix">
+              <div class="portlet-body clearfix template-body-scroll">
                   <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
                         <strong>{{templateUpdateMessage}}</strong>
                   </div>
-                  <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
-                  <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput"
-                   (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+                <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
+                <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup && !isFromDomainWhiteListing" [beeContainerInput]="beeContainerInput"
+                    (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+                <app-xamplify-default-templates *ngIf="!isEditTemplateLoader && isFromDomainWhiteListing" [xamplifyDefaultTemplate]="xamplifyDefaultTemplate"></app-xamplify-default-templates>
             </div>
             </div>
           </div>

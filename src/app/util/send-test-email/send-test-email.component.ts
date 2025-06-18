@@ -84,15 +84,28 @@ export class SendTestEmailComponent implements OnInit {
   leadStatusModalId: string = 'LEAD-STATUS-REMINDER-MODAL-POPUP';
   emailBodyHtml: any;
 /***** XNFR-972 *****/
-  @Input() allPartnerDomains: string[] = [];
+  @Input() allPartnerDomains: any;
   @Input() isFromDomainWhiteListing: false;
   @Input() pagedItems: any[];
   onAddedFunc = this.beforeAdd.bind(this);
   addFirstAttemptFailed = false;
   errorMessages = { 'must_be_email': 'Please be sure to use a valid email format',
-    'invalid_domain': 'Email domain is not whitelisted'
+    'invalid_domain': 'Email domain is not whitelisted',
+    'deactivated_domain': 'Email domain is deactivated',
    };
   validators = [this.mustBeEmail.bind(this)];
+//XNFR-1008
+  showAttachmentErrorMessage: boolean = false;
+  files: File[] = [];
+  showFileTypeError: boolean = false;
+  showFilePathError: boolean = false;
+  restrictedFileTypes = ["exe"];
+  isValidFile: boolean = true;
+  formData: FormData = new FormData();
+  openEditTemplateModalPopup: boolean = false;
+  @Output() openEditModalPopup = new EventEmitter<File[]>();
+  @Input() sendTestEmailDtoAttachments: any[] = [];
+  hasVanityAccess: boolean = false;
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
@@ -125,6 +138,8 @@ export class SendTestEmailComponent implements OnInit {
       this.findSendReminderLeadEmailTemplate();
     }else if(this.isFromDomainWhiteListing){
       this.headerTitle = "Send Welcome Mail";
+      this.files = this.sendTestEmailDtoAttachments;
+      this.checkVanityAccess();
       this.findWelcomeMailTemplate();
     } else if(this.isAllPartners) {
       this.activeTab('registerNow'); 
@@ -589,6 +604,7 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  /***** XNFR-970 *****/
   findWelcomeMailTemplate() {
     this.processing = true;
     this.vanityURLService.getWelcomeTemplateForPartnerDomainWhitelisting().subscribe(
@@ -601,6 +617,7 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
+
   /***** XNFR-970 *****/
   closeModalPopup() {
     this.id = 0;
@@ -649,20 +666,24 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
-  sendWelcomeMailRemainder(){
+  /***** XNFR-970 *****/
+  sendWelcomeMailRemainder() {
     this.processing = true;
     this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
     this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
     this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
-    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto).subscribe(
+    this.prepareFormData();
+    this.vanityURLService.sendWelcomeEmail(this.sendTestEmailDto, this.formData).subscribe(
       response => {
+        this.processing = false;
         if (response.statusCode === 200) {
-          this.processing = false;
           this.callEventEmitter();
           this.referenceService.showSweetAlertSuccessMessage('Email sent successfully.');
         } else if (response.statusCode === 401) {
-          this.processing = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        } else if (response.statusCode === 402) {
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
       }, error => {
         this.processing = false;
@@ -670,22 +691,29 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
-   private isValidEmail(text: string): boolean {
+
+  isValidEmail(text: string): boolean {
     const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return text ? EMAIL_REGEXP.test(text) : false;
   }
 
- beforeAdd(tag: any): Observable<any> {
+  beforeAdd(tag: any): Observable<any> {
     const isPaste = !!tag['value'];
-    const emailTag = isPaste ? tag.value : tag;
-    if (!this.isValidEmail(emailTag)) {
-      return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['must_be_email']);
+    const email = isPaste ? tag.value : tag;
+    if (!this.isValidEmail(email)) {
+      return this.handleInvalidEmail(email, isPaste, this.errorMessages['must_be_email']);
     }
-    if (!this.isAllowedDomain(emailTag)) {
-    return this.handleInvalidEmail(emailTag, isPaste, this.errorMessages['invalid_domain']);
-  }
+
+    if (this.isDeactivatedDomain(email)) {
+      return this.handleInvalidEmail(email, isPaste, this.errorMessages['deactivated_domain']);
+    }
+
+    if (!this.isAllowedDomain(email)) {
+      return this.handleInvalidEmail(email, isPaste, this.errorMessages['invalid_domain']);
+    }
+
     this.addFirstAttemptFailed = false;
-    return Observable.of(emailTag);
+    return Observable.of(email);
   }
 
   private handleInvalidEmail(tag: string, isPaste: boolean, message: string): Observable<any> {
@@ -701,21 +729,18 @@ export class SendTestEmailComponent implements OnInit {
 
   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
     const email = control.value;
-
     if (this.addFirstAttemptFailed && !this.isValidEmail(email)) {
-      return { "must_be_email": true };
+      return { must_be_email: true };
     }
-
     if (this.isValidEmail(email)) {
-      const domain = email.substring(email.lastIndexOf('@') + 1).toLowerCase().trim();
-      const allowedDomains = (this.allPartnerDomains || [])
-        .map(function (d) { return d ? d.toLowerCase().trim() : ''; });
+      if (this.isDeactivatedDomain(email)) {
+        return { deactivated_domain: true };
+      }
 
-      if (allowedDomains.indexOf(domain) === -1) {
-        return { "invalid_domain": true };
+      if (!this.isAllowedDomain(email)) {
+        return { invalid_domain: true };
       }
     }
-
     return null;
   }
 
@@ -723,18 +748,70 @@ export class SendTestEmailComponent implements OnInit {
     if (!email || email.indexOf('@') === -1 || !this.allPartnerDomains) {
       return false;
     }
+    const domain = email.split('@')[1].toLowerCase().trim();
+    return this.allPartnerDomains.some(d => d.name === domain && !d.deactivated);
+  }
 
-    const emailDomain = email.split('@')[1].toLowerCase().trim();
+  private isDeactivatedDomain(email: string): boolean {
+    if (!email || email.indexOf('@') === -1 || !this.allPartnerDomains) {
+      return false;
+    }
+    const domain = email.split('@')[1].toLowerCase().trim();
+    return this.allPartnerDomains.some(d => d.name === domain && d.deactivated);
+  }
+//XNFR-1008
+  onFileChange(event: any): void {
+    const selectedFiles: FileList = event.target.files;    
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.files.push(selectedFiles[i]);
+      }
+      event.target.value = '';
+      this.validateAttachments();
+    }
+  }
 
-    for (var i = 0; i < this.allPartnerDomains.length; i++) {
-      var domain = this.allPartnerDomains[i];
-      if (domain && domain.toLowerCase().trim() === emailDomain) {
-        return true;
+    validateAttachments() {
+    let sizeInKb = 0;
+    let maxFileSizeInKb = 1024 * 20;
+    this.showFileTypeError = false;
+    for ( let file of this.files) {
+      sizeInKb = sizeInKb + (file.size / 1024);
+      let fileType = this.getFileExtension(file.name);
+      if (this.restrictedFileTypes.includes(fileType)) {
+        this.isValidFile = false;
+        this.showFileTypeError = true;
+        break;
       }
     }
-
-    return false;
+    if (sizeInKb>maxFileSizeInKb) {
+      this.showAttachmentErrorMessage = true;
+      this.isValidFile = false;
+    } else {
+      this.showAttachmentErrorMessage = false;
+      this.isValidFile = true;
+    }
   }
+
+  getFileExtension(fileName: string): string {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : '';
+  }
+
+  removeFile(index: number): void {
+    this.files.splice(index, 1);
+    this.validateAttachments();
+  }
+
+  prepareFormData(): void {
+    this.files.forEach(file => {
+      this.formData.append("uploadedFiles", file, file['name']);
+    });
+  }
+  openEditTemplatePopup() {
+    this.openEditModalPopup.emit(this.files);
+  }
+  
   tabId:any;
   setTabName(){
     if(this.registerNowItems.length > 0) {
@@ -747,4 +824,14 @@ export class SendTestEmailComponent implements OnInit {
       this.tabId = 'interacted';
     }
   }
+
+  checkVanityAccess() {
+		this.referenceService.hasVanityAccess().subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.hasVanityAccess = response.data;
+				}
+			}
+		);
+	}
 }
