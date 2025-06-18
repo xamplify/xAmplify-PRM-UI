@@ -62,7 +62,11 @@
         [toDateFilter]="toDateFilter" *ngIf="referenseService?.playBookAccessGivenByVendor"></app-userwise-track-counts>
     </div>
   </div>
-
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
+    <app-play-book-journey-interaction-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
+      *ngIf="authenticationService?.module?.damAccess"></app-play-book-journey-interaction-details>
+  </div>
   <!--****************** Lead To Deal Conversion & Campaigns To Lead Conversion Charts *******************-->
   <div class="row rowPaddingCustomization3 mobilerowPadding1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor || referenseService?.campaignAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12">
@@ -119,11 +123,6 @@
         [isDetailedAnalytics]="true" [assetType]="selectedAssetType"
         [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"></app-typewise-track-content-details>
     </div>
-  </div>
-  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
-    <app-play-book-journey-interaction-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
-      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-      *ngIf="authenticationService?.module?.damAccess"></app-play-book-journey-interaction-details>
   </div>
   <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
     <app-partner-journey-asset-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
