@@ -279,7 +279,7 @@ private beforeAdd(tag: any) {
     return Observable.of(tag);
   } 
    private validateEmail(text: string) {
-    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
     return (text && EMAIL_REGEXP.test(text));
   } 
   public notifications = 0;

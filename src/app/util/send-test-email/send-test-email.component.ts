@@ -693,7 +693,7 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   isValidEmail(text: string): boolean {
-    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
     return text ? EMAIL_REGEXP.test(text) : false;
   }
 
