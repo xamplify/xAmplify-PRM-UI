@@ -39,7 +39,7 @@
                               value="{{partner?.partnershipId}}" id="one-launch-campaign-radio-{{partner?.partnershipId}}"
                               type="radio" name="one-launch-campaign-partner-company"
                               [checked]="selectedPartnershipId==partner?.partnershipId"
-                              [disabled]="selectedPartnershipId==partner?.partnershipId"
+                              [disabled]="selectedPartnershipId==partner?.partnershipId || partner?.partnerStatus === 'deactivated'"
                               (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                          <i *ngIf="selectedPartnershipId==partner?.partnershipId" class="fa fa-check-circle-o success"></i>
                         </td>
@@ -60,6 +60,8 @@
                                  <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
                               </strong>
                            </h5>
+                           <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
+                              data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                         </td>
                         <td>
                            <app-display-date-and-time [dateAndTimeUTCString]="partner?.createdTimeInString"></app-display-date-and-time>
