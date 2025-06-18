@@ -337,6 +337,10 @@
                                           (click)="isListView = false"><i class="fa fa-th-large p10"
                                              aria-hidden="true"></i></span>
                                     </ng-container>
+                                    <a class="close-circle ref-mar" id="alignline-m-ref-mar" *ngIf="assignLeads || module == 'contacts' " (click)="refreshList()" data-toggle="tooltip"
+                                       data-placement="bottom" title="Refresh">
+                                       <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </a>
                                     <div class="inputs sort-class pb5" style="display: flex;">
                                        <div
                                           [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
@@ -366,7 +370,7 @@
                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                              </button> -->
                                           </div>
-                                       </div>
+                                          </div>
                                        <div class="portlet-input input-inline search-class"
                                           [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
                                           <div class="input-icon right">
@@ -443,8 +447,7 @@
                                     <tbody>
                                        <ng-container *ngFor="let contactList of pagination.pagedItems ;let i =index">
                                           <!-- XNFR-211 -->
-                                          <tr
-                                             [class.isProcessing]="contactList.uploadInProgress || contactList.validationInProgress || !contactList.emailValidationInd">
+                                          <tr>
                                              <td class="cw" *ngIf="showExpandButton">
                                                 <div class="actions-block left-float">
                                                    <a (click)="viewMatchedContacts(contactList)" data-toggle="tooltip"
@@ -778,8 +781,15 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                 </div>
-                                                <div class="actions-block actions-msg"
-                                                   *ngIf="contactList.uploadInProgress">Uploading...</div>
+                                                <div class="actions-block actions-msg" *ngIf="(contactList.uploadInProgress || contactList.validationInProgress) && (!sharedLeads || !isPartner)">
+                                                   <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()">
+                                                      <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+                                                      <div class="clickicons"></div>
+                                                   </a> <strong>
+                                                      <img src="assets/images/loading.gif" alt="Please Wait..." style="height:15px; opacity: 1;">
+                                                      Please wait..
+                                                   </strong>
+                                                </div>
                                                 <div class="actions-block actions-msg"
                                                    *ngIf="contactList.validationInProgress">Validating Email IDs...
                                                 </div>

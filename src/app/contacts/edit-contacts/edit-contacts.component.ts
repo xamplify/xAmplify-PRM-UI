@@ -2263,7 +2263,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									this.saveAsError = '';
 									this.saveAsListName = '';
 									this.saveAsListName = undefined;
+									if(this.checkingContactTypeName == 'Lead'){
+										this.router.navigateByUrl('/home/assignleads/manage');
+									}else{								
 									this.goToContactOrPartnerUrl();
+									}
 									this.contactService.saveAsSuccessMessage = "SUCCESS";
 									this.contactService.isLoadingList = false;
 								} else {
@@ -2331,8 +2335,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 	goToContactOrPartnerUrl() {
-		const url = !this.isPartner ? 'contacts' : 'partners';
-		this.router.navigateByUrl('/home/' + url + '/manage')
+		if (this.checkingContactTypeName == 'Lead') {
+			this.router.navigateByUrl('/home/assignleads/manage');
+		}else{
+			const url = !this.isPartner ? 'contacts' : 'partners';
+			this.router.navigateByUrl('/home/' + url + '/manage')
+		}
+		
 		this.contactService.isLoadingList = false;
 	}
 	toggle(i: number) {
