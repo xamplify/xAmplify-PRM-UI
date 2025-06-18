@@ -77,7 +77,8 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
   showContent() {
     if(this.isPlaybookWorkflow){
-        this.responseType = 'playbook';
+      this.responseType = 'playbook';
+      this.playbookReplies.sort((a, b) => (a.id > b.id) ? 1 : -1);
       this.replies = this.playbookReplies;
       this.findAllUsers();
       this.findTriggerTitles()
@@ -86,6 +87,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
         if(reply.divId == null || reply.divId == ''){
             var id = 'reply-' + (this.replies.indexOf(reply) +1);
             reply.divId = id;
+            this.allItems.push(id);
         }
         reply.previouslySelectedTemplateId = reply.templateId
         reply.timePhraseId = 20;

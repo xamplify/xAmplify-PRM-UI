@@ -194,6 +194,8 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
     this.httpRequestLoader.isHorizontalCss = true;
     this.csvPagination = { 
       ...this.partnersPagination,
+      pageIndex: 1,
+      maxResults: this.pagination.totalRecords 
     };
     this.teamMemberService.findPartners(this.csvPagination)
       .subscribe(

@@ -1387,9 +1387,8 @@
                                                                 </tr>
                                                                 <tr role="row" *ngIf="contacts?.expand">
                                                                     <td colspan="12">
-                                                                        <app-userlist-users
-                                                                            [searchKey]="campaignRecipientsPagination.searchKey"
-                                                                            [userListId]="contacts.id"></app-userlist-users>
+                                                                        <app-userlist-users [searchKey]="campaignRecipientsPagination.searchKey" [userListId]="contacts.id"
+                                                                            [isPartnerList]="contacts?.partnerList"></app-userlist-users>
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>

@@ -1891,17 +1891,11 @@
    <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
       <div class="modal-content">
          <div class="modal-header col-xs-12">
-            <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-               <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
-                  <a class="close-circle" data-dismiss="modal" (click)="closeSharedDetailsPopup()"><i
-                        class="fa fa-times" aria-hidden="true"></i></a>
-               </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
-               <div class="col-xs-12 col-sm-12 col-lg-12 hidden-xs">
-                  <h4 class="modal-title" id="sharedListModalLabel"> <strong>List has shared with the following
-                        {{authenticationService?.partnerModule?.customName}}:</strong> </h4>
-               </div>
+            <div  class="d-flex justify-content-between align-items-center">
+               <h4 class="modal-title" id="sharedListModalLabel"> <strong>List has shared with the following
+                  {{authenticationService?.partnerModule?.customName}}:</strong> </h4>
+                  <a class="close-circle d-flex justify-content-center align-items-center" data-dismiss="modal" (click)="closeSharedDetailsPopup()"><i
+                     class="fa fa-times mt0" aria-hidden="true"></i></a>
             </div>
          </div>
          <div class="modal-body clearfix">

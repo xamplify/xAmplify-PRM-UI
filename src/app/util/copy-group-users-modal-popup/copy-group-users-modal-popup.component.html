@@ -83,7 +83,9 @@
                                                 id="copy-group-users-header-checkbox-id"
                                                 (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                         </th>                      
-                                        <th colspan="2">{{isContactModule ? 'List Name' : 'Name'}}</th>
+                                        <th [attr.colspan]="isContactModule ? 2 : null">
+                                            {{ isContactModule ? 'List Name' : 'Name' }}
+                                          </th>                                          
                                         <th class="text-center">Count</th>
                                         <th class="text-center">Created On</th>
                                         <th class="text-center">Preview</th>
