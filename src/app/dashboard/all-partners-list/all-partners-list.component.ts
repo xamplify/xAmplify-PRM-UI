@@ -59,7 +59,12 @@ export class AllPartnersListComponent implements OnInit {
   showFilterOption: boolean = false;
   public multiSelectPlaceholderForRegion: string = "Select Region";
   public multiSelectPlaceholderForStatus: string = "Select Status";
-
+  /*** XNFR-1015 */
+  @Output() partnersSelected = new EventEmitter<any[]>();
+  @Input() isSentEmailNotification:boolean = false;
+  private selectedIds = new Set<string>();
+  private selectedPartnersMap = new Map<string, any>();
+  /**** XNFR-1015 */
   statusOptions = [
     { text: 'IncompleteCompanyProfile', value: 'IncompleteCompanyProfile' },
     { text: 'Active', value: 'Active' },
@@ -91,6 +96,10 @@ export class AllPartnersListComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if (this.isSentEmailNotification) {
+      this.selectedIds.clear();
+      this.selectedPartnersMap.clear();
+    }
     this.pagination.pageIndex = 1;
     this.getAllPartnersDetails(this.pagination);
     this.findRegionNames();
@@ -257,7 +266,6 @@ applyFilters(pagination: Pagination) {
       this.pagination.selectedRegionIds = [];
     }
     this.getAllPartnersDetailsList(this.pagination);
-    
   }
   getAllPartnersDetailsList(pagination: Pagination){
    pagination.partnerTeamMemberGroupFilter = this.applyFilter;
@@ -299,4 +307,54 @@ applyFilters(pagination: Pagination) {
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
       + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+"&selectedRegionIds="+selectedRegionIds+"&selectedStatusIds="+selectedStatusIds+"&access_token=" + this.authenticationService.access_token + pageableUrl;
    }
+  /****** XNFR-1015 *****/
+  getUniqueId(item: any): string {
+    return item.partnerId;
+  }
+
+  isItemSelected(item: any): boolean {
+    return this.selectedIds.has(this.getUniqueId(item));
+  }
+
+  toggleItemSelection(item: any, event:any): void {
+    const isChecked = event.target.checked;
+    const id = this.getUniqueId(item);
+    item.isSelected = isChecked;
+    if (isChecked) {
+      this.selectedIds.add(id);
+      this.selectedPartnersMap.set(id, item);
+    } else {
+      this.selectedIds.delete(id);
+      this.selectedPartnersMap.delete(id);
+    }
+  }
+
+  isItemSelectable(item: any): boolean {
+    return item.status !== 'Active';
+  }
+
+  hasSelectableItems(): boolean {
+    return this.pagination.pagedItems.some(item => this.isItemSelectable(item));
+  }
+
+  isCurrentPageFullySelected(): boolean {
+    return this.pagination.pagedItems
+      .filter(this.isItemSelectable)
+      .every(item => this.isItemSelected(item));
+  }
+
+  toggleSelectionForPage(event:any): void {
+    this.pagination.pagedItems.forEach(item => {
+      if (this.isItemSelectable(item)) {
+        this.toggleItemSelection(item, event);
+      }
+    });
+  }
+
+  emitSelectedPartners(): void {
+    const selectedPartners = Array.from(this.selectedPartnersMap.values()).filter(item => this.isItemSelected(item));
+    console.log(selectedPartners,"selectedPartners");
+    this.partnersSelected.emit(selectedPartners);
+  }
+  /***** XNFR-1015 *****/
 }

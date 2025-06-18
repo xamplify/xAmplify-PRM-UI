@@ -60,3 +60,15 @@ height: 7px;
 .pl5{
   padding-left: 5px!important;
 }
+
+/*** XNFR-1015 ***/
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+input[type="checkbox"] {
+  margin: 0 auto;
+  display: block;
+}
+/*** XNFR-1015 ***/
