@@ -4,7 +4,7 @@
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m  mobilesearchdisplay">
         <!-- XNFR-1015-->
-        <button *ngIf="selectedPartnersMap.size > 0" class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="emitSelectedPartners()">
+        <button [disabled]="selectedPartnersMap.size === 0" class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="emitSelectedPartners()">
           <i aria-hidden=" true" class="fa fa-envelope p10" data-toggle="tooltip" title="Send reminder email"
             data-original-title="Send reminder email"></i>
         </button>
@@ -127,7 +127,8 @@
               <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
               <td>{{item.region}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
-              <td>{{item?.status}}</td>
+              <td *ngIf="item?.status === 'IncompleteCompanyProfile'">Incomplete<br> Company<br>Profile</td>
+              <td *ngIf="item?.status != 'IncompleteCompanyProfile'">{{item?.status}}</td>
               <td>
                 <span *ngIf="!item.dateLastLogin">-</span>
                 <app-timestamp  *ngIf="item.dateLastLogin" [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp>
