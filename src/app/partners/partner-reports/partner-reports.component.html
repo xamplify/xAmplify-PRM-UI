@@ -933,7 +933,7 @@
     </div>
     <div class="ml15m">
       <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
-      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)"></app-all-partners-list>
+      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (partnersSelected)="openSendTestPopupFromAllPartner($event)" [isSentEmailNotification]="isSentEmailNotification" ></app-all-partners-list>
     </div>
   </div>
 
@@ -1242,7 +1242,7 @@
   </div>
 </div>
 
-<app-send-test-email *ngIf="sendTestEmailIconClicked" [selectedPartners]="selectedPartners" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [selectedPartners]="selectedPartners" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()" [isAllPartners]="isAllPartners" [selectedIncompleteEmailTemplateId]="selectedIncompleteEmailTemplateId" [selectedDormantEmailTemplateId]="selectedDormantEmailTemplateId"></app-send-test-email>
 
 
 

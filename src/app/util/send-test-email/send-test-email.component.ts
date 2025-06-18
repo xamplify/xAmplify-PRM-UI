@@ -37,7 +37,7 @@ export class SendTestEmailComponent implements OnInit {
   @Input() selectedItem : any;
   @Output() sendmailNotify =new EventEmitter
   @Input() sendSignatureRemainder: boolean; 
-  
+  @Input() isAllPartners:boolean = false;
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -71,6 +71,12 @@ export class SendTestEmailComponent implements OnInit {
   ngxloading = false;
   activateNowItems: any[]= [];
   registerNowItems: any[]= [];
+  /** XNFR-1015  **/
+  loginNowItems: any[]= [];
+  dormantPartnerItems: any[]= [];
+  @Input() selectedDormantEmailTemplateId:number = 0;
+  @Input() selectedIncompleteEmailTemplateId:number = 0;
+  /** XNFR-1015 **/
   tabsEnabled: boolean = false;
 
   /***** XNFR-970 *****/
@@ -118,14 +124,14 @@ export class SendTestEmailComponent implements OnInit {
     this.tabsEnabled = false;
     if(this.sendSignatureRemainder){
       this.getVanityEmailTemplateForParterSignatureRemainder()
-    }else if(this.vanityTemplatesPartnerAnalytics && this.id !== undefined && this.id!=0 ){
+    }else if(this.vanityTemplatesPartnerAnalytics && this.id !== undefined && this.id!=0 && !this.isAllPartners){
       this.getVanityEmailTemplatesPartnerAnalytics();
     }else if(this.isSendMdfRequestOptionClicked){
       this.headerTitle = "Unlock MDF Funds for Your Campaign";
       this.getFundingTemplateHtmlBody();
     }else if(this.teamMemberReminder){
       this.getVanityEmailTemplatesPartnerAnalytics();
-    }else if(this.vanityTemplatesPartnerAnalytics &&(this.id==undefined || this.id==0)){
+    }else if(this.vanityTemplatesPartnerAnalytics &&(this.id==undefined || this.id==0) && !this.isAllPartners){
       this.activeTab('registerNow'); 
       this.tabsEnabled = true;
     }else if (this.isLeadOptionClicked) {
@@ -135,9 +141,13 @@ export class SendTestEmailComponent implements OnInit {
       this.files = this.sendTestEmailDtoAttachments;
       this.checkVanityAccess();
       this.findWelcomeMailTemplate();
+    } else if(this.isAllPartners) {
+      this.activeTab('registerNow'); 
+      this.tabsEnabled = true;
     } else {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
+    this.setTabName();
   }
   ngOnDestroy(){
     $('td a').css({
@@ -441,6 +451,8 @@ export class SendTestEmailComponent implements OnInit {
   callEventEmitter() {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.modalPopupId);
+    this.selectedDormantEmailTemplateId = 0;//XNFR-1015
+    this.selectedIncompleteEmailTemplateId = 0; //XNFR-1015
     this.sendTestEmailComponentEventEmitter.emit();
     this.sendTestEmailComponentTeamMemberEventEmitter.emit();
   }
@@ -465,12 +477,34 @@ export class SendTestEmailComponent implements OnInit {
 
       this.registerNowItems = [];
       this.activateNowItems = [];
-
+      /*** XNFR-1015 **/
+      this.loginNowItems = [];
+      this.dormantPartnerItems = [];
+      /*** XNFR-1015 **/
+  
       selectedItemsArray.forEach((item: any) => {
-        if (item.password == null || item.password == undefined) {
-          this.registerNowItems.push(item);
+        /*** XNFR-1015 */
+        if (this.isAllPartners) {
+          if (item.status == 'IncompleteCompanyProfile') {
+            this.loginNowItems.push(item);
+          }
+          else if (item.status == 'Dormant') {
+            this.dormantPartnerItems.push(item);
+          }
+          else if (item.status == 'Pending Signup') {
+            if (item.password == null || item.password == undefined) {
+              this.registerNowItems.push(item);
+            } else {
+              this.activateNowItems.push(item);
+            }
+          }
+          /*** XNFR-1015 */
         } else {
-          this.activateNowItems.push(item);
+          if (item.password == null || item.password == undefined) {
+            this.registerNowItems.push(item);
+          } else {
+            this.activateNowItems.push(item);
+          }
         }
       });
     }
@@ -483,6 +517,10 @@ export class SendTestEmailComponent implements OnInit {
 
     const hasRegisterItems = tabName === 'registerNow' && this.registerNowItems.length > 0;
     const hasActivateItems = tabName === 'activateNow' || (tabName === 'registerNow' && this.registerNowItems.length === 0 && this.activateNowItems.length > 0);
+    /** XNFR-1015 **/
+    const hasIncompleItems = tabName === 'logIn' || (tabName === 'registerNow' && this.registerNowItems.length === 0 && this.loginNowItems.length > 0);
+    const hasDormantPartnerItems = tabName === 'interacted' || (tabName === 'registerNow' && this.registerNowItems.length === 0 && this.dormantPartnerItems.length > 0);
+   /** XNFR-1015 **/
 
     if (hasRegisterItems) {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
@@ -498,8 +536,20 @@ export class SendTestEmailComponent implements OnInit {
       } else {
         this.id = vanityCheck ? 2 : 405;
       }
-
-    } else {
+    } 
+    /*** XNFR-1015 */
+    else if (hasDormantPartnerItems || hasIncompleItems) {
+      const isIncompleteItems = hasIncompleItems;
+      const partnerItems = isIncompleteItems ?  this.loginNowItems : this.dormantPartnerItems ;
+      this.toEmailId = partnerItems.map(item => item.emailId).join(', ');
+      this.id = isIncompleteItems ?  this.selectedIncompleteEmailTemplateId : this.selectedDormantEmailTemplateId ;
+    }
+    // else if(hasIncompleItems) {
+    //   this.toEmailId = this.loginNowItems.map(item => item.emailId).join(', ');
+    //   this.id = this.selectedIncompleteEmailTemplateId;
+    // }
+    /*** XNFR-1015 */
+    else {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
       if (isPrm || isTeamMember) {
         this.id = vanityCheck ? 14 : 1178;
@@ -575,6 +625,8 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.leadStatusModalId);
     this.referenceService.closeModalPopup(this.modalPopupId);
+    this.selectedDormantEmailTemplateId = 0;
+    this.selectedIncompleteEmailTemplateId = 0;   
     this.sendTestEmailComponentEventEmitter.emit();
   }
 
@@ -758,6 +810,19 @@ export class SendTestEmailComponent implements OnInit {
   }
   openEditTemplatePopup() {
     this.openEditModalPopup.emit(this.files);
+  }
+  
+  tabId:any;
+  setTabName(){
+    if(this.registerNowItems.length > 0) {
+       this.tabId = 'Register';
+    } else if(this.activateNowItems.length > 0) {
+      this.tabId = 'Activate';
+    } else if(this.loginNowItems.length > 0) {
+      this.tabId = 'logIn';
+    } else if(this.dormantPartnerItems.length > 0) {
+      this.tabId = 'interacted';
+    }
   }
 
   checkVanityAccess() {
