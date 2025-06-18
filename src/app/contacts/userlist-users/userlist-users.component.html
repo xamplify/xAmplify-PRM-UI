@@ -20,8 +20,9 @@
             <tr>
                <td style="width: 40%;">
                   <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
-                  <h6 *ngIf="user.partnerStatus == 'deactivated'" class="green-banner inline-flex" style="margin-left: 65px;"
-                     data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
+                  <h6 *ngIf="isPartnerList && user.partnerStatus == 'deactivated'" class="green-banner inline-flex"
+                     style="margin-left: 65px;" data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">
+                     DEACTIVATED</h6>
                </td>
                <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.jobTitle}}</td>
                <td [ngStyle]="{'width' : isContactModule ? '20%' : '30%'}">{{user.address}}</td>

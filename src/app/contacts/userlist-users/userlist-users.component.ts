@@ -18,6 +18,7 @@ export class UserlistUsersComponent implements OnInit {
 
 	@Input() public userListId: any;
 	@Input() public searchKey: any;
+	@Input() public isPartnerList: boolean = false
 
 	usersPagination: Pagination = new Pagination();
 	usersSortOption: SortOption = new SortOption();
