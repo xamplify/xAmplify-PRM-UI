@@ -1,8 +1,8 @@
 
 <div class="summary-container">
   <header class="summary-header" *ngIf="reportData">
-    <h1>Executive Summary</h1>
-    <p class="subtitle">Contact: {{ reportData.contact_details.name }}</p>
+    <h1> {{ reportData.header }}</h1>
+    <!-- <p class="subtitle">Contact: {{ reportData.contact_details.name }}</p> -->
   </header>
 
   <main class="summary-main" *ngIf="reportData">

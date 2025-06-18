@@ -124,16 +124,11 @@ export class ChatGptModalComponent implements OnInit {
   copiedIndexes: number[] = [];
   showButtons = false;
 
-
   showPrompts: boolean = false;
   suggestedPrompts: string[] = [];  
 
   showReport: boolean= false;
-  reportData: ReportData;
-  repoData: ReportData;
-
   oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
-
   filteredPrompts: string[] = [];          
   searchTerm: string = '';                 
   showPromptsDown: boolean  = false;
@@ -774,19 +769,18 @@ export class ChatGptModalComponent implements OnInit {
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         self.isTextLoading = false;
-        self.reportData = response.data.oliverReportDTO;
         console.log('API Response:', response);
         var content = response.data;
         if (content) {
 
           let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           let isReport = response.data.isReport;
-          if (isReport) {
+          if (isReport == 'true') {
             try {
-              const cleanJsonStr = this.extractJsonString(message);
+              const cleanJsonStr = self.extractJsonString(message);
               message = self.parseOliverReport(cleanJsonStr);
             } catch (error) {
-              isReport = false;
+              isReport = 'false';
               message = self.chatGptGeneratedText;
             }
           }
@@ -923,7 +917,8 @@ export class ChatGptModalComponent implements OnInit {
 
             if (message.role === 'assistant') {
               if (isReport == 'true') {
-                message.content = this.parseOliverReport(message.content);
+                let reponseJson = this.extractJsonString(message.content);
+                message.content = this.parseOliverReport(reponseJson);
               }
               this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
@@ -1467,88 +1462,69 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     .slice().sort(() => Math.random() - 0.5).slice(0, 15);
   }
 
-
-   showOliverReport() {
-    this.repoData = this.reportData;
-    this.showReport = !this.showReport;
+  extractJsonString(raw: string): string {
+    const firstBrace = raw.indexOf('{');
+    const lastBrace = raw.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
+      throw new Error('No valid JSON object found in input');
+    }
+    return raw.substring(firstBrace, lastBrace + 1);
   }
 
-  closeReport(event: any) {
-     this.showReport = !this.showReport;
+  parseOliverReport(jsonStr: string): ReportData {
+    const jsonObject = JSON.parse(jsonStr);
+    const dto: ReportData = {
+      contact_details: {
+        name: jsonObject.contact_details.name || '',
+        email: jsonObject.contact_details.email || '',
+        phone_numbers: jsonObject.contact_details.phone_numbers || [],
+        company: jsonObject.contact_details.company || '',
+        address: jsonObject.contact_details.address || '',
+        additional_info: jsonObject.contact_details.additional_info || ''
+      },
+      leads: {
+        summary: jsonObject.leads.summary || '',
+        lead_records: (jsonObject.leads.lead_records || []).map((record: any) => ({
+          id: record.id,
+          first_name: record.first_name || '',
+          last_name: record.last_name || '',
+          company: record.company || '',
+          email: record.email || '',
+          phone: record.phone || '',
+          address: record.address || '',
+          campaign: record.campaign || '',
+          created_time: record.created_time || '',
+          pipeline_stage: record.pipeline_stage || ''
+        }))
+      },
+      deals: {
+        summary: jsonObject.deals.summary || '',
+        deal_records: (jsonObject.deals.deal_records || []).map((record: any) => ({
+          title: record.title || '',
+          amount: record.amount || 0,
+          close_date: record.close_date || '',
+          associated_lead_id: record.associated_lead_id || '',
+          campaign: record.campaign || '',
+          created_by: record.created_by || '',
+          pipeline: record.pipeline || '',
+          stage: record.stage || ''
+        }))
+      },
+      campaigns: {
+        summary: jsonObject.campaigns.summary || '',
+        campaign_records: (jsonObject.campaigns.campaign_records || []).map((record: any) => ({
+          name: record.name || '',
+          campaign_type: record.campaign_type || '',
+          launch_time: record.launch_time || '',
+          associated_with: record.associated_with || '',
+          details: record.details || ''
+        }))
+      },
+      key_takeaways: jsonObject.key_takeaways || [],
+      strategic_recommendations: jsonObject.strategic_recommendations || [],
+      header: jsonObject.header || 'Report'
+    };
+    return dto;
   }
-
-
-
-
-
-
-
-
-extractJsonString(raw: string): string {
-  const firstBrace = raw.indexOf('{');
-  const lastBrace = raw.lastIndexOf('}');
-  if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
-    throw new Error('No valid JSON object found in input');
-  }
-  return raw.substring(firstBrace, lastBrace + 1);
-}
-
-
-parseOliverReport(jsonStr: string): ReportData {
-  const jsonObject = JSON.parse(jsonStr);
-  const dto: ReportData = {
-    contact_details: {
-      name: jsonObject.contact_detailsname || '',
-      email: jsonObject.contact_detailsemail || '',
-      phone_numbers: jsonObject.contact_detailsphone_numbers || [],
-      company: jsonObject.contact_detailscompany || '',
-      address: jsonObject.contact_detailsaddress || '',
-      additional_info: jsonObject.contact_detailsadditional_info || ''
-    },
-    leads: {
-      summary: jsonObject.leadssummary || '',
-      lead_records: (jsonObject.leadslead_records || []).map((record: any) => ({
-        id: record.id,
-        first_name: record.first_name || '',
-        last_name: record.last_name || '',
-        company: record.company || '',
-        email: record.email || '',
-        phone: record.phone || '',
-        address: record.address || '',
-        campaign: record.campaign || '',
-        created_time: record.created_time || '',
-        pipeline_stage: record.pipeline_stage || ''
-      }))
-    },
-    deals: {
-      summary: jsonObject.dealssummary || '',
-      deal_records: (jsonObject.dealsdeal_records || []).map((record: any) => ({
-        title: record.title || '',
-        amount: record.amount || 0,
-        close_date: record.close_date || '',
-        associated_lead_id: record.associated_lead_id || '',
-        campaign: record.campaign || '',
-        created_by: record.created_by || '',
-        pipeline: record.pipeline || '',
-        stage: record.stage || ''
-      }))
-    },
-    campaigns: {
-      summary: jsonObject.campaignssummary || '',
-      campaign_records: (jsonObject.campaignscampaign_records || []).map((record: any) => ({
-        name: record.name || '',
-        campaign_type: record.campaign_type || '',
-        launch_time: record.launch_time || '',
-        associated_with: record.associated_with || '',
-        details: record.details || ''
-      }))
-    },
-    key_takeaways: jsonObject.key_takeaways || [],
-    strategic_recommendations: jsonObject.strategic_recommendations || []
-  };
-  return dto;
-}
-
-
 
 }

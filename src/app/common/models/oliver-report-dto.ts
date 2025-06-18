@@ -5,6 +5,7 @@ export class ReportData {
   campaigns: Campaigns;
   key_takeaways: string[];
   strategic_recommendations: string[];
+  header: string;
 }
 interface ContactDetails {
   name: string;
