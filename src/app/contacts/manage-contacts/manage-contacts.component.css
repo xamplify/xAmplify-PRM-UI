@@ -442,4 +442,6 @@ h6 {
   text-decoration-line: underline;
 }
 .close-circle {height: 29px;width: 29px;}
-
+.ref-mar {
+  margin-left: -1px !important;
+}
