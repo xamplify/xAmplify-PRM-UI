@@ -21,6 +21,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
+import { OliverReportClientDTO } from '../models/oliver-report-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -38,7 +39,7 @@ export class ChatGptModalComponent implements OnInit {
 
   inputText = "";
   isValidInputText = false;
-  chatGptGeneratedText = "";
+  chatGptGeneratedText : any;
   isTextLoading = false;
   isCopyButtonDisplayed = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -127,6 +128,10 @@ export class ChatGptModalComponent implements OnInit {
   showPrompts: boolean = false;
   suggestedPrompts: string[] = [];  
 
+  showReport: boolean= false;
+  reportData: OliverReportClientDTO;
+  repoData: OliverReportClientDTO;
+
   oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
 
   filteredPrompts: string[] = [];          
@@ -136,6 +141,7 @@ export class ChatGptModalComponent implements OnInit {
   showGlobalPrompts: boolean;
   showInsightsPromptsDown: boolean = false;
   showInsightsPrompts: boolean = false;
+  isReportInHistory: boolean;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -720,7 +726,11 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
+  showMEEEEE: boolean = false;
+
   AskAiTogetData() {
+  
+    this.showMEEEEE = true;
     this.searchTerm = "";
     this.showPromptsDown = false;
     this.showPrompts = false;
@@ -764,15 +774,28 @@ export class ChatGptModalComponent implements OnInit {
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         self.isTextLoading = false;
+        self.reportData = response.data.oliverReportDTO;
         console.log('API Response:', response);
         var content = response.data;
         if (content) {
-          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+
+          let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+          let isReport = response.data.isReport;
+          if (isReport) {
+            try {
+              const cleanJsonStr = this.extractJsonString(message);
+              message = self.parseOliverReport(cleanJsonStr);
+            } catch (error) {
+              isReport = false;
+              message = self.chatGptGeneratedText;
+            }
+          }
+          self.messages.push({ role: 'assistant', content: message,  isReport: isReport});
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
           self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
+          
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -894,12 +917,19 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (response.statusCode == 200) {
           let messages = response.data;
+          let isReport = 'false';
           messages.forEach((message: any) => {
+
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
+              if (this.checkKeywords(message.content)) {
+                isReport = 'true';
+              } else {
+                isReport = 'false';
+              }
             }
           });
           setTimeout(() => {
@@ -919,6 +949,12 @@ export class ChatGptModalComponent implements OnInit {
       }
     );
   }
+
+  checkKeywords(prompt: string) {
+    const keywords = ['executive summary', 'QBR'];
+    return keywords.some(keyword => prompt.toLowerCase().includes(keyword.toLowerCase()));
+  }
+
 
   openEdit(history:any,index:any) {
     if (this.index != undefined && this.index > 0 && this.index != index) {
@@ -1426,5 +1462,84 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.filteredPrompts = this.suggestedPrompts
     .slice().sort(() => Math.random() - 0.5).slice(0, 15);
   }
+
+
+   showOliverReport() {
+    this.repoData = this.reportData;
+    this.showReport = !this.showReport;
+  }
+
+  closeReport(event: any) {
+     this.showReport = !this.showReport;
+  }
+
+
+
+
+
+
+
+
+extractJsonString(raw: string): string {
+  const firstBrace = raw.indexOf('{');
+  const lastBrace = raw.lastIndexOf('}');
+  if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
+    throw new Error('No valid JSON object found in input');
+  }
+  return raw.substring(firstBrace, lastBrace + 1);
+}
+
+
+parseOliverReport(jsonStr: string): OliverReportClientDTO {
+  const jsonObject = JSON.parse(jsonStr);
+  let dto: OliverReportClientDTO;
+
+  if (jsonObject.contactDetails) {
+    dto.contactDetails = {
+      email: jsonObject.contactDetails.email || [],
+      phone: jsonObject.contactDetails.phone || [],
+      company: jsonObject.contactDetails.company || [],
+      address: jsonObject.contactDetails.address || '',
+      city: jsonObject.contactDetails.city || [],
+      state: jsonObject.contactDetails.state || '',
+      country: jsonObject.contactDetails.country || ''
+    };
+  }
+
+  if (jsonObject.campaignEngagementPerformance) {
+    dto.campaignEngagementPerformance = {
+      engagedCampaigns: jsonObject.campaignEngagementPerformance.engagedCampaigns || [],
+      activeCampaigns: jsonObject.campaignEngagementPerformance.activeCampaigns || []
+    };
+  }
+
+  if (jsonObject.leadLifecycleFunnelMetrics) {
+    dto.leadLifecycleFunnelMetrics = {
+      pipelineStage: jsonObject.leadLifecycleFunnelMetrics.pipelineStage || '',
+      topLeadCampaigns: jsonObject.leadLifecycleFunnelMetrics.topLeadCampaigns || []
+    };
+  }
+
+  if (jsonObject.dealInteractionsRevenueAttribution) {
+    dto.dealInteractionsRevenueAttribution = {
+      dealsClosed: jsonObject.dealInteractionsRevenueAttribution.dealsClosed || [],
+      recentClosedDealsDates: jsonObject.dealInteractionsRevenueAttribution.recentClosedDealsDates || []
+    };
+  }
+
+  if (jsonObject.partnerJourneyBehavioralInsights) {
+    dto.partnerJourneyBehavioralInsights = {
+      associatedCompanies: jsonObject.partnerJourneyBehavioralInsights.associatedCompanies || [],
+      interactionFrequency: jsonObject.partnerJourneyBehavioralInsights.interactionFrequency || ''
+    };
+  }
+
+  dto.keyTakeaways = jsonObject.keyTakeaways || [];
+  dto.strategicRecommendations = jsonObject.strategicRecommendations || [];
+
+  return dto;
+}
+
+
 
 }

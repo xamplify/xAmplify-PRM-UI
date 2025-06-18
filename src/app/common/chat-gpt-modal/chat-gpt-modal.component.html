@@ -727,8 +727,8 @@
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
-                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign
-                      directions with guided ideation.</p>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Effortlessly retrieve contact details using just a name or email address.
+                       Instantly generate summaries and detailed reports.</p>
                     <!-- Input Section -->
                     <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
@@ -773,7 +773,9 @@
       <div class="content-card">
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
-            <markdown [data]="message.content"></markdown>
+            <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
+             <app-executive-summary-report  *ngIf="showMEEEEE">
+             </app-executive-summary-report>
           </div>
         </div>
       </div>
