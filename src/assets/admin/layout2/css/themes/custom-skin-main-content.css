@@ -2694,7 +2694,7 @@ markdown pre,.aligin-para{
   background-image: none !important;
   box-shadow: none !important;
 }
-::ng-deep.nl-container table tr:nth-child(odd) {
+table.nl-container tr:nth-child(odd) {
   background-color: transparent !important;
 }
 .pad div {
