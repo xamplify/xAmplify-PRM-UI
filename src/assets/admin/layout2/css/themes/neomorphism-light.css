@@ -4663,3 +4663,21 @@ input:checked + .toggle-slider {
   .suggestion-direction-global-chat{
     border-bottom: 12px solid #f0f5fa!important;
   }
+  /* bee template table remove bg-color */
+.nl-container table tr,
+.nl-container table tr:nth-child(odd),
+.nl-container table tr:nth-child(even),
+.nl-container table tbody tr:nth-of-type(odd),
+.nl-container table tbody tr:nth-of-type(even) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.nl-container tbody {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.pad div {
+  color: #333 !important;
+}

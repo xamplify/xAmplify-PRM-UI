@@ -443,5 +443,7 @@ h6 {
 }
 .close-circle {height: 29px;width: 29px;}
 .ref-mar {
-  margin-left: -1px !important;
+  height: 34px;
+  width: 34px;
+  margin-left:10px;
 }
