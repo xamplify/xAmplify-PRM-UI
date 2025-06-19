@@ -645,8 +645,8 @@ export class SortOption {
 	];
 	playbookDetailsInteractionDropDownOptions = [
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'View Count(ASC)', 'value': 'viewCount-Asc' },
-		{ 'name': 'View Count(DESC)', 'value': 'viewCount-Desc' }
+		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
+		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' }
 	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];

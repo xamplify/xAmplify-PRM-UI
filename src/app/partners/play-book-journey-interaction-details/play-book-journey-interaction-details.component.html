@@ -100,8 +100,7 @@
                 Member</th>
               <th scope="col" class="text-center">Playbook Name</th>
               <th scope="col" class="text-center">Created By</th>
-              <th scope="col" class="text-center">View Count</th>
-              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i>Progress</th>
+              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Progress</th>
               <th scope="col" class="text-center">Published On</th>
               <th scope="col" class="text-center">Actions</th>
             </tr>
@@ -117,13 +116,6 @@
               </td>
               <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.createdByName}}">{{item.createdByName}}   
                   </p></td>
-              <td class="text-center">
-                <div class="custom-icon">
-                  <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">
-                    <strong>{{item?.viewedCount}}</strong></i>
-                  <div class="clickicons"></div>
-                </div>
-              </td>
                 <td>
                   <div class="progress heightabjustment">
                     <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%"
