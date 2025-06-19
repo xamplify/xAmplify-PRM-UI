@@ -125,7 +125,7 @@
                   <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
                   <span *ngIf="item.progress == undefined">0%</span>
                 </td>
-                <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
+                <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOn">
                 </app-timestamp></td>
               <td class="text-center">
                 <div class="actions-block override-actions ActionAlign action_inline">
