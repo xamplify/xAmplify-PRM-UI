@@ -6,4 +6,5 @@ export class CustomLoginTemplate {
     loggedInUserId:number;
     companyId:number;
     imagePath:string;
+    cdnImagePath:string;//XNFR-1001
 }

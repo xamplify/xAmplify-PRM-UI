@@ -1217,7 +1217,11 @@
    <!-- <div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
       <app-digital-signature  [isFromDam]="true" (notifyAddImageToPdf)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
    </div> -->
-
-   <div *ngIf="openSelectDigitalSignatureModalPopUp">
-      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true" [isDamEditMode] = "!isAdd" [damAssetPath] = "this.damUploadPostDto.assetPath" [hideSignatureTool]="this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature"></app-select-digital-signature>
+   
+<!-- XNFR-1001  -->
+<div *ngIf="openSelectDigitalSignatureModalPopUp && !referenceService.isCloudFront">
+      <app-select-digital-signature  (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true" [isDamEditMode] = "!isAdd" [damAssetPath] = "damUploadPostDto.assetPath" [hideSignatureTool]="this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature"></app-select-digital-signature>
+   </div>
+   <div *ngIf="openSelectDigitalSignatureModalPopUp && referenceService.isCloudFront">
+      <app-select-digital-signature *ngIf="damUploadPostDto.cdnAssetPath" (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true" [isDamEditMode] = "!isAdd" [damAssetPath] = "damUploadPostDto.cdnAssetPath" [hideSignatureTool]="this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature"></app-select-digital-signature>
    </div>

@@ -51,15 +51,20 @@
 								<tbody>
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
+											<!-- XNFR-1001  -->
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
 													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)" [disabled]="asset.disableAccessForOliver || files.indexOf(asset.assetType) === -1"></td>
-											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
-												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
-													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
-														alt="Image Not Found"
-														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
-												</div>
-											</td>
+													<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
+														<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+															<img class="custom-image-css" *ngIf="!referenceService.isCloudFront" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+																alt="Image Not Found"
+																style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+																<img class="custom-image-css" *ngIf="referenceService.isCloudFront" src="{{asset?.cdnThumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+																alt="Image Not Found"
+																style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+														</div>
+													</td>
+													<!-- XNFR-1001  -->
 											<td *ngIf="(!isPartnerView && asset.videoId)" class="hidden-xs text-center" style="width: 10%;">
 												<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO"
 													[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName"
