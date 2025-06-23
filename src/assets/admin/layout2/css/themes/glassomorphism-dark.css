@@ -4494,3 +4494,12 @@ markdown pre,.aligin-para{
 .suggestion-list div:hover{
   background-color: rgb(51 55 70 / 40%) !important;
 }
+ /* bee template table remove bg-color */
+ .nl-container tbody {
+  background: transparent !important;
+  backdrop-filter:none!important;
+  border:none!important;
+}
+.pad div {
+  color: #ffffff !important;
+}

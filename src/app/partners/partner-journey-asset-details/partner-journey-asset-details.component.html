@@ -55,7 +55,7 @@
                 </button>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
-                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedAssetNames' [ngModelOptions]="{standalone: true}"
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.assetIds' [ngModelOptions]="{standalone: true}"
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
                   [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
                 </ejs-multiselect>
@@ -148,7 +148,7 @@
                   <div class="clickicons"></div>
                 </div>
               </td>
-              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
+              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOn">
                 </app-timestamp></td>
               <td class="text-center">
                 <div class="actions-block override-actions ActionAlign action_inline">

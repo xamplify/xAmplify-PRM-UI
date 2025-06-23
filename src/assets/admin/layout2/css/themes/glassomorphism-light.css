@@ -4761,3 +4761,12 @@ input:checked + .toggle-slider {
   .templateui{
     bottom: 46px!important;
   }
+   /* bee template table remove bg-color */
+ .nl-container tbody {
+  background: transparent !important;
+  backdrop-filter:none!important;
+  border:none!important;
+}
+.pad div {
+  color: #ffffff !important;
+}

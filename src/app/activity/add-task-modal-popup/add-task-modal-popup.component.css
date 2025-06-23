@@ -27,6 +27,10 @@ select option[data-class="red"] {
     color: red;
     font-weight: 600;
   }
-  /* select {
-    font-family: 'FontAwesome', 'sans-serif';
-  } */
+  .l-g-view {
+    height: 29px;
+    width: 29px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+  

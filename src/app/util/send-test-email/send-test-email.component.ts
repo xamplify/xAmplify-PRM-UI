@@ -305,6 +305,18 @@ export class SendTestEmailComponent implements OnInit {
     $('table tbody').css({
       'background-color': 'inherit'
     });
+    $('td a').each(function () {
+      const text = $(this).text().trim().toLowerCase();
+      if (text === 'register now' || text === 'activate now') {
+        $(this).css({
+          'background-color': '#0943e5',
+          'color': '#ffffff',
+          'padding': '5px 40px',
+          'display': 'inline-block',
+          'text-decoration': 'none'
+        });
+      }
+    });
     this.processing = false;
   }
 

@@ -290,8 +290,9 @@ export class SortOption {
 	]
 
 	groupsSortDropDownOptions = [
-		{ 'name': 'List name (A-Z)', 'value': 'name-ASC' },
-		{ 'name': 'List name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'List name (A-Z)', 'value': 'groupName-ASC' },
+		{ 'name': 'List name (Z-A)', 'value': 'groupName-DESC' },
 		{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC' },
 	];
@@ -644,8 +645,8 @@ export class SortOption {
 	];
 	playbookDetailsInteractionDropDownOptions = [
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'View Count(ASC)', 'value': 'viewCount-Asc' },
-		{ 'name': 'View Count(DESC)', 'value': 'viewCount-Desc' }
+		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
+		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' }
 	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -676,7 +677,7 @@ export class SortOption {
 	isListView: boolean = false;
 	selectedCampaignTypeIndex:number = 0;
 	public selectedTagDropDownOption: any = this.tagSortDropDownOptions[3];
-	public selectedGroupsDropDownOption: any = this.groupsSortDropDownOptions[3];
+	public selectedGroupsDropDownOption: any = this.groupsSortDropDownOptions[0];
 	public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
 	public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
 	public eventSelectedCampaignRecipientsDropDownOption = this.eventCampaignRecipientsDropDownOptions[3];
