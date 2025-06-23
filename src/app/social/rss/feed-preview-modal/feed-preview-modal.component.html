@@ -1,0 +1,25 @@
+<div class="modal fade" id="feedPreviewModal" tabindex="-1" role="dialog" aria-labelledby="feedPreviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="feedPreviewModalLabel">Preview</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-top:10px;margin-bottom:10px;">
+          <span title="{{feed?.statusMessage}}"><strong>{{feed?.statusMessage}}</strong></span>
+        </div>
+        <ng-container *ngIf="feed?.socialStatusContents?.length>0">
+          <ng-container *ngFor="let item of feed.socialStatusContents">
+            <div class="img-wrap img-thumbnail rounded-0" style="margin-bottom:15px;">
+              <img *ngIf="item.fileType !== 'video'" [src]="authenticationService.MEDIA_URL + item.filePath" style="max-width:100%">
+              <img *ngIf="item.fileType === 'video'" [src]="item.filePath" (error)="videoUtilService.errorVideoHandler($event)">
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
