@@ -22,6 +22,7 @@
                     <div *ngIf="selectedPartnerTeamMemberGroupMappingIds?.length>0  && partnersPagination.totalRecords>0" class="alert alert-success text-center">
                         <strong>Selected Rows: {{selectedPartnerTeamMemberGroupMappingIds?.length}}</strong>
                      </div>
+                     <div *ngIf="partnersPagination.pagedItems?.length>0">
                         <div class="btn-group pull-right">
                             <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr10" data-toggle="tooltip"
                                 title="Export to Excel" [disabled]="!(partnersPagination.pagedItems?.length > 0)" (click)="downloadTeamMemberCsv()">
@@ -46,7 +47,7 @@
                               </div>
                            </div>
                         </div>
-                    <table *ngIf="partnersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
+                    <table class="table tgrid table-condensed table-bordered hash-table-color"
                          id="teamMemberPartnersTable" aria-describedby="teamMemberPartnersTable">
                         <thead>
                             <tr>
@@ -77,6 +78,7 @@
                             </ng-container>
                         </tbody>
                     </table>
+                </div>
                 </div>
                 <!-- End of 24 -->
                 <div *ngIf="partnersPagination.totalRecords==0 && !partnersLoader.isLoading" class="alert alert-info text-center">
