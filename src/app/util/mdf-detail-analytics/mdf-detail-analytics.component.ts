@@ -169,10 +169,11 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/mdf-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm
-      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm;
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
 

@@ -282,7 +282,7 @@
              <app-box-loader [countLoader]=5 *ngIf="totalDeactivatePartnersCountLoader"></app-box-loader>
              <div *ngIf="!totalDeactivatePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
              (click)="totalDeactivatePartnersCount>0 ? goToDeactivatePartnersDiv() : '' ">
-             <a [className]="totalDeactivatePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft greay' :'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
+             <a [className]="totalDeactivatePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter purple-soft' :'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
                 [class.greay]="9!=selectedTabIndex">
                  <div class="visual">
                   <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -1160,7 +1160,7 @@
   </div>
 
   <div class="row responsivepaddding1">
-    <app-kpi [applyTeamMemberFilter]="applyFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv" *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9)"></app-kpi>
+    <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-kpi>
 
     <!--******************MDF Details*******************-->
 

@@ -202,13 +202,13 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/typewise-track-content-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&assetType=" + assertTypeFilterRequestParm
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
-      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
-      + timeZoneRequestParm;
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam +  timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
 

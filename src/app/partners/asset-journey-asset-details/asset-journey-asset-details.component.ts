@@ -158,11 +158,12 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     let sortcolumn = this.pagination.sortcolumn;
     let sortingOrder = this.pagination.sortingOrder;
     let assetNames = this.pagination.selectedAssetNames.join(',');
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/asset/journey/asset/details/download/asset-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&searchKey=" + searchKeyRequestParm +  "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
-      + "&assetNames=" + assetNames +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm;
+      + "&assetNames=" + assetNames +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
   sortAssetDetails(text: any) {

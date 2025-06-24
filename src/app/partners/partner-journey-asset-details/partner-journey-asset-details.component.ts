@@ -187,11 +187,12 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     let assetNames =this.pagination.selectedAssetNames.join(',');
     let emailIds = this.pagination.selectedEmailIds.join(',');    
     let companyIds = this.pagination.selectedCompanyIds.join(',');
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/asset-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
-      + "&assetNames=" + assetNames + "&companyIds=" + companyIds + "&emailIds=" + emailIds + "&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm;
+      + "&assetNames=" + assetNames + "&companyIds=" + companyIds + "&emailIds=" + emailIds + "&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
   sortAssetDetails(text: any) {

@@ -99,10 +99,11 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
 		let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
 		let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+		let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
 		let url = this.authenticationService.REST_URL + "partner/journey/download/active-partners-launched-campaigns-report?access_token=" + this.authenticationService.access_token
 			+ "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
 			+ "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm
-			+ "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+			+ "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm + partnershipStatus;
 		this.referenseService.openWindowInNewTab(url);
 	}
 	

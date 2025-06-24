@@ -325,6 +325,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
+        this.isdeactivatePartnersDiv = false;
 
         this.getActivePartnerReports();
         this.loadCountryData();
@@ -906,7 +907,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnChanges(){
         this.goToActivePartnersDiv();
-        this.goToDeactivatePartnersDiv();
+        // this.goToDeactivatePartnersDiv();
     }
 
     getModuleAccess() {
@@ -1692,7 +1693,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.getActivePartnerReports();
          this.loadCountryData();
          this.getPartnersRedistributedCampaignsData();
-        //  this.allPartnersStatusForMail();
     }
 
 }

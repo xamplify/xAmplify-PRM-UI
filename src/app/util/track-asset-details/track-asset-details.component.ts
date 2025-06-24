@@ -177,6 +177,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let urlSuffix = "partner/journey/download/track-asset-details-report"
     if (this.type === 'PLAYBOOK') {
       urlSuffix = "partner/journey/download/playbook-asset-details-report"
@@ -185,7 +186,7 @@ export class TrackAssetDetailsComponent implements OnInit {
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
-      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
 
