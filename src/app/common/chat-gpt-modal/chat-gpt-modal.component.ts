@@ -21,7 +21,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
-import { ReportData } from '../models/oliver-report-dto';
+import { ExecutiveReport } from '../models/oliver-report-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -1471,58 +1471,57 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     return raw.substring(firstBrace, lastBrace + 1);
   }
 
-  parseOliverReport(jsonStr: string): ReportData {
+  parseOliverReport(jsonStr: string): ExecutiveReport {
     const jsonObject = JSON.parse(jsonStr);
-    const dto: ReportData = {
-      contact_details: {
-        name: jsonObject.contact_details.name || '',
-        email: jsonObject.contact_details.email || '',
-        phone_numbers: jsonObject.contact_details.phone_numbers || [],
-        company: jsonObject.contact_details.company || '',
-        address: jsonObject.contact_details.address || '',
-        additional_info: jsonObject.contact_details.additional_info || ''
+    const dto: ExecutiveReport = {
+      meta: {
+        report_title: jsonObject.meta ? jsonObject.meta.report_title : '',
+        subtitle: jsonObject.meta ? jsonObject.meta.subtitle : '',
+        date_range: jsonObject.meta ? jsonObject.meta.date_range : '',
+        report_owner: jsonObject.meta ? jsonObject.meta.report_owner : '',
+        report_recipient: jsonObject.meta ? jsonObject.meta.report_recipient : ''
       },
-      leads: {
-        summary: jsonObject.leads.summary || '',
-        lead_records: (jsonObject.leads.lead_records || []).map((record: any) => ({
-          id: record.id,
-          first_name: record.first_name || '',
-          last_name: record.last_name || '',
-          company: record.company || '',
-          email: record.email || '',
-          phone: record.phone || '',
-          address: record.address || '',
-          campaign: record.campaign || '',
-          created_time: record.created_time || '',
-          pipeline_stage: record.pipeline_stage || ''
-        }))
+      kpi_overview: {
+        total_pipeline_value: jsonObject.kpi_overview ? jsonObject.kpi_overview.total_pipeline_value : '',
+        number_of_leads_generated: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_leads_generated : '',
+        number_of_campaigns_launched: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_campaigns_launched : '',
+        number_of_deals_logged: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_deals_logged : '',
+        total_deal_value: jsonObject.kpi_overview ? jsonObject.kpi_overview.total_deal_value : ''
       },
-      deals: {
-        summary: jsonObject.deals.summary || '',
-        deal_records: (jsonObject.deals.deal_records || []).map((record: any) => ({
-          title: record.title || '',
-          amount: record.amount || 0,
-          close_date: record.close_date || '',
-          associated_lead_id: record.associated_lead_id || '',
-          campaign: record.campaign || '',
-          created_by: record.created_by || '',
-          pipeline: record.pipeline || '',
-          stage: record.stage || ''
-        }))
+      executive_summary_table: jsonObject.executive_summary_table ? jsonObject.executive_summary_table : [],
+      // performance_indicators: jsonObject.key_takeaways || [],
+      performance_indicators: {
+        campaign_engagement_rate: jsonObject.performance_indicators ? jsonObject.performance_indicators.campaign_engagement_rate : '',
+        lead_conversion_rate: jsonObject.performance_indicators ? jsonObject.performance_indicators.lead_conversion_rate : '',
+        average_deal_value: jsonObject.performance_indicators ? jsonObject.performance_indicators.average_deal_value : '',
+        video_campaign_performance: jsonObject.performance_indicators ? jsonObject.performance_indicators.video_campaign_performance : '',
+        page_campaign_performance: jsonObject.performance_indicators ? jsonObject.performance_indicators.page_campaign_performance : '',
+        overall_pipeline_health: jsonObject.performance_indicators ? jsonObject.performance_indicators.overall_pipeline_health : ''
       },
-      campaigns: {
-        summary: jsonObject.campaigns.summary || '',
-        campaign_records: (jsonObject.campaigns.campaign_records || []).map((record: any) => ({
-          name: record.name || '',
-          campaign_type: record.campaign_type || '',
-          launch_time: record.launch_time || '',
-          associated_with: record.associated_with || '',
-          details: record.details || ''
-        }))
+      // campaign_performance_analysis: jsonObject.strategic_recommendations || [],
+      campaign_performance_analysis: {
+        top_performing_campaign_type: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.campaign_engagement_rate : '',
+        engagement_state: {
+          connected: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.connected : '' : '',
+          idle: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.idle : '' : '',
+          other: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.other : '' : ''
+        },
+        notes: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.notes : ''
       },
-      key_takeaways: jsonObject.key_takeaways || [],
-      strategic_recommendations: jsonObject.strategic_recommendations || [],
-      header: jsonObject.header || 'Report'
+      lead_progression_funnel: {
+        stages: jsonObject.lead_progression_funnel ? jsonObject.lead_progression_funnel.stages : [],
+        notes: jsonObject.lead_progression_funnel ? jsonObject.lead_progression_funnel.notes : ''
+      },
+      pipeline_progression: {
+        deal_stages: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.deal_stages : [],
+        highest_deal_value: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.highest_deal_value : '',
+        average_deal_value: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.average_deal_value : '',
+        notes: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.notes : ''
+      },
+      contact_journey_timeline: jsonObject.contact_journey_timeline ? jsonObject.contact_journey_timeline : [],
+      strategic_insights: jsonObject.strategic_insights ? jsonObject.strategic_insights : [],
+      recommended_next_steps: jsonObject.strategic_insights ? jsonObject.recommended_next_steps : [],
+      executive_bottom_line: jsonObject.strategic_insights ? jsonObject.executive_bottom_line : ''
     };
     return dto;
   }
