@@ -939,7 +939,7 @@
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization"
-    *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess || authenticationService?.module?.showContent)">
+    *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess)">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <!--******************Interacted & Not Interacted Donut Chart******************-->
       <div class="ml15m">
@@ -960,7 +960,7 @@
 
   <!--******************Status wise Track Assets Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization"
-    *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess || authenticationService?.module?.showContent)">
+    *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess)">
     <div class="col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <!--******************Type wise Track Assets Donut Chart******************-->
       <div class="ml15m">
@@ -987,39 +987,39 @@
       <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter" [applyFilter]="applyFilter"
-        *ngIf="authenticationService?.lmsAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
+        *ngIf="authenticationService?.lmsAccess"></app-userwise-track-counts>
 
       <!--******************Company wise Playbook Counts******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-        [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
+        [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess"></app-userwise-track-counts>
     </div>
   </div>
   <div class="row rowPaddingCustomization2">
     <app-play-book-journey-interaction [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-play-book-journey-interaction>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.playbookAccess)"></app-play-book-journey-interaction>
   </div>
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-asset-details [partnerCompanyId]="'0'"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isDetailedAnalytics]="false"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-partner-journey-asset-details>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess)"></app-partner-journey-asset-details>
   </div>
    <div class="row rowPaddingCustomization2">
     <app-asset-journey-asset-details [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-asset-journey-asset-details>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess)"></app-asset-journey-asset-details>
   </div>
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization2">
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess || authenticationService?.module?.showContent)"></app-userwise-track-details>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.lmsAccess)"></app-userwise-track-details>
   </div>
 
   <!--******************Track & Playbook Asset Details*******************-->
@@ -1029,13 +1029,13 @@
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-        *ngIf="authenticationService?.lmsAccess || authenticationService?.module?.showContent"></app-track-asset-details>
+        *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-        *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-track-asset-details>
+        *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
 
