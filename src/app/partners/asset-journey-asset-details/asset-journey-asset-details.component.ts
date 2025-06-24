@@ -194,6 +194,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.isCollapsed = true;
+    this.searchKey = "";
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.getAssetDetails(this.pagination);
   }

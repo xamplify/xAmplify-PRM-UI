@@ -197,6 +197,7 @@ export class PlayBookJourneyInteractionDetailsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.isCollapsed = true;
+    this.searchKey = "";
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.getPlaybookDetails(this.pagination);
   }

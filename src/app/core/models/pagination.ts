@@ -201,4 +201,7 @@ export class Pagination {
 	assetIds: number[] = [];
 
 	selectedPlaybookNames : string[] = [];
+	filterFromDateString:string = "";
+	filterToDateString:string = "";
+
 }
