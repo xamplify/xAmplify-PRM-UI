@@ -1472,58 +1472,146 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
   }
 
   parseOliverReport(jsonStr: string): ExecutiveReport {
-    const jsonObject = JSON.parse(jsonStr);
+    const j = JSON.parse(jsonStr);
+
     const dto: ExecutiveReport = {
-      meta: {
-        report_title: jsonObject.meta ? jsonObject.meta.report_title : '',
-        subtitle: jsonObject.meta ? jsonObject.meta.subtitle : '',
-        date_range: jsonObject.meta ? jsonObject.meta.date_range : '',
-        report_owner: jsonObject.meta ? jsonObject.meta.report_owner : '',
-        report_recipient: jsonObject.meta ? jsonObject.meta.report_recipient : ''
-      },
+      /* ---------- top-level meta ---------- */
+      report_title: j && j.report_title ? j.report_title : '',
+      subtitle: j && j.subtitle ? j.subtitle : '',
+      date_range: j && j.date_range ? j.date_range : '',
+      report_owner: j && j.report_owner ? j.report_owner : '',
+      report_recipient: j && j.report_recipient ? j.report_recipient : '',
+
+      /* ---------- KPI overview ---------- */
       kpi_overview: {
-        total_pipeline_value: jsonObject.kpi_overview ? jsonObject.kpi_overview.total_pipeline_value : '',
-        number_of_leads_generated: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_leads_generated : '',
-        number_of_campaigns_launched: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_campaigns_launched : '',
-        number_of_deals_logged: jsonObject.kpi_overview ? jsonObject.kpi_overview.number_of_deals_logged : '',
-        total_deal_value: jsonObject.kpi_overview ? jsonObject.kpi_overview.total_deal_value : ''
+        title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+        description: j && j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+        items: j && j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
       },
-      executive_summary_table: jsonObject.executive_summary_table ? jsonObject.executive_summary_table : [],
-      // performance_indicators: jsonObject.key_takeaways || [],
+
+      /* ---------- summary overview ---------- */
+      summary_overview: {
+        title: j && j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+        description: j && j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+        items: j && j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+      },
+
+      /* ---------- performance indicators ---------- */
       performance_indicators: {
-        campaign_engagement_rate: jsonObject.performance_indicators ? jsonObject.performance_indicators.campaign_engagement_rate : '',
-        lead_conversion_rate: jsonObject.performance_indicators ? jsonObject.performance_indicators.lead_conversion_rate : '',
-        average_deal_value: jsonObject.performance_indicators ? jsonObject.performance_indicators.average_deal_value : '',
-        video_campaign_performance: jsonObject.performance_indicators ? jsonObject.performance_indicators.video_campaign_performance : '',
-        page_campaign_performance: jsonObject.performance_indicators ? jsonObject.performance_indicators.page_campaign_performance : '',
-        overall_pipeline_health: jsonObject.performance_indicators ? jsonObject.performance_indicators.overall_pipeline_health : ''
+        title: j && j.performance_indicators && j.performance_indicators.title ? j.performance_indicators.title : '',
+        description: j && j.performance_indicators && j.performance_indicators.description ? j.performance_indicators.description : '',
+        items: j && j.performance_indicators && j.performance_indicators.items ? j.performance_indicators.items : []
       },
-      // campaign_performance_analysis: jsonObject.strategic_recommendations || [],
+
+      /* ---------- campaign performance analysis ---------- */
       campaign_performance_analysis: {
-        top_performing_campaign_type: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.campaign_engagement_rate : '',
-        engagement_state: {
-          connected: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.connected : '' : '',
-          idle: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.idle : '' : '',
-          other: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.engagement_state ? jsonObject.campaign_performance_analysis.engagement_state.other : '' : ''
+        top_performing_campaign_type:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.top_performing_campaign_type
+            ? j.campaign_performance_analysis.top_performing_campaign_type
+            : '',
+        campaign_engagement_state: {
+          connected:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.connected
+              ? j.campaign_performance_analysis.campaign_engagement_state.connected
+              : 0,
+          idle:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.idle
+              ? j.campaign_performance_analysis.campaign_engagement_state.idle
+              : 0,
+          other:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.other
+              ? j.campaign_performance_analysis.campaign_engagement_state.other
+              : 0
         },
-        notes: jsonObject.campaign_performance_analysis ? jsonObject.campaign_performance_analysis.notes : ''
+        notes:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.notes
+            ? j.campaign_performance_analysis.notes
+            : ''
       },
+
+      /* ---------- lead-progression funnel ---------- */
       lead_progression_funnel: {
-        stages: jsonObject.lead_progression_funnel ? jsonObject.lead_progression_funnel.stages : [],
-        notes: jsonObject.lead_progression_funnel ? jsonObject.lead_progression_funnel.notes : ''
+        stages:
+          j && j.lead_progression_funnel && j.lead_progression_funnel.stages
+            ? j.lead_progression_funnel.stages
+            : {},
+        notes:
+          j && j.lead_progression_funnel && j.lead_progression_funnel.notes
+            ? j.lead_progression_funnel.notes
+            : ''
       },
+
+      /* ---------- pipeline progression ---------- */
       pipeline_progression: {
-        deal_stages: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.deal_stages : [],
-        highest_deal_value: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.highest_deal_value : '',
-        average_deal_value: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.average_deal_value : '',
-        notes: jsonObject.pipeline_progression ? jsonObject.pipeline_progression.notes : ''
+        deal_stages:
+          j && j.pipeline_progression && j.pipeline_progression.deal_stages
+            ? j.pipeline_progression.deal_stages
+            : {},
+        highest_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.highest_deal_value
+            ? j.pipeline_progression.highest_deal_value
+            : '',
+        average_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.average_deal_value
+            ? j.pipeline_progression.average_deal_value
+            : '',
+        notes:
+          j && j.pipeline_progression && j.pipeline_progression.notes
+            ? j.pipeline_progression.notes
+            : ''
       },
-      contact_journey_timeline: jsonObject.contact_journey_timeline ? jsonObject.contact_journey_timeline : [],
-      strategic_insights: jsonObject.strategic_insights ? jsonObject.strategic_insights : [],
-      recommended_next_steps: jsonObject.strategic_insights ? jsonObject.recommended_next_steps : [],
-      executive_bottom_line: jsonObject.strategic_insights ? jsonObject.executive_bottom_line : ''
+
+      /* ---------- contact-journey timeline ---------- */
+      contact_journey_timeline:
+        j && j.contact_journey_timeline ? j.contact_journey_timeline : [],
+
+      /* ---------- strategic insights ---------- */
+      strategic_insights: {
+        title:
+          j && j.strategic_insights && j.strategic_insights.title
+            ? j.strategic_insights.title
+            : '',
+        description:
+          j && j.strategic_insights && j.strategic_insights.description
+            ? j.strategic_insights.description
+            : '',
+        items:
+          j && j.strategic_insights && j.strategic_insights.items
+            ? j.strategic_insights.items
+            : []
+      },
+
+      /* ---------- recommended next steps ---------- */
+      recommended_next_steps: {
+        title:
+          j && j.recommended_next_steps && j.recommended_next_steps.title
+            ? j.recommended_next_steps.title
+            : '',
+        description:
+          j && j.recommended_next_steps && j.recommended_next_steps.description
+            ? j.recommended_next_steps.description
+            : '',
+        items:
+          j && j.recommended_next_steps && j.recommended_next_steps.items
+            ? j.recommended_next_steps.items
+            : []
+      },
+
+      /* ---------- conclusion ---------- */
+      conclusion: {
+        title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
+        description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
+      }
     };
+
     return dto;
   }
+
 
 }
