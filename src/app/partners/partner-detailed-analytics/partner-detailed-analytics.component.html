@@ -50,19 +50,19 @@
   </div>
 
   <!--******************User wise Track Counts & User wise PlayBook Counts*******************-->
-  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="authenticationService?.lmsAccess && (referenseService?.trackAccessGivenByVendor || referenseService?.playBookAccessGivenByVendor)">
+  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="(authenticationService?.lmsAccess || authenticationService.module?.playbookAccess) && (referenseService?.trackAccessGivenByVendor || referenseService?.playBookAccessGivenByVendor)">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--*****************User wise Track Counts********************-->
       <app-userwise-track-counts [type]="'TRACK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
-        [toDateFilter]="toDateFilter" *ngIf="referenseService?.trackAccessGivenByVendor"></app-userwise-track-counts>
+        [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess && referenseService?.trackAccessGivenByVendor"></app-userwise-track-counts>
       <!--******************User wise Playbook Counts*******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
-        [toDateFilter]="toDateFilter" *ngIf="referenseService?.playBookAccessGivenByVendor"></app-userwise-track-counts>
+        [toDateFilter]="toDateFilter" *ngIf="authenticationService.module?.playbookAccess && referenseService?.playBookAccessGivenByVendor"></app-userwise-track-counts>
     </div>
   </div>
-  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
+  <div class="row rowPaddingCustomization1" *ngIf="authenticationService.module?.playbookAccess && referenseService?.playBookAccessGivenByVendor">
     <app-play-book-journey-interaction-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService?.module?.damAccess"></app-play-book-journey-interaction-details>
