@@ -1558,14 +1558,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType: string) {
-		if (this.isPartner || this.isContactModule) {
-			this.findUserListContactsByType(contactType);
-		} else {
-			this.listOfContactsByType(contactType);
-		}
-	}
-
-	listOfContactsByType(contactType: string) {
 		if (!this.showFilterOption) {
 			this.criterias = [];
 			this.criteria = new Criteria();
@@ -1904,8 +1896,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	hasAccessForDownloadUndeliverableContacts() {
 		if (this.assignLeads) {
 			this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
-		} else if (this.isPartner || this.isContactModule) {
-			this.downloadUserDetailsCsv();
 		} else {
 			try {
 				if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
@@ -2115,7 +2105,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.searchKey = this.searchKey;
 			this.contactsByType.contactPagination.sortcolumn = this.sortcolumn;
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
-
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
 			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
@@ -3223,36 +3212,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	/***** XNFR-1011 *****/
-	findUserListContactsByType(contactType: string) {
-		this.resetResponse();
-		this.resetListContacts();
-		this.contactsByType.isLoading = true;
-		this.contactsByType.selectedCategory = contactType;
-		let pagination = this.contactsByType.pagination;
-		pagination.userId = this.loggedInUserId;
-		pagination.type = contactType;
-		pagination.moduleName = this.module;
-		pagination.criterias = this.criterias;
-		pagination.searchKey = this.searchKey;
-		pagination.userListId = this.defaultPartnerListId;
-		this.contactService.findUserListContactsByType(pagination).subscribe(
-			response => {
-				this.contactsByType.contacts = response.listOfUsers;
-				this.contactsByType.pagination.totalRecords = response.totalRecords;
-				this.contactsByType.pagination = this.pagerService.getPagedItems(this.contactsByType.pagination, this.contactsByType.contacts);
-				if (this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all') {
-					this.userListIds = response.listOfUsers;
-				}
-				this.contactsByType.isLoading = false;
-			}, error => {
-				this.xtremandLogger.error(error);
-				this.contactsByType.isLoading = false;
-				this.referenceService.showSweetAlertServerErrorMessage();
-			}, () => this.xtremandLogger.info("findUserListContactsByType() finished")
-		);
-	}
-
-	/***** XNFR-1011 *****/
 	findContactsCount() {
 		this.loading = true;
 		this.contactService.findContactsCount(this.module, this.defaultPartnerListId).subscribe(
@@ -3276,34 +3235,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.xtremandLogger.error(error);
 				this.referenceService.showSweetAlertServerErrorMessage();
 			}, () => this.xtremandLogger.info("findContactsCount() finished")
-		);
-	}
-
-	/***** XNFR-1011 *****/
-	downloadUserDetailsCsv() {
-		this.contactsByType.isLoading = true;
-		let pagination = new Pagination();
-		pagination = this.contactsByType.pagination;
-		pagination.type = this.contactsByType.selectedCategory;
-		pagination.exportToExcel = true;
-		pagination.moduleName = this.module;
-		pagination.criterias = this.criterias;
-		pagination.searchKey = this.searchKey;
-		pagination.userId = this.loggedInUserId;
-		pagination.userListId = this.defaultPartnerListId;
-		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-			this.referenceService.setTeamMemberFilterForPagination(pagination, this.selectedFilterIndex);
-		}
-		this.contactService.findUserListContactsByType(pagination).subscribe(
-			response => {
-				this.contactsByType.listOfAllContacts = response.listOfUsers;
-				this.downloadContactTypeList();
-				this.contactsByType.isLoading = false;
-			}, error => {
-				this.xtremandLogger.error(error);
-				this.contactsByType.isLoading = false;
-				this.referenceService.showSweetAlertServerErrorMessage();
-			}, () => this.xtremandLogger.info("downloadUserDetailsCsv() finished")
 		);
 	}
 
