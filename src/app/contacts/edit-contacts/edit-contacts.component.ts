@@ -399,6 +399,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.pagination = event;
 			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
+				this.contactsByType.pagination = event;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			} else {
 				this.contactsByType.pagination = event;
@@ -1567,6 +1568,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	editContactListLoadAllUsers(contactSelectedListId: number, pagination: Pagination) {
+		if (this.isPartner || this.isContactModule) {
+			this.findUserListContactsByType(this.contactsByType.selectedCategory);
+		} else {
+			this.loadEditUserListDetails(contactSelectedListId, pagination);
+		}
+	}
+
+	loadEditUserListDetails(contactSelectedListId: number, pagination: Pagination) {
 		try {
 			this.refService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
@@ -1611,7 +1620,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.noOfContactsDropdown = false;
 						this.pagedItems = null;
 					}
-					if(this.moveOptionClicked && this.contacts.length === 0){
+					if (this.moveOptionClicked && this.contacts.length === 0) {
 						this.goBackToManageList();
 					}
 					this.moveOptionClicked = false;
@@ -1633,7 +1642,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				},
 				error => this.xtremandLogger.error(error),
 				() => this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() finished")
-			)
+			);
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "loadingAllUsersInList()");
 		}
@@ -1655,13 +1664,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	setPage(event: any) {
 		if (event.type == 'contacts') {
 			this.pagination.pageIndex = event.page;
+			this.contactsByType.pagination.pageIndex = event === 1 ? 1 : event.page;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else if (this.currentContactType == "all_contacts") {
 			this.pagination.searchKey = this.searchKey;
 			this.pagination.pageIndex = 1;
+			this.contactsByType.pagination.pageIndex = event === 1 ? 1 : event.page;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-		}
-		else {
+		} else {
 			this.contactsByType.pagination.pageIndex = event.page;
 			this.listOfSelectedContactListByType(event.type);
 		}
@@ -1695,7 +1705,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		//this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
-		this.contactsByType.selectedCategory = null;
+		this.contactsByType.selectedCategory = 'all';
 		this.currentContactType = "all_contacts";
 		this.selectedFilterIndex = 1
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
@@ -2011,6 +2021,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	listOfSelectedContactListByType(contactType: string) {
+		if (this.isPartner || this.isContactModule) {
+			this.findUserListContactsByType(contactType);
+		} else {
+			this.loadUserListDetailsByType(contactType);
+		}
+	}
+
+	loadUserListDetailsByType(contactType: string) {
 		try {
 			if (contactType == undefined) {
 				contactType = 'all';
@@ -2108,6 +2126,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.pagination.pageIndex = 1;
 				this.pagination.sortcolumn = this.sortcolumn;
 				this.pagination.sortingOrder = this.sortingOrder;
+				this.contactsByType.pagination.pageIndex = 1;
+				this.contactsByType.pagination.sortcolumn = this.sortcolumn;
+				this.contactsByType.pagination.sortingOrder = this.sortingOrder;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			} else {
 				this.contactsByType.pagination.pageIndex = 1;
@@ -2127,6 +2148,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.searchKey = this.searchKey;
 				this.pagination.pageIndex = 1;
+				this.contactsByType.pagination.searchKey = this.searchKey;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			} else {
 				this.contactsByType.pagination.searchKey = this.searchKey;
@@ -2476,6 +2498,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 					this.checkingLoadContactsCount = true;
 					this.pagination.pageIndex = 1;
+					this.contactsByType.pagination.pageIndex = 1;
 					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 				} else {
 					this.contactsByType.pagination.pageIndex = 1;
@@ -2747,6 +2770,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	downloadList() {
+		if (this.isPartner || this.isContactModule) {
+			this.downloadUserDetailsCsv();
+		} else {
+			this.downloadUserListData();
+		}
+	}
+
+	private downloadUserListData() {
 		try {
 			this.userListPaginationWrapper.pagination = this.pagination;
 			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
@@ -2820,6 +2851,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'excluded') {
 			this.logListName = this.selectedContactListName + '_list_Excluded_' + this.checkingContactTypeName + 's.csv';
+		} else if (this.contactsByType.selectedCategory === 'deactivated') {
+			this.logListName = this.selectedContactListName + '_list_Deactivated_' + this.checkingContactTypeName + 's.csv';
 		}
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -3100,8 +3133,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.checkingLoadContactsCount = true;
-			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			let self = this;
 			this.uploader = new FileUploader({
 				allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"],
@@ -3249,8 +3282,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		e.stopPropagation();
 	}
 
-
 	contactsCount(id: number) {
+		if (this.isPartner || this.isContactModule) {
+			this.findContactsCount();
+		} else {
+			this.loadContactsCount(id);
+		}
+	}
+
+	/*********XNFR-85********* */
+	showTeamMembers = false;
+	showModulesPopup = false;
+	currentPartner: any;
+	teamMemberGroupId = 0;
+	teamMemberGroups: Array<any> = new Array<any>();
+
+	loadContactsCount(id: number) {
 		try {
 			this.contactListObject = new ContactList;
 			this.contactListObject.id = id;
@@ -3281,12 +3328,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	/*********XNFR-85********* */
-	showTeamMembers = false;
-	showModulesPopup = false;
-	currentPartner: any;
-	teamMemberGroupId = 0;
-	teamMemberGroups: Array<any> = new Array<any>();
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
@@ -3921,7 +3962,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.loadUsersByContactType();
 	}
 	private loadUsersByContactType() {
-		const contactType = this.userListPaginationWrapper.userList.contactType;
+		const contactType = (this.userListPaginationWrapper.userList && this.userListPaginationWrapper.userList.contactType
+		? this.userListPaginationWrapper.userList.contactType : this.contactsByType.selectedCategory);
 		const validTypes = [
 			'active',
 			'non-active',
@@ -3951,6 +3993,93 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias = new Array<Criteria>();
 		this.pagination.criterias = null;
 		this.loadUsersByContactType();
-	 }
+	}
+
+	/***** XNFR-1011 *****/
+	findUserListContactsByType(contactType: string) {
+		this.resetResponse();
+		this.resetListContacts();
+		this.refService.loading(this.httpRequestLoader, true);
+		this.contactsByType.selectedCategory = contactType;
+		let pagination = this.contactsByType.pagination;
+		pagination.type = contactType;
+		pagination.moduleName = this.module;
+		pagination.criterias = this.criterias;
+		pagination.searchKey = this.searchKey;
+		pagination.userId = this.loggedInUserId;
+		pagination.userListId = this.selectedContactListId;
+		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+			this.refService.setTeamMemberFilterForPagination(pagination, this.selectedFilterIndex);
+		}
+		this.contactService.findUserListContactsByType(pagination).subscribe(
+			response => {
+				this.contactsByType.selectedCategory = contactType;
+				this.contactsByType.contacts = response.listOfUsers;
+				this.setLegalBasisOptionString(response.listOfUsers);
+				this.refService.loading(this.httpRequestLoader, false);
+				this.contactsByType.pagination.totalRecords = response.totalRecords;
+				this.contactsByType.pagination = this.pagerService.getPagedItems(this.contactsByType.pagination, this.contactsByType.contacts);
+			}, error => {
+				this.xtremandLogger.error(error);
+				this.refService.showSweetAlertServerErrorMessage();
+				this.refService.loading(this.httpRequestLoader, false);
+			}, () => this.xtremandLogger.info("findUserListContactsByType() finished")
+		);
+	}
+
+	/***** XNFR-1011 *****/
+	findContactsCount() {
+		this.loading = true;
+		this.contactService.findContactsCount(this.module, this.selectedContactListId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					let data = response.data;
+					this.contactsByType.allContactsCount = data.allCounts;
+					this.contactsByType.invalidContactsCount = data.inValidCount;
+					this.contactsByType.unsubscribedContactsCount = data.unSubscribedCount;
+					this.contactsByType.activeContactsCount = data.activeCount;
+					this.contactsByType.inactiveContactsCount = data.inActiveCount;
+					this.contactsByType.validContactsCount = data.validCount;
+					this.contactsByType.excludedContactsCount = data.excludedCount;
+					this.contactsByType.deactivatedContactsCount = data.deactivatedCount;
+				} else {
+					this.refService.showSweetAlertServerErrorMessage();
+				}
+				this.loading = false;
+			}, error => {
+				this.loading = false;
+				this.xtremandLogger.error(error);
+				this.refService.showSweetAlertServerErrorMessage();
+			}, () => this.xtremandLogger.info("findContactsCount() finished")
+		);
+	}
+
+	/***** XNFR-1011 *****/
+	downloadUserDetailsCsv() {
+		this.refService.loading(this.httpRequestLoader, true);
+		let pagination = new Pagination();
+		pagination = this.contactsByType.pagination;
+		pagination.exportToExcel = true;
+		pagination.moduleName = this.module;
+		pagination.criterias = this.criterias;
+		pagination.searchKey = this.searchKey;
+		pagination.userId = this.loggedInUserId;
+		pagination.userListId = this.selectedContactListId;
+		pagination.type = this.contactsByType.selectedCategory;
+		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+			this.refService.setTeamMemberFilterForPagination(pagination, this.selectedFilterIndex);
+		}
+		this.contactService.findUserListContactsByType(pagination).subscribe(
+			response => {
+				this.contactsByType.listOfAllContacts = response.listOfUsers;
+				this.downloadContactTypeList();
+				this.refService.loading(this.httpRequestLoader, false);
+			}, error => {
+				this.xtremandLogger.error(error);
+				this.refService.showSweetAlertServerErrorMessage();
+				this.refService.loading(this.httpRequestLoader, false);
+			}, () => this.xtremandLogger.info("downloadUserDetailsCsv() finished")
+		);
+	}
 
 }

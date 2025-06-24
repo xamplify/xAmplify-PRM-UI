@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response, RequestOptions, ResponseContentType } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ContactList } from '../models/contact-list';
 import { SocialContact } from '../models/social-contact';
@@ -1025,9 +1025,23 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    findMasterContactListId() {
+    findDefaultContactListId(moduleName: string) {
         let loggedInUserId = this.authenticationService.getUserId();
-        let url = this.contactsUrl + 'master-contact-list' + '/userId/' + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.contactsUrl + 'default-contact-list' + '/userId/' + loggedInUserId + '/moduleName/' + moduleName + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***** XNFR-1011 *****/
+    findUserListContactsByType(pagination: Pagination) {
+        let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, pagination);
+    }
+
+    /***** XNFR-1011 *****/
+    findContactsCount(moduleName: string, userListId: number) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.contactsV2Url + "contacts-count?loggedInUserId=" + loggedInUserId + "&userListId=" + userListId
+            + "&moduleName=" + moduleName + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
