@@ -1299,7 +1299,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.isSendReminderEnabled = false;
                         }
                         this.isHeaderCheckBoxChecked = false;                   
-                        this.referenseService.showSweetAlertSuccessMessage(data.message);
+                        //this.referenseService.showSweetAlertSuccessMessage(data.message);
+                        this.openSweetAlertSuccessMessage(data.message);
+
                     } else if (data.statusCode == 400) {
                         const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
                         if (partnerIndex !== -1) {
@@ -1314,7 +1316,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                         else{
                             this.isSendReminderEnabled = false;
                         }
-                        this.referenseService.showSweetAlertSuccessMessage(data.message);
+                        //this.referenseService.showSweetAlertSuccessMessage(data.message);
+                        this.openSweetAlertSuccessMessage(data.message);
                     }
                     this.sendTestEmailIconClicked = false;
                     this.referenseService.goToTop();
@@ -1561,7 +1564,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             } else {
                 this.sendPartnerReminder(event);
             }
-            this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
+            //this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
+            this.openSweetAlertSuccessMessage('Email sent successfully.');
             this.isSentEmailNotification = true; //XNFR-1015
         }
          else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv || this.isIncompleteCompanyProfile || this.isPendingStatus) {
@@ -1699,4 +1703,20 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSentEmailNotification = false;
     }
     /*** XNFR-1015 */
+
+    //XNFR-1026
+    openSweetAlertSuccessMessage(message: string) {
+        let self = this;
+        swal({
+            title: message,
+            type: "success",
+            allowOutsideClick: false,
+        }).then(function () {
+            if(self.isSingUpPendingDiv){
+                self.goToSignupPendingPartnersDiv();
+            }else if(self.isIncompleteCompanyProfileDiv){
+                self.goToIncompleteCompanyProfilePartnersDiv();
+            }
+        })
+    }
 }
