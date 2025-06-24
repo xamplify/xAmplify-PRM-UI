@@ -74,7 +74,7 @@
                             <strong *ngIf="moduleName == 'partners'">Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
                         </div>
                         <div class="table-responsive">
-                            <table class='table tgrid table-condensed' [class.table-bordered]="!isContactModule"
+                            <table class='table tgrid table-condensed'
                                 *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
                                 <thead>
                                     <tr>
@@ -82,9 +82,9 @@
                                             <input type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
                                                 id="copy-group-users-header-checkbox-id"
                                                 (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
-                                        </th>
-                                        <th *ngIf="isContactModule" class="text-center">Logo</th>
-                                        <th class="text-center">{{isContactModule ? 'List Name' : 'Name'}}</th>
+                                        </th> 
+                                        <th *ngIf="!isContactModule" class="text-center">{{!isContactModule ? 'Name' : ''}}</th>                     
+                                        <th [ngClass]="isContactModule ? '' : 'text-center'" [attr.colspan]="isContactModule ? 2 : null">{{isContactModule ? 'List Name' : ''}}</th>
                                         <th class="text-center">Count</th>
                                         <th class="text-center">Created On</th>
                                         <th class="text-center">Preview</th>
@@ -102,7 +102,7 @@
                                                     name="copyGroupUsersCheckBoxName[]"
                                                     (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
                                             </td>
-                                            <td *ngIf="isContactModule"  style="width: 10%;" class="hidden-xs image_effect">
+                                            <td [ngClass]="isContactModule ? '': 'pl10'" style="width: 10%;" class="hidden-xs image_effect">
                                                 <img class="neu-l-d micon-al"               
                                                    src="{{properties?.manualImage}}" alt="manual">
                                             </td>                                            

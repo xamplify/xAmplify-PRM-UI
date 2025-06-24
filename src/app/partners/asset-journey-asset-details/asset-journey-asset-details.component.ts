@@ -49,6 +49,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   filterCategoryLoader = false;
   public multiSelectPlaceholderForAsset: string = "Select Asset";
   public selectedAssetNames: any[] = [];
+  public selectedAssetIds = [];
   public assetNameFilters: Array<any>;
   public assetInfoFields: any;
   dateFilterText = "Select Date Filter";
@@ -63,7 +64,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.findAssetNames();
+   
   }
 
   ngOnChanges() {
@@ -74,6 +75,8 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     }
 
     this.pagination.pageIndex = 1;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.findAssetNames();
     this.getAssetDetails(this.pagination);
     this.setFilterColor();
   }
@@ -83,7 +86,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
-    this.pagination.selectedAssetNames = this.pagination.selectedAssetNames;
+    this.pagination.assetIds = this.pagination.assetIds;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getAssetInteractionDetails(this.pagination).subscribe(
@@ -139,7 +142,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
     
   showAnalytics(item: any) {
-    let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenseService.encodePathVariable(item.id);
+    let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenseService.encodePathVariable(item.assetId);
     this.referenseService.navigateToRouterByViewTypes(url, 0, '', '', false);
   }
   getAssetDetails(pagination: Pagination) {
@@ -157,13 +160,14 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let sortcolumn = this.pagination.sortcolumn;
     let sortingOrder = this.pagination.sortingOrder;
+    let assetIds =this.pagination.assetIds.join(',');
     let assetNames = this.pagination.selectedAssetNames.join(',');
     let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/asset/journey/asset/details/download/asset-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&searchKey=" + searchKeyRequestParm +  "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
-      + "&assetNames=" + assetNames +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
+      + "&assetIds=" + assetIds +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
   sortAssetDetails(text: any) {
@@ -171,13 +175,13 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
       this.getAssetDetails(this.pagination);
     }
     setFilterColor() {
-    let isValidSelectedAssetNames = this.pagination.selectedAssetNames != undefined && this.pagination.selectedAssetNames.length > 0;
+    let isValidSelectedAssetIds = this.pagination.assetIds != undefined && this.pagination.assetIds.length > 0;
     let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter.length > 0;
     let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter.length > 0;
-    if (isValidSelectedAssetNames && isValidFromDateFilter && isValidToDateFilter) {
+    if (isValidSelectedAssetIds && isValidFromDateFilter && isValidToDateFilter) {
       this.filterActiveBg = 'filterActiveBg';
     }
-    if (isValidSelectedAssetNames) {
+    if (isValidSelectedAssetIds) {
     this.filterActiveBg = 'filterActiveBg';
     this.isCollapsed = false;
   }
@@ -193,15 +197,16 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.clearFilter();
   }
   clearFilter() {
-    this.pagination.selectedAssetNames = [];
+    this.pagination.assetIds = [];
     this.pagination.criterias = [];
     this.pagination.searchKey = "";
     this.pagination.fromDateFilterString = "";
     this.pagination.toDateFilterString = "";
-    this.selectedAssetNames = [];
+    this.selectedAssetIds = [];
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.isCollapsed = true;
+    this.searchKey = "";
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.getAssetDetails(this.pagination);
   }
@@ -222,12 +227,12 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
     let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
     let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
-    let isValidAssetNames = this.pagination.selectedAssetNames.length > 0;
+    let isValidAssetIds = this.pagination.assetIds.length > 0;
     let checkIfToDateIsEmpty = isValidFromDateFilter && isEmptyToDateFilter;
     let checkIfFromDateIsEmpty = isValidToDateFilter && isEmptyFromDateFilter;
-    let showToDateError = (isValidAssetNames && checkIfToDateIsEmpty) || (!isValidAssetNames && checkIfToDateIsEmpty)
-    let showFromDateError = (isValidAssetNames && checkIfFromDateIsEmpty) || (!isValidAssetNames && checkIfFromDateIsEmpty)
-    if (!(this.pagination.selectedCompanyIds.length > 0) && !(this.pagination.selectedAssetNames.length > 0)  && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+    let showToDateError = (isValidAssetIds && checkIfToDateIsEmpty) || (!isValidAssetIds && checkIfToDateIsEmpty)
+    let showFromDateError = (isValidAssetIds && checkIfFromDateIsEmpty) || (!isValidAssetIds && checkIfFromDateIsEmpty)
+    if (!(this.pagination.selectedCompanyIds.length > 0) && !(this.pagination.assetIds.length > 0)  && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
       this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
     } else if (showToDateError) {
       this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
@@ -247,7 +252,8 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
 findAssetNames(){
   this.pagination.userId = this.loggedInUserId;  
-  this.assetInfoFields = { text: 'asset', value: 'asset' };
+  this.assetInfoFields = { text: 'assetName', value: 'assetId' };
+  this.selectedAssetIds = this.selectedAssetIds;
   this.parterService.getAllPartnerAssetNamesFilter(this.pagination).
   subscribe(response => {
     this.assetNameFilters = response.data;

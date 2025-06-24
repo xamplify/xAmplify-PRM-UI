@@ -37,8 +37,15 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
   refershTeamMemberList = false;
   learingTrackIds = [];
+
+  // XNFR-998
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  @Input() fullName: any;
+  csvPagination: any;
+  downloadDataList = [];
+
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public teamMemberService: TeamMemberService,
-    public xtremandLogger: XtremandLogger, public pagerService: PagerService, public utilService: UtilService,public properties:Properties) { }
+    public xtremandLogger: XtremandLogger, public pagerService: PagerService, public utilService: UtilService,public properties:Properties,public pagination: Pagination,public logger: XtremandLogger,) { }
   
 
   ngOnInit() {
@@ -181,4 +188,65 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
     this.partnersPagination.maxResults = 12;
     this.findPartners(this.partnersPagination);
   }
+   // XNFR-998
+
+  downloadTeamMemberCsv() {
+    this.httpRequestLoader.isHorizontalCss = true;
+    this.csvPagination = { 
+      ...this.partnersPagination,
+      pageIndex: 1,
+      maxResults: this.pagination.totalRecords 
+    };
+    this.teamMemberService.findPartners(this.csvPagination)
+      .subscribe(
+        response => {
+          let data = response.data;
+          this.csvPagination.csvPagedItems = data.list;         
+          this.downloadCsv();
+          this.httpRequestLoader.isHorizontalCss = false;
+        },
+        error => {
+          this.logger.errorPage(error);
+          this.httpRequestLoader.isHorizontalCss = false;
+        });
+  }
+downloadCsv() {
+    let csvName = this.fullName + '(Associated-Partners).csv';
+    this.downloadDataList = this.csvPagination.csvPagedItems.map(item => {
+      let row = {
+        "COMPANY NAME": item.companyName,
+        "FULL NAME": [(item.firstName || ""), (item.lastName || "")].filter(Boolean).join(" "),
+        "EMAILID": item.emailId,
+      };
+      return row;
+    });
+    this.downloadCsvFile(this.downloadDataList, csvName);
+  }
+
+  downloadCsvFile(data: any[], filename: string) {
+    const escapeCsvValue = (value: any) => {
+      if (typeof value === 'string') {
+        value.replace(/,/g, '');
+      }
+      return value;
+    };
+    const header = Object.keys(data[0]).map(escapeCsvValue).join(',') + '\n';
+    const rows = data.map(row => Object.keys(row).map(key => escapeCsvValue(row[key])).join(',')).join('\n');
+    const csvContent = header + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  get filteredSortOptions() {
+  return this.sortOption.activeUsersSortDropDownOptions.filter(option =>
+    option.name !== 'Created Time (ASC)' && option.name !== 'Created Time (DESC)'
+  );
+}
 }

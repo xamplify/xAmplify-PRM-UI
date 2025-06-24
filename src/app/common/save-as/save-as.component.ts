@@ -67,9 +67,9 @@ export class SaveAsComponent implements OnInit {
    }
 
   saveAsInputChecking() {
-      if (this.listName === 'Lead'){
-    	  this.saveAsLeadsInputChecking();
-      } else {
+    //   if (this.listName === 'Lead'){
+    // 	  this.saveAsLeadsInputChecking();
+    //   } else {
           try {
               if(this.saveAsListName!=undefined){
                 this.saveAsListName = this.saveAsListName.trim();
@@ -110,7 +110,7 @@ export class SaveAsComponent implements OnInit {
               this.referenceService.showSweetAlertErrorMessage("Invalid Input Name:-"+this.saveAsListName);
               this.xtremandLogger.error(error, "Add partner Component", "saveAsInputChecking()");
           }
-      }
+     // }
     }
 
   saveAsLeadsInputChecking() {

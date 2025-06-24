@@ -17,11 +17,11 @@ export class Properties {
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS
 	FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
-	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
-	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
-	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
+	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
+	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
+	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
 	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
-	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully";
+	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
 
 	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
 	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
@@ -593,6 +593,16 @@ export class Properties {
 
 	/**XNFR-921**/
 	ADD_AUTO_RESPONSE_PLAYBOOK= 'Auto-Responses to Your Playbook'
+
+	SINGLE_DEACTIVATE_PARTNER = "The partnership will be deactivated. A deactivated partner will lose access to the application and be excluded from content";
+
+	SINGLE_ACTIVATE_PARTNER = "The partnership will be activated. An activated partner will gain access to the application and be included in content";
+
+	MULTI_SELECT_DEACTIVATE_PARTNERS = "The partnerships will be deactivated. Deactivated partners will no longer have access to the application and will be excluded from content";
+
+	DOMAIN_WHITELISTING_DEACTIVATE_DOMAIN = "The partnership with all the companies listed below will be deactivated. Once deactivated, the partner(s) will lose access to the application and be excluded from content";
+
+	DOMAIN_WHITELISTING_ACTIVATE_DOMAIN = "The partnership with all the companies listed below will be activated. Once activated, the partner(s) will gain access to the application and be included in content";
 
 
 }

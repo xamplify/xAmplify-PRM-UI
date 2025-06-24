@@ -37,6 +37,7 @@
                      <span *ngIf="oneClickLaunchPartnerCompany?.companyNameAddedByVendor.length>20">...</span>
                   </strong>
                </h5>
+               <h6 class="green-banner inline-flex" *ngIf="oneClickLaunchPartnerCompany?.partnerStatus === 'deactivated'" title="Partnership is deactivated">DEACTIVATED</h6>
             </td>
             <td class="text-center">
                <div class="actions-block float-none">

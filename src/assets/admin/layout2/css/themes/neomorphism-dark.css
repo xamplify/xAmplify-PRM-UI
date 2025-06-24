@@ -4675,3 +4675,11 @@ border-top: 1px solid #191b1e !important;
 .suggestion-list-global-chat {
   max-height: 135px !important;
 }
+  /* bee template table remove bg-color */
+.nl-container tbody {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.pad div {
+  color: #ffffff !important;
+}

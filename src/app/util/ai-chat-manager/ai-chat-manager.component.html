@@ -154,7 +154,7 @@
 
 
           <div>
-            <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 16px;"
+            <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 16px;"
               (click)="!assetLoader && openPrompts()">
               <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions" 
                 src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
@@ -164,7 +164,7 @@
           </div>
         
         </div>
-          <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
+          <div *ngIf="oliverPromptSuggestionDTOs?.length > 0 && (showPromptBoxAbove || showInsightPromptBoxAbove)">
             <div class="suggestion-direction"></div>
             <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
           </div>
@@ -477,23 +477,19 @@
 
               <div>
                 <!-- XNFR-986 -->
-                <button *ngIf="suggestedPrompts.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
+                <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
                   <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
                     src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                 </button>
-              
                 <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
                   Submit</button>
               </div>
-              
-            
-            
             </div>
-              <div *ngIf="filteredPrompts?.length > 0 && (showPrompts || showInsightsPrompts)">
-                 <div class="suggestion-direction"></div>
-                <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
-              </div>
-          </div>
+            <div *ngIf="oliverPromptSuggestionDTOs?.length > 0 && (showPromptBoxAbove || showInsightPromptBoxAbove)">
+              <div class="suggestion-direction"></div>
+              <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+            </div>
+            </div>
         </div>
       </div>
     </div>
@@ -504,8 +500,9 @@
 <ng-template #displayPrompts>
   <div style="margin-top: 8px;" class="suggestion-box-input" id="suggestionBox">
     <div class="suggestion-list">
-      <div *ngFor="let prompt of filteredPrompts" (click)="setInputText(prompt)">
-        {{prompt}}
+      <div *ngFor="let prompt of oliverPromptSuggestionDTOs"
+        (click)="setSuggestedInputText(prompt.promptMessage, prompt.id)">
+        {{prompt.promptMessage}}
       </div>
     </div>
   </div>

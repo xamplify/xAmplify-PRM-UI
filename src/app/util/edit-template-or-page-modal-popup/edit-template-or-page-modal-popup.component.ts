@@ -5,6 +5,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $:any;
 @Component({
@@ -24,17 +25,23 @@ export class EditTemplateOrPageModalPopupComponent implements OnInit {
   editTemplateMergeTagsInput= {};
   templateMessageClass: string;
   templateUpdateMessage: string;
+  @Input() isFromDomainWhiteListing:boolean = false;
+  xamplifyDefaultTemplate:any;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
-    public properties:Properties,public emailTemplateService:EmailTemplateService) { }
+    public properties:Properties,public emailTemplateService:EmailTemplateService, public vanityURLService:VanityURLService) { }
 
   ngOnInit() {
     this.isEditTemplateLoader = true;
     this.referenceService.openModalPopup("edit-template-modal");
-    this.editTemplate(this.emailTemplate);
+    if (this.isFromDomainWhiteListing) {
+      this.getEmailTemplateByType('WELCOME_EMAIL_REMAINDER', this.authenticationService.getUserId());
+    } else {
+      this.editTemplate(this.emailTemplate);
+    }
   }
 
 
-
+//XNFR-1008
   editTemplate(emailTemplate:any){
     this.isShowEditTemplateMessageDiv = false;
     if (emailTemplate['emailTemplateType'] != 'UPLOADED' && emailTemplate.userDefined) {
@@ -130,5 +137,26 @@ export class EditTemplateOrPageModalPopupComponent implements OnInit {
     this.isShowEditTemplateMessageDiv = true;
   }
     
+  getEmailTemplateByType(emailTemplateType: string, userId: number) {
+    this.vanityURLService.getEmailTemplateByType(emailTemplateType, userId).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          this.xamplifyDefaultTemplate = response.data;
+        } else {
+          this.xtremandLogger.errorPage(response.message);
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+        }
+        this.isEditTemplateLoader = false;
 
+      }, error => {
+        this.xtremandLogger.errorPage(error);
+        this.referenceService.showSweetAlertServerErrorMessage();
+        this.isEditTemplateLoader = false;
+      }
+    );
+  }
+
+    ngOnDestroy(){
+    this.closeModal();
+  }
 }

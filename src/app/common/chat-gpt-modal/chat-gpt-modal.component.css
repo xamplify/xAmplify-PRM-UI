@@ -1673,6 +1673,8 @@ circle.front {
 .dropdown-container {
   position: relative;
   display: inline-block;
+  padding-top: 120px;
+  margin-top: -120px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1689,7 +1691,7 @@ circle.front {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: -112px;
+  top: 5px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1724,6 +1726,45 @@ circle.front {
   background-color: #007bff;
   color: white;
 }
+.suggestion-box {
+  background: white;
+  border-radius: 20px;
+  max-height: 300px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+  box-shadow: 0px 12px 30px rgba(0, 32, 73, 0.15);
+  padding: 16px;
+  flex-direction: column;
+}
+
+.suggestion-box-input {
+  background: white;
+  position: relative;
+  bottom: -10px;
+  border-radius: 20px;
+  max-height: 300px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%);
+  padding: 16px;
+  flex-direction: column;
+}
+
+.suggestion-box-input-prompt {
+  background: white;
+  position: relative;
+  bottom: 0px;
+  border-radius: 20px;
+  max-height: 200px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);
+  padding: 16px;
+  flex-direction: column;
+}
+
+.suggestion-search-container {
+  position: relative;
+  margin-bottom: 10px;
+}
 
  .suggestion-box {
     border-radius: 20px;
@@ -1753,7 +1794,7 @@ circle.front {
     bottom: 0px;
     border-radius:10px 10px 15px 15px;
     /* max-height: 300px; */
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
     /* background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%); */
     background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);
@@ -1765,10 +1806,11 @@ circle.front {
     position: relative;
     margin-bottom: 10px;
   }
+
 .suggestion-list {
-    overflow-y: auto;
-    max-height: 180px;
-  }
+  overflow-y: auto;
+  max-height: 180px;
+}
 
  .suggestion-list div {
     padding: 10px;
@@ -1789,8 +1831,24 @@ circle.front {
     justify-content: end;
   }
 
-  
-.suggestion-direction{
+
+.suggestion-box div:last-child {
+  border-bottom: none;
+}
+
+.suggestion-list div:hover {
+  background-color: #fbfdff;
+}
+
+.suggestion-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.justify-content-end {
+  justify-content: end;
+}
+
+.suggestion-direction {
   position: absolute;
   bottom: 83px;
   right: 235px;
@@ -1802,9 +1860,7 @@ circle.front {
   z-index: 9999999;
 }
 
-
-
-.suggestion-direction-global-chat{
+.suggestion-direction-global-chat {
   position: absolute;
   bottom: 220px;
   right: 139px;
@@ -1816,21 +1872,19 @@ circle.front {
   z-index: 9999999;
 }
 
-.suggestion-direction-global-chat-down{
-    position: absolute;
-    bottom: 45px;
-    right: 196px;
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 12px solid #e3edfc;
-    z-index: 99;
+
+.suggestion-direction-global-chat-down {
+  position: absolute;
+  bottom: 44px;
+  right: 196px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #e3edfc;
+  z-index: 9999999;
 }
 
-
-
-/* added extra */
 button.image-only-button {
   background: none;
   border: none;
@@ -1841,8 +1895,8 @@ button.image-only-button {
 
 button.image-only-button img {
   display: block;
-  width: 24px; /* adjust as needed */
-  height: 24px; /* adjust as needed */
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
@@ -1854,14 +1908,15 @@ button.image-only-button img {
   width: 76%;
 }
 
-
 .align-for-prompts-global {
   position: absolute;
   top: 58%;
-    left: 63%;
-    transform: translate(-50%, -50%);
-    width: 75%;
+  left: 63%;
+  transform: translate(-50%, -50%);
+  width: 75%;
 }
 
-
+.suggestion-list-global-chat {
+  max-height: 132px !important;
+}
 
