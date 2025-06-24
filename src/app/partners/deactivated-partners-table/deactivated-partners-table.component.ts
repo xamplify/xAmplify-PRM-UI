@@ -13,11 +13,11 @@ import { UtilService } from 'app/core/services/util.service';
 import { Properties } from 'app/common/models/properties';
 
 @Component({
-  selector: 'app-active-partners-table',
-  templateUrl: './active-partners-table.component.html',
-  styleUrls: ['./active-partners-table.component.css']
+  selector: 'app-deactivated-partners-table',
+  templateUrl: './deactivated-partners-table.component.html',
+  styleUrls: ['./deactivated-partners-table.component.css']
 })
-export class ActivePartnersTableComponent implements OnInit {
+export class DeactivatedPartnersTableComponent implements OnInit {
   @Input() applyFilter: boolean;
   loggedInUserId: number = 0;
   searchKey: string = "";
@@ -57,7 +57,7 @@ export class ActivePartnersTableComponent implements OnInit {
 
   ngOnInit() {
     //this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    //this.getActivePartners(this.pagination);
+    //this.getDeactivatedPartners(this.pagination);
   }
 
   ngOnChanges(){
@@ -68,17 +68,17 @@ export class ActivePartnersTableComponent implements OnInit {
     }
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;  
     this.sortOption.searchKey = "";/*** XNFR-835 ***/
-    this.getActivePartners(this.pagination);
+    this.getDeactivatedPartners(this.pagination);
     this.findCompanyNames();
     this.setFilterColor();
   }
 
-  getActivePartners(pagination: Pagination) {
+  getDeactivatedPartners(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.partnershipStatus = this.partnershipStatus;
-    this.parterService.getActivePartners(this.pagination).subscribe(
+    this.parterService.getDeactivatedPartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         this.sortOption.totalRecords = response.data.totalRecords;
@@ -93,7 +93,7 @@ export class ActivePartnersTableComponent implements OnInit {
   search() {
     // this.pagination.pageIndex = 1;
     // this.pagination.searchKey = this.searchKey;
-    // this.getActivePartners(this.pagination);
+    // this.getDeactivatedPartners(this.pagination);
     this.getAllFilteredResults(this.pagination);
   }
 
@@ -107,17 +107,17 @@ export class ActivePartnersTableComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOptionForPartnerJourney, pagination);
-    this.getActivePartners(this.pagination);
+    this.getDeactivatedPartners(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getActivePartners(this.pagination);
+    this.getDeactivatedPartners(this.pagination);
   }
 
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
-    this.getActivePartners(this.pagination);
+    this.getDeactivatedPartners(this.pagination);
   }
 
   getSortedResults(text: any) {
@@ -181,7 +181,7 @@ export class ActivePartnersTableComponent implements OnInit {
     this.filterApplied = true;
     this.setDateFilterOptions();
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
-    this.showActivePartnersTable();
+    this.showDeactivatedPartnersTable();
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
   }
@@ -250,14 +250,14 @@ export class ActivePartnersTableComponent implements OnInit {
     }
   }
 
-  showActivePartnersTable() {
+  showDeactivatedPartnersTable() {
     if(this.selectedCompanyIds.length > 0){
       this.isCollapsed = false;
     }
   }
 /*** XNFR-835 ***/
-  downloadActivePatnerReport() {
-    this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"active-partners-report")
+  downloadDeactivatedPartnerReport() {
+    this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"deactivated-partners-report")
   }
 /*** XNFR-835 ***/
 }

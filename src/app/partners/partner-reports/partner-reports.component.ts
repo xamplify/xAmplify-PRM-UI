@@ -119,6 +119,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isPendingStatus = false;
     isDormantStatus = false;
     isIncompleteCompanyProfile = false;
+    //XNFR-1006
+    isdeactivatePartnersDiv: boolean = false;
+    totalDeactivatePartnersCountLoader: boolean = false;
+    totalDeactivatePartnersCount: any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -179,9 +183,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getPartnersRedistributedCampaignsData() {
         this.barChartLoader = true;
         let partnerJourneyRequest = new PartnerJourneyRequest();
+        let partnershipStatus: any;
         partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
         partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
         partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+         if(this.isActivePartnerDiv){
+         partnershipStatus = 'approved';
+         } else if (this.isdeactivatePartnersDiv) {
+          partnershipStatus = 'deactivated';
+         }
+         partnerJourneyRequest.partnershipStatus = partnershipStatus;
         this.parterService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
             (data: any) => {
                 const campaignData = [];
@@ -315,6 +326,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.getActivePartnerReports();
         this.loadCountryData();
         setTimeout(() => {
@@ -339,8 +351,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.isApprovePartnersDiv = false;
          this.isIncompleteCompanyProfileDiv = false;
          this.isSingUpPendingDiv = false;
+         this.isdeactivatePartnersDiv = false;
          this.allPartnersStatusForMail();
     }
+    
     
     /****************************Through Partner Analytics**************************/
     goToThroughPartnersDiv() {
@@ -358,6 +372,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
+
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
         this.allPartnersStatusForMail();
@@ -378,6 +394,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.allPartnersStatusForMail();
     }
 
@@ -504,6 +521,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.inActivePartnersSearchKey = "";
 
         this.inActivePartnersPagination.pageIndex = 1;
@@ -529,6 +547,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
         this.allPartnersStatusForMail();
@@ -867,6 +886,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.findApprovePartnersCount();
             this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
             this.findTotalPartnersCount();
+            this.findTotalDeactivatePartnersCount();
             if (tabIndex != undefined) {
                 if (tabIndex == 1) {
                     this.goToInActivePartnersDiv();
@@ -894,6 +914,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnChanges(){
         this.goToActivePartnersDiv();
+        // this.goToDeactivatePartnersDiv();
     }
 
     getModuleAccess() {
@@ -995,6 +1016,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findApprovePartnersCount();
         self.findPendingSignupAndCompanyProfileIncompletePartnersCount();
         self.findTotalPartnersCount();
+        self.findTotalDeactivatePartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
             self.getPartnersRedistributedCampaignsData();
@@ -1178,6 +1200,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
 
@@ -1206,6 +1229,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = true;
         this.totalPartnersDiv = false;
         this.isAllPartners = false; //XNFR-1015
+        this.isdeactivatePartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
@@ -1699,4 +1723,36 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSentEmailNotification = false;
     }
     /*** XNFR-1015 */
+    
+    //XNFR-1006
+    findTotalDeactivatePartnersCount() {
+        this.totalDeactivatePartnersCountLoader = true;
+        this.parterService.findTotalDeactivatePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (result: any) => {
+                this.totalDeactivatePartnersCount = result.data.totalDeactivatePartnersCount;
+                this.totalDeactivatePartnersCountLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.totalDeactivatePartnersCountLoader = false;
+            });
+    }
+
+ goToDeactivatePartnersDiv(){
+        this.isdeactivatePartnersDiv = true;
+         this.loadAllCharts = false;
+         this.selectedTabIndex = 9;
+         this.isThroughPartnerDiv = false;
+         this.isInactivePartnersDiv = false;
+         this.isActivePartnerDiv = false;
+         this.isRedistributePartnersDiv = false;
+         this.isApprovePartnersDiv = false;
+         this.isIncompleteCompanyProfileDiv = false;
+         this.isSingUpPendingDiv = false;
+         this.totalPartnersDiv = false;
+         this.getActivePartnerReports();
+         this.loadCountryData();
+         this.getPartnersRedistributedCampaignsData();
+    }
+
 }

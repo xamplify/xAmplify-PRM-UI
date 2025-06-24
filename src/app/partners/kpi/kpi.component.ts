@@ -50,6 +50,10 @@ export class KpiComponent implements OnInit {
     this.refreshKpis();
   }
 
+  ngOnChanges() {
+
+  }
+
   refreshKpis(){
     this.loader = true;
     this.getModuleDetails();

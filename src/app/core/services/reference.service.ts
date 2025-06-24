@@ -4017,10 +4017,11 @@ getFirstLetter(inputString:any) {
     let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
     let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";
     let moduleName = pagination.moduleName ? "&moduleName="+ pagination.moduleName:"";
+    let partnershipStatus = pagination.partnershipStatus != null ? "&partnershipStatus=" + pagination.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/" + urlString + "?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm
-      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm;
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm + partnershipStatus;
     this.openWindowInNewTab(url);
   }
 
