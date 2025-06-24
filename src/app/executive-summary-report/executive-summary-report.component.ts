@@ -954,43 +954,34 @@ margin-right: 30px;
   <div class="main-wrapper">
 
     <!-- Header Section -->
-    <div class="header-card" *ngIf="report?.meta">
+    <div class="header-card">
       <div class="header">
         <div class="header-left">
-          <h1>{{ report.meta.report_title }}</h1>
-          <h2>{{ report.meta.subtitle }}</h2>
-          <p *ngIf="report.contact_email">Contact: {{ report.contact_email }}</p>
-          <span *ngIf="report.meta.date_range">Data range: {{ report.meta.date_range }}</span>
+          <h1>{{ report.report_title }}</h1>
+          <h2>{{ report.subtitle }}</h2>
+          <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span>
         </div>
         <div class="header-right">
           <span>Prepared for</span>
-          <h3>{{ report.meta.report_recipient }}</h3>
-          <span>{{ report.meta.report_owner }}</span>
+          <h3>{{ report.report_recipient }}</h3>
+          <span>{{ report.report_owner }}</span>
         </div>
       </div>
       <div class="summary" *ngIf="report.kpi_overview">
+      {{#report.kpi_overview.items}}
         <div class="summary-item">
-          <h1 class="green">{{ report.kpi_overview.total_pipeline_value }}</h1>
-          <p>Total Pipeline Value</p>
-          <span>{{ report.kpi_overview.number_of_deals_logged }} Deals Logged</span>
+          <h1 class="green">{{ name }}</h1>
+          <p>{{value}}</p>
+          <span>{{notes}}</span>
         </div>
-        <div class="summary-item">
-          <h1 class="yellow">{{ report.kpi_overview.number_of_leads_generated }}</h1>
-          <p>Leads Generated</p>
-          <span><!-- You can compute open/connected breakdown in component --></span>
-        </div>
-        <div class="summary-item">
-          <h1 class="blue">{{ report.kpi_overview.number_of_campaigns_launched }}</h1>
-          <p>Campaigns Launched</p>
-          <span>Multi-channel Strategy</span>
-        </div>
+        {{/report.kpi_overview.items}}
       </div>
     </div>
 
     <!-- KPI Table -->
-    <div class="white-card" *ngIf="report.executive_summary_table?.length">
-      <h2>Executive Summary Overview</h2>
-      <p>Critical metrics and performance indicators</p>
+    <div class="white-card" *ngIf="report.summary_overview?.length">
+      <h2>{{report.summary_overview.title}}</h2>
+      <p>{{report.summary_overview.description}}</p>
       <table>
         <thead>
           <tr>
@@ -1000,96 +991,44 @@ margin-right: 30px;
           </tr>
         </thead>
         <tbody>
-          {{#report.executive_summary_table}}
+          {{#report.summary_overview.items}}
       <tr>
-        {{#KPI}}
-        <td>{{KPI}}</td>
-        {{/KPI}}
-        {{#kpi}}
-        <td>{{kpi}}</td>
-        {{/kpi}}
-        {{#Volume}}
-        <td>{{Volume}}</td>
-        {{/Volume}}
-        {{#volume}}
-        <td>{{volume}}</td>
-        {{/volume}}
-        {{#Trend}}
-        <td>{{Trend}}</td>
-        {{/Trend}}
-        {{#trend}}
-        <td>{{trend}}</td>
-        {{/trend}}
+        {{#name}}
+        <td>{{name}}</td>
+        {{/name}}
+        {{#value}}
+        <td>{{value}}</td>
+        {{/value}}
+        {{#notes}}
+        <td>{{notes}}</td>
+        {{/notes}}
       </tr>
-    {{/report.executive_summary_table}}
+    {{/report.summary_overview.items}}
         </tbody>
       </table>
     </div>
 
     <!-- Metric Cards -->
     <div class="cards-grid" *ngIf="report.performance_indicators">
+    {{#report.performance_indicators.items}}
       <div class="card">
         <div class="card-header">
-          Campaign Engagement Rate
-          <div class="status-label">Strong</div>
+          {{name}}
+          <div class="status-label">{{rating}}</div>
         </div>
-        <div class="card-value">{{ report.performance_indicators.campaign_engagement_rate }}</div>
-        <div class="card-subtext">&nbsp;</div>
+        <div class="card-value">{{ value }}</div>
+        <div class="card-subtext">{{notes}}</div>
       </div>
-
-      <div class="card">
-        <div class="card-header">
-          Lead Conversion Rate
-          <div class="status-label">Excellent</div>
-        </div>
-        <div class="card-value">{{ report.performance_indicators.lead_conversion_rate }}</div>
-        <div class="card-subtext">&nbsp;</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          Average Deal Value
-          <div class="status-label">Above target</div>
-        </div>
-        <div class="card-value">{{ report.performance_indicators.average_deal_value }}</div>
-        <div class="card-subtext">&nbsp;</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          Video Campaign Performance
-          <div class="status-label">Top performer</div>
-        </div>
-        <div class="card-value">{{ report.performance_indicators.video_campaign_performance }}</div>
-        <div class="card-subtext">&nbsp;</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          Page Campaign Success
-          <div class="status-label">Breakthrough</div>
-        </div>
-        <div class="card-value">{{ report.performance_indicators.page_campaign_performance }}</div>
-        <div class="card-subtext">&nbsp;</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          Deal Pipeline Health
-          <div class="status-label">Strong</div>
-        </div>
-        <div class="card-value">{{ report.performance_indicators.overall_pipeline_health }}</div>
-        <div class="card-subtext">&nbsp;</div>
-      </div>
+      {{/report.performance_indicators.items}}
     </div>
 
     <!-- Strategic Insights & Analysis -->
     <div class="analysis-section" *ngIf="report.strategic_insights?.length">
-      <h2>Strategic Insights & Analysis</h2>
-      <p>Key findings and opportunities for optimization</p>
+      <h2>{{report.strategic_insights.title}}</h2>
+      <p>{{report.strategic_insights.description}}</p>
 
       <div class="insights-grid">
-      {{#report.strategic_insights}}
+      {{#report.strategic_insights.items}}
         <div class="insight-card" [ngClass]="{
               'green': insight_type === 'High Conversion',
               'blue': insight_type === 'Revenue Opportunity' || insight_type === 'Positive Trend',
@@ -1106,25 +1045,25 @@ margin-right: 30px;
           <p>{{ analysis }}</p>
           <div class="action">IMMEDIATE ACTION<br><strong>{{ recommended_action }}</strong></div>
         </div>
-        {{/report.strategic_insights}}
+        {{/report.strategic_insights.items}}
       </div>
     </div>
 
     <!-- Next Steps -->
     <div class="white-card" *ngIf="report.recommended_next_steps?.length">
       <div class="next-steps-wrapper">
-        <h2>Recommended Next Steps</h2>
-        <p>&nbsp;</p>
-        {{#report.recommended_next_steps}}
+        <h2>{{report.recommended_next_steps.title}}</h2>
+        <p>{{report.recommended_next_steps.description}}</p>
+        {{#report.recommended_next_steps.items}}
         <div class="step-card">
           <div class="step-top">
             <div class="step-icon">🎯</div>
             <div class="step-content">
               <div class="step-title">
-                <h3>{{ action }}</h3>
-                <span class="priority-tag">P1 Priority</span>
+                <h3>{{ title }}</h3>
+                <span class="priority-tag">{{priority}}</span>
               </div>
-              <p class="step-description">&nbsp;</p>
+              <p class="step-description">{{ action }}</p>
               <div class="step-details">
                 <div>
                   <span class="label">OWNER</span>
@@ -1142,19 +1081,14 @@ margin-right: 30px;
             </div>
           </div>
         </div>
-        {{/report.recommended_next_steps}}
+        {{/report.recommended_next_steps.items}}
       </div>
 
       <!-- Bottom Line -->
-      <div class="bottom-line-card" *ngIf="report.executive_bottom_line">
+      <div class="bottom-line-card" *ngIf="report.conclusion">
         <div class="bottom-line-inner">
-          <h3>Executive Bottom Line</h3>
-          <p>{{ report.executive_bottom_line }}</p>
-          <div class="bottom-line-stats" *ngIf="report.kpi_overview">
-            <span><strong>Campaign Success Rate:</strong> <span class="green">{{ report.performance_indicators?.campaign_engagement_rate }}</span></span>
-            <span><strong>Pipeline Value:</strong> <span class="green">{{ report.kpi_overview.total_pipeline_value }}</span></span>
-            <span><strong>Conversion Status:</strong> <span class="green">On Track</span></span>
-          </div>
+          <h3>{{report.conclusion.title}}</h3>
+          <p>{{ report.conclusion.description }}</p>
         </div>
       </div>
     </div>
