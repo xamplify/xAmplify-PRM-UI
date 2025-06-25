@@ -35,6 +35,9 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ report?.meta?.report_title }}</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- Funnel module -->
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* ------------- ORIGINAL CSS — UNCHANGED ------------- */
@@ -109,8 +112,9 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .summary {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
@@ -121,11 +125,10 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         .summary-item {
             text-align: center;
-            flex: 1;
         }
 
         .summary-item h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             margin-bottom: 6px;
         }
@@ -694,6 +697,7 @@ margin-right: 30px;
             }
 
             .summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
                 flex-wrap: wrap;
                 gap: 20px;
                 padding: 20px;
@@ -797,6 +801,7 @@ margin-right: 30px;
             }
 
             .summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 flex-direction: column;
                 padding: 15px;
                 gap: 15px;
@@ -946,6 +951,65 @@ margin-right: 30px;
                 align-items: center;
                 gap: 15px;
             }
+
+            /* ── Contact-Journey Timeline ─────────────────────────────── */
+            .timeline-card .timeline-wrapper {
+            max-height: 260px;              /* controls visible height */
+            overflow-y: auto;
+            margin: 20px 0;
+            padding-right: 6px;             /* room for scrollbar */
+            }
+
+            .timeline-card .timeline-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            }
+
+            .timeline-card .timeline-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            }
+
+            .timeline-card .timeline-head .date {
+            min-width: 65px;
+            color: #475569;
+            }
+
+            .timeline-card .timeline-body {
+            font-size: 15px;
+            color: #1e293b;
+            }
+
+            .timeline-card .badge.purple  { background:#ede9fe; color:#6d28d9; }
+            .timeline-card .badge.dark    { background:#1e293b; color:#f8fafc; }
+
+            .timeline-card .timeline-footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            }
+
+            .timeline-card .timeline-footer span {
+            display: flex;
+            gap: 4px;
+            align-items: baseline;
+            }
+            .timeline-card .timeline-footer .blue  { color:#3b82f6; }
+            .timeline-card .timeline-footer .green { color:#16a34a; }
+            .timeline-card .timeline-footer .orange{ color:#ea580c; }
         }
   </style>
 </head>
@@ -959,7 +1023,7 @@ margin-right: 30px;
         <div class="header-left">
           <h1>{{ report.report_title }}</h1>
           <h2>{{ report.subtitle }}</h2>
-          <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span>
+           <!-- <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span> -->
         </div>
         <div class="header-right">
           <span>Prepared for</span>
@@ -1021,6 +1085,62 @@ margin-right: 30px;
       </div>
       {{/report.performance_indicators.items}}
     </div>
+
+    <div class="card" *ngIf="report.lead_progression_funnel">
+        <h2>{{report.lead_progression_funnel.title}}</h2>
+        <p>{{report.lead_progression_funnel.description}}</p>
+        <div class="funnel-step">
+            {{#report.lead_progression_funnel.items}}
+                <div class="funnel-left">
+                <div class="funnel-dot" style="background:#10b981;"></div>
+                <div class="funnel-info">
+                    <span class="funnel-title">{{name}}</span>
+                    <div class="funnel-bar">
+                    <div class="bar-fill" [style.width]="conversion_rate" style="background:#10b981;"></div>
+                    </div>
+                    <div class="funnel-sub">{{notes}}</div>
+                </div>
+                </div>
+            {{/report.lead_progression_funnel.items}}
+        <div class="status complete">Complete</div>
+        </div>
+        <div class="progress-footer">
+          <div class="blue">62.5%<br />Campaign Response Rate</div>
+          <div class="green">20%<br />Connection Rate</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Contact Journey Timeline -->
+    <div class="white-card timeline-card"  *ngIf="report.contact_journey_timeline">
+        <h2>{{report.contact_journey_timeline.title}}</h2>
+        <p>{{report.contact_journey_timeline.description}}</p>
+
+        <div class="timeline-wrapper">
+            {{#report.contact_journey_timeline.items}}
+                <div class="timeline-item">
+                <div class="timeline-head">
+                    <span class="date">{{date}}</span>
+                    <span class="badge purple">{{status}}</span>
+                </div>
+                <div class="timeline-body">
+                    {{interaction}}
+                </div>
+                <p>
+                    {{notes}}
+                </p>
+                </div>
+            {{/report.contact_journey_timeline.items}}
+        </div>
+        </div>
+
+       
+    <!-- Bar-chat -->
+    <div class="white-card">
+      <div style="widht:100%;height:100%" id="bar-chart"></div>
+    </div>
+
 
     <!-- Strategic Insights & Analysis -->
     <div class="analysis-section" *ngIf="report.strategic_insights?.length">
@@ -1094,6 +1214,20 @@ margin-right: 30px;
     </div>
 
   </div>
+
+    <script>
+        Highcharts.chart('bar-chart', {
+            chart: { type: 'column' },
+            title: { text: '{{report.dealPipelinePrograssion.title}}' },
+            xAxis: { categories: {{{report.dealPipelinePrograssion.categoriesString}}} },
+            yAxis: { title: { text: '{{report.dealPipelinePrograssion.revenue}}' } },
+            series: {{{report.dealPipelinePrograssion.seriesString}}}
+        });
+    </script>
+
+
+
+
 </body>
 
 </html>`;
@@ -1162,6 +1296,8 @@ margin-right: 30px;
       // this.createDealAmountBarChart();
       // this.createCampaignTypePieChart();
     }, 0);
+    this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+    this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
     const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
     const blob = new Blob([mergedContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);

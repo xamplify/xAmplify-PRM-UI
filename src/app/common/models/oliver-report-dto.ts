@@ -16,12 +16,14 @@ export interface ExecutiveReport {
   lead_progression_funnel: LeadProgressionFunnel;
   pipeline_progression:    PipelineProgression;
 
-  contact_journey_timeline: ContactJourney[];
+  contact_journey_timeline: OverviewSection<ContactJourney>;
 
   strategic_insights:       OverviewSection<StrategicInsightItem>;
   recommended_next_steps:   OverviewSection<RecommendedNextStepItem>;
 
   conclusion: Conclusion;
+
+  dealPipelinePrograssion: DealPipelineProgression
 }
 
 /* ----------  Re-usable building blocks ---------- */
@@ -106,4 +108,30 @@ export interface ContactJourney {
 export interface Conclusion {
   title: string;
   description: string;
+}
+
+export interface DealPipelineProgression {
+  title: string;
+  categories: string[];
+  revenue: string;
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+}
+export interface OverviewSection<TItem> {
+  title:       string;
+  description: string;
+  items:       TItem[];
+}
+export interface ExecutiveReport {
+ 
+  contact_journey_timeline: OverviewSection<ContactJourney>;
+
+}
+
+export interface ContactJourney {
+  date:        string;
+  interaction: string;
+  status:      string;
+  notes:       string; 
 }

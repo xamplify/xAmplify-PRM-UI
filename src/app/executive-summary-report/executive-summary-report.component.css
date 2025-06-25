@@ -351,3 +351,28 @@ canvas {
   display: block;
 }
 
+
+
+.asset-btn {
+  background: linear-gradient(to right, #0ea5e9, #3b82f6);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  margin-top: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.asset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.download-btns {
+  margin-left: 15px;
+}
+

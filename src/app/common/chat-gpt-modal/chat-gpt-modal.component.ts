@@ -1474,6 +1474,26 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
   parseOliverReport(jsonStr: string): ExecutiveReport {
     const j = JSON.parse(jsonStr);
 
+    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+
+    const dealPipelinePrograssion = {
+      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: ''
+    };
+
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
       report_title: j && j.report_title ? j.report_title : '',
@@ -1567,9 +1587,23 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
             : ''
       },
 
+      
       /* ---------- contact-journey timeline ---------- */
-      contact_journey_timeline:
-        j && j.contact_journey_timeline ? j.contact_journey_timeline : [],
+      contact_journey_timeline: {
+        title:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.title
+            ? j.contact_journey_timeline.title
+            : '',
+        description:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.description
+            ? j.contact_journey_timeline.description
+            : '',
+        items:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.items
+            ? j.contact_journey_timeline.items
+            : []
+      },
+
 
       /* ---------- strategic insights ---------- */
       strategic_insights: {
@@ -1608,10 +1642,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
         description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
       }
+
+      dealPipelinePrograssion: dealPipelinePrograssion
     };
 
     return dto;
   }
+
+  
 
 
 }
