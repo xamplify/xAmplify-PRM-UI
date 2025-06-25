@@ -140,9 +140,7 @@ export class ChatGptModalComponent implements OnInit {
 
   /** XNFR-1009 **/
   showPromptBoxAbove: boolean = false;
-  oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
   suggestedPromptDTOs: OliverPromptSuggestionDTO[] = [];
-  searchTerm: string = '';                 
   showPromptBoxBelow: boolean  = false;
   showGlobalPromptBoxBelow: boolean;
   showGlobalPromptBoxAbove: boolean;
