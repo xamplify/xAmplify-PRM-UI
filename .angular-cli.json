@@ -135,7 +135,8 @@
 				"./assets/js/shim.min.js",
 				"./assets/js/reflect-metadata@0.1.3.js",
 				"./assets/js/system.src.js",
-				"./assets/js/indexjscss/slider.js"		
+				"./assets/js/indexjscss/slider.js",
+				"../node_modules/chart.js/dist/Chart.bundle.min.js"		
 			],
 			"environmentSource": "environments/environment.ts",
 			"environments": {

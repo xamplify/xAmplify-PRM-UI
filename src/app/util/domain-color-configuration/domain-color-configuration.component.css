@@ -1,0 +1,152 @@
+.color-settings-container {
+  padding: 10px;
+}
+
+.color-field {
+  margin-bottom: 20px;
+}
+
+.color-field label {
+  display: block;
+  color: #888;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.color-input-row {
+  display: flex;
+  align-items: center;
+}
+
+.color-preview {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+
+input[type="text"] {
+  font-size: 16px;
+  padding: 6px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  display: flex;
+  flex: 1;
+}
+
+/* button {
+  margin-top: 16px;
+  padding: 8px 24px;
+  background: #59d77c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+} */
+
+button:disabled {
+  background: #c8e6c9;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 10px;
+}
+
+.lead_details h3 {
+    font-size: 15px;
+    margin: 0px;
+    padding: 9px 4px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.justify-content-end{
+    justify-content: end;
+}
+
+.color-settings-container {
+  padding: 10px;
+}
+
+.color-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.field-label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.color-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Wrap native input and square */
+.color-picker-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.color-picker-input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.color-preview {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.hex-input {
+  width: 100px;
+  height: 32px;
+  border: 1px solid #160d0d;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.lead_details h3 a:hover i.fa-refresh {
+  color: #2e7d32;
+  transition: color 0.2s;
+}
+
+.reload-btn {
+  margin-left: 2px;
+  color: #888;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.section-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+
