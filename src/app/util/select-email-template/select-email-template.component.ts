@@ -150,6 +150,8 @@ editTemplate(emailTemplate:any){
 closeEditTemplateModalPopup(){
   this.selectedEmailTemplate = {};
   this.openEditTemplateModalPopup = false;
+  this.findEmailTemplates(this.emailTemplatesPagination);
+
 }
 
 

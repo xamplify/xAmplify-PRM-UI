@@ -1764,6 +1764,8 @@ body {
 .dropdown-container {
   position: relative;
   display: inline-block;
+  padding-top: 120px;
+  margin-top: -120px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1780,7 +1782,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: -112px;
+  top:5px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1842,7 +1844,7 @@ body {
     bottom: 0px;
     border-radius:10px 10px 15px 15px;
     /* max-height: 300px; */
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
     /* background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%); */
     background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);

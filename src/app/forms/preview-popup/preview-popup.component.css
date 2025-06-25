@@ -262,3 +262,10 @@ span.quiz_optionname {
     margin: 10px 5px 0px 5px;
   }
 }
+.modal-dialog.modal-dialog-width{
+width:85%!important;
+}
+.abjusttextarea-width::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}

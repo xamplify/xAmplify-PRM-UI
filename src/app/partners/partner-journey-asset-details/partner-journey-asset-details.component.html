@@ -55,7 +55,7 @@
                 </button>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
-                <ejs-multiselect class="mb10" [(ngModel)]='pagination.selectedAssetNames' [ngModelOptions]="{standalone: true}"
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.assetIds' [ngModelOptions]="{standalone: true}"
                   [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
                   [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
                 </ejs-multiselect>
@@ -124,9 +124,16 @@
               <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
                   (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
                     [userInfo]="item"></app-user-info></a></td>
-              <td class="text-center" >{{item?.assetName | slice:0:20}}<span *ngIf="item?.assetName.length>20">...</span></td>
-              <td class="text-center">{{item?.assetType}}</td>
-              <td class="text-center">{{item?.createdByName}}</td>
+              <td class="text-center">
+                <p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
+                    <span *ngIf="item.assetName?.length>30">...</span>
+                  </p>
+              </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetType}}">{{item.assetType | slice:0:30}}   
+                    <span *ngIf="item.assetType?.length>30">...</span>
+                  </p> </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.createdByName}}">{{item.createdByName}}   
+                  </p></td>
               <td class="text-center">
                 <div class="custom-icon">
                   <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">
@@ -141,7 +148,7 @@
                   <div class="clickicons"></div>
                 </div>
               </td>
-              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
+              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOn">
                 </app-timestamp></td>
               <td class="text-center">
                 <div class="actions-block override-actions ActionAlign action_inline">

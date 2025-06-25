@@ -692,7 +692,7 @@ export class ParterService {
         let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
         let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
         let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";   
-        let assetNames = pagination.selectedAssetNames != undefined ? "&assetNames=" + pagination.selectedAssetNames : "";
+        let assetIds = pagination.assetIds != undefined ? "&assetIds=" + pagination.assetIds : "";
         let companyIds = pagination.selectedCompanyIds != undefined ? "&companyIds=" + pagination.selectedCompanyIds : ""
         let emailIds = pagination.selectedEmailIds != undefined ? "&emailIds=" + pagination.selectedEmailIds : "";
         let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&partnerTeamMemberGroupFilter=true" : "";
@@ -702,7 +702,7 @@ export class ParterService {
         let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
         let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
         let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
-        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetNames + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetIds + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
         const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
         return this.httpClient.get(url)
             .catch(this.handleError);
@@ -821,7 +821,16 @@ export class ParterService {
         var url = this.URL + "partnership/deactivatePartnerCompanies/" + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, deactivateUserIds);
     }
+    getPlaybookInteractionDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/journey/interaction/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
 
-
+    getAllPlaybookNamesFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/names/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
 }
 

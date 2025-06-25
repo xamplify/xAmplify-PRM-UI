@@ -2845,3 +2845,6 @@ markdown pre,.aligin-para{
 .suggestion-direction-global-chat{
   border-bottom: 12px solid #22313a!important;
 }
+.pad div {
+  color: #ffffff !important;
+}

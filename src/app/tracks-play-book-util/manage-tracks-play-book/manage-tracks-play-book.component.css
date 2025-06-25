@@ -189,3 +189,7 @@ p.warning-red-textcolor {
   display: flex;
   flex-wrap: wrap;
 }
+.track-deactivated {
+  float: left;
+  margin-left: 12px;
+}

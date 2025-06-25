@@ -352,11 +352,11 @@
       <div class="col-xs-12 col-sm-12 col-lg-12 p5">
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
-            <div class="caption">
+            <div class="caption margin_top7">
               <span class="caption-subject font-red-sunglo uppercase"> Dormant
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
-            <div class="inputs" style="float: right">
+            <div class="inputs mb5" style="float: right">
               <div class="portlet-input d-flex">
                  <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" (click)="downloadInActivePartnersReport()">
                 <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
@@ -694,10 +694,10 @@
                           | slice:0:25}}
                           <span *ngIf="campaign.campaignName?.length>25">...</span>
                         </h4>
-                        <h5 class='m0'><b>From:</b> {{campaign.companyName | slice:0:15}}
+                        <h5 class='m0 ellipsis p0'><b>From:</b> {{campaign.companyName | slice:0:15}}
                          <span *ngIf="campaign.companyName?.length>25">...</span>
                         </h5>
-                        <h5 class='f-w-300 mt5'><b>By:</b> {{campaign.createdBy | slice:0:25}}
+                        <h5 class='f-w-300 mt5 ellipsis p0'><b>By:</b> {{campaign.createdBy | slice:0:25}}
                           <span *ngIf="campaign.createdBy?.length>25">...</span>
                         </h5>
                       </td>
@@ -733,7 +733,7 @@
               </div>
             </section>
 
-            <div *ngIf="sortOption.totalRecords <= 0 && isListView" class="alert alert-info">
+            <div *ngIf="sortOption.totalRecords <= 0 && isListView" class="alert alert-info col-xs-12 mt5">
               <strong>No campaigns found</strong>
             </div>
 
@@ -832,24 +832,24 @@
       <div class="col-xs-12 cl-sm-12 col-md-12 col-lg-12">
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
-            <div class="caption">
+            <div class="caption margin_top7">
               <span class="caption-subject font-red-sunglo uppercase">
                 {{ isSingUpPendingDiv ? 'Pending SignUp' : 'Incomplete Company Profile' }}
                 {{ isSingUpPendingDiv ? '' : authenticationService?.partnerModule?.customName }} </span>
             </div>
-            <div class="inputs" style="float: right">
+            <div class="inputs mb5" style="float: right">
               <!-- XNFR-835 -->
-              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;" (click)="downloadIncompleteCompanyProfilePartnersReport()">
+              <div class="portlet-input d-flex">
+                  <!-- XNFR-835 -->
+              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;"
+                (click)="downloadIncompleteCompanyProfilePartnersReport()">
                 <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
                   data-original-title="Export to Excel"></i>
               </button>
-              <!-- XNFR-835 -->
-              <div class="portlet-input input-inline">
                 <button *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv" class="btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()"
                 >Send Reminder</button>
                 <div class="input-icon right mTop" 
-                [ngClass]="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ? '' : 'input-icon right mTop'" 
-                [ngStyle]="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ? {'position': 'relative', 'margin': '-34px 0 0 131px'} : {'position': 'relative', 'margin': '-12px 0 0 0'}">
+                [ngClass]="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ? '' : 'input-icon right mTop'">
                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
                     [ngModelOptions]="{ standalone: true }" placeholder="Search"
                     (keypress)=" inCompleteCompanyProfileSignupPendingPartnersSearch($event.keyCode)">
@@ -933,7 +933,7 @@
     </div>
     <div class="ml15m">
       <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
-      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)"></app-all-partners-list>
+      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (partnersSelected)="openSendTestPopupFromAllPartner($event)" [isSentEmailNotification]="isSentEmailNotification" ></app-all-partners-list>
     </div>
   </div>
 
@@ -995,7 +995,12 @@
         [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess || authenticationService?.module?.showContent"></app-userwise-track-counts>
     </div>
   </div>
-
+  <div class="row rowPaddingCustomization2">
+    <app-play-book-journey-interaction [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.damAccess || authenticationService?.module?.showContent)"></app-play-book-journey-interaction>
+  </div>
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-asset-details [partnerCompanyId]="'0'"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isDetailedAnalytics]="false"
@@ -1237,7 +1242,7 @@
   </div>
 </div>
 
-<app-send-test-email *ngIf="sendTestEmailIconClicked" [selectedPartners]="selectedPartners" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [selectedPartners]="selectedPartners" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()" [isAllPartners]="isAllPartners" [selectedIncompleteEmailTemplateId]="selectedIncompleteEmailTemplateId" [selectedDormantEmailTemplateId]="selectedDormantEmailTemplateId"></app-send-test-email>
 
 
 

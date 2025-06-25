@@ -435,6 +435,11 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
           this.referenceService.stopLoader(this.httpRequestLoader);
+        } else if (response.statusCode == 402) {
+          let trackOrPlayBook =  this.tracksModule ? "track":"playbook";
+          let infoMessage = "The " + trackOrPlayBook + " will not be published to the deactivated partner(s)";
+          this.customResponse = new CustomResponse('ERROR', infoMessage, true);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
       },
       (error: string) => {
