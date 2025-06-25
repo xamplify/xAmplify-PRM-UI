@@ -185,7 +185,7 @@
                     <li *ngIf="true"
                       [ngClass]="{'active': activeTab === 'contactagent'}">
                       <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
-                        <i class="fa fa-lightbulb-o"></i> Contact Agent
+                        <i class="fa fa-vcard-o"></i> Contact Agent
                       </a>
                     </li>
                   </ul>
@@ -605,6 +605,8 @@
                                   class="fa fa-bar-chart mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == GLOBALCHAT"
                                   class="fa fa-file-text mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == CONTACTAGENT"
+                                  class="fa fa-vcard-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
                                   *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
