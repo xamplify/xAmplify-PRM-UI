@@ -182,6 +182,12 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
+                    <li *ngIf="true"
+                      [ngClass]="{'active': activeTab === 'contactagent'}">
+                      <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
+                        <i class="fa fa-lightbulb-o"></i> Contact Agent
+                      </a>
+                    </li>
                   </ul>
                 </li>
             
@@ -692,6 +698,49 @@
                 </div> -->
               </div>
             </div>
+
+                <!-- XNFR-1012 -->
+                <!-- Contact Agent Tab -->
+                 <!-- Start New Chat -->
+                <div role="tabpanel"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'contactagent', 'tab-pane fade': activeTab !== 'contactagent'}"
+                  id="contactagent">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'contactagent'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'contactagent',
+                                      'container-ui': !(showOpenHistory && activeTab === 'contactagent'),
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
+                                    }">
+                    <!-- Heading -->
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Contact Agent</span>
+                      <!-- Oliver Image Positioned Correctly -->
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Effortlessly retrieve contact details using just a name or email address.
+                       Instantly generate summaries and detailed reports.</p>
+                    <!-- Input Section -->
+                    <div class="oliver_input mt10">
+                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                      <div class="btn-wrapper">
+                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             <!-- -add changes- -->
           </div>
           <!--  -->
@@ -724,7 +773,9 @@
       <div class="content-card">
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
-            <markdown [data]="message.content"></markdown>
+            <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
+             <app-executive-summary-report   *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             </app-executive-summary-report>
           </div>
         </div>
       </div>

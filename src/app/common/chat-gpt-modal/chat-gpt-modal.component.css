@@ -607,6 +607,7 @@ max-height: calc(100vh - 220px);
   margin-bottom: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  overflow-x: auto;
 }
 .heading_text{
   margin-top: 0;

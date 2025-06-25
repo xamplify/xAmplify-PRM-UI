@@ -21,6 +21,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
+import { ExecutiveReport } from '../models/oliver-report-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -38,7 +39,7 @@ export class ChatGptModalComponent implements OnInit {
 
   inputText = "";
   isValidInputText = false;
-  chatGptGeneratedText = "";
+  chatGptGeneratedText : any;
   isTextLoading = false;
   isCopyButtonDisplayed = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -81,6 +82,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly GLOBALCHAT = "GLOBALCHAT";
+  private readonly CONTACTAGENT = "CONTACTAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -121,6 +123,20 @@ export class ChatGptModalComponent implements OnInit {
   stopClickEvent: boolean;
   copiedIndexes: number[] = [];
   showButtons = false;
+
+  showPrompts: boolean = false;
+  suggestedPrompts: string[] = [];  
+
+  showReport: boolean= false;
+  oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
+  filteredPrompts: string[] = [];          
+  searchTerm: string = '';                 
+  showPromptsDown: boolean  = false;
+  showGlobalPromptsDown: boolean;
+  showGlobalPrompts: boolean;
+  showInsightsPromptsDown: boolean = false;
+  showInsightsPrompts: boolean = false;
+  isReportInHistory: boolean;
 
   /** XNFR-1009 **/
   showPromptBoxAbove: boolean = false;
@@ -711,7 +727,11 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
+  showMEEEEE: boolean = false;
+
   AskAiTogetData() {
+  
+    this.showMEEEEE = true;
     this.searchTerm = "";
     this.resetAllPromptBoxes();
     this.showOpenHistory = true;
@@ -734,6 +754,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARAPHRASERAGENT;
     } else if (this.activeTab == 'globalchat') {
       this.chatGptIntegrationSettingsDto.agentType = this.GLOBALCHAT;
+    } else if (this.activeTab == 'contactagent') {
+      this.chatGptIntegrationSettingsDto.agentType = this.CONTACTAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -750,12 +772,25 @@ export class ChatGptModalComponent implements OnInit {
         console.log('API Response:', response);
         var content = response.data;
         if (content) {
-          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+
+          let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+          let isReport = response.data.isReport;
+          if (isReport == 'true') {
+            try {
+              const cleanJsonStr = self.extractJsonString(message);
+              message = self.parseOliverReport(cleanJsonStr);
+            } catch (error) {
+              isReport = 'false';
+              message = self.chatGptGeneratedText;
+            }
+          }
+
+          self.messages.push({ role: 'assistant', content: message,  isReport: isReport});
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
           self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
+          
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -846,7 +881,8 @@ export class ChatGptModalComponent implements OnInit {
     this.isSaveHistoryPopUpVisible = false;
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
-      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)) {
+      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
+      || (history.oliverChatHistoryType == this.CONTACTAGENT)) {
       this.isAgentSubmenuOpen = true;
     }
     this.getChatHistory(history.oliverChatHistoryType);
@@ -864,6 +900,8 @@ export class ChatGptModalComponent implements OnInit {
         return "paraphraser";
       case this.GLOBALCHAT:
         return "globalchat";
+      case this.CONTACTAGENT:
+        return "contactagent";
     }
   }
 
@@ -876,12 +914,23 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (response.statusCode == 200) {
           let messages = response.data;
+          let isReport = 'false';
           messages.forEach((message: any) => {
+
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              if (isReport == 'true') {
+                let reponseJson = this.extractJsonString(message.content);
+                message.content = this.parseOliverReport(reponseJson);
+              }
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
+              if (this.checkKeywords(message.content)) {
+                isReport = 'true';
+              } else {
+                isReport = 'false';
+              }
             }
           });
           setTimeout(() => {
@@ -901,6 +950,12 @@ export class ChatGptModalComponent implements OnInit {
       }
     );
   }
+
+  checkKeywords(prompt: string) {
+    const keywords = ['executive summary', 'QBR'];
+    return keywords.some(keyword => prompt.toLowerCase().includes(keyword.toLowerCase()));
+  }
+
 
   openEdit(history:any,index:any) {
     if (this.index != undefined && this.index > 0 && this.index != index) {
@@ -1207,6 +1262,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+            this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
           }
         }
       }, error => {
@@ -1406,5 +1462,209 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.showGlobalPromptBoxBelow = false;
   }
   /** XNFR-1009 end **/
+
+  extractJsonString(raw: string): string {
+    const firstBrace = raw.indexOf('{');
+    const lastBrace = raw.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
+      throw new Error('No valid JSON object found in input');
+    }
+    return raw.substring(firstBrace, lastBrace + 1);
+  }
+
+  parseOliverReport(jsonStr: string): ExecutiveReport {
+    const j = JSON.parse(jsonStr);
+
+    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+
+    const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
+    const dealPipelinePrograssion = {
+      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+    };
+
+    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+
+    const campaignPerformanceAnalysis = {
+      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: campaignItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.count == 'string'
+            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
+            : item.count ? item.count : 0
+        }))
+      }],
+      seriesString: '',
+    };
+
+    const dto: ExecutiveReport = {
+      /* ---------- top-level meta ---------- */
+      report_title: j && j.report_title ? j.report_title : '',
+      subtitle: j && j.subtitle ? j.subtitle : '',
+      date_range: j && j.date_range ? j.date_range : '',
+      report_owner: j && j.report_owner ? j.report_owner : '',
+      report_recipient: j && j.report_recipient ? j.report_recipient : '',
+
+      /* ---------- KPI overview ---------- */
+      kpi_overview: {
+        title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+        description: j && j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+        items: j && j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+      },
+
+      /* ---------- summary overview ---------- */
+      summary_overview: {
+        title: j && j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+        description: j && j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+        items: j && j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+      },
+
+      /* ---------- performance indicators ---------- */
+      performance_indicators: {
+        title: j && j.performance_indicators && j.performance_indicators.title ? j.performance_indicators.title : '',
+        description: j && j.performance_indicators && j.performance_indicators.description ? j.performance_indicators.description : '',
+        items: j && j.performance_indicators && j.performance_indicators.items ? j.performance_indicators.items : []
+      },
+
+      /* ---------- campaign performance analysis ---------- */
+      campaign_performance_analysis: {
+        top_performing_campaign_type:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.top_performing_campaign_type
+            ? j.campaign_performance_analysis.top_performing_campaign_type
+            : '',
+        campaign_engagement_state: {
+          connected:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.connected
+              ? j.campaign_performance_analysis.campaign_engagement_state.connected
+              : 0,
+          idle:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.idle
+              ? j.campaign_performance_analysis.campaign_engagement_state.idle
+              : 0,
+          other:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.other
+              ? j.campaign_performance_analysis.campaign_engagement_state.other
+              : 0
+        },
+        notes:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.notes
+            ? j.campaign_performance_analysis.notes
+            : ''
+      },
+
+      /* ---------- lead-progression funnel ---------- */
+      lead_progression_funnel: leadProgressionFunnelData,
+
+      /* ---------- pipeline progression ---------- */
+      pipeline_progression: {
+        deal_stages:
+          j && j.pipeline_progression && j.pipeline_progression.deal_stages
+            ? j.pipeline_progression.deal_stages
+            : {},
+        highest_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.highest_deal_value
+            ? j.pipeline_progression.highest_deal_value
+            : '',
+        average_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.average_deal_value
+            ? j.pipeline_progression.average_deal_value
+            : '',
+        notes:
+          j && j.pipeline_progression && j.pipeline_progression.notes
+            ? j.pipeline_progression.notes
+            : ''
+      },
+
+      
+      /* ---------- contact-journey timeline ---------- */
+      contact_journey_timeline: {
+        title:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.title
+            ? j.contact_journey_timeline.title
+            : '',
+        description:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.description
+            ? j.contact_journey_timeline.description
+            : '',
+        items:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.items
+            ? j.contact_journey_timeline.items
+            : []
+      },
+
+
+      /* ---------- strategic insights ---------- */
+      strategic_insights: {
+        title:
+          j && j.strategic_insights && j.strategic_insights.title
+            ? j.strategic_insights.title
+            : '',
+        description:
+          j && j.strategic_insights && j.strategic_insights.description
+            ? j.strategic_insights.description
+            : '',
+        items:
+          j && j.strategic_insights && j.strategic_insights.items
+            ? j.strategic_insights.items
+            : []
+      },
+
+      /* ---------- recommended next steps ---------- */
+      recommended_next_steps: {
+        title:
+          j && j.recommended_next_steps && j.recommended_next_steps.title
+            ? j.recommended_next_steps.title
+            : '',
+        description:
+          j && j.recommended_next_steps && j.recommended_next_steps.description
+            ? j.recommended_next_steps.description
+            : '',
+        items:
+          j && j.recommended_next_steps && j.recommended_next_steps.items
+            ? j.recommended_next_steps.items
+            : []
+      },
+
+      /* ---------- conclusion ---------- */
+      conclusion: {
+        title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
+        description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
+      },
+
+      dealPipelinePrograssion: dealPipelinePrograssion,
+
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+    };
+
+    return dto;
+  }
+
+  
+
 
 }
