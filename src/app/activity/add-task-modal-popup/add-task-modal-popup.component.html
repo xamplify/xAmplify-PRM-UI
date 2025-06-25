@@ -102,20 +102,20 @@
         <div class="form-group">
           <label for="attachments">Attachments:</label>
           <input id="fileInput" class="hide_remainder_date" type="file" (change)="onFileChange($event);validateTask()" multiple>
-          <label for="fileInput" class="btn btn-primary custom-file-label">
+          <label for="fileInput" class="btn btn-primary custom-file-label ml10">
             Choose a file
           </label>
           <div>
             <ul *ngIf="(taskActivity?.taskAttachmentDTOs?.length > 0)">
               <li *ngFor="let file of taskActivity?.taskAttachmentDTOs; let i = index">
                 {{ file.fileName }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
-                <button type="button" (click)="removeFileDTO(i);validateTask()"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn l-g-view" (click)="removeFileDTO(i);validateTask()"><i class="fa fa-times"></i></button>
               </li>
             </ul>
             <ul *ngIf="(files.length > 0)">
               <li *ngFor="let file of files; let i = index">
                 {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
-                <button type="button" (click)="removeFile(i);validateTask()"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn l-g-view" (click)="removeFile(i);validateTask()"><i class="fa fa-times"></i></button>
               </li>
             </ul>
           </div>

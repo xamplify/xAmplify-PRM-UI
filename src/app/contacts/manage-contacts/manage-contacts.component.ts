@@ -102,7 +102,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsByType: ContactsByType = new ContactsByType();
 	downloadDataList = [];
-
+	isRefreshingFromButton: boolean = false;
 	/*
 	 * Display all the contactLists in manage contacts page by default.
 	   If 'showListOfContactList' is set to false,display category wise contacts.
@@ -465,6 +465,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
 								this.pagedItems = null;
 							}
+							if (this.isRefreshingFromButton) {
+								this.customResponse = new CustomResponse(''); 
+								this.isRefreshingFromButton = false;
+							}
 
 							this.referenceService.loading(this.httpRequestLoader, false);
 							this.campaignLoader = false;
@@ -509,6 +513,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.resetResponse();
 							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
 							this.pagedItems = null;
+						}
+						if (this.isRefreshingFromButton) {
+							this.customResponse = new CustomResponse('');
+							this.isRefreshingFromButton = false;
 						}
 						this.referenceService.loading(this.httpRequestLoader, false);
 						this.campaignLoader = false;
@@ -3189,5 +3197,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.criterias = new Array<Criteria>();
 		this.listContactsByType(this.contactsByType.selectedCategory);
 		}
-		
+		refreshList() {
+			this.isRefreshingFromButton = true;
+			this.loadContactLists(this.pagination);
+	}
 }

@@ -2665,3 +2665,38 @@ markdown pre,.aligin-para{
 .dropdown-menu button.share-btn:hover{
   box-shadow: none !important;
 }
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color)!important;
+}
+.suggestion-list div{
+  border-bottom: 1px solid var(--border-color)!important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid var(--border-color)!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid var(--border-color)!important;
+}
+.suggestion-list-global-chat {
+  max-height: 135px !important;
+}
+.suggestion-list div:hover{
+  background-color: var(--page-content) !important;
+}
+/* bee template table remove bg-color */
+.nl-container table tr,
+.nl-container table tr:nth-child(odd),
+.nl-container table tr:nth-child(even),
+.nl-container table tbody tr:nth-of-type(odd),
+.nl-container table tbody tr:nth-of-type(even) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+table.nl-container tr:nth-child(odd) {
+  background-color: transparent !important;
+}
+.pad div {
+  color: var(---text-color) !important;
+}

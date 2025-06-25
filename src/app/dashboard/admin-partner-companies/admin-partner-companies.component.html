@@ -140,6 +140,11 @@
                       [ngModelOptions]="{standalone: true}"></td>
                 </tr>
                 <tr>
+                  <th scope="row">Non Vanity Access</th>
+                  <td><input class="checkBox_shadow" type="checkbox" [checked]="campaignAccess.nonVanityAccessEnabled"
+                       (change)="onNonVanityAccessToggle($event)"></td>
+                </tr>
+                <tr>
                   <th scope="row">Maximum Admins
                     <a *ngIf="!modalPopupLoader">
                       <span>

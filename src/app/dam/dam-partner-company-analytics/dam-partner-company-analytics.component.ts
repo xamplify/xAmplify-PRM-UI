@@ -401,7 +401,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     const currentPageItems = this.pagination.pagedItems;
 
     currentPageItems.forEach(item => {
-      item.isSelected = !item.partnerSignatureCompleted && checked;
+      item.isSelected = !item.partnerSignatureCompleted && checked && item.partnerStatus != 'deactivated';
 
       if (checked) {
         if (!this.selectedCompanyIds.includes(item.companyId) ) {

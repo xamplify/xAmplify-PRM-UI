@@ -2830,3 +2830,21 @@ markdown pre,.aligin-para{
 .dropdown-menu button.share-btn:hover{
   box-shadow: none !important;
 }
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background: #22313a!important;
+}
+.suggestion-list div{
+  border-bottom: 1px solid rgb(47 72 87)!important;
+}
+.suggestion-list div:hover{
+  background-color: #2b3c46!important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid #22313a!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid #22313a!important;
+}
+.pad div {
+  color: #ffffff !important;
+}

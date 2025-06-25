@@ -142,19 +142,20 @@ export class ChangeMdfRequestComponent implements OnInit,OnDestroy {
     this.modalPopupLoader = true;
     this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
     this.mdfService.updateMdfRequest(this.selectedMdfRequest).subscribe((result: any) => {
-      if(result.statusCode==200){
+      if (result.statusCode==200) {
         this.referenceService.showSweetAlertSuccessMessage("Status Changed Successfully");
         this.closeChangeRequestPopup();
         this.loadData();
-      }else if(result.statusCode==400){
+      } else if(result.statusCode==400) {
         this.referenceService.goToTop();
-        this.modalPopupLoader = false;
+        
         this.errorResponses = result.errorResponses;
         this.customResponse = new CustomResponse('ERROR','There is a problem with your submission.Please check highlighted errors below.',true);
         this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
-      } else{
-        this.modalPopupLoader = false;
+      } else if(result.statusCode==401) {
+        this.customResponse = new CustomResponse('ERROR', result.message, true);
       }
+      this.modalPopupLoader = false;
     }, error => {
       this.modalPopupLoader = false;
       this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);

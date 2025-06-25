@@ -4657,3 +4657,29 @@ border-top: 1px solid #191b1e !important;
 .dropdown-menu button.share-btn:hover{
   box-shadow: none !important;
 }
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background:#393f47!important;
+}
+.suggestion-list div{
+  border-bottom: 1px solid rgb(44 47 51)!important;
+}
+.suggestion-list div:hover{
+  background-color: #2c2f33!important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid #393f47!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid #393f47!important;
+}
+.suggestion-list-global-chat {
+  max-height: 135px !important;
+}
+  /* bee template table remove bg-color */
+.nl-container tbody {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.pad div {
+  color: #ffffff !important;
+}

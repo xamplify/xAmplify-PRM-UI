@@ -4736,3 +4736,37 @@ input:checked + .toggle-slider {
   .dropdown-menu button.share-btn:hover{
     box-shadow: none !important;
   }
+  .suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+    background:#e0dedee8!important;
+    backdrop-filter: blur(5px);
+  }
+  .suggestion-list div{
+    border-bottom: 1px solid rgb(166 178 183)!important;
+  }
+  .suggestion-direction-global-chat-down,.suggestion-direction{
+    border-top: 12px solid #f6eded!important;
+  }
+  .suggestion-direction-global-chat{
+    border-bottom: 12px solid #f6eded!important;
+  }
+  .suggestion-list-global-chat {
+    max-height: 135px !important;
+  }
+  .suggestion-direction{
+    bottom: 87px!important;
+  }
+  .suggestion-direction-global-chat-down{
+    bottom: 51px!important;
+  }
+  .templateui{
+    bottom: 46px!important;
+  }
+   /* bee template table remove bg-color */
+ .nl-container tbody {
+  background: transparent !important;
+  backdrop-filter:none!important;
+  border:none!important;
+}
+.pad div {
+  color: #ffffff !important;
+}

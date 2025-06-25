@@ -78,10 +78,12 @@
                  <tbody>
                   <ng-container *ngIf="isPublished">
                     <tr *ngFor="let company of pagination?.pagedItems ;let i =index">
-                      <td *ngIf ="isPartnerSignatureRequired " class='text-center' scope="col"><input *ngIf="!company?.partnerSignatureCompleted" type="checkbox" class="checkBox_shadow" name="all"
-                        [(ngModel)]="company.isSelected" (change)="updateSelectionState()">
+                      <td *ngIf="isPartnerSignatureRequired " class='text-center' scope="col"><input
+                          *ngIf="!company?.partnerSignatureCompleted" type="checkbox" class="checkBox_shadow" name="all"
+                          [(ngModel)]="company.isSelected" (change)="updateSelectionState()"
+                          [disabled]="company?.partnerStatus === 'deactivated'">
                         <div *ngIf="company?.partnerSignatureCompleted" class="checkBox_shadow"></div>
-                    </td>
+                      </td>
                       <td class="text-center" style="width: 10%;">
                         <div class="thumbnail-wrapper image_effect">
                           <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company?.companyLogo"
@@ -130,8 +132,11 @@
                             <i class="fas fa-pen-nib IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
-                          <a *ngIf="!company?.partnerSignatureCompleted && isPartnerSignatureRequired " class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Send Signature Reminder Notification" (click)="sendRemainderToIndividulCompany(company.companyId)">
-                            <i class="fas fa-envelope IconCustomization" aria-hidden="true"></i>
+                          <a *ngIf="!company?.partnerSignatureCompleted && isPartnerSignatureRequired " class="custom-icon" data-toggle="tooltip"
+                            data-placement="top" title="Send Signature Reminder Notification"
+                            (click)="company?.partnerStatus === 'deactivated' ? '' : sendRemainderToIndividulCompany(company.companyId)">
+                            <i class="fas fa-envelope IconCustomization" aria-hidden="true"
+                              [ngClass]="company?.partnerStatus === 'deactivated' ? 'disabled gray' : ''"></i>
                             <div class="clickicons"></div>
                           </a>
 
@@ -167,11 +172,11 @@
 <ng-template #partnerCompanyTable>
   <thead>
     <tr>
-      <th class='text-center' *ngIf="isPartnerSignatureRequired " scope="col"><input *ngIf="!isAllPartnerSignesCompleted" type="checkbox" class="checkBox_shadow" name="all"
-        [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+      <th class='text-center' *ngIf="isPartnerSignatureRequired " scope="col"><input *ngIf="!isAllPartnerSignesCompleted"
+          type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+          (change)="toggleSelectAll($event)" />
         <div *ngIf="isAllPartnerSignesCompleted" class="checkBox_shadow"></div>
-
-    </th>
+      </th>
       <th  colspan="2" style="width: 45%" id="border-bottom">
         <span *ngIf="isPublished" class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)"></span>
         <span class="gridHeader">Company</span>

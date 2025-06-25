@@ -1764,6 +1764,8 @@ body {
 .dropdown-container {
   position: relative;
   display: inline-block;
+  padding-top: 120px;
+  margin-top: -120px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1780,7 +1782,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: -112px;
+  top:5px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1815,7 +1817,6 @@ body {
 
 
 .suggestion-box {
-    background: white;
     border-radius: 20px;
     max-height: 300px;
     overflow: hidden;
@@ -1827,7 +1828,6 @@ body {
     flex-direction: column;
   }
   .suggestion-box-input{
-    background: white;
     position: relative;
     bottom: -10px;
     border-radius: 20px;
@@ -1840,12 +1840,11 @@ body {
     flex-direction: column;
   }
   .suggestion-box-input-prompt{
-    background: white;
     position: relative;
     bottom: 0px;
-    border-radius: 20px;
+    border-radius:10px 10px 15px 15px;
     /* max-height: 300px; */
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
     /* background: linear-gradient(180deg, #f6faff 0%, #e6effc 100%); */
     background: linear-gradient(180deg, #DAEAFF 0%, #FFFFFF 100%);
@@ -1865,7 +1864,7 @@ body {
  .suggestion-list div {
     padding: 10px;
     border-bottom: 1px solid rgba(195, 218, 250, 1);
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
   }
   .suggestion-box div:last-child {
@@ -1884,7 +1883,7 @@ body {
 
 .suggestion-direction{
   position: absolute;
-  bottom: 82px;
+  bottom: 83px;
   right: 235px;
   width: 0;
   height: 0;
@@ -1904,13 +1903,13 @@ body {
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-bottom: 12px solid #e4ebf5;
+  border-bottom: 12px solid #dfecff;
   z-index: 9999999;
 }
 
 .suggestion-direction-global-chat-down{
     position: absolute;
-    bottom: 44px;
+    bottom: 45px;
     right: 196px;
     width: 0;
     height: 0;
