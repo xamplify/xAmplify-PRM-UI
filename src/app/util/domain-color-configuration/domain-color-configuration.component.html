@@ -1,12 +1,12 @@
 <div class="lead_details">
   <h3>
     Domain Color Settings
-      <a (click)="!selectedRefereshButton && getColorsByReferesh()" class="reload-btn"
-        [class.disabled]="selectedRefereshButton" [attr.aria-disabled]="selectedRefereshButton"
-        [style.pointer-events]="selectedRefereshButton ? 'none' : 'auto'" data-toggle="tooltip" data-placement="top"
-        title="Click to refresh and get updated colors">
-        <i class="fa fa-refresh" aria-hidden="true"></i>
-      </a>
+    <a (click)="!selectedRefereshButton && getColorsByReferesh()" class="reload-btn"
+      [class.disabled]="selectedRefereshButton" [attr.aria-disabled]="selectedRefereshButton"
+      [style.pointer-events]="selectedRefereshButton ? 'none' : 'auto'" data-toggle="tooltip" data-placement="top"
+      title="Click to refresh and get updated colors">
+      <i class="fa fa-refresh" aria-hidden="true"></i>
+    </a>
 
     <a data-toggle="collapse" (click)="toggleClass('color-details')" style="float: right;"
       href="javascript:;#colorDetailsDropdown">
@@ -16,18 +16,25 @@
 </div>
 
 <div class="color-settings-container nav collapse in" id="colorDetailsDropdown">
-  <div *ngFor="let field of colorFields" class="color-field-wrapper">
-    <label class="field-label">{{ field.label }}</label>
+  <div *ngFor="let field of colorFields; let i = index" class="color-field-wrapper">
 
+    <!-- Show "Domain Colors" header before first 'theme' item -->
+    <h5 class="section-header" *ngIf="field.group === 'theme' && (i === 0 || colorFields[i - 1]?.group !== 'theme')">
+      Domain Colors
+    </h5>
+
+    <!-- Show "Logo Colors" header before first 'logo' item -->
+    <h5 class="section-header" *ngIf="field.group === 'logo' && colorFields[i - 1]?.group !== 'logo'">
+      Logo Colors
+    </h5>
+
+    <label class="field-label">{{ field.label }}</label>
     <div class="color-input-container">
-      <!-- Color preview (click to open native color input) -->
       <label class="color-picker-wrapper">
         <input type="color" class="color-picker-input" [(ngModel)]="theme[field.key]"
           (change)="onHexChange(field.key, theme[field.key])" [attr.id]="'color-picker-' + field.key" />
         <div class="color-preview" [style.backgroundColor]="theme[field.key] || field.placeholder"></div>
       </label>
-
-      <!-- Text Hex Input -->
       <input type="text" class="hex-input" [(ngModel)]="theme[field.key]"
         (ngModelChange)="onHexChange(field.key, $event)" [placeholder]="field.placeholder" maxlength="7" />
     </div>
@@ -35,3 +42,4 @@
 
   <div *ngIf="message" class="error-message">{{ message }}</div>
 </div>
+

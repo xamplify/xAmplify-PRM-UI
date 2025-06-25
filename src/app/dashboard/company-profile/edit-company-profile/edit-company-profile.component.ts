@@ -846,6 +846,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
                         this.isDisable = this.companyProfile.companyProfileName.length == 0 ? false : true;
                         this.domainColorComponent.updateTheme();
+                        this.domainColorComponent.getColorsByReferesh();
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },

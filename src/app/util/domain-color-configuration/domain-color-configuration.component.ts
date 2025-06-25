@@ -10,13 +10,17 @@ export class DomainColorConfigurationComponent implements OnInit {
   theme: any = {};
   message: string = '';
 
-  colorFields = [
-    { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee'},
-    { key: 'headerColor', label: 'Header Color', placeholder: '#eeeeee'},
-    { key: 'footerColor', label: 'Footer Color', placeholder: '#eeeeee' },
-    { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee' },
-    { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee' }
-  ];
+ colorFields = [
+  { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee', group: 'theme' },
+  { key: 'headerColor', label: 'Header Color', placeholder: '#eeeeee', group: 'theme' },
+  { key: 'footerColor', label: 'Footer Color', placeholder: '#eeeeee', group: 'theme' },
+  { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee', group: 'theme' },
+  { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee', group: 'theme' },
+  { key: 'logocolor1', label: 'Logo Color 1', placeholder: '#eeeeee', group: 'logo' },
+  { key: 'logocolor2', label: 'Logo Color 2', placeholder: '#eeeeee', group: 'logo' },
+  { key: 'logocolor3', label: 'Logo Color 3', placeholder: '#eeeeee', group: 'logo' },
+];
+
   companyProfile: any;
   selectedRefereshButton: boolean;
 
@@ -35,7 +39,10 @@ export class DomainColorConfigurationComponent implements OnInit {
             buttonColor: res.data.buttonColor,
             footerColor: res.data.footerColor,
             textColor: res.data.textColor,
-            headerColor: res.data.headerColor
+            headerColor: res.data.headerColor,
+            logocolor1: res.data.logoColor1,
+            logocolor2: res.data.logoColor2,
+            logocolor3: res.data.logoColor3
           };
           this.message = '';
         } else {
@@ -51,7 +58,7 @@ export class DomainColorConfigurationComponent implements OnInit {
     this.chatGptSettingsService.updateDomainColorConfiguration(this.theme).subscribe(
       (res: any) => {
         if (res && res.statusCode === 200) {
-          this.loadColorConfiguration();
+          // this.loadColorConfiguration();
         } else {
           this.handleError('Failed to update color', res);
         }
