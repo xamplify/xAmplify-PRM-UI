@@ -9,6 +9,7 @@ declare var $: any;
 export class DomainColorConfigurationComponent implements OnInit {
   theme: any = {};
   message: string = '';
+  loading = false;
 
  colorFields = [
   { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee', group: 'theme' },
@@ -31,8 +32,10 @@ export class DomainColorConfigurationComponent implements OnInit {
   }
 
   private loadColorConfiguration(): void {
+    this.loading = true;
     this.chatGptSettingsService.getDomainColorConfigurationByUserId().subscribe(
       (res: any) => {
+        this.loading = false;
         if (res && res.statusCode === 200 && res.data) {
           this.theme = {
             backgroundColor: res.data.backgroundColor,
@@ -46,6 +49,7 @@ export class DomainColorConfigurationComponent implements OnInit {
           };
           this.message = '';
         } else {
+          this.loading = false;
           this.handleError('No colors found for the user', null);
         }
       },
@@ -107,15 +111,18 @@ getCompanyProfile(companyProfile: any) {
 }
 
   getColorsByReferesh() {
-    this.selectedRefereshButton= true;
+    this.selectedRefereshButton = true;
+    this.loading = true;
     this.chatGptSettingsService.checkDomainColorConfigurationExists().subscribe(
       (res: any) => {
         if (res && res.statusCode === 200 && res.access == true) {
-          this.selectedRefereshButton= false;
+          this.selectedRefereshButton = false;
+          this.loading = false;
           this.loadColorConfiguration();
         } else {
           this.handleError('No colors found for the user', null);
-           this.selectedRefereshButton= false;
+          this.selectedRefereshButton = false;
+          this.loading = false;
         }
       },
       (error) => this.handleError('Error fetching color data', error)
