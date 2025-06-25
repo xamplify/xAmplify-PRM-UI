@@ -82,22 +82,24 @@ selectedType: any = this.TemplateColorSelection[0];
   }
   
   showSweetAlertForBrandColors() {
-  let self = this;
-  swal({
-    title: 'Generate Template',
-    text: 'Do you want to generate this template with brand colors?',
-    type: 'info',
-    showCancelButton: true,
-    confirmButtonColor: '#54a7e9',
-    cancelButtonColor: '#999',
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No'
-  }).then(function (result: any) {
-    self.isConfirmed = true;
-    self.generateEmailTemplate();
-  }, function (dismiss: any) {
-    self.isConfirmed = false;
-    self.generateEmailTemplate();
-  });
-}
+    this.isConfirmed = true;
+    this.generateEmailTemplate();
+    // let self = this;
+    // swal({
+    //   title: 'Generate Template',
+    //   text: 'Do you want to generate this template with brand colors?',
+    //   type: 'info',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#54a7e9',
+    //   cancelButtonColor: '#999',
+    //   confirmButtonText: 'Yes',
+    //   cancelButtonText: 'No'
+    // }).then(function (result: any) {
+    //   self.isConfirmed = true;
+    //   self.generateEmailTemplate();
+    // }, function (dismiss: any) {
+    //   self.isConfirmed = false;
+    //   self.generateEmailTemplate();
+    // });
+  }
 }
