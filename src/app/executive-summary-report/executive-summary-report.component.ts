@@ -600,6 +600,15 @@ margin-right: 30px;
             border-radius: 999px;
         }
 
+        .insight-type-tag {
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #e8c5ee;
+            color: #7967eb;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
         .step-description {
             font-size: 14px;
             color: #475569;
@@ -1011,6 +1020,15 @@ margin-right: 30px;
             .timeline-card .timeline-footer .green { color:#16a34a; }
             .timeline-card .timeline-footer .orange{ color:#ea580c; }
         }
+        .timeline-card .timeline-item{
+            background:#f8fafc;   /* ← the soft grey */
+            border-radius:12px;
+            padding:16px 20px;
+            margin-bottom:16px;
+        }
+
+        .timeline-card .badge.purple  { background:#ede9fe; color:#6d28d9; }
+        .timeline-card .badge.dark    { background:#1e293b; color:#f8fafc; }
   </style>
 </head>
 
@@ -1034,8 +1052,8 @@ margin-right: 30px;
       <div class="summary" *ngIf="report.kpi_overview">
       {{#report.kpi_overview.items}}
         <div class="summary-item">
-          <h1 class="green">{{ name }}</h1>
-          <p>{{value}}</p>
+          <h1 class="green">{{ value }}</h1>
+          <p>{{name}}</p>
           <span>{{notes}}</span>
         </div>
         {{/report.kpi_overview.items}}
@@ -1073,8 +1091,8 @@ margin-right: 30px;
     </div>
 
     <!-- Metric Cards -->
-    <div class="cards-grid" *ngIf="report.performance_indicators">
     {{#report.performance_indicators.items}}
+    <div class="cards-grid" *ngIf="report.performance_indicators">
       <div class="card">
         <div class="card-header">
           {{name}}
@@ -1083,36 +1101,34 @@ margin-right: 30px;
         <div class="card-value">{{ value }}</div>
         <div class="card-subtext">{{notes}}</div>
       </div>
-      {{/report.performance_indicators.items}}
     </div>
+    {{/report.performance_indicators.items}}
 
-    <div class="card" *ngIf="report.lead_progression_funnel">
+    {{#report.lead_progression_funnel.title}}
+    <div class="white-card" *ngIf="report.lead_progression_funnel">
         <h2>{{report.lead_progression_funnel.title}}</h2>
         <p>{{report.lead_progression_funnel.description}}</p>
         <div class="funnel-step">
-            {{#report.lead_progression_funnel.items}}
-                <div class="funnel-left">
-                <div class="funnel-dot" style="background:#10b981;"></div>
-                <div class="funnel-info">
-                    <span class="funnel-title">{{name}}</span>
-                    <div class="funnel-bar">
-                    <div class="bar-fill" [style.width]="conversion_rate" style="background:#10b981;"></div>
-                    </div>
-                    <div class="funnel-sub">{{notes}}</div>
+          {{#report.lead_progression_funnel.items}}
+            <div class="funnel-left">
+              <div class="funnel-dot" style="background:#10b981;"></div>
+              <div class="funnel-info">
+                <span class="funnel-title">{{name}} ({{count}})</span>
+                <div class="funnel-bar">
+                  <div class="bar-fill" style="width:{{conversion_rate}};background:#10b981;"></div>
                 </div>
-                </div>
-            {{/report.lead_progression_funnel.items}}
-        <div class="status complete">Complete</div>
-        </div>
-        <div class="progress-footer">
-          <div class="blue">62.5%<br />Campaign Response Rate</div>
-          <div class="green">20%<br />Connection Rate</div>
+                <div class="funnel-sub">{{notes}}</div>
+              </div>
+            </div>
+          {{/report.lead_progression_funnel.items}}
         </div>
       </div>
     </div>
+    {{/report.lead_progression_funnel.title}}
 
     
     <!-- Contact Journey Timeline -->
+    {{#report.contact_journey_timeline.title}}
     <div class="white-card timeline-card"  *ngIf="report.contact_journey_timeline">
         <h2>{{report.contact_journey_timeline.title}}</h2>
         <p>{{report.contact_journey_timeline.description}}</p>
@@ -1127,40 +1143,46 @@ margin-right: 30px;
                 <div class="timeline-body">
                     {{interaction}}
                 </div>
-                <p>
-                    {{notes}}
-                </p>
                 </div>
             {{/report.contact_journey_timeline.items}}
         </div>
         </div>
+        {{/report.contact_journey_timeline.title}}
 
        
     <!-- Bar-chat -->
+    {{#report.dealPipelinePrograssion.title}}
     <div class="white-card">
       <div style="widht:100%;height:100%" id="bar-chart"></div>
+      {{#report.dealPipelinePrograssion.average_deal_value}}
+      <p> Average deal value: {{report.dealPipelinePrograssion.average_deal_value}} </p>
+      {{/report.dealPipelinePrograssion.average_deal_value}}
+      {{#report.dealPipelinePrograssion.highest_deal_value}}
+      <p> Highest deal value: {{report.dealPipelinePrograssion.highest_deal_value}} </p>
+      {{/report.dealPipelinePrograssion.highest_deal_value}}
     </div>
+    {{/report.dealPipelinePrograssion.title}}
+
+    <!-- Pie-chat -->
+    {{#report.campaignPerformanceAnalysis.title}}
+    <div class="white-card">
+      <div style="widht:100%;height:100%" id="pie-chart"></div>
+    </div>
+    {{/report.campaignPerformanceAnalysis.title}}
 
 
     <!-- Strategic Insights & Analysis -->
+    {{#report.strategic_insights.title}}
     <div class="analysis-section" *ngIf="report.strategic_insights?.length">
       <h2>{{report.strategic_insights.title}}</h2>
       <p>{{report.strategic_insights.description}}</p>
 
       <div class="insights-grid">
       {{#report.strategic_insights.items}}
-        <div class="insight-card" [ngClass]="{
-              'green': insight_type === 'High Conversion',
-              'blue': insight_type === 'Revenue Opportunity' || insight_type === 'Positive Trend',
-              'teal': insight_type === 'Proven Strategy',
-              'yellow': insight_type === 'Opportunity for Growth' }">
+        <div class="insight-card blue">
           <div class="insight-header">
             <span>{{ title }}</span>
-            <div class="badge" [ngClass]="{
-                  'green': insight_type === 'High Conversion',
-                  'blue': insight_type === 'Revenue Opportunity' || insight_type === 'Positive Trend',
-                  'teal': insight_type === 'Proven Strategy',
-                  'yellow': insight_type === 'Opportunity for Growth' }">{{ insight_type }}</div>
+            <div class="insight-type-tag">{{ insight_type }}</div>
           </div>
           <p>{{ analysis }}</p>
           <div class="action">IMMEDIATE ACTION<br><strong>{{ recommended_action }}</strong></div>
@@ -1168,8 +1190,10 @@ margin-right: 30px;
         {{/report.strategic_insights.items}}
       </div>
     </div>
+    {{/report.strategic_insights.title}}
 
     <!-- Next Steps -->
+    {{#report.recommended_next_steps.title}}
     <div class="white-card" *ngIf="report.recommended_next_steps?.length">
       <div class="next-steps-wrapper">
         <h2>{{report.recommended_next_steps.title}}</h2>
@@ -1203,14 +1227,17 @@ margin-right: 30px;
         </div>
         {{/report.recommended_next_steps.items}}
       </div>
+      {{/report.recommended_next_steps.title}}
 
       <!-- Bottom Line -->
+      {{#report.conclusion.title}}
       <div class="bottom-line-card" *ngIf="report.conclusion">
         <div class="bottom-line-inner">
           <h3>{{report.conclusion.title}}</h3>
           <p>{{ report.conclusion.description }}</p>
         </div>
       </div>
+      {{/report.conclusion.title}}
     </div>
 
   </div>
@@ -1222,6 +1249,19 @@ margin-right: 30px;
             xAxis: { categories: {{{report.dealPipelinePrograssion.categoriesString}}} },
             yAxis: { title: { text: '{{report.dealPipelinePrograssion.revenue}}' } },
             series: {{{report.dealPipelinePrograssion.seriesString}}}
+        });
+
+        Highcharts.chart('pie-chart', {
+            chart: { type: 'pie' },
+            title: { text: '{{report.campaignPerformanceAnalysis.title}}' },
+            plotOptions: {
+              pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: { enabled: true, format: '{point.name}' }
+                  }
+            },
+            series: {{{report.campaignPerformanceAnalysis.seriesString}}}
         });
     </script>
 
@@ -1298,6 +1338,7 @@ margin-right: 30px;
     }, 0);
     this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
     this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+    this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
     const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
     const blob = new Blob([mergedContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);

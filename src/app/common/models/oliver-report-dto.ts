@@ -13,7 +13,7 @@ export interface ExecutiveReport {
 
   campaign_performance_analysis: CampaignPerformanceAnalysis;
 
-  lead_progression_funnel: LeadProgressionFunnel;
+  lead_progression_funnel: OverviewSection<KPIItem>;
   pipeline_progression:    PipelineProgression;
 
   contact_journey_timeline: OverviewSection<ContactJourney>;
@@ -23,7 +23,8 @@ export interface ExecutiveReport {
 
   conclusion: Conclusion;
 
-  dealPipelinePrograssion: DealPipelineProgression
+  dealPipelinePrograssion: DealPipelineProgression;
+  campaignPerformanceAnalysis: CampaignPerformanceAnalysisData
 }
 
 /* ----------  Re-usable building blocks ---------- */
@@ -75,16 +76,19 @@ export interface CampaignPerformanceAnalysis {
   notes: string;
 }
 
-export interface LeadProgressionFunnel {
-  stages: {
-    [stageName: string]: {
-      count: number;
-      /** Only the first stage has response_rate – keep both optional */
-      response_rate?: string;
-      conversion_rate?: string;
-    };
-  };
-  notes: string;
+export interface LeadProgressionFunnel<TItem> {
+  title: string;
+  description: string;
+  items: TItem[];
+  // stages: {
+  //   [stageName: string]: {
+  //     count: number;
+  //     /** Only the first stage has response_rate – keep both optional */
+  //     response_rate?: string;
+  //     conversion_rate?: string;
+  //   };
+  // };
+  // notes: string;
 }
 
 export interface PipelineProgression {
@@ -117,6 +121,8 @@ export interface DealPipelineProgression {
   series: { name: string; data: string[] }[];
   categoriesString: string;
   seriesString: string;
+  average_deal_value: string;
+  highest_deal_value: string
 }
 export interface OverviewSection<TItem> {
   title:       string;
@@ -134,4 +140,17 @@ export interface ContactJourney {
   interaction: string;
   status:      string;
   notes:       string; 
+}
+
+export interface CampaignPerformanceAnalysisData {
+  title: string;
+  series: {
+    name: string;
+    colorByPoint: boolean,
+    data: {
+      name: string;
+      y: string;
+    }[];
+  }[];
+  seriesString: string;
 }

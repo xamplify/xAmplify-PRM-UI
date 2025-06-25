@@ -1476,6 +1476,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
+    const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
     const dealPipelinePrograssion = {
       title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
@@ -1491,7 +1493,26 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         };
       }),
       categoriesString: '',
-      seriesString: ''
+      seriesString: '',
+      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+    };
+
+    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+
+    const campaignPerformanceAnalysis = {
+      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: campaignItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.count == 'string'
+            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
+            : item.count ? item.count : 0
+        }))
+      }],
+      seriesString: '',
     };
 
     const dto: ExecutiveReport = {
@@ -1556,16 +1577,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       },
 
       /* ---------- lead-progression funnel ---------- */
-      lead_progression_funnel: {
-        stages:
-          j && j.lead_progression_funnel && j.lead_progression_funnel.stages
-            ? j.lead_progression_funnel.stages
-            : {},
-        notes:
-          j && j.lead_progression_funnel && j.lead_progression_funnel.notes
-            ? j.lead_progression_funnel.notes
-            : ''
-      },
+      lead_progression_funnel: leadProgressionFunnelData,
 
       /* ---------- pipeline progression ---------- */
       pipeline_progression: {
@@ -1643,7 +1655,9 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
       },
 
-      dealPipelinePrograssion: dealPipelinePrograssion
+      dealPipelinePrograssion: dealPipelinePrograssion,
+
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis
     };
 
     return dto;
