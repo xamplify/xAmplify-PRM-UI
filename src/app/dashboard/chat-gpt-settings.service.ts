@@ -272,4 +272,21 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
+  getDomainColorConfigurationByUserId() {
+    const url = this.chatGptSettingsUrl + 'getDomainColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+ updateDomainColorConfiguration(theme: any) {
+  const userId = this.authenticationService.getUserId(); 
+  const url = this.chatGptSettingsUrl + 'updateDomainColors/' + userId + '?access_token=' + this.authenticationService.access_token;
+  return this.authenticationService.callPutMethod(url, theme);
+}
+
+ checkDomainColorConfigurationExists() {
+    const userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'checkDomainColorsExists/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }
