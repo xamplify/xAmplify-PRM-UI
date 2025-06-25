@@ -1091,8 +1091,8 @@ margin-right: 30px;
     </div>
 
     <!-- Metric Cards -->
-    {{#report.performance_indicators.items}}
     <div class="cards-grid" *ngIf="report.performance_indicators">
+     {{#report.performance_indicators.items}}
       <div class="card">
         <div class="card-header">
           {{name}}
@@ -1101,8 +1101,9 @@ margin-right: 30px;
         <div class="card-value">{{ value }}</div>
         <div class="card-subtext">{{notes}}</div>
       </div>
+       {{/report.performance_indicators.items}}
     </div>
-    {{/report.performance_indicators.items}}
+   
 
     {{#report.lead_progression_funnel.title}}
     <div class="white-card" *ngIf="report.lead_progression_funnel">
