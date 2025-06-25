@@ -1641,7 +1641,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       conclusion: {
         title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
         description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
-      }
+      },
 
       dealPipelinePrograssion: dealPipelinePrograssion
     };
