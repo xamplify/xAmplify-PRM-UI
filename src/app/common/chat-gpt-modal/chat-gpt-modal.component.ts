@@ -147,6 +147,7 @@ export class ChatGptModalComponent implements OnInit {
   showInsightPromptBoxBelow: boolean = false;
   showInsightPromptBoxAbove: boolean = false;
   selectedPromptId: number
+  historyLoader: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -864,9 +865,11 @@ export class ChatGptModalComponent implements OnInit {
 
   fetchHistories(chatHistoryPagination: Pagination) {
     this.stopClickEvent = true;
+    this.historyLoader = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
+        this.historyLoader = false;
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           chatHistoryPagination.totalRecords = data.totalRecords;
@@ -874,6 +877,7 @@ export class ChatGptModalComponent implements OnInit {
         }
         this.stopClickEvent = false;
       }, error => {
+        this.historyLoader = false;
         this.stopClickEvent = false;
       }
     )

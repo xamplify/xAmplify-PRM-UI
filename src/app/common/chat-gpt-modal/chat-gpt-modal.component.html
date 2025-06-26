@@ -593,7 +593,8 @@
                     <!--  -->
                     <!-- History Sections -->
                     <div class="oliver-history-scroll">
-                      <div class="history-section">
+                      <app-modal-popup-loader *ngIf="historyLoader"></app-modal-popup-loader>
+                      <div *ngIf="!historyLoader" class="history-section">
                         <div *ngFor="let history of chatHistories;let i =index">
                           <div class="history-entry">
                             <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
@@ -630,7 +631,7 @@
                           *ngIf="chatHistoryPagination.totalRecords > chatHistories.length && !(chatHistories == undefined && chatHistories.length == 0)">
                           <a (click)="setChatHistoryPage()" class="show_more"><strong translate class="pointer">Show more</strong></a>
                         </div>
-                        <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
+                        <div *ngIf="!historyLoader && (chatHistories == undefined || chatHistories.length == 0)" class="alert alert-info">
                           <strong translate>No Data Found.</strong>
                         </div>
                         <!-- <div class="history-entry">
