@@ -602,7 +602,7 @@ export class ChatGptModalComponent implements OnInit {
     this.assetLoader = true;
     this.showOpenHistory = false;
     if (this.selectedFolders.length == 0) {
-      if (this.isReUpload) {
+      if (this.isReUpload && this.uploadedAssets != undefined && this.uploadedAssets.length > 0) {
         this.selectedAssets = this.uploadedAssets;
       }
       this.pdfFiles = this.selectedAssets;
