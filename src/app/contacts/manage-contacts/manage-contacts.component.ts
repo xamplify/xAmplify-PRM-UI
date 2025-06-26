@@ -258,7 +258,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	isFromCompanyModule: boolean;
 	isContactModule: boolean;
-	masterContactListId: number;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -291,6 +290,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
 			this.module = 'contacts';
+			this.isContactModule = true;
 			this.checkingContactTypeName = "Contact"
 		} else {
 			this.isPartner = true;
@@ -395,9 +395,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
 			this.isFromCompanyModule = true;
 		}
-		if (this.module == 'contacts') {
-			this.isContactModule = true;
-		}
+		
 		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage+'/all')) {
 			this.contactsByType.selectedCategory = 'all';
 			this.loadContactsByType(this.contactsByType.selectedCategory);
@@ -1495,11 +1493,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	contactsCount() {
+		if (this.isPartner || this.isContactModule) {
+			this.findContactsCount();
+		} else {
+			this.loadContactsCount();
+		}
+	}
+
+	loadContactsCount() {
 		try {
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			if (this.assignLeads) {
-				this.contactListObject.assignedLeadsList = true
+				this.contactListObject.assignedLeadsList = true;
 			} else if (this.sharedLeads) {
 				this.contactListObject.sharedLeads = true;
 			}
@@ -1552,7 +1558,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType: string) {
-		if(!this.showFilterOption){
+		if (!this.showFilterOption) {
 			this.criterias = [];
 			this.criteria = new Criteria();
 			this.showFilterOption = false;
@@ -1581,8 +1587,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.criterias = this.criterias;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
-			this.contactListObject = new ContactList;
-			this.contactListObject.id = this.masterContactListId;
+			this.contactListObject = new ContactList();
+			this.contactListObject.id = this.defaultPartnerListId;
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
@@ -1935,6 +1941,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_Valid_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'excluded') {
 				this.logListName = 'All_Excluded_' + csvNameSuffix + suffix + '.csv';
+			} else if (this.contactsByType.selectedCategory === 'deactivated') {
+				this.logListName = 'All_Deactivated_' + csvNameSuffix + suffix + '.csv';
 			}
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -2097,7 +2105,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.searchKey = this.searchKey;
 			this.contactsByType.contactPagination.sortcolumn = this.sortcolumn;
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
-
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
 			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
@@ -2580,7 +2587,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.loadContactsByType(moduleId)
 		}
 		this.callInitMethods();
-		this.findMasterContactListId();
 		/**** user guide ****/
 		this.getMergeTagsForDifferentModules();
 	}
@@ -2646,15 +2652,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.sharedDetailsPagination.pageIndex = 1;
 			this.sharedDetailsPagination.maxResults = 12;
 			this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
-			if (this.isPartner) {
-				this.defaultPartnerList(this.authenticationService.getUserId());
+			if (this.isPartner || this.isContactModule) {
+				this.findDefaultContactListId();
+			} else {
+				this.contactsCount();
 			}
 			if (this.checkingContactTypeName == "Contact") {
 				this.pagination.filterBy = 'MY-CONTACTS';
 				this.findFlexiFieldsData();
 			}
 			this.loadContactLists(this.pagination);
-			this.contactsCount();
 			this.loadContactListsNames();
 
 			/********Check Gdpr Settings******************/
@@ -2701,7 +2708,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			$('#filterModal').modal('hide');
 			$('#saveAsModal').modal('hide');
 			$("#listSharedDetailsModal").modal('hide');
-			this.masterContactListId = null;
+			this.defaultPartnerListId = null;
 		} catch (error) {
 			this.xtremandLogger.error("ERROR : MangeContactsComponent onOnDestroy() " + error);
 		}
@@ -3153,18 +3160,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.location.replaceState('/home/contacts/manage');
 	}
 
-	findMasterContactListId() {
-		if (this.isContactModule) {
-			this.contactService.findMasterContactListId().subscribe(
-			response => {
-				if (response.statusCode == 200) {
-					this.masterContactListId = response.data;
-				}
-			}, error => {
-				this.xtremandLogger.error(error);
-			});
+	findDefaultContactListId() {
+		if (this.isContactModule || this.isPartner) {
+			this.contactService.findDefaultContactListId(this.module).subscribe(
+				response => {
+					if (response.statusCode == 200) {
+						this.defaultPartnerListId = response.data;
+						this.contactsCount();
+					}
+				}, error => {
+					this.xtremandLogger.error(error);
+				});
 		}
 	}
+
 	toggleFilterOption() {
 		if(this.isPartner){
 			this.selectedType = 'Partners';
@@ -3201,4 +3210,32 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.isRefreshingFromButton = true;
 			this.loadContactLists(this.pagination);
 	}
+
+	/***** XNFR-1011 *****/
+	findContactsCount() {
+		this.loading = true;
+		this.contactService.findContactsCount(this.module, this.defaultPartnerListId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					let data = response.data;
+					this.contactsByType.allContactsCount = data.allCounts;
+					this.contactsByType.invalidContactsCount = data.inValidCount;
+					this.contactsByType.unsubscribedContactsCount = data.unSubscribedCount;
+					this.contactsByType.activeContactsCount = data.activeCount;
+					this.contactsByType.inactiveContactsCount = data.inActiveCount;
+					this.contactsByType.validContactsCount = data.validCount;
+					this.contactsByType.excludedContactsCount = data.excludedCount;
+					this.contactsByType.deactivatedContactsCount = data.deactivatedCount;
+				} else {
+					this.referenceService.showSweetAlertServerErrorMessage();
+				}
+				this.loading = false;
+			}, error => {
+				this.loading = false;
+				this.xtremandLogger.error(error);
+				this.referenceService.showSweetAlertServerErrorMessage();
+			}, () => this.xtremandLogger.info("findContactsCount() finished")
+		);
+	}
+
 }
