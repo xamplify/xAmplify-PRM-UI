@@ -201,11 +201,7 @@ export class Pagination {
 	assetIds: number[] = [];
 
 	selectedPlaybookNames : string[] = [];
-<<<<<<< XBI
 	filterFromDateString:string = "";
 	filterToDateString:string = "";
-
-=======
 	exportToExcel: boolean = false;
->>>>>>> feature
 }
