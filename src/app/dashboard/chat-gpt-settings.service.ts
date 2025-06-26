@@ -262,10 +262,10 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
-  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string) {
+  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string, isPartnerView: boolean) {
     let url = '';
     if (companyProfileName != '' && companyProfileName) {
-      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '/' + isPartnerView + '?access_token=' + this.authenticationService.access_token;
     } else {
       url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
     }

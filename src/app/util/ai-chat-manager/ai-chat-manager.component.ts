@@ -164,7 +164,11 @@ export class AiChatManagerComponent implements OnInit {
     this.oliverPromptSuggestionDTOs = [];
     if (this.authenticationService.companyProfileName !== undefined &&
       this.authenticationService.companyProfileName !== '') {
-      this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+        if (this.assetId && this.isPartnerView) {
+          this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+        } else if (this.asset != null && this.asset != undefined && this.asset.id) {
+          this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+        }
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
@@ -982,7 +986,7 @@ export class AiChatManagerComponent implements OnInit {
     this.oliverPromptSuggestionDTOs = [];
     if (assetId) {
       this.isPdfUploading = true;
-      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName).subscribe(
+      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName, this.isPartnerView).subscribe(
         response => {
           let statusCode = response.statusCode;
           let data = response.data;

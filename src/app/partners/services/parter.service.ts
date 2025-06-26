@@ -690,6 +690,8 @@ export class ParterService {
         let searchParam = searchKey.length > 0 ? "&searchKey=" + searchKey : "";
         let fromDateFilterStringParam = pagination.fromDateFilterString != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
         let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
+        let filterFromDatestringParam = pagination.filterFromDateString != null ? "&filterFromDateString=" + pagination.filterFromDateString : "";
+        let filterToDatestringParam = pagination.filterToDateString != null ? "&filterToDateString=" + pagination.filterToDateString : "";
         let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
         let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";   
         let assetIds = pagination.assetIds != undefined ? "&assetIds=" + pagination.assetIds : "";
@@ -702,7 +704,7 @@ export class ParterService {
         let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
         let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
         let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
-        + fromDateFilterStringParam + toDateFilterStringParam + sortcolumn + sortingOrder + assetIds + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        + fromDateFilterStringParam + toDateFilterStringParam + filterFromDatestringParam + filterToDatestringParam + sortcolumn + sortingOrder + assetIds + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
         const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
         return this.httpClient.get(url)
             .catch(this.handleError);

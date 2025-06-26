@@ -46,7 +46,7 @@
                               </div>
                            </div>
                         </div>
-                    <table *ngIf="partnersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
+                    <table class="table tgrid table-condensed table-bordered hash-table-color"
                          id="teamMemberPartnersTable" aria-describedby="teamMemberPartnersTable">
                         <thead>
                             <tr>
@@ -76,7 +76,7 @@
                                 </tr>
                             </ng-container>
                         </tbody>
-                    </table>
+                    </table>          
                 </div>
                 <!-- End of 24 -->
                 <div *ngIf="partnersPagination.totalRecords==0 && !partnersLoader.isLoading" class="alert alert-info text-center">

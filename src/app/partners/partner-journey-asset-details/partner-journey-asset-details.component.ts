@@ -33,6 +33,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  filterFromDate : string = '';
+  filterToDate : string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -95,6 +97,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.filterFromDateString = this.filterFromDate;
+    this.pagination.filterToDateString = this.filterToDate;
     this.pagination.selectedCompanyIds = this.pagination.selectedCompanyIds;
     this.pagination.assetIds = this.pagination.assetIds;
     this.pagination.selectedEmailIds = this.pagination.selectedEmailIds;
@@ -174,6 +178,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
     let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let filterFromDatestringParam = this.filterFromDate != undefined ? this.filterFromDate : "";
+    let filterToDatestringParam = this.filterToDate != undefined ? this.filterToDate : "";
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let sortcolumn = this.pagination.sortcolumn;
     let sortingOrder = this.pagination.sortingOrder;
@@ -184,6 +190,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
+      + "&filterFromDateString=" + filterFromDatestringParam + "&filterToDateString=" + filterToDatestringParam
       + "&assetIds=" + assetIds + "&companyIds=" + companyIds + "&emailIds=" + emailIds + "&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);
   }
@@ -196,8 +203,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   const hasSelectedCompanies = this.pagination.selectedCompanyIds && this.pagination.selectedCompanyIds.length > 0;
   const hasSelectedEmails = this.pagination.selectedEmailIds && this.pagination.selectedEmailIds.length > 0;
 
-  const isValidFromDateFilter = this.pagination.fromDateFilterString && this.pagination.fromDateFilterString.length > 0;
-  const isValidToDateFilter = this.pagination.toDateFilterString && this.pagination.toDateFilterString.length > 0;
+  const isValidFromDateFilter = this.pagination.filterFromDateString && this.pagination.filterFromDateString.length > 0;
+  const isValidToDateFilter = this.pagination.filterToDateString && this.pagination.filterToDateString.length > 0;
 
   const isAnyFilterActive = hasSelectedAssets || hasSelectedCompanies || hasSelectedEmails || isValidFromDateFilter || isValidToDateFilter;
 
@@ -234,6 +241,11 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.selectedEmailIds = [];
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    this.filterFromDate = "";
+    this.filterToDate = "";
+    this.pagination.filterFromDateString = "";
+    this.pagination.filterToDateString = "";
+    this.searchKey = "";
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.isCollapsed = true;
@@ -252,10 +264,10 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.getAssetDetails(this.pagination);
   }
   validateDateFilter() {
-    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
-    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
-    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
-    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidFromDateFilter = this.filterFromDate != undefined && this.filterFromDate != "";
+    let isEmptyFromDateFilter = this.filterFromDate == undefined || this.filterFromDate == "";
+    let isValidToDateFilter = this.filterToDate != undefined && this.filterToDate != "";
+    let isEmptyToDateFilter = this.filterToDate == undefined || this.filterToDate == "";
     let isValidSelectedFilter = false;
     if (this.isDetailedAnalytics) {
       isValidSelectedFilter = this.pagination.selectedEmailIds.length > 0 && this.pagination.assetIds.length > 0;
@@ -273,8 +285,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     } else if (showFromDateError) {
       this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
     } else if (isValidToDateFilter && isValidFromDateFilter) {
-      var toDate = Date.parse(this.toDateFilter);
-      var fromDate = Date.parse(this.fromDateFilter);
+      var toDate = Date.parse(this.filterToDate);
+      var fromDate = Date.parse(this.filterFromDate);
       if (fromDate <= toDate) {
         this.applyFilters();
       } else {

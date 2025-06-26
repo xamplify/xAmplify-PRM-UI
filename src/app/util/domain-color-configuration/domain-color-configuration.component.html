@@ -15,7 +15,11 @@
   </h3>
 </div>
 
-<div class="color-settings-container nav collapse in" id="colorDetailsDropdown">
+<div *ngIf="loading" class="div-loader">
+  <div id="process-loader"></div>
+</div>
+
+<div *ngIf="!loading" class="color-settings-container nav collapse in" id="colorDetailsDropdown">
   <div *ngFor="let field of colorFields; let i = index" class="color-field-wrapper">
 
     <!-- Show "Domain Colors" header before first 'theme' item -->

@@ -149,4 +149,27 @@ button:disabled {
   color: #444;
 }
 
+.div-loader {
+  padding: 5px 5px 10px 10px;
+  background-color: #fff;
+  border-radius: 0;
+  margin: 1em;
+  height: 113px;
+  position: relative;
+}
+#process-loader {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
 

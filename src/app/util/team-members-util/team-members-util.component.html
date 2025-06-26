@@ -823,7 +823,7 @@
             </app-typewise-track-content-details>
           </div>
         </span>
-        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess || authenticationService.module?.playbookAccess">
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Team Member wise Track Counts******************-->
@@ -831,7 +831,7 @@
                 [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
                 [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
                 [isVendorVersion]="isVendorVersion" [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
-                [toDateFilter]="toDateFilter" *ngIf="referenceService?.trackAccessGivenByVendor"></app-userwise-track-counts>
+                [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess || (referenceService?.trackAccessGivenByVendor && !isVendorVersion)"></app-userwise-track-counts>
             
               <!--******************Team Member wise Playbook Counts******************-->
               <app-userwise-track-counts [type]="'PLAYBOOK'" [vanityUrlFilter]="vanityUrlFilter"
@@ -839,7 +839,7 @@
                 [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
                 [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
-                [toDateFilter]="toDateFilter" *ngIf="referenceService?.playBookAccessGivenByVendor"></app-userwise-track-counts>
+                [toDateFilter]="toDateFilter" *ngIf="authenticationService.module?.playbookAccess || (referenceService?.playBookAccessGivenByVendor && !isVendorVersion)"></app-userwise-track-counts>
             </div>
             <!--******************Asset Details*******************-->
         <div *ngIf="!isVendorVersion" class="row rowPaddingCustomize3">
@@ -854,12 +854,12 @@
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
                 [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
-                [toDateFilter]="toDateFilter" *ngIf="referenceService?.trackAccessGivenByVendor"></app-userwise-track-details>
+                [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess && referenceService?.trackAccessGivenByVendor"></app-userwise-track-details>
             </div>
           </div>
         </span>
         <!--******************Track & Playbook Asset Details*******************-->
-        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess || authenticationService.module?.playbookAccess">
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Track Asset Details*******************-->
@@ -867,14 +867,14 @@
                 [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"
                 [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter"
-                [toDateFilter]="toDateFilter" *ngIf="referenceService?.trackAccessGivenByVendor"></app-track-asset-details>
+                [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess || (referenceService?.trackAccessGivenByVendor && !isVendorVersion)"></app-track-asset-details>
         
               <!--******************Playbook Asset Details*******************-->
               <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
                 [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"
                 [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter"
-                [toDateFilter]="toDateFilter" *ngIf="referenceService?.playBookAccessGivenByVendor"></app-track-asset-details>
+                [toDateFilter]="toDateFilter" *ngIf="authenticationService.module?.playbookAccess || (referenceService?.playBookAccessGivenByVendor && !isVendorVersion)"></app-track-asset-details>
             </div>
           </div>
         </span>

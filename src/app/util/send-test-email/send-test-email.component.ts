@@ -520,7 +520,7 @@ export class SendTestEmailComponent implements OnInit {
         }
       });
     }
-    let isPrm = this.authenticationService.module.isPrm;
+    let isPrm = this.authenticationService.module.isPrmCompany;
     let isTeamMember = this.authenticationService.module.isTeamMember;
 
     let vanityCheck = Array.isArray(this.selectedItem)
@@ -536,7 +536,7 @@ export class SendTestEmailComponent implements OnInit {
 
     if (hasRegisterItems) {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      if (isPrm || isTeamMember) {
+      if (isPrm) {
         this.id = vanityCheck ? 14 : 1178;
       } else {
         this.id = vanityCheck ? 4 : 638;
@@ -563,7 +563,7 @@ export class SendTestEmailComponent implements OnInit {
     /*** XNFR-1015 */
     else {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      if (isPrm || isTeamMember) {
+      if (isPrm) {
         this.id = vanityCheck ? 14 : 1178;
       } else {
         this.id = vanityCheck ? 4 : 638;
