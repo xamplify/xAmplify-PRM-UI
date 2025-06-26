@@ -206,8 +206,8 @@ export class ChatGptModalComponent implements OnInit {
           // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
           // this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
-          // this.chatGptGeneratedText = response.message;
-          // this.messages.push({ role: 'assistant', content: response.message });
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
         } else {
           // let errorMessage = data['apiResponse']['error']['message'];
           // this.customResponse = new CustomResponse('ERROR', errorMessage, true);
@@ -728,7 +728,6 @@ export class ChatGptModalComponent implements OnInit {
   showMEEEEE: boolean = false;
 
   AskAiTogetData() {
-  
     this.showMEEEEE = true;
     this.searchTerm = "";
     this.resetAllPromptBoxes();
@@ -766,34 +765,41 @@ export class ChatGptModalComponent implements OnInit {
     self.isValidInputText = false;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
-        self.isTextLoading = false;
-        console.log('API Response:', response);
-        var content = response.data;
-        if (content) {
-
-          let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+        let statusCode = response.statusCode;
+        // swal.close();
+        if (statusCode === 200) {
+          self.isTextLoading = false;
           let isReport = response.data.isReport;
-          if (isReport == 'true') {
-            try {
-              const cleanJsonStr = self.extractJsonString(message);
-              message = self.parseOliverReport(cleanJsonStr);
-            } catch (error) {
-              isReport = 'false';
-              message = self.chatGptGeneratedText;
+          console.log('API Response:', response);
+          var content = response.data;
+          if (content) {
+            let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+            if (isReport == 'true') {
+              try {
+                const cleanJsonStr = self.extractJsonString(message);
+                message = self.parseOliverReport(cleanJsonStr);
+              } catch (error) {
+                isReport = 'false';
+                message = self.chatGptGeneratedText;
+              }
             }
-          }
 
-          self.messages.push({ role: 'assistant', content: message,  isReport: isReport});
-          self.threadId = content.threadId;
-          self.vectorStoreId = content.vectorStoreId;
-          self.chatHistoryId = content.chatHistoryId;
-          self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
-          
-        } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
+            self.messages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.threadId = content.threadId;
+            self.vectorStoreId = content.vectorStoreId;
+            self.chatHistoryId = content.chatHistoryId;
+            self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
+
+          } else {
+            self.messages.push({ role: 'assistant', content: 'Sorry, something didn’t work as expected. Please try again shortly.', isReport: 'false' });
+          }
+          this.trimmedText = '';
+          self.selectedPromptId = null;
+        } else if (statusCode === 400) {
+          self.isTextLoading = false;
+          self.messages.push({ role: 'assistant', content: 'Sorry, something didn’t work as expected. Please try again shortly.', isReport: 'false' });
         }
-        this.trimmedText = '';
-        self.selectedPromptId = null;
+        console.log(self.messages);
       },
       function (error) {
         console.log('API Error:', error);
