@@ -161,4 +161,33 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
   }
 
+  downloadDamAnalytics() {
+    this.referenceService.goToTop();
+    this.referenceService.loading(this.listLoader, true);
+    let pagination = new Pagination();
+    pagination = this.pagination;
+    pagination.pageIndex = 1;
+    pagination.maxResults = this.pagination.totalRecords;
+    this.damService.findPartnerCompanyUsers(pagination).subscribe((result: any) => {
+      this.referenceService.loading(this.listLoader, false);
+      let data = result.data;
+      const csvRows: string[] = [];
+      const headers = ['FIRST NAME', 'LAST NAME', 'EMAIL ID', 'COMPANY NAME', 'VIEW COUNT', 'DOWNLOAD COUNT'];
+      csvRows.push(headers.join(','));
+      data.list.forEach((item: any) => {
+        const row = [item.firstName, item.lastName, item.emailId, item.companyName, item.viewCount, item.downloadCount];
+        csvRows.push(row.join(','));});
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `dam-partner-analytics.csv`;
+      link.click();
+      URL.revokeObjectURL(downloadUrl);
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
+  }
+
 }
