@@ -46,10 +46,10 @@
                       <td>
                         <strong>{{user?.companyName}}</strong>
                       </td>
-                      <td [ngClass]="[(user?.validEmail && user?.partnerStatus != 'deactivated') ? 'valid' : 'invalid']">
-                        <span data-toggle="tooltip" data-placement="bottom" [title]="user?.partnerStatus === 'deactivated' 
-                        ? 'Partnership is deactivated.' : (user?.validEmail ? 'This is a valid email address' 
-                        : 'This is an invalid email address')">{{user.emailId}}</span>
+                      <td [ngClass]="[(user?.partnerGroup && user?.partnerStatus === 'deactivated') ?  'invalid' : user?.validEmail ? 'valid' : 'invalid']">
+                        <span data-toggle="tooltip" data-placement="bottom"
+                          [title]="(user?.partnerGroup && user?.partnerStatus === 'deactivated') ? 'Partnership is deactivated.' 
+                          : (user?.validEmail ? 'This is a valid email address' : 'This is an invalid email address')">{{user.emailId}}</span>
                       <!--XBI-2880-->
                       <ng-container *ngIf="showTickMark">
                         <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
