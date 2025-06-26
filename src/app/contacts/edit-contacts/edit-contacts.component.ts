@@ -42,6 +42,8 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { CustomCsvMappingComponent } from '../custom-csv-mapping/custom-csv-mapping.component';
 import { Partnership } from 'app/partners/models/partnership.model';
 import { ParterService } from 'app/partners/services/parter.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -313,13 +315,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isEditMode: boolean = false;
 	partnership: Partnership = new Partnership();
 	isDeleteOptionClicked: boolean = false;
+	showAskOliverModalPopup: boolean = false;
+	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	contact: any;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
 		private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
 		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, 
-		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService) {
+		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService,
+		private chatgptSettingsService: ChatGptSettingsService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -3114,6 +3121,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
 		}
 		this.getActiveCrmType();
+		this.fetchOliverActiveIntegration();
 	}
 
 
@@ -3973,6 +3981,49 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.refService.showSweetAlertServerErrorMessage();
 			}, () => this.xtremandLogger.info("findContactsCount() finished")
 		);
+	}
+
+	askOliver(contact: any) {
+		this.contact = contact;
+		this.contact.contactName = this.setContactNameToDisplay(contact);;
+		this.showAskOliverModalPopup = true;
+	}
+
+	setContactNameToDisplay(contact: any): string {
+		let firstName = contact.firstName;
+		let lastName = contact.lastName;
+		let isValidFirstName = this.refService.checkIsValidString(firstName);
+		let isValidLastName = this.refService.checkIsValidString(lastName);
+		let contactName = '';
+		if (isValidFirstName) {
+			contactName = firstName;
+		}
+		if (isValidLastName) {
+			contactName += isValidFirstName ? ` ${lastName}` : lastName;
+		}
+		return contactName;
+	}
+
+	closeAskAI(event: any) {
+		this.chatGptSettingDTO = event;
+		this.showAskOliverModalPopup = false;
+	}
+
+	fetchOliverActiveIntegration() {
+		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
+		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
+			(response: any) => {
+				if (response.statusCode == 200 && response.data) {
+					let data = response.data;
+					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
+					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
+					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
+					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+				}
+			}, error => {
+				console.log('Error in fetchOliverActiveIntegration() ', error);
+			});
 	}
 
 }

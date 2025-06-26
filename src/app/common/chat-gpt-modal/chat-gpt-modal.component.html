@@ -782,7 +782,7 @@
           </div>
         </div>
       </div>
-      <div class="footer-icons mb10">
+      <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
         <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
           <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
             aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
@@ -822,6 +822,7 @@
       <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
     </div>
     <div class="col-lg-11 col-sm-11">
+      <div class="status_message">{{statusMessage}}</div>
       <div class="assitLoader"></div>
     </div>
   </div>

@@ -22,6 +22,7 @@ import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
 import { ExecutiveReport } from '../models/oliver-report-dto';
+import { Observable, Subscription } from 'rxjs';
 
 declare var $: any, swal:any;
 @Component({
@@ -146,8 +147,12 @@ export class ChatGptModalComponent implements OnInit {
   showGlobalPromptBoxAbove: boolean;
   showInsightPromptBoxBelow: boolean = false;
   showInsightPromptBoxAbove: boolean = false;
-  selectedPromptId: number
+  selectedPromptId: number;
   historyLoader: boolean = false;
+  statusMessage: string = '';
+  private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
+  private messageIndex: number = 0;
+  private intervalSub: Subscription;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -764,6 +769,7 @@ export class ChatGptModalComponent implements OnInit {
       self.inputText = '';
     }
     self.isValidInputText = false;
+    self.startStatusRotation();
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         let statusCode = response.statusCode;
@@ -804,12 +810,14 @@ export class ChatGptModalComponent implements OnInit {
           self.chatHistoryId = content.chatHistoryId;
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
+        self.stopStatusRotation();
         console.log(self.messages);
       },
       function (error) {
         console.log('API Error:', error);
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
         self.selectedPromptId = null;
+        self.stopStatusRotation();
       }
     );
   }
@@ -1676,6 +1684,25 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     return dto;
   }
   
+  startStatusRotation() {
+    this.statusMessage = this.loaderMessages[0];
+    this.messageIndex = 1;
+    let intervalTime = 5000;
 
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+
+    this.intervalSub = Observable.interval(intervalTime).subscribe(() => {
+      this.statusMessage = this.loaderMessages[this.messageIndex % this.loaderMessages.length];
+      this.messageIndex++;
+      intervalTime += intervalTime;
+      if (this.messageIndex == (this.loaderMessages.length - 1)) {
+        this.stopStatusRotation();
+      }
+    });
+  }
+
+  stopStatusRotation() {
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
 
 }

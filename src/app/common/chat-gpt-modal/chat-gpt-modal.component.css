@@ -679,6 +679,8 @@ max-height: calc(100vh - 220px);
   background: radial-gradient(circle closest-side,#000 90%,#0000) 0/calc(100%/3) 100% space;
   clip-path: inset(0 100% 0 0);
   animation: l1 2s steps(4) infinite;
+  float: left;
+  margin: 10px 0px 0px 3px;
 }
 @keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
 
@@ -1921,3 +1923,6 @@ button.image-only-button img {
   max-height: 132px !important;
 }
 
+.status_message {
+  float: inline-start;
+}
