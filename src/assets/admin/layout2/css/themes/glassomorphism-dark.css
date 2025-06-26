@@ -4503,3 +4503,23 @@ markdown pre,.aligin-para{
 .pad div {
   color: #ffffff !important;
 }
+/* content count css */
+.section-column,.front-count-card,.stat-card {
+    background: rgb(0 0 0 / 18%) !important;
+    border: 1px solid #ffffff33! important;
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label,a.action-button{
+  color:#fff !important;
+}
+button.btn.btn-primary.dropdown-toggle.border_btn{
+  border-left: 1px solid #1ca6f3 !important;
+}
+.oliveIcon {
+  background: rgb(146 151 179 / 8%) !important;
+  border: 1px solid #ffffff17 !important;
+  width: 32px!important;
+  height: 32px!important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}

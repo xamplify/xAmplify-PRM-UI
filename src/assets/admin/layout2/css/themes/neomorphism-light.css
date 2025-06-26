@@ -3747,7 +3747,7 @@ div#reply-3:hover {
 }
 button.btn.btn-primary.dropdown-toggle.rounded-0,
 button.group-name-cclass.btn-primary.default-btn-cursor,
-button.btn.btn-primary.breadcrumb-right-btn{
+button.btn.btn-primary.breadcrumb-right-btn, button.btn.btn-primary.dropdown-toggle.border_btn{
   background: #0276FF  !important;
 }
 /* Sudha Sri(23-1-2024) */
@@ -4680,4 +4680,25 @@ input:checked + .toggle-slider {
 }
 .pad div {
   color: #333 !important;
+}
+/* content count css */
+.section-column,.front-count-card,.stat-card {
+ border: 1px solid #e0e6ed;
+ background: #f0f5fa !important;
+box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+.section-column:hover{
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+button.btn.btn-primary.dropdown-toggle.border_btn{
+  border-left: 1px solid #1ca6f3 !important;
+}
+.oliveIcon {
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  border: none !important;
+  width: 32px!important;
+  height: 32px!important;
+}
+.oliveBackground {
+  background-color: transparent !important;
 }
