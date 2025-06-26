@@ -5,11 +5,12 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../services/util.service';
+import { LmsService } from 'app/lms/services/lms.service';
 @Component({
   selector: 'app-select-content-modules',
   templateUrl: './select-content-modules.component.html',
   styleUrls: ['./select-content-modules.component.css'],
-  providers: [ HttpRequestLoader],
+  providers: [ HttpRequestLoader, LmsService],
 })
 export class SelectContentModulesComponent implements OnInit {
 
@@ -17,8 +18,12 @@ export class SelectContentModulesComponent implements OnInit {
   prefixUrl = "home/";
   searchWithModuleName:any;
   loadModules:boolean = false;
+  loggedInUserId: any;
+  contentCounts: any;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger, public utilService: UtilService) { }
+    public xtremandLogger:XtremandLogger, public utilService: UtilService, private lmsService:LmsService) {
+     }
 
   ngOnInit() {
     this.searchWithModuleName = 4;
@@ -26,6 +31,7 @@ export class SelectContentModulesComponent implements OnInit {
     setTimeout(() => {
       this.loadModules = false;
       }, 5000);
+      this.getContentCounts();
   }
   navigate(suffixUrl:string){
     this.loading = true;
@@ -33,5 +39,22 @@ export class SelectContentModulesComponent implements OnInit {
     this.utilService.searchKey = "";
     this.referenceService.goToRouter(this.prefixUrl+suffixUrl);
   }
+
+    getContentCounts() {
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.lmsService.getContentCounts().subscribe(
+        (response: any) => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (response.statusCode == 200) {
+            this.contentCounts = response.map;
+          }
+        },
+        (_error: any) => {
+          this.httpRequestLoader.isServerError = true;
+          this.xtremandLogger.error(_error);
+        }
+      );
+    }
+  
 
 }

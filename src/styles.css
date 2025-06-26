@@ -3470,3 +3470,6 @@ h5.oliver-heading-color{
 .suggestion-list-global-chat {
   max-height: 160px !important;
 }
+.section-column:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1) !important;
+}

@@ -2700,3 +2700,25 @@ table.nl-container tr:nth-child(odd) {
 .pad div {
   color: var(---text-color) !important;
 }
+/* content count css */
+.section-column,.front-count-card {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.stat-card {
+    background-color: var(--page-content) !important;
+    border: 1px solid var(--border-color) !important;
+  }
+.stat-label,.stat-unit,.front-count-number,.front-count-label{
+  color: var(---text-color) !important;
+}
+a.action-button{
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+}
+.oliveIcon {
+border: 1px solid var(--icon-border-color) !important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}

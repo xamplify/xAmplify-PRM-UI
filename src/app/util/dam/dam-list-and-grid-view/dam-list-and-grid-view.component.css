@@ -305,3 +305,39 @@
   float: left;
   margin-left: 12px;
 }
+
+.downloadteam {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+}
+.download-btn {
+  border-left: 1px solid #1ca6f3;
+  padding: 0 12px;
+  border-radius: 0 7px 7px 0 !important;
+}
+.dropdown-menu li > a {
+  color: #333;
+}
+.border_btn{
+    border-left: 1px solid #1ca6f3;
+}
+    .fileinput-button {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fileinput-button input[type="file"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      cursor: inherit;
+      display: block;
+    }

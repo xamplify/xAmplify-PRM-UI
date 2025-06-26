@@ -12,7 +12,7 @@
     </ul>
   </div>
   <app-content-module-status-analytics *ngIf="!previewContent" [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
-    [filterType]="selectedFilterType" [toDateFilter]="toDateFilter" [fromDateFilter]="fromDateFilter">
+    [filterType]="selectedFilterType" [toDateFilter]="toDateFilter" [fromDateFilter]="fromDateFilter" [showApprovalTiles]="true">
   </app-content-module-status-analytics>
   <div class="row" *ngIf="!previewContent">
     <div class="col-md-12">
