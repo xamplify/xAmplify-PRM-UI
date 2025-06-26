@@ -2848,3 +2848,21 @@ markdown pre,.aligin-para{
 .pad div {
   color: #ffffff !important;
 }
+/* content count css */
+.section-column,.front-count-card {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.stat-card{
+  background-color: #22313a!important;
+  border: 1px solid #2f4857 !important;
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label{
+  color:#fff !important;
+}
+.oliveIcon {
+border: 1px solid #fff !important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}

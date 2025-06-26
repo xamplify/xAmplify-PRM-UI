@@ -3,12 +3,13 @@ import { ContentModuleStatusAnalyticsDTO } from 'app/contacts/models/ContentModu
 import { DamService } from 'app/dam/services/dam.service';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { LmsService } from 'app/lms/services/lms.service';
 
 @Component({
   selector: 'app-content-module-status-analytics',
   templateUrl: './content-module-status-analytics.component.html',
   styleUrls: ['./content-module-status-analytics.component.css'],
-  providers: [DamService,ApproveService]
+  providers: [DamService,ApproveService,LmsService]
 })
 export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
@@ -17,23 +18,29 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   @Input() toDateFilter : string;
   @Input() fromDateFilter : string;
   @Output() filterContentByType = new EventEmitter();
+  @Input() showApprovalTiles : boolean = false;
 
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
   timeZone: string;
   moduleLabel: string;
+  manageContentCounts: any;
 
-  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService) {
+  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService:LmsService) {
 
   }
 
   ngOnInit() {
-    this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
-    this.setModuleTypeLabel();
-    if (this.moduleType == 'APPROVE') {
-      this.getTileCountsForApproveModule();
+    if (this.showApprovalTiles) {
+     this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
+      this.setModuleTypeLabel();
+      if (this.moduleType == 'APPROVE') {
+        this.getTileCountsForApproveModule();
+      } else {
+        this.getTileCounts();
+      }
     } else {
-      this.getTileCounts();
+       this.getContentCounts();
     }
   }
 
@@ -102,5 +109,20 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
       this.moduleLabel = '';
     }
   }
+
+     getContentCounts() {
+    this.countsLoader = true;
+      this.lmsService.getManageContentCounts(this.moduleType).subscribe(
+        (response: any) => {
+          this.countsLoader = false;
+          if (response.statusCode == 200) {
+            this.manageContentCounts = response.map;
+          }
+        },
+        (_error: any) => {
+          this.countsLoader = false;
+        }
+      );
+    }
 
 }
