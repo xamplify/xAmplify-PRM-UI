@@ -791,13 +791,17 @@ export class ChatGptModalComponent implements OnInit {
             self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
 
           } else {
-            self.messages.push({ role: 'assistant', content: 'Sorry, something didn’t work as expected. Please try again shortly.', isReport: 'false' });
+            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
           self.selectedPromptId = null;
         } else if (statusCode === 400) {
+          var content = response.data;
           self.isTextLoading = false;
-          self.messages.push({ role: 'assistant', content: 'Sorry, something didn’t work as expected. Please try again shortly.', isReport: 'false' });
+          self.threadId = content.threadId;
+          self.vectorStoreId = content.vectorStoreId;
+          self.chatHistoryId = content.chatHistoryId;
+          self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         console.log(self.messages);
       },
@@ -1667,7 +1671,6 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     return dto;
   }
-
   
 
 
