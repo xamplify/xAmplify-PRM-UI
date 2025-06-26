@@ -201,4 +201,5 @@ export class Pagination {
 	assetIds: number[] = [];
 
 	selectedPlaybookNames : string[] = [];
+	exportToExcel: boolean = false;
 }
