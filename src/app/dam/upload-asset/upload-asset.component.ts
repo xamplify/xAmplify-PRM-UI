@@ -1407,7 +1407,7 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
                 this.submitButtonText = "Save & Publish";
                 this.disableSaveAsDraftButton = true;
             } else {
-                this.submitButtonText = "Save";
+                this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 this.disableSaveAsDraftButton = false;
             }
         } else {
@@ -1415,7 +1415,7 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
                 this.submitButtonText = "Update & Publish";
                 this.disableSaveAsDraftButton = true;
             } else {
-                this.submitButtonText = "Update";
+                this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 this.disableSaveAsDraftButton = false;
             }
         }

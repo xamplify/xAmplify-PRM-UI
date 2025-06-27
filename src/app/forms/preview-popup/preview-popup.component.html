@@ -23,7 +23,7 @@
                     <div class="col-xs-12 p5" style="margin-bottom: -10px;">
                         <div class="portlet light border-none">
                             <div class="portlet-title border-none">
-                                <div class="">
+                                <div *ngIf="!fromSurvyaTemplate">
                                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
                                         <ul class="mix-filter m0">
                                             <li class="filter" (click)="searchFormsByFilter('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
