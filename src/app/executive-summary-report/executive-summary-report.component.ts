@@ -1103,7 +1103,9 @@ margin-right: 30px;
            <!-- <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span> -->
         </div>
         <div class="header-right">
+        {{#report.report_recipient}}
           <span>Prepared for</span>
+          {{/report.report_recipient}}
           <h3>{{ report.report_recipient }}</h3>
           <span>{{ report.report_owner }}</span>
         </div>
@@ -1202,7 +1204,7 @@ margin-right: 30px;
               <div class="funnel-info">
                 <span class="funnel-title">{{name}} ({{count}})</span>
                 <div class="funnel-bar">
-                  <div class="bar-fill" style="width:{{conversion_rate}};background:#10b981;"></div>
+                  <div class="bar-fill" style="width:{{count}}%;background:#10b981;"></div>
                 </div>
                 <div class="funnel-sub">{{notes}}</div>
               </div>

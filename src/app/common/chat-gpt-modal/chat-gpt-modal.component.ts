@@ -1505,7 +1505,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
         const numericValue = item.value
-          ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+          ? item.value
           : 0;
 
         return {

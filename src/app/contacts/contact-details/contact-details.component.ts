@@ -158,6 +158,7 @@ export class ContactDetailsComponent implements OnInit {
   contact: any;
   callActivity: any;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+  isFromManageContact: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -1013,14 +1014,12 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   askOliver() {
-    this.contact = this.selectedContact;
-    this.contact.contactName = this.contactName;
-    this.contact.imageSourcePath = this.imageSourcePath;
-    this.showAskOliverModalPopup = true;
+    this.isFromManageContact = true;
+    this.openAskOliverModalPopup();
   }
 
   closeAskAI(event) {
-    if (this.callActivity == undefined) {
+    if (this.callActivity == undefined && !this.isFromManageContact) {
       this.chatGptSettingDTO = event;
     } else {
       this.callActivity = undefined;
@@ -1029,6 +1028,11 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   openOliver() {
+    this.isFromManageContact = false;
+    this.openAskOliverModalPopup();
+  }
+
+  private openAskOliverModalPopup() {
     this.contact = this.selectedContact;
     this.contact.contactName = this.contactName;
     this.contact.imageSourcePath = this.imageSourcePath;
@@ -1054,6 +1058,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   askOliverForCallRecording(callActivity:any) {
+    this.isFromManageContact = false;
     this.callActivity = callActivity;
     this.callActivity.contactName = this.contactName;
     this.callActivity.emailId = this.selectedContact.emailId;
