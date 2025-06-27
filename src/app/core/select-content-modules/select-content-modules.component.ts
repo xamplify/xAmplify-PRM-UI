@@ -21,8 +21,13 @@ export class SelectContentModulesComponent implements OnInit {
   loggedInUserId: any;
   contentCounts: any;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  vendorCompanyProfileName: string = null;
+  
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger, public utilService: UtilService, private lmsService:LmsService) {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    }
      }
 
   ngOnInit() {
@@ -42,7 +47,7 @@ export class SelectContentModulesComponent implements OnInit {
 
     getContentCounts() {
       this.referenceService.loading(this.httpRequestLoader, true);
-      this.lmsService.getContentCounts().subscribe(
+      this.lmsService.getContentCounts(this.vendorCompanyProfileName).subscribe(
         (response: any) => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (response.statusCode == 200) {
