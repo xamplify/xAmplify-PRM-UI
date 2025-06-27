@@ -182,7 +182,7 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
-                    <li *ngIf="true"
+                    <li *ngIf="authenticationService?.module?.isContact"
                       [ngClass]="{'active': activeTab === 'contactagent'}">
                       <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
                         <i class="fa fa-vcard-o"></i> Contact Agent
