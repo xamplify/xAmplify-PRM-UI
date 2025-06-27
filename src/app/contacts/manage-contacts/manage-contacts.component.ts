@@ -3278,4 +3278,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			});
 	}
 
+	formatNumber(input: number) {
+		if (input >= 1000000) {
+			return Math.floor(input / 1000000) + 'M';
+		} else if (input >= 1000) {
+			const roundedValue = Math.floor(input / 100) / 10;
+			if (input % 1000 !== 0) {
+				return `${roundedValue}k+`;
+			}
+			return `${roundedValue}k`;
+		} else {
+			return input.toString();
+		}
+	}
+
 }
