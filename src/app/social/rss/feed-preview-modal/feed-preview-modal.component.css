@@ -1,1 +1,250 @@
-/* No additional styles */
+/* Container Styles */
+.social-media-container {
+  width: 100%;
+  /* max-width: 600px; */
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  /* background-color: #fff; */
+}
+
+.media-layout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.media-row {
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+}
+
+.media-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  /* background-color: #f0f0f0; */
+}
+
+.media-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Media Elements */
+.media-element {
+  width: 100%;
+  height: auto !important;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+}
+
+.media-image {
+  transition: transform 0.3s ease;
+}
+
+.media-image:hover {
+  transform: scale(1.02);
+}
+
+/* .media-video {
+   background-color: #000; 
+} */
+
+/* Stacked Media Styles */
+.stacked-media {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stacked-item {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.stacked-image,
+.stacked-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Layout Specific Styles */
+.layout-single .media-row {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.layout-single .media-element {
+  border-radius: 8px;
+}
+
+.layout-double .media-item,
+.layout-triple .media-item,
+.layout-quad .media-item {
+  min-height: 120px;
+}
+
+/* Bootstrap 3 Grid System Adjustments */
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6,
+.col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+  position: relative;
+  min-height: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  float: left;
+}
+
+.col-xs-12 { width: 100%; }
+.col-xs-9 { width: 75%; }
+.col-xs-6 { width: 50%; }
+.col-xs-4 { width: 33.33333333%; }
+.col-xs-3 { width: 25%; }
+
+/* Flexbox Fallback */
+.media-row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Modern Flexbox Support */
+.flexbox .media-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.flexbox .media-item {
+  float: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.flexbox .media-content,
+.flexbox .stacked-media {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .social-media-container {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .layout-single .media-element {
+    height: 300px !important;
+  }
+  
+  .layout-double .media-element {
+    height: 180px !important;
+  }
+  
+  .layout-triple .row-0 .media-element {
+    height: 160px !important;
+  }
+  
+  .layout-triple .row-1 .media-element {
+    height: 140px !important;
+  }
+  
+  .layout-quad .media-element {
+    height: 130px !important;
+  }
+  
+  .stacked-item {
+    min-height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-single .media-element {
+    height: 250px !important;
+  }
+  
+  .layout-double .media-element {
+    height: 150px !important;
+  }
+  
+  .layout-triple .row-0 .media-element {
+    height: 140px !important;
+  }
+  
+  .layout-triple .row-1 .media-element {
+    height: 120px !important;
+  }
+  
+  .layout-quad .media-element {
+    height: 110px !important;
+  }
+  
+  .stacked-item {
+    min-height: 50px;
+  }
+  
+  /* Force single column on very small screens for better UX */
+  .force-mobile .col-xs-6,
+  .force-mobile .col-xs-4,
+  .force-mobile .col-xs-3,
+  .force-mobile .col-xs-9 {
+    width: 100%;
+    margin-bottom: 2px;
+  }
+}
+
+/* Video Specific Styles */
+.media-video {
+  outline: none;
+}
+
+/* .media-video::-webkit-media-controls-panel {
+   background-color: rgba(0, 0, 0, 0.8);
+} */
+
+/* Hover Effects */
+.media-item:hover .media-image {
+  transform: scale(1.02);
+}
+
+.media-item:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Accessibility */
+.media-element:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Animation for layout changes */
+.media-layout {
+  transition: all 0.3s ease-in-out;
+}
+
+.media-item {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  /* .social-media-container {
+    background-color: #1a1a1a;
+  }  
+  .media-item {
+    background-color: #333;
+  } */
+}

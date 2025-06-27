@@ -1,24 +1,76 @@
-<div class="modal fade" id="feedPreviewModal" tabindex="-1" role="dialog" aria-labelledby="feedPreviewModalLabel" aria-hidden="true">
+<div class="modal fade right" id="feedPreviewModal" tabindex="-1" role="dialog" aria-labelledby="feedPreviewModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="feedPreviewModalLabel">Preview</h4>
+    <div class="modal-content full_popup">
+      <div class="modal-header popup_header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times"></i>
-        </button>
+          <i class="fa fa-times"></i></button>
+        <h4 class="modal-title" id="feedPreviewModalLabel">Social Feed Preview</h4>
       </div>
       <div class="modal-body">
         <div style="margin-top:10px;margin-bottom:10px;">
-          <span title="{{feed?.statusMessage}}"><strong>{{feed?.statusMessage}}</strong></span>
+          <span title="{{formattedText}}"><strong>
+              <div [innerHTML]="formattedText"></div>
+            </strong></span>
         </div>
-        <ng-container *ngIf="feed?.socialStatusContents?.length>0">
-          <ng-container *ngFor="let item of feed.socialStatusContents">
-            <div class="img-wrap img-thumbnail rounded-0" style="margin-bottom:15px;">
-              <img *ngIf="item.fileType !== 'video'" [src]="authenticationService.MEDIA_URL + item.filePath" style="max-width:100%">
-              <img *ngIf="item.fileType === 'video'" [src]="item.filePath" (error)="videoUtilService.errorVideoHandler($event)">
+        <!-- Media related content -->
+        <!-- <div class="media-container" [ngClass]="getImageClass(images?.length)" *ngIf="layoutReady">
+          <div class="top-image-container" *ngIf="topImage && (images?.length === 3 || images?.length === 4)">
+            <img [src]="getMediaSource(topImage)" class="media-image top-image" />
+          </div>
+          <div class="single-image-container" *ngIf="images?.length === 1 && topImage">
+            <img [src]="getMediaSource(topImage)" class="media-image single-image" />
+          </div>
+          <div class="bottom-images-container" [ngClass]="getBottomImageClass()" *ngIf="bottomImages.length > 0">
+            <div class="bottom-image-item" *ngFor="let image of bottomImages">
+              <img [src]="getMediaSource(image)" class="media-image bottom-image" />
             </div>
-          </ng-container>
-        </ng-container>
+          </div>
+        </div> -->
+        <div class="social-media-container" *ngIf="layoutReady && layout">
+          <!-- Media Layout Rows -->
+          <div class="media-layout" [ngClass]="'layout-' + layout.type">
+            <div class="media-row" *ngFor="let row of layout.rows; let rowIndex = index" [style.height]="row.height"
+              [ngClass]="'row-' + rowIndex">
+
+              <div class="media-item" *ngFor="let item of row.items" [ngClass]="item.colClass"
+                [style.height]="item.height">
+
+                <!-- Regular Media Item -->
+                <div class="media-content" *ngIf="!item.media.isStacked" [style.height]="item.height">
+
+                  <!-- Image -->
+                  <img *ngIf="!isVideo(item.media)" [src]="getMediaSource(item.media)" class="media-element media-image"
+                    [style.height]="item.height" />
+
+                  <!-- Video -->
+                  <video *ngIf="isVideo(item.media)" class="media-element media-video" [style.height]="item.height"
+                    controls preload="metadata">
+                    <source [src]="getMediaSource(item.media)" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <!-- Stacked Media Items (for tall layouts) -->
+                <div class="stacked-media" *ngIf="item.media.isStacked" [style.height]="item.height">
+                  <div class="stacked-item" *ngFor="let stackedMedia of item.media.stackedMedia; let i = index"
+                    [style.height]="getStackedHeight(item.media.stackedMedia.length)">
+
+                    <!-- Stacked Image -->
+                    <img *ngIf="!isVideo(stackedMedia)" [src]="getMediaSource(stackedMedia)"
+                      class="media-element media-image stacked-image"
+                      [style.height]="getStackedHeight(item.media.stackedMedia.length)" />
+                    <video *ngIf="isVideo(stackedMedia)" class="media-element media-video stacked-video"
+                      [style.height]="getStackedHeight(item.media.stackedMedia.length)" controls preload="metadata">
+                      <source [src]="getMediaSource(stackedMedia)" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Check if feed has media content -->
       </div>
     </div>
   </div>
