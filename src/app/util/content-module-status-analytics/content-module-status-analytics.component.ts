@@ -25,28 +25,31 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   timeZone: string;
   moduleLabel: string;
   manageContentCounts: any;
+  contentCountsLoader: boolean = false;
+  hideContentTiles: boolean = false;
 
   constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService:LmsService) {
 
   }
 
   ngOnInit() {
-    if (this.showApprovalTiles) {
      this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
       this.setModuleTypeLabel();
       if (this.moduleType == 'APPROVE') {
         this.getTileCountsForApproveModule();
+        this.hideContentTiles = true;
       } else {
         this.getTileCounts();
+        this.getContentCounts();
       }
-    } else {
-       this.getContentCounts();
-    }
   }
 
   ngOnChanges() {
     if (this.moduleType == 'APPROVE') {
       this.getTileCountsForApproveModule();
+      this.hideContentTiles = true;
+    } else if(!this.showApprovalTiles){
+       this.getContentCounts();
     }
   }
 
@@ -111,16 +114,16 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   }
 
      getContentCounts() {
-    this.countsLoader = true;
+    this.contentCountsLoader = true;
       this.lmsService.getManageContentCounts(this.moduleType).subscribe(
         (response: any) => {
-          this.countsLoader = false;
+          this.contentCountsLoader = false;
           if (response.statusCode == 200) {
             this.manageContentCounts = response.map;
           }
         },
         (_error: any) => {
-          this.countsLoader = false;
+          this.contentCountsLoader = false;
         }
       );
     }
