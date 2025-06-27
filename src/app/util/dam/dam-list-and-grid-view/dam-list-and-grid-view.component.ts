@@ -646,8 +646,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 		/** XNFR-813 **/
-		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
-			this.contentModuleStatusAnalyticsComponent.getTileCounts();
+		if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
 		}
 	}
 
@@ -770,6 +773,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.findFileTypes();
 			}
 			this.listAssets(this.pagination);
+			if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
+		}
 		} else if (response.statusCode == 401) {
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
