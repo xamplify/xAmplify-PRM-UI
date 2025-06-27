@@ -58,7 +58,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .header-card {
-            background: linear-gradient(to right, #0f172a, #1e3a8a);
+                    background: linear-gradient(to right, #0f172a, #1e3a8a);
             padding: 40px;
             color: white;
             margin-bottom: 30px;
@@ -281,7 +281,7 @@ margin-right: 30px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-margin-right: 30px;
+            margin-right: 30px;
             margin-left: 30px
         }
 
@@ -723,8 +723,6 @@ margin-right: 30px;
 
             table {
                 display: block;
-                overflow-x: auto;
-                white-space: nowrap;
             }
 
             th,
@@ -963,10 +961,16 @@ margin-right: 30px;
 
             /* ── Contact-Journey Timeline ─────────────────────────────── */
             .timeline-card .timeline-wrapper {
-            max-height: 260px;              /* controls visible height */
-            overflow-y: auto;
+             /*max-height: 260px; */
+             /*overflow-y: auto; */
             margin: 20px 0;
             padding-right: 6px;             /* room for scrollbar */
+            }
+
+            .timeline-card-duplicate {
+                margin-left: 0px !important; 
+                margin-right: 0px !important; 
+                margin-bottom: 10px !important; 
             }
 
             .timeline-card .timeline-item {
@@ -1029,6 +1033,43 @@ margin-right: 30px;
 
         .timeline-card .badge.purple  { background:#ede9fe; color:#6d28d9; }
         .timeline-card .badge.dark    { background:#1e293b; color:#f8fafc; }
+
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .stat-value.blue { color: #3b82f6; }
+        .stat-value.green { color: #10b981; }
+        .stat-value.orange { color: #f59e0b; }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.125rem;
+        }
+
+        .timeline-card-duplicate {
+                margin-left: 0px !important; 
+                margin-right: 0px !important; 
+        }
+
   </style>
 </head>
 
@@ -1105,32 +1146,10 @@ margin-right: 30px;
     </div>
    
 
-    {{#report.lead_progression_funnel.title}}
-    <div class="white-card" *ngIf="report.lead_progression_funnel">
-        <h2>{{report.lead_progression_funnel.title}}</h2>
-        <p>{{report.lead_progression_funnel.description}}</p>
-        <div class="funnel-step">
-          {{#report.lead_progression_funnel.items}}
-            <div class="funnel-left">
-              <div class="funnel-dot" style="background:#10b981;"></div>
-              <div class="funnel-info">
-                <span class="funnel-title">{{name}} ({{count}})</span>
-                <div class="funnel-bar">
-                  <div class="bar-fill" style="width:{{conversion_rate}};background:#10b981;"></div>
-                </div>
-                <div class="funnel-sub">{{notes}}</div>
-              </div>
-            </div>
-          {{/report.lead_progression_funnel.items}}
-        </div>
-      </div>
-    </div>
-    {{/report.lead_progression_funnel.title}}
-
-    
+  <div class="dashboard">
     <!-- Contact Journey Timeline -->
     {{#report.contact_journey_timeline.title}}
-    <div class="white-card timeline-card"  *ngIf="report.contact_journey_timeline">
+    <div class="white-card timeline-card timeline-card-duplicate"  *ngIf="report.contact_journey_timeline">
         <h2>{{report.contact_journey_timeline.title}}</h2>
         <p>{{report.contact_journey_timeline.description}}</p>
 
@@ -1148,26 +1167,65 @@ margin-right: 30px;
             {{/report.contact_journey_timeline.items}}
         </div>
         </div>
-        {{/report.contact_journey_timeline.title}}
+    {{/report.contact_journey_timeline.title}}
+
+
+    {{#report.lead_progression_funnel.title}}
+    <div class="white-card timeline-card-duplicate" *ngIf="report.lead_progression_funnel">
+        <h2>{{report.lead_progression_funnel.title}}</h2>
+        <p>{{report.lead_progression_funnel.description}}</p>
+        
+        {{#report.lead_progression_funnel.items}}
+        <div class="funnel-step">
+          
+            <div class="funnel-left">
+                
+              <div class="funnel-dot" style="background:#10b981;"></div>
+              <div class="funnel-info">
+                <span class="funnel-title">{{name}} ({{count}})</span>
+                <div class="funnel-bar">
+                  <div class="bar-fill" style="width:{{conversion_rate}};background:#10b981;"></div>
+                </div>
+                <div class="funnel-sub">{{notes}}</div>
+              </div>
+              
+            </div>
+          
+        </div>
+        {{/report.lead_progression_funnel.items}}
+      </div>
+    </div>
+    {{/report.lead_progression_funnel.title}}
+  </div>
+    
+    
 
        
     <!-- Bar-chat -->
     {{#report.dealPipelinePrograssion.title}}
     <div class="white-card">
-      <div style="widht:100%;height:100%" id="bar-chart"></div>
-      {{#report.dealPipelinePrograssion.average_deal_value}}
-      <p> Average deal value: {{report.dealPipelinePrograssion.average_deal_value}} </p>
-      {{/report.dealPipelinePrograssion.average_deal_value}}
-      {{#report.dealPipelinePrograssion.highest_deal_value}}
-      <p> Highest deal value: {{report.dealPipelinePrograssion.highest_deal_value}} </p>
-      {{/report.dealPipelinePrograssion.highest_deal_value}}
+      <div style="widht:100%;height:99%" id="bar-chart"></div>
+        <div class="stats-row">
+            <div class="stat-item">
+                {{#report.dealPipelinePrograssion.average_deal_value}}
+                    <div class="stat-value blue">{{report.dealPipelinePrograssion.average_deal_value}}</div>
+                    <div class="stat-label">Average deal value</div>
+                {{/report.dealPipelinePrograssion.average_deal_value}}
+            </div>
+            <div class="stat-item">
+                {{#report.dealPipelinePrograssion.highest_deal_value}}
+                    <div class="stat-value orange">{{report.dealPipelinePrograssion.highest_deal_value}}</div>
+                    <div class="stat-label">Highest deal value</div>
+                {{/report.dealPipelinePrograssion.highest_deal_value}}
+            </div>
+        </div>
     </div>
     {{/report.dealPipelinePrograssion.title}}
 
     <!-- Pie-chat -->
     {{#report.campaignPerformanceAnalysis.title}}
     <div class="white-card">
-      <div style="widht:100%;height:100%" id="pie-chart"></div>
+      <div style="widht:100%;height:99%" id="pie-chart"></div>
     </div>
     {{/report.campaignPerformanceAnalysis.title}}
 
@@ -1246,6 +1304,7 @@ margin-right: 30px;
     <script>
         Highcharts.chart('bar-chart', {
             chart: { type: 'column' },
+            credits:{ enabled: false },
             title: { text: '{{report.dealPipelinePrograssion.title}}' },
             xAxis: { categories: {{{report.dealPipelinePrograssion.categoriesString}}} },
             yAxis: { title: { text: '{{report.dealPipelinePrograssion.revenue}}' } },
@@ -1254,6 +1313,7 @@ margin-right: 30px;
 
         Highcharts.chart('pie-chart', {
             chart: { type: 'pie' },
+            credits:{ enabled: false },
             title: { text: '{{report.campaignPerformanceAnalysis.title}}' },
             plotOptions: {
               pie: {
@@ -1276,7 +1336,7 @@ margin-right: 30px;
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-  }
+      }
 
   downloadIframeAsHTML() {
     const iframe = this.iframeRef.nativeElement as HTMLIFrameElement;
@@ -1328,23 +1388,23 @@ margin-right: 30px;
   }
 
   ngAfterViewInit(): void {
-    if (typeof Chart === 'undefined') {
-      console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
-      return;
+if (typeof Chart === 'undefined') {
+    console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
+    return;
     }
     setTimeout(() => {
       // this.createLeadPipelineChart();
-      // this.createDealAmountBarChart();
-      // this.createCampaignTypePieChart();
-    }, 0);
-    this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
-    this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
-    this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
-    const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
+    // this.createDealAmountBarChart();
+    // this.createCampaignTypePieChart();
+    }, 0);       
+      this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+      this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+      this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
     const blob = new Blob([mergedContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
+}
 
   formatDisplayCurrency(amount: number): string {
     if (amount === undefined || amount === null) return 'N/A';
