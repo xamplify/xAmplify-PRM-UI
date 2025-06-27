@@ -1340,7 +1340,7 @@
                                              Reason
                                           </th>
                                           <th class="text-center"
-                                             *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
+                                             *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all' || contactsByType.selectedCategory == 'deactivated') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
                                              translate scope="row"></th>
                                           <th *ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !=='excluded'"
                                              scope="row"></th>
@@ -1491,6 +1491,12 @@
                                                    slice:0:30}}
                                                    <span *ngIf="contact.unsubscribedReason?.length>30">..</span>
                                                 </h5>
+                                             </td>
+                                             <td *ngIf="contactsByType.selectedCategory === 'deactivated'">
+                                                <button class=" btn btn-primary"
+                                                   *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces" 
+                                                   (click)="showActivatePartnersAlert(contact.partnershipId)" translate>Activate
+                                                </button>
                                              </td>
                                              <td
                                                 *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">

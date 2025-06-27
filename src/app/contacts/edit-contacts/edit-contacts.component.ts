@@ -4026,4 +4026,43 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			});
 	}
 
+	showActivatePartnersAlert(partnershipId: number) {
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: message,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, activate it!'
+		}).then(function (myData: any) {
+			console.log("ManageContacts showAlert then()" + myData);
+			self.activatePartner(partnershipId);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	activatePartner(partnershipId: number) {
+		let partnershipIds = [];
+		partnershipIds.push(partnershipId);
+		this.partnerService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
+			.subscribe(response => {
+				this.loading = false;
+				if (response.statusCode == 200) {
+					this.contactsCount(this.selectedContactListId);
+					this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+					this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				}
+			}, error => {
+				this.loading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
 }

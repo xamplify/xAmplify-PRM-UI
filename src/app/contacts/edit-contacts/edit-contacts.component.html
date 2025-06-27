@@ -1519,7 +1519,7 @@
 												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th scope="col"
-													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded')">
+													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory === 'deactivated')">
 													Actions</th>
 												<th scope="col"
 													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
@@ -1703,8 +1703,11 @@
 																*ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
 														</h5>
 													</td>
-
-
+													<td class="hidden-xs text-center" *ngIf="contactsByType.selectedCategory === 'deactivated'">
+														<button class="btn btn-primary" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+															(click)="showActivatePartnersAlert(allcontacts.partnershipId)" translate>Activate
+														</button>
+													</td>
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
 														<button class="btn-primary"
