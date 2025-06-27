@@ -147,7 +147,7 @@
                      <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10 pr0 tiles_hover_effect" *ngIf="isPartner">
                         <button class="btn-block dashboard-stat yellow-gold"
                            [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'deactivated'"
-                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;listContactsByType('deactivated')"
+                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;loadContactsByType('deactivated')"
                            [disabled]="contactsByType.deactivatedContactsCount == 0">
                            <div class="visual">
                               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -1493,7 +1493,7 @@
                                                 </h5>
                                              </td>
                                              <td *ngIf="contactsByType.selectedCategory === 'deactivated'">
-                                                <button class=" btn btn-primary"
+                                                <button class="btn btn-primary ml15 m0"
                                                    *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces" 
                                                    (click)="showActivatePartnersAlert(contact.partnershipId)" translate>Activate
                                                 </button>
