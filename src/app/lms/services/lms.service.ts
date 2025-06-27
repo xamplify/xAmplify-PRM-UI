@@ -147,9 +147,9 @@ export class LmsService {
     return this.authenticationService.callGetMethod(findContentCounts);
   }
 
-  getContentCounts(){
+  getContentCounts(vendorCompanyProfileName: string){
     let userId = this.authenticationService.getUserId();
-    let findContentCounts = this.URL+'/content/counts/'+userId+'/' + this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    let findContentCounts = this.URL+'/content/counts/'+userId+'/'+ vendorCompanyProfileName+'/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(findContentCounts);
   }
   
