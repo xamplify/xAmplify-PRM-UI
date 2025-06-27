@@ -11,19 +11,23 @@ export class DomainColorConfigurationComponent implements OnInit {
   message: string = '';
   loading = false;
 
- colorFields = [
-  { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee', group: 'theme' },
-  { key: 'headerColor', label: 'Header Color', placeholder: '#eeeeee', group: 'theme' },
-  { key: 'footerColor', label: 'Footer Color', placeholder: '#eeeeee', group: 'theme' },
-  { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee', group: 'theme' },
-  { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee', group: 'theme' },
-  { key: 'logocolor1', label: 'Logo Color 1', placeholder: '#eeeeee', group: 'logo' },
-  { key: 'logocolor2', label: 'Logo Color 2', placeholder: '#eeeeee', group: 'logo' },
-  { key: 'logocolor3', label: 'Logo Color 3', placeholder: '#eeeeee', group: 'logo' },
-];
+  colorFields = [
+    { key: 'backgroundColor', label: 'Background Color', placeholder: '#eeeeee', group: 'theme' },
+    { key: 'headerColor', label: 'Header Color', placeholder: '#eeeeee', group: 'theme' },
+    { key: 'footerColor', label: 'Footer Color', placeholder: '#eeeeee', group: 'theme' },
+    { key: 'buttonColor', label: 'Button Color', placeholder: '#eeeeee', group: 'theme' },
+    { key: 'textColor', label: 'Text Color', placeholder: '#eeeeee', group: 'theme' },
+    { key: 'logoColor1', label: '', placeholder: '#eeeeee', group: 'logo' },
+    { key: 'logoColor2', label: '', placeholder: '#eeeeee', group: 'logo' },
+    { key: 'logoColor3', label: '', placeholder: '#eeeeee', group: 'logo' },
+  ];
 
   companyProfile: any;
   selectedRefereshButton: boolean;
+  hexRegex = /^#([A-Fa-f0-9]{6})$/;
+    errorMessages: { [key: string]: string } = {};
+
+
 
   constructor(public chatGptSettingsService: ChatGptSettingsService) {}
 
@@ -36,26 +40,28 @@ export class DomainColorConfigurationComponent implements OnInit {
     this.chatGptSettingsService.getDomainColorConfigurationByUserId().subscribe(
       (res: any) => {
         this.loading = false;
-        if (res && res.statusCode === 200 && res.data) {
+        if (res.statusCode === 200 && res.data) {
           this.theme = {
             backgroundColor: res.data.backgroundColor,
-            buttonColor: res.data.buttonColor,
-            footerColor: res.data.footerColor,
-            textColor: res.data.textColor,
             headerColor: res.data.headerColor,
-            logocolor1: res.data.logoColor1,
-            logocolor2: res.data.logoColor2,
-            logocolor3: res.data.logoColor3
+            footerColor: res.data.footerColor,
+            buttonColor: res.data.buttonColor,
+            textColor: res.data.textColor,
+            logoColor1: res.data.logoColor1,
+            logoColor2: res.data.logoColor2,
+            logoColor3: res.data.logoColor3,
           };
           this.message = '';
+          this.errorMessages = {};
         } else {
-          this.loading = false;
           this.handleError('No colors found for the user', null);
+          this.errorMessages = {};
         }
       },
       (error) => this.handleError('Error fetching color data', error)
     );
   }
+
 
   updateTheme() {
     if (!this.theme) return;
@@ -82,19 +88,27 @@ export class DomainColorConfigurationComponent implements OnInit {
     }
   }
 
-  isThemeValid(): boolean {
-    const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+ isThemeValid(): boolean {
     return this.colorFields.every(field =>
-      this.theme[field.key] && hexRegex.test(this.theme[field.key])
+      this.hexRegex.test(this.theme[field.key] || '')
     );
   }
 
-  onHexChange(key: string, value: string) {
-    const hexRegex = /^#([A-Fa-f0-9]{6})$/;
-    if (value && hexRegex.test(value)) {
+   onHexChange(key: string, value: string) {
+    if (this.hexRegex.test(value)) {
       this.theme[key] = value;
+      this.errorMessages[key] = '';     
+    } else {
+      this.errorMessages[key] = `Invalid hex for ${this.getLabel(key)} – use format #RRGGBB.`;
     }
   }
+
+  getLabel(key: string): string {
+    const f = this.colorFields.find(field => field.key === key);
+    return f ? (f.label || 'color') : key;
+  }
+
+  
 
   toggleClass(id: string) {
     $("i#" + id).toggleClass("fa-minus fa-plus");

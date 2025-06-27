@@ -1,5 +1,5 @@
 <!-- BEGIN PAGE CONTENT-->
-<div [ngClass]="(module === 'contacts') ? 'page-content':''">
+<div [ngClass]="(module === 'contacts') ? 'page-content':''"  *ngIf="!showAskOliverModalPopup">
 <div class="page-bar mb-height_auto" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
@@ -1133,7 +1133,7 @@
 																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier 
 																		|| authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() 
 																		|| (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
-																	<div class="actions-block override-actions white-space-transform  actions_width" style="width:170px;">
+																	<div class="actions-block override-actions white-space-transform  actions_width">
 																		<a class="custom-icon" *ngIf="!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) 
 																			&& (checkingContactTypeName == 'Contact' || sharedLeads) && contact?.partnerStatus != 'deactivated'"
 																			data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
@@ -1190,6 +1190,15 @@
 																			data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
+																		</a>
+
+																		<!--Ask Oliver-->
+																		<a class="oliveIcon"
+																			*ngIf="authenticationService?.isOliverActive"
+																			data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contact)">
+																			<div class="oliveBackground">
+																				<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																			</div>
 																		</a>
 																	</div>
 																</td>
@@ -1510,7 +1519,7 @@
 												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th scope="col"
-													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded')">
+													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory === 'deactivated')">
 													Actions</th>
 												<th scope="col"
 													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
@@ -1694,8 +1703,11 @@
 																*ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
 														</h5>
 													</td>
-
-
+													<td class="hidden-xs text-center" *ngIf="contactsByType.selectedCategory === 'deactivated'">
+														<button class="btn btn-primary" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+															(click)="showActivatePartnersAlert(allcontacts.partnershipId)" translate>Activate
+														</button>
+													</td>
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
 														<button class="btn-primary"
@@ -2224,3 +2236,6 @@
 	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+	[isFromManageContact]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

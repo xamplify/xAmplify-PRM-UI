@@ -182,7 +182,7 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
-                    <li *ngIf="true"
+                    <li *ngIf="authenticationService?.module?.isContact"
                       [ngClass]="{'active': activeTab === 'contactagent'}">
                       <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
                         <i class="fa fa-vcard-o"></i> Contact Agent
@@ -593,7 +593,8 @@
                     <!--  -->
                     <!-- History Sections -->
                     <div class="oliver-history-scroll">
-                      <div class="history-section">
+                      <app-modal-popup-loader *ngIf="historyLoader"></app-modal-popup-loader>
+                      <div *ngIf="!historyLoader" class="history-section">
                         <div *ngFor="let history of chatHistories;let i =index">
                           <div class="history-entry">
                             <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
@@ -630,7 +631,7 @@
                           *ngIf="chatHistoryPagination.totalRecords > chatHistories.length && !(chatHistories == undefined && chatHistories.length == 0)">
                           <a (click)="setChatHistoryPage()" class="show_more"><strong translate class="pointer">Show more</strong></a>
                         </div>
-                        <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
+                        <div *ngIf="!historyLoader && (chatHistories == undefined || chatHistories.length == 0)" class="alert alert-info">
                           <strong translate>No Data Found.</strong>
                         </div>
                         <!-- <div class="history-entry">
@@ -753,7 +754,7 @@
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5"
-          [disabled]="(selectedAssets.length == 0 && selectedFolders.length == 0) || (isReUpload && uploadedAssets?.length == 0)"
+          [disabled]="(!isReUpload && selectedAssets.length == 0 && selectedFolders.length == 0) || (isReUpload && uploadedAssets?.length == 0)"
           (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
@@ -781,7 +782,7 @@
           </div>
         </div>
       </div>
-      <div class="footer-icons mb10">
+      <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
         <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
           <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
             aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
@@ -821,6 +822,7 @@
       <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
     </div>
     <div class="col-lg-11 col-sm-11">
+      <div class="status_message">{{statusMessage}}</div>
       <div class="assitLoader"></div>
     </div>
   </div>

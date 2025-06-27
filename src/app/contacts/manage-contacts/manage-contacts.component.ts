@@ -32,6 +32,7 @@ import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/servi
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Location } from '@angular/common';
+import { ParterService } from 'app/partners/services/parter.service';
 
 
 declare var $: any, swal: any;
@@ -261,7 +262,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location, private parterService: ParterService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -3236,6 +3237,59 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.referenceService.showSweetAlertServerErrorMessage();
 			}, () => this.xtremandLogger.info("findContactsCount() finished")
 		);
+	}
+
+	showActivatePartnersAlert(partnershipId: number) {
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: message,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, activate it!'
+		}).then(function (myData: any) {
+			console.log("ManageContacts showAlert then()" + myData);
+			self.activatePartner(partnershipId);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	activatePartner(partnershipId: number) {
+		let partnershipIds = [];
+		partnershipIds.push(partnershipId);
+		this.parterService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
+			.subscribe(response => {
+				this.loading = false;
+				if (response.statusCode == 200) {
+					this.contactsCount();
+					this.listContactsByType(this.contactsByType.selectedCategory);
+					this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				}
+			}, error => {
+				this.loading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
+	formatNumber(input: number) {
+		if (input >= 1000000) {
+			return Math.floor(input / 1000000) + 'M';
+		} else if (input >= 1000) {
+			const roundedValue = Math.floor(input / 100) / 10;
+			if (input % 1000 !== 0) {
+				return `${roundedValue}k+`;
+			}
+			return `${roundedValue}k`;
+		} else {
+			return input.toString();
+		}
 	}
 
 }

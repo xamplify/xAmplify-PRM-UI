@@ -346,6 +346,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
           this.customResponse = new CustomResponse('SUCCESS', track.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
+              if (this.contentModuleStatusAnalyticsComponent) {
+                if (this.authenticationService.approvalRequiredForTracks
+                  || this.authenticationService.approvalRequiredForPlaybooks) {
+                  this.contentModuleStatusAnalyticsComponent.getTileCounts();
+                }
+                this.contentModuleStatusAnalyticsComponent.getContentCounts();
+              }
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -472,9 +479,12 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   refreshPage() {
     this.listLearningTracks(this.pagination);
-    if (this.contentModuleStatusAnalyticsComponent && (this.authenticationService.approvalRequiredForTracks
-      || this.authenticationService.approvalRequiredForPlaybooks)) {
-      this.contentModuleStatusAnalyticsComponent.getTileCounts();
+    if (this.contentModuleStatusAnalyticsComponent) {
+      if (this.authenticationService.approvalRequiredForTracks
+        || this.authenticationService.approvalRequiredForPlaybooks) {
+        this.contentModuleStatusAnalyticsComponent.getTileCounts();
+      }
+      this.contentModuleStatusAnalyticsComponent.getContentCounts();
     }
   }
 

@@ -22,6 +22,7 @@ import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
 import { ExecutiveReport } from '../models/oliver-report-dto';
+import { Observable, Subscription } from 'rxjs';
 
 declare var $: any, swal:any;
 @Component({
@@ -146,7 +147,12 @@ export class ChatGptModalComponent implements OnInit {
   showGlobalPromptBoxAbove: boolean;
   showInsightPromptBoxBelow: boolean = false;
   showInsightPromptBoxAbove: boolean = false;
-  selectedPromptId: number
+  selectedPromptId: number;
+  historyLoader: boolean = false;
+  statusMessage: string = '';
+  private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
+  private messageIndex: number = 0;
+  private intervalSub: Subscription;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -206,8 +212,8 @@ export class ChatGptModalComponent implements OnInit {
           // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
           // this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
-          // this.chatGptGeneratedText = response.message;
-          // this.messages.push({ role: 'assistant', content: response.message });
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
         } else {
           // let errorMessage = data['apiResponse']['error']['message'];
           // this.customResponse = new CustomResponse('ERROR', errorMessage, true);
@@ -602,7 +608,7 @@ export class ChatGptModalComponent implements OnInit {
     this.assetLoader = true;
     this.showOpenHistory = false;
     if (this.selectedFolders.length == 0) {
-      if (this.isReUpload) {
+      if (this.isReUpload && this.uploadedAssets != undefined && this.uploadedAssets.length > 0) {
         this.selectedAssets = this.uploadedAssets;
       }
       this.pdfFiles = this.selectedAssets;
@@ -728,7 +734,6 @@ export class ChatGptModalComponent implements OnInit {
   showMEEEEE: boolean = false;
 
   AskAiTogetData() {
-  
     this.showMEEEEE = true;
     this.searchTerm = "";
     this.resetAllPromptBoxes();
@@ -764,41 +769,55 @@ export class ChatGptModalComponent implements OnInit {
       self.inputText = '';
     }
     self.isValidInputText = false;
+    self.startStatusRotation();
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
-        self.isTextLoading = false;
-        console.log('API Response:', response);
-        var content = response.data;
-        if (content) {
-
-          let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+        let statusCode = response.statusCode;
+        // swal.close();
+        if (statusCode === 200) {
+          self.isTextLoading = false;
           let isReport = response.data.isReport;
-          if (isReport == 'true') {
-            try {
-              const cleanJsonStr = self.extractJsonString(message);
-              message = self.parseOliverReport(cleanJsonStr);
-            } catch (error) {
-              isReport = 'false';
-              message = self.chatGptGeneratedText;
+          console.log('API Response:', response);
+          var content = response.data;
+          if (content) {
+            let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+            if (isReport == 'true') {
+              try {
+                const cleanJsonStr = self.extractJsonString(message);
+                message = self.parseOliverReport(cleanJsonStr);
+              } catch (error) {
+                isReport = 'false';
+                message = self.chatGptGeneratedText;
+              }
             }
-          }
 
-          self.messages.push({ role: 'assistant', content: message,  isReport: isReport});
+            self.messages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.threadId = content.threadId;
+            self.vectorStoreId = content.vectorStoreId;
+            self.chatHistoryId = content.chatHistoryId;
+            self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
+
+          } else {
+            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+          }
+          this.trimmedText = '';
+          self.selectedPromptId = null;
+        } else if (statusCode === 400) {
+          var content = response.data;
+          self.isTextLoading = false;
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
-          self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
-          
-        } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
+          self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
-        this.trimmedText = '';
-        self.selectedPromptId = null;
+        self.stopStatusRotation();
+        console.log(self.messages);
       },
       function (error) {
         console.log('API Error:', error);
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
         self.selectedPromptId = null;
+        self.stopStatusRotation();
       }
     );
   }
@@ -854,9 +873,11 @@ export class ChatGptModalComponent implements OnInit {
 
   fetchHistories(chatHistoryPagination: Pagination) {
     this.stopClickEvent = true;
+    this.historyLoader = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
+        this.historyLoader = false;
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           chatHistoryPagination.totalRecords = data.totalRecords;
@@ -864,6 +885,7 @@ export class ChatGptModalComponent implements OnInit {
         }
         this.stopClickEvent = false;
       }, error => {
+        this.historyLoader = false;
         this.stopClickEvent = false;
       }
     )
@@ -1661,8 +1683,26 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     return dto;
   }
-
   
+  startStatusRotation() {
+    this.statusMessage = this.loaderMessages[0];
+    this.messageIndex = 1;
+    let intervalTime = 5000;
 
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+
+    this.intervalSub = Observable.interval(intervalTime).subscribe(() => {
+      this.statusMessage = this.loaderMessages[this.messageIndex % this.loaderMessages.length];
+      this.messageIndex++;
+      intervalTime += intervalTime;
+      if (this.messageIndex == (this.loaderMessages.length - 1)) {
+        this.stopStatusRotation();
+      }
+    });
+  }
+
+  stopStatusRotation() {
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
 
 }

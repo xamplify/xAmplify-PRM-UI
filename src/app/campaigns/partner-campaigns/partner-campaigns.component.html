@@ -242,7 +242,9 @@
 												style="background-color: red;" translate>Cancelled</h5>
 										</td>
 										<td title="{{campaign.companyName}}" class="moreipsis custom-center hidden-xs">
-											<span>{{campaign.companyName}}</span>
+											<span>{{campaign.companyName}}</span><br>
+											<h6 *ngIf="campaign?.partnerStatus === 'deactivated'" class="green-banner inline-flex mt5" data-toggle="tooltip"
+												data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
 										</td>
 										<td class="custom-center hidden-xs"><span align="right">
 												<b translate>Received On:</b>
@@ -595,8 +597,8 @@
 			[title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
 	   !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'"
 			data-rel="fancybox-button"
-			(click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
-			<i [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o  cancelled-event':'fa fa-hand-pointer-o '"></i>
+			(click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists || campaign?.partnerStatus==='deactivated'? false: launchOneClickCampaign(campaign)">
+			<i [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists || campaign?.partnerStatus==='deactivated'? 'fa fa-hand-pointer-o  cancelled-event':'fa fa-hand-pointer-o '"></i>
 			<div class="clickicons"></div>
 		</a>
 		<a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip"
@@ -606,8 +608,8 @@
 			<div class="clickicons"></div>
 		</a> <a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
 			data-toggle="tooltip" data-placement="top" title="One Click Launch" data-rel="fancybox-button"
-			(click)="launchOneClickCampaign(campaign)">
-			<i class="fa fa-hand-pointer-o IconCustomization"></i>
+			(click)="campaign?.partnerStatus==='deactivated'?'':launchOneClickCampaign(campaign)">
+			<i class="fa fa-hand-pointer-o IconCustomization" [ngClass]="{'cancelled-event':campaign?.partnerStatus==='deactivated'}"></i>
 			<div class="clickicons"></div>
 		</a>
 	</ng-container>
@@ -629,8 +631,8 @@
 </ng-template>
 <ng-template #redistributeIcon let-campaign="campaign"> <a class="Iconhover custom-icon"
 		*ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
-		(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
-		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket" aria-hidden="true"></i>
+		(click)="campaign?.partnerStatus==='deactivated'?'':reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
+		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket" [ngClass]="{'cancelled-event':campaign?.partnerStatus==='deactivated'}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="custom-icon"
 		*ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)"
@@ -639,8 +641,8 @@
 		data-rel="fancybox-button"> <i class="fa fa-rocket cancelled-event IconCustomization"></i>
 		<div class="clickicons"></div>
 	</a> <a class=" custom-icon" *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
-		(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
-		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket"></i>
+		(click)="campaign?.partnerStatus==='deactivated'?'':reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
+		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket" [ngClass]="{'cancelled-event':campaign?.partnerStatus==='deactivated'}"></i>
 		<div class="clickicons"></div>
 	</a> <a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"
 		data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">

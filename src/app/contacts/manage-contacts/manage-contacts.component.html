@@ -147,7 +147,7 @@
                      <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10 pr0 tiles_hover_effect" *ngIf="isPartner">
                         <button class="btn-block dashboard-stat yellow-gold"
                            [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'deactivated'"
-                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;listContactsByType('deactivated')"
+                           (click)="contactsByType.pagination.pageIndex = 1;showFilterOption=false;loadContactsByType('deactivated')"
                            [disabled]="contactsByType.deactivatedContactsCount == 0">
                            <div class="visual">
                               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -675,12 +675,32 @@
                                                 </div>
                                              </td>
                                              <td class="text-center hidden-xs">
-                                                <span
+                                                <!-- <span
                                                    *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
                                                    {{contactList.noOfContacts}}</span>
                                                 <span
                                                    *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
-                                                   <strong>-</strong></span>
+                                                   <strong>-</strong></span> -->
+                                                   <div class="custom-icon">
+                                                      <i class="circled-number IconCustomization fontStyleNormal number-count">
+                                                         <!-- Show contact count when the email is validated and (if Marketo-linked) sync is complete -->
+                                                         <strong *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) ||
+                                                                                                                (contactList.marketoMasterList &&
+                                                                                                                 contactList.marketoSyncComplete &&
+                                                                                                                 contactList.emailValidationInd)">
+                                                            {{ formatNumber(contactList.noOfContacts) }}
+                                                         </strong>
+                                                   
+                                                         <!-- Otherwise, show a dash -->
+                                                         <strong
+                                                            *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) ||
+                                                                                                                (contactList.marketoMasterList &&
+                                                                                                                 (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+                                                            -
+                                                         </strong>
+                                                      </i>
+                                                      <div class="clickicons"></div>
+                                                   </div>
                                              </td>
                                              <!-- XNFR-211 -->
                                              <td *ngIf="!authenticationService.isSuperAdmin()">
@@ -1340,7 +1360,7 @@
                                              Reason
                                           </th>
                                           <th class="text-center"
-                                             *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
+                                             *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all' || contactsByType.selectedCategory == 'deactivated') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
                                              translate scope="row"></th>
                                           <th *ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !=='excluded'"
                                              scope="row"></th>
@@ -1491,6 +1511,12 @@
                                                    slice:0:30}}
                                                    <span *ngIf="contact.unsubscribedReason?.length>30">..</span>
                                                 </h5>
+                                             </td>
+                                             <td *ngIf="contactsByType.selectedCategory === 'deactivated'">
+                                                <button class="btn btn-primary ml15 m0"
+                                                   *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces" 
+                                                   (click)="showActivatePartnersAlert(contact.partnershipId)" translate>Activate
+                                                </button>
                                              </td>
                                              <td
                                                 *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">

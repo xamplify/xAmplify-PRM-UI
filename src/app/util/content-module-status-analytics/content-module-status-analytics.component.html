@@ -1,6 +1,6 @@
-   <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
 
 <div *ngIf="showApprovalTiles" class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
+      <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
    <ng-container *ngIf="!countsLoader">
       <div class="new-width-row">
          <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect" style="padding-left: 12px;">
@@ -136,7 +136,8 @@
 </div>
 
    
-<div *ngIf="!showApprovalTiles && !countsLoader" class="front-count-row mb10">
+<div *ngIf="!hideContentTiles && !contentCountsLoader" class="front-count-row mb10">
+         <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
     <!-- Card 1: Total Assets -->
     <div class="front-count-col">
       <div class="front-count-card">
@@ -180,3 +181,4 @@
         <div class="front-count-label">Folders</div>
       </div>
   </div>
+</div>

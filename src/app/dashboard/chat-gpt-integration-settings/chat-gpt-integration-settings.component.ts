@@ -23,7 +23,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   isSwitchOptionDisabled = false;
   chatGptIntegrationEnabledPreviousState = false;
   description = "To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired";
-  helperText = "If you prefer using your own AI infrastructure, you can enter your own API key here. This enables custom control over AI behavior while continuing to access Oliver features";
+  helperText = "If you prefer to use your own AI infrastructure, you can enter your OpenAI API key here. This allows custom control over AI behavior while continuing to access Oliver's features";
 
   activeTab: string = 'settings';
   showOliverInsights: boolean = false;
