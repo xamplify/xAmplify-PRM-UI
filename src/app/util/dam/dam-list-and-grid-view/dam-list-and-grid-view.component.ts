@@ -170,7 +170,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		if(this.referenceService.isOliverEnabled){
+		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)
 		}
@@ -182,6 +182,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.FromOliverPopUp) {
 			this.SuffixHeading = 'Select ';
+			this.isOliverCalled = false;
 			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
 				this.selectedItems = [];
 				for (let item of this.selectedItemFromOliver) {
@@ -193,7 +194,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedFoldersForOliver.length > 0) {
 			this.setOliverViewType();
-			
+
 		}
 	}
 
