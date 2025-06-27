@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '
 import { ExecutiveReport } from 'app/common/models/oliver-report-dto';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as Mustache from 'mustache';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 
 declare var Chart: any;
 @Component({
@@ -22,6 +23,23 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   public currentYear: number = new Date().getFullYear();
 
   safeUrl: SafeResourceUrl;
+
+    theme: any = {};
+    DEFAULT_THEME: { [key: string]: string } = {
+        backgroundColor: '#f1f5f9',
+        buttonColor: '#0060df',
+        textColor: '#0f172a',
+        headerColor: '#1e3a8a',
+        lightHeaderColor: '#1e3a8a',
+        darkHeaderColor: '#0f172a',
+        footerColor: '#f0fdf4',
+        footerColorTwo: '#f0f9ff',
+        gradientFrom: '#1e3a8a',
+        gradientTo: '#3b82f6',
+        logoColor1: '#1e3a8a',
+        logoColor2: '#3b82f6',
+        logoColor3: '#60a5fa'
+    };
 
   private chartColors: string[] = [
     '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8',
@@ -49,7 +67,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
+            background: {{theme.backgroundColor}}
         }
 
         .main-wrapper {
@@ -58,7 +76,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .header-card {
-                    background: linear-gradient(to right, #0f172a, #1e3a8a);
+            background: linear-gradient(to bottom right,{{theme.darkHeaderColor}},{{theme.lightHeaderColor}});
             padding: 40px;
             color: white;
             margin-bottom: 30px;
@@ -645,7 +663,7 @@ margin-right: 30px;
         }
 
         .bottom-line-card {
-            background: linear-gradient(to right, #f0fdf4, #f0f9ff);
+            background: linear-gradient(to right, {{theme.footerColor}},{{theme.footerColorTwo}});
             border: 1px solid #bbf7d0;
             border-radius: 12px;
             padding: 30px 20px;
@@ -1333,10 +1351,60 @@ margin-right: 30px;
 
 </html>`;
 
-  constructor(private sanitizer: DomSanitizer) { }
+    constructor(private sanitizer: DomSanitizer, public chatGptSettingsService: ChatGptSettingsService) { }
 
-  ngOnInit(): void {
-      }
+    ngOnInit(): void {
+        this.loadColorConfiguration();
+    }
+
+    loadColorConfiguration(): void {
+        this.chatGptSettingsService.getOliverReportColors()
+        .subscribe(
+            (res: any) => {
+                const apiTheme = (res && res.statusCode === 200 && res.data) ? res.data : {};
+                this.theme = {
+                    backgroundColor: this.safe(apiTheme.backgroundColor, this.DEFAULT_THEME.backgroundColor),
+                    buttonColor: this.safe(apiTheme.buttonColor, this.DEFAULT_THEME.buttonColor),
+                    footerColor: this.safe(apiTheme.footerColor, this.DEFAULT_THEME.footerColor),
+                    footerColorTwo: this.safe(apiTheme.footerColor, this.DEFAULT_THEME.footerColorTwo),
+                    textColor: this.safe(apiTheme.textColor, this.DEFAULT_THEME.textColor),
+                    headerColor: this.safe(apiTheme.headerColor, this.DEFAULT_THEME.headerColor),
+                    lightHeaderColor: this.safe(apiTheme.lightHeaderColor, this.DEFAULT_THEME.lightHeaderColor),
+                    darkHeaderColor: this.safe(apiTheme.darkHeaderColor, this.DEFAULT_THEME.darkHeaderColor),
+                    gradientFrom: this.safe(apiTheme.gradientFrom, this.DEFAULT_THEME.gradientFrom),
+                    gradientTo: this.safe(apiTheme.gradientTo, this.DEFAULT_THEME.gradientTo),
+                    logocolor1: this.safe(apiTheme.logoColor1, this.DEFAULT_THEME.logoColor1),
+                    logocolor2: this.safe(apiTheme.logoColor2, this.DEFAULT_THEME.logoColor2),
+                    logocolor3: this.safe(apiTheme.logoColor3, this.DEFAULT_THEME.logoColor3)
+                };
+                this.buildIframe();
+            },
+            (err: any) => this.handleError('Error fetching colour data', err)
+        );
+    }
+
+    handleError(message: string, error: any): void {
+        console.error(message, error);
+        this.theme = Object.assign({}, this.DEFAULT_THEME);
+        if (this.reportData) { this.buildIframe(); }
+    }
+
+    buildIframe(): void {
+        if (!this.reportData || !this.theme.lightHeaderColor) { return; }
+
+        const merged = Mustache.render(this.iframeContent, {
+            report: this.reportData,
+            theme: this.theme 
+        });
+
+        if (this.safeUrl) {
+            URL.revokeObjectURL(
+                (this.safeUrl as any).changingThisBreaksApplicationSecurity
+            );
+        }
+        const url = URL.createObjectURL(new Blob([merged], { type: 'text/html' }));
+        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
 
   downloadIframeAsHTML() {
     const iframe = this.iframeRef.nativeElement as HTMLIFrameElement;
@@ -1387,24 +1455,38 @@ margin-right: 30px;
     }
   }
 
-  ngAfterViewInit(): void {
-if (typeof Chart === 'undefined') {
-    console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
-    return;
+    ngAfterViewInit(): void {
+        // if (typeof Chart === 'undefined') {
+        //     console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
+        //     return;
+        //     }
+        //     setTimeout(() => {
+        // this.createLeadPipelineChart();
+        // this.createDealAmountBarChart();
+        // this.createCampaignTypePieChart();
+        //     }, 0);       
+        //       this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+        //       this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+        //       this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+        // const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
+        //     const blob = new Blob([mergedContent], { type: 'text/html' });
+        //     const url = URL.createObjectURL(blob);
+        //     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+        this.reportData.dealPipelinePrograssion.categoriesString =
+            JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+        this.reportData.dealPipelinePrograssion.seriesString =
+            JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+        this.reportData.campaignPerformanceAnalysis.seriesString =
+            JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+        this.buildIframe();
     }
-    setTimeout(() => {
-      // this.createLeadPipelineChart();
-    // this.createDealAmountBarChart();
-    // this.createCampaignTypePieChart();
-    }, 0);       
-      this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
-      this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
-      this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
-const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
-    const blob = new Blob([mergedContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-}
+
+    safe<T>(value: T, fallback: T): T {
+        if (value === null || value === undefined) { return fallback; }
+        if (typeof value === 'string' && value.trim() === '') { return fallback; }
+        return value;
+    }
 
   formatDisplayCurrency(amount: number): string {
     if (amount === undefined || amount === null) return 'N/A';

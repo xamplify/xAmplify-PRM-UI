@@ -302,4 +302,9 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
+  getOliverReportColors() {
+    const url = this.chatGptSettingsUrl + 'getOliverReportColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }
