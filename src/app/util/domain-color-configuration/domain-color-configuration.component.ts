@@ -67,17 +67,20 @@ export class DomainColorConfigurationComponent implements OnInit {
   }
 
 
-  updateTheme() {
+ updateTheme() {
     if (!this.theme) return;
+    this.loading = true;
     this.chatGptSettingsService.updateDomainColorConfiguration(this.theme).subscribe(
       (res: any) => {
         if (res && res.statusCode === 200) {
-          // this.loadColorConfiguration();
+          this.loadColorConfiguration();
         } else {
           this.handleError('Failed to update color', res);
         }
+        this.loading = false;
       },
       (error) => {
+        this.loading = false;
         this.handleError('Update failed', error);
       }
     );
