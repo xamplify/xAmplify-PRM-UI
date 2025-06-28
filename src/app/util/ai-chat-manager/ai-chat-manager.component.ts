@@ -348,6 +348,9 @@ export class AiChatManagerComponent implements OnInit {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
       } else if (this.isFromContactJourney || this.isFromManageContact) {
+        if (this.isFromManageContact) {
+          this.saveChatHistoryTitle(this.chatHistoryId);
+        }
         this.selectedContact = undefined;
         this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
@@ -1311,6 +1314,29 @@ export class AiChatManagerComponent implements OnInit {
 
   stopStatusRotation() {
     if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
+
+  saveChatHistoryTitle(chatHistoryId: any) {
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
+    this.messages = [];
+    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
+        } else if (statusCode === 400) {
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
+        }
+      }, error => {
+
+      });
   }
 
 }
