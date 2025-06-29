@@ -278,7 +278,7 @@ margin-right: 30px;
         }
 
         .status-label::before {
-            content: '↗';
+            /* content: '↗'; */
             font-size: 15px;
             margin-right: 4px;
         }
@@ -1157,7 +1157,7 @@ margin-right: 30px;
       <div class="card">
         <div class="card-header">
           {{name}}
-          <div class="status-label">{{rating}}</div>
+          <div class="status-label" style="color:{{color}}">{{symbol}} {{rating}}</div>
         </div>
         <div class="card-value">{{ value }}</div>
         <div class="card-subtext">{{notes}}</div>
@@ -1475,6 +1475,33 @@ margin-right: 30px;
         //     const url = URL.createObjectURL(blob);
         //     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
+        const ratingColors = {
+            Poor: '#ef4444',       // red
+            Low: '#ef4444',
+            Medium: '#f97316',     // orange
+            Average: '#f97316',
+            Moderate: '#f97316',
+            Excellent: '#10b981',   // green
+            High: '#10b981'
+        };
+
+        const ratingSymbols = {
+            Poor: '↘',
+            Low: '↘', 
+            Medium: '→',
+            Average: '→', 
+            Moderate: '→',
+            Excellent: '↗',
+            High: '↗'
+        };
+
+        this.reportData.performance_indicators.items = this.reportData.performance_indicators.items.map(item => {
+            return {
+                ...item,
+                color: ratingColors[item.rating] || '#6b7280',
+                symbol: ratingSymbols[item.rating] || '•'
+            };
+        });
         this.reportData.dealPipelinePrograssion.categoriesString =
             JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
         this.reportData.dealPipelinePrograssion.seriesString =
