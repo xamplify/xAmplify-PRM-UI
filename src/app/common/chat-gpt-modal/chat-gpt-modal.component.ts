@@ -296,6 +296,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isCopyButtonDisplayed = false;
     this.resetAllPromptBoxes();
     this.getSuggestedPromptsForGlobalSearch();
+    this.autoResizeTextArea(event);
   }
 
   private checkDamAccess() {
@@ -371,6 +372,7 @@ export class ChatGptModalComponent implements OnInit {
     if (tab == 'globalchat') {
       this.getSuggestedPromptsForGlobalSearch();
     }
+    this.autoResizeTextArea(event);
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -584,6 +586,8 @@ export class ChatGptModalComponent implements OnInit {
   searchDataOnKeyPress(keyCode: any) {
     if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
       this.AskAiTogetData();
+      event.preventDefault(); // Prevent form submission
+       
     }
   }
 
@@ -767,6 +771,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
+      this.removeStyleForTextArea();
     }
     self.isValidInputText = false;
     self.startStatusRotation();
@@ -801,6 +806,9 @@ export class ChatGptModalComponent implements OnInit {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
+          if(!(self.inputText != undefined && self.inputText.length > 0)) {
+             self.autoResizeTextArea(event);
+          }
           self.selectedPromptId = null;
         } else if (statusCode === 400) {
           var content = response.data;
@@ -822,9 +830,42 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
+  private removeStyleForTextArea() {
+    const textarea = document.getElementById('askMeTextarea') as HTMLTextAreaElement | null;
+    const textarea1 = document.getElementById('askMeTextarea1') as HTMLTextAreaElement | null;
+    const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
+    const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
+    const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
+    if (textarea) {
+      textarea.removeAttribute('style');
+    }
+    if (textarea1) {
+      textarea1.removeAttribute('style');
+    }
+    if (textarea2) {
+      textarea2.removeAttribute('style');
+    }
+    if (textarea3) {
+      textarea3.removeAttribute('style');
+    }
+    if (textarea4) {
+      textarea4.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4;
+    if (textArea) {
+        const chat = document.querySelector('.newChatlabel') as HTMLElement;
+        const box = textArea.closest('.oliver_input') as HTMLElement;
+        if (chat && box) {
+          chat.removeAttribute('style');
+          
+      }
+    }
+  }
+
   onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
+    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {   
       this.AskAiTogetData();
+       event.preventDefault();
     }
   }
 
@@ -1704,5 +1745,55 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
   stopStatusRotation() {
     if (this.intervalSub) this.intervalSub.unsubscribe();
   }
+  
+ autoResizeTextArea(evt: any, maxRows = 6): void {
+    let textarea: HTMLTextAreaElement | null = null;
+    if (evt && evt.target && evt.target instanceof HTMLTextAreaElement) {
+      textarea = evt.target;
+    }
+    else if (evt instanceof HTMLTextAreaElement) {
+      textarea = evt;
+    }
+    if (!textarea) {
+      const nodes = document.querySelectorAll('.oliver_input textarea');
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i] as HTMLTextAreaElement;
+        el.style.removeProperty('height');
+        el.style.overflowY = 'hidden';
+      }
+      const chatBox = document.querySelector('.newChatlabel') as HTMLElement;
+      if (chatBox) { chatBox.style.removeProperty('max-height'); }
+      return;
+    }
+    textarea.style.height = 'auto';
+    const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight) || 24;
+    const maxHeight = lineHeight * maxRows;
 
+    if (!textarea.value.trim()) {
+      textarea.style.height = `${lineHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    } else if (textarea.scrollHeight <= maxHeight) {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+    else {
+      const oneLineH = lineHeight;                             // exact 1-line height
+      const wantedH = Math.min(textarea.scrollHeight, maxHeight);
+      textarea.style.height = (wantedH < oneLineH ? oneLineH : wantedH) + 'px';
+      textarea.style.overflowY = wantedH >= maxHeight ? 'auto' : 'hidden';
+    }
+    this.removeHeightofTextarea(textarea);
+
+  }
+
+
+  private removeHeightofTextarea(textarea: HTMLTextAreaElement) {
+    requestAnimationFrame(() => {
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textarea.closest('.oliver_input') as HTMLElement;
+      if (chat && box ) {
+        chat.style.maxHeight = `calc(100vh - ${box.offsetHeight + 80}px)`;
+      }
+    });
+  }
 }
