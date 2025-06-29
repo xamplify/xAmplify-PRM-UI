@@ -163,33 +163,33 @@ export class FeedPreviewModalComponent implements OnInit, OnDestroy {
     const aspectRatioSimilar = Math.abs(media1.aspectRatio - media2.aspectRatio) < 0.3;
     const bothLandscape = media1.isLandscape && media2.isLandscape;
 
-    if (bothLandscape && aspectRatioSimilar && !hasVideo) {
-      const itemHeight = 200;
-      return {
-        type: 'double',
-        containerHeight: '410px',
-        rows: [
-          {
-            items: [{
-              media: media1,
-              colClass: 'col-xs-12',
-              height: `${itemHeight}px`,
-              objectFit: 'cover'
-            }],
-            height: `${itemHeight}px`
-          },
-          {
-            items: [{
-              media: media2,
-              colClass: 'col-xs-12',
-              height: `${itemHeight}px`,
-              objectFit: 'cover'
-            }],
-            height: `${itemHeight}px`
-          }
-        ]
-      };
-    } else {
+    // if (bothLandscape && aspectRatioSimilar && !hasVideo) {
+    //   const itemHeight = 300;
+    //   return {
+    //     type: 'double',
+    //     containerHeight: '410px',
+    //     rows: [
+    //       {
+    //         items: [{
+    //           media: media1,
+    //           colClass: 'col-xs-12',
+    //           height: `${itemHeight}px`,
+    //           objectFit: 'cover'
+    //         }],
+    //         height: `${itemHeight}px`
+    //       },
+    //       {
+    //         items: [{
+    //           media: media2,
+    //           colClass: 'col-xs-12',
+    //           height: `${itemHeight}px`,
+    //           objectFit: 'cover'
+    //         }],
+    //         height: `${itemHeight}px`
+    //       }
+    //     ]
+    //   };
+    // } else {
       // Side by side layout
       const itemWidth = this.containerWidth / 2 - 5;
       const itemHeight = hasVideo ? 280 : this.calculateOptimalHeight(media1, itemWidth, media2);
@@ -215,7 +215,7 @@ export class FeedPreviewModalComponent implements OnInit, OnDestroy {
           height: `${itemHeight}px`
         }]
       };
-    }
+    //}
   }
 
   createTripleLayout(): any {
