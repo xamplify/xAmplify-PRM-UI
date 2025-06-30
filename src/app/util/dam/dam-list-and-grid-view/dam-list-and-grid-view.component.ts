@@ -1329,17 +1329,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
-	setViewTypeForOliver(event: any){
-		this.categoryId = 0;
-		this.showUpArrowButton = false;
-		this.viewType = event;
-		this.setViewType(this.viewType);
-		this.getCompanyId();
-	}
+  setViewTypeForOliver(event: any){
+                this.categoryId = 0;
+                this.showUpArrowButton = false;
+                this.viewType = event;
+                this.setViewType(this.viewType);
+                this.getCompanyId();
+        }
 
-	handleFolders(event) {
-		this.notifyFolders.emit(event);
-	}
+  navigateToUploadAsset() {
+    this.referenceService.goToRouter('/home/dam/upload?from=manage');
+  }
+
+  navigateToAddAsset() {
+    this.referenceService.goToRouter('/home/dam/add?from=manage');
+  }
+
+        handleFolders(event) {
+                this.notifyFolders.emit(event);
+        }
 	private setOliverViewType() {
     if (this.FromOliverPopUp) {
       let oliverViewType: string;

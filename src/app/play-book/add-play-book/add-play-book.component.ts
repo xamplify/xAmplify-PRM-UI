@@ -14,6 +14,7 @@ export class AddPlayBookComponent implements OnInit {
 
   @ViewChild('addTracksPlayBookComponent') addTracksPlayBookComponent: AddTracksPlayBookComponent;
   isAdd: boolean = true;
+  fromManage: boolean = false;
   type: string = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
   viewType: string;
   categoryId: number;
@@ -29,6 +30,7 @@ export class AddPlayBookComponent implements OnInit {
 
   ngOnInit() {
     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
+    this.fromManage = this.route.snapshot.queryParamMap.get('from') === 'manage';
     if (this.router.url.indexOf('/edit') > -1) {
       this.isAdd = false;
     } else {
