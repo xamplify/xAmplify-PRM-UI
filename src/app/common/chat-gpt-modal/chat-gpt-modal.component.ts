@@ -153,6 +153,7 @@ export class ChatGptModalComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  socialShareOption: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -162,6 +163,7 @@ export class ChatGptModalComponent implements OnInit {
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
+    this.checkSocialAcess();
   }
 
   validateInputText() {
@@ -253,6 +255,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.checkSocialAcess();
     this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
@@ -1805,4 +1808,15 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       }
     });
   }
+
+    checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
 }

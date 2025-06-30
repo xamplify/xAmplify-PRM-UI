@@ -844,7 +844,7 @@
           </div>
         </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-        <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+        <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
       </div>
     </div>
   </div>
