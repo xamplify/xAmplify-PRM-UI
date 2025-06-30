@@ -154,6 +154,7 @@ export class ChatGptModalComponent implements OnInit {
   private messageIndex: number = 0;
   private intervalSub: Subscription;
   socialShareOption: boolean = false;
+  designAccess: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -179,6 +180,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isWelcomePageUrl = false;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.designAccess = false;
   }
 
   generateChatGPTText(chatHistoryId:any) {
@@ -304,6 +306,8 @@ export class ChatGptModalComponent implements OnInit {
     this.resetAllPromptBoxes();
     this.getSuggestedPromptsForGlobalSearch();
     this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   private checkDamAccess() {
@@ -380,6 +384,8 @@ export class ChatGptModalComponent implements OnInit {
       this.getSuggestedPromptsForGlobalSearch();
     }
     this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -1817,6 +1823,11 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       || this.authenticationService.module.isPrm
       || this.authenticationService.module.isVendorTier
       || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
+   private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
 }
