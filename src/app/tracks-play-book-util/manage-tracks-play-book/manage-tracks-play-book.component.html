@@ -23,7 +23,7 @@
                         <div class="page-toolbar col-xs-12 col-sm-8 col-lg-9" style="padding-top: 4px;"
                             *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right mb10" style="display: flex;">
-                                <button class="btn btn-primary mr5" (click)="navigateToAdd()">Add</button>
+                                <button *ngIf="!isPartnerView" class="btn btn-primary mr5" style="border-radius: 7px;" (click)="navigateToAdd()">Add {{trackOrPlayBookText | titlecase}}</button>
                                 <div class="">
                                     <div class="group-dropdown">
                                         <button

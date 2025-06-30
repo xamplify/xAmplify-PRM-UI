@@ -303,7 +303,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     let route = this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]
       ? '/home/playbook/add?from=manage'
       : '/home/tracks/add?from=manage';
-    this.referenceService.goToRouter(route);
+    this.referenceService.goToRouterByNavigateUrl(route);
   }
 
   edit(id: number) {

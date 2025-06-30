@@ -685,9 +685,12 @@
 				</h4>
 			</div>
                         <div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
-                                <div class="hidden-xs pull-right downloadteam mr5">
+                                <div class="btn-group pull-right">
+					<div class="d-flex">
+
+                                      <div class="hidden-xs pull-right downloadteam mr5" *ngIf="!FromOliverPopUp && !isPartnerView">
                                         <button class="btn btn-primary fileinput-button upload-label" (click)="navigateToUploadAsset()" style="border-radius: 7px 0 0 7px!important;">
-                                                Design / Upload
+                                                 Upload File
                                         </button>
                                         <div class="btn-group">
                                                 <button type="button" class="btn btn-primary dropdown-toggle border_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="border-radius: 0px 7px 7px 0px!important;">
@@ -699,8 +702,7 @@
                                                 </ul>
                                         </div>
                                 </div>
-                                <div class="btn-group pull-right">
-					<div class="d-flex">
+
 						<!-- Custom Upload Button -->
 						<button *ngIf="FromOliverPopUp && !isPartnerView && !authenticationService?.module?.loggedInThroughVendorVanityUrl" (click)="fileInput.click()"
 							class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate="" type="button">

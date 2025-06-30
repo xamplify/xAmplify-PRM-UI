@@ -515,7 +515,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   /******XNFR-169********/
   goToManageDam() {
     this.ngxloading = true;
-    if(this.isAdd){
+    if(this.isAdd && !this.fromManage){
       this.goToSelect();
     }else{
       this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
