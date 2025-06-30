@@ -1520,7 +1520,7 @@
 													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads) || contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory =='unsubscribed' || isPartner)">
 													Actions</th>
 												<th scope="col"
-													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
+													*ngIf="contactsByType.selectedCategory == 'valid' || contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory == 'excluded'">
 												</th>
 											</tr>
 										</thead>
