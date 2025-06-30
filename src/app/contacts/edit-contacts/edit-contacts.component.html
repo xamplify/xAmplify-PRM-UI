@@ -1516,16 +1516,11 @@
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate
 													scope="col">Reason</th>
-												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
-					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th scope="col"
-													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory === 'deactivated')">
+													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads) || contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory =='unsubscribed' || isPartner)">
 													Actions</th>
 												<th scope="col"
 													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
-												</th>
-												<th scope="col"
-													*ngIf="isPartner && contactsByType.selectedCategory =='unsubscribed'">
 												</th>
 											</tr>
 										</thead>

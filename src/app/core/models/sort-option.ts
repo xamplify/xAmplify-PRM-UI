@@ -220,8 +220,6 @@ export class SortOption {
 		{ 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
 		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
-		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
 		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
 		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' },
