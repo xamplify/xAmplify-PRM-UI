@@ -312,7 +312,7 @@ export class AiChatManagerComponent implements OnInit {
         let isReport = response.data.isReport;
         if (content) {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          
+
           let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           if (isReport == 'true') {
             try {
@@ -336,7 +336,7 @@ export class AiChatManagerComponent implements OnInit {
         this.selectedPromptId = null;
         self.isLoading = false;
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.stopStatusRotation();
       }
     );
@@ -478,10 +478,11 @@ export class AiChatManagerComponent implements OnInit {
         this.openHistory = true;
         this.isLoading = false;
         if (response.statusCode == 200) {
+          let isReport = 'false';
           let messages = response.data;
           messages.forEach((message: any) => {
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });

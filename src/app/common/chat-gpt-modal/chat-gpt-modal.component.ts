@@ -583,13 +583,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
+   searchDataOnKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0 && !this.isTextLoading) {
       this.AskAiTogetData();
-      event.preventDefault(); // Prevent form submission
-       
+      event.preventDefault();
     }
   }
+}
 
   openAssetsPage() {
     if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
@@ -806,8 +807,8 @@ export class ChatGptModalComponent implements OnInit {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
-          if(!(self.inputText != undefined && self.inputText.length > 0)) {
-             self.autoResizeTextArea(event);
+          if (!(self.inputText != undefined && self.inputText.length > 0)) {
+            self.autoResizeTextArea(event);
           }
           self.selectedPromptId = null;
         } else if (statusCode === 400) {
@@ -823,7 +824,8 @@ export class ChatGptModalComponent implements OnInit {
       },
       function (error) {
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.isTextLoading = false;
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.selectedPromptId = null;
         self.stopStatusRotation();
       }
@@ -862,12 +864,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {   
+  onKeyPressForAsekOliver(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0) {
       this.AskAiTogetData();
-       event.preventDefault();
+      event.preventDefault(); 
     }
   }
+}
 
  closeManageAssets() {
     this.showView = false;
@@ -1491,6 +1495,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.selectedPromptId = promptId;
     this.isValidInputText = true;
     this.searchTerm = "";
+    this.autoResizeTextArea(event);
     this.resetAllPromptBoxes();
   }
 

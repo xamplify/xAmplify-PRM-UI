@@ -233,7 +233,7 @@
               [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' || activeTab == 'contactagent') ? 'd-flex align-templateui' : 
               ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  
 
-              (oliverPromptSuggestionDTOs?.length > 0 && isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
+              (isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
               ? 'd-flex align-for-prompts-global' :
               (oliverPromptSuggestionDTOs?.length > 0 && !isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
               ? 'd-flex align-center align_tab_view'             
@@ -291,9 +291,9 @@
                     </div> -->
 
                     <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
-                    <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea"
-                      (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event.keyCode)">
-                    </textarea>
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea"
+                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event)">
+                                        </textarea>
                       <div class="btn-wrapper">
                         <button class="image-only-button" title="Prompt Suggestions"
                           (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
@@ -351,7 +351,7 @@
                     <!-- Input Section -->
                     <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
                       <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea1"
-                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event.keyCode)">
+                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event)">
                       </textarea>
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
@@ -468,7 +468,7 @@
                           <!-- <textarea (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText" (input)="autoResizeTextArea(textarea3);validateInputText(textarea3)"
                             placeholder="Ask Me!" rows="1" #textarea3></textarea> -->
                             <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea2"
-                              (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event.keyCode)">
+                              (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event)">
                                                 </textarea>
                           <div class="btn-wrapper">
                             <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
@@ -508,7 +508,7 @@
                         #textarea4></textarea> -->
                         <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea3"
                           [ngModelOptions]="{standalone: true}" (ngModelChange)="validateInputText()"
-                          (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event.keyCode)">
+                          (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event)">
                                                                     </textarea>
                       <div class="btn-wrapper">
                     
@@ -763,7 +763,7 @@
                     
                       <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" id="askMeTextarea4"
                         (input)="autoResizeTextArea($event); validateInputText()"
-                        (keydown)="searchDataOnKeyPress($event.keyCode)"></textarea>
+                        (keydown)="searchDataOnKeyPress($event)"></textarea>
                     
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
@@ -794,7 +794,9 @@
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <ng-template #messageTemplate let-message="data" let-index="index">
   <div class="message user" *ngIf="message.role === 'user'">
-    <div class="summarize-card">{{ message.content }}</div>
+  <div #markdownComponent1 class="summarize-card">
+    <markdown [data]="message.content"></markdown>
+  </div>
     <div class="avatar">
       <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
     </div>
@@ -881,7 +883,7 @@
 
 <!-- XNFR-986 -->
 <ng-template #displayPrompts>
-  <div [ngClass]="(showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'suggestion-box-input-prompt' : 'suggestion-box-input mt10' "    id="suggestionBox">
+  <div class='suggestion-box-input-prompt' id="suggestionBox">
     <div class="d-flex justify-content-end mb10" *ngIf="activeTab !== 'askpdf'">
       <div class="search-wrapper">
         <input type="text" class="form-control input-sm search-input" placeholder="Search" [(ngModel)]="searchTerm"

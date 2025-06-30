@@ -2866,3 +2866,16 @@ border: 1px solid #fff !important;
 .oliveBackground {
   background-color: transparent !important;
 }
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}
+.summarize-card {
+    background: linear-gradient(135deg, #7e8a96, #7d6a98ab)!important;}
