@@ -478,10 +478,11 @@ export class AiChatManagerComponent implements OnInit {
         this.openHistory = true;
         this.isLoading = false;
         if (response.statusCode == 200) {
+          let isReport = 'false';
           let messages = response.data;
           messages.forEach((message: any) => {
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
