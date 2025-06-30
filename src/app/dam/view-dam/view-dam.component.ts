@@ -78,9 +78,9 @@ export class ViewDamComponent implements OnInit {
 
   }
 
-  viewContent(){
+  /*viewContent(){
 	this.saveGeoLocationAnalytics(this.assetId);
-	if (!this.assetDetailsViewDto.beeTemplate) {
+	//if (!this.assetDetailsViewDto.beeTemplate) {
 		this.previewContent = true;
 		if(this.assetDetailsViewDto.sharedAssetPath){
 			this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
@@ -90,11 +90,35 @@ export class ViewDamComponent implements OnInit {
 		this.fileType = this.assetDetailsViewDto.assetType;
 		this.isImageFormat = this.assetDetailsViewDto.imageFileType
 		this.isTextFormat = this.assetDetailsViewDto.textFileType
-	} else {
-		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
-	}
-  }
+	// } else {
+	// 	this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+	// }
+  }*/
 
+  viewContent(){
+    this.saveGeoLocationAnalytics(this.assetId);
+    if (!this.assetDetailsViewDto.beeTemplate) {
+        this.previewContent = true;
+        if(this.assetDetailsViewDto.sharedAssetPath){
+            this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
+        } else {
+            this.assetPath = this.assetDetailsViewDto.assetPath;
+        }
+        this.fileType = this.assetDetailsViewDto.assetType;
+        this.isImageFormat = this.assetDetailsViewDto.imageFileType
+        this.isTextFormat = this.assetDetailsViewDto.textFileType
+    } else {
+        if(this.assetDetailsViewDto.sharedAssetPath){
+            this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
+            this.fileType = this.assetDetailsViewDto.assetType;
+            this.isImageFormat = this.assetDetailsViewDto.imageFileType
+            this.isTextFormat = this.assetDetailsViewDto.textFileType
+            this.previewContent = true;
+        } else {
+                this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+        }
+    }
+  }
   closeAssetDetails(){
 	this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
   }

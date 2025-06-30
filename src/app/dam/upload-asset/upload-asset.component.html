@@ -62,7 +62,7 @@
                   </div>
                   <div *ngIf="isBeeTemplatePdf">
                      <button [title]="isAssetPublished ? 'This PDF is not editable as it has already been published.':''" [disabled]="isAssetPublished" id="right" style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
-                           type="button" (click)="!isAssetPublished && editPdf()">
+                           data-toggle="tooltip" data-placement="top" type="button" (click)="!isAssetPublished && editPdf()">
                            <span class="btn btn-primary transition">Edit PDF</span>
                      </button>
                   </div>
