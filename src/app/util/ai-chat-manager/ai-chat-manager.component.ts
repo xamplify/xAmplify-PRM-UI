@@ -1140,9 +1140,9 @@ export class AiChatManagerComponent implements OnInit {
         colorByPoint: true,
         data: campaignItems.map((item: any) => ({
           name: item.name ? item.name : '',
-          y: typeof item.count == 'string'
-            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
-            : item.count ? item.count : 0
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
         }))
       }],
       seriesString: '',

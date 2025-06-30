@@ -197,7 +197,11 @@ export class ChatGptModalComponent implements OnInit {
     // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     // this.chatGptIntegrationSettingsDto.prompt = askOliver;
     // this.showOpenHistory = true;
-    this.chatGptIntegrationSettingsDto.contents = this.messages;
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
     this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
     this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -991,7 +995,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if (this.checkKeywords(message.content)) {
+              if (this.activeTab == 'contactagent' && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1574,9 +1578,9 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         colorByPoint: true,
         data: campaignItems.map((item: any) => ({
           name: item.name ? item.name : '',
-          y: typeof item.count == 'string'
-            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
-            : item.count ? item.count : 0
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
         }))
       }],
       seriesString: '',
