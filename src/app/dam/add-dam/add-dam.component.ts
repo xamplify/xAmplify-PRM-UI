@@ -36,6 +36,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   assetId: number = 0;
   isAdd = false;
+  fromManage = false;
   modalTitle = "";
   saveOrUpdateButtonText = "Save";
   saveAsButtonText = "Save As";
@@ -124,9 +125,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.ckeConfig = this.properties.ckEditorConfig;
   }
 
-    ngOnInit() {
+  ngOnInit() {
       this.ngxloading = true;
       this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
+      this.fromManage = this.route.snapshot.queryParamMap.get('from') === 'manage';
       this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
          this.getCompanyId();

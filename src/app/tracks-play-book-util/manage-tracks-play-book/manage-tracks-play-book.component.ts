@@ -299,6 +299,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 
+  navigateToAdd() {
+    let route = this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]
+      ? '/home/playbook/add?from=manage'
+      : '/home/tracks/add?from=manage';
+    this.referenceService.goToRouter(route);
+  }
+
   edit(id: number) {
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       let url = "/home/tracks/edit/" + id;

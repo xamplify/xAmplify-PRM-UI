@@ -15,8 +15,8 @@
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li *ngIf="!isFromApprovalModule">
-                     <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
-                     <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>
+                     <a *ngIf="fromManage || !isAdd" (click)="goToManageDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
+                     <a *ngIf="!fromManage && isAdd" (click)="goToSelect()" translate>Design/Upload</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li *ngIf="isFromApprovalModule">
@@ -27,9 +27,6 @@
                      <a>Design PDF</a>
                   </li>
                </ul>
-               <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-               </a>
             </div>
             <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
                <app-bee-template-util [beeContainerInput]="beeContainerInput"
