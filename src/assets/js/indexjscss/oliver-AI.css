@@ -1884,7 +1884,7 @@ body {
 .suggestion-direction{
   position: absolute;
   bottom: 83px;
-  right: 235px;
+  right: 255px;
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
