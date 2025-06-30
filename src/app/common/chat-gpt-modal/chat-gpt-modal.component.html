@@ -276,7 +276,7 @@
                       <div class="suggestion-direction-global-chat-down"></div>
                     </div>
                   
-                    <div class="oliver_input mt10">
+                    <!-- <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
@@ -284,6 +284,21 @@
                           style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
                           <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
                             src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        </button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div> -->
+
+                    <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                    <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea"
+                      (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event.keyCode)">
+                    </textarea>
+                      <div class="btn-wrapper">
+                        <button class="image-only-button" title="Prompt Suggestions"
+                          (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
+                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts" />
                         </button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -334,9 +349,10 @@
                     <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign
                       directions with guided ideation.</p>
                     <!-- Input Section -->
-                    <div class="oliver_input mt10">
-                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
-                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea1"
+                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event.keyCode)">
+                      </textarea>
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
@@ -447,9 +463,13 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
-                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
-                            [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10"
+                          [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                          <!-- <textarea (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText" (input)="autoResizeTextArea(textarea3);validateInputText(textarea3)"
+                            placeholder="Ask Me!" rows="1" #textarea3></textarea> -->
+                            <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea2"
+                              (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event.keyCode)">
+                                                </textarea>
                           <div class="btn-wrapper">
                             <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
                               <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
@@ -482,16 +502,22 @@
                       <div class="suggestion-direction"></div>
                     </div>
 
-                    <div *ngIf="showOpenHistory" class="oliver_input mt10">
-                      <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
-                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    <div *ngIf="showOpenHistory" class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                      <!-- <textarea (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
+                        (input)="autoResizeTextArea(textarea4);validateInputText(textarea4)" placeholder="Ask Me!" rows="1"
+                        #textarea4></textarea> -->
+                        <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea3"
+                          [ngModelOptions]="{standalone: true}" (ngModelChange)="validateInputText()"
+                          (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event.keyCode)">
+                                                                    </textarea>
                       <div class="btn-wrapper">
-                        
-                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;"  
-                          (click)="!assetLoader && openPrompts()">
-                          <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                    
+                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button"
+                          style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
+                          <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
                         </button>
-
+                    
                         <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -733,13 +759,18 @@
                     <p *ngIf="!showOpenHistory" class="oliver-text-color">Effortlessly retrieve contact details using just a name or email address.
                        Instantly generate summaries and detailed reports.</p>
                     <!-- Input Section -->
-                    <div class="oliver_input mt10">
-                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
-                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    <div class="oliver_input mt10" [ngClass]="(inputText?.length || 0) > 74 ? 'multi-line' : 'single-line'">
+                    
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" id="askMeTextarea4"
+                        (input)="autoResizeTextArea($event); validateInputText()"
+                        (keydown)="searchDataOnKeyPress($event.keyCode)"></textarea>
+                    
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
-                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                          [disabled]="isTextLoading || !isValidInputText">
+                          Submit
+                        </button>
                       </div>
                     </div>
                   </div>

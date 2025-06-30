@@ -681,7 +681,7 @@
                                                 <span
                                                    *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                                                    <strong>-</strong></span> -->
-                                                   <div class="custom-icon">
+                                                   <a class="custom-icon" (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany,contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);">
                                                       <i class="circled-number IconCustomization fontStyleNormal number-count">
                                                          <!-- Show contact count when the email is validated and (if Marketo-linked) sync is complete -->
                                                          <strong *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) ||
@@ -700,7 +700,7 @@
                                                          </strong>
                                                       </i>
                                                       <div class="clickicons"></div>
-                                                   </div>
+                                                   </a>
                                              </td>
                                              <!-- XNFR-211 -->
                                              <td *ngIf="!authenticationService.isSuperAdmin()">

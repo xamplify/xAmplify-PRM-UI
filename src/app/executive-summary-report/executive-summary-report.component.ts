@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '
 import { ExecutiveReport } from 'app/common/models/oliver-report-dto';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as Mustache from 'mustache';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 
 declare var Chart: any;
 @Component({
@@ -22,6 +23,25 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   public currentYear: number = new Date().getFullYear();
 
   safeUrl: SafeResourceUrl;
+
+    theme: any = {};
+    DEFAULT_THEME: { [key: string]: string } = {
+        backgroundColor: '#f1f5f9',
+        buttonColor: '#0060df',
+        textColor: '#0f172a',
+        headerColor: '#1e3a8a',
+        lightHeaderColor: '#1e3a8a',
+        darkHeaderColor: '#0f172a',
+        footerColor: '#f0fdf4',
+        footerColorTwo: '#f0f9ff',
+        gradientFrom: '#1e3a8a',
+        gradientTo: '#3b82f6',
+        logoColor1: '#1e3a8a',
+        logoColor2: '#3b82f6',
+        logoColor3: '#60a5fa',
+        footertextColor: '#334155',
+        headertextColor: '#cbd5e1'
+    };
 
   private chartColors: string[] = [
     '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8',
@@ -49,7 +69,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
+            background: {{theme.backgroundColor}}
         }
 
         .main-wrapper {
@@ -58,7 +78,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .header-card {
-                    background: linear-gradient(to right, #0f172a, #1e3a8a);
+            background: linear-gradient(to bottom right,{{theme.darkHeaderColor}},{{theme.lightHeaderColor}});
             padding: 40px;
             color: white;
             margin-bottom: 30px;
@@ -84,14 +104,19 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .header-left p {
-            color: #bfdbfe;
+            color: {{theme.headertextColor}};  /* #bfdbfe;  */
             font-size: 14px;
             margin-bottom: 4px;
         }
 
         .header-left span {
             font-size: 14px;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};  /*  #cbd5e1;  */
+        }
+
+        .header-left h1,
+        .header-left h2 {
+            color: {{theme.headertextColor}};
         }
 
         .header-right {
@@ -101,13 +126,13 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         .header-right span {
             display: block;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};    /* #cbd5e1;  */
         }
 
         .header-right h3 {
             font-size: 22px;
             font-weight: 700;
-            color: white;
+            color:  {{theme.headertextColor}};    /* white; */
             margin-top: 2px;
         }
 
@@ -135,13 +160,13 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         .summary-item p {
             font-size: 16px;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};       /* #cbd5e1;  */
             margin-bottom: 4px;
         }
 
         .summary-item span {
             font-size: 13px;
-            color: #94a3b8;
+            color: {{theme.headertextColor}};      /* #94a3b8; */
         }
 
         .green {
@@ -260,7 +285,7 @@ margin-right: 30px;
         }
 
         .status-label::before {
-            content: '↗';
+            /* content: '↗'; */
             font-size: 15px;
             margin-right: 4px;
         }
@@ -645,7 +670,7 @@ margin-right: 30px;
         }
 
         .bottom-line-card {
-            background: linear-gradient(to right, #f0fdf4, #f0f9ff);
+            background: linear-gradient(to right, {{theme.footerColor}},{{theme.footerColorTwo}});
             border: 1px solid #bbf7d0;
             border-radius: 12px;
             padding: 30px 20px;
@@ -662,13 +687,13 @@ margin-right: 30px;
         .bottom-line-inner h3 {
             font-size: 18px;
             font-weight: 700;
-            color: #0f172a;
+            color: {{theme.footertextColor}};         /*   #0f172a */
             margin-bottom: 12px;
         }
 
         .bottom-line-inner p {
             font-size: 15px;
-            color: #334155;
+            color: {{theme.footertextColor}};      /*   #334155  */
             line-height: 1.6;
             margin-bottom: 24px;
         }
@@ -1085,7 +1110,9 @@ margin-right: 30px;
            <!-- <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span> -->
         </div>
         <div class="header-right">
+        {{#report.report_recipient}}
           <span>Prepared for</span>
+          {{/report.report_recipient}}
           <h3>{{ report.report_recipient }}</h3>
           <span>{{ report.report_owner }}</span>
         </div>
@@ -1137,7 +1164,7 @@ margin-right: 30px;
       <div class="card">
         <div class="card-header">
           {{name}}
-          <div class="status-label">{{rating}}</div>
+          <div class="status-label" style="color:{{color}}">{{symbol}} {{rating}}</div>
         </div>
         <div class="card-value">{{ value }}</div>
         <div class="card-subtext">{{notes}}</div>
@@ -1184,7 +1211,7 @@ margin-right: 30px;
               <div class="funnel-info">
                 <span class="funnel-title">{{name}} ({{count}})</span>
                 <div class="funnel-bar">
-                  <div class="bar-fill" style="width:{{conversion_rate}};background:#10b981;"></div>
+                  <div class="bar-fill" style="width:{{count}}%;background:#10b981;"></div>
                 </div>
                 <div class="funnel-sub">{{notes}}</div>
               </div>
@@ -1333,10 +1360,62 @@ margin-right: 30px;
 
 </html>`;
 
-  constructor(private sanitizer: DomSanitizer) { }
+    constructor(private sanitizer: DomSanitizer, public chatGptSettingsService: ChatGptSettingsService) { }
 
-  ngOnInit(): void {
-      }
+    ngOnInit(): void {
+        this.loadColorConfiguration();
+    }
+
+    loadColorConfiguration(): void {
+        this.chatGptSettingsService.getOliverReportColors()
+        .subscribe(
+            (res: any) => {
+                const apiTheme = (res && res.statusCode === 200 && res.data) ? res.data : {};
+                this.theme = {
+                    backgroundColor: this.safe(apiTheme.backgroundColor, this.DEFAULT_THEME.backgroundColor),
+                    buttonColor: this.safe(apiTheme.buttonColor, this.DEFAULT_THEME.buttonColor),
+                    footerColor: this.safe(apiTheme.footerColor, this.DEFAULT_THEME.footerColor),
+                    footerColorTwo: this.safe(apiTheme.footerColor, this.DEFAULT_THEME.footerColorTwo),
+                    textColor: this.safe(apiTheme.textColor, this.DEFAULT_THEME.textColor),
+                    headerColor: this.safe(apiTheme.headerColor, this.DEFAULT_THEME.headerColor),
+                    lightHeaderColor: this.safe(apiTheme.lightHeaderColor, this.DEFAULT_THEME.lightHeaderColor),
+                    darkHeaderColor: this.safe(apiTheme.darkHeaderColor, this.DEFAULT_THEME.darkHeaderColor),
+                    gradientFrom: this.safe(apiTheme.gradientFrom, this.DEFAULT_THEME.gradientFrom),
+                    gradientTo: this.safe(apiTheme.gradientTo, this.DEFAULT_THEME.gradientTo),
+                    logocolor1: this.safe(apiTheme.logoColor1, this.DEFAULT_THEME.logoColor1),
+                    logocolor2: this.safe(apiTheme.logoColor2, this.DEFAULT_THEME.logoColor2),
+                    logocolor3: this.safe(apiTheme.logoColor3, this.DEFAULT_THEME.logoColor3),
+                    footertextColor: this.safe(apiTheme.footertextColor, this.DEFAULT_THEME.footertextColor),
+                    headertextColor: this.safe(apiTheme.headertextColor, this.DEFAULT_THEME.headertextColor)
+                };
+                this.buildIframe();
+            },
+            (err: any) => this.handleError('Error fetching colour data', err)
+        );
+    }
+
+    handleError(message: string, error: any): void {
+        console.error(message, error);
+        this.theme = Object.assign({}, this.DEFAULT_THEME);
+        if (this.reportData) { this.buildIframe(); }
+    }
+
+    buildIframe(): void {
+        if (!this.reportData || !this.theme.lightHeaderColor) { return; }
+
+        const merged = Mustache.render(this.iframeContent, {
+            report: this.reportData,
+            theme: this.theme 
+        });
+
+        if (this.safeUrl) {
+            URL.revokeObjectURL(
+                (this.safeUrl as any).changingThisBreaksApplicationSecurity
+            );
+        }
+        const url = URL.createObjectURL(new Blob([merged], { type: 'text/html' }));
+        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
 
   downloadIframeAsHTML() {
     const iframe = this.iframeRef.nativeElement as HTMLIFrameElement;
@@ -1387,24 +1466,65 @@ margin-right: 30px;
     }
   }
 
-  ngAfterViewInit(): void {
-if (typeof Chart === 'undefined') {
-    console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
-    return;
+    ngAfterViewInit(): void {
+        // if (typeof Chart === 'undefined') {
+        //     console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
+        //     return;
+        //     }
+        //     setTimeout(() => {
+        // this.createLeadPipelineChart();
+        // this.createDealAmountBarChart();
+        // this.createCampaignTypePieChart();
+        //     }, 0);       
+        //       this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+        //       this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+        //       this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+        // const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
+        //     const blob = new Blob([mergedContent], { type: 'text/html' });
+        //     const url = URL.createObjectURL(blob);
+        //     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+        const ratingColors = {
+            Poor: '#ef4444',       // red
+            Low: '#ef4444',
+            Medium: '#f97316',     // orange
+            Average: '#f97316',
+            Moderate: '#f97316',
+            Excellent: '#10b981',   // green
+            High: '#10b981'
+        };
+
+        const ratingSymbols = {
+            Poor: '↘',
+            Low: '↘', 
+            Medium: '→',
+            Average: '→', 
+            Moderate: '→',
+            Excellent: '↗',
+            High: '↗'
+        };
+
+        this.reportData.performance_indicators.items = this.reportData.performance_indicators.items.map(item => {
+            return {
+                ...item,
+                color: ratingColors[item.rating] || '#6b7280',
+                symbol: ratingSymbols[item.rating] || '•'
+            };
+        });
+        this.reportData.dealPipelinePrograssion.categoriesString =
+            JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
+        this.reportData.dealPipelinePrograssion.seriesString =
+            JSON.stringify(this.reportData.dealPipelinePrograssion.series);
+        this.reportData.campaignPerformanceAnalysis.seriesString =
+            JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+        this.buildIframe();
     }
-    setTimeout(() => {
-      // this.createLeadPipelineChart();
-    // this.createDealAmountBarChart();
-    // this.createCampaignTypePieChart();
-    }, 0);       
-      this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
-      this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
-      this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
-const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
-    const blob = new Blob([mergedContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-}
+
+    safe<T>(value: T, fallback: T): T {
+        if (value === null || value === undefined) { return fallback; }
+        if (typeof value === 'string' && value.trim() === '') { return fallback; }
+        return value;
+    }
 
   formatDisplayCurrency(amount: number): string {
     if (amount === undefined || amount === null) return 'N/A';
