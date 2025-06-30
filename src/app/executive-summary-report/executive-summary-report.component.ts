@@ -38,7 +38,9 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         gradientTo: '#3b82f6',
         logoColor1: '#1e3a8a',
         logoColor2: '#3b82f6',
-        logoColor3: '#60a5fa'
+        logoColor3: '#60a5fa',
+        footertextColor: '#334155',
+        headertextColor: '#cbd5e1'
     };
 
   private chartColors: string[] = [
@@ -102,14 +104,19 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .header-left p {
-            color: #bfdbfe;
+            color: {{theme.headertextColor}};  /* #bfdbfe;  */
             font-size: 14px;
             margin-bottom: 4px;
         }
 
         .header-left span {
             font-size: 14px;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};  /*  #cbd5e1;  */
+        }
+
+        .header-left h1,
+        .header-left h2 {
+            color: {{theme.headertextColor}};
         }
 
         .header-right {
@@ -119,13 +126,13 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         .header-right span {
             display: block;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};    /* #cbd5e1;  */
         }
 
         .header-right h3 {
             font-size: 22px;
             font-weight: 700;
-            color: white;
+            color:  {{theme.headertextColor}};    /* white; */
             margin-top: 2px;
         }
 
@@ -153,13 +160,13 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
         .summary-item p {
             font-size: 16px;
-            color: #cbd5e1;
+            color: {{theme.headertextColor}};       /* #cbd5e1;  */
             margin-bottom: 4px;
         }
 
         .summary-item span {
             font-size: 13px;
-            color: #94a3b8;
+            color: {{theme.headertextColor}};      /* #94a3b8; */
         }
 
         .green {
@@ -680,13 +687,13 @@ margin-right: 30px;
         .bottom-line-inner h3 {
             font-size: 18px;
             font-weight: 700;
-            color: #0f172a;
+            color: {{theme.footertextColor}};         /*   #0f172a */
             margin-bottom: 12px;
         }
 
         .bottom-line-inner p {
             font-size: 15px;
-            color: #334155;
+            color: {{theme.footertextColor}};      /*   #334155  */
             line-height: 1.6;
             margin-bottom: 24px;
         }
@@ -1377,7 +1384,9 @@ margin-right: 30px;
                     gradientTo: this.safe(apiTheme.gradientTo, this.DEFAULT_THEME.gradientTo),
                     logocolor1: this.safe(apiTheme.logoColor1, this.DEFAULT_THEME.logoColor1),
                     logocolor2: this.safe(apiTheme.logoColor2, this.DEFAULT_THEME.logoColor2),
-                    logocolor3: this.safe(apiTheme.logoColor3, this.DEFAULT_THEME.logoColor3)
+                    logocolor3: this.safe(apiTheme.logoColor3, this.DEFAULT_THEME.logoColor3),
+                    footertextColor: this.safe(apiTheme.footertextColor, this.DEFAULT_THEME.footertextColor),
+                    headertextColor: this.safe(apiTheme.headertextColor, this.DEFAULT_THEME.headertextColor)
                 };
                 this.buildIframe();
             },
