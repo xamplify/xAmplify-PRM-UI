@@ -583,13 +583,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
+   searchDataOnKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0 && !this.isTextLoading) {
       this.AskAiTogetData();
-      event.preventDefault(); // Prevent form submission
-       
+      event.preventDefault();
     }
   }
+}
 
   openAssetsPage() {
     if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
@@ -863,12 +864,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {   
+  onKeyPressForAsekOliver(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0) {
       this.AskAiTogetData();
-       event.preventDefault();
+      event.preventDefault(); 
     }
   }
+}
 
  closeManageAssets() {
     this.showView = false;
@@ -1492,6 +1495,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.selectedPromptId = promptId;
     this.isValidInputText = true;
     this.searchTerm = "";
+    this.autoResizeTextArea(event);
     this.resetAllPromptBoxes();
   }
 
