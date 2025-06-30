@@ -806,8 +806,8 @@ export class ChatGptModalComponent implements OnInit {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
-          if(!(self.inputText != undefined && self.inputText.length > 0)) {
-             self.autoResizeTextArea(event);
+          if (!(self.inputText != undefined && self.inputText.length > 0)) {
+            self.autoResizeTextArea(event);
           }
           self.selectedPromptId = null;
         } else if (statusCode === 400) {
@@ -823,7 +823,8 @@ export class ChatGptModalComponent implements OnInit {
       },
       function (error) {
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.isTextLoading = false;
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.selectedPromptId = null;
         self.stopStatusRotation();
       }
