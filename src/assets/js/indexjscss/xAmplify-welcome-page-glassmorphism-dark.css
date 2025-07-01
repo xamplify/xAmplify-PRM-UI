@@ -173,3 +173,16 @@ markdown pre,.aligin-para{
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .search-icon {color: white !important;}
+
+.oliveBackground {
+  background-color: transparent !important;
+}
+.oliver_input textarea{
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+.oliver_input textarea:active,.oliver_input textarea:focus{
+border-color:none !important;
+ outline: none !important;
+}
