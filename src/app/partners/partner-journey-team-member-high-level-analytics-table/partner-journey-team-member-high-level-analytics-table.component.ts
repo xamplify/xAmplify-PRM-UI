@@ -28,6 +28,8 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -43,6 +45,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   scrollClass: string;
   isHeaderCheckBoxChecked: boolean = false;
   isSendReminderEnabled: boolean = false;
+  partnershipStatus: any;
   selectedPartnerIds: number[] = [];
   allItems: any[] = []; 
   teamMemberPreview : boolean = false;
@@ -62,7 +65,12 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   }
   
 
-  ngOnChanges() {    
+  ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -82,6 +90,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
       (response: any) => {

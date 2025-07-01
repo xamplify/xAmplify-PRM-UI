@@ -30,12 +30,15 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
   scrollClass: string;
+  partnershipStatus: string;
 
 
   constructor(public authenticationService: AuthenticationService,
@@ -49,6 +52,12 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
+
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -69,6 +78,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getDealDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -178,11 +188,12 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/deal-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
-      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
 

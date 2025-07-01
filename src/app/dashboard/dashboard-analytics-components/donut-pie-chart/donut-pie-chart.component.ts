@@ -43,12 +43,16 @@ export class DonutPieChartComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
-@Input() fromAllPartners : boolean =false;
+  @Input() fromAllPartners : boolean =false;
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
+
  isOrgadminPartner : boolean = true; 
   headerText: string;
   chartColors: string[];
   colClass: string;
   portletLightClass: string;
+  partnershipStatus: string;
   constructor(
     public authenticationService: AuthenticationService,
     public properties: Properties,
@@ -72,6 +76,11 @@ export class DonutPieChartComponent implements OnInit {
   }
 
   ngOnChanges() {
+      if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.findDonutChart();
   }
@@ -139,6 +148,7 @@ findAllPartnerRegionDetaiils() {
     partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
     partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
     partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
     this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);
@@ -169,6 +179,7 @@ findAllPartnerRegionDetaiils() {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
     partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter;
     partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
     partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;

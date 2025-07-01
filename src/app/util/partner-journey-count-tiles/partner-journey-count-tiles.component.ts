@@ -28,11 +28,14 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() vendorCompanyProfileName : string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   shareLeadText: string = 'Share Leads';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   partnerJourneyAnalytics: any;
+  partnershipStatus: any;
   partnerModuleName: string;
   infoName: string;
 
@@ -60,6 +63,11 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     if (!this.isTeamMemberAnalytics) {
       this.getCounts();
     } else {
@@ -81,6 +89,7 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
     partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
     partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
     partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
