@@ -307,4 +307,11 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
+
+  getSuggestedpromptsForFolderView(categoryId: number, isPartnerFolderView: boolean) {
+    let urlPrefix = 'getSuggestedPromptsForFolderView/';
+    const url = this.chatGptSettingsUrl + urlPrefix + categoryId + '/' + this.authenticationService.getUserId() + '/' + isPartnerFolderView + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

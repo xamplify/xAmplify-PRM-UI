@@ -436,6 +436,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 				this.companyAndPartnerMap.delete(companyId);
 			}
 		}
+		this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 		this.disableOrEnablePartnerListsTab();
 		ev.stopPropagation();
 	}

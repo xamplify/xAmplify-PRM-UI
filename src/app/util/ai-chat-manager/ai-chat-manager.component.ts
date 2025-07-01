@@ -172,7 +172,9 @@ export class AiChatManagerComponent implements OnInit {
     /** XNFR-1009 **/
     this.suggestedPromptDTOs = [];
     this.oliverPromptSuggestionDTOs = [];
-    if (this.authenticationService.companyProfileName !== undefined &&
+    if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+        this.getSuggestedpromptsForFolderView(this.categoryId);
+    } else if (this.authenticationService.companyProfileName !== undefined &&
       this.authenticationService.companyProfileName !== '') {
         if (this.assetId && this.isPartnerView) {
           this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
@@ -1340,4 +1342,24 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
 
+  getSuggestedpromptsForFolderView(categoryId: number) {
+    this.suggestedPromptDTOs = [];
+    this.oliverPromptSuggestionDTOs = [];
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getSuggestedpromptsForFolderView(categoryId, this.isPartnerView).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          this.oliverPromptSuggestionDTOs = data || [];
+          this.suggestedPromptDTOs = [...this.oliverPromptSuggestionDTOs];
+        }
+        this.isPdfUploading = false;
+      }, error => {
+        this.isPdfUploading = false;
+      }, () => {
+        
+      });
+  }
+  
 }
