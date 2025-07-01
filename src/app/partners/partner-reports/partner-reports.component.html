@@ -1036,8 +1036,8 @@
   <div class="row rowPaddingCustomization2">
     <app-play-book-journey-interaction [partnerCompanyId]="'0'" [applyFilter]="applyFilter"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0 && (authenticationService?.module?.playbookAccess)"></app-play-book-journey-interaction>
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv"
+      *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 9) && (authenticationService?.module?.playbookAccess)"></app-play-book-journey-interaction>
   </div>
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-asset-details [partnerCompanyId]="'0'"
