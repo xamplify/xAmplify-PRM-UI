@@ -348,9 +348,6 @@ export class AiChatManagerComponent implements OnInit {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
       } else if (this.isFromContactJourney || this.isFromManageContact) {
-        if (this.isFromManageContact) {
-          this.saveChatHistoryTitle(this.chatHistoryId);
-        }
         this.selectedContact = undefined;
         this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
@@ -575,6 +572,9 @@ export class AiChatManagerComponent implements OnInit {
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
+    }
+    if (this.isFromManageContact) {
+      this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
 
