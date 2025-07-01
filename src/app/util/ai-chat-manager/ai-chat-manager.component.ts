@@ -312,7 +312,7 @@ export class AiChatManagerComponent implements OnInit {
         let isReport = response.data.isReport;
         if (content) {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          
+
           let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           if (isReport == 'true') {
             try {
@@ -336,7 +336,7 @@ export class AiChatManagerComponent implements OnInit {
         this.selectedPromptId = null;
         self.isLoading = false;
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.stopStatusRotation();
       }
     );
@@ -475,10 +475,11 @@ export class AiChatManagerComponent implements OnInit {
         this.openHistory = true;
         this.isLoading = false;
         if (response.statusCode == 200) {
+          let isReport = 'false';
           let messages = response.data;
           messages.forEach((message: any) => {
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
@@ -571,6 +572,9 @@ export class AiChatManagerComponent implements OnInit {
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
+    }
+    if (this.isFromManageContact) {
+      this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
 
@@ -1113,7 +1117,7 @@ export class AiChatManagerComponent implements OnInit {
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
         const numericValue = item.value
-          ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+          ? item.value
           : 0;
 
         return {
@@ -1136,9 +1140,9 @@ export class AiChatManagerComponent implements OnInit {
         colorByPoint: true,
         data: campaignItems.map((item: any) => ({
           name: item.name ? item.name : '',
-          y: typeof item.count == 'string'
-            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
-            : item.count ? item.count : 0
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
         }))
       }],
       seriesString: '',
@@ -1311,6 +1315,29 @@ export class AiChatManagerComponent implements OnInit {
 
   stopStatusRotation() {
     if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
+
+  saveChatHistoryTitle(chatHistoryId: any) {
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
+    this.messages = [];
+    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
+        } else if (statusCode === 400) {
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
+        }
+      }, error => {
+
+      });
   }
 
 }

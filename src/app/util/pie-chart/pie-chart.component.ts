@@ -29,12 +29,15 @@ export class PieChartComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
 
   headerText: string;
   loader = false;
   statusCode = 200;
   pieChartData: Array<any> = [];
+  partnershipStatus: string;
   constructor(public parterService: ParterService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger) { }
 
   constructPieChart(pieChartData: any) {
@@ -153,6 +156,11 @@ export class PieChartComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
     this.foundPieChart();
   }
 
@@ -167,6 +175,7 @@ export class PieChartComponent implements OnInit {
     partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
     partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
     partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    partnerJourneyRequest.partnershipStatus = this.partnershipStatus;
     this.parterService.redistributedCampaignDetailsPieChart(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

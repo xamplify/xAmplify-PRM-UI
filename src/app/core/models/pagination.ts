@@ -199,9 +199,12 @@ export class Pagination {
 	selectedCompanyIds: number[] = [];
 	selectedEmailIds: string[] = [];
 	assetIds: number[] = [];
-
 	selectedPlaybookNames : string[] = [];
 	filterFromDateString:string = "";
 	filterToDateString:string = "";
+
+	//XNFR-1006
+   partnershipStatus: any;
+
 	exportToExcel: boolean = false;
 }

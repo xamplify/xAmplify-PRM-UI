@@ -36,14 +36,14 @@
     <label class="field-label">{{ field.label }}</label>
 
     <div class="color-input-container">
-      <label class="color-picker-wrapper">
-        <input type="color" class="color-picker-input" [(ngModel)]="theme[field.key]"
+      <label class="color-picker-wrapper mb0">
+        <input type="color" class="form-control color-picker-input" [(ngModel)]="theme[field.key]"
           (change)="onHexChange(field.key, theme[field.key])" [attr.id]="'color-picker-' + field.key" />
         <div class="color-preview" [style.backgroundColor]="theme[field.key] || field.placeholder">
         </div>
       </label>
 
-      <input type="text" class="hex-input" [ngModel]="theme[field.key]" (ngModelChange)="onHexChange(field.key, $event)"
+      <input type="text" class="form-control hex-input" [ngModel]="theme[field.key]" (ngModelChange)="onHexChange(field.key, $event)"
         [placeholder]="field.placeholder" maxlength="7" [class.invalid]="!!errorMessages[field.key]" />
     </div>
 

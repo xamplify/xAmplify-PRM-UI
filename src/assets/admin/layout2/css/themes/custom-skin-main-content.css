@@ -2722,3 +2722,13 @@ border: 1px solid var(--icon-border-color) !important;
 .oliveBackground {
   background-color: transparent !important;
 }
+
+.oliver_input textarea {
+  background: transparent !important;
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}

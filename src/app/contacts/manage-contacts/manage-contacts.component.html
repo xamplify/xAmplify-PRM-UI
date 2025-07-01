@@ -675,12 +675,32 @@
                                                 </div>
                                              </td>
                                              <td class="text-center hidden-xs">
-                                                <span
+                                                <!-- <span
                                                    *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
                                                    {{contactList.noOfContacts}}</span>
                                                 <span
                                                    *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
-                                                   <strong>-</strong></span>
+                                                   <strong>-</strong></span> -->
+                                                   <a class="custom-icon" (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany,contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);">
+                                                      <i class="circled-number IconCustomization fontStyleNormal number-count">
+                                                         <!-- Show contact count when the email is validated and (if Marketo-linked) sync is complete -->
+                                                         <strong *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) ||
+                                                                                                                (contactList.marketoMasterList &&
+                                                                                                                 contactList.marketoSyncComplete &&
+                                                                                                                 contactList.emailValidationInd)">
+                                                            {{ formatNumber(contactList.noOfContacts) }}
+                                                         </strong>
+                                                   
+                                                         <!-- Otherwise, show a dash -->
+                                                         <strong
+                                                            *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) ||
+                                                                                                                (contactList.marketoMasterList &&
+                                                                                                                 (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+                                                            -
+                                                         </strong>
+                                                      </i>
+                                                      <div class="clickicons"></div>
+                                                   </a>
                                              </td>
                                              <!-- XNFR-211 -->
                                              <td *ngIf="!authenticationService.isSuperAdmin()">

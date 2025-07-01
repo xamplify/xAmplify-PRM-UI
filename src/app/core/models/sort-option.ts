@@ -220,8 +220,6 @@ export class SortOption {
 		{ 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
 		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
-		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
 		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
 		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' },
@@ -531,6 +529,12 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	sortByDropDownForDeactivatedPartnerJourney = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Company Name(A-Z)', 'value': 'campaign-ASC' },
+		{ 'name': 'Company Name(Z-A)', 'value': 'campaign-DESC' }
+	];
+
 	/***XNFR-783***/
 	calendlyDropDownOptions = [
 		{ 'name': 'Created On(Desc)', 'value': 'desc' },
@@ -738,6 +742,8 @@ export class SortOption {
     public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
 
 	public selectedSortedOptionForPartnerJourney = this.sortByDropDownForPartnerJourney[0];
+
+	public selectedSortedOptionForDeactivatedPartnerJourney = this.sortByDropDownForDeactivatedPartnerJourney[0];
 
 	/**XNFR-783**/
 	public calendlyDropDownOption = this.calendlyDropDownOptions[0].value;

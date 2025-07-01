@@ -15,6 +15,7 @@ export class AddLmsComponent implements OnInit {
 
   @ViewChild('addTracksPlayBookComponent') addTracksPlayBookComponent: AddTracksPlayBookComponent;
   isAdd: boolean = true;
+  fromManage: boolean = false;
   type: string = TracksPlayBookType[TracksPlayBookType.TRACK];
   viewType: string;
   categoryId: number;
@@ -30,6 +31,7 @@ export class AddLmsComponent implements OnInit {
 
   ngOnInit() {
     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
+    this.fromManage = this.route.snapshot.queryParamMap.get('from') === 'manage';
     if (this.router.url.indexOf('/edit') > -1) {
       this.isAdd = false;
     } else {

@@ -164,8 +164,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   downloadDamAnalytics() {
     this.referenceService.goToTop();
     this.referenceService.loading(this.listLoader, true);
-    let pagination = new Pagination();
-    pagination = this.pagination;
+    const pagination = Object.assign(new Pagination(), this.pagination);
     pagination.pageIndex = 1;
     pagination.maxResults = this.pagination.totalRecords;
     this.damService.findPartnerCompanyUsers(pagination).subscribe((result: any) => {

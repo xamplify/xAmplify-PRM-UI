@@ -153,6 +153,8 @@ export class ChatGptModalComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  socialShareOption: boolean = false;
+  designAccess: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -162,6 +164,7 @@ export class ChatGptModalComponent implements OnInit {
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
+    this.checkSocialAcess();
   }
 
   validateInputText() {
@@ -177,6 +180,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isWelcomePageUrl = false;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.designAccess = false;
   }
 
   generateChatGPTText(chatHistoryId:any) {
@@ -197,7 +201,11 @@ export class ChatGptModalComponent implements OnInit {
     // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     // this.chatGptIntegrationSettingsDto.prompt = askOliver;
     // this.showOpenHistory = true;
-    this.chatGptIntegrationSettingsDto.contents = this.messages;
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
     this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
     this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -249,6 +257,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.checkSocialAcess();
     this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
@@ -296,6 +305,9 @@ export class ChatGptModalComponent implements OnInit {
     this.isCopyButtonDisplayed = false;
     this.resetAllPromptBoxes();
     this.getSuggestedPromptsForGlobalSearch();
+    this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   private checkDamAccess() {
@@ -371,6 +383,9 @@ export class ChatGptModalComponent implements OnInit {
     if (tab == 'globalchat') {
       this.getSuggestedPromptsForGlobalSearch();
     }
+    this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -581,11 +596,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
+   searchDataOnKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0 && !this.isTextLoading) {
       this.AskAiTogetData();
+      event.preventDefault();
     }
   }
+}
 
   openAssetsPage() {
     if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
@@ -767,6 +785,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
+      this.removeStyleForTextArea();
     }
     self.isValidInputText = false;
     self.startStatusRotation();
@@ -801,6 +820,9 @@ export class ChatGptModalComponent implements OnInit {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
+          if (!(self.inputText != undefined && self.inputText.length > 0)) {
+            self.autoResizeTextArea(event);
+          }
           self.selectedPromptId = null;
         } else if (statusCode === 400) {
           var content = response.data;
@@ -815,18 +837,54 @@ export class ChatGptModalComponent implements OnInit {
       },
       function (error) {
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.isTextLoading = false;
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.selectedPromptId = null;
         self.stopStatusRotation();
       }
     );
   }
 
-  onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
-      this.AskAiTogetData();
+  private removeStyleForTextArea() {
+    const textarea = document.getElementById('askMeTextarea') as HTMLTextAreaElement | null;
+    const textarea1 = document.getElementById('askMeTextarea1') as HTMLTextAreaElement | null;
+    const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
+    const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
+    const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
+    if (textarea) {
+      textarea.removeAttribute('style');
+    }
+    if (textarea1) {
+      textarea1.removeAttribute('style');
+    }
+    if (textarea2) {
+      textarea2.removeAttribute('style');
+    }
+    if (textarea3) {
+      textarea3.removeAttribute('style');
+    }
+    if (textarea4) {
+      textarea4.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4;
+    if (textArea) {
+        const chat = document.querySelector('.newChatlabel') as HTMLElement;
+        const box = textArea.closest('.oliver_input') as HTMLElement;
+        if (chat && box) {
+          chat.removeAttribute('style');
+          
+      }
     }
   }
+
+  onKeyPressForAsekOliver(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0) {
+      this.AskAiTogetData();
+      event.preventDefault(); 
+    }
+  }
+}
 
  closeManageAssets() {
     this.showView = false;
@@ -946,7 +1004,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if (this.checkKeywords(message.content)) {
+              if (this.activeTab == 'contactagent' && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1450,6 +1508,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.selectedPromptId = promptId;
     this.isValidInputText = true;
     this.searchTerm = "";
+    this.autoResizeTextArea(event);
     this.resetAllPromptBoxes();
   }
 
@@ -1505,7 +1564,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
         const numericValue = item.value
-          ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+          ? item.value
           : 0;
 
         return {
@@ -1528,9 +1587,9 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         colorByPoint: true,
         data: campaignItems.map((item: any) => ({
           name: item.name ? item.name : '',
-          y: typeof item.count == 'string'
-            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
-            : item.count ? item.count : 0
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
         }))
       }],
       seriesString: '',
@@ -1703,6 +1762,72 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
   stopStatusRotation() {
     if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
+  
+ autoResizeTextArea(evt: any, maxRows = 6): void {
+    let textarea: HTMLTextAreaElement | null = null;
+    if (evt && evt.target && evt.target instanceof HTMLTextAreaElement) {
+      textarea = evt.target;
+    }
+    else if (evt instanceof HTMLTextAreaElement) {
+      textarea = evt;
+    }
+    if (!textarea) {
+      const nodes = document.querySelectorAll('.oliver_input textarea');
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i] as HTMLTextAreaElement;
+        el.style.removeProperty('height');
+        el.style.overflowY = 'hidden';
+      }
+      const chatBox = document.querySelector('.newChatlabel') as HTMLElement;
+      if (chatBox) { chatBox.style.removeProperty('max-height'); }
+      return;
+    }
+    textarea.style.height = 'auto';
+    const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight) || 24;
+    const maxHeight = lineHeight * maxRows;
+
+    if (!textarea.value.trim()) {
+      textarea.style.height = `${lineHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    } else if (textarea.scrollHeight <= maxHeight) {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+    else {
+      const oneLineH = lineHeight;                             // exact 1-line height
+      const wantedH = Math.min(textarea.scrollHeight, maxHeight);
+      textarea.style.height = (wantedH < oneLineH ? oneLineH : wantedH) + 'px';
+      textarea.style.overflowY = wantedH >= maxHeight ? 'auto' : 'hidden';
+    }
+    this.removeHeightofTextarea(textarea);
+
+  }
+
+
+  private removeHeightofTextarea(textarea: HTMLTextAreaElement) {
+    requestAnimationFrame(() => {
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textarea.closest('.oliver_input') as HTMLElement;
+      if (chat && box ) {
+        chat.style.maxHeight = `calc(100vh - ${box.offsetHeight + 80}px)`;
+      }
+    });
+  }
+
+    checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
+   private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
 }

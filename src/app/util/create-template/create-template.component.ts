@@ -342,9 +342,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
         emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-        if(this.isOliverCreateUrl || this.isFromOliverPopUp){
-            this.selecttemplatetype(emailTemplate);
-        }
         let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
             || emailTemplate.beeEventCoBrandingTemplate || emailTemplate.surveyCoBrandingTemplate;
         if (emailTemplateService.emailTemplate.subject.indexOf('basic') > -1 && !isCoBrandingTemplate) {

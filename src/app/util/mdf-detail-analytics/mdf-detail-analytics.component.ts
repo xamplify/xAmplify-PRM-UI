@@ -29,11 +29,14 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
+  partnershipStatus: any;
   scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
@@ -46,6 +49,11 @@ export class MdfDetailAnalyticsComponent implements OnInit {
 
   }
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+      this.partnershipStatus = 'approved';
+    } else if(this.fromDeactivatedPartnersDiv){
+      this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     this.getMdfDetails(this.pagination);
   }
@@ -58,6 +66,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getMdfDetails(this.pagination).subscribe(
       (response: any) => {
@@ -160,10 +169,11 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/mdf-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm
-      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm;
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
 
@@ -177,6 +187,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     }
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 

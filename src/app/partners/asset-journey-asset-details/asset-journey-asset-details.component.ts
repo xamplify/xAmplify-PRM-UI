@@ -29,6 +29,8 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -52,6 +54,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   public assetInfoFields: any;
   dateFilterText = "Select Date Filter";
   isFromApprovalModule: boolean = false;
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -65,6 +68,12 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
+
     this.pagination.pageIndex = 1;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.findAssetNames();
@@ -79,6 +88,7 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     this.pagination.toDateFilterString = this.toDateFilter;
     this.pagination.assetIds = this.pagination.assetIds;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getAssetInteractionDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -151,11 +161,13 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     let sortcolumn = this.pagination.sortcolumn;
     let sortingOrder = this.pagination.sortingOrder;
     let assetIds =this.pagination.assetIds.join(',');
+    let assetNames = this.pagination.selectedAssetNames.join(',');
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/asset/journey/asset/details/download/asset-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&searchKey=" + searchKeyRequestParm +  "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
-      + "&assetIds=" + assetIds +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm;
+      + "&assetIds=" + assetIds +"&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
   sortAssetDetails(text: any) {
