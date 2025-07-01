@@ -738,6 +738,10 @@ max-height: calc(100vh - 220px);
   margin-bottom: 5px;
 }
 
+::ng-deep markdown p {
+  margin-bottom: 0px;
+}
+
 /* Bold (strong) text */
 ::ng-deep markdown strong {
   font-weight: 500 !important;
@@ -1854,7 +1858,7 @@ circle.front {
 .suggestion-direction {
   position: absolute;
   bottom: 83px;
-  right: 235px;
+  right: 255px;
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
@@ -1866,7 +1870,7 @@ circle.front {
 .suggestion-direction-global-chat {
   position: absolute;
   bottom: 220px;
-  right: 139px;
+  right: 142px;
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
@@ -1879,7 +1883,7 @@ circle.front {
 .suggestion-direction-global-chat-down {
   position: absolute;
   bottom: 44px;
-  right: 196px;
+  right: 200px;
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
@@ -1984,6 +1988,6 @@ button.image-only-button img {
   align-items: center;
 }
 
-.image-only-button:hover {
+/* .image-only-button:hover {
   background-color: #f3f4f6;
-}
+} */

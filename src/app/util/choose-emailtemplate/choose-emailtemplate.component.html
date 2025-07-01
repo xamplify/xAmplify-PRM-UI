@@ -15,8 +15,8 @@
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
         *ngFor="let emailTemplate of selectedTemplatetype; let i = index">
         <div class="ribbon tab-ribbon">
-          <span *ngIf="emailTemplate.regularCoBrandingTemplate && !pageView">Co-Branded</span>
-          <span *ngIf="emailTemplate.coBranded && pageView">Co-Branded</span>
+          <span *ngIf="!pageView">{{ emailTemplate.regularCoBrandingTemplate ? 'Co-Branded' : 'Regular' }}</span>
+          <span *ngIf="pageView">{{ emailTemplate.coBranded ? 'Co-Branded' : 'Regular' }}</span>
         </div>
         <div class="grid-box imgage-paddings grid-email-card pointer"
           [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' : ''"

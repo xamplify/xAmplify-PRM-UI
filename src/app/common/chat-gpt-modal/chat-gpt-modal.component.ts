@@ -153,6 +153,8 @@ export class ChatGptModalComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  socialShareOption: boolean = false;
+  designAccess: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -162,6 +164,7 @@ export class ChatGptModalComponent implements OnInit {
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
+    this.checkSocialAcess();
   }
 
   validateInputText() {
@@ -177,6 +180,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isWelcomePageUrl = false;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.designAccess = false;
   }
 
   generateChatGPTText(chatHistoryId:any) {
@@ -197,7 +201,11 @@ export class ChatGptModalComponent implements OnInit {
     // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     // this.chatGptIntegrationSettingsDto.prompt = askOliver;
     // this.showOpenHistory = true;
-    this.chatGptIntegrationSettingsDto.contents = this.messages;
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
     this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
     this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -249,6 +257,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    this.checkSocialAcess();
     this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
@@ -297,6 +306,8 @@ export class ChatGptModalComponent implements OnInit {
     this.resetAllPromptBoxes();
     this.getSuggestedPromptsForGlobalSearch();
     this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   private checkDamAccess() {
@@ -373,6 +384,8 @@ export class ChatGptModalComponent implements OnInit {
       this.getSuggestedPromptsForGlobalSearch();
     }
     this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -583,13 +596,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
+   searchDataOnKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0 && !this.isTextLoading) {
       this.AskAiTogetData();
-      event.preventDefault(); // Prevent form submission
-       
+      event.preventDefault();
     }
   }
+}
 
   openAssetsPage() {
     if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
@@ -863,12 +877,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {   
+  onKeyPressForAsekOliver(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0) {
       this.AskAiTogetData();
-       event.preventDefault();
+      event.preventDefault(); 
     }
   }
+}
 
  closeManageAssets() {
     this.showView = false;
@@ -988,7 +1004,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if (this.checkKeywords(message.content)) {
+              if (this.activeTab == 'contactagent' && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1492,6 +1508,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     this.selectedPromptId = promptId;
     this.isValidInputText = true;
     this.searchTerm = "";
+    this.autoResizeTextArea(event);
     this.resetAllPromptBoxes();
   }
 
@@ -1570,9 +1587,9 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         colorByPoint: true,
         data: campaignItems.map((item: any) => ({
           name: item.name ? item.name : '',
-          y: typeof item.count == 'string'
-            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
-            : item.count ? item.count : 0
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
         }))
       }],
       seriesString: '',
@@ -1797,4 +1814,20 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       }
     });
   }
+
+    checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
+   private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
 }

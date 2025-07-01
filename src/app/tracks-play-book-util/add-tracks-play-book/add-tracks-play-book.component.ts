@@ -1981,17 +1981,18 @@ addTagsCondition(selectedTags:any[]) {
       confirmButtonText: 'Yes, Remove',
       cancelButtonText: 'Cancel'
     }).then(function () {
-      if (type === 'quiz') {
-        self.selectedQuiz(asset);
-        self.removeAlertType = 'form';
-      } else {
-        self.setSelectedAsset(asset);
-        self.removeAlertType = 'asset';
+      const index = self.selectedAssets.findIndex(a => a === asset);
+      if (index > -1) {
+        self.selectedAssets.splice(index, 1);
+        self.removeAlertType = type === 'quiz' ? 'form' : 'asset';
       }
+
       self.validateAssets();
       self.validateAllSteps();
-
     });
   }
 
+  showRemoveAlert(type: 'asset' | 'form') {
+    this.removeAlertType = type;
+  }
 }

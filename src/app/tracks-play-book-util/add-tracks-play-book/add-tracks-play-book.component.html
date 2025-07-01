@@ -715,18 +715,19 @@
   <div class="modal-dialog modal-lg" style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal">
+        <button type="button" class="close-circle" data-dismiss="modal" (click)="removeAlertType = ''">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <h4 class="modal-title text-center">Selected Assets</h4>
       </div>
-
-      <div *ngIf="removeAlertType" class="alert alert-success alert-dismissible" style="margin: 10px 15px 0 15px;">
-        <button type="button" class="close" (click)="removeAlertType = ''">&times;</button>
+      <div *ngIf="removeAlertType === 'asset' || removeAlertType === 'form'"
+        class="alert alert-success alert-dismissible" style="margin: 10px 15px 0 15px;">
+        <button type="button" class="close" aria-label="Close" (click)="removeAlertType = ''">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <strong *ngIf="removeAlertType === 'asset'">Asset removed successfully</strong>
-        <strong *ngIf="removeAlertType === 'form'">Form removed successfully</strong>
+        <strong *ngIf="removeAlertType === 'form'">Form canceled successfully</strong>
       </div>
-
 
       <div class="modal-body">
         <div class="row">
@@ -773,7 +774,8 @@
               <table class='table tgrid table-hover table-sm' *ngIf="selectedAssets?.length > 0">
                 <thead>
                   <tr>
-                    <th class ="" colspan="2" style="width: 35%" id ="border-bottom"><span class="gridHeader" translate>Details</span></th>
+                    <th class="" colspan="2" style="width: 35%" id="border-bottom"><span class="gridHeader"
+                        translate>Details</span></th>
                     <th class="text-center" translate scope="col">Type</th>
                     <th class="text-center" translate scope="col">Created On</th>
                     <th class="text-center">Preview</th>
@@ -891,7 +893,8 @@
       </div>
 
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn Btn-Gray" style="float: right"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn Btn-Gray" (click)="removeAlertType = ''"
+          style="float: right"><span>Close</span></a>
       </div>
 
     </div>
