@@ -6,8 +6,8 @@
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
-                <i *ngIf="!isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isAdd" (click)="goToManagePlayBooks()">Manage Playbooks</a>
+                <i *ngIf="!isAdd || fromManage" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isAdd || fromManage" (click)="goToManagePlayBooks()">Manage Playbooks</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isAdd">Add Playbook</a>
                 <a *ngIf="!isAdd">Edit Playbook</a>

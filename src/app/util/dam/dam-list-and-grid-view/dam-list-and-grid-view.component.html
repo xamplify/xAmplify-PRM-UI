@@ -684,9 +684,25 @@
 					<span>Assets</span>
 				</h4>
 			</div>
-			<div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
-				<div class="btn-group pull-right">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                                <div class="btn-group pull-right">
 					<div class="d-flex">
+
+                                      <div class="hidden-xs pull-right downloadteam mr5" *ngIf="!FromOliverPopUp && !isPartnerView">
+                                        <button class="btn btn-primary fileinput-button upload-label" (click)="navigateToUploadAsset()" style="border-radius: 7px 0 0 7px!important;">
+                                                 Upload File
+                                        </button>
+                                        <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle border_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="border-radius: 0px 7px 7px 0px!important;">
+                                                        <i class="fa fa-upload"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a (click)="navigateToUploadAsset()"><i class="fa fa-upload mr5"></i> Upload File</a></li>
+                                                        <li><a (click)="navigateToAddAsset()"><i class="fa fa-file-pdf-o mr5"></i> Design PDF</a></li>
+                                                </ul>
+                                        </div>
+                                </div>
+
 						<!-- Custom Upload Button -->
 						<button *ngIf="FromOliverPopUp && !isPartnerView && !authenticationService?.module?.loggedInThroughVendorVanityUrl"
 							(click)="fileInput.click()" class="btn btn-primary mr5" tabindex="-1" translate="" type="button">

@@ -13,4 +13,5 @@ export class PartnerJourneyRequest {
     filterType: any;
     page: any;
     size: any;
+    partnershipStatus: any;
 }

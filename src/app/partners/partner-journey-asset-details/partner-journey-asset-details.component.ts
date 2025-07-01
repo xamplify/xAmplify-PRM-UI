@@ -33,7 +33,9 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
-  filterFromDate : string = '';
+  @Input() fromActivePartnersDiv: boolean = false;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
+   filterFromDate : string = '';
   filterToDate : string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -65,6 +67,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   dateFilterText = "Select Date Filter";
   isFromApprovalModule: boolean = false;
   public EmailInfoFilterPlaceHolder: string = 'Select Emailids'
+  partnershipStatus: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -80,6 +83,11 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
 
   ngOnChanges() {
      this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+     if(this.fromActivePartnersDiv){
+    this.partnershipStatus = 'approved';
+    } else if (this.fromDeactivatedPartnersDiv) {
+    this.partnershipStatus = 'deactivated';
+    }
     this.pagination.pageIndex = 1;
     this.findAssetNames();
     this.findEmailIds();
@@ -103,6 +111,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.pagination.assetIds = this.pagination.assetIds;
     this.pagination.selectedEmailIds = this.pagination.selectedEmailIds;
     this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pagination.partnershipStatus = this.partnershipStatus;
     this.parterService.getAssetDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -186,12 +195,13 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     let assetIds =this.pagination.assetIds.join(',');
     let emailIds = this.pagination.selectedEmailIds.join(',');    
     let companyIds = this.pagination.selectedCompanyIds.join(',');
+    let partnershipStatus = this.partnershipStatus != null ? "&partnershipStatus=" + this.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/asset-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
       + "&filterFromDateString=" + filterFromDatestringParam + "&filterToDateString=" + filterToDatestringParam
-      + "&assetIds=" + assetIds + "&companyIds=" + companyIds + "&emailIds=" + emailIds + "&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm;
+      + "&assetIds=" + assetIds + "&companyIds=" + companyIds + "&emailIds=" + emailIds + "&sortcolumn="+sortcolumn+ "&sortingOrder="+sortingOrder+ timeZoneRequestParm + partnershipStatus;
     this.referenseService.openWindowInNewTab(url);
   }
   sortAssetDetails(text: any) {

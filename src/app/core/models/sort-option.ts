@@ -529,6 +529,12 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	sortByDropDownForDeactivatedPartnerJourney = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Company Name(A-Z)', 'value': 'campaign-ASC' },
+		{ 'name': 'Company Name(Z-A)', 'value': 'campaign-DESC' }
+	];
+
 	/***XNFR-783***/
 	calendlyDropDownOptions = [
 		{ 'name': 'Created On(Desc)', 'value': 'desc' },
@@ -736,6 +742,8 @@ export class SortOption {
     public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
 
 	public selectedSortedOptionForPartnerJourney = this.sortByDropDownForPartnerJourney[0];
+
+	public selectedSortedOptionForDeactivatedPartnerJourney = this.sortByDropDownForDeactivatedPartnerJourney[0];
 
 	/**XNFR-783**/
 	public calendlyDropDownOption = this.calendlyDropDownOptions[0].value;
