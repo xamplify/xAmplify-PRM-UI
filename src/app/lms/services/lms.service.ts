@@ -139,4 +139,18 @@ export class LmsService {
     let findAllUrl = this.URL+'/'+urlPrefix+'/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
+
+   //XNFR-1032
+   getManageContentCounts(moduleContentType: any){
+    let userId = this.authenticationService.getUserId();
+    let findContentCounts = this.URL+'/manage/content/counts/'+userId+'/'+moduleContentType+'/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(findContentCounts);
+  }
+
+  getContentCounts(vendorCompanyProfileName: string){
+    let userId = this.authenticationService.getUserId();
+    let findContentCounts = this.URL+'/content/counts/'+userId+'/'+ vendorCompanyProfileName+'/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(findContentCounts);
+  }
+  
 }

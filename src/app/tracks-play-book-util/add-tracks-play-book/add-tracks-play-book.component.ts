@@ -220,6 +220,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   replies: Array<Reply> = new Array<Reply>();
   deletedWorkflowIds:number[] = [];
   playbookWorkflowLoader = false; 
+  removeAlertType: string;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe, private partnerService:ParterService) {
@@ -1968,4 +1969,29 @@ addTagsCondition(selectedTags:any[]) {
             this.ngxloading = false;
         });
   }
+  showRemoveConfirmation(type: 'quiz' | 'dam', asset: any): void {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Remove',
+      cancelButtonText: 'Cancel'
+    }).then(function () {
+      if (type === 'quiz') {
+        self.selectedQuiz(asset);
+        self.removeAlertType = 'form';
+      } else {
+        self.setSelectedAsset(asset);
+        self.removeAlertType = 'asset';
+      }
+      self.validateAssets();
+      self.validateAllSteps();
+
+    });
+  }
+
 }

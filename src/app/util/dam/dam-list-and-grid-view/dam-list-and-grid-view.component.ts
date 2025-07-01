@@ -170,7 +170,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		if(this.referenceService.isOliverEnabled){
+		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)
 		}
@@ -182,6 +182,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.FromOliverPopUp) {
 			this.SuffixHeading = 'Select ';
+			this.isOliverCalled = false;
 			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
 				this.selectedItems = [];
 				for (let item of this.selectedItemFromOliver) {
@@ -193,7 +194,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedFoldersForOliver.length > 0) {
 			this.setOliverViewType();
-			
+
 		}
 	}
 
@@ -645,8 +646,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 		/** XNFR-813 **/
-		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
-			this.contentModuleStatusAnalyticsComponent.getTileCounts();
+		if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
 		}
 	}
 
@@ -769,6 +773,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.findFileTypes();
 			}
 			this.listAssets(this.pagination);
+			if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
+		}
 		} else if (response.statusCode == 401) {
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
@@ -1320,17 +1330,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
-	setViewTypeForOliver(event: any){
-		this.categoryId = 0;
-		this.showUpArrowButton = false;
-		this.viewType = event;
-		this.setViewType(this.viewType);
-		this.getCompanyId();
-	}
+  setViewTypeForOliver(event: any){
+                this.categoryId = 0;
+                this.showUpArrowButton = false;
+                this.viewType = event;
+                this.setViewType(this.viewType);
+                this.getCompanyId();
+        }
 
-	handleFolders(event) {
-		this.notifyFolders.emit(event);
-	}
+  navigateToUploadAsset() {
+    this.referenceService.goToRouterByNavigateUrl('/home/dam/upload?from=manage');
+  }
+
+  navigateToAddAsset() {
+    this.referenceService.goToRouterByNavigateUrl('/home/dam/add?from=manage');
+  }
+
+        handleFolders(event) {
+                this.notifyFolders.emit(event);
+        }
 	private setOliverViewType() {
     if (this.FromOliverPopUp) {
       let oliverViewType: string;

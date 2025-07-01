@@ -262,13 +262,48 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callGetMethod(url);
   }
 
-  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string) {
+  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string, isPartnerView: boolean) {
     let url = '';
     if (companyProfileName != '' && companyProfileName) {
-      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '/' + isPartnerView + '?access_token=' + this.authenticationService.access_token;
     } else {
       url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
     }
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getDomainColorConfigurationByUserId() {
+    const url = this.chatGptSettingsUrl + 'getDomainColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+ updateDomainColorConfiguration(theme: any) {
+  const userId = this.authenticationService.getUserId(); 
+  const url = this.chatGptSettingsUrl + 'updateDomainColors/' + userId + '?access_token=' + this.authenticationService.access_token;
+  return this.authenticationService.callPutMethod(url, theme);
+}
+
+ checkDomainColorConfigurationExists() {
+    const userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'checkDomainColorsExists/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  uploadContactDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
+    let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadContactDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getOliverReportColors() {
+    const url = this.chatGptSettingsUrl + 'getOliverReportColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 

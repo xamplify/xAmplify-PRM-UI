@@ -520,7 +520,9 @@ export class SendTestEmailComponent implements OnInit {
         }
       });
     }
-    let isPrm = this.authenticationService.module.isPrm;
+    let isPrm = this.authenticationService.module.isPrmCompany;
+    let isTeamMember = this.authenticationService.module.isTeamMember;
+
     let vanityCheck = Array.isArray(this.selectedItem)
       ? this.selectedItem.some((item: any) => item.vanityUrlDomain)
       : this.selectedItem.vanityUrlDomain;

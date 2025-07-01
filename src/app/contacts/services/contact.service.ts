@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response, RequestOptions, ResponseContentType } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ContactList } from '../models/contact-list';
 import { SocialContact } from '../models/social-contact';
@@ -160,29 +160,41 @@ export class ContactService {
     }
 
     listContactsByType(userListPaginationWrapper: UserListPaginationWrapper) {
-        let userId = this.authenticationService.user.id;
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        /****XNFR-252*****/
-        let companyProfileName = this.authenticationService.companyProfileName;
-        let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
-        if (xamplifyLogin) {
-            userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-            userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId > 0;
+        if (userListPaginationWrapper.userList.moduleName == 'contacts' || userListPaginationWrapper.userList.moduleName == 'partners') {
+            this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let pagination = new Pagination();
+            pagination = userListPaginationWrapper.pagination;
+            pagination.userId = this.authenticationService.getUserId();
+            pagination.userListId = userListPaginationWrapper.userList.id;
+            pagination.type = userListPaginationWrapper.userList.contactType;
+            pagination.moduleName = userListPaginationWrapper.userList.moduleName;
+            let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url, pagination);
+        } else {
+             this.logger.info("user-list-contacts pagination: V1 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let userId = this.authenticationService.user.id;
+            userId = this.authenticationService.checkLoggedInUserId(userId);
+            /****XNFR-252*****/
+            let companyProfileName = this.authenticationService.companyProfileName;
+            let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
+            if (xamplifyLogin) {
+                userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+                userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId > 0;
+            }
+            userListPaginationWrapper.pagination.vendorCompanyProfileName = companyProfileName;
+            /****XNFR-252****/
+            var requestoptions = new RequestOptions({
+                body: userListPaginationWrapper
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            return this._http.post(this.contactsUrl + "/" + userId + "/all-contacts/?access_token=" + this.authenticationService.access_token, options, requestoptions)
+                .map((response: any) => response.json())
+                .catch(this.handleError);
         }
-        userListPaginationWrapper.pagination.vendorCompanyProfileName = companyProfileName;
-        /****XNFR-252****/
-        var requestoptions = new RequestOptions({
-            body: userListPaginationWrapper
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-
-        return this._http.post(this.contactsUrl + "/" + userId + "/all-contacts/?access_token=" + this.authenticationService.access_token, options, requestoptions)
-            .map((response: any) => response.json())
-            .catch(this.handleError);
     }
 
     loadContactsCount(contactListObject: ContactList) {
@@ -207,21 +219,32 @@ export class ContactService {
     }
 
     listOfSelectedContactListByType(userListPaginationWrapper: UserListPaginationWrapper) {
-        this.logger.info("ContactService listContactsByType():  contactType=" + userListPaginationWrapper.userList.contactType);
-        let userId = this.authenticationService.user.id;
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        var requestoptions = new RequestOptions({
-            body: userListPaginationWrapper
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
-            .map(this.extractData)
-            .catch(this.handleError);
-
+        if (userListPaginationWrapper.userList.moduleName == 'contacts' || userListPaginationWrapper.userList.moduleName == 'partners') {
+            this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let pagination = new Pagination();
+            pagination = userListPaginationWrapper.pagination;
+            pagination.userId = this.authenticationService.getUserId();
+            pagination.userListId = userListPaginationWrapper.userList.id;
+            pagination.type = userListPaginationWrapper.userList.contactType;
+            pagination.moduleName = userListPaginationWrapper.userList.moduleName;
+            let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url, pagination);
+        } else {
+            this.logger.info("user-list-contacts pagination: V1 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let userId = this.authenticationService.user.id;
+            userId = this.authenticationService.checkLoggedInUserId(userId);
+            var requestoptions = new RequestOptions({
+                body: userListPaginationWrapper
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
+                .map(this.extractData)
+                .catch(this.handleError);
+        }
     }
 
     contactListAssociatedCampaigns(contactListId: number, pagination: Pagination) {
@@ -960,20 +983,34 @@ export class ContactService {
             .catch(this.handleError);
 
     }
-    loadUsersOfContactLists(userListPaginationWrapper: UserListPaginationWrapper){
-        let userId = this.authenticationService.user.id;
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        var requestoptions = new RequestOptions({
-            body: userListPaginationWrapper
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
-            .map(this.extractData)
-            .catch(this.handleError);
+
+    loadUsersOfContactLists(userListPaginationWrapper: UserListPaginationWrapper) {
+        if (userListPaginationWrapper.userList.moduleName == 'contacts' || userListPaginationWrapper.userList.moduleName == 'partners') {
+            this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let pagination = new Pagination();
+            pagination = userListPaginationWrapper.pagination;
+            pagination.userId = this.authenticationService.getUserId();
+            pagination.userListId = userListPaginationWrapper.userList.id;
+            pagination.type = userListPaginationWrapper.userList.contactType;
+            pagination.moduleName = userListPaginationWrapper.userList.moduleName;
+            let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url, pagination);
+        } else {
+            this.logger.info("user-list-contacts pagination: V1 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let userId = this.authenticationService.user.id;
+            userId = this.authenticationService.checkLoggedInUserId(userId);
+            var requestoptions = new RequestOptions({
+                body: userListPaginationWrapper
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
+                .map(this.extractData)
+                .catch(this.handleError);
+        }
     }
 
     vanityConfigZoho() {
@@ -1025,9 +1062,23 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    findMasterContactListId() {
+    findDefaultContactListId(moduleName: string) {
         let loggedInUserId = this.authenticationService.getUserId();
-        let url = this.contactsUrl + 'master-contact-list' + '/userId/' + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.contactsUrl + 'default-contact-list' + '/userId/' + loggedInUserId + '/moduleName/' + moduleName + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***** XNFR-1011 *****/
+    findUserListContactsByType(pagination: Pagination) {
+        let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, pagination);
+    }
+
+    /***** XNFR-1011 *****/
+    findContactsCount(moduleName: string, userListId: number) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.contactsV2Url + "contacts-count?loggedInUserId=" + loggedInUserId + "&userListId=" + userListId
+            + "&moduleName=" + moduleName + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

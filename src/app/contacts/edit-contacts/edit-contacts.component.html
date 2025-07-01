@@ -1,5 +1,5 @@
 <!-- BEGIN PAGE CONTENT-->
-<div [ngClass]="(module === 'contacts') ? 'page-content':''">
+<div [ngClass]="(module === 'contacts') ? 'page-content':''"  *ngIf="!showAskOliverModalPopup">
 <div class="page-bar mb-height_auto" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
@@ -130,9 +130,8 @@
 							</div>
 							<!-- END DASHBOARD STATS -->
 							<div class="clearfix"></div>
-							<div class="row mt5 mb5" [ngStyle]="(module =='partners') ? {'padding-right': '15px'} : ''">
-								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
-									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+							<div class="row mt5 mb5">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths mt5 pr2 pr15 tiles_hover_effect">
 									<button class="btn-block dashboard-stat blue"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
@@ -180,9 +179,7 @@
 										</span>
 									</button>
 								</div>
-								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
-									*ngIf="isPartner"
-									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths mt5 pr2 pr15 tiles_hover_effect" *ngIf="isPartner">
 									<button class="btn-block dashboard-stat green"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 										(click)="showingContactDetails('active')"
@@ -206,9 +203,27 @@
 										</span>
 									</button>
 								</div>
-								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
-									*ngIf="isPartner"
-									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths mt5 pr2 pr15 tiles_hover_effect" *ngIf="isPartner">
+									<button class="btn-block dashboard-stat yellow-gold"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'deactivated'"
+										(click)="showingContactDetails('deactivated')" [disabled]="contactsByType.deactivatedContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'deactivated' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'deactivated'" aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.deactivatedContactsCount}}</div>
+											<div class="desc fz17" translate>Deactivated</div>
+										</div>
+										<span class="morePadding">
+											<a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths mt5 pr2 pr15 tiles_hover_effect" *ngIf="isPartner">
 									<button class="btn-block dashboard-stat purple"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 										(click)="showingContactDetails('non-active')"
@@ -284,8 +299,7 @@
 										</span>
 									</button>
 								</div>
-								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect'"
-									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths mt5 pr pr15 tiles_hover_effect">
 									<button class="btn-block dashboard-stat red"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribed'"
 										(click)="showingContactDetails('unsubscribed')"
@@ -1119,7 +1133,7 @@
 																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier 
 																		|| authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() 
 																		|| (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
-																	<div class="actions-block override-actions white-space-transform  actions_width" style="width:170px;">
+																	<div class="actions-block override-actions white-space-transform  actions_width">
 																		<a class="custom-icon" *ngIf="!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) 
 																			&& (checkingContactTypeName == 'Contact' || sharedLeads) && contact?.partnerStatus != 'deactivated'"
 																			data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
@@ -1176,6 +1190,15 @@
 																			data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
+																		</a>
+
+																		<!--Ask Oliver-->
+																		<a class="oliveIcon"
+																			*ngIf="authenticationService?.isOliverActive"
+																			data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contact)">
+																			<div class="oliveBackground">
+																				<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																			</div>
 																		</a>
 																	</div>
 																</td>
@@ -1496,7 +1519,7 @@
 												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th scope="col"
-													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded')">
+													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads)|| contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory === 'deactivated')">
 													Actions</th>
 												<th scope="col"
 													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
@@ -1680,8 +1703,11 @@
 																*ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
 														</h5>
 													</td>
-
-
+													<td class="hidden-xs text-center" *ngIf="contactsByType.selectedCategory === 'deactivated'">
+														<button class="btn btn-primary" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+															(click)="showActivatePartnersAlert(allcontacts.partnershipId)" translate>Activate
+														</button>
+													</td>
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
 														<button class="btn-primary"
@@ -2210,3 +2236,6 @@
 	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+	[isFromManageContact]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

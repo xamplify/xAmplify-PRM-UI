@@ -37,5 +37,6 @@ export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     agentAssistantId: any;
     designPage : boolean = false; /** XNFR-1002 **/
     addBrandColors: boolean = false; 
+    contactAssistantId:any;
     promptId: number;
 }

@@ -227,6 +227,9 @@ import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-inte
 import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
 import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
 import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-landing-page.component';
+import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
+
+import { ExecutiveSummaryReportComponent } from 'app/executive-summary-report/executive-summary-report.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -271,7 +274,7 @@ import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent
 	],
 
 
@@ -315,7 +318,7 @@ import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent
+		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent
 	]
 
 

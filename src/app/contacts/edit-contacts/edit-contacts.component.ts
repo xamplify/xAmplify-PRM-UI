@@ -42,6 +42,8 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { CustomCsvMappingComponent } from '../custom-csv-mapping/custom-csv-mapping.component';
 import { Partnership } from 'app/partners/models/partnership.model';
 import { ParterService } from 'app/partners/services/parter.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -313,13 +315,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isEditMode: boolean = false;
 	partnership: Partnership = new Partnership();
 	isDeleteOptionClicked: boolean = false;
+	showAskOliverModalPopup: boolean = false;
+	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	contact: any;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
 		private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
 		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, 
-		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService) {
+		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService,
+		private chatgptSettingsService: ChatGptSettingsService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -1611,7 +1618,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.noOfContactsDropdown = false;
 						this.pagedItems = null;
 					}
-					if(this.moveOptionClicked && this.contacts.length === 0){
+					if (this.moveOptionClicked && this.contacts.length === 0) {
 						this.goBackToManageList();
 					}
 					this.moveOptionClicked = false;
@@ -1629,11 +1636,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					} else {
 						this.isHeaderCheckBoxChecked = false;
 					}
-
 				},
 				error => this.xtremandLogger.error(error),
 				() => this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() finished")
-			)
+			);
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "loadingAllUsersInList()");
 		}
@@ -2016,13 +2022,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				contactType = 'all';
 				this.contactsByType.pagination.pageIndex = 1;
 			}
-
 			if (contactType === 'all') {
 				this.currentContactType = "all";
 			} else {
 				this.currentContactType = '';
 			}
-
 			this.showAllContactData = true;
 			this.showEditContactData = false;
 			this.contactsByType.isLoading = true;
@@ -2820,6 +2824,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'excluded') {
 			this.logListName = this.selectedContactListName + '_list_Excluded_' + this.checkingContactTypeName + 's.csv';
+		} else if (this.contactsByType.selectedCategory === 'deactivated') {
+			this.logListName = this.selectedContactListName + '_list_Deactivated_' + this.checkingContactTypeName + 's.csv';
 		}
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -2913,13 +2919,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.contactsByType.isLoading = true;
 			this.currentContactType = '';
-			// this.resetListContacts();
-			// this.resetResponse();
 			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.contactsByType.pagination.criterias = this.criterias;
 			this.contactsByType.pagination.maxResults = this.contactsByType.allContactsCount;
-			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
-			this.contactListObject = new ContactList;
+			let pagination = new Pagination();
+			pagination = this.contactsByType.pagination;
+			pagination.exportToExcel = true;
+			this.contactListObject = new ContactList();
 			this.contactListObject.contactType = this.contactsByType.selectedCategory;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
@@ -2927,20 +2933,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.contactListObject.isDownload = true;
+			this.userListPaginationWrapper.pagination = pagination;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
-						//	this.contactsByType.selectedCategory = contactType;
 						this.contactsByType.listOfAllContacts = data.listOfUsers;
 						this.downloadContactTypeList();
-						// this.contactsByType.contactPagination.totalRecords = data.totalRecords;
-						//	this.contactsByType.contactPagination = this.pagerService.getPagedItems(this.contactsByType.contactPagination, this.contactsByType.contacts);
-					},
-					error => console.log(error),
-					() => {
-						this.contactsByType.isLoading = false;
-					}
+					}, error => console.log(error),
+					() => { this.contactsByType.isLoading = false; }
 				);
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "loadingAllDetailsOfContactList()");
@@ -3100,8 +3101,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.checkingLoadContactsCount = true;
-			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			let self = this;
 			this.uploader = new FileUploader({
 				allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"],
@@ -3120,6 +3121,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
 		}
 		this.getActiveCrmType();
+		this.fetchOliverActiveIntegration();
 	}
 
 
@@ -3249,8 +3251,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		e.stopPropagation();
 	}
 
-
 	contactsCount(id: number) {
+		if (this.isPartner || this.isContactModule) {
+			this.findContactsCount();
+		} else {
+			this.loadContactsCount(id);
+		}
+	}
+
+	/*********XNFR-85********* */
+	showTeamMembers = false;
+	showModulesPopup = false;
+	currentPartner: any;
+	teamMemberGroupId = 0;
+	teamMemberGroups: Array<any> = new Array<any>();
+
+	loadContactsCount(id: number) {
 		try {
 			this.contactListObject = new ContactList;
 			this.contactListObject.id = id;
@@ -3281,12 +3297,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	/*********XNFR-85********* */
-	showTeamMembers = false;
-	showModulesPopup = false;
-	currentPartner: any;
-	teamMemberGroupId = 0;
-	teamMemberGroups: Array<any> = new Array<any>();
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
@@ -3922,14 +3932,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 	private loadUsersByContactType() {
 		const contactType = this.userListPaginationWrapper.userList.contactType;
-		const validTypes = [
-			'active',
-			'non-active',
-			'unsubscribed',
-			'valid',
-			'excluded',
-			'invalid'
-		];
+		const validTypes = [ 'active', 'non-active', 'deactivated', 'unsubscribed', 'valid', 'excluded', 'invalid' ];
 		if (validTypes.includes(contactType)) {
 			this.listOfSelectedContactListByType(contactType);
 		} else {
@@ -3951,6 +3954,115 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias = new Array<Criteria>();
 		this.pagination.criterias = null;
 		this.loadUsersByContactType();
-	 }
+	}
+
+	/***** XNFR-1011 *****/
+	findContactsCount() {
+		this.loading = true;
+		this.contactService.findContactsCount(this.module, this.selectedContactListId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					let data = response.data;
+					this.contactsByType.allContactsCount = data.allCounts;
+					this.contactsByType.invalidContactsCount = data.inValidCount;
+					this.contactsByType.unsubscribedContactsCount = data.unSubscribedCount;
+					this.contactsByType.activeContactsCount = data.activeCount;
+					this.contactsByType.inactiveContactsCount = data.inActiveCount;
+					this.contactsByType.validContactsCount = data.validCount;
+					this.contactsByType.excludedContactsCount = data.excludedCount;
+					this.contactsByType.deactivatedContactsCount = data.deactivatedCount;
+				} else {
+					this.refService.showSweetAlertServerErrorMessage();
+				}
+				this.loading = false;
+			}, error => {
+				this.loading = false;
+				this.xtremandLogger.error(error);
+				this.refService.showSweetAlertServerErrorMessage();
+			}, () => this.xtremandLogger.info("findContactsCount() finished")
+		);
+	}
+
+	askOliver(contact: any) {
+		this.contact = contact;
+		this.contact.contactName = this.setContactNameToDisplay(contact);;
+		this.showAskOliverModalPopup = true;
+	}
+
+	setContactNameToDisplay(contact: any): string {
+		let firstName = contact.firstName;
+		let lastName = contact.lastName;
+		let isValidFirstName = this.refService.checkIsValidString(firstName);
+		let isValidLastName = this.refService.checkIsValidString(lastName);
+		let contactName = '';
+		if (isValidFirstName) {
+			contactName = firstName;
+		}
+		if (isValidLastName) {
+			contactName += isValidFirstName ? ` ${lastName}` : lastName;
+		}
+		return contactName;
+	}
+
+	closeAskAI(event: any) {
+		this.chatGptSettingDTO = event;
+		this.showAskOliverModalPopup = false;
+	}
+
+	fetchOliverActiveIntegration() {
+		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
+		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
+			(response: any) => {
+				if (response.statusCode == 200 && response.data) {
+					let data = response.data;
+					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
+					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
+					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
+					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+				}
+			}, error => {
+				console.log('Error in fetchOliverActiveIntegration() ', error);
+			});
+	}
+
+	showActivatePartnersAlert(partnershipId: number) {
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: message,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, activate it!'
+		}).then(function (myData: any) {
+			console.log("ManageContacts showAlert then()" + myData);
+			self.activatePartner(partnershipId);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	activatePartner(partnershipId: number) {
+		let partnershipIds = [];
+		partnershipIds.push(partnershipId);
+		this.partnerService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
+			.subscribe(response => {
+				this.loading = false;
+				if (response.statusCode == 200) {
+					this.contactsCount(this.selectedContactListId);
+					this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+					this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				}
+			}, error => {
+				this.loading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
 
 }

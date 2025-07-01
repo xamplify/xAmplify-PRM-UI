@@ -166,6 +166,13 @@
               </div>
               <div class="icon-label">Call</div>
             </div>
+            <div class="icon-item mt10" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top"
+              title="Ask Oliver" (click)="askOliver()">
+              <div class="icon-btns">
+                <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+              </div>
+              <div class="icon-label">Ask Oliver</div>
+            </div>
           </div>
           <!-- end -->
         </div>
@@ -607,5 +614,5 @@
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
 
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact" [callActivity]="callActivity"
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact" [callActivity]="callActivity" [isFromManageContact]="isFromManageContact"
   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

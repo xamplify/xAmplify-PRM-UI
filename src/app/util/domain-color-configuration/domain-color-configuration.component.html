@@ -1,0 +1,56 @@
+<div class="lead_details">
+  <h3>
+    Domain Color Settings
+    <a (click)="!selectedRefereshButton && getColorsByReferesh()" class="reload-btn"
+      [class.disabled]="selectedRefereshButton" [attr.aria-disabled]="selectedRefereshButton"
+      [style.pointer-events]="selectedRefereshButton ? 'none' : 'auto'" data-toggle="tooltip" data-placement="top"
+      title="Click to refresh and get updated colors">
+      <i class="fa fa-refresh" aria-hidden="true"></i>
+    </a>
+
+    <a data-toggle="collapse" (click)="toggleClass('color-details')" style="float: right;"
+      href="javascript:;#colorDetailsDropdown">
+      <i id="color-details" class="fa fa-minus" aria-hidden="true"></i>
+    </a>
+  </h3>
+</div>
+
+<div *ngIf="loading" class="div-loader">
+  <div id="process-loader"></div>
+</div>
+
+<div *ngIf="!loading" class="color-settings-container nav collapse in" id="colorDetailsDropdown">
+  <!-- global error banner -->
+  <div *ngIf="message" class="error-message">{{ message }}</div>
+
+  <div *ngFor="let field of colorFields; let i = index" class="color-field-wrapper">
+
+    <!-- Section headers -->
+    <h3 class="section-header" *ngIf="field.group === 'theme' && (i === 0 || colorFields[i-1]?.group !== 'theme')">
+      Domain Colors
+    </h3>
+    <h3 class="section-header" *ngIf="field.group === 'logo' && colorFields[i-1]?.group !== 'logo'">
+      Logo Colors
+    </h3>
+
+    <label class="field-label">{{ field.label }}</label>
+
+    <div class="color-input-container">
+      <label class="color-picker-wrapper">
+        <input type="color" class="color-picker-input" [(ngModel)]="theme[field.key]"
+          (change)="onHexChange(field.key, theme[field.key])" [attr.id]="'color-picker-' + field.key" />
+        <div class="color-preview" [style.backgroundColor]="theme[field.key] || field.placeholder">
+        </div>
+      </label>
+
+      <input type="text" class="hex-input" [ngModel]="theme[field.key]" (ngModelChange)="onHexChange(field.key, $event)"
+        [placeholder]="field.placeholder" maxlength="7" [class.invalid]="!!errorMessages[field.key]" />
+    </div>
+
+    <!-- per-field error, below the inputs, single-line & red -->
+    <div *ngIf="errorMessages[field.key]" class="error-message">
+      {{ errorMessages[field.key] }}
+    </div>
+
+  </div>
+</div>

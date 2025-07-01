@@ -206,4 +206,5 @@ export class Pagination {
 	//XNFR-1006
    partnershipStatus: any;
 
+	exportToExcel: boolean = false;
 }

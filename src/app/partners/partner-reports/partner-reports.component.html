@@ -914,7 +914,7 @@
                       [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAllForIncompleteProfiles($event)" />
                   </th>
                     <th class="center-aligned">partners</th>
-                    <th *ngIf="isIncompleteCompanyProfileDiv && isSingUpPendingDiv" style="text-align: center;">LAST REMINDER SENT</th>
+                    <th *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv" style="text-align: center;">LAST REMINDER SENT</th>
                     <th style="text-align: center;">Actions</th>
                   </tr>
                 </thead>
@@ -928,9 +928,13 @@
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>
                     </td>
-                    <td *ngIf="isIncompleteCompanyProfileDiv && isSingUpPendingDiv" class="hidden-xs text-center">
-                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
-                      <h4 *ngIf="!item.time"><strong>-</strong></h4>
+                    <td *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv" class="hidden-xs text-center">
+                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.sentOn"> </app-timestamp>
+                      <h4 *ngIf="!item.sentOn"><strong>-</strong></h4><br>
+                      <ng-container *ngIf="item.sentOn && isSingUpPendingDiv">
+                        <span class="green-banner LableSpaceings" *ngIf="item.sentOn && item.activationMail">Activation</span>
+                        <span class="view-banner LableSpaceings" *ngIf="item.sentOn && !item.activationMail">Registration</span>
+                      </ng-container>
                     </td>
                     <td class="mAlign text-center" (click)="openSendTestEmailModalPopup(item)">
                       <div class="actions-block float-none">

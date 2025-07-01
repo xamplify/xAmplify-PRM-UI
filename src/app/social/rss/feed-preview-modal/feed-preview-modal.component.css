@@ -1,0 +1,395 @@
+/* Enhanced Container Styles for Better Image Handling */
+.social-media-container {
+  width: 100%;
+  max-width: 630px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  /* background-color: #ffffff; */
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
+  position: relative;
+}
+
+.media-layout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.media-row {
+  width: 100%;
+  display: flex;
+  gap: 3px;
+  align-items: stretch;
+}
+
+.media-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  /* background-color: #f8f9fa; */
+}
+
+.media-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Enhanced Media Elements for Proper Aspect Ratio Handling */
+.media-element {
+  width: 100%;
+  height: auto !important;
+  display: block;
+  border-radius: 8px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.media-image {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.media-image:hover {
+  transform: scale(1.02);
+  filter: brightness(1.03);
+}
+
+.media-video {
+  outline: none;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Aspect Ratio Containers for Better Control */
+.aspect-ratio-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.aspect-ratio-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Enhanced Stacked Media Styles */
+.stacked-media {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stacked-item {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: calc(50% - 1.5px);
+  /* background-color: #f8f9fa; */
+  position: relative;
+}
+
+.stacked-image,
+.stacked-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 6px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Bootstrap Grid System with Enhanced Flexbox */
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6,
+.col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+  position: relative;
+  min-height: 1px;
+  padding-left: 1.5px;
+  padding-right: 1.5px;
+  float: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-xs-12 { width: 100%; }
+.col-xs-9 { width: 75%; }
+.col-xs-8 { width: 66.66666667%; }
+.col-xs-7 { width: 58.33333333%; }
+.col-xs-6 { width: 50%; }
+.col-xs-5 { width: 41.66666667%; }
+.col-xs-4 { width: 33.33333333%; }
+.col-xs-3 { width: 25%; }
+
+/* Flexbox Layout */
+.media-row {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.media-item {
+  float: none !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.media-content,
+.stacked-media {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Layout Specific Enhancements */
+
+/* Single Layout - Optimized for Corporate Photos */
+.layout-single .media-row {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.layout-single .media-element {
+  border-radius: 12px;
+  max-height: 600px;
+  min-height: 200px;
+}
+
+.layout-single .media-item {
+  /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); */
+}
+
+/* Double Layout - Corporate Events & Awards */
+.layout-double .media-item {
+  min-height: 150px;
+}
+
+.layout-double .media-element {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.layout-double .media-item:hover {
+  transform: translateY(-1px);
+  /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); */
+}
+
+/* Enhanced for Corporate Group Photos */
+.layout-double .media-image {
+  object-fit: cover;
+  object-position: center top; /* Better for group photos */
+}
+
+/* Triple Layout - Corporate Events & Presentations */
+.layout-triple .media-row {
+  align-items: stretch;
+}
+
+.layout-triple .media-item {
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
+}
+
+.layout-triple .media-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.layout-triple .media-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 8px;
+}
+
+/* Better handling for corporate presentation images */
+.layout-triple .media-image {
+  object-position: center top;
+}
+
+.layout-triple .stacked-container {
+  padding-left: 3px;
+}
+
+.layout-triple .stacked-media {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+}
+
+.layout-triple .stacked-item {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: calc(50% - 1.5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Quad Layout - Corporate Event Grid */
+.layout-quad .media-item {
+  min-height: 120px;
+}
+
+.layout-quad .media-element {
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 8px;
+}
+
+/* Special handling for brand/logo images */
+.media-element.logo-image {
+  object-fit: contain;
+  /* background-color: #ffffff; */
+  padding: 10px;
+}
+
+.media-element.presentation-image {
+  object-fit: contain;
+  /* background-color: #f8f9fa; */
+}
+
+/* Enhanced Professional Hover Effects */
+.media-item:hover .media-image {
+  transform: scale(1.02);
+  filter: brightness(1.03);
+}
+
+.media-item:hover {
+  /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); */
+  transform: translateY(-1px);
+}
+
+.stacked-item:hover .stacked-image,
+.stacked-item:hover .stacked-video {
+  transform: scale(1.02);
+  filter: brightness(1.03);
+}
+
+/* Image Quality and Loading */
+.media-element {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.media-item.loading {
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e6ea 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  position: relative;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Responsive Design for Corporate Photos */
+@media (max-width: 768px) {
+  .social-media-container {
+    max-width: 100%;
+    margin: 0 10px;
+    border-radius: 8px;
+  }
+  
+  .layout-single .media-element {
+    height: 300px !important;
+    max-height: 300px;
+  }
+  
+  .layout-double .media-element {
+    height: 180px !important;
+  }
+  
+  /* Stack triple layout vertically on mobile */
+  .layout-triple .media-row {
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .layout-triple .col-xs-8,
+  .layout-triple .col-xs-4 {
+    width: 100% !important;
+    padding: 0;
+  }
+  
+  .layout-triple .stacked-container {
+    padding-left: 0;
+    margin-top: 3px;
+  }
+  
+  .layout-triple .stacked-media {
+    flex-direction: row;
+    height: 150px;
+    gap: 3px;
+  }
+  
+  .layout-quad .media-element {
+    height: 140px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-media-container {
+    margin: 0 5px;
+    border-radius: 6px;
+  }
+  
+  .layout-single .media-element {
+    height: 250px !important;
+  }
+  
+  .layout-double .media-element {
+    height: 150px !important;
+  }
+  
+  .layout-triple .media-element {
+    height: 130px !important;
+  }
+  
+  .layout-quad .media-element {
+    height: 120px !important;
+  }
+  
+  /* Force single column on very small screens */
+  .force-mobile .col-xs-6,
+  .force-mobile .col-xs-4,
+  .force-mobile .col-xs-3,
+  .force-mobile .col-xs-8 {
+    width: 100% !important;
+    margin-bottom: 3px;
+  }
+}
+
+/* Video Specific Enhancements */
+.media-video {
+  outline: none;
+  border-radius: 8px;
+}
+
+/* .media-video::-webkit-media-controls-panel {
+  background: linear-gradient(transparent */

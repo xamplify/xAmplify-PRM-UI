@@ -2715,6 +2715,11 @@ export class ReferenceService {
   goToRouter(url: string) {
     this.router.navigate([url]);
   }
+
+  goToRouterByNavigateUrl(url: string) {
+    this.router.navigateByUrl(url);
+  }
+
   goToPageNotFound() {
     this.router.navigate(["/404"]);
   }

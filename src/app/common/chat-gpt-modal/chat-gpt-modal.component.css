@@ -567,7 +567,7 @@ max-height: calc(100vh - 220px);
 .message {
   margin-bottom: 15px;
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 .message.agent {
   justify-content: flex-start;
@@ -607,6 +607,7 @@ max-height: calc(100vh - 220px);
   margin-bottom: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  overflow-x: auto;
 }
 .heading_text{
   margin-top: 0;
@@ -678,6 +679,8 @@ max-height: calc(100vh - 220px);
   background: radial-gradient(circle closest-side,#000 90%,#0000) 0/calc(100%/3) 100% space;
   clip-path: inset(0 100% 0 0);
   animation: l1 2s steps(4) infinite;
+  float: left;
+  margin: 10px 0px 0px 3px;
 }
 @keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
 
@@ -1673,8 +1676,8 @@ circle.front {
 .dropdown-container {
   position: relative;
   display: inline-block;
-  padding-top: 120px;
-  margin-top: -120px;
+  padding-top: 19px;
+  margin-top: -19px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1691,7 +1694,7 @@ circle.front {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 5px;
+  top: -95px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1920,3 +1923,67 @@ button.image-only-button img {
   max-height: 132px !important;
 }
 
+.status_message {
+  float: inline-start;
+}
+
+/* Input area expand */
+.oliver_input {
+  transition: all 0.3s ease;
+}
+
+/* Default layout */
+.oliver_input.single-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Multi-line layout */
+.oliver_input.multi-line {
+  display: block;
+}
+
+/* Textarea */
+.oliver_input textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  border-radius: 30px;
+  padding: 6px 13px;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+  min-height: 24px;
+  max-height: calc(2.1em * 6);
+  min-width: auto;
+}
+
+.oliver_input textarea::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+
+/* Button area */
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.image-only-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.image-only-button:hover {
+  background-color: #f3f4f6;
+}

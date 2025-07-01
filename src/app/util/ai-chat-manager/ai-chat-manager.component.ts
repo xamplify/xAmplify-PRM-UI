@@ -16,6 +16,8 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { OliverPromptSuggestionDTO } from 'app/common/models/oliver-prompt-suggestion-dto';
+import { ExecutiveReport } from 'app/common/models/oliver-report-dto';
+import { Observable, Subscription } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -28,6 +30,7 @@ export class AiChatManagerComponent implements OnInit {
   @Input() chatGptSettingDTO: any;
   @Input() selectedContact: any;
   @Input() callActivity: any;
+  @Input() isFromManageContact: boolean;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -102,6 +105,10 @@ export class AiChatManagerComponent implements OnInit {
   oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
   suggestedPromptDTOs: OliverPromptSuggestionDTO[] = [];
   selectedPromptId: number;
+  statusMessage: string = '';
+  private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
+  private messageIndex: number = 0;
+  private intervalSub: Subscription;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -127,7 +134,7 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
       // this.getThreadId(this.chatGptIntegrationSettingsDto);
-    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined) {
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
@@ -144,6 +151,9 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.userListId = this.callActivity.userListId;
       // this.getThreadId(this.chatGptIntegrationSettingsDto);
       this.referenceService.goToTop();
+    } else if (this.isFromManageContact) {
+      this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
+      this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
     } else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -164,7 +174,11 @@ export class AiChatManagerComponent implements OnInit {
     this.oliverPromptSuggestionDTOs = [];
     if (this.authenticationService.companyProfileName !== undefined &&
       this.authenticationService.companyProfileName !== '') {
-      this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+        if (this.assetId && this.isPartnerView) {
+          this.getRandomOliverSuggestedPromptsByDamId(this.assetId);
+        } else if (this.asset != null && this.asset != undefined && this.asset.id) {
+          this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
+        }
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
@@ -287,19 +301,33 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    self.startStatusRotation();
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
         self.isLoading = false;
+        self.stopStatusRotation();
         var content = response.data;
         var reply = 'No response received from Oliver.';
-
+        let isReport = response.data.isReport;
         if (content) {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+
+          let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+          if (isReport == 'true') {
+            try {
+              const cleanJsonStr = self.extractJsonString(message);
+              message = self.parseOliverReport(cleanJsonStr);
+            } catch (error) {
+              isReport = 'false';
+              message = self.chatGptGeneratedText;
+            }
+          }
+
+          self.messages.push({ role: 'assistant', content: message, isReport: isReport });
           self.threadId = content.threadId;
         } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
+          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.', isReport: isReport });
         }
         this.trimmedText = '';
         this.selectedPromptId = null;
@@ -308,7 +336,8 @@ export class AiChatManagerComponent implements OnInit {
         this.selectedPromptId = null;
         self.isLoading = false;
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
+        self.stopStatusRotation();
       }
     );
   }
@@ -318,7 +347,10 @@ export class AiChatManagerComponent implements OnInit {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
-      } else if (this.isFromContactJourney) {
+      } else if (this.isFromContactJourney || this.isFromManageContact) {
+        if (this.isFromManageContact) {
+          this.saveChatHistoryTitle(this.chatHistoryId);
+        }
         this.selectedContact = undefined;
         this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
@@ -446,10 +478,11 @@ export class AiChatManagerComponent implements OnInit {
         this.openHistory = true;
         this.isLoading = false;
         if (response.statusCode == 200) {
+          let isReport = 'false';
           let messages = response.data;
           messages.forEach((message: any) => {
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
@@ -905,6 +938,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+            this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
           }
         }
       }, error => {
@@ -913,8 +947,11 @@ export class AiChatManagerComponent implements OnInit {
       if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
         this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
-      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined)) {
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact) {
         this.getChatHistory();
+      }
+      if (this.isFromManageContact) {
+        this.uploadContactDetails();
       }
     });
   }
@@ -982,7 +1019,7 @@ export class AiChatManagerComponent implements OnInit {
     this.oliverPromptSuggestionDTOs = [];
     if (assetId) {
       this.isPdfUploading = true;
-      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName).subscribe(
+      this.chatGptSettingsService.getRandomOliverSuggestedPromptsByDamId(assetId, this.vendorCompanyProfileName, this.isPartnerView).subscribe(
         response => {
           let statusCode = response.statusCode;
           let data = response.data;
@@ -1036,5 +1073,271 @@ export class AiChatManagerComponent implements OnInit {
     this.validateInputText();
   }
   /** XNFR-1009 end **/
+
+  uploadContactDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "CONTACTAGENT";
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadContactDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  extractJsonString(raw: string): string {
+    const firstBrace = raw.indexOf('{');
+    const lastBrace = raw.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
+      throw new Error('No valid JSON object found in input');
+    }
+    return raw.substring(firstBrace, lastBrace + 1);
+  }
+
+  parseOliverReport(jsonStr: string): ExecutiveReport {
+    const j = JSON.parse(jsonStr);
+
+    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+
+    const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
+    const dealPipelinePrograssion = {
+      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+    };
+
+    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+
+    const campaignPerformanceAnalysis = {
+      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: campaignItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.count == 'string'
+            ? Number(item.count.replace(/[^0-9.-]+/g, ''))
+            : item.count ? item.count : 0
+        }))
+      }],
+      seriesString: '',
+    };
+
+    const dto: ExecutiveReport = {
+      /* ---------- top-level meta ---------- */
+      report_title: j && j.report_title ? j.report_title : '',
+      subtitle: j && j.subtitle ? j.subtitle : '',
+      date_range: j && j.date_range ? j.date_range : '',
+      report_owner: j && j.report_owner ? j.report_owner : '',
+      report_recipient: j && j.report_recipient ? j.report_recipient : '',
+
+      /* ---------- KPI overview ---------- */
+      kpi_overview: {
+        title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+        description: j && j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+        items: j && j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+      },
+
+      /* ---------- summary overview ---------- */
+      summary_overview: {
+        title: j && j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+        description: j && j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+        items: j && j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+      },
+
+      /* ---------- performance indicators ---------- */
+      performance_indicators: {
+        title: j && j.performance_indicators && j.performance_indicators.title ? j.performance_indicators.title : '',
+        description: j && j.performance_indicators && j.performance_indicators.description ? j.performance_indicators.description : '',
+        items: j && j.performance_indicators && j.performance_indicators.items ? j.performance_indicators.items : []
+      },
+
+      /* ---------- campaign performance analysis ---------- */
+      campaign_performance_analysis: {
+        top_performing_campaign_type:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.top_performing_campaign_type
+            ? j.campaign_performance_analysis.top_performing_campaign_type
+            : '',
+        campaign_engagement_state: {
+          connected:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.connected
+              ? j.campaign_performance_analysis.campaign_engagement_state.connected
+              : 0,
+          idle:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.idle
+              ? j.campaign_performance_analysis.campaign_engagement_state.idle
+              : 0,
+          other:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.other
+              ? j.campaign_performance_analysis.campaign_engagement_state.other
+              : 0
+        },
+        notes:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.notes
+            ? j.campaign_performance_analysis.notes
+            : ''
+      },
+
+      /* ---------- lead-progression funnel ---------- */
+      lead_progression_funnel: leadProgressionFunnelData,
+
+      /* ---------- pipeline progression ---------- */
+      pipeline_progression: {
+        deal_stages:
+          j && j.pipeline_progression && j.pipeline_progression.deal_stages
+            ? j.pipeline_progression.deal_stages
+            : {},
+        highest_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.highest_deal_value
+            ? j.pipeline_progression.highest_deal_value
+            : '',
+        average_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.average_deal_value
+            ? j.pipeline_progression.average_deal_value
+            : '',
+        notes:
+          j && j.pipeline_progression && j.pipeline_progression.notes
+            ? j.pipeline_progression.notes
+            : ''
+      },
+
+
+      /* ---------- contact-journey timeline ---------- */
+      contact_journey_timeline: {
+        title:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.title
+            ? j.contact_journey_timeline.title
+            : '',
+        description:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.description
+            ? j.contact_journey_timeline.description
+            : '',
+        items:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.items
+            ? j.contact_journey_timeline.items
+            : []
+      },
+
+
+      /* ---------- strategic insights ---------- */
+      strategic_insights: {
+        title:
+          j && j.strategic_insights && j.strategic_insights.title
+            ? j.strategic_insights.title
+            : '',
+        description:
+          j && j.strategic_insights && j.strategic_insights.description
+            ? j.strategic_insights.description
+            : '',
+        items:
+          j && j.strategic_insights && j.strategic_insights.items
+            ? j.strategic_insights.items
+            : []
+      },
+
+      /* ---------- recommended next steps ---------- */
+      recommended_next_steps: {
+        title:
+          j && j.recommended_next_steps && j.recommended_next_steps.title
+            ? j.recommended_next_steps.title
+            : '',
+        description:
+          j && j.recommended_next_steps && j.recommended_next_steps.description
+            ? j.recommended_next_steps.description
+            : '',
+        items:
+          j && j.recommended_next_steps && j.recommended_next_steps.items
+            ? j.recommended_next_steps.items
+            : []
+      },
+
+      /* ---------- conclusion ---------- */
+      conclusion: {
+        title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
+        description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
+      },
+
+      dealPipelinePrograssion: dealPipelinePrograssion,
+
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+    };
+
+    return dto;
+  }
+
+  startStatusRotation() {
+    this.statusMessage = this.loaderMessages[0];
+    this.messageIndex = 1;
+    let intervalTime = 5000;
+
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+
+    this.intervalSub = Observable.interval(intervalTime).subscribe(() => {
+      this.statusMessage = this.loaderMessages[this.messageIndex % this.loaderMessages.length];
+      this.messageIndex++;
+      intervalTime += intervalTime;
+      if (this.messageIndex == (this.loaderMessages.length - 1)) {
+        this.stopStatusRotation();
+      }
+    });
+  }
+
+  stopStatusRotation() {
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
+
+  saveChatHistoryTitle(chatHistoryId: any) {
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
+    this.messages = [];
+    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
+        } else if (statusCode === 400) {
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
+        }
+      }, error => {
+
+      });
+  }
 
 }
