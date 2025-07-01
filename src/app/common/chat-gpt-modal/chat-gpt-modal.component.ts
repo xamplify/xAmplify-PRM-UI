@@ -908,6 +908,9 @@ export class ChatGptModalComponent implements OnInit {
 
   handleFolders(event: any[]) {
     this.selectedFolders = event;
+    if (this.isReUpload && (this.selectedFolders || this.selectedFolders.length > 0)) {
+      this.selectedAssets = [];
+    }
   }
 
   getAssetPathsByCategoryIds() {

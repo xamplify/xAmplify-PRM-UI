@@ -1346,9 +1346,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     this.referenceService.goToRouterByNavigateUrl('/home/dam/add?from=manage');
   }
 
-        handleFolders(event) {
-                this.notifyFolders.emit(event);
-        }
+	handleFolders(event) {
+		this.notifyFolders.emit(event);
+	}
 	private setOliverViewType() {
     if (this.FromOliverPopUp) {
       let oliverViewType: string;
