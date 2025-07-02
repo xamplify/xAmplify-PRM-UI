@@ -3707,6 +3707,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.userListPaginationWrapper.pagination = this.pagination;
 			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+			this.userListPaginationWrapper.userList.editList = true;
 			this.contactListObj.id = this.selectedContactListId;
 			this.contactListObj.moduleName = this.checkingContactTypeName + 's';
 			this.contactListObj.name = this.contactListName;
@@ -3724,12 +3725,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(data => {
 					if (data.statusCode == 200) {
 						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-					}
-					if (data.statusCode == 401) {
+					} else if (data.statusCode == 401) {
 						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
 					}
-				},
-					error => this.xtremandLogger.error(error),
+				}, error => this.xtremandLogger.error(error),
 					() => this.xtremandLogger.info("editContactsComponent downloadListUserListCsv() finished"));
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "downloadListUserListCsv()");

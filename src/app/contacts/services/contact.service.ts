@@ -164,6 +164,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
+            pagination.exportToExcel = false; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -223,6 +224,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
+            pagination.exportToExcel = false; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -953,9 +955,24 @@ export class ContactService {
     }
 
     downloadUserListCsv(userId: number, userListPaginationWrapper: UserListPaginationWrapper) {
-        return this._http.post(this.contactsUrl + "download/" + userId + "?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
+        if (userListPaginationWrapper.userList.moduleName == 'contacts' || userListPaginationWrapper.userList.moduleName == 'partners') {
+            this.logger.info("download user-list-contacts: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            let pagination = new Pagination();
+            pagination = userListPaginationWrapper.pagination;
+            pagination.exportToExcel = true;
+            pagination.userId = this.authenticationService.getUserId();
+            pagination.userListId = userListPaginationWrapper.userList.id;
+            pagination.type = userListPaginationWrapper.userList.contactType;
+            pagination.moduleName = userListPaginationWrapper.userList.moduleName;
+            pagination.editCampaign = userListPaginationWrapper.userList.editList;
+            let url = this.contactsV2Url + "download/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url, pagination);
+        } else {
+            this.logger.info("download user-list-contacts: V1 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
+            return this._http.post(this.contactsUrl + "download/" + userId + "?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
             .map(this.extractData)
             .catch(this.handleError);
+        }
     }
     getCompaniesForDropdown() {
         var url = this.companyUrl + "list" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
@@ -989,6 +1006,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
+            pagination.exportToExcel = false; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -1066,12 +1084,6 @@ export class ContactService {
         let loggedInUserId = this.authenticationService.getUserId();
         let url = this.contactsUrl + 'default-contact-list' + '/userId/' + loggedInUserId + '/moduleName/' + moduleName + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
-    }
-
-    /***** XNFR-1011 *****/
-    findUserListContactsByType(pagination: Pagination) {
-        let url = this.contactsV2Url + "paginated/user-list-contacts" + "?access_token=" + this.authenticationService.access_token;
-        return this.authenticationService.callPostMethod(url, pagination);
     }
 
     /***** XNFR-1011 *****/

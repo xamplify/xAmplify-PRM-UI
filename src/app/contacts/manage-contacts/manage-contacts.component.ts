@@ -3061,18 +3061,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	downloadUserListCsv() {
 		this.userListPaginationWrapper.userList.isDownload = true;
+		this.userListPaginationWrapper.userList.editList = false;
 		try {
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						if (data.statusCode == 200) {
 							this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-						}
-						if (data.statusCode == 401) {
+						} else if (data.statusCode == 401) {
 							this.customResponse = new CustomResponse('SUCCESS', data.message, true);
 						}
-					},
-					(error: any) => {
+					}, (error: any) => {
 						this.xtremandLogger.error(error);
 						this.xtremandLogger.errorPage(error);
 					});
