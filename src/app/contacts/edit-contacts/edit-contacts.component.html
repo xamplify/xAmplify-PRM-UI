@@ -1516,6 +1516,9 @@
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate
 													scope="col">Reason</th>
+					  							<th scope="col"
+													*ngIf="(contactsByType.selectedCategory === 'deactivated')">
+													Deactivated On</th>
 												<th scope="col"
 													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads) || contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory =='unsubscribed' || isPartner)">
 													Actions</th>
@@ -1698,10 +1701,18 @@
 																*ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
 														</h5>
 													</td>
+													<td class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory === 'deactivated' && isPartner">
+														<app-timestamp [dateAndTime]="allcontacts.deactivatedOn"> </app-timestamp>
+													</td>
 													<td class="hidden-xs text-center" *ngIf="contactsByType.selectedCategory === 'deactivated'">
-														<button class="btn btn-primary" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
-															(click)="showActivatePartnersAlert(allcontacts.partnershipId)" translate>Activate
-														</button>
+														<div  class="actions-block override-actions" style="float:none !important;">
+														<a class="custom-icon" data-toggle="tooltip" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+															data-placement="bottom" [title]="'Activate Partnership'"
+															(click)="showActivatePartnersAlert(allcontacts.partnershipId)">
+															<i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+															<div class="clickicons"></div>
+														</a>
+														</div>
 													</td>
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">

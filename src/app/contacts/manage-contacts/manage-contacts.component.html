@@ -1361,7 +1361,10 @@
                                           </th>
                                           <th class="text-center"
                                              *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all' || contactsByType.selectedCategory == 'deactivated') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
-                                             translate scope="row"></th>
+                                             translate scope="row"><span *ngIf="contactsByType.selectedCategory == 'deactivated'">Activate</span></th>
+                                          <th class="text-center"
+                                             *ngIf="((contactsByType.selectedCategory == 'deactivated') && isPartner)"
+                                             translate scope="row">Deactivated On</th>
                                           <th *ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !=='excluded'"
                                              scope="row"></th>
                                           <ng-container
@@ -1512,11 +1515,18 @@
                                                    <span *ngIf="contact.unsubscribedReason?.length>30">..</span>
                                                 </h5>
                                              </td>
-                                             <td *ngIf="contactsByType.selectedCategory === 'deactivated'">
-                                                <button class="btn btn-primary ml15 m0"
-                                                   *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces" 
-                                                   (click)="showActivatePartnersAlert(contact.partnershipId)" translate>Activate
-                                                </button>
+                                             <td class="text-center" *ngIf="contactsByType.selectedCategory === 'deactivated'">
+                                                <div  class="actions-block override-actions" style="float:none !important;">
+                                                <a class="custom-icon" data-toggle="tooltip" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+                                                   data-placement="bottom" [title]="'Activate Partnership'"
+                                                   (click)="showActivatePartnersAlert(contact.partnershipId)">
+                                                   <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                                </div>
+                                             </td>
+                                             <td class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory === 'deactivated' && isPartner">
+                                                <app-timestamp [dateAndTime]="contact.deactivatedOn"> </app-timestamp>
                                              </td>
                                              <td
                                                 *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
