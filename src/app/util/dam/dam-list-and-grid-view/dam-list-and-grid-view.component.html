@@ -645,7 +645,7 @@
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
 				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
-					[selectedFoldersForOliver]="selectedFoldersForOliver" [modulesDisplayType]="modulesDisplayType"
+					[selectedFoldersForOliver]="selectedFolderItems" [modulesDisplayType]="modulesDisplayType"
 					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
 					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
 					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>

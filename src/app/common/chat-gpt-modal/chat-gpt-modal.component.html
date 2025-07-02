@@ -786,8 +786,9 @@
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5"
           [disabled]="(!isReUpload && selectedAssets?.length === 0 && selectedFolders?.length === 0) || 
-            (isReUpload && (selectedFolders?.length === 0 && (!uploadedAssets || uploadedAssets?.length === 0)))"
-          (click)="submitSelectedAssetsToOliver()">Ask Oliver 
+            (isReUpload && ((!uploadedFolders || uploadedFolders?.length === 0) 
+            && (!uploadedAssets || uploadedAssets?.length === 0)))"
+          (click)="submitSelectedAssetsToOliver()">Ask Oliver
         </button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
