@@ -149,10 +149,10 @@ export class FeedPreviewModalComponent implements OnInit, OnDestroy {
         items: [{
           media: media,
           colClass: 'col-xs-12',
-          height: `${finalHeight}px`,
+          height: `auto`,
           objectFit: this.getObjectFit(media, this.containerWidth, finalHeight)
         }],
-        height: `${finalHeight}px`
+        height: `auto`
       }]
     };
   }
