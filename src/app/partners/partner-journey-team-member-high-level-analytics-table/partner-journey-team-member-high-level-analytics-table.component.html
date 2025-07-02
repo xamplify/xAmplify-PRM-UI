@@ -3,7 +3,7 @@
     <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="pj-team-member-details-div">
       <h3 class="panel-title mt7">Team Member Details</h3>
       <div style="display:flex;">
-        <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+        <button *ngIf="!fromDeactivatedPartnersDiv" class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
         <div class="float-left">
           <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
             (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">

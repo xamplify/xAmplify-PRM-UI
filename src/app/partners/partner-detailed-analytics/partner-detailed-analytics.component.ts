@@ -15,6 +15,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 })
 export class PartnerDetailedAnalyticsComponent implements OnInit {
   @Input() partnerCompanyId: any;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   @Output() notifyCloseDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();

@@ -7,7 +7,7 @@
     <h3 class="panel-title mt7">Team Member Details</h3>
   </div>
     <div class="col-xs-12 col-sm-12 col-lg-9 reminder_btn margin_14">
-    <button class=" btn btn-primary mr5" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+    <button *ngIf="!fromDeactivatedPartnersDiv" class=" btn btn-primary mr5" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
     <button class="mt25m btn btn-xs l-g-view mr5" data-placement="bottom"
     [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
     <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""

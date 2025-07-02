@@ -1750,7 +1750,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
  goToDeactivatePartnersDiv(){
         this.isdeactivatePartnersDiv = true;
-         this.loadAllCharts = false;
+         this.loadAllCharts = true;
+         this.reloadWithFilter = false;
          this.selectedTabIndex = 9;
          this.isThroughPartnerDiv = false;
          this.isInactivePartnersDiv = false;
@@ -1760,9 +1761,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.isIncompleteCompanyProfileDiv = false;
          this.isSingUpPendingDiv = false;
          this.totalPartnersDiv = false;
-         this.getActivePartnerReports();
+        //  this.getActivePartnerReports();
          this.loadCountryData();
-         this.getPartnersRedistributedCampaignsData();
+        setTimeout(() => {
+             this.getPartnersRedistributedCampaignsData();
+             this.reloadWithFilter = true;
+             this.loadAllCharts = false;
+        }, 500);
     }
 
 
