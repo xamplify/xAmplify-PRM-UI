@@ -43,7 +43,7 @@
   </div>
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
-    <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
+    <app-partner-journey-team-members-table [fromDeactivatedPartnersDiv]="fromDeactivatedPartnersDiv" [partnerCompanyId]="partnerCompanyId"
       (notifyTeamMemberSelection)="applyTeamMemberSelection($event)" [partnerStatus]="partnerStatus" 
       [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
     </app-partner-journey-team-members-table>

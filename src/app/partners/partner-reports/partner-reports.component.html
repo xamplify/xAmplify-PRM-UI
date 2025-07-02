@@ -293,7 +293,7 @@
                    <div class="number">{{totalDeactivatePartnersCount}}</div>
                    <div class="desc" data-toggle="tooltip" data-placement="top"
                      title="Deactivated {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">
-                     Deactivated {{authenticationService?.partnerModule?.customName}}s
+                     Deactivated {{authenticationService?.partnerModule?.customName}}
                    </div>
                  </div>
                  <span id="permhref" class="morePadding">
@@ -1184,7 +1184,7 @@
 
 <!--*******************Detailed Analytics****************-->
 <div *ngIf="showDetailedAnalytics">
-  <app-partner-detailed-analytics [partnerCompanyId]="detailedAnalyticsPartnerCompany"
+  <app-partner-detailed-analytics [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [partnerCompanyId]="detailedAnalyticsPartnerCompany"
     (notifyCloseDetailedAnalytics)="closeDetailedAnalytics()"></app-partner-detailed-analytics>
 </div>
 

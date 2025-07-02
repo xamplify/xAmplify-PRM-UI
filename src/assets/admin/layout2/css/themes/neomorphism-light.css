@@ -4714,3 +4714,10 @@ button.btn.btn-primary.dropdown-toggle.border_btn{
   border-color: none !important;
   outline: none !important;
 }
+.oliverImgIcon,.oliveImg{
+  filter: unset !important;
+}
+.gridIconCustomization a.oliverhover:hover,.gridIconCustomization a.Iconhover.oliverhover:hover{
+  background: linear-gradient(225deg, #dde6ec, #ffffff)!important;
+  box-shadow: unset !important;
+}

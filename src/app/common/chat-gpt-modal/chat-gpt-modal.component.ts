@@ -155,6 +155,7 @@ export class ChatGptModalComponent implements OnInit {
   private intervalSub: Subscription;
   socialShareOption: boolean = false;
   designAccess: boolean = false;
+  uploadedFolders: any[];
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -606,8 +607,13 @@ export class ChatGptModalComponent implements OnInit {
 }
 
   openAssetsPage() {
-    if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
+    if (this.isReUpload && this.selectedAssets.length > 0 &&
+      (!this.uploadedAssets || this.uploadedAssets.length == 0)) {
       this.uploadedAssets = this.selectedAssets;
+    }
+    if (this.isReUpload && this.selectedFolders.length > 0 &&
+      (!this.uploadedFolders || this.uploadedFolders.length == 0)) {
+      this.uploadedFolders = this.selectedFolders;
     }
     this.showView = true;
   }
@@ -619,20 +625,33 @@ export class ChatGptModalComponent implements OnInit {
     } else {
       this.uploadedAssets = event;
     }
+
+    if (this.isReUpload && (this.uploadedFolders && this.uploadedFolders.length > 0)) {
+      this.uploadedAssets = [];
+    }
   }
   
 
   submitSelectedAssetsToOliver() {
     this.assetLoader = true;
     this.showOpenHistory = false;
-    if (this.selectedFolders.length == 0) {
+    if (this.isReUpload && (!this.uploadedFolders || this.uploadedFolders.length == 0)) {
+      this.selectedFolders = [];
+    }
+    if (this.selectedFolders.length === 0 && (!this.uploadedFolders || this.uploadedFolders.length === 0)) {
       if (this.isReUpload && this.uploadedAssets != undefined && this.uploadedAssets.length > 0) {
         this.selectedAssets = this.uploadedAssets;
+        this.selectedFolders = [];
+        this.uploadedFolders = [];
       }
       this.pdfFiles = this.selectedAssets;
-      // this.getPdfByAssetPaths(this.selectedAssets);
       this.getUploadedFileIds();
     } else {
+      if (this.isReUpload && this.uploadedFolders != undefined && this.uploadedFolders.length > 0) {
+        this.selectedFolders = this.uploadedFolders;
+        this.selectedAssets = [];
+        this.uploadedAssets = [];
+      }
       this.getAssetPathsByCategoryIds();
     }
     this.showView = false;
@@ -886,7 +905,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 }
 
- closeManageAssets() {
+  closeManageAssets() {
     this.showView = false;
     if (!this.isReUpload && !this.isfileProcessed) {
       this.selectedAssets = [];
@@ -907,7 +926,11 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   handleFolders(event: any[]) {
-    this.selectedFolders = event;
+    if (!this.isReUpload) {
+      this.selectedFolders = event;
+    } else {
+      this.uploadedFolders = event;
+    }
   }
 
   getAssetPathsByCategoryIds() {

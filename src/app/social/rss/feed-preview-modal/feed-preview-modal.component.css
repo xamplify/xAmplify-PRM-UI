@@ -167,8 +167,8 @@
 
 .layout-single .media-element {
   border-radius: 12px;
-  max-height: 600px;
-  min-height: 200px;
+  /* max-height: 600px;
+  min-height: 200px; */
 }
 
 .layout-single .media-item {
@@ -317,8 +317,8 @@
   }
   
   .layout-single .media-element {
-    height: 300px !important;
-    max-height: 300px;
+    /* height: 300px !important;
+    max-height: 300px; */
   }
   
   .layout-double .media-element {
@@ -360,7 +360,7 @@
   }
   
   .layout-single .media-element {
-    height: 250px !important;
+    /* height: 250px !important; */
   }
   
   .layout-double .media-element {

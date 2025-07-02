@@ -1910,7 +1910,7 @@ body {
 .suggestion-direction-global-chat-down{
     position: absolute;
     bottom: 45px;
-    right: 200px;
+    right: 140px;
     width: 0;
     height: 0;
     border-left: 12px solid transparent;

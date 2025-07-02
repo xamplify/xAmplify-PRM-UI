@@ -47,7 +47,6 @@
 	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
-		<div class="clickicons"></div>
 	</a>
 	<a class="Iconhover custom-grid-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp"
 		(click)="asset.approvalStatus !== 'DRAFT' ? showCommentsAndHistoryModalPopup(asset) : ''" 
@@ -59,7 +58,6 @@
 	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
-		<div class="clickicons"></div>
 	</a>
 	 <a *ngIf="(!isPartnerView && asset?.delete) && !FromOliverPopUp" class="delete custom-icon" data-toggle="tooltip"
 		data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i class="fa fa-trash-o"

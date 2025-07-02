@@ -1526,7 +1526,8 @@
                                                 </div>
                                              </td>
                                              <td class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory === 'deactivated' && isPartner">
-                                                <app-timestamp [dateAndTime]="contact.deactivatedOn"> </app-timestamp>
+                                                <app-timestamp *ngIf="contact.deactivatedOn != null  && contact.deactivatedOn !='' " [dateAndTime]="contact.deactivatedOn"> </app-timestamp>
+                                                <h4 *ngIf="contact.deactivatedOn == null  || contact.deactivatedOn ===''"><strong>-</strong></h4>
                                              </td>
                                              <td
                                                 *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">

@@ -412,7 +412,7 @@
                 <div role="tabpanel"
                   [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}"
                   id="askpdf">
-                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'askpdf'">
+                  <ng-container *ngIf="showOpenHistory && activeTab === 'askpdf'">
                     <div class="main-container newChatlabel">
                       <ng-container *ngFor="let msg of messages; let i = index">
                         <ng-template [ngTemplateOutlet]="messageTemplate"
@@ -785,8 +785,11 @@
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5"
-          [disabled]="(!isReUpload && selectedAssets.length == 0 && selectedFolders.length == 0) || (isReUpload && uploadedAssets?.length == 0)"
-          (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
+          [disabled]="(!isReUpload && selectedAssets?.length === 0 && selectedFolders?.length === 0) || 
+            (isReUpload && ((!uploadedFolders || uploadedFolders?.length === 0) 
+            && (!uploadedAssets || uploadedAssets?.length === 0)))"
+          (click)="submitSelectedAssetsToOliver()">Ask Oliver
+        </button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
 </div>

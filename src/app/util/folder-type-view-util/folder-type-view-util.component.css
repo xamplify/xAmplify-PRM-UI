@@ -312,11 +312,6 @@ h4.folder-name.align-titletext {
     top: -1px;
     position: relative;
 }
-
-.gridIconCustomization a.Iconhover.oliverhover:hover {
-    background: none !important;
-}
-
 span.select-check-box {
     position: absolute;
     background: #fff;

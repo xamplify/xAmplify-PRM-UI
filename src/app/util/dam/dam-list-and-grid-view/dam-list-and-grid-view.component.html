@@ -54,8 +54,8 @@
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView" class="text-center"><input
 													class="chk checkBox_shadow" type="checkbox" [checked]="isSelected(asset)"
 													(change)="onCheckboxChange(asset, $event)"
-													[disabled]="asset.disableAccessForOliver || oliverIntegrationType != 'openai' ? 
-													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1">
+													[disabled]="asset.disableAccessForOliver || (oliverIntegrationType != 'openai' ? 
+													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1)">
 											</td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
@@ -645,7 +645,7 @@
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
 				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
-					[selectedFoldersForOliver]="selectedFoldersForOliver" [modulesDisplayType]="modulesDisplayType"
+					[selectedFoldersForOliver]="selectedFolderItems" [modulesDisplayType]="modulesDisplayType"
 					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
 					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
 					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
@@ -689,7 +689,7 @@
 					<div class="d-flex">
 
                                       <div class="hidden-xs pull-right downloadteam mr5" *ngIf="!FromOliverPopUp && !isPartnerView">
-                                        <button class="btn btn-primary fileinput-button upload-label" (click)="navigateToUploadAsset()" style="border-radius: 7px 0 0 7px!important;">
+                                        <button class="btn btn-primary fileinput-button upload-label mr0" (click)="navigateToUploadAsset()" style="border-radius: 7px 0 0 7px!important;">
                                                  Upload File
                                         </button>
                                         <div class="btn-group">
