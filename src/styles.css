@@ -3480,3 +3480,6 @@ h5.oliver-heading-color{
   display: block;
   margin: 10px auto;
 }
+.gridIconCustomization a.oliverhover:hover,.gridIconCustomization a.Iconhover.oliverhover:hover {
+    background:none !important;
+}
