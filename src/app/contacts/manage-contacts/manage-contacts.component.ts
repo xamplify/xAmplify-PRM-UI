@@ -475,8 +475,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						(error: any) => {
 							this.xtremandLogger.error(error);
 							this.xtremandLogger.errorPage(error);
-						},
-						() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
+						}, () => {
+							let moduleId = this.route.snapshot.params['id'];
+							if (moduleId != undefined) {
+								this.loadContactsByType(moduleId);
+							}
+							this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished");
+						}
 					)
 				this.sortOption = this.sortOptions[0];
 			} catch (error) {
@@ -2583,10 +2588,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	ngOnInit() {
-		let moduleId = this.route.snapshot.params['id'];
-		if (moduleId != undefined) {
-			this.loadContactsByType(moduleId)
-		}
 		this.callInitMethods();
 		/**** user guide ****/
 		this.getMergeTagsForDifferentModules();
