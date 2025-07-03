@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import{FormsModule } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 declare var swal:any;
 @Component({
   selector: 'app-choose-emailtemplate',
@@ -20,7 +21,7 @@ TemplateColorSelection = ['Default Colors', 'Brand Colors'];
 isOliverCreateUrl: boolean;
 selectedType: any = this.TemplateColorSelection[0];
   isConfirmed: boolean;
-  constructor(public authenticationService: AuthenticationService) { }
+  constructor(public authenticationService: AuthenticationService,public referenceService: ReferenceService) { }
 
   ngOnInit() {
     if(this.pageView){
@@ -101,5 +102,9 @@ selectedType: any = this.TemplateColorSelection[0];
     //   self.isConfirmed = false;
     //   self.generateEmailTemplate();
     // });
+  }
+
+  previewEmailTemplate(emailTemplate: any) {
+    this.referenceService.previewOliverDefaultTemplateInNewTab(emailTemplate.id, this.authenticationService.getUserId());
   }
 }
