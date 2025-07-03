@@ -263,8 +263,8 @@
                  <div class="details">
                    <div class="number">{{totalPartnersCount}}</div>
                    <div class="desc" data-toggle="tooltip" data-placement="top"
-                     title="All {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">
-                     All {{authenticationService?.partnerModule?.customName | slice:0:10}}s
+                     title="All {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
+                     All {{authenticationService?.partnerModule?.customName | slice:0:10}}
                      <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                    </div>
                  </div>
@@ -292,7 +292,7 @@
                  <div class="details">
                    <div class="number">{{totalDeactivatePartnersCount}}</div>
                    <div class="desc" data-toggle="tooltip" data-placement="top"
-                     title="Deactivated {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">
+                     title="Deactivated {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
                      Deactivated {{authenticationService?.partnerModule?.customName}}
                    </div>
                  </div>
