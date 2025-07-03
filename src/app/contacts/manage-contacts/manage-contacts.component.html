@@ -706,7 +706,7 @@
                                              <td *ngIf="!authenticationService.isSuperAdmin()">
                                                 <div class="actions-block override-actions"
                                                    style="float:none !important;"
-                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
+                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !(masterContactListSync && contactList.isDefaultContactList) && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                                                    <a class="custom-icon"
                                                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                     || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
@@ -818,7 +818,7 @@
                                                    <!--XNFR-342---->
                                                 </div>
                                                 <div class="actions-block override-actions"
-                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !(masterContactListSync && contactList.isDefaultContactList) && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                                       ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                                                       || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -828,7 +828,7 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                 </div>
-                                                <div class="actions-block actions-msg" *ngIf="(contactList.uploadInProgress || contactList.validationInProgress) && (!sharedLeads || !isPartner)">
+                                                <div class="actions-block actions-msg" *ngIf="(contactList.uploadInProgress || contactList.validationInProgress || (masterContactListSync && contactList.isDefaultContactList)) && (!sharedLeads || !isPartner)">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()">
                                                       <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                                       <div class="clickicons"></div>

@@ -3100,7 +3100,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			response => {
 				if (response.statusCode == 200) {
 					this.masterContactListSync = true;
-					this.customResponse = new CustomResponse('SUCCESS', "We are Synchronizing your Master Contact List", true);
+					let message = "We are Synchronizing your Master Contact List. If you'd like to take a break, we'll continue processing it in the background.";
+					this.customResponse = new CustomResponse('SUCCESS', message, true);
 				}
 			},
 			error => {
