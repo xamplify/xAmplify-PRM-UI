@@ -773,6 +773,14 @@
                         </button>
                       </div>
                     </div>
+                    <div *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'contactagent'" class="action-buttons">
+                      <button class="action-btn" (click)="setInputText('Give me the details of the contact')">Give me the details of the
+                        contact</button>
+                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an
+                        Executive Summary of the...</button>
+                      <button class="action-btn" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the
+                        contact</button>
+                    </div>
                   </div>
                 </div>
             <!-- -add changes- -->
