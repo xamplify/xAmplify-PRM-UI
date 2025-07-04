@@ -811,6 +811,7 @@ export class ChatGptModalComponent implements OnInit {
     }
     self.isValidInputText = false;
     self.startStatusRotation();
+    let previousTab = this.activeTab;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         let statusCode = response.statusCode;
@@ -855,6 +856,10 @@ export class ChatGptModalComponent implements OnInit {
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
+        if (previousTab != self.activeTab) {
+          self.showOpenHistory = false;
+          self.isCopyButtonDisplayed = false;
+        }
         console.log(self.messages);
       },
       function (error) {

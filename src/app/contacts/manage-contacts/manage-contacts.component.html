@@ -706,7 +706,7 @@
                                              <td *ngIf="!authenticationService.isSuperAdmin()">
                                                 <div class="actions-block override-actions"
                                                    style="float:none !important;"
-                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
+                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !(masterContactListSync && contactList.isDefaultContactList) && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                                                    <a class="custom-icon"
                                                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                     || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
@@ -818,7 +818,7 @@
                                                    <!--XNFR-342---->
                                                 </div>
                                                 <div class="actions-block override-actions"
-                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !(masterContactListSync && contactList.isDefaultContactList) && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                                       ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                                                       || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -828,7 +828,7 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                 </div>
-                                                <div class="actions-block actions-msg" *ngIf="(contactList.uploadInProgress || contactList.validationInProgress) && (!sharedLeads || !isPartner)">
+                                                <div class="actions-block actions-msg" *ngIf="(contactList.uploadInProgress || contactList.validationInProgress || (masterContactListSync && contactList.isDefaultContactList)) && (!sharedLeads || !isPartner)">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()">
                                                       <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                                       <div class="clickicons"></div>
@@ -1355,18 +1355,10 @@
                                           <th scope="row" class="text-center hidden-xs" *ngIf="!isPartner  && !isContactsByTypeAllVaildUnsubscribed()" 
                                              translate>ADDRESS</th>
                                           <th scope="row" class="text-center" *ngIf="isPartner"></th>
-                                          <th scope="row" *ngIf="contactsByType.selectedCategory == 'unsubscribed'"
-                                             class="hidden-xs" translate>
-                                             Reason
-                                          </th>
-                                          <th class="text-center"
-                                             *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all' || contactsByType.selectedCategory == 'deactivated') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'"
-                                             translate scope="row"><span *ngIf="contactsByType.selectedCategory == 'deactivated'">Activate</span></th>
-                                          <th class="text-center"
-                                             *ngIf="((contactsByType.selectedCategory == 'deactivated') && isPartner)"
-                                             translate scope="row">Deactivated On</th>
-                                          <th *ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !=='excluded'"
-                                             scope="row"></th>
+                                          <th scope="row" *ngIf="contactsByType.selectedCategory == 'unsubscribed'" class="hidden-xs" translate>Reason</th>
+                                          <th class="text-center" scope="row" translate *ngIf="isPartner || contactsByType.selectedCategory == 'unsubscribed' 
+                                          || contactsByType.selectedCategory == 'excluded' || contactsByType.selectedCategory == 'invalid'">{{contactsByType.selectedCategory == 'deactivated' ? 'Activate' : 'Actions'}}</th>
+                                          <th class="text-center" *ngIf="contactsByType.selectedCategory == 'deactivated'" translate scope="row">Deactivated On</th>
                                           <ng-container
                                              *ngIf="authenticationService.module.isCampaign && ((!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || !isPartner)&& contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory !='excluded' && !assignLeads">
                                              <th scope="col" class="text-center">Total Campaigns</th>
@@ -1375,16 +1367,12 @@
                                              <th scope="col" class="text-center">Clicked Urls</th>
                                              <th scope="col" class="text-center">Campaign Analytics</th>
                                           </ng-container>
-                                          <th *ngIf="contactsByType.selectedCategory == 'non-active'" scope="row"></th>
-                                          <th *ngIf="(contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory =='excluded')"
-                                             scope="row">Actions</th>
-                                          <th *ngIf="contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory =='excluded'"
-                                             scope="row"></th>
-                                          <th *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
-                                    || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing || authenticationService.module.isMarektingAndPartner ||authenticationService.module.isMarketingSuperVisor
-                                    || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
-                                             scope="row">Actions
-                                          </th>
+                                          <th class="text-center" *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory == 'all') && (hasAllAccess 
+                                             || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                                             || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing 
+                                             || authenticationService.module.isMarektingAndPartner || authenticationService.module.isMarketingSuperVisor || authenticationService.isOrgAdmin() 
+                                             || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)" scope="row">Actions</th>
+                                          <th scope="row" class="text-center" *ngIf="isContactModule && (contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory == 'excluded')"></th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -1482,14 +1470,14 @@
                                                       *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
                                                 </h5>
                                              </td>
-                                             <td class="Mark-as-ValidBtn"
+                                             <td class="Mark-as-ValidBtn text-center"
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
                                                 <button type="submit" class=" bgcolor-unset button_height"
                                                    (click)="validateUndeliverableContacts(contact.id)" translate><span
                                                       class="btn markas transition txt_pd-top8">Mark as
                                                       valid</span></button>
                                              </td>
-                                             <td class="Mark-as-ValidBtn"
+                                             <td class="Mark-as-ValidBtn text-center"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
                                                 <button
                                                    *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
@@ -1529,9 +1517,9 @@
                                                 <app-timestamp *ngIf="contact.deactivatedOn != null  && contact.deactivatedOn !='' " [dateAndTime]="contact.deactivatedOn"> </app-timestamp>
                                                 <h4 *ngIf="contact.deactivatedOn == null  || contact.deactivatedOn ===''"><strong>-</strong></h4>
                                              </td>
-                                             <td
+                                             <td class="text-center"
                                                 *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
-                                                <button class="btn table-scbscribe-btn" [disabled]="assignLeads"
+                                                <button class="btn table-scbscribe-btn m0" [disabled]="assignLeads"
                                                    *ngIf="contactsByType.selectedCategory == 'unsubscribed' &&
                                         (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)" (click)="resubscribeUser(contact)"
                                                    translate>
@@ -1559,14 +1547,6 @@
                                                    </ng-container>
                                                 </div>
                                              </td>
-                                             <ng-container
-                                                *ngIf="(contactsByType.selectedCategory !== 'invalid' ) && isPartner">
-                                                <td></td>
-                                             </ng-container>
-                                             <ng-container
-                                                *ngIf="contactsByType.selectedCategory != 'non-active' && !isPartner">
-                                                <td></td>
-                                             </ng-container>
                                              <ng-container
                                                 *ngIf="authenticationService.module.isCampaign && ((!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || !isPartner) && contactsByType.selectedCategory != 'invalid'  && contactsByType.selectedCategory !='excluded' &&  !assignLeads">
                                                 <td class="text-center">
@@ -1646,7 +1626,6 @@
                                                    </a>
                                                 </div>
                                              </td>
-                                             <td *ngIf="contactsByType.selectedCategory == 'non-active'"></td>
                                              <ng-template #NA>N/A</ng-template>
                                           </tr>
                                           <tr

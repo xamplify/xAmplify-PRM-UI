@@ -42,6 +42,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isPreviewingTemplateFromEditCampaignSection = false;
   isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection = false;
   isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection = false;
+  isOliverView: boolean = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
@@ -73,6 +74,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     let isSharedTempaltePreview = this.isSharedCampaignTemplatePreviewWithFromEmailParameter;
     let isCampaignTemplatePreview = this.isUnLaunchedCampaignTemplatePreview ||  this.isPreviewingTemplateFromEditCampaignSection || this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection || this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection;
     let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview || isCampaignTemplatePreview;
+    this.isOliverView = currentRouterUrl.indexOf("pv/otp/")>-1;
     if(isFromEmailUserIdParamExists){
       this.decodeFromEmailUserIdParameter();
     }
@@ -181,7 +183,9 @@ export class PreviewEmailTemplateComponent implements OnInit {
       URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;
     }else if(this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection){
       URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;
-    }else {
+    } else if(this.isOliverView) {
+      URL_SUFFIX = "templateId/" + this.id;
+    } else {
       URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/" + this.id : "id/" + this.id;
     }
     return URL_SUFFIX;

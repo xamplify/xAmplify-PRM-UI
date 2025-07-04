@@ -4127,6 +4127,12 @@ getFirstLetter(inputString:any) {
     }
   }
   /** XNFR-897 */
+
+  previewOliverDefaultTemplateInNewTab(id: number, userId: number) {
+    let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+    let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(userId));
+    this.openWindowInNewTab("pv/otp/" + encodedURLString + "/" + encodedFromEmailUserIdURLString);
+  }
 }
 
 
