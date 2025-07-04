@@ -258,6 +258,9 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    if (this.messages.length == 0 && this.activeTab == 'askpdf') {
+      this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
+    }
     this.checkSocialAcess();
     this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
@@ -337,6 +340,13 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   setActiveTab(tab: string) {
+    if (this.messages.length > 0 && this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
+      this.saveChatHistoryTitle(this.chatHistoryId);
+    } else if(this.messages.length == 0 && this.activeTab == 'askpdf') {
+      this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
+    }else{
+      this.messages = [];
+    }
     this.searchTerm = "";
     this.showPromptBoxBelow = false;
     this.showPromptBoxAbove = false;
@@ -346,11 +356,6 @@ export class ChatGptModalComponent implements OnInit {
     this.showGlobalPromptBoxAbove = false;
     this.isValidInputText = false;
     this.inputText = "";
-    if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
-      this.saveChatHistoryTitle(this.chatHistoryId);
-    } else {
-      this.messages = [];
-    }
     this.isTextLoading = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
@@ -369,7 +374,6 @@ export class ChatGptModalComponent implements OnInit {
     if (tab == 'history') {
       this.showChatHistories();
     }
-
     if (this.activeTab == 'settings') {
       this.callChatGptIntegrationSettingsComponent = true;
       this.chatGptIntegrationSettingsChildComponent.getSettings();
@@ -417,8 +421,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
-    this.referenceService.showSweetAlertProcessingLoader("Loading");
-    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId,"GLOBALCHAT").subscribe(
+    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId,"INSIGHTAGENT").subscribe(
       response => {
         swal.close();
         if (isClosingModelPopup) {
@@ -808,6 +811,7 @@ export class ChatGptModalComponent implements OnInit {
     }
     self.isValidInputText = false;
     self.startStatusRotation();
+    let previousTab = this.activeTab;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         let statusCode = response.statusCode;
@@ -852,6 +856,10 @@ export class ChatGptModalComponent implements OnInit {
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
+        if (previousTab != self.activeTab) {
+          self.showOpenHistory = false;
+          self.isCopyButtonDisplayed = false;
+        }
         console.log(self.messages);
       },
       function (error) {

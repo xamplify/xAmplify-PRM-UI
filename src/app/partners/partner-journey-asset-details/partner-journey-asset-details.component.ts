@@ -324,6 +324,7 @@ findAssetNames(){
   this.pagination.userId = this.loggedInUserId;  
   this.pagination.partnerCompanyId = this.partnerCompanyId;
   this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+  this.pagination.partnershipStatus = this.partnershipStatus;
   this.selectedAssetIds = this.selectedAssetIds;
   this.assetInfoFields = { text: 'assetName', value: 'assetId' };
   this.parterService.getAllPartnerAssetNamesFilter(this.pagination).

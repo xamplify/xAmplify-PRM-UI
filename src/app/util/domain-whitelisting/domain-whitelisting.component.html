@@ -163,7 +163,7 @@
                   <tr>
                     <th style="width: 50%">Domain Name</th>
                     <th class="text-center"style="width: 20%">Created On</th>
-                    <th class="text-center"style="width: 20%">Deactivated On</th>
+                    <th class="text-center"style="width: 20%" *ngIf="isPartnerDomains">Deactivated On</th>
                     <th style="width:10%">Actions</th>
                   </tr>
                 </thead>
@@ -182,7 +182,7 @@
                             [dateAndTimeUTCString]="domain?.createdTime"></app-display-date-and-time>
                         </h6>
                       </td>
-                      <td  class="text-center">
+                      <td  class="text-center" *ngIf="isPartnerDomains">
                         <h6 *ngIf="domain.domainDeactivated">
                           <app-display-date-and-time 
                             [dateAndTimeUTCString]="domain?.deactivatedOn"></app-display-date-and-time>

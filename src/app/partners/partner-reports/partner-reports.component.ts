@@ -310,6 +310,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     goToActivePartnersDiv() {
+        this.resetPartnerFilters();
         this.reloadWithFilter = false;
         this.loadAllCharts = true;
         this.sortOption = new SortOption();
@@ -1749,6 +1750,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
  goToDeactivatePartnersDiv(){
+        this.resetPartnerFilters();
         this.isdeactivatePartnersDiv = true;
          this.loadAllCharts = true;
          this.reloadWithFilter = false;
@@ -1786,5 +1788,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             }
         })
     }
-  
+
+   private resetPartnerFilters() {
+        this.partnerfromDateFilter = "";
+        this.partnertoDateFilter = "";
+        this.selectedPartnerCompanyIds = [];
+    }
 }
