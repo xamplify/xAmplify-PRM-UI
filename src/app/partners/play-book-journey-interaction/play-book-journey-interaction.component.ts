@@ -250,7 +250,8 @@ export class PlayBookJourneyInteractionComponent implements OnInit {
     }
   }
 findPlaybookNames(){
-  this.pagination.userId = this.loggedInUserId;  
+  this.pagination.userId = this.loggedInUserId;
+  this.pagination.partnershipStatus = this.partnershipStatus;  
   this.playbookInfoFields = { text: 'playbook', value: 'playbook' };
   this.parterService.getAllPlaybookNamesFilter(this.pagination).
   subscribe(response => {

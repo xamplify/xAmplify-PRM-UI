@@ -251,7 +251,8 @@ export class AssetJourneyAssetDetailsComponent implements OnInit {
     }
   }
 findAssetNames(){
-  this.pagination.userId = this.loggedInUserId;  
+  this.pagination.userId = this.loggedInUserId;
+  this.pagination.partnershipStatus = this.partnershipStatus; 
   this.assetInfoFields = { text: 'assetName', value: 'assetId' };
   this.selectedAssetIds = this.selectedAssetIds;
   this.parterService.getAllPartnerAssetNamesFilter(this.pagination).

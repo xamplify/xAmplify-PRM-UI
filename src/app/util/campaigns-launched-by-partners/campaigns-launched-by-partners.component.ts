@@ -28,6 +28,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
         loggedInUserId: number = 0;
         scrollClass: string;
         partnershipStatus: any;
+	partnerStatus: string;
 	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService,public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -38,8 +39,10 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
         ngOnChanges() {
                 if(this.fromActivePartnersDiv){
                         this.partnershipStatus = 'approved';
+						this.partnerStatus = 'Active';
                 } else if(this.fromDeactivatedPartnersDiv){
                         this.partnershipStatus = 'deactivated';
+						this.partnerStatus = 'Deactivated';
                 }
                 this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
 				this.activePartnersPagination.partnershipStatus = this.partnershipStatus;
