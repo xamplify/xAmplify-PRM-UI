@@ -396,12 +396,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
 			this.isFromCompanyModule = true;
 		}
-		
-		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage+'/all')) {
-			this.contactsByType.selectedCategory = 'all';
-			this.loadContactsByType(this.contactsByType.selectedCategory);
-			this.updateUrl();
-		}
 
 	}
 
@@ -476,10 +470,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.xtremandLogger.error(error);
 							this.xtremandLogger.errorPage(error);
 						}, () => {
-							let moduleId = this.route.snapshot.params['id'];
-							if (moduleId != undefined) {
-								this.loadContactsByType(moduleId);
-							}
 							this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished");
 						}
 					)
@@ -3169,6 +3159,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (response.statusCode == 200) {
 						this.defaultPartnerListId = response.data;
 						this.contactsCount();
+						let moduleId = this.route.snapshot.params['id'];
+						if (moduleId != undefined && (this.isPartner || (this.isContactModule && moduleId == 'all'))) {
+							if (this.isContactModule) {
+								this.updateUrl();
+							}
+							this.loadContactsByType(moduleId);
+						}
 					}
 				}, error => {
 					this.xtremandLogger.error(error);
