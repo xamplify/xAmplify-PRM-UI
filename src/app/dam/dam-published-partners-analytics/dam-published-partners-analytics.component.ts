@@ -166,6 +166,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.referenceService.loading(this.listLoader, true);
     const pagination = new Pagination();
     pagination.pageIndex = 1;
+    pagination.id = this.pagination.id;
     pagination.searchKey = this.pagination.searchKey;
     pagination.sortcolumn = this.pagination.sortcolumn;
     pagination.maxResults = this.pagination.totalRecords;
