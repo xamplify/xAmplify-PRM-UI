@@ -15,8 +15,8 @@
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="!isFromApprovalModule">
-               <a  *ngIf="vendorView" (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
-               <a  *ngIf="!vendorView" (click)="goToDam()" translate>{{properties?.ACCESS_SHARED_ASSETS}}</a>
+               <a *ngIf="vendorView" (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
+               <a *ngIf="!vendorView" (click)="goToDam()" translate>{{properties?.ACCESS_SHARED_ASSETS}}</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="isFromApprovalModule">
@@ -33,12 +33,6 @@
             </ng-container>
             <li><a class="default-cursor"> View & Download Analytics</a></li>
          </ul>
-         <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-            <i class="fa fa-times" aria-hidden="true"></i>
-         </a>
-         <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
-            <i class="fa fa-refresh" aria-hidden="true"></i>
-         </a>
       </div>
 
       <div class="row">
@@ -147,6 +141,12 @@
                                        class="fa fa-search" aria-hidden="true"></i></button>
                               </div>
                            </div>
+                           <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                           </a>
+                           <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                              <i class="fa fa-refresh" aria-hidden="true"></i>
+                           </a>
                         </div>
                      </div>
 
@@ -181,7 +181,8 @@
                                           </td>
                                           <td class="text-center">
                                              <ng-container *ngIf="damAnalytics?.actionType=='View'">
-                                                <a class="custom-icon" data-placement="top" data-toggle="tooltip" title="View Icon"><i
+                                                <a class="custom-icon" data-placement="top" data-toggle="tooltip"
+                                                   title="View Icon"><i
                                                       class="fa fa-eye campaignViewIcon IconCustomization"
                                                       aria-hidden="true"></i>
                                                    <div class="clickicons"></div>

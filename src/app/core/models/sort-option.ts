@@ -652,6 +652,15 @@ export class SortOption {
 		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
 		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' }
 	];
+
+	trackDetailsDropDownOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-Asc' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-Desc' },
+		{ 'name': 'Count(ASC)', 'value': 'count-Asc' },
+		{ 'name': 'Count(DESC)', 'value': 'count-Desc' }
+	];
+
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -774,5 +783,7 @@ export class SortOption {
 	selectedOptionForPlaybookInteraction = this.playbookInteractionDropDownOptions[0];
 
 	selectedOptionForPlaybookDetails = this.playbookDetailsInteractionDropDownOptions[0];
+
+	selectedSortOptionForTracks = this.trackDetailsDropDownOptions[0];
 
 }

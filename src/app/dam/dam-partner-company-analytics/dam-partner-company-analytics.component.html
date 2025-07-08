@@ -19,9 +19,9 @@
         <li><a class="default-cursor">{{breadCrumb}}</a>
         </li>
       </ul>
-      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-         <i class="fa fa-times" aria-hidden="true"></i>
-      </a>
+   </div>
+   <div>
+
    </div>
    <app-response-message class="pg8" [customResponse]="customResponse"
    *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
@@ -61,9 +61,18 @@
                               <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()"><i class="fa fa-search" aria-hidden="true"></i></button>
                           </div>
                         </div>
+                         <div class="inline-block pull-right ml10">
+                              <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" title="Export to Excel"
+                                 (click)="downloadDamAnalytics()" [disabled]="pagination?.totalRecords === 0">
+                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                              </button>
+                           </div>
                           <!--Refresh-->
                           <a class="close-circle ref-mar"  (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
+                          </a>
+                          <a class="close-circle ref-mar" (click)="goBack()" aria-hidden="true">
+                            <i class="fa fa-times" aria-hidden="true"></i>
                           </a>
                   </div>
                  </div>
@@ -91,9 +100,15 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="mt5 mb5 f-w-600 analytics-tooltip" style="word-wrap: break-word;" data-toggle="tooltip" data-placement="bottom" title="{{company?.companyName}}">
+                        <!-- <h4 class="mt5 mb5 f-w-600 analytics-tooltip" style="word-wrap: break-word;" data-toggle="tooltip" data-placement="bottom" title="{{company?.companyName}}">
                           <span><strong>{{company?.companyName}}</strong></span>
-                        </h4>
+                        </h4> -->
+                         <h5>
+                          <strong> Company Name By Partner :
+                             <span title="{{company?.companyName}}">{{company?.companyName | slice:0:50}}</span>
+                             <span *ngIf="company?.companyName.length>50">...</span>
+                          </strong>
+                       </h5>
                         <h5>
                           <strong> Company Name By Vendor :
                              <span title="{{company?.contactCompany}}">{{company?.contactCompany | slice:0:50}}</span>

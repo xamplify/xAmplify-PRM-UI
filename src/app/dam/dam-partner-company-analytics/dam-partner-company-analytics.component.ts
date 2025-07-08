@@ -20,6 +20,7 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { User } from 'app/core/models/user';
 import { ParterService } from 'app/partners/services/parter.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { DamPostDto } from '../models/dam-post-dto';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 
 @Component({
@@ -29,7 +30,7 @@ import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature
   providers:[Properties,HttpRequestLoader,SortOption]
 })
 export class DamPartnerCompanyAnalyticsComponent implements OnInit {
-
+  damPostDto: DamPostDto = new DamPostDto();
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
   pagination:Pagination = new Pagination();
@@ -67,7 +68,6 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   vanityTemplates : boolean = false;
   selectedPartners:any[]=[];
   isAllPartnerSignesCompleted:boolean =false;
-
   @ViewChild('assetSignatureStatusAnalyticsComponent') assetSignatureStatusAnalyticsComponent: AssetSignatureStatusAnalyticsComponent;
   assetPreviewProxyPath: any;
   previewContent: boolean = false;
@@ -102,6 +102,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 
    
     this.getIsPartnerSignatureRequiredAndGetPartnerSignatureCount(this.damId);
+    this.getDamDetailsByDamId(this.damId);
   }
 
   findVideoDetails() {
@@ -506,6 +507,57 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       objElement.remove();
     }
   }
-
+getDamDetailsByDamId(damId: any) {
+  this.damService.getDamDetailsById(damId).subscribe(
+    response => {
+      if (response.statusCode === 200) {
+        this.damPostDto = response.data;
+      } else {
+        console.error("Error fetching DAM details:", response);
+      }
+    },
+    error => {
+      console.error("Error fetching DAM details:", error);
+    }
+  );
+}
+/*downloadDamAnalytics(){
+this.referenceService.goToTop();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    const pagination = new Pagination();
+    pagination.pageIndex = 1;
+    pagination.id = this.pagination.id;
+    pagination.searchKey = this.pagination.searchKey;
+    pagination.sortcolumn = this.pagination.sortcolumn;
+    pagination.maxResults = this.pagination.totalRecords;
+    pagination.sortingOrder = this.pagination.sortingOrder;
+    this.damService.findPartnerCompanies(pagination,this.damId).subscribe((result: any) => {
+      this.referenceService.loading(this.httpRequestLoader, false);
+      let data = result.data;
+      const csvRows: string[] = [];
+      const headers = ['COMPANY NAME BY PARTNER', 'COMPANY NAME BY VENDOR', 'VIEW COUNT', 'DOWNLOAD COUNT'];
+      csvRows.push(headers.join(','));
+      data.list.forEach((item: any) => {
+        const row = [item.companyName, item.contactCompany, item.viewCount, item.downloadCount];
+        csvRows.push(row.join(','));});
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `dam-partner-company-analytics.csv`;
+      link.click();
+      URL.revokeObjectURL(downloadUrl);
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
+}*/
+  downloadDamAnalytics() {
+    let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
+    let userId = this.authenticationService.getUserId();
+    let url = this.authenticationService.REST_URL + "dam" + "/downloadDamAnalytics/damId/" + this.damId + "/userId/" + userId
+      + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+    this.referenceService.openWindowInNewTab(url);
+  }
 }
 

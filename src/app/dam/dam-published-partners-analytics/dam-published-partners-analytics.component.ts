@@ -14,6 +14,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { DamPostDto } from '../models/dam-post-dto'
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
@@ -23,6 +24,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
   providers: [HttpRequestLoader, SortOption, Properties]
 })
 export class DamPublishedPartnersAnalyticsComponent implements OnInit {
+  damPostDto: DamPostDto = new DamPostDto();
   loggedInUserId: number = 0;
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
@@ -63,6 +65,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damPartnerId = atob(this.route.snapshot.params['damPartnerId']);
     this.pagination.id = this.damPartnerId;
     this.validateDamId(this.damId);
+    this.getDamDetailsByDamId(this.damId);
   }
   validateDamId(damId: any) {
     this.damService.validateDamId(damId).subscribe(
@@ -192,5 +195,18 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
       this.xtremandLogger.errorPage(error);
     });
   }
-
+getDamDetailsByDamId(damId: any) {
+  this.damService.getDamDetailsById(damId).subscribe(
+    response => {
+      if (response.statusCode === 200) {
+        this.damPostDto = response.data;
+      } else {
+        console.error("Error fetching DAM details:", response);
+      }
+    },
+    error => {
+      console.error("Error fetching DAM details:", error);
+    }
+  );
+}
 }
