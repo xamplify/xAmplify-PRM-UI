@@ -269,3 +269,12 @@ width:85%!important;
   width: 6px;
   height: 6px;
 }
+@media screen and (min-width:768px) {
+.justify-content-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.input-small {
+  width: 175px !important;
+}
+}

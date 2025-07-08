@@ -78,7 +78,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   findAllPartnerCompanyUsers(pagination:Pagination){
     this.referenceService.goToTop();
     this.referenceService.loading(this.listLoader, true);
-    this.damService.findPartnerCompanyUsers(pagination).subscribe((result: any) => {
+    this.damService.findPartnerCompanyUsers(pagination, false).subscribe((result: any) => {
       let data = result.data;
       pagination.totalRecords = data.totalRecords;
       pagination = this.pagerService.getPagedItems(pagination, data.list);
@@ -171,7 +171,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     pagination.sortcolumn = this.pagination.sortcolumn;
     pagination.maxResults = this.pagination.totalRecords;
     pagination.sortingOrder = this.pagination.sortingOrder;
-    this.damService.findPartnerCompanyUsers(pagination).subscribe((result: any) => {
+    this.damService.findPartnerCompanyUsers(pagination, true).subscribe((result: any) => {
       this.referenceService.loading(this.listLoader, false);
       let data = result.data;
       const csvRows: string[] = [];
