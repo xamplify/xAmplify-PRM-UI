@@ -52,8 +52,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	descriptionErrorMessage: string;
 	isValidForm = false;
 	submitButtonText = "Save";
-	isAdd = true;
-	headerText = "Upload Asset";
+        isAdd = true;
+        fromManage = false;
+        headerText = "Upload Asset";
 	previewItems = false;
 	previewPath = "";
 	uploadedAssetName = "";
@@ -218,10 +219,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 	
     
-	ngOnInit() {
-		this.isAdd = this.router.url.indexOf('/upload') > -1;
-		this.showDefaultLogo = this.isAdd;
-		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+        ngOnInit() {
+                this.isAdd = this.router.url.indexOf('/upload') > -1;
+                this.showDefaultLogo = this.isAdd;
+                this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+        this.fromManage = this.route.snapshot.queryParamMap.get('from') === 'manage';
         this.referenceService.assetResponseMessage = "";
         this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -1407,7 +1409,7 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
                 this.submitButtonText = "Save & Publish";
                 this.disableSaveAsDraftButton = true;
             } else {
-                this.submitButtonText = "Save";
+                this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 this.disableSaveAsDraftButton = false;
             }
         } else {
@@ -1415,7 +1417,7 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
                 this.submitButtonText = "Update & Publish";
                 this.disableSaveAsDraftButton = true;
             } else {
-                this.submitButtonText = "Update";
+                this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 this.disableSaveAsDraftButton = false;
             }
         }

@@ -15,6 +15,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 })
 export class PartnerDetailedAnalyticsComponent implements OnInit {
   @Input() partnerCompanyId: any;
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   @Output() notifyCloseDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -25,6 +26,7 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
   selectedAssetType: any = "";
   toDateFilter: any;
   fromDateFilter: any;
+  partnerStatus: string;
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -137,5 +139,9 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
     }
   }
   /*** XNFR-914 ***/
-  
+
+  getPartnerStatus(event: any) {
+    this.partnerStatus = event;
+  }
+
 }

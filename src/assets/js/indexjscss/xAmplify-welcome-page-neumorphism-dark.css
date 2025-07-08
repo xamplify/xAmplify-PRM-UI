@@ -191,3 +191,19 @@ border-top: 1px solid #191b1e !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   border: 1px solid #252525 !important;
 }
+
+.oliveBackground {
+  background-color: transparent !important;
+}
+
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}

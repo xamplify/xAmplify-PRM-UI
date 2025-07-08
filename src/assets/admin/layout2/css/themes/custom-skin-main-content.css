@@ -107,7 +107,7 @@ h6 {
   background: var(--page-content) !important;
 }
 .form-control,
-.col-item {
+.col-item,.domain-field-text {
   color: var(---text-color) !important;
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
@@ -193,7 +193,7 @@ ul.alt-row-style1 li:hover,
 .l-g-view,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
-.filter-button-color {
+.filter-button-color,.domain-btn {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
@@ -2658,4 +2658,77 @@ markdown pre,.aligin-para{
 .submenu-toggle::after{
   border-right: 2px solid var(---text-color) !important;
   border-bottom: 2px solid var(---text-color) !important;
+}
+.dropdown-menu button.share-btn {
+  border: none !important;
+}
+.dropdown-menu button.share-btn:hover{
+  box-shadow: none !important;
+}
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color)!important;
+}
+.suggestion-list div{
+  border-bottom: 1px solid var(--border-color)!important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid var(--border-color)!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid var(--border-color)!important;
+}
+.suggestion-list-global-chat {
+  max-height: 135px !important;
+}
+.suggestion-list div:hover{
+  background-color: var(--page-content) !important;
+}
+/* bee template table remove bg-color */
+.nl-container table tr,
+.nl-container table tr:nth-child(odd),
+.nl-container table tr:nth-child(even),
+.nl-container table tbody tr:nth-of-type(odd),
+.nl-container table tbody tr:nth-of-type(even) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+table.nl-container tr:nth-child(odd) {
+  background-color: transparent !important;
+}
+.pad div {
+  color: var(---text-color) !important;
+}
+/* content count css */
+.section-column,.front-count-card {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.stat-card {
+    background-color: var(--page-content) !important;
+    border: 1px solid var(--border-color) !important;
+  }
+.stat-label,.stat-unit,.front-count-number,.front-count-label{
+  color: var(---text-color) !important;
+}
+a.action-button{
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+}
+.oliveIcon {
+border: 1px solid var(--icon-border-color) !important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}
+
+.oliver_input textarea {
+  background: transparent !important;
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
 }

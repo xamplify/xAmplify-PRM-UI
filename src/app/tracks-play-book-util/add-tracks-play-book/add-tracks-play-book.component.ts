@@ -220,6 +220,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   replies: Array<Reply> = new Array<Reply>();
   deletedWorkflowIds:number[] = [];
   playbookWorkflowLoader = false; 
+  removeAlertType: string;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe, private partnerService:ParterService) {
@@ -1938,14 +1939,8 @@ addTagsCondition(selectedTags:any[]) {
         workFlowDto.fromEmailUserId = workflow.fromEmailUserId;
         workFlowDto.fromEmail = workflow.fromEmail;
         workFlowDto.fromName = workflow.fromName;
-        workFlowDto.fromName
-        if (this.tracksPlayBook.groupIds != null && this.tracksPlayBook.groupIds.length > 0) {
-          workFlowDto.partnerGroupSelected = true;
-          workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds
-        } else {
-          workFlowDto.partnerGroupSelected = false;
-          workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
-        }
+        workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds;
+        workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
         workFlowDtos.push(workFlowDto)
       }
       this.tracksPlayBook.workflowDtos = workFlowDtos;
@@ -1973,5 +1968,31 @@ addTagsCondition(selectedTags:any[]) {
         },error=>{
             this.ngxloading = false;
         });
+  }
+  showRemoveConfirmation(type: 'quiz' | 'dam', asset: any): void {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Remove',
+      cancelButtonText: 'Cancel'
+    }).then(function () {
+      const index = self.selectedAssets.findIndex(a => a === asset);
+      if (index > -1) {
+        self.selectedAssets.splice(index, 1);
+        self.removeAlertType = type === 'quiz' ? 'form' : 'asset';
+      }
+
+      self.validateAssets();
+      self.validateAllSteps();
+    });
+  }
+
+  showRemoveAlert(type: 'asset' | 'form') {
+    this.removeAlertType = type;
   }
 }

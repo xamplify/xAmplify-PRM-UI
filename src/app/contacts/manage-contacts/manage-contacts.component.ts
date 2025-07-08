@@ -32,6 +32,7 @@ import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/servi
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Location } from '@angular/common';
+import { ParterService } from 'app/partners/services/parter.service';
 
 
 declare var $: any, swal: any;
@@ -102,7 +103,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsByType: ContactsByType = new ContactsByType();
 	downloadDataList = [];
-
+	isRefreshingFromButton: boolean = false;
 	/*
 	 * Display all the contactLists in manage contacts page by default.
 	   If 'showListOfContactList' is set to false,display category wise contacts.
@@ -139,7 +140,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	public currentContactType: string = "valid";
 	showFilterOption: boolean = false;
-	
+	// XNFR-994
+	@Input() selectedType: string;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
@@ -257,11 +259,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	isFromCompanyModule: boolean;
 	isContactModule: boolean;
-	masterContactListId: number;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location, private parterService: ParterService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -290,6 +291,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
 			this.module = 'contacts';
+			this.isContactModule = true;
 			this.checkingContactTypeName = "Contact"
 		} else {
 			this.isPartner = true;
@@ -394,14 +396,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
 			this.isFromCompanyModule = true;
 		}
-		if (this.module == 'contacts') {
-			this.isContactModule = true;
-		}
-		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage+'/all')) {
-			this.contactsByType.selectedCategory = 'all';
-			this.loadContactsByType(this.contactsByType.selectedCategory);
-			this.updateUrl();
-		}
 
 	}
 
@@ -464,6 +458,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
 								this.pagedItems = null;
 							}
+							if (this.isRefreshingFromButton) {
+								this.customResponse = new CustomResponse(''); 
+								this.isRefreshingFromButton = false;
+							}
 
 							this.referenceService.loading(this.httpRequestLoader, false);
 							this.campaignLoader = false;
@@ -471,8 +469,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						(error: any) => {
 							this.xtremandLogger.error(error);
 							this.xtremandLogger.errorPage(error);
-						},
-						() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
+						}, () => {
+							this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished");
+						}
 					)
 				this.sortOption = this.sortOptions[0];
 			} catch (error) {
@@ -508,6 +507,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.resetResponse();
 							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
 							this.pagedItems = null;
+						}
+						if (this.isRefreshingFromButton) {
+							this.customResponse = new CustomResponse('');
+							this.isRefreshingFromButton = false;
 						}
 						this.referenceService.loading(this.httpRequestLoader, false);
 						this.campaignLoader = false;
@@ -1486,11 +1489,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	contactsCount() {
+		if (this.isPartner || this.isContactModule) {
+			this.findContactsCount();
+		} else {
+			this.loadContactsCount();
+		}
+	}
+
+	loadContactsCount() {
 		try {
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			if (this.assignLeads) {
-				this.contactListObject.assignedLeadsList = true
+				this.contactListObject.assignedLeadsList = true;
 			} else if (this.sharedLeads) {
 				this.contactListObject.sharedLeads = true;
 			}
@@ -1522,6 +1533,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	loadContactsByType(contactType: string) {
+		this.showFilterOption = false;
+		this.criterias = [];
+		this.criteria = new Criteria();
 		this.contactsByType.pagination.pageIndex = 1;
 		this.contactsByType.pagination.maxResults = 12;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
@@ -1540,6 +1554,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType: string) {
+		if (!this.showFilterOption) {
+			this.criterias = [];
+			this.criteria = new Criteria();
+			this.showFilterOption = false;
+		}
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.selectedCategory = contactType;
@@ -1564,8 +1583,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.criterias = this.criterias;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
-			this.contactListObject = new ContactList;
-			this.contactListObject.id = this.masterContactListId;
+			this.contactListObject = new ContactList();
+			this.contactListObject.id = this.defaultPartnerListId;
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
@@ -1918,6 +1937,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_Valid_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'excluded') {
 				this.logListName = 'All_Excluded_' + csvNameSuffix + suffix + '.csv';
+			} else if (this.contactsByType.selectedCategory === 'deactivated') {
+				this.logListName = 'All_Deactivated_' + csvNameSuffix + suffix + '.csv';
 			}
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -2080,7 +2101,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.searchKey = this.searchKey;
 			this.contactsByType.contactPagination.sortcolumn = this.sortcolumn;
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
-
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
 			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
@@ -2558,12 +2578,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	ngOnInit() {
-		let moduleId = this.route.snapshot.params['id'];
-		if (moduleId != undefined) {
-			this.loadContactsByType(moduleId)
-		}
 		this.callInitMethods();
-		this.findMasterContactListId();
 		/**** user guide ****/
 		this.getMergeTagsForDifferentModules();
 	}
@@ -2629,15 +2644,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.sharedDetailsPagination.pageIndex = 1;
 			this.sharedDetailsPagination.maxResults = 12;
 			this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
-			if (this.isPartner) {
-				this.defaultPartnerList(this.authenticationService.getUserId());
+			if (this.isPartner || this.isContactModule) {
+				this.findDefaultContactListId();
+			} else {
+				this.contactsCount();
 			}
 			if (this.checkingContactTypeName == "Contact") {
 				this.pagination.filterBy = 'MY-CONTACTS';
 				this.findFlexiFieldsData();
 			}
 			this.loadContactLists(this.pagination);
-			this.contactsCount();
 			this.loadContactListsNames();
 
 			/********Check Gdpr Settings******************/
@@ -2684,7 +2700,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			$('#filterModal').modal('hide');
 			$('#saveAsModal').modal('hide');
 			$("#listSharedDetailsModal").modal('hide');
-			this.masterContactListId = null;
+			this.defaultPartnerListId = null;
 		} catch (error) {
 			this.xtremandLogger.error("ERROR : MangeContactsComponent onOnDestroy() " + error);
 		}
@@ -3036,18 +3052,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	downloadUserListCsv() {
 		this.userListPaginationWrapper.userList.isDownload = true;
+		this.userListPaginationWrapper.userList.editList = false;
 		try {
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						if (data.statusCode == 200) {
 							this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-						}
-						if (data.statusCode == 401) {
+						} else if (data.statusCode == 401) {
 							this.customResponse = new CustomResponse('SUCCESS', data.message, true);
 						}
-					},
-					(error: any) => {
+					}, (error: any) => {
 						this.xtremandLogger.error(error);
 						this.xtremandLogger.errorPage(error);
 					});
@@ -3075,7 +3090,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			response => {
 				if (response.statusCode == 200) {
 					this.masterContactListSync = true;
-					this.customResponse = new CustomResponse('SUCCESS', "We are Synchronizing your Master Contact List", true);
+					let message = "We are Synchronizing your Master Contact List. If you'd like to take a break, we'll continue processing it in the background.";
+					this.customResponse = new CustomResponse('SUCCESS', message, true);
 				}
 			},
 			error => {
@@ -3136,19 +3152,37 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.location.replaceState('/home/contacts/manage');
 	}
 
-	findMasterContactListId() {
-		if (this.isContactModule) {
-			this.contactService.findMasterContactListId().subscribe(
-			response => {
-				if (response.statusCode == 200) {
-					this.masterContactListId = response.data;
-				}
-			}, error => {
-				this.xtremandLogger.error(error);
-			});
+	findDefaultContactListId() {
+		if (this.isContactModule || this.isPartner) {
+			this.contactService.findDefaultContactListId(this.module).subscribe(
+				response => {
+					if (response.statusCode == 200) {
+						this.defaultPartnerListId = response.data;
+						this.contactsCount();
+						let moduleId = this.route.snapshot.params['id'];
+						if (moduleId != undefined && (this.isPartner || (this.isContactModule && moduleId == 'all'))) {
+							if (this.isContactModule) {
+								this.updateUrl();
+							}
+							this.loadContactsByType(moduleId);
+						}
+					}
+				}, error => {
+					this.xtremandLogger.error(error);
+				});
 		}
 	}
+
 	toggleFilterOption() {
+		if(this.isPartner){
+			this.selectedType = 'Partners';
+		}else if(this.isContactModule){
+			this.selectedType = 'Contacts';
+		}else if(this.assignLeads){
+			this.selectedType = 'AssignLeads'
+		}else if(this.sharedLeads){
+			this.selectedType = 'SharedLeads';
+		}	
 		this.showFilterOption = true;
 	}
 	partnersFilter(event: any) {
@@ -3162,6 +3196,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	closeFilterEmitter(event: any) {
 		if (event === 'close') {
 			this.showFilterOption = false;
+			this.pagination.criterias = null;
 		} else {
 			this.showFilterOption = true
 		}
@@ -3170,5 +3205,89 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.criterias = new Array<Criteria>();
 		this.listContactsByType(this.contactsByType.selectedCategory);
 		}
-		
+		refreshList() {
+			this.isRefreshingFromButton = true;
+			this.loadContactLists(this.pagination);
+	}
+
+	/***** XNFR-1011 *****/
+	findContactsCount() {
+		this.loading = true;
+		this.contactService.findContactsCount(this.module, this.defaultPartnerListId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					let data = response.data;
+					this.contactsByType.allContactsCount = data.allCounts;
+					this.contactsByType.invalidContactsCount = data.inValidCount;
+					this.contactsByType.unsubscribedContactsCount = data.unSubscribedCount;
+					this.contactsByType.activeContactsCount = data.activeCount;
+					this.contactsByType.inactiveContactsCount = data.inActiveCount;
+					this.contactsByType.validContactsCount = data.validCount;
+					this.contactsByType.excludedContactsCount = data.excludedCount;
+					this.contactsByType.deactivatedContactsCount = data.deactivatedCount;
+				} else {
+					this.referenceService.showSweetAlertServerErrorMessage();
+				}
+				this.loading = false;
+			}, error => {
+				this.loading = false;
+				this.xtremandLogger.error(error);
+				this.referenceService.showSweetAlertServerErrorMessage();
+			}, () => this.xtremandLogger.info("findContactsCount() finished")
+		);
+	}
+
+	showActivatePartnersAlert(partnershipId: number) {
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: message,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, activate it!'
+		}).then(function (myData: any) {
+			console.log("ManageContacts showAlert then()" + myData);
+			self.activatePartner(partnershipId);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	activatePartner(partnershipId: number) {
+		let partnershipIds = [];
+		partnershipIds.push(partnershipId);
+		this.parterService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
+			.subscribe(response => {
+				this.loading = false;
+				if (response.statusCode == 200) {
+					this.contactsCount();
+					this.listContactsByType(this.contactsByType.selectedCategory);
+					this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				}
+			}, error => {
+				this.loading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
+	formatNumber(input: number) {
+		if (input >= 1000000) {
+			return Math.floor(input / 1000000) + 'M';
+		} else if (input >= 1000) {
+			const roundedValue = Math.floor(input / 100) / 10;
+			if (input % 1000 !== 0) {
+				return `${roundedValue}k+`;
+			}
+			return `${roundedValue}k`;
+		} else {
+			return input.toString();
+		}
+	}
+
 }

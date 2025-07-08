@@ -241,6 +241,24 @@
                      </div>
                   </ng-container>
 
+                  <ng-container *ngIf="(campaign?.campaignTypeInString=='REGULAR' || campaign?.campaignTypeInString=='SURVEY' || campaign?.campaignTypeInString=='VIDEO' )  && campaign?.channelCampaign">
+                      <div class="media col-xs-12">
+                     <!--Notify Partner Team Member-->
+                         <div class="col-xs-6 col-sm-6">
+                           <div class="ml10">
+                              <h5>Notify {{authenticationService?.partnerModule?.customName}} Team Member ?</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.notifyTeamMember"
+                                 [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                 [onColor]="callActionSwitch.onGreenColorSwitch"
+                                 [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                 [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                        </div> 
+                  </ng-container>
                </fieldset>
                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
                   <legend class="scheduler-border">Social Accounts</legend>
@@ -436,8 +454,24 @@
                      <app-list-loader style="background: white" [rowsCount]="3"
                         *ngIf="isContactListLoader"></app-list-loader>
                      <div class="table-responsive mb_border_none">
-                        <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
+                           <button class="btn-radius domain-btn" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0) && !isDomainWorkflow "
+                              title="Pause or Resume Workflows for Domains" (click)="getDomainDetailsOrPartners()">
+                              <i class="fa fa-cogs"></i>
+                           </button>
+                           <button  class="btn-radius mb10 domain-btn" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0) && isDomainWorkflow"
+                              title="Go back to {{contactType}}" (click)="getDomainDetailsOrPartners()">
+                              <i class="fa fa-arrow-left"></i>
+                           </button>
+                                                   <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader && isDomainWorkflow">
+                                                      <div class="alert alert-info">
+                     <strong>
+                         **Pause or Resume workflows for specific domains. Workflows will be paused or resumed for all recipients within the selected domain in the campaign.
+                     </strong>
+                 </div>
+                           </div>
+                        <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader && !isDomainWorkflow">
                            <div class="input-icon" style="position:relative;right: -11px;margin-bottom: 7px;">
+                              <ng-container *ngIf="!isDomainWorkflow">
                               <input type="text" class="form-control" [(ngModel)]="contactSearchInput"
                                  [ngModelOptions]="{standalone: true}" placeholder="Search"
                                  (keypress)="eventHandlerForSearchUsers($event.keyCode)"
@@ -445,11 +479,44 @@
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                  *ngIf="contactSearchInput"
                                  (click)="contactSearchInput='';searchCampaignUsers();"></button>
-                              <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i
+                              <button type="submit" class="search-box-item-click"  (click)="searchCampaignUsers()"><i
                                     class="fa fa-search" aria-hidden="true"></i></button>
+                              </ng-container>
                            </div>
                         </div>
-                        <table class="table tgrid" aria-describedby=""
+                        <div class="col-xs-12 p0" *ngIf="isDomainWorkflow && !isContactListLoader">
+                           <div class="col-xs-4" id="margin-bottom">
+                              <label class="default-cursor f-w-600" for="reason">Domains</label>
+                              <app-multi-select-dropdown [dropdownList]="domains" [singleSelection]="true"
+                                 (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event)"
+                                 [displayText]="'-- Select Domain --'">
+                              </app-multi-select-dropdown>
+                           </div>
+                           <div class="col-xs-4">
+                              <label class="default col-xs-12 p0">
+                                 Inactive Recipients Count {{selectDomainDetails.inactiveCount}}/{{selectDomainDetails.totalCount}}
+                              </label>
+                                          <button class="btn btn-default workflow-style resume-style"
+                                          [disabled]="selectDomainDetails.totalCount == selectDomainDetails.activeCount"
+                                             (click)="changeCampaignDomainUsersStatus(selectedDomainName,'Resume')">
+                                             <span class="hidden-xs resume-text-style">Resume</span>
+                                             <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                           </div>
+                           <div class="col-xs-4 p0">
+                              <label class="default col-xs-12 p0" for="time">
+                                    Active Recipients Count {{selectDomainDetails.activeCount}}/{{selectDomainDetails.totalCount}}
+                              </label>
+                                          <button class="btn btn-default workflow-style pause-style"
+                                             [disabled]="selectDomainDetails.totalCount == selectDomainDetails.inactiveCount"
+                                             (click)="changeCampaignDomainUsersStatus(selectedDomainName,'Pause')">
+                                             <span class="hidden-xs pause-text-style">Pause</span>
+                                             <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                           </div>
+                        </div>
+
+                        <table *ngIf="!isDomainWorkflow" class="table tgrid" aria-describedby=""
                            [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader"
                            id="campaign-preview-contact-list">
                            <thead>
@@ -500,7 +567,7 @@
                            </tbody>
                         </table>
                      </div>
-                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0">
+                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0 && !isDomainWorkflow">
                         <div *ngIf="campaignPartnersOrContactsPagination.pagedItems.length !== 0">
                            <app-pagination [pagination]="campaignPartnersOrContactsPagination"
                               [type]="'contactsOrPartners'" (notifyParent)="setPage($event)"
@@ -508,7 +575,7 @@
                         </div>
                      </div>
                      <div class="alert alert-info alert-top-padding-xamplify"
-                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader">No
+                        *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader && !isDomainWorkflow">No
                         {{contactType}} found</div>
                   </fieldset>
                </ng-container>
@@ -563,55 +630,55 @@
                                                    </div>
                                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                       <h5 for="reason">Reason</h5>
-                                                      <h6 *ngIf="reply.actionId ==0"> <input type="text"
+                                                      <h6 *ngIf="reply.actionId ==0"> <input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Email is not opened"></h6>
-                                                      <h6 *ngIf="reply.actionId==13"><input type="text"
+                                                      <h6 *ngIf="reply.actionId==13"><input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Email is opened"></h6>
-                                                      <h6 *ngIf="reply.actionId ==16"><input type="text" disabled
+                                                      <h6 *ngIf="reply.actionId ==16"><input class="domain-field-text" type="text" disabled
                                                             style="width:100%;height: 22px;"
                                                             value="Send immediately after email is opened"></h6>
-                                                      <h6 *ngIf="reply.actionId==33"> <input type="text"
+                                                      <h6 *ngIf="reply.actionId==33"> <input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send follow-up email"></h6>
-                                                      <h6 *ngIf="reply.actionId ==22"><input type="text"
+                                                      <h6 *ngIf="reply.actionId ==22"><input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send if {{authenticationService?.partnerModule?.customName}} email is not used">
                                                       </h6>
-                                                      <h6 *ngIf="reply.actionId ==24"> <input type="text"
+                                                      <h6 *ngIf="reply.actionId ==24"> <input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="If {{authenticationService?.partnerModule?.customName}} has not shared event">
                                                       </h6>
-                                                      <h6 *ngIf="reply.actionId==29"><input type="text"
+                                                      <h6 *ngIf="reply.actionId==29"><input  class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send reminder if no response"></h6>
-                                                      <h6 *ngIf="reply.actionId ==30"><input type="text" disabled
+                                                      <h6 *ngIf="reply.actionId ==30"><input class="domain-field-text" type="text" disabled
                                                             style="width:100%;height: 22px;"
                                                             value="Send reminder if responded YES"></h6>
-                                                      <h6 *ngIf="reply.actionId ==25"><input type="text"
+                                                      <h6 *ngIf="reply.actionId ==25"><input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send email if RSVP Yes"></h6>
-                                                      <h6 *ngIf="reply.actionId==26"><input type="text"
+                                                      <h6 *ngIf="reply.actionId==26"><input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send email If RSVP No"></h6>
-                                                      <h6 *ngIf="reply.actionId ==27"><input type="text" disabled
+                                                      <h6 *ngIf="reply.actionId ==27"><input class="domain-field-text" type="text" disabled
                                                             style="width:100%;height: 22px;"
                                                             value="Send email If RSVP Maybe"></h6>
-                                                      <h6 *ngIf="reply.actionId ==28"><input type="text"
+                                                      <h6 *ngIf="reply.actionId ==28"><input class="domain-field-text" type="text"
                                                             style="width:100%;height: 22px;" disabled
                                                             value="Send after event"></h6>
                                                       <ng-container *ngIf="campaignType=='VIDEO'">
-                                                         <h6 *ngIf="reply.actionId ==1"> <input type="text"
+                                                         <h6 *ngIf="reply.actionId ==1"> <input class="domain-field-text" type="text"
                                                                style="width:100%;height: 22px;" disabled
                                                                value="Video is played"></h6>
-                                                         <h6 *ngIf="reply.actionId==17"><input type="text"
+                                                         <h6 *ngIf="reply.actionId==17"><input class="domain-field-text" type="text"
                                                                style="width:100%;height: 22px;" disabled
                                                                value="Send immediately after video is played"></h6>
-                                                         <h6 *ngIf="reply.actionId==18"><input type="text"
+                                                         <h6 *ngIf="reply.actionId==18"><input class="domain-field-text" type="text"
                                                                style="width:100%;height: 22px;" disabled
                                                                value="Video is not played"></h6>
-                                                         <h6 *ngIf="reply.actionId==23"> <input type="text"
+                                                         <h6 *ngIf="reply.actionId==23"> <input class="domain-field-text" type="text"
                                                                style="width:100%;height: 22px;" disabled
                                                                value="Video is not redistributed"></h6>
                                                       </ng-container>
@@ -627,14 +694,14 @@
                                                             *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33"
                                                             id="reply-days-{{reply.divId}}">Reply In X Days
                                                          </h5>
-                                                         <h6><input style="width:50%;height: 22px;" type="text" disabled
+                                                         <h6><input class="domain-field-text" style="width:50%;height: 22px;" type="text" disabled
                                                                value="{{reply.replyInDays}}"></h6>
                                                       </div>
                                                    </div>
                                                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
                                                       <h5>Subject</h5>
                                                       <h6 title="{{reply?.subject}}">
-                                                         <input type="text" style="width:100%;height: 22px;" disabled
+                                                         <input  class="domain-field-text" type="text" style="width:100%;height: 22px;" disabled
                                                             value="{{reply?.subject}}">
                                                       </h6>
                                                    </div>

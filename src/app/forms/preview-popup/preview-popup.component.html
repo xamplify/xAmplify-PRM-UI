@@ -1,13 +1,14 @@
 <div style="padding-top:6px;margin-bottom: -5px;">
     <button *ngIf="(authenticationService.module.hasFormAccess && (showButton || authenticationService?.isShowForms) 
-        && !isVendorJourney && !isMasterLandingPage && !isWelcomePage && !isVendorOrMasterLandingPage && !isPartnerJourneyPages && !isVendorMarketplacePages)"
+            && !isVendorJourney && !isMasterLandingPage && !isWelcomePage && !isVendorOrMasterLandingPage 
+            && !isPartnerJourneyPages && !isVendorMarketplacePages && !fromOliver)"
         class="button_blue show-forms-btn bgcolor-unset px-0" id="right" style="border-radius: 5px" (click)="showForms()">
         <span class="btn btn-primary transition">{{buttonText}}</span>
     </button>
 </div>
 <!-- ----------------------List Available Forms------------------- -->
 <div class="modal fade right" id="forms-list" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog"
+    <div class="modal-dialog modal-dialog-width"
         [ngClass]="(router.url.indexOf('/home/pages/add') > -1  || router.url.indexOf('/home/pages/edit') > -1)&& showCustomPopup ?'pages-custom-width85':'popup-custom-width'">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,10 +21,10 @@
             <div class="modal-body">
                 <div class="row" *ngIf="!formsError">
                     <div class="col-xs-12 p5" style="margin-bottom: -10px;">
-                        <div class="portlet light">
-                            <div class="portlet-title">
-                                <div class="">
-                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
+                        <div class="portlet light border-none">
+                            <div class="portlet-title border-none">
+                                <div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" *ngIf="!fromSurvyaTemplate">
                                         <ul class="mix-filter m0">
                                             <li class="filter" (click)="searchFormsByFilter('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
                                                 translate>All</li>

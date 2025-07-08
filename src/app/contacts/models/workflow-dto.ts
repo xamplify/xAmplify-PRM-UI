@@ -23,5 +23,8 @@ export class WorkflowDto {
     partnerGroupSelected:boolean = false;
     selectedPartnerIds = [];
     divId:string;
+    //XNFR-993
+    learningTrackId = 0;
+    partnerShipIds = [];
 
 }

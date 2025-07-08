@@ -10,6 +10,7 @@ import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 import { PartnerCompanyMetricsDto } from 'app/dashboard/models/partner-company-metrics-dto';
+import { Partnership } from '../models/partnership.model';
 
 @Injectable()
 export class ParterService {
@@ -141,7 +142,8 @@ export class ParterService {
         let filterTypeRequestParam = partnerJourneyRequest.filterType != undefined ? "&filterType=" + partnerJourneyRequest.filterType : "&filterType= =''"
         let partnerTeamMemberGroupFilterRequestParm = "&partnerTeamMemberGroupFilter=" + partnerJourneyRequest.partnerTeamMemberGroupFilter
         let teamMemberIdRequestParam = partnerJourneyRequest.teamMemberUserId != undefined ? "&teamMemberUserId=" + partnerJourneyRequest.teamMemberUserId : "&teamMemberUserId=0"
-        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam 
+        let partnershipStatus = "&partnershipStatus=" + partnerJourneyRequest.partnershipStatus ;
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam + partnershipStatus
         + filterTypeRequestParam + partnerTeamMemberGroupFilterRequestParm + teamMemberIdRequestParam;
         if (chartId == "redistributeCampaignsAndLeadsCountBarChart") {
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
@@ -253,6 +255,12 @@ export class ParterService {
     /*********Start : XNFR-316************/
     getActivePartners(pagination: Pagination) {
         const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
+    getDeactivatedPartners(pagination: Pagination) {
+        const url = this.URL + 'partner/deactivated-partners?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
@@ -689,14 +697,22 @@ export class ParterService {
         let searchParam = searchKey.length > 0 ? "&searchKey=" + searchKey : "";
         let fromDateFilterStringParam = pagination.fromDateFilterString != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
         let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
+        let filterFromDatestringParam = pagination.filterFromDateString != null ? "&filterFromDateString=" + pagination.filterFromDateString : "";
+        let filterToDatestringParam = pagination.filterToDateString != null ? "&filterToDateString=" + pagination.filterToDateString : "";
+        let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
+        let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";   
+        let assetIds = pagination.assetIds != undefined ? "&assetIds=" + pagination.assetIds : "";
+        let companyIds = pagination.selectedCompanyIds != undefined ? "&companyIds=" + pagination.selectedCompanyIds : ""
+        let emailIds = pagination.selectedEmailIds != undefined ? "&emailIds=" + pagination.selectedEmailIds : "";
         let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&partnerTeamMemberGroupFilter=true" : "";
         let timeZoneParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
+        let partnershipStatus = "&partnershipStatus=" + pagination.partnershipStatus ;
         let partnerCompanyIdRequestParam = partnerCompanyId != null ? "&partnerCompanyId=" + partnerCompanyId : "";
         let selectedPartnerCompanyIdsRequestParam = pagination.selectedPartnerCompanyIds != undefined ? "&selectedPartnerCompanyIds=" + pagination.selectedPartnerCompanyIds : "";
         let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
         let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
         let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
-        + fromDateFilterStringParam + toDateFilterStringParam + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        + fromDateFilterStringParam + toDateFilterStringParam + filterFromDatestringParam + filterToDatestringParam + sortcolumn + sortingOrder + assetIds + companyIds + emailIds + teamMemberPartnerFilter + timeZoneParam   + partnershipStatus + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
         const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
         return this.httpClient.get(url)
             .catch(this.handleError);
@@ -774,6 +790,62 @@ export class ParterService {
     getWorkflowsByPlaybookId(playbookId:number) {
         let findAllUrl = this.WORK_FLOW_PREFIX_URL + '/getWorkflowsByPlaybookId/' + playbookId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    getAllPartnerAssetNamesFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/journey/asset/names/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+    getAllPartnerEmailIdsFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/journey/email/ids/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+    getAssetInteractionDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/asset/journey/asset/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
+
+    /***** XNFR-988 *****/
+    updatePartnerShipStatusForPartner(partnershipids:any, partnerStatus:string) {
+        let url = this.URL + 'partnership/updatePartnerShipStatusForPartner?partnerStatus=' + partnerStatus + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, partnershipids);
+    }
+
+    findPartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/findPartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+    updatePartnerCompaniesByDomain(partnership: Partnership) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + 'partnership/updatePartnerCompaniesByDomain/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnership);
+    }
+
+      deactivatePartners(deactivateUserIds: Array<number>) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        var url = this.URL + "partnership/deactivatePartnerCompanies/" + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, deactivateUserIds);
+    }
+    getPlaybookInteractionDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/journey/interaction/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
+
+    getAllPlaybookNamesFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/playbook/names/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+  
+    //XNFR-1006
+      findTotalDeactivatePartnersCount(loggedInUserId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findTotalDeactivatePartnersCount", loggedInUserId, applyFilter);
     }
 
 }

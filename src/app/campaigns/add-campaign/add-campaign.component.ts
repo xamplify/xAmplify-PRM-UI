@@ -261,6 +261,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   maxRecipientCount: number = 0;
   restrictRecipientCount: boolean = false;
 
+  notifyPartnersTeamMembersLabelText = "";
+  notifyPartnerTeamMemberToolTipMessage = "";
+  teamMemberCustomName = "Team Member";
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -626,6 +630,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 }
                 /***XNFR-382 */
                 this.notifyWorkflowToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign workflows";
+                 //  XNFR-990
+                this.notifyPartnersTeamMembersLabelText = "Notify "+this.partnerModuleCustomName+" Team Members?";
+                this.notifyPartnerTeamMemberToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign";
                 this.removeBlur();
             },(error:any)=>{
                 let errorMessage = this.referenceService.showHttpErrorMessage(error);
@@ -2255,6 +2262,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             'replyVideo': true,
             'channelCampaign': this.campaign.channelCampaign,
             'emailNotification': this.campaign.emailNotification,
+            // XNFR-990
+            'notifyTeamMember': this.campaign.notifyTeamMember,
+            // XNFR-990
             'linkOpened': this.campaign.linkOpened,
             'enableCoBrandingLogo': this.campaign.enableCoBrandingLogo,
             'userId': this.loggedInUserId,
@@ -2740,4 +2750,13 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.maxRecipientCountReached = false;
         }
     }
+
+    //  XNFR-990
+    setNotifyPartnerTeamMemberWorkflow(event: boolean) {
+        this.campaign.notifyTeamMember = event;
+        if (!event) {
+            this.campaign.notifyTeamMember = false;
+        }
+    }
+     //  XNFR-990
 }

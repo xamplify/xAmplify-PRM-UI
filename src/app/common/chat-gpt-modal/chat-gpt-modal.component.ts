@@ -17,8 +17,13 @@ import { EmailTemplateService } from 'app/email-template/services/email-template
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { OliverAgentAccessDTO } from '../models/oliver-agent-access-dto';
 import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
+import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
+import { ExecutiveReport } from '../models/oliver-report-dto';
+import { Observable, Subscription } from 'rxjs';
+
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -35,7 +40,7 @@ export class ChatGptModalComponent implements OnInit {
 
   inputText = "";
   isValidInputText = false;
-  chatGptGeneratedText = "";
+  chatGptGeneratedText : any;
   isTextLoading = false;
   isCopyButtonDisplayed = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -78,6 +83,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly GLOBALCHAT = "GLOBALCHAT";
+  private readonly CONTACTAGENT = "CONTACTAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -113,22 +119,61 @@ export class ChatGptModalComponent implements OnInit {
   integrationType: any;
   uploadedAssets: any;
   isReUploadFromPreview: boolean = false;
+  showPage: boolean;
+  pagination: Pagination = new Pagination();
+  stopClickEvent: boolean;
+  copiedIndexes: number[] = [];
+  showButtons = false;
+
+  showPrompts: boolean = false;
+  suggestedPrompts: string[] = [];  
+
+  showReport: boolean= false;
+  oliverPromptSuggestionDTOs: OliverPromptSuggestionDTO[] = [];
+  filteredPrompts: string[] = [];          
+  searchTerm: string = '';                 
+  showPromptsDown: boolean  = false;
+  showGlobalPromptsDown: boolean;
+  showGlobalPrompts: boolean;
+  showInsightsPromptsDown: boolean = false;
+  showInsightsPrompts: boolean = false;
+  isReportInHistory: boolean;
+
+  /** XNFR-1009 **/
+  showPromptBoxAbove: boolean = false;
+  suggestedPromptDTOs: OliverPromptSuggestionDTO[] = [];
+  showPromptBoxBelow: boolean  = false;
+  showGlobalPromptBoxBelow: boolean;
+  showGlobalPromptBoxAbove: boolean;
+  showInsightPromptBoxBelow: boolean = false;
+  showInsightPromptBoxAbove: boolean = false;
+  selectedPromptId: number;
+  historyLoader: boolean = false;
+  statusMessage: string = '';
+  private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
+  private messageIndex: number = 0;
+  private intervalSub: Subscription;
+  socialShareOption: boolean = false;
+  designAccess: boolean = false;
+  uploadedFolders: any[];
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
-    private emailTemplateService: EmailTemplateService, public pagerService: PagerService) {
+    private emailTemplateService: EmailTemplateService, public pagerService: PagerService,private landingPageService: LandingPageService) {
   }
 
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
+    this.checkSocialAcess();
   }
-
-
 
   validateInputText() {
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText != undefined && trimmedText.length > 0;
+     if (this.activeTab == 'askpdf' || this.activeTab == 'globalchat' ) { 
+      this.searchPromptsOnKeyPress();
+    }
   }
 
   ngOnDestroy() {
@@ -136,6 +181,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isWelcomePageUrl = false;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.designAccess = false;
   }
 
   generateChatGPTText(chatHistoryId:any) {
@@ -156,7 +202,11 @@ export class ChatGptModalComponent implements OnInit {
     // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     // this.chatGptIntegrationSettingsDto.prompt = askOliver;
     // this.showOpenHistory = true;
-    this.chatGptIntegrationSettingsDto.contents = this.messages;
+    let messagesContent: any = [];
+    messagesContent = this.messages.filter(function (message) {
+      return message.isReport == 'false';
+    });
+    this.chatGptIntegrationSettingsDto.contents = messagesContent;
     this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
     this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -171,8 +221,8 @@ export class ChatGptModalComponent implements OnInit {
           // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
           // this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
-          // this.chatGptGeneratedText = response.message;
-          // this.messages.push({ role: 'assistant', content: response.message });
+          this.chatGptGeneratedText = response.message;
+          this.messages.push({ role: 'assistant', content: response.message });
         } else {
           // let errorMessage = data['apiResponse']['error']['message'];
           // this.customResponse = new CustomResponse('ERROR', errorMessage, true);
@@ -208,6 +258,10 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   resetValues() {
+    if (this.messages.length == 0 && this.activeTab == 'askpdf') {
+      this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
+    }
+    this.checkSocialAcess();
     this.emailTemplateService.emailTemplate = new EmailTemplate();
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.showDefaultTemplates();
@@ -252,6 +306,12 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.isCopyButtonDisplayed = false;
+    this.resetAllPromptBoxes();
+    this.getSuggestedPromptsForGlobalSearch();
+    this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   private checkDamAccess() {
@@ -280,13 +340,22 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   setActiveTab(tab: string) {
-    this.isValidInputText = false;
-    this.inputText = "";
-    if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
+    if (this.messages.length > 0 && this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
       this.saveChatHistoryTitle(this.chatHistoryId);
-    } else {
+    } else if(this.messages.length == 0 && this.activeTab == 'askpdf') {
+      this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
+    }else{
       this.messages = [];
     }
+    this.searchTerm = "";
+    this.showPromptBoxBelow = false;
+    this.showPromptBoxAbove = false;
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.isValidInputText = false;
+    this.inputText = "";
     this.isTextLoading = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
@@ -305,7 +374,6 @@ export class ChatGptModalComponent implements OnInit {
     if (tab == 'history') {
       this.showChatHistories();
     }
-
     if (this.activeTab == 'settings') {
       this.callChatGptIntegrationSettingsComponent = true;
       this.chatGptIntegrationSettingsChildComponent.getSettings();
@@ -316,6 +384,13 @@ export class ChatGptModalComponent implements OnInit {
     this.isfileProcessed = false;
     this.isReUpload = false;
     this.isReUploadFromPreview = false;
+    this.copiedIndexes = [];
+    if (tab == 'globalchat') {
+      this.getSuggestedPromptsForGlobalSearch();
+    }
+    this.autoResizeTextArea(event);
+    this.designAccess = false;
+    this.checkDesignAccess();
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -346,8 +421,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
-    this.referenceService.showSweetAlertProcessingLoader("Loading");
-    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId,"GLOBALCHAT").subscribe(
+    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId,"INSIGHTAGENT").subscribe(
       response => {
         swal.close();
         if (isClosingModelPopup) {
@@ -451,7 +525,7 @@ export class ChatGptModalComponent implements OnInit {
     this.emitterData(event);
   }
 
- private emitterData(event: any) {
+  private emitterData(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
@@ -465,6 +539,11 @@ export class ChatGptModalComponent implements OnInit {
     this.openShareOption = false;
     this.openAssetPage = false;
     this.showTemplate = false;
+    this.landingPageService.jsonBody = "";
+    this.landingPageService.id = 0;
+    this.showPage = false;
+    this.selectTemplate = false;
+    this.resetPageData();
   }
 
   speakTextOn(index: number, element: any) {
@@ -521,15 +600,23 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
-  searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0 && !this.isTextLoading)  {
+   searchDataOnKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0 && !this.isTextLoading) {
       this.AskAiTogetData();
+      event.preventDefault();
     }
   }
+}
 
   openAssetsPage() {
-    if (this.isReUpload && (this.uploadedAssets != undefined && this.uploadedAssets.length == 0)) {
+    if (this.isReUpload && this.selectedAssets.length > 0 &&
+      (!this.uploadedAssets || this.uploadedAssets.length == 0)) {
       this.uploadedAssets = this.selectedAssets;
+    }
+    if (this.isReUpload && this.selectedFolders.length > 0 &&
+      (!this.uploadedFolders || this.uploadedFolders.length == 0)) {
+      this.uploadedFolders = this.selectedFolders;
     }
     this.showView = true;
   }
@@ -541,20 +628,33 @@ export class ChatGptModalComponent implements OnInit {
     } else {
       this.uploadedAssets = event;
     }
+
+    if (this.isReUpload && (this.uploadedFolders && this.uploadedFolders.length > 0)) {
+      this.uploadedAssets = [];
+    }
   }
   
 
   submitSelectedAssetsToOliver() {
     this.assetLoader = true;
     this.showOpenHistory = false;
-    if (this.selectedFolders.length == 0) {
-      if (this.isReUpload) {
+    if (this.isReUpload && (!this.uploadedFolders || this.uploadedFolders.length == 0)) {
+      this.selectedFolders = [];
+    }
+    if (this.selectedFolders.length === 0 && (!this.uploadedFolders || this.uploadedFolders.length === 0)) {
+      if (this.isReUpload && this.uploadedAssets != undefined && this.uploadedAssets.length > 0) {
         this.selectedAssets = this.uploadedAssets;
+        this.selectedFolders = [];
+        this.uploadedFolders = [];
       }
       this.pdfFiles = this.selectedAssets;
-      // this.getPdfByAssetPaths(this.selectedAssets);
       this.getUploadedFileIds();
     } else {
+      if (this.isReUpload && this.uploadedFolders != undefined && this.uploadedFolders.length > 0) {
+        this.selectedFolders = this.uploadedFolders;
+        this.selectedAssets = [];
+        this.uploadedAssets = [];
+      }
       this.getAssetPathsByCategoryIds();
     }
     this.showView = false;
@@ -619,6 +719,9 @@ export class ChatGptModalComponent implements OnInit {
 
 
   getUploadedFileIds() {
+    this.oliverPromptSuggestionDTOs = [];
+    this.suggestedPromptDTOs = [];
+    this.chatGptIntegrationSettingsDto.loggedInUserId = this.loggedInUserId;
     this.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
     // this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
     this.chatGptIntegrationSettingsDto.threadId = this.threadId;
@@ -650,6 +753,8 @@ export class ChatGptModalComponent implements OnInit {
           }, 1000);
           self.showOpenHistory = true;
         }
+        this.oliverPromptSuggestionDTOs = data.suggestedPrompts || [];
+        this.suggestedPromptDTOs = [...this.oliverPromptSuggestionDTOs];
       },
       (error: string) => {
         this.assetLoader = false;
@@ -666,10 +771,17 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
 
+  showMEEEEE: boolean = false;
+
   AskAiTogetData() {
+    this.showMEEEEE = true;
+    this.searchTerm = "";
+    this.resetAllPromptBoxes();
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
+    this.isCopyButtonDisplayed = false;
+    this.chatGptIntegrationSettingsDto.promptId = this.selectedPromptId;
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
@@ -685,6 +797,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARAPHRASERAGENT;
     } else if (this.activeTab == 'globalchat') {
       this.chatGptIntegrationSettingsDto.agentType = this.GLOBALCHAT;
+    } else if (this.activeTab == 'contactagent') {
+      this.chatGptIntegrationSettingsDto.agentType = this.CONTACTAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -693,38 +807,113 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
+      this.removeStyleForTextArea();
     }
     self.isValidInputText = false;
+    self.startStatusRotation();
+    let previousTab = this.activeTab;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
-        self.isTextLoading = false;
-        console.log('API Response:', response);
-        var content = response.data;
-        if (content) {
-          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+        let statusCode = response.statusCode;
+        // swal.close();
+        if (statusCode === 200) {
+          self.isTextLoading = false;
+          let isReport = response.data.isReport;
+          console.log('API Response:', response);
+          var content = response.data;
+          if (content) {
+            let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+            if (isReport == 'true') {
+              try {
+                const cleanJsonStr = self.extractJsonString(message);
+                message = self.parseOliverReport(cleanJsonStr);
+              } catch (error) {
+                isReport = 'false';
+                message = self.chatGptGeneratedText;
+              }
+            }
+
+            self.messages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.threadId = content.threadId;
+            self.vectorStoreId = content.vectorStoreId;
+            self.chatHistoryId = content.chatHistoryId;
+            self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
+
+          } else {
+            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+          }
+          this.trimmedText = '';
+          if (!(self.inputText != undefined && self.inputText.length > 0)) {
+            self.autoResizeTextArea(event);
+          }
+          self.selectedPromptId = null;
+        } else if (statusCode === 400) {
+          var content = response.data;
+          self.isTextLoading = false;
           self.threadId = content.threadId;
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
-        } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
+          self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
-        this.trimmedText = '';
+        self.stopStatusRotation();
+        if (previousTab != self.activeTab) {
+          self.showOpenHistory = false;
+          self.isCopyButtonDisplayed = false;
+        }
+        console.log(self.messages);
       },
       function (error) {
         console.log('API Error:', error);
-        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+        self.isTextLoading = false;
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
+        self.selectedPromptId = null;
+        self.stopStatusRotation();
       }
     );
   }
 
-  onKeyPressForAsekOliver(keyCode: any) {
-    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
-      this.AskAiTogetData();
+  private removeStyleForTextArea() {
+    const textarea = document.getElementById('askMeTextarea') as HTMLTextAreaElement | null;
+    const textarea1 = document.getElementById('askMeTextarea1') as HTMLTextAreaElement | null;
+    const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
+    const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
+    const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
+    if (textarea) {
+      textarea.removeAttribute('style');
+    }
+    if (textarea1) {
+      textarea1.removeAttribute('style');
+    }
+    if (textarea2) {
+      textarea2.removeAttribute('style');
+    }
+    if (textarea3) {
+      textarea3.removeAttribute('style');
+    }
+    if (textarea4) {
+      textarea4.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4;
+    if (textArea) {
+        const chat = document.querySelector('.newChatlabel') as HTMLElement;
+        const box = textArea.closest('.oliver_input') as HTMLElement;
+        if (chat && box) {
+          chat.removeAttribute('style');
+          
+      }
     }
   }
 
- closeManageAssets() {
+  onKeyPressForAsekOliver(event: KeyboardEvent) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    if (this.inputText && this.inputText.length > 0) {
+      this.AskAiTogetData();
+      event.preventDefault(); 
+    }
+  }
+}
+
+  closeManageAssets() {
     this.showView = false;
     if (!this.isReUpload && !this.isfileProcessed) {
       this.selectedAssets = [];
@@ -744,8 +933,12 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = true;
   }
 
-  handleFolders(event) {
-    this.selectedFolders = event;
+  handleFolders(event: any[]) {
+    if (!this.isReUpload) {
+      this.selectedFolders = event;
+    } else {
+      this.uploadedFolders = event;
+    }
   }
 
   getAssetPathsByCategoryIds() {
@@ -767,17 +960,22 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
-  fetchHistories(chatHistoryPagination) {
+  fetchHistories(chatHistoryPagination: Pagination) {
+    this.stopClickEvent = true;
+    this.historyLoader = true;
     chatHistoryPagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.fetchHistories(chatHistoryPagination, this.isPartnerLoggedIn, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
       (response) => {
+        this.historyLoader = false;
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           chatHistoryPagination.totalRecords = data.totalRecords;
           this.chatHistories = [...this.chatHistories,...data.list];
         }
+        this.stopClickEvent = false;
       }, error => {
-
+        this.historyLoader = false;
+        this.stopClickEvent = false;
       }
     )
   }
@@ -792,13 +990,14 @@ export class ChatGptModalComponent implements OnInit {
     this.isSaveHistoryPopUpVisible = false;
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
-      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)) {
+      || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
+      || (history.oliverChatHistoryType == this.CONTACTAGENT)) {
       this.isAgentSubmenuOpen = true;
     }
     this.getChatHistory(history.oliverChatHistoryType);
   }
 
-  getTabName(tab): string {
+  getTabName(tab: any): string {
     switch (tab) {
       case this.BRAINSTORMAGENT:
         return "new-chat";
@@ -810,6 +1009,8 @@ export class ChatGptModalComponent implements OnInit {
         return "paraphraser";
       case this.GLOBALCHAT:
         return "globalchat";
+      case this.CONTACTAGENT:
+        return "contactagent";
     }
   }
 
@@ -822,12 +1023,23 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (response.statusCode == 200) {
           let messages = response.data;
+          let isReport = 'false';
           messages.forEach((message: any) => {
+
             if (message.role === 'assistant') {
-              this.messages.push({ role: 'assistant', content: message.content });
+              if (isReport == 'true') {
+                let reponseJson = this.extractJsonString(message.content);
+                message.content = this.parseOliverReport(reponseJson);
+              }
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
+              if (this.activeTab == 'contactagent' && this.checkKeywords(message.content)) {
+                isReport = 'true';
+              } else {
+                isReport = 'false';
+              }
             }
           });
           setTimeout(() => {
@@ -847,6 +1059,12 @@ export class ChatGptModalComponent implements OnInit {
       }
     );
   }
+
+  checkKeywords(prompt: string) {
+    const keywords = ['executive summary', 'QBR'];
+    return keywords.some(keyword => prompt.toLowerCase().includes(keyword.toLowerCase()));
+  }
+
 
   openEdit(history:any,index:any) {
     if (this.index != undefined && this.index > 0 && this.index != index) {
@@ -916,7 +1134,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
-    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0) {
+    if (keyCode === 13 && this.chatHistorySortOption.searchKey != undefined && this.chatHistorySortOption.searchKey.length > 0 && !this.stopClickEvent) {
       this.searchChatHistory();
     }
   }
@@ -949,7 +1167,6 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         if (!this.emailTemplateService.emailTemplate) {
           this.emailTemplateService.emailTemplate = new EmailTemplate();
-          alert("Template created successfully.");
           this.showTemplate = false;
           this.selectTemplate = true;
           this.templateLoader = false;
@@ -957,6 +1174,9 @@ export class ChatGptModalComponent implements OnInit {
         if (this.chatGptIntegrationSettingsDto.designPdf) {
           this.emittdata = JSON.stringify(response.data);
           this.openAssetPage = true;
+        } else if (this.chatGptIntegrationSettingsDto.designPage) {
+          this.showPage = true;
+          this.landingPageService.jsonBody = JSON.stringify(response.data);
         } else {
           this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
           this.showTemplate = true;
@@ -1086,14 +1306,22 @@ closeDesignTemplate(event: any) {
   }
     /** XNFR-982 end **/
 
-    closeSelectionTemplate(event: any) {
+  closeSelectionTemplate(event: any) {
     if (event) {
+       const selectedTemplate = event.selectedTemplate;
+       const isConfirmed = event.isConfirmed;
+       this.chatGptIntegrationSettingsDto.addBrandColors = isConfirmed;
       // this.emailTemplateService.emailTemplate.jsonBody = "";
-      this.emailTemplateService.emailTemplate = event;
-      this.chatGptIntegrationSettingsDto.templateId = event.id;
-      this.openDesignTemplate(event);
+      if (this.chatGptIntegrationSettingsDto.designPage) {
+        this.landingPageService.id = selectedTemplate.id;
+      } else {
+        this.emailTemplateService.emailTemplate = selectedTemplate;
+      }
+      this.chatGptIntegrationSettingsDto.templateId = selectedTemplate.id;
+      this.openDesignTemplate(selectedTemplate);
       this.templateLoader = true;
-    } else{
+    } else {
+      this.resetPageData();
       this.selectTemplate = false;
     }
   } 
@@ -1143,6 +1371,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+            this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
           }
         }
       }, error => {
@@ -1154,6 +1383,482 @@ closeDesignTemplate(event: any) {
     this.isReUpload = true;
     this.isReUploadFromPreview = true;
     this.openAssetsPage();
+  }
+
+  /** XNFR-1002 start **/
+  desginPage(markdown: any) {
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.pagination.source = "OLIVER_DEFAULT_PAGE";
+    this.listLandingPages(this.pagination);
+    this.chatGptIntegrationSettingsDto.designPage = true;
+  }
+
+  listLandingPages(pagination: Pagination) {
+    this.referenceService.goToTop();
+    this.landingPageService.listDefault(pagination).subscribe(
+      (response: any) => {
+        if (response.access) {
+          let data = response.data;
+          if (response.statusCode == 200) {
+            pagination.totalRecords = data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+            this.selectedTemplateList = pagination.pagedItems;
+            this.selectTemplate = true;
+          }
+        } else {
+          this.authenticationService.forceToLogout();
+        }
+
+      },
+      (error: any) => {
+        console.error("Error in listLandingPages():", error);});
+  }
+
+  /** XNFR-1002 End **/
+  
+  copyToClipBoard(inputValue: HTMLElement) {
+    const title = inputValue.getAttribute('value') || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = title;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  copyResponse(inputValue: HTMLElement, index:any) {
+    this.copiedIndexes[index] = 1;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.copiedIndexes[index] = 0;
+    }, 2000)
+  }
+
+  isCopied(index: number): boolean {
+    return !!this.copiedIndexes[index];
+  }
+
+  clearSeachKey() {
+    this.chatHistorySortOption.searchKey = '';
+    this.searchChatHistory();
+  }
+
+showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
+    let self = this;
+    swal({
+      title: 'Do you want to save the History?',
+      text: 'If not the history will be deleted permanently',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(function () {
+      if (isClosingModelPopup) {
+        self.showIcon = true;
+      }
+    }, function (dismiss: any) {
+    })
+    self.activeTab = tab;
+  }
+
+  resetPageData() {
+    if (this.chatGptIntegrationSettingsDto.designPage) {
+      this.selectedTemplateList = [];
+      this.landingPageService.jsonBody = "";
+      this.showDefaultTemplates();
+      this.chatGptIntegrationSettingsDto.designPage = false;
+    }
+  }
+
+  /** XNFR-1009 start **/
+  searchPrompts() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (term === '') {
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
+    } else {
+      const searchWords = term.split(/\s+/);
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.filter(dto => {
+        const lowerPrompt = dto.promptMessage.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
+      });
+    }
+  }
+
+  searchPromptsOnKeyPress(): void {
+    const isAskPdf = this.activeTab === 'askpdf';
+    const isGlobalChat = this.activeTab === 'globalchat';
+    const term = (isAskPdf || isGlobalChat ? this.inputText : this.searchTerm || '').trim().toLowerCase();
+    if (!term) {
+      this.oliverPromptSuggestionDTOs = [...this.suggestedPromptDTOs];
+    } else {
+      const searchWords = term.split(/\s+/);
+      this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.filter(prompt => {
+        const lowerPrompt = prompt.promptMessage.toLowerCase();
+        return searchWords.every(word => lowerPrompt.includes(word));
+      });
+    }
+    const hasMatches = term && this.oliverPromptSuggestionDTOs.length > 0;
+    if (isAskPdf && hasMatches) {
+      this.showInsightPromptBoxBelow = this.showOpenHistory;
+      this.showInsightPromptBoxAbove = !this.showOpenHistory;
+    } else if (isGlobalChat && hasMatches) {
+      this.showGlobalPromptBoxBelow = this.showOpenHistory;
+      this.showGlobalPromptBoxAbove = !this.showOpenHistory;
+    } else {
+      this.resetAllPromptBoxes();
+      this.oliverPromptSuggestionDTOs = [...this.suggestedPromptDTOs];
+    }
+  }
+
+  getSuggestedPromptsForGlobalSearch() {
+    this.oliverPromptSuggestionDTOs = [];
+    this.suggestedPromptDTOs = [];
+    this.customResponse = new CustomResponse();
+    const companyProfileName = this.authenticationService.companyProfileName.trim() || '';
+    this.chatGptSettingsService.getSuggestedPromptsForGlobalSearch(companyProfileName).subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode === 200) {
+          this.oliverPromptSuggestionDTOs = data || [];
+          this.suggestedPromptDTOs = [...this.oliverPromptSuggestionDTOs];
+        }
+      }, error => {
+
+      }, () => {
+
+      });
+  }
+
+  setSuggestedInputText(text: string, promptId: number): void {
+    this.inputText = text;
+    this.selectedPromptId = promptId;
+    this.isValidInputText = true;
+    this.searchTerm = "";
+    this.autoResizeTextArea(event);
+    this.resetAllPromptBoxes();
+  }
+
+ openPrompts() {
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
+    this.searchTerm = "";
+    this.showPromptBoxAbove = !this.showPromptBoxAbove;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
+  }
+
+  openPromptsDown() {
+    this.showInsightPromptBoxBelow = false;
+    this.showInsightPromptBoxAbove = false;
+    this.searchTerm = "";
+    this.showPromptBoxBelow = !this.showPromptBoxBelow;
+    this.showGlobalPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.oliverPromptSuggestionDTOs = this.suggestedPromptDTOs.slice(0, 15);
+  }
+
+  resetAllPromptBoxes(): void {
+    this.showInsightPromptBoxAbove = false;
+    this.showInsightPromptBoxBelow = false;
+    this.showPromptBoxAbove = false;
+    this.showPromptBoxBelow = false;
+    this.showGlobalPromptBoxAbove = false;
+    this.showGlobalPromptBoxBelow = false;
+  }
+  /** XNFR-1009 end **/
+
+  extractJsonString(raw: string): string {
+    const firstBrace = raw.indexOf('{');
+    const lastBrace = raw.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1 || firstBrace > lastBrace) {
+      throw new Error('No valid JSON object found in input');
+    }
+    return raw.substring(firstBrace, lastBrace + 1);
+  }
+
+  parseOliverReport(jsonStr: string): ExecutiveReport {
+    const j = JSON.parse(jsonStr);
+
+    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+
+    const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
+    const dealPipelinePrograssion = {
+      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+    };
+
+    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+
+    const campaignPerformanceAnalysis = {
+      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: campaignItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
+        }))
+      }],
+      seriesString: '',
+    };
+
+    const dto: ExecutiveReport = {
+      /* ---------- top-level meta ---------- */
+      report_title: j && j.report_title ? j.report_title : '',
+      subtitle: j && j.subtitle ? j.subtitle : '',
+      date_range: j && j.date_range ? j.date_range : '',
+      report_owner: j && j.report_owner ? j.report_owner : '',
+      report_recipient: j && j.report_recipient ? j.report_recipient : '',
+
+      /* ---------- KPI overview ---------- */
+      kpi_overview: {
+        title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+        description: j && j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+        items: j && j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+      },
+
+      /* ---------- summary overview ---------- */
+      summary_overview: {
+        title: j && j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+        description: j && j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+        items: j && j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+      },
+
+      /* ---------- performance indicators ---------- */
+      performance_indicators: {
+        title: j && j.performance_indicators && j.performance_indicators.title ? j.performance_indicators.title : '',
+        description: j && j.performance_indicators && j.performance_indicators.description ? j.performance_indicators.description : '',
+        items: j && j.performance_indicators && j.performance_indicators.items ? j.performance_indicators.items : []
+      },
+
+      /* ---------- campaign performance analysis ---------- */
+      campaign_performance_analysis: {
+        top_performing_campaign_type:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.top_performing_campaign_type
+            ? j.campaign_performance_analysis.top_performing_campaign_type
+            : '',
+        campaign_engagement_state: {
+          connected:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.connected
+              ? j.campaign_performance_analysis.campaign_engagement_state.connected
+              : 0,
+          idle:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.idle
+              ? j.campaign_performance_analysis.campaign_engagement_state.idle
+              : 0,
+          other:
+            j && j.campaign_performance_analysis &&
+              j.campaign_performance_analysis.campaign_engagement_state &&
+              j.campaign_performance_analysis.campaign_engagement_state.other
+              ? j.campaign_performance_analysis.campaign_engagement_state.other
+              : 0
+        },
+        notes:
+          j && j.campaign_performance_analysis && j.campaign_performance_analysis.notes
+            ? j.campaign_performance_analysis.notes
+            : ''
+      },
+
+      /* ---------- lead-progression funnel ---------- */
+      lead_progression_funnel: leadProgressionFunnelData,
+
+      /* ---------- pipeline progression ---------- */
+      pipeline_progression: {
+        deal_stages:
+          j && j.pipeline_progression && j.pipeline_progression.deal_stages
+            ? j.pipeline_progression.deal_stages
+            : {},
+        highest_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.highest_deal_value
+            ? j.pipeline_progression.highest_deal_value
+            : '',
+        average_deal_value:
+          j && j.pipeline_progression && j.pipeline_progression.average_deal_value
+            ? j.pipeline_progression.average_deal_value
+            : '',
+        notes:
+          j && j.pipeline_progression && j.pipeline_progression.notes
+            ? j.pipeline_progression.notes
+            : ''
+      },
+
+      
+      /* ---------- contact-journey timeline ---------- */
+      contact_journey_timeline: {
+        title:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.title
+            ? j.contact_journey_timeline.title
+            : '',
+        description:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.description
+            ? j.contact_journey_timeline.description
+            : '',
+        items:
+          j && j.contact_journey_timeline && j.contact_journey_timeline.items
+            ? j.contact_journey_timeline.items
+            : []
+      },
+
+
+      /* ---------- strategic insights ---------- */
+      strategic_insights: {
+        title:
+          j && j.strategic_insights && j.strategic_insights.title
+            ? j.strategic_insights.title
+            : '',
+        description:
+          j && j.strategic_insights && j.strategic_insights.description
+            ? j.strategic_insights.description
+            : '',
+        items:
+          j && j.strategic_insights && j.strategic_insights.items
+            ? j.strategic_insights.items
+            : []
+      },
+
+      /* ---------- recommended next steps ---------- */
+      recommended_next_steps: {
+        title:
+          j && j.recommended_next_steps && j.recommended_next_steps.title
+            ? j.recommended_next_steps.title
+            : '',
+        description:
+          j && j.recommended_next_steps && j.recommended_next_steps.description
+            ? j.recommended_next_steps.description
+            : '',
+        items:
+          j && j.recommended_next_steps && j.recommended_next_steps.items
+            ? j.recommended_next_steps.items
+            : []
+      },
+
+      /* ---------- conclusion ---------- */
+      conclusion: {
+        title: j && j.conclusion && j.conclusion.title ? j.conclusion.title : '',
+        description: j && j.conclusion && j.conclusion.description ? j.conclusion.description : ''
+      },
+
+      dealPipelinePrograssion: dealPipelinePrograssion,
+
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+    };
+
+    return dto;
+  }
+  
+  startStatusRotation() {
+    this.statusMessage = this.loaderMessages[0];
+    this.messageIndex = 1;
+    let intervalTime = 5000;
+
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+
+    this.intervalSub = Observable.interval(intervalTime).subscribe(() => {
+      this.statusMessage = this.loaderMessages[this.messageIndex % this.loaderMessages.length];
+      this.messageIndex++;
+      intervalTime += intervalTime;
+      if (this.messageIndex == (this.loaderMessages.length - 1)) {
+        this.stopStatusRotation();
+      }
+    });
+  }
+
+  stopStatusRotation() {
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
+  
+ autoResizeTextArea(evt: any, maxRows = 6): void {
+    let textarea: HTMLTextAreaElement | null = null;
+    if (evt && evt.target && evt.target instanceof HTMLTextAreaElement) {
+      textarea = evt.target;
+    }
+    else if (evt instanceof HTMLTextAreaElement) {
+      textarea = evt;
+    }
+    if (!textarea) {
+      const nodes = document.querySelectorAll('.oliver_input textarea');
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i] as HTMLTextAreaElement;
+        el.style.removeProperty('height');
+        el.style.overflowY = 'hidden';
+      }
+      const chatBox = document.querySelector('.newChatlabel') as HTMLElement;
+      if (chatBox) { chatBox.style.removeProperty('max-height'); }
+      return;
+    }
+    textarea.style.height = 'auto';
+    const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight) || 24;
+    const maxHeight = lineHeight * maxRows;
+
+    if (!textarea.value.trim()) {
+      textarea.style.height = `${lineHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    } else if (textarea.scrollHeight <= maxHeight) {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+    else {
+      const oneLineH = lineHeight;                             // exact 1-line height
+      const wantedH = Math.min(textarea.scrollHeight, maxHeight);
+      textarea.style.height = (wantedH < oneLineH ? oneLineH : wantedH) + 'px';
+      textarea.style.overflowY = wantedH >= maxHeight ? 'auto' : 'hidden';
+    }
+    this.removeHeightofTextarea(textarea);
+
+  }
+
+
+  private removeHeightofTextarea(textarea: HTMLTextAreaElement) {
+    requestAnimationFrame(() => {
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textarea.closest('.oliver_input') as HTMLElement;
+      if (chat && box ) {
+        chat.style.maxHeight = `calc(100vh - ${box.offsetHeight + 80}px)`;
+      }
+    });
+  }
+
+    checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
+
+   private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
 }

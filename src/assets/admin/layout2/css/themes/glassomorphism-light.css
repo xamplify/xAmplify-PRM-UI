@@ -191,7 +191,7 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
 .form-control,.l-g-view,
 .col-item,
 button.fa.fa-th-large.btn-xs.l-g-view,
-button.btn.btn-xs.l-g-view {
+button.btn.btn-xs.l-g-view,.message-auto,.domain-field-text {
     color: #000 !important;
     background-color: rgb(255 255 255 / 31%) !important;
     border: 1px solid rgb(255 255 255 / 35%) !important;
@@ -1130,7 +1130,7 @@ input#copy-link {
 }
 .message-auto {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #22313a !important;
+  /* background-color: #22313a !important; */
 }
 .border-right,
 .right-border {
@@ -4730,3 +4730,75 @@ input:checked + .toggle-slider {
   }
   .fixed-update-button {bottom: 44px!important;}
   .templateui {padding: 20px 100px 12px 54px!important;}
+  .dropdown-menu button.share-btn {
+    border: none !important;
+  }
+  .dropdown-menu button.share-btn:hover{
+    box-shadow: none !important;
+  }
+  .suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+    background:#e0dedee8!important;
+    backdrop-filter: blur(5px);
+  }
+  .suggestion-list div{
+    border-bottom: 1px solid rgb(166 178 183)!important;
+  }
+  .suggestion-direction-global-chat-down,.suggestion-direction{
+    border-top: 12px solid #f6eded!important;
+  }
+  .suggestion-direction-global-chat{
+    border-bottom: 12px solid #f6eded!important;
+  }
+  .suggestion-list-global-chat {
+    max-height: 135px !important;
+  }
+  .suggestion-direction{
+    bottom: 87px!important;
+  }
+  .suggestion-direction-global-chat-down{
+    bottom: 51px!important;
+  }
+  .templateui{
+    bottom: 46px!important;
+  }
+   /* bee template table remove bg-color */
+ .nl-container tbody {
+  background: transparent !important;
+  backdrop-filter:none!important;
+  border:none!important;
+}
+.pad div {
+  color: #ffffff !important;
+}
+/* content count css */
+.section-column,.front-count-card,.stat-card {
+  background: rgb(255 255 255 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%)!important;
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label{
+  color:#000 !important;
+}
+button.btn.btn-primary.dropdown-toggle.border_btn{
+  border-left: 1px solid #1ca6f3 !important;
+}
+a.action-button{
+  color: #fff !important;
+}
+.oliveIcon {
+  background: rgb(0 0 0 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  width: 32px!important;
+  height: 32px!important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}
+.oliver_input textarea{
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+.oliver_input textarea:active,.oliver_input textarea:focus{
+      border-color:none !important;
+      outline: none !important;
+}

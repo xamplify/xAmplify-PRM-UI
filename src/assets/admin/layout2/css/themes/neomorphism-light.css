@@ -195,7 +195,7 @@ h6 {
   color:#fff !important;
 }
 .form-control,
-.col-item {
+.col-item,.message-auto,.domain-field-text {
   color: #000 !important;
   background-color: #f0f5fa !important;
   border: 0px solid #191b1e !important;
@@ -1129,10 +1129,10 @@ input#copy-link {
   .e-input-in-wrap {
   border-color: #191b1e !important;
 }
-.message-auto {
+/* .message-auto {
   border: 1px solid #2f4857 !important;
   background-color: #22313a !important;
-}
+} */
 .border-right,
 .right-border {
   border-right: 1px solid #d0d5db !important;
@@ -1263,9 +1263,9 @@ div#box-dark-defalut-clr {
 .has-error {
   box-shadow: none !important;
 }
-.message-auto {
+/* .message-auto {
   border: 1px solid #000 !important;
-}
+} */
 /* 30-5-2023 sudha sri */
 input.field-border-customization {
   border: 2px solid #2f4857 !important;
@@ -2367,7 +2367,7 @@ button.fa.fa-th-list.btn.btn-xs.l-g-view,
 button.fa.fa-th-large.btn.btn-xs.l-g-view,
 button.btn.btn-xs.l-g-view.folder-list-span-custom-width,
 button.btn.btn-xs.l-g-view,
-button.btn.btn-xs.l-g-view.disabled {
+button.btn.btn-xs.l-g-view.disabled,.domain-btn {
   box-shadow : inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   border: 1px solid #d0d5db !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
@@ -3747,7 +3747,7 @@ div#reply-3:hover {
 }
 button.btn.btn-primary.dropdown-toggle.rounded-0,
 button.group-name-cclass.btn-primary.default-btn-cursor,
-button.btn.btn-primary.breadcrumb-right-btn{
+button.btn.btn-primary.breadcrumb-right-btn, button.btn.btn-primary.dropdown-toggle.border_btn{
   background: #0276FF  !important;
 }
 /* Sudha Sri(23-1-2024) */
@@ -4587,6 +4587,9 @@ input:checked + .toggle-slider {
 .action-btn:hover {
   background-color: #f0f7ff !important;
 }
+.share-btn:hover{
+  color: #333;
+}
 .btn-pdf:focus {
   color: rgba(2, 118, 255, 1) !important;
 }
@@ -4642,3 +4645,79 @@ input:checked + .toggle-slider {
 .nav .submenu-parent.open > .submenu-toggle{
   border-color: transparent !important;
   border: 1px solid #d0d5db;}
+  .dropdown-menu button.share-btn {
+    border: none !important;
+  }
+  .dropdown-menu button.share-btn:hover{
+    box-shadow: none !important;
+  }
+  .suggestion-list-global-chat {
+    max-height: 135px !important;
+  }
+  .suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+    background:#edf2f8!important;
+  }
+  .suggestion-direction-global-chat-down,.suggestion-direction{
+    border-top: 12px solid #f0f5fa!important;
+  }
+  .suggestion-direction-global-chat{
+    border-bottom: 12px solid #f0f5fa!important;
+  }
+  /* bee template table remove bg-color */
+.nl-container table tr,
+.nl-container table tr:nth-child(odd),
+.nl-container table tr:nth-child(even),
+.nl-container table tbody tr:nth-of-type(odd),
+.nl-container table tbody tr:nth-of-type(even) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.nl-container tbody {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.pad div {
+  color: #333 !important;
+}
+/* content count css */
+.section-column,.front-count-card,.stat-card {
+ border: 1px solid #e0e6ed;
+ background: #f0f5fa !important;
+box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+.section-column:hover{
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+button.btn.btn-primary.dropdown-toggle.border_btn{
+  border-left: 1px solid #1ca6f3 !important;
+}
+.oliveIcon {
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  border: none !important;
+  width: 32px!important;
+  height: 32px!important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}
+
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}
+.oliverImgIcon,.oliveImg{
+  filter: unset !important;
+}
+.gridIconCustomization a.oliverhover:hover,.gridIconCustomization a.Iconhover.oliverhover:hover{
+  background: linear-gradient(225deg, #dde6ec, #ffffff)!important;
+  box-shadow: unset !important;
+}

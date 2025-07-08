@@ -405,14 +405,16 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                                 </app-timestamp>
                               </h5>
+                              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
+                                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                             </td>
                             <td style="width: 20%;">
                               <span class="comment-color" translate>
                                 {{deal.currentStageName}}</span>
 
                               <!-- xnfr-426-->
-                              <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)" data-rel="fancybox-button"
-                                (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                              <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)"
+                                data-rel="fancybox-button" (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
                               </a>
@@ -663,6 +665,8 @@
                                                 <td>
                                                   <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"
                                                     [isPartnerInfo]="true"></app-user-info>
+                                                  <h6 *ngIf="item?.partnerStatus === 'deactivated'" class="green-banner inline-flex" style="margin-left: 60px;" 
+                                                    data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                                                 </td>
                                                 <td>
                                                   <a class="custom-icon" (click)="showCampaignDealsByPartner(item)"

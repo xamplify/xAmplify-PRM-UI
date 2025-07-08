@@ -32,10 +32,10 @@
 <!--ChatGPT Modal-->
 <div
   *ngIf="isChatGptIconDisplayed && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
+  class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage  ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage  ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -45,15 +45,16 @@
         (notifyClose)="closeSocialShare($event)"></app-update-status>
       <app-create-template *ngIf="showTemplate" [isFromOliverPopUp]="true" (notifyEmit)="closeDesignTemplate($event)">
       </app-create-template>
+      <app-add-landing-page *ngIf="showPage" [isFromOliver]="true" (notifyEmit)="closeDesignTemplate($event)"></app-add-landing-page>
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
-          (notifyData)="closeSelectionTemplate($event)"></app-choose-emailtemplate>
+          (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate && !showPage " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
-          [selectedItemFromOliver]="selectedAssets" [selectedFoldersForOliver]="selectedFolders"
-          [isPartnerViewFromOliver]="isPartnerLoggedIn" (notifyasset)="getSelectedAssets($event)"
-          (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+          [oliverIntegrationType]="chatGptIntegrationSettingsDto?.oliverIntegrationType" [selectedItemFromOliver]="selectedAssets"
+          [selectedFoldersForOliver]="selectedFolders" [isPartnerViewFromOliver]="isPartnerLoggedIn"
+          (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
           <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
@@ -181,6 +182,12 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
+                    <li *ngIf="authenticationService?.module?.isContact"
+                      [ngClass]="{'active': activeTab === 'contactagent'}">
+                      <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
+                        <i class="fa fa-vcard-o"></i> Contact Agent
+                      </a>
+                    </li>
                   </ul>
                 </li>
             
@@ -223,8 +230,15 @@
               <span *ngIf="isSidebarVisible">&#9776;</span>
             </button>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' )? 'd-flex align-templateui' : 
-              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ? 'd-flex align-start' : 'd-flex align-center align_tab_view')">
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' || activeTab == 'contactagent') ? 'd-flex align-templateui' : 
+              ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  
+
+              (isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
+              ? 'd-flex align-for-prompts-global' :
+              (oliverPromptSuggestionDTOs?.length > 0 && !isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
+              ? 'd-flex align-center align_tab_view'             
+               : 
+               (oliverPromptSuggestionDTOs?.length > 0 && showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove) ? 'd-flex align-for-prompts' : 'd-flex align-center align_tab_view'))">
               <div [ngClass]="isSidebarVisible ? 'tab-content oliver_content' : 'tab-content oliver_content oliver-tabcontent'"
                 [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '15px' }">
                 
@@ -241,36 +255,68 @@
                     </div>
                   </ng-container>
                   <div [ngClass]="{
-                                  'fixed_oliver_input': !isSidebarVisible && showOpenHistory,
-                                  'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
-                                  'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
-                                }">
+                        'fixed_oliver_input': !isSidebarVisible && showOpenHistory,
+                        'templateui col-lg-9':  showOpenHistory && activeTab === 'globalchat',
+                        'container-ui': (!showOpenHistory || activeTab !== 'globalchat')
+                      }">
                     <div *ngIf="!showOpenHistory" class="d-flex content-align">
                       <span class="oliver_heading">Ask Oliver</span>
                       <div class="oliver-container">
                         <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                       </div>
                     </div>
+
                     <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your
                       solution and audience. Specializes in creative
                       brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored
                       to
                       your goals.</p>
-                    <div class="oliver_input mt10">
+                    <div *ngIf="showPromptBoxAbove && !showPromptBoxBelow || showGlobalPromptBoxBelow">
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                      <div class="suggestion-direction-global-chat-down"></div>
+                    </div>
+                  
+                    <!-- <div class="oliver_input mt10">
                       <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
+                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button"
+                          style="padding-right: 6px; height: 25px;" (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
+                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        </button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                      </div>
+                    </div> -->
+
+                    <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea"
+                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event)">
+                                        </textarea>
+                      <div class="btn-wrapper">
+                        <button class="image-only-button" title="Prompt Suggestions"
+                          (click)="showOpenHistory ? openPrompts() : openPromptsDown()">
+                          <img data-toggle="tooltip" data-placement="top" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts" />
+                        </button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
+                  
+                    <div *ngIf="showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove">
+                      <div class="suggestion-direction-global-chat"></div>
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                    </div>
+                  
                     <!--  -->
                     <!-- <div class="action-buttons mt10">
-                      <button class="action-btn">Analyze Asset</button>
-                      <button class="action-btn">Summarize in detail</button>
-                      <button class="action-btn">Summarize with Key
-                        Quotes</button>
-                    </div> -->
+                                        <button class="action-btn">Analyze Asset</button>
+                                        <button class="action-btn">Summarize in detail</button>
+                                        <button class="action-btn">Summarize with Key
+                                          Quotes</button>
+                                      </div> -->
                     <!--  -->
                   </div>
                 </div>
@@ -303,9 +349,10 @@
                     <p *ngIf="!showOpenHistory" class="oliver-text-color">Unlock fresh ideas, angles, and campaign
                       directions with guided ideation.</p>
                     <!-- Input Section -->
-                    <div class="oliver_input mt10">
-                      <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
-                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    <div class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea1"
+                        (input)="autoResizeTextArea($event); validateInputText()" (keypress)="searchDataOnKeyPress($event)">
+                      </textarea>
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
@@ -365,7 +412,7 @@
                 <div role="tabpanel"
                   [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}"
                   id="askpdf">
-                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'askpdf'">
+                  <ng-container *ngIf="showOpenHistory && activeTab === 'askpdf'">
                     <div class="main-container newChatlabel">
                       <ng-container *ngFor="let msg of messages; let i = index">
                         <ng-template [ngTemplateOutlet]="messageTemplate"
@@ -416,10 +463,17 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
-                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
-                            [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10"
+                          [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                          <!-- <textarea (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText" (input)="autoResizeTextArea(textarea3);validateInputText(textarea3)"
+                            placeholder="Ask Me!" rows="1" #textarea3></textarea> -->
+                            <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea2"
+                              (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event)">
+                                                </textarea>
                           <div class="btn-wrapper">
+                            <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button" style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPromptsDown()">
+                              <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions" src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                            </button>
                             <button (click)="!assetLoader && uploadFilesFromPreview()" class="btn-plus">+</button>
                           </div>
                         </div>
@@ -438,10 +492,32 @@
                         <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()" class="btn btn-submit">Submit</button>
                       </div>
                     </div>
-                    <div *ngIf="showOpenHistory" class="oliver_input mt10">
-                      <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
-                        [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    
+                    <div *ngIf="showPromptBoxBelow && !showPromptBoxAbove || showInsightPromptBoxAbove">
+                      <ng-container *ngTemplateOutlet="displayPrompts"></ng-container>
+                    </div>
+
+                    <div *ngIf="showPromptBoxAbove && !showPromptBoxBelow || showInsightPromptBoxBelow">
+                      <ng-container  *ngTemplateOutlet="displayPrompts"></ng-container>
+                      <div class="suggestion-direction"></div>
+                    </div>
+
+                    <div *ngIf="showOpenHistory" class="oliver_input mt10" [ngClass]="inputText?.length > 74 ? 'multi-line' : 'single-line'">
+                      <!-- <textarea (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
+                        (input)="autoResizeTextArea(textarea4);validateInputText(textarea4)" placeholder="Ask Me!" rows="1"
+                        #textarea4></textarea> -->
+                        <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" id="askMeTextarea3"
+                          [ngModelOptions]="{standalone: true}" (ngModelChange)="validateInputText()"
+                          (input)="autoResizeTextArea($event); validateInputText()" (keypress)="onKeyPressForAsekOliver($event)">
+                                                                    </textarea>
                       <div class="btn-wrapper">
+                    
+                        <button *ngIf="oliverPromptSuggestionDTOs?.length > 0" class="image-only-button"
+                          style="padding-right: 6px; height: 25px;" (click)="!assetLoader && openPrompts()">
+                          <img data-toggle="tooltip" data-placement="bottom" title="Prompt Suggestions"
+                            src="assets/images/oliver-promps-icon.svg" alt="Suggested Prompts">
+                        </button>
+                    
                         <button [disabled]="isTextLoading" (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -490,9 +566,9 @@
                       <div class="generate-div w-50per mt10">
                         <button class="generate-btn" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Generate</button>
-                        <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button>
-                                        <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                                        <button *ngIf="false" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
+                        <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
+                        <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button> -->
+                        <!-- <button *ngIf="false" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
                       </div>
                       <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                         <div class="footer-icons phara-footer mt0">
@@ -512,8 +588,8 @@
                             </i>
                           </div>
                           <!-- <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-                          <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                          <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+                          <!-- <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                          <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button> -->
                         </div>
                       </div>
                     </div>
@@ -536,13 +612,15 @@
                       <div class="search-wrapper">
                         <input type="text" class="form-control input-sm search-input" [(ngModel)]="chatHistorySortOption.searchKey"
                           (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
+                        <i class="fa fa-times search-icon right_30" (click)="clearSeachKey()"></i>
                         <i class="fa fa-search search-icon" (click)="searchChatHistory()"></i>
                       </div>
                     </div>
                     <!--  -->
                     <!-- History Sections -->
                     <div class="oliver-history-scroll">
-                      <div class="history-section">
+                      <app-modal-popup-loader *ngIf="historyLoader"></app-modal-popup-loader>
+                      <div *ngIf="!historyLoader" class="history-section">
                         <div *ngFor="let history of chatHistories;let i =index">
                           <div class="history-entry">
                             <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
@@ -551,7 +629,11 @@
                                 <i *ngIf="history.oliverChatHistoryType == BRAINSTORMAGENT"
                                   class="fa fa-lightbulb-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == INSIGHTAGENT"
+                                  class="fa fa-bar-chart mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == GLOBALCHAT"
                                   class="fa fa-file-text mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == CONTACTAGENT"
+                                  class="fa fa-vcard-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
                                   *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
@@ -575,7 +657,7 @@
                           *ngIf="chatHistoryPagination.totalRecords > chatHistories.length && !(chatHistories == undefined && chatHistories.length == 0)">
                           <a (click)="setChatHistoryPage()" class="show_more"><strong translate class="pointer">Show more</strong></a>
                         </div>
-                        <div *ngIf="chatHistories == undefined || chatHistories.length == 0" class="alert alert-info">
+                        <div *ngIf="!historyLoader && (chatHistories == undefined || chatHistories.length == 0)" class="alert alert-info">
                           <strong translate>No Data Found.</strong>
                         </div>
                         <!-- <div class="history-entry">
@@ -645,6 +727,62 @@
                 </div> -->
               </div>
             </div>
+
+                <!-- XNFR-1012 -->
+                <!-- Contact Agent Tab -->
+                 <!-- Start New Chat -->
+                <div role="tabpanel"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'contactagent', 'tab-pane fade': activeTab !== 'contactagent'}"
+                  id="contactagent">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'contactagent'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'contactagent',
+                                      'container-ui': !(showOpenHistory && activeTab === 'contactagent'),
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
+                                    }">
+                    <!-- Heading -->
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Contact Agent</span>
+                      <!-- Oliver Image Positioned Correctly -->
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Effortlessly retrieve contact details using just a name or email address.
+                       Instantly generate summaries and detailed reports.</p>
+                    <!-- Input Section -->
+                    <div class="oliver_input mt10" [ngClass]="(inputText?.length || 0) > 74 ? 'multi-line' : 'single-line'">
+                    
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" id="askMeTextarea4"
+                        (input)="autoResizeTextArea($event); validateInputText()"
+                        (keydown)="searchDataOnKeyPress($event)"></textarea>
+                    
+                      <div class="btn-wrapper">
+                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                    <div *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'contactagent'" class="action-buttons">
+                      <button class="action-btn" (click)="setInputText('Give me the details of the contact')">Give me the details of the
+                        contact</button>
+                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an
+                        Executive Summary of the...</button>
+                      <button class="action-btn" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the
+                        contact</button>
+                    </div>
+                  </div>
+                </div>
             <!-- -add changes- -->
           </div>
           <!--  -->
@@ -655,8 +793,11 @@
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5"
-          [disabled]="(selectedAssets.length == 0 && selectedFolders.length == 0) || (isReUpload && uploadedAssets?.length == 0)"
-          (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
+          [disabled]="(!isReUpload && selectedAssets?.length === 0 && selectedFolders?.length === 0) || 
+            (isReUpload && ((!uploadedFolders || uploadedFolders?.length === 0) 
+            && (!uploadedAssets || uploadedAssets?.length === 0)))"
+          (click)="submitSelectedAssetsToOliver()">Ask Oliver
+        </button>
         <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
 </div>
@@ -664,7 +805,9 @@
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <ng-template #messageTemplate let-message="data" let-index="index">
   <div class="message user" *ngIf="message.role === 'user'">
-    <div class="summarize-card">{{ message.content }}</div>
+  <div #markdownComponent1 class="summarize-card">
+    <markdown [data]="message.content"></markdown>
+  </div>
     <div class="avatar">
       <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
     </div>
@@ -677,24 +820,42 @@
       <div class="content-card">
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
-            <markdown [data]="message.content"></markdown>
+            <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
+             <app-executive-summary-report   *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             </app-executive-summary-report>
           </div>
         </div>
       </div>
-      <div class="footer-icons mb10">
+      <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
         <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
           <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
             aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
           </i>
         </div>
-        <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
-            (click)="copyChatGPTText(message.content)"></i></div>
+        <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+            (click)="copyChatGPTText(message.content)"></i></div> -->
+        <button class="footer-icon" #textMobile value="{{message.content}}" (click)="copyResponse(textMobile,index)">
+          <i *ngIf="!isCopied(index)" class="fa fa-clone fs-12"></i>
+          <i *ngIf="isCopied(index)" class="fa fa-check fs-12"></i></button>
         <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-        <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+        <!-- <button *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
         <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
+        <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button> -->
         <!-- <button class="share-btn">Design Page</button> -->
+        <div *ngIf="designAccess" class="dropdown-container">
+          <button class="share-btn dropdown-toggle">Design</button>
+          <div class="dropdown-menu">
+            <button
+              *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany"
+              class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
+            <button *ngIf="authenticationService.module.damAccess" class="share-btn"
+              (click)="createAsset(markdownComponent)">Design Pdf</button>
+            <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
+              class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+          </div>
+        </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-        <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+        <button *ngIf="socialShareOption" class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
       </div>
     </div>
   </div>
@@ -705,6 +866,7 @@
       <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
     </div>
     <div class="col-lg-11 col-sm-11">
+      <div class="status_message">{{statusMessage}}</div>
       <div class="assitLoader"></div>
     </div>
   </div>
@@ -724,5 +886,26 @@
       <circle r="14" cy="17" cx="17" class="front"></circle>
     </svg>
     <div class="text" data-text="Searching"></div>
+  </div>
+</ng-template>
+
+
+
+
+<!-- XNFR-986 -->
+<ng-template #displayPrompts>
+  <div class='suggestion-box-input-prompt' id="suggestionBox">
+    <div class="d-flex justify-content-end mb10" *ngIf="activeTab !== 'askpdf'">
+      <div class="search-wrapper">
+        <input type="text" class="form-control input-sm search-input" placeholder="Search" [(ngModel)]="searchTerm"
+          (input)="searchPrompts()" />
+        <i class="fa fa-search search-icon"></i>
+      </div>
+    </div>
+    <div  [ngClass]="activeTab == 'globalchat' ? 'suggestion-list suggestion-list-global-chat' : 'suggestion-list'">
+      <div *ngFor="let prompt of oliverPromptSuggestionDTOs" (click)="setSuggestedInputText(prompt.promptMessage, prompt.id)">
+        {{prompt.promptMessage}}
+      </div>
+    </div>
   </div>
 </ng-template>

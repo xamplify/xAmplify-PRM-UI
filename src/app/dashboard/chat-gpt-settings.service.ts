@@ -40,7 +40,7 @@ export class ChatGptSettingsService {
   onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
     const url = `${this.authenticationService.REST_URL}oliver/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    formData.append('file', pdfFile, `${assetName}.pdf`);
+    // formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     formData.delete('chatGptSettingsDTO');
     formData.append('chatGptSettingsDTO', new Blob([JSON.stringify(chatGptSettings)],
@@ -97,24 +97,26 @@ export class ChatGptSettingsService {
     const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm + callIdRequestParam + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParameter;
     return this.authenticationService.callGetMethod(url);
   }
-insertTemplateData(chatGptIntegrationSettingsDto: any) {
+  
+  insertTemplateData(chatGptIntegrationSettingsDto: any) {
+    chatGptIntegrationSettingsDto.loggedInUserId = this.authenticationService.getUserId();
     const url = this.chatGptSettingsUrl + '/insertTemplateData?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptIntegrationSettingsDto);
-}
+  }
 
 listDefaultTemplates(userId:any){
   const url = this.chatGptSettingsUrl+"/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
   return  this.authenticationService.callGetMethod(url);
 }
 
-  getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean) {
+   getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean, oliverIntegrationType: any) {
     let urlPrefix = "";
     if (isPartnerFolderView) {
       urlPrefix = 'getAssetDetailsByCategoryIdForPartner';
     } else if (!isPartnerFolderView) {
       urlPrefix = 'getAssetDetailsByCategoryId';
     }
-    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}&oliverIntegrationtype=${oliverIntegrationType}`;
     return this.http.get(url);
   }
 
@@ -146,16 +148,19 @@ listDefaultTemplates(userId:any){
     let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
     let chatHistoryIdRequestParameter = chatGptSettingDTO.chatHistoryId != undefined ? '&chatHistoryId=' + chatGptSettingDTO.chatHistoryId : '';
     let contactJourneyRequestParameter = '&contactJourney='+true;
-    const url = this.chatGptSettingsUrl + "/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter;
+    let oliverIntegrationTypeRequestParam = chatGptSettingDTO.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptSettingDTO.oliverIntegrationType : '';
+    let accessTokenRequestParam = chatGptSettingDTO.accessToken != undefined ? '&accessToken=' + chatGptSettingDTO.accessToken : '';
+    const url = this.authenticationService.REST_URL + "oliver/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter + oliverIntegrationTypeRequestParam + accessTokenRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
-  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any) {
+  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any, activeOliverIntegrationType:any) {
     let userId = this.authenticationService.getUserId();
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let contactIdRequestParameter = contactId != undefined ? '&contactId=' + contactId : '';
     let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
-    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParam = activeOliverIntegrationType != undefined ? '&oliverIntegrationType=' + activeOliverIntegrationType : '';
+    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -200,7 +205,9 @@ listDefaultTemplates(userId:any){
     let contactJourneyRequestParameter = '&contactJourney='+true;
     let contactIdRequestParameter = chatGptSettingDTO.contactId != undefined ? '&contactId=' + chatGptSettingDTO.contactId : '';
     let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
-    const url = this.chatGptSettingsUrl + "/analyzeCallRecording?access_token=" + this.authenticationService.access_token + callIdRequestParameter + userIdRequestParameter + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    let oliverIntegrationTypeRequestParam = chatGptSettingDTO.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptSettingDTO.oliverIntegrationType : '';
+    let accessTokenRequestParam = chatGptSettingDTO.accessToken != undefined ? '&accessToken=' + chatGptSettingDTO.accessToken : '';
+    const url = this.authenticationService.REST_URL + "oliver/analyzeCallRecording?access_token=" + this.authenticationService.access_token + callIdRequestParameter + userIdRequestParameter + contactJourneyRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + accessTokenRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -235,6 +242,75 @@ listDefaultTemplates(userId:any){
 
   fetchOliverActiveIntegrationType(companyId: any) {
     const url = this.oliverUrl + 'fetchOliverActiveIntegrationType/' + companyId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+
+  getSuggestedPromptsResponse(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + '/getSuggestedPromptsResponse?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);;
+  }
+
+  getSuggestedPromptsForGlobalSearch(companyProfileName: string) {
+    let loggedInUserId = this.authenticationService.getUserId()
+    let url = '';
+    if (companyProfileName != '' && companyProfileName) {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT/' + companyProfileName + '?access_token=' + this.authenticationService.access_token;
+    } else {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamIds/' + loggedInUserId + '/GLOBALCHAT' + '?access_token=' + this.authenticationService.access_token;
+    }
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getRandomOliverSuggestedPromptsByDamId(damId: number, companyProfileName: string, isPartnerView: boolean) {
+    let url = '';
+    if (companyProfileName != '' && companyProfileName) {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '/' + companyProfileName + '/' + isPartnerView + '?access_token=' + this.authenticationService.access_token;
+    } else {
+      url = this.chatGptSettingsUrl + 'getRandomOliverSuggestedPromptsByDamId/' + damId + '?access_token=' + this.authenticationService.access_token;
+    }
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getDomainColorConfigurationByUserId() {
+    const url = this.chatGptSettingsUrl + 'getDomainColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+ updateDomainColorConfiguration(theme: any) {
+  const userId = this.authenticationService.getUserId(); 
+  const url = this.chatGptSettingsUrl + 'updateDomainColors/' + userId + '?access_token=' + this.authenticationService.access_token;
+  return this.authenticationService.callPutMethod(url, theme);
+}
+
+ checkDomainColorConfigurationExists() {
+    const userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'checkDomainColorsExists/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  uploadContactDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
+    let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadContactDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getOliverReportColors() {
+    const url = this.chatGptSettingsUrl + 'getOliverReportColors/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+
+  getSuggestedpromptsForFolderView(categoryId: number, isPartnerFolderView: boolean) {
+    let urlPrefix = 'getSuggestedPromptsForFolderView/';
+    const url = this.chatGptSettingsUrl + urlPrefix + categoryId + '/' + this.authenticationService.getUserId() + '/' + isPartnerFolderView + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 

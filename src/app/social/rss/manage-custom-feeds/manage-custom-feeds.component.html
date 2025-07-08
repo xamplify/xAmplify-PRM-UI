@@ -8,6 +8,11 @@
 			</li>
 			<li><i class="fa fa-rss" aria-hidden="true"></i>RSS <sup>(Beta)</sup></li>
 		</ul>
+		<!-- XNFR-991 -->
+		<div style="padding: 3px 0px 0px 0px;">
+			<app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+		</div>
+		<!-- XNFR-991 -->
 	</div>
 	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="row">
@@ -179,11 +184,18 @@
 															<div class="clickicons"></div>
 														</a> <a class="custom-icon" data-toggle="tooltip"
 															data-placement="top" title="Publish the feed on your social accounts"
-															(click)="shareFeed(feed)"> <i
-																class="fa fa-share IconCustomization"
-																aria-hidden="true"></i>
-															<div class="clickicons"></div>
-														</a>
+                                                                              (click)="shareFeed(feed)"> <i
+                                                                              class="fa fa-share IconCustomization"
+                                                                              aria-hidden="true"></i>
+                                                                              <div class="clickicons"></div>
+                                                                              </a>
+                                                                              <a class="custom-icon" data-toggle="tooltip"
+                                                                              data-placement="top" title="Preview"
+                                                                              (click)="openPreview(feed)"> <i
+                                                                              class="fa fa-eye IconCustomization"
+                                                                              aria-hidden="true"></i>
+                                                                              <div class="clickicons"></div>
+                                                                              </a>
 														<a class="custom-icon" *ngIf="selectedType!='p'"
 															data-toggle="tooltip" data-placement="top" title="Analytics"
 															(click)="showFeedAnalyticsPopUp(feed.id)"> <i
@@ -463,6 +475,8 @@
 	</div>
 </div>
 
+<app-feed-preview-modal *ngIf="previewFeed" [feed]="previewFeed" (closed)="previewClosed()"></app-feed-preview-modal>
+
 <div lass="page-content" *ngIf="!authenticationService?.module?.socialFeedsAccess && !authenticationService?.module?.socialFeedsAccessAsPartner">
-	<app-access-denied-util></app-access-denied-util>
+        <app-access-denied-util></app-access-denied-util>
 </div>

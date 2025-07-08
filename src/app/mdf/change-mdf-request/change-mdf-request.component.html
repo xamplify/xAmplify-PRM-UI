@@ -48,8 +48,10 @@
                                  <div class="col-md-6 col-lg-6">
                                     <div class="dropdown">
                                        <button class="btn btn-primary dropdown-toggle" type="button"
-                                          data-toggle="dropdown">Actions
-                                          <span class="caret"></span></button>
+                                          [attr.data-toggle]="partnerManager?.partnerStatus == 'DEACTIVATED' ? 'tooltip' : 'dropdown'"
+                                          [attr.data-original-title]="partnerManager?.partnerStatus == 'DEACTIVATED' ? 'Partnership is deactivated' : ''"
+                                          data-placement="top" [disabled]="partnerManager?.partnerStatus == 'DEACTIVATED'">
+                                          Actions<span class="caret"></span></button>
                                        <ul class="dropdown-menu">
                                           <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
                                           <li><a (click)="viewTimeLine()">View Timeline </a></li>

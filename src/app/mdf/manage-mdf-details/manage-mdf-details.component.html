@@ -167,8 +167,11 @@
                                     <ng-container *ngFor="let partner of pagination.pagedItems;let i=index">
                                        <tr>
                                           <td>
-                                             <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"
-                                                [userInfo]="partner" [hideJobTitle]="true"></app-user-info>
+                                             <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner"
+                                                [hideJobTitle]="true"></app-user-info>
+                                             <h6 *ngIf="partner?.partnerStatus == 'deactivated'" class="green-banner inline-flex ml5"
+                                                style="margin-left: 60px !important;" data-toggle="tooltip" data-placement="bottom"
+                                                title="Partnership is deactivated">DEACTIVATED</h6>
                                           </td>
                                           <td>
                                              <span>${{partner?.totalBalance | number:'1.0':'en-US'}}</span>
@@ -181,11 +184,11 @@
                                           </td>
                                           <td style="text-align: center;">
                                              <div class="actions-block override-actions action_inline float-left">
-                                                <a class="custom-icon" (click)="openMdfAmountPopup(partner)"
+                                                <a class="custom-icon" (click)="partner?.partnerStatus == 'deactivated' ? '' : openMdfAmountPopup(partner)"
                                                    data-toggle="tooltip" data-placement="bottom"
                                                    title="Add/Remove MDF Amount">
                                                    <i class="fa fa-pencil-square-o p0 IconCustomization"
-                                                      aria-hidden="true"></i>
+                                                      aria-hidden="true" [ngClass]="partner?.partnerStatus == 'deactivated' ? 'disabled gray' : ''"></i>
                                                    <div class="clickicons"></div>
                                                 </a>
                                                 <!----Timeline History-->

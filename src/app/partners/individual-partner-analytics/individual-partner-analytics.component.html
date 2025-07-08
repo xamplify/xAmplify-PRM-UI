@@ -728,7 +728,7 @@
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
                       class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box">
-                        <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                        <img class="grid-icon-img" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
                           <span *ngIf="campaign.campaignName?.length>25">...</span>
                         </h4>

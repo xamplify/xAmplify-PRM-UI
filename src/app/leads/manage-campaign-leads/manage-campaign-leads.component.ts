@@ -517,7 +517,7 @@ downloadLeads(pagination: Pagination){
   let partnerTeamMemberGroupFilter = false;    
   let userType = "";
   if (this.isVendorVersion) {
-    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+    partnerTeamMemberGroupFilter = this.showTeamMemberFilter ? this.selectedFilterIndex == 1 :  false ; //XNFR-1022
     userType = "v";
   } else if (this.isPartnerVersion) {
     userType = "p";

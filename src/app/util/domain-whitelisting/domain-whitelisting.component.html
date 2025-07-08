@@ -92,7 +92,7 @@
             class="portlet-input search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right pr0 d-flex"
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
             <button id="welcome_mail" class="btn Btn-Green" (click)="addWelcomeMailModalOpen()" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected"
-            data-placement="bottom" data-toggle="tooltip" title="Send a welcome email to whitelisted domain users.">
+            data-placement="bottom" data-toggle="tooltip" title="Send a welcome email to whitelisted domain users." [disabled]="pagination.totalRecords==0">
               Send Welcome Mail
              </button>
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
@@ -162,7 +162,8 @@
                 <thead>
                   <tr>
                     <th style="width: 50%">Domain Name</th>
-                    <th style="width: 40%">Created On</th>
+                    <th class="text-center"style="width: 20%">Created On</th>
+                    <th class="text-center"style="width: 20%" *ngIf="isPartnerDomains">Deactivated On</th>
                     <th style="width:10%">Actions</th>
                   </tr>
                 </thead>
@@ -171,12 +172,22 @@
                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
                       <td>
                         <h6>{{domain?.domainName}}</h6>
+                        <span *ngIf="domain?.domainDeactivated">
+                          <h6 class="green-banner inline-flex">DEACTIVATED</h6>
+                        </span>
                       </td>
-                      <td>
+                      <td class="text-center">
                         <h6>
                           <app-display-date-and-time
                             [dateAndTimeUTCString]="domain?.createdTime"></app-display-date-and-time>
                         </h6>
+                      </td>
+                      <td  class="text-center" *ngIf="isPartnerDomains">
+                        <h6 *ngIf="domain.domainDeactivated">
+                          <app-display-date-and-time 
+                            [dateAndTimeUTCString]="domain?.deactivatedOn"></app-display-date-and-time>
+                        </h6>
+                        <h4 *ngIf="!domain.domainDeactivated"><strong>-</strong></h4>
                       </td>
                       <td>
                         <div class="actions-block override-actions mb_whitespace" style="float:none;">
@@ -190,6 +201,11 @@
                             (click)="confirmDeleteDomain(domain.id)">
                             <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                             <div class="del-icon"></div>
+                          </a>
+                          <a *ngIf="isPartnerDomainsTabSelected" class="custom-icon" data-toggle="tooltip" data-placement="top" [title]="domain.domainDeactivated ? 'Activate Domain' : ' Deactivate Domain'"
+                            (click)="confirmDeativateDomain(domain)">
+                            <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                         </div>
                       </td>
@@ -278,6 +294,10 @@
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked"
   (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
 
-  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [allPartnerDomains]="allPartnerDomains" [toEmailId]= "''" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()"></app-send-test-email>
+  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [allPartnerDomains]="allPartnerDomains" [toEmailId]= "''"  [sendTestEmailDtoAttachments] = "attachments" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()" (openEditModalPopup) ="openEditModalPopup($event)"></app-send-test-email>
 
+  <app-partner-company-domain-modal-popup *ngIf="isDeactivateOrActivateOptionClicked" [selectedDomain]="selectedDomain" (closeEvent)="closeModalPopup()" (notifyCloseEvent)="notifyCloseModalPopup($event)"></app-partner-company-domain-modal-popup>
 
+<app-edit-template-or-page-modal-popup
+ *ngIf="openEditTemplateModalPopup" [isFromDomainWhiteListing]="true" 
+ (editTemplateOrPageModalPopupEventEmitter)="closeEditTemplateModalPopup()"></app-edit-template-or-page-modal-popup>

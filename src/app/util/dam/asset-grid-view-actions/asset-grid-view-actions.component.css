@@ -68,6 +68,3 @@
     height: 20px;
     filter: brightness(0) invert(1);
 }
-.gridIconCustomization a.oliverhover:hover {
-    background:none !important;
-}

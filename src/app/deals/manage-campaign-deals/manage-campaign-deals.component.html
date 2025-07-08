@@ -183,12 +183,15 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                 </app-timestamp>
               </h5>
+              <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
+                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
             </td>
             <td style="width: 10%;">
               <!-- xnfr-426-->
               <span class="comment-color" translate>
                 {{deal.currentStageName}}</span>
-              <a data-rel="fancybox-button" *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)"
+              <a data-rel="fancybox-button"
+                *ngIf="((deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage))"
                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)" data-toggle="tooltip"
                 data-placement="bottom" title="Edit Deal Stage">
                 <span class="fa fa-edit IconCustomization" aria-hidden="true"></span>

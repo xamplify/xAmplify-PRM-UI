@@ -216,6 +216,7 @@ export const routes: Routes = [
 	{ path: 'funding-request/:mdfAlias/analytics', component: CampaignMdfAnalyticsComponent },
 	{ path: 'funding-request/:mdfAlias/preview', component: CampaignMdfTemplatePreviewComponent },
 	{ path: 'search', component: CampaignMdfSearchComponent },
+	{ path: 'pv/otp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
 
 
 	{ path: '404', component: PageNotFoundComponent },

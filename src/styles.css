@@ -3466,3 +3466,20 @@ h5.oliver-heading-color{
 .close_popup{
   width: 30px!important;height: 30px!important;
 }
+/* suggestion prompt css*/
+.suggestion-list-global-chat {
+  max-height: 160px !important;
+}
+.section-column:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1) !important;
+}
+.gridViewImgBg .grid-icon-img,.grid-icon-img{
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  margin: 10px auto;
+}
+.gridIconCustomization a.oliverhover:hover,.gridIconCustomization a.Iconhover.oliverhover:hover {
+    background:none !important;
+}

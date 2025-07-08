@@ -31,6 +31,7 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
   fromDateFilter: string;
   dateFilterText = "Select Date Filter";
   @Output() notifySelectedDateFilters = new EventEmitter();
+  @Output() notifyPartnerStatus = new EventEmitter();
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -45,22 +46,27 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
   getPartnerCompanyInfo() {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.parterService.getPartnerJourneyCompanyInfo(this.partnerCompanyId, this.loggedInUserId).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
-          this.companyInfo = response.data;	
-          if(!(this.companyInfo != null))
-          {
+          this.companyInfo = response.data;
+          if (this.companyInfo) {
+            let partnerStatus = this.companyInfo.partnerStatus;
+            if (partnerStatus === 'deactivated') {
+              this.isInfonull = true;
+              this.errorMessage = " Partnership has been deactivated ";
+            }
+            this.notifyPartnerStatus.emit(partnerStatus);
+          } else if (!this.companyInfo) {
             this.isInfonull = true;
             this.errorMessage = " Partnership has been deleted ";
           }
-        }        	
-			},
-			(_error: any) => {
+        }
+      }, (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
   clickFilter() {

@@ -1,0 +1,57 @@
+<div class="modal right fade" id="partnerCompanyDomainForm" tabindex="-1" role="dialog"
+  aria-labelledby="integrtaionModalLabel" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="closePartnerCompanyDomainModal()"><i
+            class="fa fa-times"></i></a>
+        <h4 class="modal-title capitalize " id="templateRetrieve" translate>Partner Companies</h4>
+        <div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
+        <div *ngIf="!modalPopupLoader" class="alert alert-info mt5">{{domainDeactivatingDescription}}</div>
+        <div class="table-responsive" *ngIf="!modalPopupLoader">
+          <table class='table tgrid table-hover table-sm'
+            aria-describedby="describe">
+            <thead>
+              <tr>
+                 <th>
+                  <span class="gridHeader" translate>Email Id</span>
+                </th>
+                <th class="text-center" translate scope="col">Company Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let partner of partners; let i = index">
+                <ng-container>
+                   <td>
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{partner?.partnerEmailId}}"><strong>{{partner?.partnerEmailId || '-'}}</strong></span>
+                    </h4>
+                  </td>
+                   <td class="text-center">
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{partner?.partnerCompanyName || '-'}}"><strong>{{ (partner?.partnerCompanyName || '-') |slice:0:35}}</strong><span *ngIf="partner?.partnerCompanyName?.length>35">...</span></span>
+                    </h4>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!modalPopupLoader && partners?.length === 0" class="alert alert-info">
+                      <strong translate>No Partner Companies Found.</strong>
+                    </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray" (click)="closePartnerCompanyDomainModal()">Cancel</button>
+        <button type="button" [disabled]="modalPopupLoader" class="btn btn-success" data-bs-dismiss="modal" (click)="confirmAndupdateExcludedDomain()"
+          translate>{{partnership.domainDeactivated ? 'Activate' : 'Deactivate'}}</button>
+      </div>
+    </div>
+  </div>
+</div>

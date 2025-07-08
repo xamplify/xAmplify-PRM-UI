@@ -186,3 +186,19 @@ textarea.textarea.h-350 {
     background-color: rgb(255 255 255 / 31%) !important;
     border: 1px solid rgb(255 255 255 / 35%) !important;
     backdrop-filter: blur(5px);}
+ 
+        .oliveBackground {
+            background-color: transparent !important;
+        }
+    
+        .oliver_input textarea {
+            box-shadow: none !important;
+            background: transparent !important;
+    
+        }
+    
+        .oliver_input textarea:active,
+        .oliver_input textarea:focus {
+            border-color: none !important;
+            outline: none !important;
+        }

@@ -158,6 +158,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     @Input() categoryId:number;
     /****XNFR-125**/
     callOneClickLaunchPreviewComponent = false;
+    //XNFR-996
+    isDomainWorkflow:boolean = false;
+    domainDetials:any[];
+    selectDomainDetails:any = null;
+    selectedDomainName:string="";
+    domains: any[] = [];
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -1721,6 +1727,119 @@ openPageInNewTab(id:number){
   this.referenceService.previewPageInNewTab(id);
 }
 
+//XNFR996
+getDomainDetailsOrPartners(){
+  this.isDomainWorkflow = !this.isDomainWorkflow
+  if(this.isDomainWorkflow){
+  this.getCampaignUserDomainsByCampaignId();
+  }else{
+    this.searchCampaignUsers();
+  }
+}
+
+   changeCampaignDomainUsersStatus(domainName:string,status:string){
+     let campaignDomainUser = {
+       "domainName": domainName,
+       "status": status,
+       "loggedInUserId": this.loggedInUserId,
+       "campaignId": this.previewCampaignId
+     }
+     let self = this;
+     swal({
+         title: 'Are you sure to '+status+'?',
+         text:'This will '+status+' the workflow for @'+domainName+' Domain Users',
+         type: 'warning',
+         showCancelButton: true,
+         swalConfirmButtonColor: '#54a7e9',
+         swalCancelButtonColor: '#999',
+         confirmButtonText: 'Yes, '+status+' it!',
+         allowOutsideClick: false
+     }).then(function () {
+        self.changeDomainUserWorkFlowStatus(campaignDomainUser);
+       
+     }, function (dismiss: any) {
+         console.log('you clicked on option' + dismiss);
+     });
+   }
+
+   changeDomainUserWorkFlowStatus(campaignUser:any){
+    this.ngxloading = true;
+    this.campaignService.changeDomainUserWorkFlowStatus(campaignUser).subscribe(
+      ( data: any ) => {
+          this.referenceService.showSweetAlertSuccessMessage(data.message);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        },
+      () => {
+        this.getCampaignUserDomainsByCampaignId();
+      });
+  }
+
+    private getCampaignUserDomainsByCampaignId() {
+    this.isContactListLoader = true;
+    let self = this;
+    this.selectDomainDetails = {
+      "inactiveCount": 0,
+      "activeCount": 0,
+      "totalCount": 0,
+    };
+    this.campaignService.getDomainWorkflowStatusDetailsById(this.previewCampaignId).subscribe(
+      (data: any) => {
+        this.domainDetials = data.data;
+/*         if (!this.selectedDomainName) {
+          this.selectDomainDetails = this.domainDetials[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        } else {
+          this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
+          this.selectedDomainName = this.selectDomainDetails.domainName;
+        } */
+       this.addDomainNameDropDown(this.domainDetials, self);
+        this.isContactListLoader = false;
+      },
+      error => {
+        this.isContactListLoader = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
+  }
+
+  getDomainWorkflowDetails() {
+    if (!this.selectedDomainName) {
+      this.selectDomainDetails = {
+        "domainName": "",
+        "inactiveCount": 0,
+        "activeCount": 0,
+        "totalCount": 0,
+      };
+    } else {
+      this.selectDomainDetails = this.domainDetials.filter(det => det.domainName === this.selectedDomainName)[0];
+    }
+
+  }
+
+
+    selectedMappedColumn(event: any) {
+      if (event['itemName'] == '-- Select Domain --') {
+        this.selectedDomainName = "";
+      } else if (event != undefined) {
+        this.selectedDomainName = event['itemName'];
+      } else {
+        this.selectedDomainName = "";
+      }
+      this.getDomainWorkflowDetails();
+    }
+
+    private addDomainNameDropDown(headers: any, self: this) {
+      this.domains = [];
+    $.each(headers, function (index: number, detail: any) {
+        let customCsvHeader = {};
+        customCsvHeader['id'] = index;
+        customCsvHeader['itemName'] = detail.domainName;
+        self.domains.push(customCsvHeader);
+    });
+  }
 
 
 }

@@ -191,6 +191,8 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                 </app-timestamp>
               </h5>
+              <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'" data-toggle="tooltip"
+                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
             </td>
             <td style="width: 23%; text-align: center;">
               {{ (isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa  ? (lead.sfcfDealRegStatusForVersa | slice:0:30) : (lead.currentStageName | slice:0:30) }}
@@ -238,8 +240,9 @@
                     </button>
                   </div>
                 </div>
-                <div class="buttons"
-                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection && !this.isLoggedAsPartner">
+                <div class="buttons" *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner 
+                  && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection && !this.isLoggedAsPartner
+                  && lead?.partnerStatus !== 'deactivated'">
                   <button type="button" class="button_blue bgcolor-unset" translate
                     (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
                       class="btn btn-primary transition txt_pd-top3">Approve</span></button>

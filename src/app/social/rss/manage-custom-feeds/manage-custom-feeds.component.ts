@@ -45,7 +45,9 @@ export class ManageCustomFeedsComponent implements OnInit {
 	feedId = 0;
 	partnerCompanyId = 0;
 	addCollectionError = false;
-	addCollectionErrorMessage: string;
+        addCollectionErrorMessage: string;
+        previewFeed: any = null;
+	mergeTagForGuide = 'social_feeds_partner'; //XNFR-991
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
 		public router: Router, public logger: XtremandLogger,
@@ -441,9 +443,17 @@ renameCollection(){
   
   
   partnerAnalyticsModalClose() {
-  	var x = document.getElementById('partnerAnalyticsModal');
-  	x.style.display = "none";
-  	this.loading = false;
+        var x = document.getElementById('partnerAnalyticsModal');
+        x.style.display = "none";
+        this.loading = false;
+  }
+
+  openPreview(feed: any) {
+    this.previewFeed = feed;
+  }
+
+  previewClosed() {
+    this.previewFeed = null;
   }
   
   

@@ -79,7 +79,9 @@
 </div>
 <div class="write-new comment-text-area" *ngIf="enableWrite && !authenticationService?.module?.deletedPartner">
     <textarea *ngIf="!editTextArea" placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
-        [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(comment.comment)"></textarea>
+        [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(comment.comment)" 
+        [disabled]="partnerStatus === 'deactivated'" data-toggle="tooltip" data-placement="top" 
+        [title]="(partnerStatus === 'deactivated') ? 'Partnership is deactivated' : ''"></textarea>
     <div>
     <button (click)="postComment(comment)" *ngIf="comment.comment" class="btn btn-primary transition mb5"
         [disabled]="!comment.comment || isError "

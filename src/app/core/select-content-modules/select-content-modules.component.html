@@ -23,12 +23,138 @@
    <div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
       <div class="col-md-12">
          <div class="padding">
-            <div class="portlet-title">
+            <!-- <div class="portlet-title">
                <div class="caption" translate style="font-size:20px !important;">
                   Select Module
                </div>
-            </div>
+            </div> -->
             <div class="portlet-body">
+
+               <div class="row mt5" *ngIf="!httpRequestLoader.isLoading">
+                  <!-- Digital Asset Library -->
+                  <div class="col-lg-4 col-md-4 col-sm-12"
+                     *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">
+                     <div class="section-column">
+                        <div class="count_header">
+                           <div class="section-title mb0">Digital Asset Library</div>
+                           <a *ngIf="authenticationService?.module?.damAccess" class="action-button" (click)="navigate('dam/select')">Design / Upload</a>
+                        </div>
+               
+                        <div class="stats-row" *ngIf="authenticationService?.module?.damAccess">
+                           <div class="stat-card"  (click)="navigate('dam/manage')">
+                              <div class="stat-content">
+                                 <div class="stat-label">Total Assets</div>
+                                 <div class="stat-value">
+                                    <span class="stat-number">{{contentCounts.assetsCount}}</span>
+                                    <span class="stat-unit">Records</span>
+                                 </div>
+                              </div>
+                              <div class="stat-icon library-icon">
+                                 <i class="fa fa-folder"></i>
+                              </div>
+                           </div>
+                        </div>
+               
+                        <div class="stats-row mt10" *ngIf ="authenticationService?.module?.damAccessAsPartner">
+                                          <div class="stat-card" (click)="navigate('dam/shared')">
+                                             <div class="stat-content">
+                                                <div class="stat-label">Shared Assets </div>
+                                                <div class="stat-value">
+                                                   <span class="stat-number">{{contentCounts.sharedAssetsCount}}</span>
+                                                   <span class="stat-unit">Records</span>
+                                                </div>
+                                             </div>
+                                             <div class="stat-icon library-icon">
+                                                <i class="fa fa-share-alt"></i>
+                                             </div>
+                                          </div>
+                                       </div>
+                     </div>
+                  </div>
+                  <!-- Track Builder (with playbook-icon style) -->
+                  <div class="col-lg-4 col-md-4 col-sm-12"
+                     *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
+                     <div class="section-column">
+                        <div class="count_header">
+                           <div class="section-title mb0">Track Builder</div>
+                           <a *ngIf="authenticationService?.module?.lmsAccess" class="action-button" (click)="navigate('tracks/add')">Add Tracks</a>
+                        </div>
+               
+                        <div class="stats-row" *ngIf="authenticationService?.module?.lmsAccess">
+                           <div class="stat-card" (click)="navigate('tracks/manage')">
+                              <div class="stat-content">
+                                 <div class="stat-label">Total Tracks</div>
+                                 <div class="stat-value">
+                                    <span class="stat-number">{{contentCounts.tracksCount}}</span>
+                                    <span class="stat-unit">Records</span>
+                                 </div>
+                              </div>
+                              <div class="stat-icon library-icon-share">
+                                 <i class="fa fa-list"></i>
+                              </div>
+                           </div>
+                        </div>
+               
+                        <div class="stats-row mt10" *ngIf ="authenticationService?.module?.lmsAccessAsPartner">
+                           <div class="stat-card" (click)="navigate('tracks/shared')">
+                             <div class="stat-content">
+                               <div class="stat-label">Shared Tracks </div>
+                               <div class="stat-value">
+                                 <span class="stat-number">{{contentCounts.sharedTracksCount}}</span>
+                                 <span class="stat-unit">Records</span>
+                               </div>
+                             </div>
+                             <div class="stat-icon library-icon-share">
+                               <i class="fa fa-users"></i>
+                             </div>
+                           </div>
+                         </div>
+                     </div>
+                  </div>
+                  <!-- Playbooks -->
+                  <div class="col-lg-4 col-md-4 col-sm-12"
+                     *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+                     <div class="section-column">
+                        <div class="count_header">
+                           <div class="section-title mb0">Playbook</div>
+                           <a *ngIf="authenticationService?.module?.playbookAccess" class="action-button" (click)="navigate('playbook/add')">Add Playbooks</a>
+                        </div>
+               
+                        <div class="stats-row" *ngIf="authenticationService?.module?.playbookAccess">
+                           <div class="stat-card" (click)="navigate('playbook/manage')">
+                              <div class="stat-content">
+                                 <div class="stat-label">Total Playbooks</div>
+                                 <div class="stat-value">
+                                    <span class="stat-number">{{contentCounts.playbooksCount}}</span>
+                                    <span class="stat-unit">Records</span>
+                                 </div>
+                              </div>
+                              <div class="stat-icon playbook-icon">
+                                 <i class="fa fa-book"></i>
+                              </div>
+                           </div>
+                        </div>
+               
+                        <div class="stats-row mt10" *ngIf ="authenticationService?.module?.playbookAccessAsPartner">
+                                          <div class="stat-card" (click)="navigate('playbook/shared')">
+                                             <div class="stat-content">
+                                                <div class="stat-label">Shared Playbooks </div>
+                                                <div class="stat-value">
+                                                   <span class="stat-number">{{contentCounts.sharedPlaybooksCount}}</span>
+                                                   <span class="stat-unit">Records</span>
+                                                </div>
+                                             </div>
+                                             <div class="stat-icon playbook-icon">
+                                                <i class="fa fa-share"></i>
+                                             </div>
+                                          </div>
+                                       </div>
+                     </div>
+                  </div>
+               </div>
+
+
+
                <div class="row mtop mrg_top15" *ngIf="authenticationService?.user?.hasCompany">
                   <!--------Videos------------->
                   <!--------DAM------------->

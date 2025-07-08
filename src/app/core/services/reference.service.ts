@@ -2716,6 +2716,11 @@ export class ReferenceService {
   goToRouter(url: string) {
     this.router.navigate([url]);
   }
+
+  goToRouterByNavigateUrl(url: string) {
+    this.router.navigateByUrl(url);
+  }
+
   goToPageNotFound() {
     this.router.navigate(["/404"]);
   }
@@ -2939,7 +2944,34 @@ export class ReferenceService {
    
     return mergeTags;
   }
-
+  addDamMergeTags(mergeTags: any) {
+    mergeTags.push({ name: "Partner Company Name", value: "{{partnerCompanyName}}" });
+    mergeTags.push({ name: "Partner Company Email Id", value: "{{partnerCompanyEmailId}}" });
+    mergeTags.push({ name: "Partner Company Contact Number", value: "{{partnerCompanyContactNumber}}" });
+    mergeTags.push({ name: "Partner Company Url", value: "{{partnerCompanyUrl}}" });
+    mergeTags.push({ name: "Partner Company Address", value: "{{partnerCompanyAddress}}" });
+    mergeTags.push({ name: "Partner Company About Us", value: "{{partnerCompanyAboutUs}}" });
+    mergeTags.push({ name: "Sender First Name", value: "{{senderFirstName}}" });
+    mergeTags.push({ name: "Sender Middle Name", value: "{{senderMiddleName}}" });
+    mergeTags.push({ name: "Sender Last Name", value: "{{senderLastName}}" });
+    mergeTags.push({ name: "Sender Full Name", value: "{{senderFullName}}" });
+    mergeTags.push({ name: "Sender Job Title", value: "{{senderJobTitle}}" });
+    mergeTags.push({ name: "Sender Email Id", value: "{{senderEmailId}}" });
+    mergeTags.push({ name: "Sender Contact Number", value: "{{senderContactNumber}}" });
+    mergeTags.push({ name: "Sender Company", value: "{{senderCompany}}" });
+    mergeTags.push({ name: "Sender Company Url", value: "{{senderCompanyUrl}}" });
+    mergeTags.push({ name: "Sender Company Instagram Url", value: "{{senderCompanyInstagramUrl}}" });
+    mergeTags.push({ name: "Sender Company Twitter Url", value: "{{senderCompanyTwitterUrl}}" });
+    mergeTags.push({ name: "Sender Company Google Url", value: "{{senderCompanyGoogleUrl}}" });
+    mergeTags.push({ name: "Sender Company Facebook Url", value: "{{senderCompanyFacebookUrl}}" });
+    mergeTags.push({ name: "Sender Company Linkedin Url", value: "{{senderCompanyLinkedinUrl}}" });
+    mergeTags.push({ name: "Sender Company Address", value: "{{senderCompanyAddress}}" });
+    mergeTags.push({ name: "Sender Event Url", value: "{{senderEventUrl}}" });
+    mergeTags.push({ name: "Sender AboutUs", value: "{{senderAboutUs}}" });
+    mergeTags.push({ name: "Sender Company Contact Number", value: "{{senderCompanyContactNumber}}" });
+    mergeTags.push({ name: "Sender Privacy Policy", value: "{{senderPrivacyPolicy}}" });
+    return mergeTags;
+  }
   addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags: any) {
     mergeTags.push({
       name: "Sender Company",
@@ -4018,10 +4050,11 @@ getFirstLetter(inputString:any) {
     let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
     let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";
     let moduleName = pagination.moduleName ? "&moduleName="+ pagination.moduleName:"";
+    let partnershipStatus = pagination.partnershipStatus != null ? "&partnershipStatus=" + pagination.partnershipStatus : "";
     let url = this.authenticationService.REST_URL + "partner/journey/download/" + urlString + "?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm
-      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm;
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm + partnershipStatus;
     this.openWindowInNewTab(url);
   }
 
@@ -4095,6 +4128,12 @@ getFirstLetter(inputString:any) {
     }
   }
   /** XNFR-897 */
+
+  previewOliverDefaultTemplateInNewTab(id: number, userId: number) {
+    let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+    let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(userId));
+    this.openWindowInNewTab("pv/otp/" + encodedURLString + "/" + encodedFromEmailUserIdURLString);
+  }
 }
 
 

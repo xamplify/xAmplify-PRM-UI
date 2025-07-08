@@ -21,7 +21,7 @@
 }
 /* table header bgcolor end */
 .panel-heading {
-    padding: 11px 15px !important;
+    padding: 6px 15px !important;
 }
 .table>tbody>tr>td {
 	vertical-align: middle !important;
@@ -31,8 +31,8 @@
 	margin: -1px 3px 0px 3px;
   }
 
-  .tableHeightScroll{   
-    height: 383px !important;
+.tableHeightScroll{   
+    max-height: 383px !important;
    overflow-y: auto;
    margin-bottom: 20px;
 }
@@ -44,4 +44,63 @@
 ::-webkit-scrollbar {
     width: 7px;
     height: 7px;
+}
+.search_download_align{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+span.btn-aligmntCu{
+    display: flex;
+    justify-content: flex-end;
+}
+.ActionAlign{
+    text-align: center;
+    float: none;
+}
+i.IconviewedCount{
+    border: 1px solid #8e5fa2;
+    color: #8e5fa2;
+}
+i.IconviewedCount:hover {
+    border: 1px solid #8e5fa2;
+    background: #8e5fa2;
+    color: #fff;
+}
+i.IconodownloadedCount {
+    border: 1px solid #e87e04;
+    color: #e87e04;
+}
+i.IconodownloadedCount:hover {
+    border: 1px solid #e87e04;
+    background: #e87e04;
+    color: #fff;
+}
+.createdOnRow{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+.template_box{
+    border: 1px solid #ddd;
+    margin-top: 15px;
+}
+.custom_fiter-asset{
+    background-color: #f1f5f9;
+    padding: 10px 5px 10px 5px !important;
+}
+span.filterActiveBg {
+    background-color: #10ad39 !important;
+    box-shadow: unset !important;
+}
+
+span.filterActiveBg i {
+    color: #fff;
+}
+
+.defaultFilterACtiveBg {
+    background-color: #f1f3fa;
 }

@@ -193,7 +193,7 @@
                     <!-- <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" name="campaignEndDatePicker" [value]="tracksPlayBook.expireDate" /> -->
                     <app-flatpickr #endDatePickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
                   </app-flatpickr>
-                      <button class="btn btn-default" type="button"  (click)="clearEndDate();endDatePickr.clearEndDate()">
+                      <button class="btn btn-default" type="button" style="border-radius: 0px 6px 6px 0px;margin-left:-1px;"  (click)="clearEndDate();endDatePickr.clearEndDate()">
                         <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
                           <i class="fa fa-refresh npcfs" aria-hidden="true"></i>
                         </span>
@@ -718,38 +718,70 @@
 
 <!-- --------------Order assets Popup--------------- -->
 <div class="modal right" id="order-assets" data-backdrop="static">
-  <div class="modal-dialog modal-lg "  style="width: 80% !important;right:0">
+  <div class="modal-dialog modal-lg" style="width: 80% !important;right:0">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal">
-          <i class="fa fa-times" aria-hidden="true "></i>
+        <button type="button" class="close-circle" data-dismiss="modal" (click)="removeAlertType = ''">
+          <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <h4 class="modal-title text-center">Selected Assets</h4>
       </div>
+      <div *ngIf="removeAlertType === 'asset' || removeAlertType === 'form'"
+        class="alert alert-success alert-dismissible" style="margin: 10px 15px 0 15px;">
+        <button type="button" class="close" aria-label="Close" (click)="removeAlertType = ''">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong *ngIf="removeAlertType === 'asset'">Asset removed successfully</strong>
+        <strong *ngIf="removeAlertType === 'form'">Form canceled successfully</strong>
+      </div>
+
       <div class="modal-body">
         <div class="row">
-          <div class="col-xs-12">
-            <div class="pg8 inline" style="float: right;">
-              <ng-container *ngIf="type == undefined || type == 'TRACK'">
-                <label style="margin-right: 10px; margin-top: 10px;">Follow Sequence </label>
-                <label class="toggleOnOff">
-                  <input id="cmn-toggle-1"  class="checkBox_shadow"
-                    [(ngModel)]="tracksPlayBook.followAssetSequence" type="checkbox">
-                    <span class="sliderOnOff"></span>
-                    <span class="labels" data-on="ON" data-off="OFF"></span>
-                </label>
-              </ng-container>
+
+          <ng-container *ngIf="type === 'TRACK' || type === undefined">
+            <div class="col-xs-12">
+              <div class="alert alert-info" style="margin-bottom: 10px;">
+                <strong>**Reorder assets and quizzes</strong> by simply dragging them up or down.
+                The same sequence will be visible to partner(s) when they view the Track.
+              </div>
             </div>
-          </div>
+            <div class="col-xs-12">
+              <div class="pg8 inline" style="float: right;">
+                <label style="margin-right: 10px; margin-top: 10px;">
+                  Follow Sequence
+
+                  <i class="fa fa-info-circle text-primary" style="margin-left: 5px; cursor: pointer;"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Enabling this option will require partners to follow the sequence of assets and quizzes as defined in the Track.">
+                  </i>
+
+                </label>
+                <label class="toggleOnOff">
+                  <input id="cmn-toggle-1" class="checkBox_shadow" [(ngModel)]="tracksPlayBook.followAssetSequence"
+                    type="checkbox">
+                  <span class="sliderOnOff"></span>
+                  <span class="labels" data-on="ON" data-off="OFF"></span>
+                </label>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="type === 'PLAYBOOK'">
+            <div class="col-xs-12">
+              <div class="alert alert-info" style="margin-bottom: 10px;">
+                <strong>**Reorder assets</strong> by simply dragging them up or down.
+                The same sequence will be visible to partner(s) when they view the Playbook.
+              </div>
+            </div>
+          </ng-container>
+
           <div class="col-xs-12 p5">
             <div class="table-responsive">
-              <table class='table tgrid table-hover table-sm' *ngIf="selectedAssets?.length>0"
-                aria-describedby="describe">
+              <table class='table tgrid table-hover table-sm' *ngIf="selectedAssets?.length > 0">
                 <thead>
                   <tr>
-                    <th class="" colspan="2" style="width: 35%" id="border-bottom">
-                      <span class="gridHeader" translate>Details</span>
-                    </th>
+                    <th class="" colspan="2" style="width: 35%" id="border-bottom"><span class="gridHeader"
+                        translate>Details</span></th>
                     <th class="text-center" translate scope="col">Type</th>
                     <th class="text-center" translate scope="col">Created On</th>
                     <th class="text-center">Preview</th>
@@ -757,6 +789,8 @@
                 </thead>
                 <tbody [dragula]='"assetsDragula"' [dragulaModel]='selectedAssets'>
                   <tr *ngFor="let asset of selectedAssets; let i = index" style="cursor: move;">
+
+                    <!-- Quiz -->
                     <ng-container *ngIf="asset.typeQuizId">
                       <td class="text-cente" style="width: 10%;">
                         <div class="thumbnail-wrapper-form" style="overflow: hidden;">
@@ -780,12 +814,9 @@
                             {{asset.quiz.categoryName}}</span>
                         </h6>
                       </td>
+                      <td class="text-center">Quiz</td>
                       <td class="text-center">
-                        Quiz
-                      </td>
-                      <td class="text-center">
-                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.quiz.createdDateString">
-                        </app-timestamp>
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.quiz.createdDateString"></app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
                         <div class="actions-block override-actions custom-width-icon action_inline"
@@ -795,14 +826,17 @@
                             <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
+
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Remove"
-                            (click)="selectedQuiz(asset.quiz); validateAssets(); validateAllSteps()">
+                            (click)="showRemoveConfirmation('quiz', asset)">
                             <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                             <div class="clickicons"></div>
                           </a>
+
                         </div>
                       </td>
                     </ng-container>
+
                     <ng-container *ngIf="!asset.typeQuizId">
                       <td class="text-cente" style="width: 10%;">
                         <div class="thumbnail-wrapper">
@@ -816,55 +850,62 @@
                         </h4>
                         <h6 class="">
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.displayName}}"
-                            translate><strong>Created By:</strong>
-                           {{asset.dam.displayName}}</span>
+                            translate>
+                            <strong>Created By:</strong>
+                            {{asset.dam.displayName}}</span>
                         </h6>
                         <h6 class="">
-                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.categoryName}}" translate>
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.categoryName}}"
+                            translate>
                             <strong>Folder Name:</strong>
                             {{asset.dam.categoryName}}</span>
                         </h6>
                       </td>
+                      <td class="text-center">{{asset.dam.assetType}}</td>
                       <td class="text-center">
-                        {{asset.dam.assetType}}
-                      </td>
-                      <td class="text-center">
-                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.dam.displayTime">
-                        </app-timestamp>
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.dam.displayTime"></app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
                         <div class="actions-block override-actions custom-width-icon action_inline"
                           style="float: none;">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="(asset.dam.contentPreviewType || asset.dam.imageFileType)? assetPreview(asset.dam, true) : ''">
-                            <i class="fa fa-eye IconCustomization" [ngClass]="asset.dam.contentPreviewType || asset.dam.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization"
+                              [ngClass]="asset.dam.contentPreviewType || asset.dam.imageFileType ? '' : 'disabled gray'"
+                              aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
+
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Remove"
-                            (click)="setSelectedAsset(asset.dam); validateAssets(); validateAllSteps()">
+                            (click)="showRemoveConfirmation('dam', asset)">
                             <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                             <div class="clickicons"></div>
                           </a>
+
                         </div>
                       </td>
                     </ng-container>
+
                   </tr>
                 </tbody>
               </table>
-            </div>
-            <div *ngIf="selectedAssets?.length ==0" class="alert alert-info">
-              <strong>No Assets Selected.</strong>
+              <div *ngIf="selectedAssets?.length == 0" class="alert alert-info">
+                <strong>No Assets Selected.</strong>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
+
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn Btn-Gray" style="float: right"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn Btn-Gray" (click)="removeAlertType = ''"
+          style="float: right"><span>Close</span></a>
       </div>
+
     </div>
   </div>
 </div>
-
 <!-- --------------List Of Quiz Forms Popup--------------- -->
 <div class="modal right" id="quiz-list" data-backdrop="static">
   <div class="modal-dialog modal-lg modal_52"  style="width: 80% !important;right:0">

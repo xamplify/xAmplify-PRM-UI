@@ -26,6 +26,8 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit,OnDestroy
   @Input() partnerCompanyId: any;
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
+  @Input() partnerStatus: string = '';
+  @Input() fromDeactivatedPartnersDiv: boolean = false;
   @Output() notifyTeamMemberSelection = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();

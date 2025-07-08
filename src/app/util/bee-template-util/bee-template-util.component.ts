@@ -157,6 +157,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 			let mergeTags = [];
 			if(this.module=="pages"){
 				mergeTags = this.referenceService.addPageMergeTags();
+			}else if(this.module=="dam"){
+				mergeTags = this.referenceService.addDamMergeTags(mergeTags);
 			}else{
 				mergeTags = this.referenceService.addMergeTags(mergeTags, false, this.mergeTagsInput['isEvent']);
 			}

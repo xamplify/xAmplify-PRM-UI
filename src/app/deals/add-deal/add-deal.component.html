@@ -353,7 +353,7 @@
                                 <span *ngIf="commentDealAndLeadDto?.createdByName.length>25">..</span>
                               </h5>
                               <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByEmail"
-                                [title]="createdByEmail">
+                                [title]="commentDealAndLeadDto?.createdByEmail">
                                 <span><strong>Email</strong></span>: {{commentDealAndLeadDto?.createdByEmail |
                                 slice:0:30}}
                                 <span *ngIf="commentDealAndLeadDto?.createdByEmail.length>30">..</span>
@@ -379,7 +379,8 @@
                           </div>
                         </div>
                         <app-chat [dealId]="commentDealAndLeadDto?.id" [isPreviewDealOrLeadComponent]="true"
-                          [editTextArea]="false" [moduleType]="'deal'" [enableWrite]="true"></app-chat>
+                          [editTextArea]="false" [moduleType]="'deal'" [enableWrite]="true" 
+                          [partnerStatus]="deal?.partnerStatus"></app-chat>
                       </div>
                     </div>
                   </div>

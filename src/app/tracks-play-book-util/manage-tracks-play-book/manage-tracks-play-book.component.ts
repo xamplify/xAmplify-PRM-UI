@@ -299,6 +299,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 
+  navigateToAdd() {
+    let route = this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]
+      ? '/home/playbook/add?from=manage'
+      : '/home/tracks/add?from=manage';
+    this.referenceService.goToRouterByNavigateUrl(route);
+  }
+
   edit(id: number) {
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       let url = "/home/tracks/edit/" + id;
@@ -346,6 +353,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
           this.customResponse = new CustomResponse('SUCCESS', track.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
+              if (this.contentModuleStatusAnalyticsComponent) {
+                if (this.authenticationService.approvalRequiredForTracks
+                  || this.authenticationService.approvalRequiredForPlaybooks) {
+                  this.contentModuleStatusAnalyticsComponent.getTileCounts();
+                }
+                this.contentModuleStatusAnalyticsComponent.getContentCounts();
+              }
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -435,6 +449,11 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
           this.referenceService.stopLoader(this.httpRequestLoader);
+        } else if (response.statusCode == 402) {
+          let trackOrPlayBook =  this.tracksModule ? "track":"playbook";
+          let infoMessage = "The " + trackOrPlayBook + " will not be published to the deactivated partner(s)";
+          this.customResponse = new CustomResponse('ERROR', infoMessage, true);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
       },
       (error: string) => {
@@ -467,9 +486,12 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   refreshPage() {
     this.listLearningTracks(this.pagination);
-    if (this.contentModuleStatusAnalyticsComponent && (this.authenticationService.approvalRequiredForTracks
-      || this.authenticationService.approvalRequiredForPlaybooks)) {
-      this.contentModuleStatusAnalyticsComponent.getTileCounts();
+    if (this.contentModuleStatusAnalyticsComponent) {
+      if (this.authenticationService.approvalRequiredForTracks
+        || this.authenticationService.approvalRequiredForPlaybooks) {
+        this.contentModuleStatusAnalyticsComponent.getTileCounts();
+      }
+      this.contentModuleStatusAnalyticsComponent.getContentCounts();
     }
   }
 

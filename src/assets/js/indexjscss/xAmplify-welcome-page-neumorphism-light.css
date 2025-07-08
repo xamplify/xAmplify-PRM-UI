@@ -174,3 +174,19 @@ a.xamplify-dropdown-toggle.circlebg-none-v {
   border: 1px solid #cfd6de !important;
   color: #000 !important;
 }
+
+.oliveBackground {
+  background-color: transparent !important;
+}
+
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}

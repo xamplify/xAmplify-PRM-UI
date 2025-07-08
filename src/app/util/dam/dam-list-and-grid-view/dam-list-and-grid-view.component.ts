@@ -154,7 +154,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
 	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
+	ragItFiles: any[] = ['mp4','mp3','avi','mov','flv','wmv','mkv','webm','ogg','ogv','3gp','3g2','mpeg','mpg','m4v'];
 	@Input() fromListView: boolean = false;
+	@Input() oliverIntegrationType: any;
+	selectedFolderItems: any[] = []; 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -168,7 +171,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		if(this.referenceService.isOliverEnabled){
+		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)
 		}
@@ -180,6 +183,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.FromOliverPopUp) {
 			this.SuffixHeading = 'Select ';
+			this.isOliverCalled = false;
 			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
 				this.selectedItems = [];
 				for (let item of this.selectedItemFromOliver) {
@@ -191,7 +195,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedFoldersForOliver.length > 0) {
 			this.setOliverViewType();
-			
+		}
+		if (this.selectedFoldersForOliver != undefined && this.selectedFoldersForOliver != null && this.selectedFoldersForOliver.length > 0) {
+			this.selectedFolderItems = [];
+			for (let item of this.selectedFoldersForOliver) {
+				this.selectedFolderItems.push(item);
+			}
 		}
 	}
 
@@ -643,8 +652,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 		/** XNFR-813 **/
-		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
-			this.contentModuleStatusAnalyticsComponent.getTileCounts();
+		if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
 		}
 	}
 
@@ -767,6 +779,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.findFileTypes();
 			}
 			this.listAssets(this.pagination);
+			if (this.contentModuleStatusAnalyticsComponent) {
+			if(this.authenticationService.approvalRequiredForAssets){
+				this.contentModuleStatusAnalyticsComponent.getTileCounts();	
+			}
+			this.contentModuleStatusAnalyticsComponent.getContentCounts();
+		}
 		} else if (response.statusCode == 401) {
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
@@ -1318,13 +1336,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
-	setViewTypeForOliver(event: any){
-		this.categoryId = 0;
-		this.showUpArrowButton = false;
-		this.viewType = event;
-		this.setViewType(this.viewType);
-		this.getCompanyId();
-	}
+  setViewTypeForOliver(event: any){
+                this.categoryId = 0;
+                this.showUpArrowButton = false;
+                this.viewType = event;
+                this.setViewType(this.viewType);
+                this.getCompanyId();
+        }
+
+  navigateToUploadAsset() {
+    this.referenceService.goToRouterByNavigateUrl('/home/dam/upload?from=manage');
+  }
+
+  navigateToAddAsset() {
+    this.referenceService.goToRouterByNavigateUrl('/home/dam/add?from=manage');
+  }
 
 	handleFolders(event) {
 		this.notifyFolders.emit(event);

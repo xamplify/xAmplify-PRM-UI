@@ -14,6 +14,7 @@ import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { TracksPlayBook } from '../models/tracks-play-book'
+import { Router } from '@angular/router';
 
 declare var $: any, swal: any;
 
@@ -69,10 +70,21 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	/****XNFR-326****/
 	@Input() isTrackOrPlaybookPublishedEmailNotification = false;
 	isPartnerCompaniesTabSelected = true;
+
+	/****XNFR-993****/
+	@Input() isWorkflowForm:boolean;//XBI-4309
+	isPlaybookModule: boolean = false;
+
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
-		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
+		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, private router: Router) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.notifyParentComponent = new EventEmitter<any>();
+		let currentUrl = this.router.url;
+		if (currentUrl.includes('home/playbook')) {
+			this.isPlaybookModule = true;
+		} else if (currentUrl.includes('home/tracks')) {
+			this.isPlaybookModule = false;
+		}
 	}
 
 	ngOnInit() {
@@ -251,6 +263,9 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 	/************Partner Company Checkbox related code starts here****************/
 	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId: number, partnershipId: number, event: any) {
+		if(this.isWorkflowForm) {
+			return;	
+		}		
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			$('#publishToPartners' + teamMemberId).addClass('row-selected');
@@ -278,6 +293,9 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 
 	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number, event: any) {
+		if(this.isWorkflowForm) {
+			return;	
+		}
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			//Removing Highlighted Row
@@ -381,13 +399,17 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	}
 
 	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
-		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
-		this.notifyParent();
+		if (!this.isWorkflowForm) {
+			this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+			this.notifyParent();
+		}
 	}
 
 	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
-		this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
-		this.notifyParent();
+		if (!this.isWorkflowForm) {
+			this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+			this.notifyParent();
+		}
 	}
 
 	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event: any) {
@@ -430,6 +452,14 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
 		this.findPartnerCompanies(this.pagination);
-	  }
+	}
+
+	findModuleName() {
+		if (this.isPlaybookModule) {
+			return 'Playbook.';
+		} else {
+			return 'Track.';
+		}
+	}
 }
 

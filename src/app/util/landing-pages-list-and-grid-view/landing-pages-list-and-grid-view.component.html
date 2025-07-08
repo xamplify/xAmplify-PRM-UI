@@ -93,8 +93,9 @@
                                             <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
                                         </ng-container>
                                         <!---XNFR-255-->
-                                        <span
-                                            class="view-banner display-ib margin-0-auto green-btn-cu">{{landingPage.type}}</span>
+                                        <span class="green-banner inline-flex">{{landingPage.type}}</span>
+                                        <span class="green-banner inline-flex ml5" *ngIf="landingPage?.partnerStatus === 'deactivated'"
+                                            data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</span>
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto"
@@ -230,6 +231,8 @@
                                             </strong>
                                         </span>
                                     </h6>
+                                    <span *ngIf="landingPage?.partnerStatus === 'deactivated'" class="green-banner inline-flex float-left LabeledmarginLeft"
+                                        data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</span>
                                 </div>
                                 <!---Icons-->
                                 <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
@@ -443,7 +446,7 @@
                             </select>
                         </div>
 
-                        <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                        <div class="portlet-input input-inline input-small ml5" style="width: 198px !important;">
                             <div class="input-icon right" style="position: relative;right: -5px;">
                                 <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                                     [ngModelOptions]="{standalone: true}" placeholder="Search for a page"
@@ -484,18 +487,25 @@
 </ng-template>
 <!--Preview-->
 <ng-template #previewIcon let-landingPage="landingPage">
-    <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-        (click)="showPreview(landingPage)">
-        <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
+    <a class="Iconhover custom-grid-icon" [ngStyle]="{'pointer-events': 'auto'}"
+        [ngClass]="{'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isGridView}"
+        data-toggle="tooltip" data-placement="top" title="Preview"
+        (click)="(landingPage?.partnerStatus === 'deactivated') ? '' : showPreview(landingPage)">
+        <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView,
+            'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isListView}"
+            aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
 </ng-template>
 <!--Copy/Embed Link-->
 <ng-template #copyOrEmbedLinkIcon let-landingPage="landingPage">
     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
-            (click)="showPageLinkPopup(landingPage)">
-            <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+        <a class="Iconhover custom-grid-icon" [ngStyle]="{'pointer-events': 'auto'}"
+            [ngClass]="{'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isGridView}"
+            data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
+            (click)="(landingPage?.partnerStatus === 'deactivated') ? '' : showPageLinkPopup(landingPage)">
+            <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView,
+                'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isListView}"
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>

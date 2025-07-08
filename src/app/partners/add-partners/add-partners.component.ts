@@ -40,6 +40,7 @@ import { ContactList } from 'app/contacts/models/contact-list';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
 import { ParterService } from 'app/partners/services/parter.service';
+import { Partnership } from '../models/partnership.model';
 
 declare var $: any, Papa: any, swal: any;
 
@@ -333,6 +334,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	contactsUploadedCountByAllPartners: number = 0;
 	contactSubscriptionLimit: number = 0;
 	selfContactCount: number = 0;
+	partnership: Partnership = new Partnership();
+	deactivatedPartnerDomains: any;
+	isDeleteOptionClicked: boolean = false;
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -705,7 +709,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
-			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length)) {
+			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length) && !this.isPartner) {
 				this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
 			}
 			if (existedEmails.length === 0) {
@@ -1187,7 +1191,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
 					self.cancelPartners();
 				}
-
+				
 				console.log("ManagePartnerComponent : readFiles() Partners " + JSON.stringify(self.newPartnerUser));
 			}
 		} else {
@@ -2352,8 +2356,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				} else {
 					for (let j = 0; j < this.pagedItems.length; j++) {
 						var paginationEmail = this.pagedItems[j].emailId;
-						// this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
-						this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
+						this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+						// this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
 					}
 					let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
 					this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
@@ -3198,8 +3202,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			} else {
 				for (let j = 0; j < this.pagedItems.length; j++) {
 					var paginationEmail = this.pagedItems[j].emailId;
-					// this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
-					this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
+					this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+					// this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, paginationEmail);
 				}
 				let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
 				this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
@@ -4953,4 +4957,96 @@ triggerUniversalSearch(){
 			});
 	}
 	/** XNFR-952 end */
+
+	/***** XNFR-988 *****/
+	confirmDeactivatePartner(partner) {
+		this.user = new User();
+		this.user = partner;
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+		this.sweetAlertParameterDto.text = partner.partnerStatus !== 'deactivated'
+			? this.properties.SINGLE_DEACTIVATE_PARTNER + suffexMessage
+			: this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+		this.sweetAlertParameterDto.confirmButtonText = partner.partnerStatus !== 'deactivated'
+			? 'Yes, Deactivate it!' : 'Yes, Activate it!';
+		this.isDeleteOptionClicked = true;
+	}
+
+	/***** XNFR-988 *****/
+	deactivatePartner(event: any) {
+		if (event) {
+			this.isLoadingList = true;
+			let partnershipIds = [];
+			partnershipIds.push(this.user.partnershipId);
+			let partnerStatus = this.user.partnerStatus;
+			partnerStatus = partnerStatus == 'deactivated' ? 'approved' : 'deactivated';
+			this.parterService.updatePartnerShipStatusForPartner(partnershipIds, partnerStatus)
+				.subscribe(response => {
+					this.isLoadingList = false;
+					this.resetDeleteOptions();
+					if (response.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.loadPartnerList(this.pagination);
+					} else {
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				}, error => {
+					this.resetDeleteOptions();
+					this.isLoadingList = false;
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				});
+		} else {
+			this.resetDeleteOptions();
+		}
+	}
+
+	notifyLoadPartners() {
+		this.loadPartnerList(this.pagination);
+	}
+
+	showDeactivateAlert() {
+		if (this.editContactComponent.selectedContactListIds.length != 0) {
+			let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+			let message = this.properties.MULTI_SELECT_DEACTIVATE_PARTNERS + suffexMessage;
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: message,
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, deactivate it!'
+			}).then(function (myData: any) {
+				console.log("ManageContacts showAlert then()" + myData);
+				self.deactivatePartners();
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+		}
+	}
+
+	deactivatePartners() {
+		this.parterService.deactivatePartners(this.editContactComponent.selectedContactListIds)
+			.subscribe(
+				(response: any) => {
+					if (response.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.loadPartnerList(this.pagination);
+						this.editContactComponent.selectedContactListIds = [];
+					}
+				},
+				(error: any) => {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				},
+			);
+  }
+
+	/***** XNFR-988 *****/
+	resetDeleteOptions() {
+		this.sweetAlertParameterDto = new SweetAlertParameterDto();
+		this.isDeleteOptionClicked = false;
+		this.user = new User();
+	}
+
 }

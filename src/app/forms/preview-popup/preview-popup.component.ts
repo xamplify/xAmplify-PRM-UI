@@ -55,6 +55,9 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     @Input() isVendorOrMasterLandingPage:boolean = false;
     @Input() isPartnerJourneyPages:boolean = false;
     @Input() isVendorMarketplacePages:boolean = false;
+    @Input () fromOliver: boolean = false;
+    @Input () fromSurvyaTemplate: boolean = false;
+    
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {

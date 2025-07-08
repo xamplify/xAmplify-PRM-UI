@@ -14,6 +14,7 @@ import { RedistributedCampaignsComponent } from './redistributed-campaigns/redis
 import { ViewPartnersComponent } from './view-partners/view-partners.component';
 import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
 import { ActivePartnersTableComponent } from './active-partners-table/active-partners-table.component';
+import { DeactivatedPartnersTableComponent } from './deactivated-partners-table/deactivated-partners-table.component';
 import { PartnerDetailedAnalyticsComponent } from './partner-detailed-analytics/partner-detailed-analytics.component';
 import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-members-table/partner-journey-team-members-table.component';
 import { PartnerJourneyContactDetailsComponent } from './partner-journey-contact-details/partner-journey-contact-details.component';
@@ -25,6 +26,9 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
 import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './partner-journey-team-member-high-level-analytics-table/partner-journey-team-member-high-level-analytics-table.component';
 import { PartnerJourneyAssetDetailsComponent } from './partner-journey-asset-details/partner-journey-asset-details.component';
 import { PartnerModuleConfiguratorComponent } from './partner-module-configurator/partner-module-configurator.component';
+import { AssetJourneyAssetDetailsComponent } from './asset-journey-asset-details/asset-journey-asset-details.component';
+import { PlayBookJourneyInteractionComponent } from './play-book-journey-interaction/play-book-journey-interaction.component';
+import { PlayBookJourneyInteractionDetailsComponent } from './play-book-journey-interaction-details/play-book-journey-interaction-details.component';
 
 @NgModule({
   imports: [
@@ -32,6 +36,6 @@ import { PartnerModuleConfiguratorComponent } from './partner-module-configurato
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent, PlayBookJourneyInteractionDetailsComponent]
 })
 export class PartnersModule { }

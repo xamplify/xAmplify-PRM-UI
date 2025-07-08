@@ -279,7 +279,7 @@ private beforeAdd(tag: any) {
     return Observable.of(tag);
   } 
    private validateEmail(text: string) {
-    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
     return (text && EMAIL_REGEXP.test(text));
   } 
   public notifications = 0;
@@ -856,6 +856,7 @@ private beforeAdd(tag: any) {
 		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
 		this.authenticationService.contactsCount = data.contactsCount;
 		module.damAccess = data.dam;
+    module.sharedLeads = data.sharedLeads;
 		module.damAccessAsPartner = data.damAccessAsPartner;
 		module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
 		let roleDisplayDto = data.roleDisplayDto;

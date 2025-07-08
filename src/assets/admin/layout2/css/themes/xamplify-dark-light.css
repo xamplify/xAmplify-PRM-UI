@@ -137,7 +137,7 @@ h6 {
   background: #22313a !important;
 }
 .form-control,
-.col-item {
+.col-item,.domain-field-text {
   color: white !important;
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
@@ -231,7 +231,7 @@ ul.alt-row-style1 li:hover,
 .alert-success,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
-.btn.btn-secondary {
+.btn.btn-secondary,.domain-btn {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
@@ -2824,3 +2824,58 @@ markdown pre,.aligin-para{
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3)!important;
   transition: box-shadow 0.3s ease;
 }
+.dropdown-menu button.share-btn {
+  border: none !important;
+}
+.dropdown-menu button.share-btn:hover{
+  box-shadow: none !important;
+}
+.suggestion-box-input-prompt,.suggestion-box-input,.suggestion-box{
+  background: #22313a!important;
+}
+.suggestion-list div{
+  border-bottom: 1px solid rgb(47 72 87)!important;
+}
+.suggestion-list div:hover{
+  background-color: #2b3c46!important;
+}
+.suggestion-direction-global-chat-down,.suggestion-direction{
+  border-top: 12px solid #22313a!important;
+}
+.suggestion-direction-global-chat{
+  border-bottom: 12px solid #22313a!important;
+}
+.pad div {
+  color: #ffffff !important;
+}
+/* content count css */
+.section-column,.front-count-card {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.stat-card{
+  background-color: #22313a!important;
+  border: 1px solid #2f4857 !important;
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label{
+  color:#fff !important;
+}
+.oliveIcon {
+border: 1px solid #fff !important;
+}
+.oliveBackground {
+  background-color: transparent !important;
+}
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}
+.summarize-card {
+    background: linear-gradient(135deg, #7e8a96, #7d6a98ab)!important;}

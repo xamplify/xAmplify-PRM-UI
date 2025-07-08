@@ -14,6 +14,7 @@ export class SelectMdfComponent implements OnInit {
 
   loading = false;
   prefixUrl = "home/";
+  searchWithModuleName = 8;
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
