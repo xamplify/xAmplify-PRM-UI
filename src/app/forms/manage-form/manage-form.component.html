@@ -190,10 +190,14 @@
                                 <tbody>
                                     <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs" style="width: 10%;">
-                                            <div class="img-class-list image_effect" style="overflow: hidden;">
-                                                <img class="fit-image" [src]="form.thumbnailImage"
+                                            <!-- XNFR-1001  -->
+                                            <div class="img-class-list image_effect"  style="overflow: hidden;">
+                                                <img class="fit-image" *ngIf="!referenceService.isCloudFront" [src]="form.thumbnailImage"
+                                                    onerror="this.src='assets/images/form.png';" alt="Image Not Found">
+                                                    <img class="fit-image" *ngIf="referenceService.isCloudFront" [src]="form.cdnThumbnailImage"
                                                     onerror="this.src='assets/images/form.png';" alt="Image Not Found">
                                             </div>
+                                            <!-- XNFR-1001  -->
                                         </td>
                                         <td>
                                             <h4 class="moreipsis" data-toggle="tooltip" data-placement="top"

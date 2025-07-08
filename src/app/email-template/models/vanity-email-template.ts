@@ -10,4 +10,5 @@ export class VanityEmailTempalte{
     companyId:number;
     imagePath:string;
     typeInString:string;
+    cdnImagePath: string; //XNFR-1001
 }
