@@ -4771,11 +4771,14 @@ input:checked + .toggle-slider {
   color: #ffffff !important;
 }
 /* content count css */
-.section-column,.front-count-card,.stat-card {
+.section-column,.front-count-card,.stat-card,.asset-card,.asset-button,.asset-button:hover{
   background: rgb(255 255 255 / 15%) !important;
   border: 1px solid rgb(255 255 255 / 35%)!important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.asset-button:hover{
+  transform: scale(1.01);
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color:#000 !important;
 }
 button.btn.btn-primary.dropdown-toggle.border_btn{

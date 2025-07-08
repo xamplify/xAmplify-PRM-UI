@@ -244,6 +244,11 @@ p {
 }
 
 /* Responsive layout */
+@media (max-width: 992px) {
+ .section-column {
+    margin-bottom: 18px;
+  }
+}
 @media (max-width: 768px) {
   .dashboard-wrapper {
     padding: 16px;
@@ -269,9 +274,6 @@ p {
 .track-icon-list{
   background-color: #fff3e0;
 }
-.track-icon-list>.fa-list{
-
-}
 .playbook-icon>.fa-users{
   color: #ff9800;
 }
@@ -288,21 +290,23 @@ p {
   .asset-row {
       display: flex;
       flex-wrap: wrap;
-      margin: -10px;
     }
 
     .asset-col {
-      padding: 10px;
+      padding: 13px;
       width: 100%;
     }
 
-    @media (min-width: 768px) {
+   @media (min-width: 768px) and (max-width: 1199px){
       .asset-col {
         width: 50%;
       }
+      .asset-cols{
+        padding: 0px 13px;
+      }
     }
 
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       .asset-col {
         width: 33.3333%;
       }
@@ -310,13 +314,19 @@ p {
 
     .asset-card {
       background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 0 1px #e1e8f0, 0 4px 10px rgba(0,0,0,0.05);
-    }
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0e6ed;
+      }
+      .asset-card:hover {
+        transform: translateY(-2px);
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+      }
 
     .asset-header {
       display: flex;
@@ -338,7 +348,7 @@ p {
     }
 
     .asset-description {
-      font-size: 15px;
+      font-size: 14px;
       color: #444;
       margin-top: 5px;
     }
@@ -366,7 +376,7 @@ p {
 
     .asset-button i.fa {
       font-size: 16px;
-      color: #1f94d2;
+      color: #2397d3;
     }
 
     .label-icon {

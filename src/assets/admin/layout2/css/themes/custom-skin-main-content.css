@@ -2701,16 +2701,19 @@ table.nl-container tr:nth-child(odd) {
   color: var(---text-color) !important;
 }
 /* content count css */
-.section-column,.front-count-card {
+.section-column,.front-count-card,.asset-card {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.stat-card {
+.stat-card,.asset-button,.asset-button:hover {
     background-color: var(--page-content) !important;
     border: 1px solid var(--border-color) !important;
   }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color: var(---text-color) !important;
+}
+.asset-button:hover{
+  transform: scale(1.02);
 }
 a.action-button{
   background-color: var(--btn-primary-bg-color) !important;
