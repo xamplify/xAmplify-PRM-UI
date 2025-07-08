@@ -22,7 +22,7 @@ declare var $: any, swal: any;
 export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
 
   partnersLoader: HttpRequestLoader = new HttpRequestLoader();
-  selectedPartnerTeamMemberGroupMappingIds = [];
+  selectedPartnerTeamMemberGroupMappingIds: any[] = [];
   partnersPagination: Pagination = new Pagination();
   isHeaderCheckBoxChecked = false;
   sortOption: SortOption = new SortOption();
@@ -191,17 +191,24 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
    // XNFR-998
 
   downloadTeamMemberCsv() {
+    var self = this;
     this.httpRequestLoader.isHorizontalCss = true;
-    this.csvPagination = { 
-      ...this.partnersPagination,
-      pageIndex: 1,
-      maxResults: this.pagination.totalRecords 
-    };
+     var hasSelections = this.selectedPartnerTeamMemberGroupMappingIds && 
+     this.selectedPartnerTeamMemberGroupMappingIds.length > 0;                
+    this.csvPagination = Object.assign({}, this.partnersPagination, {
+    pageIndex: 1,
+    maxResults: this.pagination.totalRecords
+  });
     this.teamMemberService.findPartners(this.csvPagination)
       .subscribe(
         response => {
           let data = response.data;
-          this.csvPagination.csvPagedItems = data.list;         
+          var dataToDownload = hasSelections
+          ? data.list.filter((partner: any) =>
+              self.selectedPartnerTeamMemberGroupMappingIds.includes(partner.id)
+            )
+          : data.list;
+          this.csvPagination.csvPagedItems = dataToDownload;         
           this.downloadCsv();
           this.httpRequestLoader.isHorizontalCss = false;
         },
