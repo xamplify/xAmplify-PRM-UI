@@ -69,14 +69,14 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
+      <!-- <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span> -->
       <div class="form-group">
         <label class="control-label" translate>Name</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
-        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+        <span class="required">*</span>
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
-        <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" />
+        <!-- <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+          [ngModelOptions]="{standalone: true}" class="form-control" /> -->
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
@@ -88,7 +88,7 @@
               Default SSO Group <i aria-hidden="true" class="fa fa-info-circle" title="{{properties?.defaultSSOTeamMemberGroupToolTip}}"></i>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -96,7 +96,7 @@
 
       <div class="form-group">
         <label class="control-label" translate>Select Modules</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+        <span class="required">*</span>
       </div>
       <div class="table-responsive">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -107,13 +107,13 @@
               <br>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
       </div>
       <div id="right">
-        <button *ngIf="!groupDto?.previewGroup" type="button" [disabled]="!groupDto.isValidForm"
+        <button type="button" [disabled]="!groupDto.isValidForm"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
             class="btn btn-primary transition txt_pd-top3">{{groupSubmitButtonText}}</span></button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManageOrPreview()"
@@ -160,7 +160,7 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
-      <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
+      <!-- <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span> -->
       <!--XNFR-883-->
       <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
       <div class="table-responsive">
@@ -194,9 +194,7 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-        <a data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'"
-          [className]="group?.defaultGroup ? 'inactive custom-icon':'Iconhover custom-icon'"
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
           (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>
@@ -207,9 +205,7 @@
          <i class="fa fa-users" aria-hidden="true"></i>
          <div class="clickicons"></div>
        </a>
-        <a class="delete" data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'"
-          [className]="group?.defaultGroup ? 'delete inactive custom-icon':'delete custom-icon'"
+        <a class="delete custom-icon" data-toggle="tooltip" data-placement="top" title="Delete"
           (click)="confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           <div class="del-icon"></div>

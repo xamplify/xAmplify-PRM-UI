@@ -215,13 +215,9 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     );
   }
 
- 
-
-  confirmAlert(teamMemberGroup:any) {
-    if(!teamMemberGroup.defaultGroup){
-      this.isDelete = true;
-      this.idToDelete = teamMemberGroup.id;
-    }
+  confirmAlert(teamMemberGroup: any) {
+    this.isDelete = true;
+    this.idToDelete = teamMemberGroup.id;
   }
 
   deleteGroup(event: any) {
@@ -300,9 +296,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   }
 
   findGroupDetailsById(group:any) {
-    if(!group.defaultGroup){
-      this.getTeamMemberGroupDetailsById(group,false);
-    }
+    this.getTeamMemberGroupDetailsById(group,false);
   }
 
 
