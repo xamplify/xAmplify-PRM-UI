@@ -31,11 +31,32 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- XNFR-1001  -->
                                 <tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs custom-icon-width">
-                                        <img class="email-template-preview image_effect template_image_border" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject+cacheBuster}}" alt="Image Not Found">
-                                        <img class="email-template-preview image_effect template_image_border" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" alt="Image Not Found">
-                                    </td>
+
+                                        <img class="email-template-preview image_effect template_image_border"
+                                             *ngIf="emailTemplate.subject && !referenceService.isCloudFront"
+                                             src="{{emailTemplate.subject + cacheBuster}}"
+                                             alt="Image Not Found">
+                                      
+                                        <img class="email-template-preview image_effect template_image_border"
+                                             *ngIf="!emailTemplate.subject && !referenceService.isCloudFront"
+                                             src="assets/images/bee-template/rich-simple.jpg"
+                                             alt="Image Not Found">
+                                      
+                                        <img class="email-template-preview image_effect template_image_border"
+                                             *ngIf="emailTemplate.cdnSubject && referenceService.isCloudFront"
+                                             src="{{emailTemplate.cdnSubject + cacheBuster}}"
+                                             alt="Image Not Found">
+                                      
+                                        <img class="email-template-preview image_effect template_image_border"
+                                             *ngIf="!emailTemplate.cdnSubject && referenceService.isCloudFront"
+                                             src="assets/images/bee-template/rich-simple.jpg"
+                                             alt="Image Not Found">
+                                      
+                                      </td>
+                                      <!-- XNFR-1001  -->
                                     <td>
                                         <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                             <span><b>Template Name: </b>{{emailTemplate.name}} </span>

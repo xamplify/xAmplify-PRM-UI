@@ -59,7 +59,10 @@
 											</td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
-													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+													<img class="custom-image-css" *ngIf="!referenceService.isCloudFront" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+																alt="Image Not Found"
+																style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+                          <img class="custom-image-css"  *ngIf="referenceService.isCloudFront" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
 														alt="Image Not Found"
 														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 												</div>

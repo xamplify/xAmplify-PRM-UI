@@ -42,4 +42,7 @@ export class LandingPage {
     /*XNFR-712*/
     partnerJourneyPages:boolean = false;
     vendorMarketPlacePage:boolean = false;
+
+    cdnLandingPageThumbnailPath: string; //XNFR-1001
+
 }
