@@ -69,7 +69,7 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
         status = 'Deactivated ';
       }
 
-      this.infoName = `${prefix} ${status}${this.partnerModuleName}s`;
+      this.infoName = `${prefix} ${status}${this.partnerModuleName}`;
       // this.infoName = `${this.applyFilter && (this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember)? " My " : " All "}${this.partnerModuleName}s`;
     } else {
       this.infoName = ` the ${this.partnerModuleName}`;
