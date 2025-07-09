@@ -826,6 +826,7 @@ private beforeAdd(tag: any) {
           this.authenticationService.brainstormWithOliverEnabled = data.brainstormWithOliverEnabled;
           this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
           this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
+          this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
         
 					//XNFR-276
           this.menuItems = data.menuItems;
