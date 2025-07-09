@@ -102,6 +102,7 @@ export class ChatGptModalComponent implements OnInit {
   showBrainstormWithOliver: boolean = false;
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
+  showOliverContactAgent: boolean = false;
   oliverAgentAccessDTO = new OliverAgentAccessDTO(); 
   agentAccessUpdateButtonName: string = 'Update';
   disableAgentAccessUpdateButton: boolean = false;
@@ -147,6 +148,7 @@ export class ChatGptModalComponent implements OnInit {
   showGlobalPromptBoxAbove: boolean;
   showInsightPromptBoxBelow: boolean = false;
   showInsightPromptBoxAbove: boolean = false;
+  
   selectedPromptId: number;
   historyLoader: boolean = false;
   statusMessage: string = '';
@@ -1236,6 +1238,8 @@ closeDesignTemplate(event: any) {
       this.oliverAgentAccessDTO.showOliverSparkWriter = isChecked;
     } else if (agentType === this.PARAPHRASERAGENT) {
       this.oliverAgentAccessDTO.showOliverParaphraser = isChecked;
+    } else if (agentType === this.CONTACTAGENT) {
+      this.oliverAgentAccessDTO.showOliverContactAgent = isChecked;
     }
   }
 
@@ -1269,10 +1273,13 @@ closeDesignTemplate(event: any) {
           this.showBrainstormWithOliver = data.showBrainstormWithOliver;
           this.showOliverSparkWriter = data.showOliverSparkWriter;
           this.showOliverParaphraser = data.showOliverParaphraser;
+          this.showOliverContactAgent = data.showOliverContactAgent;
+          
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
           this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
+          this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentAccessSettings() ', error);
@@ -1288,10 +1295,12 @@ closeDesignTemplate(event: any) {
           this.showBrainstormWithOliver = data.showBrainstormWithOliver;
           this.showOliverSparkWriter = data.showOliverSparkWriter;
           this.showOliverParaphraser = data.showOliverParaphraser;
+          this.showOliverContactAgent = data.showOliverContactAgent;
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
           this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
+          this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
@@ -1303,6 +1312,7 @@ closeDesignTemplate(event: any) {
     this.showBrainstormWithOliver = this.oliverAgentAccessDTO.showBrainstormWithOliver;
     this.showOliverSparkWriter = this.oliverAgentAccessDTO.showOliverSparkWriter;
     this.showOliverParaphraser = this.oliverAgentAccessDTO.showOliverParaphraser;
+    this.showOliverContactAgent = this.oliverAgentAccessDTO.showOliverContactAgent;
   }
     /** XNFR-982 end **/
 
@@ -1342,12 +1352,13 @@ closeDesignTemplate(event: any) {
 
   onOliverFlagsUpdate(flags: {
     showOliverInsights: boolean; showBrainstormWithOliver: boolean; showOliverSparkWriter: boolean;
-    showOliverParaphraser: boolean;
+    showOliverParaphraser: boolean, showOliverContactAgent: boolean;
   }) {
     this.showOliverInsights = flags.showOliverInsights;
     this.showBrainstormWithOliver = flags.showBrainstormWithOliver;
     this.showOliverSparkWriter = flags.showOliverSparkWriter;
     this.showOliverParaphraser = flags.showOliverParaphraser;
+    this.showOliverContactAgent = flags.showOliverContactAgent;
   }
 
   createAsset(markdown: any) {

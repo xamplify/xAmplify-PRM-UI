@@ -153,7 +153,8 @@
             
                 <!-- Ask Oliver Agent with Submenu -->
                 <li *ngIf="((authenticationService.oliverInsightsEnabled && showOliverInsights) || (authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver) || (authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter)
-                  || (authenticationService.oliverParaphraserEnabled && showOliverParaphraser))" [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
+                  || (authenticationService.oliverParaphraserEnabled && showOliverParaphraser) || (authenticationService.oliverContactAgentEnabled && showOliverParaphraser) || 
+                      (authenticationService.oliverContactAgentEnabled && showOliverContactAgent))" [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
                   <a href="javascript:void(0);" class="submenu-toggle" (click)="toggleAgentSubmenu()">
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
@@ -182,7 +183,7 @@
                         <i class="fa fa-align-left"></i> Paraphraser Agent
                       </a>
                     </li>
-                    <li *ngIf="authenticationService?.module?.isContact"
+                    <li *ngIf="authenticationService?.module?.isContact && authenticationService?.oliverContactAgentEnabled && showOliverContactAgent"
                       [ngClass]="{'active': activeTab === 'contactagent'}">
                       <a href="#contactagent" role="tab" data-toggle="tab" (click)="setActiveTab('contactagent')">
                         <i class="fa fa-vcard-o"></i> Contact Agent
