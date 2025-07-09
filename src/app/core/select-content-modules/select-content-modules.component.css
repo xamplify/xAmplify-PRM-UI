@@ -301,9 +301,6 @@ p {
       .asset-col {
         width: 50%;
       }
-      .asset-cols{
-        padding: 0px 13px;
-      }
     }
 
     @media (min-width: 1200px) {
@@ -382,3 +379,6 @@ p {
     .label-icon {
       margin-right: 10px;
     }
+      .asset-cols{
+        padding: 0px 13px;
+      }
