@@ -74,5 +74,6 @@ export class Form {
     /** XNFR-424 **/
     formLabelDTORows = [];
    /** XNFR-424 ENDS ***/
+   cdnThumbnailImage: string = ""; //XNFR-1001
 
 }

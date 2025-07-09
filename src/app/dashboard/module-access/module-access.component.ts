@@ -88,6 +88,7 @@ export class ModuleAccessComponent implements OnInit {
   brainstormWithOliverEnabledFlag: boolean = false;
   oliverSparkWriterEnabledFlag: boolean = false;
   oliverParaphraserEnabledFlag: boolean = false;
+  oliverContactAgentEnabledFlag: boolean = false;
   oliverIntegrationTypeSelected: boolean = false;
   oliverIntegrationType: string = "";
 
@@ -655,6 +656,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     this.brainstormWithOliverEnabledFlag = campaignAccess.brainstormWithOliverEnabled;
     this.oliverSparkWriterEnabledFlag = campaignAccess.oliverSparkWriterEnabled;
     this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
+    this.oliverContactAgentEnabledFlag = campaignAccess.oliverContactAgentEnabled;
   }
   /** XNFR-952 end **/
 
@@ -667,6 +669,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
+      this.campaignAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
     }
   }
 

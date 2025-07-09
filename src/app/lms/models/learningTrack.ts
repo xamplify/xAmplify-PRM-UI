@@ -34,5 +34,7 @@ export class LearningTrack {
     canUpdate:boolean = false;
     canDelete:boolean = false;
     hasDamContent:boolean = true;
+    cdnFeaturedImage: string; //XNFR-1001
+
 
 }

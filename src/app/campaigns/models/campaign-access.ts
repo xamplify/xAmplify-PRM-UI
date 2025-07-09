@@ -74,6 +74,7 @@ export class CampaignAccess {
   brainstormWithOliverEnabled: boolean = false;
   oliverSparkWriterEnabled: boolean = false;
   oliverParaphraserEnabled: boolean = false;
+  oliverContactAgentEnabled: boolean = false;
   oliverIntegrationType: string = '';
 
     /** XNFR-987 **/

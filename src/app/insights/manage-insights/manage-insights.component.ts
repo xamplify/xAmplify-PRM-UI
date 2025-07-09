@@ -33,15 +33,15 @@ export class ManageInsightsComponent implements OnInit {
 
         const module = this.authenticationService.module;
         if (module.isVendor) {
-          this.dashboardToken = '2qa8IkP2f9AQ';
+          this.dashboardToken = 'skZKJME3Ud8z';
         } else if (module.isOrgAdminCompany) {
-          this.dashboardToken = 'fOHPmL11HQi2';
+          this.dashboardToken = 'V93QIEtjXvZS';
         } else if (module.isPrmCompany) {
-          this.dashboardToken = 'rdCEexrzuEo8';
+          this.dashboardToken = 'kzxyujzSxTO2';
         } else if (module.isMarketingCompany) {
-          this.dashboardToken = 'OPRykC9shBT3';
+          this.dashboardToken = 'JIeF01BdCEl9';
         } else if (module.isPartnerCompany){
-          this.dashboardToken = 'uko3omwl5hFy';
+          this.dashboardToken = 'GVCjUprIjZS5';
         }
         if (!this.dashboardToken || !this.companyId) {
           console.warn('Missing dashboardToken or companyId, skipping dashboard load');

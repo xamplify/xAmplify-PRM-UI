@@ -74,4 +74,6 @@ export class DamUploadPostDto {
 
     slug:string ="";
     isSlugValid = false;
+    cdnAssetPath:string = "";
+    cdnThumbnailPath:string = "";//XNFR-1001
 }
