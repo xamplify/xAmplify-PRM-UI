@@ -9,14 +9,14 @@
 <div class="row" [ngClass]="{'margin_17': isDashboardView}" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
   <div class="col-md-12">
     <div [ngClass]="{ 'page-bar': hideRowClass, 'portlet light': true, 'mfpx': hideRowClass, 'border_dashed': isDraggingEnabled }">
-      <div class="portlet-title">
+      <div class="portlet-title" style="min-height:35px;">
         <div class="caption" translate>
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <!-- Design  -->
-          Assets
+          Assets,
           <ng-container
             *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
-            ,Track
+            Track
           </ng-container>
           <ng-container
             *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
@@ -26,129 +26,141 @@
         </div>
       </div>
       <div class="portlet-body">
-        <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
-          <!--------DAM------------->
+        <div class="row mtop asset-row" *ngIf="authenticationService?.user?.hasCompany">
+        
+          <!-- DAM -->
           <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"
-            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
-            (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-            <div class="portlet light cpad  hover-effect pointer card-radius">
-              <div class="portlet-body prm-dark-border">
-                <div class="img1">
-                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
-                    src="assets/admin/pages/media/works/Grid_View_Icons/Digital_Asset_Library.png">
-                </div>
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6 asset-col':
+                         (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4 asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3 asset-col':'col-md-3 asset-col'">
+            <div class="asset-card">
+              <div class="asset-header">
+                <img alt="Videos" src="assets/admin/pages/media/works/Grid_View_Icons/assets_image.svg">
                 <div>
-                  <h4 class="header-text-css" translate>Digital Asset Library</h4>
-                </div>
-                <ng-container *ngIf="authenticationService?.module?.damAccess">
-                  <div class="text row-space">
-                    <h5>
-                      <a class="prspx" (click)="navigate('dam/select')">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="design-name" translate>Design / Upload</span></a>
-                    </h5>
+                  <h4 translate>Digital Asset Library</h4>
+                  <div class="asset-description">
+                    <ng-container *ngIf="authenticationService?.module?.damAccess">
+                      Create Manuals, Instructions, Sales / Marketing content your {{
+                      authenticationService?.partnerModule?.customName }} can access any time.
+                    </ng-container>
+                    <ng-container
+                      *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess">
+                      A library of vendor-given manuals, instructions, sales decks, one-pagers, and other sales and
+                      marketing content that you can access at any time.
+                    </ng-container>
                   </div>
-                  <div class="text row-space"
-                    [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
-                    <h5>
-                      <a class="prfpx" (click)="navigate('dam/manage')">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span class="design-name" translate>Manage My Assets</span></a>
-                    </h5>
-                  </div>
-                </ng-container>
-                <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
-                  <h5>
-                    <a class="prtfpx" (click)="navigate('dam/shared')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span class="design-name" translate>Access Shared Assets</span></a>
-                  </h5>
                 </div>
               </div>
+              <ng-container *ngIf="authenticationService?.module?.damAccess">
+                <a class="asset-button" (click)="navigate('dam/select')">
+                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Design / Upload</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+                <a class="asset-button" (click)="navigate('dam/manage')"
+                  [ngClass]="authenticationService?.module?.damAccessAsPartner ? '' : 'border-none'">
+                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage My Assets</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+              </ng-container>
+              <a *ngIf="authenticationService?.module?.damAccessAsPartner" class="asset-button mb0"
+                (click)="navigate('dam/shared')">
+                <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
+                    Assets</span></span>
+                <i class="fa fa-arrow-right"></i>
+              </a>
             </div>
           </div>
-          <!--------Learning Track------------->
+        
+          <!-- Track Builder -->
           <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"
-            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
-            (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-            <div class="portlet light cpad  hover-effect pointer card-radius">
-              <div class="portlet-body prm-dark-border">
-                <div class="img1">
-                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
-                    src="assets/admin/pages/media/works/Grid_View_Icons/Track_Builder.png">
-                </div>
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6 asset-col':
+                         (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4 asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3 asset-col':'col-md-3 asset-col'">
+            <div class="asset-card">
+              <div class="asset-header">
+                <img alt="Videos" src="assets/admin/pages/media/works/Grid_View_Icons/tracks_image.svg">
                 <div>
-                  <h4 class="header-text-css" translate>Track Builder</h4>
-                </div>
-                <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                  <div class="text row-space">
-                    <h5>
-                      <a class="prspx" (click)="navigate('tracks/add')">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="design-name" translate>Add Tracks</span></a>
-                    </h5>
+                  <h4 translate>Track Builder</h4>
+                  <div class="asset-description">
+                    <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                      Create training and certification programs to help {{
+                      authenticationService?.partnerModule?.customName }} understand your product(s).
+                    </ng-container>
+                    <ng-container
+                      *ngIf="!authenticationService?.module?.lmsAccess && authenticationService?.module?.lmsAccessAsPartner">
+                      Vendor-created training and certification programs to help you better understand the products
+                      you market and sell.
+                    </ng-container>
                   </div>
-                  <div class="text row-space"
-                    [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
-                    <h5>
-                      <a class="prfpx" (click)="navigate('tracks/manage')">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span class="design-name" translate>Manage Tracks</span></a>
-                    </h5>
-                  </div>
-                </ng-container>
-                <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
-                  <h5>
-                    <a (click)="navigate('tracks/shared')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span class="design-name" translate>Access Shared Tracks</span></a>
-                  </h5>
                 </div>
               </div>
+              <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                <a class="asset-button" (click)="navigate('tracks/add')">
+                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Add Tracks</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+                <a class="asset-button" (click)="navigate('tracks/manage')"
+                  [ngClass]="authenticationService?.module?.lmsAccessAsPartner ? '' : 'border-none'">
+                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage Tracks</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+              </ng-container>
+              <a *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="asset-button mb0"
+                (click)="navigate('tracks/shared')">
+                <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
+                    Tracks</span></span>
+                <i class="fa fa-arrow-right"></i>
+              </a>
             </div>
           </div>
-          <!--------Play Books------------->
-          <div
-            *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
-            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
-            (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-            <div class="portlet light cpad  hover-effect pointer card-radius">
-              <div class="portlet-body prm-dark-border">
-                <div class="img1">
-                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
-                    src="assets/admin/pages/media/works/Grid_View_Icons/Play_Book.png">
-                </div>
+        
+          <!-- Playbooks -->
+          <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6 asset-col':
+                         (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4 asset-col': 
+                         (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3 asset-col':'col-md-3 asset-col'">
+            <div class="asset-card">
+              <div class="asset-header">
+                <img alt="Videos" src="assets/admin/pages/media/works/Grid_View_Icons/playbooks_image.svg">
                 <div>
-                  <h4 class="header-text-css" translate>Playbook</h4>
-                </div>
-                <ng-container *ngIf="authenticationService?.module?.playbookAccess">
-                  <div class="text row-space">
-                    <h5>
-                      <a class="prspx" (click)="navigate('playbook/add')">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="design-name" translate>Add Playbooks</span></a>
-                    </h5>
+                  <h4 translate>Playbook</h4>
+                  <div class="asset-description">
+                    <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                      Create guides to help your {{ authenticationService?.partnerModule?.customName }} understand how
+                      to sell, negotiate, and close deals.
+                    </ng-container>
+                    <ng-container
+                      *ngIf="!authenticationService?.module?.playbookAccess && authenticationService?.module?.playbookAccessAsPartner">
+                      Vendor-created guides on how to sell, negotiate, and close deals.
+                    </ng-container>
                   </div>
-                  <div class="text row-space"
-                    [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
-                    <h5>
-                      <a class="prfpx" (click)="navigate('playbook/manage')">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span class="design-name" translate>Manage Playbooks</span></a>
-                    </h5>
-                  </div>
-                </ng-container>
-                <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
-                  <h5>
-                    <a (click)="navigate('playbook/shared')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span class="design-name" translate>Access Shared Playbooks</span></a>
-                  </h5>
                 </div>
               </div>
+              <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                <a class="asset-button" (click)="navigate('playbook/add')">
+                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Add Playbooks</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+                <a class="asset-button" (click)="navigate('playbook/manage')"
+                  [ngClass]="authenticationService?.module?.playbookAccessAsPartner ? '' : 'border-none'">
+                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage Playbooks</span></span>
+                  <i class="fa fa-arrow-right"></i>
+                </a>
+              </ng-container>
+              <a *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="asset-button mb0"
+                (click)="navigate('playbook/shared')">
+                <span><i class="fa fa-paper-plane label-icon"></i> <span class="design-name" translate>Access Shared
+                    Playbooks</span></span>
+                <i class="fa fa-arrow-right"></i>
+              </a>
             </div>
           </div>
+        
         </div>
+
       </div>
     </div>
   </div>
