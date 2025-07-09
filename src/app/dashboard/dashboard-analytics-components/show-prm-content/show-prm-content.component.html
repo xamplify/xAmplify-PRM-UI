@@ -9,7 +9,7 @@
 <div class="row" [ngClass]="{'margin_17': isDashboardView}" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
   <div class="col-md-12">
     <div [ngClass]="{ 'page-bar': hideRowClass, 'portlet light': true, 'mfpx': hideRowClass, 'border_dashed': isDraggingEnabled }">
-      <div class="portlet-title">
+      <div class="portlet-title" style="min-height:35px;">
         <div class="caption" translate>
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <!-- Design  -->
@@ -63,7 +63,7 @@
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
-              <a *ngIf="authenticationService?.module?.damAccessAsPartner" class="asset-button"
+              <a *ngIf="authenticationService?.module?.damAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('dam/shared')">
                 <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
                     Assets</span></span>
@@ -107,7 +107,7 @@
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
-              <a *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="asset-button"
+              <a *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('tracks/shared')">
                 <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
                     Tracks</span></span>
@@ -150,7 +150,7 @@
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
-              <a *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="asset-button"
+              <a *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('playbook/shared')">
                 <span><i class="fa fa-paper-plane label-icon"></i> <span class="design-name" translate>Access Shared
                     Playbooks</span></span>

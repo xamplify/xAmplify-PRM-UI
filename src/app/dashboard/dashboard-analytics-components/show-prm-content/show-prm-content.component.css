@@ -82,7 +82,7 @@ border-bottom: unset!important;
  .asset-row {
       display: flex;
       flex-wrap: wrap;
-      margin: -10px;
+      margin: 0px!important;
     }
 
     .asset-col {
@@ -132,7 +132,7 @@ border-bottom: unset!important;
     }
 
     .asset-description {
-      font-size: 15px;
+      font-size: 14px;
       color: #444;
       margin-top: 5px;
     }
