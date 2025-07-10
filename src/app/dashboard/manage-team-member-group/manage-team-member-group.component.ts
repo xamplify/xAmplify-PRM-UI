@@ -389,10 +389,27 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     }
 
   }
-  
 
   private resetSelectedSSOGroupId() {
     this.isDefaultSSOGroupIconClicked = false;
     this.selectedGroupId = 0;
   }
+
+  /*********Copy The Link/Iframe Link */
+  copySignUpUrl(inputElement: any) {
+    $(".success").hide();
+    $('#copied-signup-url').hide();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copied-signup-url').show(500);
+    $('#tick-mark').css('display', 'inline-block');
+
+    // Hide after 10 seconds
+    setTimeout(function () {
+      $('#copied-signup-url').fadeOut(400);
+      $('#tick-mark').hide();
+    }, 10000);
+  }
+
 }

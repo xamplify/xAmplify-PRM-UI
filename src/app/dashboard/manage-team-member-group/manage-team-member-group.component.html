@@ -80,6 +80,17 @@
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
+      <!------ XNFR-1051 ----->
+      <div class="form-group" *ngIf="groupDto?.signUpUrl">
+        <label class="control-label" translate>SignUp URL</label>
+        <div class="d-flex">
+          <input type="text" [value]="groupDto?.signUpUrl" class="form-control" readonly #signUpUrlInput />
+          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">Copy Url</a>
+        </div>
+        <span class="success" id="copied-signup-url" style="display: none;">
+          <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+        </span>
+        </div>
       <!--XNFR-883-->
       <div class="table-responsive" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
         <table class='table tgrid table-hover full-width' aria-describedby="">
