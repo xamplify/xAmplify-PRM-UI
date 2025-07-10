@@ -2701,7 +2701,7 @@ table.nl-container tr:nth-child(odd) {
   color: var(---text-color) !important;
 }
 /* content count css */
-.section-column,.front-count-card {
+.section-column,.front-count-card,.asset-card{
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2709,8 +2709,11 @@ table.nl-container tr:nth-child(odd) {
     background-color: var(--page-content) !important;
     border: 1px solid var(--border-color) !important;
   }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.label.text-align-left,.asset-info i{
   color: var(---text-color) !important;
+}
+.asset-info{
+  border-right: 1px solid var(--border-color) !important;
 }
 a.action-button{
   background-color: var(--btn-primary-bg-color) !important;

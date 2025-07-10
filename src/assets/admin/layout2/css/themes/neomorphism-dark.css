@@ -4684,12 +4684,12 @@ border-top: 1px solid #191b1e !important;
   color: #ffffff !important;
 }
 /* content count css */
-.section-column,.front-count-card,.stat-card {
+.section-column,.front-count-card,.stat-card,.asset-card {
     background: #2c2f33 !important;
     box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
     border: 0px solid #2f4857 !important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.label.text-align-left,.asset-info i{
   color:#fff !important;
 }
 .section-column:hover{

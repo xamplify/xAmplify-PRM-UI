@@ -4682,7 +4682,7 @@ input:checked + .toggle-slider {
   color: #333 !important;
 }
 /* content count css */
-.section-column,.front-count-card,.stat-card {
+.section-column,.front-count-card,.stat-card,.asset-card{
  border: 1px solid #e0e6ed;
  background: #f0f5fa !important;
 box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;

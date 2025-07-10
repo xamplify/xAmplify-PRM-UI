@@ -2849,7 +2849,7 @@ markdown pre,.aligin-para{
   color: #ffffff !important;
 }
 /* content count css */
-.section-column,.front-count-card {
+.section-column,.front-count-card,.asset-card {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
@@ -2857,7 +2857,7 @@ markdown pre,.aligin-para{
   background-color: #22313a!important;
   border: 1px solid #2f4857 !important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.label.text-align-left,.asset-info i{
   color:#fff !important;
 }
 .oliveIcon {

@@ -2,9 +2,9 @@
   background: #ffffff;
   border: 1px solid #ddd;
   border-radius:8px;
-  padding: 10px 15px;
+  padding: 12px 15px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(198px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
 }
 
@@ -16,7 +16,7 @@
   border-right: 1.4px solid #e0e6ed;
 }
 .asset-info:last-child {
-  border-right: none;
+  border-right: none!important;
   padding-right: 0;
 }
 .asset-info i {
@@ -30,7 +30,7 @@
   overflow: hidden;
 }
 
-.label {
+.label.text-align-left {
   font-size: 14px;
   color: #000;
   font-weight: 600;
