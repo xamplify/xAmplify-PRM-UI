@@ -1,4 +1,11 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div *ngIf="pptLoader" class="ppt-mask">
+  <div class="ppt-badge">
+    <span class="msag">Generating&nbsp;PPT</span>
+    <!-- ring spinner -->
+    <span class="ring"></span>
+  </div>
+</div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
@@ -265,6 +272,7 @@
                         (click)="createAsset(markdownComponent)">Design Pdf</button>
                       <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
                         class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
+                        <button class="share-btn" (click)="onpptFile(markdownComponent)">Design PPT</button>
                     </div>
                   </div>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>

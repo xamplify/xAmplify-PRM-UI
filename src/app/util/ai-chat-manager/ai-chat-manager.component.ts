@@ -109,6 +109,7 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  pptLoader: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -1360,6 +1361,23 @@ export class AiChatManagerComponent implements OnInit {
       }, () => {
         
       });
+  }
+
+  onpptFile(el: HTMLElement) {
+    this.pptLoader = true;
+    const raw = el.textContent.trim();
+    if (!raw) {
+      console.warn('[pptx] No content');
+      return;
+    }
+
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = raw;
+    this.chatGptSettingsService.getOpenAiResponse(dto).subscribe({
+      next: res => this.chatGptSettingsService.generateAndDownloadPpt(res.data),
+      complete: () => this.pptLoader = false,
+      error: err => console.error('[pptx] GPT error', err)
+    });
   }
   
 }

@@ -156,6 +156,7 @@ export class ChatGptModalComponent implements OnInit {
   socialShareOption: boolean = false;
   designAccess: boolean = false;
   uploadedFolders: any[];
+  pptLoader: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -1859,6 +1860,23 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
    private checkDesignAccess() {
     this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
+  onpptFile(el: HTMLElement) {
+    this.pptLoader = true;
+    const raw = el.textContent.trim();
+    if (!raw) {
+      console.warn('[pptx] No content');
+      return;
+    }
+
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = raw;
+    this.chatGptSettingsService.getOpenAiResponse(dto).subscribe({
+      next: res => this.chatGptSettingsService.generateAndDownloadPpt(res.data),
+      complete: () => this.pptLoader = false,
+      error: err => console.error('[pptx] GPT error', err)
+    });
   }
 
 }
