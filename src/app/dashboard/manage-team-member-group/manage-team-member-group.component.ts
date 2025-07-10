@@ -395,7 +395,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     this.selectedGroupId = 0;
   }
 
-  /*********Copy The Link/Iframe Link */
+  /***** XNFR-1051 *****/
   copySignUpUrl(inputElement: any) {
     $(".success").hide();
     $('#copied-signup-url').hide();
@@ -404,12 +404,21 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     inputElement.setSelectionRange(0, 0);
     $('#copied-signup-url').show(500);
     $('#tick-mark').css('display', 'inline-block');
+  }
 
-    // Hide after 10 seconds
-    setTimeout(function () {
-      $('#copied-signup-url').fadeOut(400);
-      $('#tick-mark').hide();
-    }, 10000);
+  /***** XNFR-1051 *****/
+  copyGroupSignUpUrl(url: string) {
+    this.referenceService.goToTop();
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    let message = "Signup url copied successfully";
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 
 }

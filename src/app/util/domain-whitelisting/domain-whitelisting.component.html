@@ -85,14 +85,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let group of teamMemberGroups; let i = index">
-          <td><span data-toggle="tooltip" data-placement="top" title="{{group.name}}">{{ group.name }}</span>
-            <div class="actions-block">
-              <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="clcik to view available modules"
-                (click)="previewModules(group?.id)">
-                <i class="fa fa-eye trashIconCustomization" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-              </a>
-            </div>
+          <td>
+            <span data-toggle="tooltip" data-placement="top" title="{{group.name}}" style="cursor: pointer;"
+              (click)="previewModules(group?.id)">{{ group.name }}</span>
           </td>
           <td>
             <a class="groupUrl" [href]="" target="" aria-disabled="true" data-toggle="tooltip" data-placement="top"
