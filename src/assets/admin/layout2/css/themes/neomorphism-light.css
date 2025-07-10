@@ -4588,7 +4588,7 @@ input:checked + .toggle-slider {
   background-color: #f0f7ff !important;
 }
 .share-btn:hover{
-  color: #333;
+  color: #333!important;
 }
 .btn-pdf:focus {
   color: rgba(2, 118, 255, 1) !important;
@@ -4677,9 +4677,6 @@ input:checked + .toggle-slider {
 .nl-container tbody {
   background-color: transparent !important;
   box-shadow: none !important;
-}
-.pad div {
-  color: #333 !important;
 }
 /* content count css */
 .section-column,.front-count-card,.stat-card,.asset-card,.asset-button,.asset-button:hover {

@@ -4500,9 +4500,6 @@ markdown pre,.aligin-para{
   backdrop-filter:none!important;
   border:none!important;
 }
-.pad div {
-  color: #ffffff !important;
-}
 /* content count css */
 .section-column,.front-count-card,.stat-card,.asset-card,.asset-button,.asset-button:hover {
     background: rgb(0 0 0 / 18%) !important;
@@ -4534,4 +4531,13 @@ button.btn.btn-primary.dropdown-toggle.border_btn{
 .oliver_input textarea:active,.oliver_input textarea:focus{
       border-color:none !important;
       outline: none !important;
+}
+  /* bee template send test email view */
+  table.heading_block.block-1 h1,table.heading_block.block-1 h2,table.heading_block.block-1 h3,
+  table.heading_block.block-1 h4,table.heading_block.block-1 h5,table.heading_block.block-1 h6 {
+    color: inherit !important;
+}
+table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
+table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
+    color: inherit !important;
 }

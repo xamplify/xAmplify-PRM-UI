@@ -3341,7 +3341,7 @@ thead>tr {
   border-top: 1px solid #c3c7d2d6 !important;
 }
 table {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 .table-responsive {
   border-radius: 0px;
@@ -3482,4 +3482,8 @@ h5.oliver-heading-color{
 }
 .gridIconCustomization a.oliverhover:hover,.gridIconCustomization a.Iconhover.oliverhover:hover {
     background:none !important;
+}
+.nl-container .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
