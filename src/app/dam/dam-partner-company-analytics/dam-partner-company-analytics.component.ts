@@ -102,7 +102,6 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 
    
     this.getIsPartnerSignatureRequiredAndGetPartnerSignatureCount(this.damId);
-    this.getDamDetailsByDamId(this.damId);
   }
 
   findVideoDetails() {
@@ -507,51 +506,6 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       objElement.remove();
     }
   }
-getDamDetailsByDamId(damId: any) {
-  this.damService.getDamDetailsById(damId).subscribe(
-    response => {
-      if (response.statusCode === 200) {
-        this.damPostDto = response.data;
-      } else {
-        console.error("Error fetching DAM details:", response);
-      }
-    },
-    error => {
-      console.error("Error fetching DAM details:", error);
-    }
-  );
-}
-/*downloadDamAnalytics(){
-this.referenceService.goToTop();
-    this.referenceService.loading(this.httpRequestLoader, true);
-    const pagination = new Pagination();
-    pagination.pageIndex = 1;
-    pagination.id = this.pagination.id;
-    pagination.searchKey = this.pagination.searchKey;
-    pagination.sortcolumn = this.pagination.sortcolumn;
-    pagination.maxResults = this.pagination.totalRecords;
-    pagination.sortingOrder = this.pagination.sortingOrder;
-    this.damService.findPartnerCompanies(pagination,this.damId).subscribe((result: any) => {
-      this.referenceService.loading(this.httpRequestLoader, false);
-      let data = result.data;
-      const csvRows: string[] = [];
-      const headers = ['COMPANY NAME BY PARTNER', 'COMPANY NAME BY VENDOR', 'VIEW COUNT', 'DOWNLOAD COUNT'];
-      csvRows.push(headers.join(','));
-      data.list.forEach((item: any) => {
-        const row = [item.companyName, item.contactCompany, item.viewCount, item.downloadCount];
-        csvRows.push(row.join(','));});
-      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-      const downloadUrl = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = `dam-partner-company-analytics.csv`;
-      link.click();
-      URL.revokeObjectURL(downloadUrl);
-    }, error => {
-      this.xtremandLogger.log(error);
-      this.xtremandLogger.errorPage(error);
-    });
-}*/
   downloadDamAnalytics() {
     let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
     let userId = this.authenticationService.getUserId();
