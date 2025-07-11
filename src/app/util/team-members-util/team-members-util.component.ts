@@ -139,6 +139,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showTeamMemberName: any;
   showInviteTeamMemberModal: boolean = false;
 
+  previousTeamMemberGroupId: number = 0;
+  selectedPartnershipIds = [];
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -369,6 +371,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
+      if(this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+        this.team.selectedPartnershipIds = this.selectedPartnershipIds;
+      }
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
@@ -1041,9 +1046,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
+        this.previousTeamMemberGroupId = this.team.teamMemberGroupId;
         if (this.team.teamMemberGroupId == null) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
+          this.previousTeamMemberGroupId = 0;
         } else if (this.team.firstName.length === 0) {
           this.team.validForm = false;
         } else {
@@ -1454,6 +1461,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       } else if (module.moduleId === 18) {
         this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
       }
+    }
+    /** XNFR-914 ***/
+
+    updateSelectedPartnershipIds(event: any) {
+      this.selectedPartnershipIds = event;
     }
     if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
       this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||

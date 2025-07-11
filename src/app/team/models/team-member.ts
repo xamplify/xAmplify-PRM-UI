@@ -43,7 +43,7 @@ export class TeamMember{
 
     validFirstName=false;
     lastNameErrorMessage="";
-
+    selectedPartnershipIds = [];
 
 
 
