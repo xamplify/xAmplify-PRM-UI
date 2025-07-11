@@ -1194,7 +1194,7 @@
 
 																		<!--Ask Oliver-->
 																		<a class="oliveIcon"
-																			*ngIf="authenticationService?.isOliverActive && isContactModule"
+																			*ngIf="authenticationService?.isOliverActive && (isContactModule || isPartner)"
 																			data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contact)">
 																			<div class="oliveBackground">
 																				<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
@@ -2245,4 +2245,4 @@
 </ng-template>
 
 <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-	[isFromManageContact]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
+	[isFromManageContact]="isFromManageContact" [isFromManagePartner]="isFromManagePartner" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

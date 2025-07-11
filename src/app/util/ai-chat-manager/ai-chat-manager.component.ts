@@ -31,6 +31,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() selectedContact: any;
   @Input() callActivity: any;
   @Input() isFromManageContact: boolean;
+  @Input() isFromManagePartner: boolean;
+   @Input() isFromOnboardSection: boolean = false;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -154,7 +156,10 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromManageContact) {
       this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
-    } else {
+    } else if (this.isFromManagePartner) {
+      this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
+      this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
+    }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
@@ -941,6 +946,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
           }
         }
       }, error => {
@@ -955,7 +961,30 @@ export class AiChatManagerComponent implements OnInit {
       if (this.isFromManageContact) {
         this.uploadContactDetails();
       }
+       if (this.isFromManagePartner) {
+        this.uploadPartnerDetails();
+      }
     });
+  }
+  uploadPartnerDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   getFileIcon(): string {

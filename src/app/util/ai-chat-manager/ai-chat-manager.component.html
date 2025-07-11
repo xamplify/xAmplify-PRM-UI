@@ -3,7 +3,7 @@
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
   [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
-<div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
+<div [ngClass]="isOliverAiFromdam || (isFromManagePartner && !isFromOnboardSection) ? '' : 'page-content'">
   <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
   <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
   <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
@@ -21,7 +21,7 @@
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact"  class="file-info">
+          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact && !isFromManagePartner"  class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div *ngIf="isFromContactJourney || isFromManageContact" class="file-info">
+          <div *ngIf="isFromContactJourney || isFromManageContact || isFromManagePartner" class="file-info">
             <div class="file-icon" *ngIf="selectedContact != undefined && callActivity == undefined">
               <div class="d-flex document_flex">
                 <div *ngIf="ngxLoading" class="fileloader mr10"></div>
@@ -115,7 +115,7 @@
               <span class="aligin-para" *ngIf="callActivity != undefined">
                 <p *ngIf="callActivity?.mobileNumber"><b>Mobile Number:</b> {{callActivity.mobileNumber}}</p>
               </span>
-              <span class="Track-countbg" *ngIf="selectedContact != undefined && callActivity == undefined && !isFromManageContact">
+              <span class="Track-countbg" *ngIf="selectedContact != undefined && callActivity == undefined && !isFromManageContact && !isFromManagePartner">
                 <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
                 </p>
                 <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
@@ -137,17 +137,21 @@
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput style="display: none;" />
             </button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Analyze the files.')">Analyze the files</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="btn btn-pdf" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Analyze the files.')">Analyze the files</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
               Insights</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
+
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of ' + selectedContact?.emailId)"> Give me the details of...</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the partner</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -294,7 +298,7 @@
             <div class="panel-group" id="accordion">
               <div class="panel panel-default accordion_card">
                 <div class="panel-heading accordion_card">
-                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact">
+                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner">
                     <a *ngIf="!isCollapsed && !isFromFolderView" (click)="toggleAction()"><span>
                         Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
@@ -362,12 +366,12 @@
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                   </h4>
-                  <h4 class="panel-title" *ngIf="isFromContactJourney || isFromManageContact">
+                  <h4 class="panel-title" *ngIf="isFromContactJourney || isFromManageContact || isFromManagePartner">
                     <a *ngIf="!isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div>
                         <span *ngIf="selectedContact.contactName">
                           Contact Name: {{selectedContact.contactName}} | </span><span>
-                          Email Id: {{selectedContact.emailId}} </span><span *ngIf="!isFromManageContact"> | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
+                          Email Id: {{selectedContact.emailId}} </span><span *ngIf="!isFromManageContact && !isFromManagePartner"> | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
                       </div>
                       <i class="fa fa-chevron-up toggle-icon"></i>
                     </a>
@@ -409,7 +413,7 @@
                           <span class="aligin-para">
                             <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
                           </span>
-                          <span class="Track-countbg" *ngIf="!isFromManageContact">
+                          <span class="Track-countbg" *ngIf="!isFromManageContact && !isFromManagePartner">
                             <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
                             </p>
                             <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
@@ -466,17 +470,21 @@
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
             </button> -->
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact" class="action-btn" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
               Insights</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of ' + selectedContact?.emailId)"> Give me the details of... </button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
+              
               </div>
               <div *ngIf="isFromFolderView">
                 <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
