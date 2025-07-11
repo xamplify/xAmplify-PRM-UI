@@ -141,6 +141,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   previousTeamMemberGroupId: number = 0;
   selectedPartnershipIds = [];
+  teamMemberPartnerCompanys: any[] = [];
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -736,7 +737,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.team.userId = this.loggedInUserId;
       if (this.editTeamMember) {
-        this.updateTeamMember();
+        if (this.previousTeamMemberGroupId != this.team.teamMemberGroupId
+          && this.teamMemberPartnerCompanys && this.teamMemberPartnerCompanys.length > 0) {
+          this.confirmUpdateAlert(this.teamMemberPartnerCompanys);
+        } else {
+          this.updateTeamMember();
+        }
       } else {
         this.addTeamMember();
       }
@@ -1059,10 +1065,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       }, error => {
         this.referenceService.loading(this.httpRequestLoader, false);
         this.referenceService.showSweetAlertServerErrorMessage();
-      }, () => {
-        this.findAllTeamMemberGroupIdsAndNames();
+    }, () => {
+      this.findAllTeamMemberGroupIdsAndNames();
+      if (this.team.teamMemberGroupId > 0) {
+        this.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(this.team);
       }
-    );
+    });
   }
 
 
@@ -1463,10 +1471,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       }
     }
     /** XNFR-914 ***/
-
-    updateSelectedPartnershipIds(event: any) {
-      this.selectedPartnershipIds = event;
-    }
     if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
       this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
       this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
@@ -1475,4 +1479,38 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   /** XNFR-914 ***/
 
+  updateSelectedPartnershipIds(event: any) {
+      this.selectedPartnershipIds = event;
+    }
+
+      findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
+    this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.teamMemberPartnerCompanys = response.data;}
+      },
+      (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+      }
+    );
+  }
+
+  confirmUpdateAlert(teamMemberPartnerCompanys: any[]){
+    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join(', ');
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "'"+this.team.emailId+"' will be moved to '" + this.team.teamMemberGroupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, Move it!'
+  
+      }).then(function() {
+        self.updateTeamMember();
+      }, function(dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    }
 }
