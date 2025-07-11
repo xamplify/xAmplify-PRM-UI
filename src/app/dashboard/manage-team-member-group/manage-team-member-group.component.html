@@ -69,7 +69,7 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <!-- <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span> -->
+      <span *ngIf="groupDto?.previewGroup && authenticationService?.module?.isOnlyPartner" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required">*</span>
@@ -171,7 +171,7 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
-      <!-- <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span> -->
+      <span class="ribbon1" *ngIf="group?.defaultGroup && authenticationService?.module?.isOnlyPartner"><span translate>Default Group</span></span>
       <!--XNFR-883-->
       <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
       <div class="table-responsive">

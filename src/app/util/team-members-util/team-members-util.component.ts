@@ -1463,10 +1463,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       }
     }
     /** XNFR-914 ***/
-
-    updateSelectedPartnershipIds(event: any) {
-      this.selectedPartnershipIds = event;
-    }
     if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
       this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
       this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
@@ -1474,5 +1470,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
   }
   /** XNFR-914 ***/
+
+  updateSelectedPartnershipIds(event: any) {
+    this.selectedPartnershipIds = event;
+  }
 
 }
