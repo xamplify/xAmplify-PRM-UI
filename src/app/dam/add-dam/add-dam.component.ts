@@ -1052,4 +1052,8 @@ nagivatetoRouter(urlType :any){
 			this.referenceService.goToRouter(this.referenceService.approvalModuleRouter);
 		}
 		}
+
+  closePopup() {
+    this.notifyEmit.emit();
+  }
 }
