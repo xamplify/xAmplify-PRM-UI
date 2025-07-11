@@ -455,12 +455,13 @@
                     <div class="col-sm-8">
                       <select
                         title="Team Member Group cannot be changed.One or more {{authenticationService?.partnerModule?.customName}} part of the group"
-                        disabled class="form-control" *ngIf="team?.partnersCount>0">
+                        disabled class="form-control" *ngIf=" false && team?.partnersCount>0">
                         <option>
                           {{team?.teamMemberGroupName}} 
                         </option>
                       </select>
-                      <select *ngIf="team?.partnersCount==0" class="form-control"
+                      <!-- *ngIf="team?.partnersCount==0" -->
+                      <select  class="form-control"
                         (ngModelChange)="selectTeamMemberGroupId($event);" [(ngModel)]="team.teamMemberGroupId"
                         [ngModelOptions]="{standalone: true}">
                         <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
@@ -477,14 +478,14 @@
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                         </strong>
                       </span>
-                      <span *ngIf="team?.partnersCount>0" class="info-text-color">
+                      <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
                       </span>
                     </div>
                   </div>
                 </div>
-
+                <app-select-partners-and-share-leads *ngIf=" team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 && previousTeamMemberGroupId != team.teamMemberGroupId" [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
                 <!---Enable As An Admin--->
                 <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
                   <div class="form-group">
