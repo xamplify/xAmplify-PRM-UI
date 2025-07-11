@@ -1383,6 +1383,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
           }
         }
       }, error => {
