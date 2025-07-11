@@ -155,11 +155,16 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
+                                        <!-- XNFR-1001  -->
                                         <td class="hidden-xs text-center" style="width: 10%;">
-                                            <img class="img-track-list" [src]="learningTrack.featuredImage"
+                                            <img class="img-track-list" *ngIf="!referenceService.isCloudFront"  [src]="learningTrack.featuredImage"
+                                                onerror="this.src='assets/images/content/image.png';"
+                                                alt="{{learningTrack?.title}}">
+                                                <img class="img-track-list" *ngIf="referenceService.isCloudFront" [src]="learningTrack.cdnFeaturedImage"
                                                 onerror="this.src='assets/images/content/image.png';"
                                                 alt="{{learningTrack?.title}}">
                                         </td>
+                                        <!-- XNFR-1001  -->
                                         <td>
                                             <h4 class="mt5 mb5 moreipsis" data-toggle="tooltip" data-placement="top"
                                                 title="{{learningTrack.title}}">
@@ -318,9 +323,13 @@
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings"
                         *ngFor="let learningTrack of pagination.pagedItems ;let i =index"
                         id="LearningTrackListDiv_{{learningTrack.id}}">
+                        <!-- XNFR-1001  -->
                         <div class="grid-box" id="box-dark-defalut-clr" style="min-height: 345px;">
-                            <img class="img-grid-track" [src]="learningTrack.featuredImage"
+                            <img class="img-grid-track" *ngIf="!referenceService.isCloudFront" [src]="learningTrack.featuredImage"
                                 onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
+                                <img class="img-grid-track" *ngIf="referenceService.isCloudFront"  [src]="learningTrack.cdnFeaturedImage"
+                                onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
+                                <!-- XNFR-1001  -->
                             <h4 class="assest-name GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
                                 data-placement="bottom" title="{{learningTrack.title}}"
                                 style="margin-bottom: 0px;padding: 0;margin-top: 10px;">

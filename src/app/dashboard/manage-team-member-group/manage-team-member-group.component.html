@@ -80,6 +80,17 @@
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
+      <!------ XNFR-1051 ----->
+      <div class="form-group" *ngIf="groupDto?.signUpUrl && !isAdd">
+        <label class="control-label" translate>SignUp URL</label>
+        <div class="d-flex">
+          <input type="text" [value]="groupDto?.signUpUrl" class="form-control" readonly #signUpUrlInput />
+          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">Copy Url</a>
+        </div>
+        <span class="success" id="copied-signup-url" style="display: none;">
+          <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+        </span>
+        </div>
       <!--XNFR-883-->
       <div class="table-responsive" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -184,6 +195,11 @@
         </table>
       </div>
       <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Copy URL" 
+          (click)="copyGroupSignUpUrl(group.signUpUrl)">
+          <i class="fa fa-link" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
         <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Save As"
           (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
@@ -204,9 +220,11 @@
          (click)="confirmAlertForDefaultSSOGroup(group)">
          <i class="fa fa-users" aria-hidden="true"></i>
          <div class="clickicons"></div>
-       </a>
-        <a class="delete custom-icon" data-toggle="tooltip" data-placement="top" title="Delete"
-          (click)="confirmAlert(group)">
+        </a>
+        <a class="delete custom-icon" data-toggle="tooltip" data-placement="top"
+          [title]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'Default group cannot be deleted':'Delete'"
+          [className]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'delete inactive custom-icon':'delete custom-icon'"
+          (click)="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? '' : confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           <div class="del-icon"></div>
         </a>

@@ -107,6 +107,7 @@ export class AccessAccountComponent implements OnInit {
     isTeamMemberSignUpPage = false;
     isCompanyAutoFilled: boolean = false;
     isCompanyFieldLoading: boolean = false;
+    teamMemberGroupAlias: string = '';
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger,
@@ -151,6 +152,7 @@ export class AccessAccountComponent implements OnInit {
     }
 
     private loadPageStyles() {
+        this.teamMemberGroupAlias = this.route.snapshot.params['alias']; 
         this.companyProfileName = this.route.snapshot.params['companyProfileName'];
         this.findCompanyDetails();
         if (this.vanityURLService.isVanityURLEnabled()) {
@@ -256,6 +258,7 @@ export class AccessAccountComponent implements OnInit {
             }else{
                 data['emailId'] = this.signUpUser.emailId;
                 data['companyProfileName'] = this.companyProfileName;
+                data['groupAlias'] = this.teamMemberGroupAlias;
                 this.signUpAsTeamMember(data);
             }
         } else {
@@ -365,11 +368,16 @@ export class AccessAccountComponent implements OnInit {
            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
            this.router.navigate(['./login']);
         },error=>{
+            let statusCode = JSON.parse(error['status']);
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
                 this.formErrors.emailId = message;
                 $("#teamMember-signup-emailId").removeClass('ng-valid');
                 $("#teamMember-signup-emailId").addClass('ng-invalid');
+            }else if(statusCode === 403){
+                let errorResponse = JSON.parse(error['_body']);
+                message = errorResponse['message'];
+                this.customResponse = new CustomResponse('ERROR',message,true);
             }else{
                 this.customResponse = new CustomResponse('ERROR',message,true);
             }

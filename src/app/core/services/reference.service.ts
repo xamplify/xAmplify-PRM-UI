@@ -182,6 +182,7 @@ export class ReferenceService {
   asset:any;
   OliverViewType = "";
   OliverCategoryId = 0;
+  isCloudFront = true; //XNFR-1001
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

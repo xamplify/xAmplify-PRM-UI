@@ -301,3 +301,35 @@ span.gearicon-font-cu {
 .h-13{
   height: 13px;
 }
+.dropdown-menu-up {
+  top: auto !important;
+  bottom: 100% !important;
+  margin-bottom: 10px;
+}
+
+.gearDropdownMenu {
+  cursor: pointer;
+}
+.responsive-scrool::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.dropdown-menu-up:before {
+  content: none !important;
+  display: none !important;
+}
+.dropdown-menu-up:after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 7px!important; 
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #e0e0e0;
+  z-index: 1000;
+  top: unset!important;
+  border-bottom: unset !important;
+}
