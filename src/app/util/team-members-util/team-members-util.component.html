@@ -1075,54 +1075,10 @@
       </button>
     </div>
   </ng-template>
-  
-  <div class="modal fade right" id="invite_team_member_modal" role="dialog" aria-labelledby="myModalLabel"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <a class="close-circle" (click)="closeInviteTeamMemberModal()" data-dismiss="modal">
-            <i class="fa fa-times"></i></a>
-          <h4 class="modal-title left" id="myModalLabel"> {{ tableHeader }} </h4>
-        </div>
-        <div class="modal-body">
-          <app-modal-popup-loader *ngIf="inviteTeamMemberLoading"></app-modal-popup-loader>
-          <app-response-message [customResponse]="inviteTeamMemberResponse" *ngIf="inviteTeamMemberResponse?.isVisible"
-            [showCloseIcon]="!isValidationMessage"></app-response-message>
-          <div *ngIf="!isValidationMessage && !inviteTeamMemberLoading">
-            <div class="form-group">
-              <label for="emailInput">To <span class="required">*</span></label>
-              <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
-                [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
-                [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
-                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
-                [onTextChangeDebounce]="40" required>
-              </tag-input>
-            </div>
-            <div class="form-group">
-              <label>Email subject <span class="required">*</span></label>
-              <input type="text" [(ngModel)]="vendorInvitation.subject" [ngModelOptions]="{standalone: true}"
-                placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" disabled />
-            </div>
-            <div class="form-group">
-              <label>Message <span class="required">*</span></label>
-            </div>
-            <div class="form-group" style="cursor: not-allowed;">
-              <span [innerHTML]="inviteTeamMemberHtmlBody" class="plspx" style="pointer-events: none;"></span>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer" style="border: none">
-          <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInviteTeamMemberModal()"
-            data-dismiss="modal">Cancel</button>
-          <button type="submit" class="button bgcolor-unset"
-            [disabled]="emailIds.length == 0 || !vendorInvitation.subject || isValidationMessage" (click)="sendTeamMemberInviteEmail()">
-            <span class="btn Btn-Green transition txt_pd-top3">Send
-              <i aria-hidden="true" class="fa fa-send"></i></span></button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <!----- XNFR-805 ----->
+  <app-invite-team-member-modal-popup *ngIf="showInviteTeamMemberModal"
+    (notifyInviteTeamMember)="hideInviteTeamMemberModal($event)"></app-invite-team-member-modal-popup> 
 
   <ng-template #defaultSSOGroupTextTemplate let-teamMemberGroup="teamMemberGroup">
     <span *ngIf="teamMemberGroup?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled">({{properties?.defaultSSOGroup}})</span>

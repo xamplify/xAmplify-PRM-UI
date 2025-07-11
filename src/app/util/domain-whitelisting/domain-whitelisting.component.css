@@ -58,3 +58,7 @@
     bottom: 1px;
     width: 100%;
   }
+.groupUrl {
+  cursor: not-allowed;
+  color: black;
+}

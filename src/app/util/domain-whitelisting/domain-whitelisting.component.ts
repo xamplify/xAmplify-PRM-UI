@@ -68,6 +68,11 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   openEditTemplateModalPopup: boolean = false;
   attachments: File[] = [];
   isEditTemplateClicked: boolean;
+  teamMemberGroups: any;
+  copiedIndex: number = -1;
+  showModulesPopup: boolean = false;
+  teamMemberGroupId: number = 0;
+
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -150,7 +155,11 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   findTeamMemberOrPartnerSignUpUrl() {
     this.dashboardService.findCompanySignUpUrl(this.selectedTab).subscribe(
       response => {
-        this.signUpUrl = response.data;
+        if (this.isTeamMemberDomains || this.isTeamMemberDomainsTabSelected) {
+          this.teamMemberGroups = response.data;
+        } else {
+          this.signUpUrl = response.data;
+        }
       }, error => {
         this.xtremandLogger.error(error);
       });
@@ -512,8 +521,34 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.openEditTemplateModalPopup = true
   }
 
-    closeEditTemplateModalPopup() {
-      this.openEditTemplateModalPopup = false;
-      this.addWelcomeMailModalOpen();
+  closeEditTemplateModalPopup() {
+    this.openEditTemplateModalPopup = false;
+    this.addWelcomeMailModalOpen();
   }
+
+  /***** XNFR-1051 *****/
+  copyGroupSignUpUrl(url: string, idx: number) {
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    this.copiedIndex = idx;
+    setTimeout(() => this.copiedIndex = -1, 5000);
+  }
+
+  /***** XNFR-1051 *****/
+  previewModules(teamMemberGroupId: number) {
+    this.showModulesPopup = true;
+    this.teamMemberGroupId = teamMemberGroupId;
+  }
+
+  /***** XNFR-1051 *****/
+  hideModulesPreviewPopUp() {
+    this.showModulesPopup = false;
+  }
+
 }

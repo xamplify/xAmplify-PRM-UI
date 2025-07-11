@@ -69,17 +69,28 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
+      <!-- <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span> -->
       <div class="form-group">
         <label class="control-label" translate>Name</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
-        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+        <span class="required">*</span>
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
-        <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" />
+        <!-- <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+          [ngModelOptions]="{standalone: true}" class="form-control" /> -->
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
+      <!------ XNFR-1051 ----->
+      <div class="form-group" *ngIf="groupDto?.signUpUrl && !isAdd">
+        <label class="control-label" translate>SignUp URL</label>
+        <div class="d-flex">
+          <input type="text" [value]="groupDto?.signUpUrl" class="form-control" readonly #signUpUrlInput />
+          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">Copy Url</a>
+        </div>
+        <span class="success" id="copied-signup-url" style="display: none;">
+          <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+        </span>
+        </div>
       <!--XNFR-883-->
       <div class="table-responsive" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -88,7 +99,7 @@
               Default SSO Group <i aria-hidden="true" class="fa fa-info-circle" title="{{properties?.defaultSSOTeamMemberGroupToolTip}}"></i>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -96,7 +107,7 @@
 
       <div class="form-group">
         <label class="control-label" translate>Select Modules</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+        <span class="required">*</span>
       </div>
       <div class="table-responsive">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -107,13 +118,13 @@
               <br>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
       </div>
       <div id="right">
-        <button *ngIf="!groupDto?.previewGroup" type="button" [disabled]="!groupDto.isValidForm"
+        <button type="button" [disabled]="!groupDto.isValidForm"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
             class="btn btn-primary transition txt_pd-top3">{{groupSubmitButtonText}}</span></button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManageOrPreview()"
@@ -160,7 +171,7 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
-      <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
+      <!-- <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span> -->
       <!--XNFR-883-->
       <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
       <div class="table-responsive">
@@ -184,6 +195,11 @@
         </table>
       </div>
       <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Copy URL" 
+          (click)="copyGroupSignUpUrl(group.signUpUrl)">
+          <i class="fa fa-link" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
         <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Save As"
           (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
@@ -194,9 +210,7 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-        <a data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'"
-          [className]="group?.defaultGroup ? 'inactive custom-icon':'Iconhover custom-icon'"
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
           (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>
@@ -206,11 +220,11 @@
          (click)="confirmAlertForDefaultSSOGroup(group)">
          <i class="fa fa-users" aria-hidden="true"></i>
          <div class="clickicons"></div>
-       </a>
-        <a class="delete" data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'"
-          [className]="group?.defaultGroup ? 'delete inactive custom-icon':'delete custom-icon'"
-          (click)="confirmAlert(group)">
+        </a>
+        <a class="delete custom-icon" data-toggle="tooltip" data-placement="top"
+          [title]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'Default group cannot be deleted':'Delete'"
+          [className]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'delete inactive custom-icon':'delete custom-icon'"
+          (click)="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? '' : confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           <div class="del-icon"></div>
         </a>
