@@ -320,7 +320,7 @@
         (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-active-partners-table>
       <app-deactivated-partners-table *ngIf="isdeactivatePartnersDiv" [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv"
-        [toDateFilter]="partnertoDateFilter" (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
+        [toDateFilter]="partnertoDateFilter" (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)" (notifyActivatedPartnership)="reloadAllPartnerTiles($event)"
         (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-deactivated-partners-table>
     </ng-container>
   </div>
