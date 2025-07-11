@@ -808,6 +808,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
     self.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    self.chatGptIntegrationSettingsDto.isContact = this.authenticationService.module.isContact;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
       this.removeStyleForTextArea();
