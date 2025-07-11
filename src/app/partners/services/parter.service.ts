@@ -852,5 +852,11 @@ export class ParterService {
         const apiUrl = this.URL + 'partnership/findTeamMemberPartnerCompany/' + teamMemberGroupId + '?access_token=' + this.authenticationService.access_token
         return this.findPartnerCompainesOrGroups(apiUrl, pagination);
     }
+
+    findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(teamMemberId: number, teamMemberGroupId: number) {
+        const apiUrl = this.URL + 'partnership/findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId/' + teamMemberId + '/' + teamMemberGroupId + '?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get(apiUrl)
+            .catch(this.handleError);
+    }
 }
 
