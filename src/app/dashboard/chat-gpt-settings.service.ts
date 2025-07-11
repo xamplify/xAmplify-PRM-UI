@@ -321,7 +321,7 @@ listDefaultTemplates(userId:any){
 
    generateAndDownloadPpt(blocks: any[]): void {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.post('http://127.0.0.1:5000/generate_ppt', blocks, {
+    this.http.post('https://imageconverter.xamplify.co/generate_ppt', blocks, {
       headers: headers,
       responseType: 'blob' as 'json'
     }).subscribe(
