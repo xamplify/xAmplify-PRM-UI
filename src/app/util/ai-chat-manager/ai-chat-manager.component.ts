@@ -1359,25 +1359,39 @@ export class AiChatManagerComponent implements OnInit {
       }, error => {
         this.isPdfUploading = false;
       }, () => {
-        
+
       });
   }
 
-  onpptFile(el: HTMLElement) {
+  onPptFile(el: HTMLElement): void {
     this.pptLoader = true;
-    const raw = el.textContent.trim();
-    if (!raw) {
+    const rawText: string = (el.textContent || '').trim();
+    if (!rawText) {
       console.warn('[pptx] No content');
+      this.pptLoader = false;
       return;
     }
-
     const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = raw;
-    this.chatGptSettingsService.getOpenAiResponse(dto).subscribe({
-      next: res => this.chatGptSettingsService.generateAndDownloadPpt(res.data),
-      complete: () => this.pptLoader = false,
-      error: err => console.error('[pptx] GPT error', err)
-    });
+    dto.prompt = rawText;
+    this.chatGptSettingsService
+      .getOpenAiResponse(dto)
+      .subscribe(
+        (response: any) => {
+          const data = response && response.data;
+          if (data) {
+            this.chatGptSettingsService.generateAndDownloadPpt(data);
+          } else {
+            console.warn('[pptx] No data returned from GPT');
+          }
+        },
+        (error: any) => {
+          console.error('[pptx] GPT error:', error);
+          this.pptLoader = false;
+        },
+        () => {
+          this.pptLoader = false;
+        }
+      );
   }
   
 }
