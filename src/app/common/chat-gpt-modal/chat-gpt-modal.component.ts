@@ -158,6 +158,7 @@ export class ChatGptModalComponent implements OnInit {
   socialShareOption: boolean = false;
   designAccess: boolean = false;
   uploadedFolders: any[];
+  pptLoader: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -1383,6 +1384,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
           }
         }
       }, error => {
@@ -1870,6 +1872,37 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
    private checkDesignAccess() {
     this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
+  onPptFile(el: HTMLElement): void {
+    this.pptLoader = true;
+    const rawText: string = (el.textContent || '').trim();
+    if (!rawText) {
+      console.warn('[pptx] No content');
+      this.pptLoader = false;
+      return;
+    }
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = rawText;
+    this.chatGptSettingsService
+      .getOpenAiResponse(dto)
+      .subscribe(
+        (response: any) => {
+          const data = response && response.data;
+          if (data) {
+            this.chatGptSettingsService.generateAndDownloadPpt(data);
+          } else {
+            console.warn('[pptx] No data returned from GPT');
+          }
+        },
+        (error: any) => {
+          console.error('[pptx] GPT error:', error);
+          this.pptLoader = false;
+        },
+        () => {
+          this.pptLoader = false;
+        }
+      );
   }
 
 }
