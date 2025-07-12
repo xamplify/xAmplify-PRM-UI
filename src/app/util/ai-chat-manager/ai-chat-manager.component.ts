@@ -136,7 +136,7 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
       // this.getThreadId(this.chatGptIntegrationSettingsDto);
-    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact) {
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact && !this.isFromManagePartner) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
@@ -354,7 +354,7 @@ export class AiChatManagerComponent implements OnInit {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
-      } else if (this.isFromContactJourney || this.isFromManageContact) {
+      } else if (this.isFromContactJourney || this.isFromManageContact || this.isFromManagePartner) {
         this.selectedContact = undefined;
         this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
@@ -580,7 +580,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact) {
+    if (this.isFromManageContact || this.isFromManagePartner) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -955,7 +955,7 @@ export class AiChatManagerComponent implements OnInit {
       if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
         this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
-      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact) {
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact && !this.isFromManagePartner) {
         this.getChatHistory();
       }
       if (this.isFromManageContact) {
