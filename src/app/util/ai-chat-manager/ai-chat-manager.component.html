@@ -149,9 +149,9 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
 
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of ' + selectedContact?.emailId)"> Give me the details of...</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')"> Give me the details of partner</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -481,7 +481,7 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of ' + selectedContact?.emailId)"> Give me the details of... </button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">Give me the details of partner</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
               
