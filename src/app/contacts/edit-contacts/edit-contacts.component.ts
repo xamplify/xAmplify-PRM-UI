@@ -207,6 +207,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isCheckTC = true;
 	contactOption = "";
 	showGDPR: boolean;
+	isFromManageContact: boolean = false;
+	isFromManagePartner: boolean = false;
 
 	// XNFR-994
 	@Input() selectedType: string;
@@ -3983,6 +3985,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	askOliver(contact: any) {
+		if (this.module == 'contacts') {
+			this.isFromManageContact = true;
+		} else {
+			this.isFromManagePartner = true;
+		}
 		this.contact = contact;
 		this.contact.contactName = this.setContactNameToDisplay(contact);;
 		this.showAskOliverModalPopup = true;

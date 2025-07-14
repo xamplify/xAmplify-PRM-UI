@@ -84,6 +84,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly GLOBALCHAT = "GLOBALCHAT";
   private readonly CONTACTAGENT = "CONTACTAGENT";
+  private readonly PARTNERAGENT = "PARTNERAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -802,6 +803,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.GLOBALCHAT;
     } else if (this.activeTab == 'contactagent') {
       this.chatGptIntegrationSettingsDto.agentType = this.CONTACTAGENT;
+    }else if (this.activeTab == 'partneragent') {
+      this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -882,6 +885,7 @@ export class ChatGptModalComponent implements OnInit {
     const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
     const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
     const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
+     const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
     if (textarea) {
       textarea.removeAttribute('style');
     }
@@ -897,7 +901,10 @@ export class ChatGptModalComponent implements OnInit {
     if (textarea4) {
       textarea4.removeAttribute('style');
     }
-    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4;
+    if (textarea5) {
+      textarea5.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5;
     if (textArea) {
         const chat = document.querySelector('.newChatlabel') as HTMLElement;
         const box = textArea.closest('.oliver_input') as HTMLElement;
@@ -995,7 +1002,7 @@ export class ChatGptModalComponent implements OnInit {
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
       || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
-      || (history.oliverChatHistoryType == this.CONTACTAGENT)) {
+      || (history.oliverChatHistoryType == this.CONTACTAGENT) || (history.oliverChatHistoryType == this.PARTNERAGENT)) {
       this.isAgentSubmenuOpen = true;
     }
     this.getChatHistory(history.oliverChatHistoryType);
@@ -1015,12 +1022,14 @@ export class ChatGptModalComponent implements OnInit {
         return "globalchat";
       case this.CONTACTAGENT:
         return "contactagent";
+      case this.PARTNERAGENT:
+        return "partneragent";
     }
   }
 
-  getChatHistory(oliverChatHistoryType:any) {
+  getChatHistory(oliverChatHistoryType: any) {
     let oliverIntegrationType = this.chatGptIntegrationSettingsDto.oliverIntegrationType;
-    if (oliverChatHistoryType == this.BRAINSTORMAGENT || oliverChatHistoryType == this.PARAPHRASERAGENT ||  oliverChatHistoryType == this.SPARKWRITERAGENT) {
+    if (oliverChatHistoryType == this.BRAINSTORMAGENT || oliverChatHistoryType == this.PARAPHRASERAGENT || oliverChatHistoryType == this.SPARKWRITERAGENT) {
       oliverIntegrationType = "openai";
     }
     this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId, oliverIntegrationType, this.chatGptIntegrationSettingsDto.accessToken).subscribe(
@@ -1039,7 +1048,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if (this.activeTab == 'contactagent' && this.checkKeywords(message.content)) {
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1385,6 +1394,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
           }
         }
@@ -1647,6 +1657,24 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       date_range: j && j.date_range ? j.date_range : '',
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
+
+      owner_details: {
+        owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
+        owner_country: j && j.owner_country ? j.owner_country : '',
+        owner_city: j && j.owner_city ? j.owner_city : '',
+        owner_address: j && j.owner_address ? j.owner_address : '',
+        owner_contact_company: j && j.owner_contact_company ? j.owner_contact_company : '',
+        owner_job_title: j && j.owner_job_title ? j.owner_job_title : '',
+        owner_email_id: j && j.owner_email_id ? j.owner_email_id : '',
+        owner_mobile_number: j && j.owner_mobile_number ? j.owner_mobile_number : '',
+        owner_state: j && j.owner_state ? j.owner_state : '',
+        owner_zip: j && j.owner_zip ? j.owner_zip : '',
+        owner_vertical: j && j.owner_vertical ? j.owner_vertical : '',
+        owner_region: j && j.owner_region ? j.owner_region : '',
+        owner_company_domain: j && j.owner_company_domain ? j.owner_company_domain : '',
+        owner_website: j && j.owner_website ? j.owner_website : '',
+        owner_country_code: j && j.owner_country_code ? j.owner_country_code : ''
+      },
 
       /* ---------- KPI overview ---------- */
       kpi_overview: {

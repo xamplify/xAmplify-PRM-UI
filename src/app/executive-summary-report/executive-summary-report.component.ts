@@ -40,7 +40,9 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         logoColor2: '#3b82f6',
         logoColor3: '#60a5fa',
         footertextColor: '#334155',
-        headertextColor: '#cbd5e1'
+        headertextColor: '#cbd5e1',
+        headerHeadingTextColor:    '#FFFFFF',
+        headerSubHeadingTextColor: '#FFFFFFBF'
     };
 
   private chartColors: string[] = [
@@ -148,6 +150,22 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
             padding: 25px 20px;
         }
 
+        .owner-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 25px 20px;
+        }
+
+        .owner-summary:not(:has(li)) {
+            display: none;
+        }
+
         .summary-item {
             text-align: center;
         }
@@ -170,7 +188,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         }
 
         .green {
-            color: #34d399;
+            color: {{theme.headerHeadingTextColor}}            /* #34d399; */
         }
 
         .yellow {
@@ -188,7 +206,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             margin-bottom: 30px;
-margin-right: 30px;
+            margin-right: 30px;
             margin-left: 30px;
         }
 
@@ -240,8 +258,8 @@ margin-right: 30px;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
-  margin-right: 30px;
-           margin-left: 30px
+            margin-right: 30px;
+            margin-left: 30px;
         }
 
         .card {
@@ -737,9 +755,11 @@ margin-right: 30px;
                 padding: 20px;
             }
 
-            .summary-item {
-                flex-basis: 48%;
-                /* Two items per row */
+            .owner-summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
             }
 
             .white-card {
@@ -833,6 +853,13 @@ margin-right: 30px;
             }
 
             .summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .owner-summary  {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 flex-direction: column;
                 padding: 15px;
@@ -1095,7 +1122,47 @@ margin-right: 30px;
                 margin-right: 0px !important; 
         }
 
-  </style>
+    .owner-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px 40px;
+      padding: 0;
+    }
+
+    .owner-list .full {
+      grid-column: 1 / -1;
+    }
+
+    .owner-list .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: {{theme.headerSubHeadingTextColor}};
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 2px;
+    }
+
+    .owner-list .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: {{theme.headertextColor}};
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    </style> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.owner-summary').forEach(function (block) {
+                if (!block.querySelector('li')) {
+                    block.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -1117,6 +1184,30 @@ margin-right: 30px;
           <span>{{ report.report_owner }}</span>
         </div>
       </div>
+
+        {{#report}}
+            {{#owner_details}}
+                <div class="owner-summary" style="margin-bottom: 15px;">
+                <ul class="owner-list">
+                {{#owner_full_name}}      <li><span class="label">Name</span>            <span class="value">{{.}}</span></li>{{/owner_full_name}}
+                {{#owner_job_title}}      <li><span class="label">Job&nbsp;Title</span>   <span class="value">{{.}}</span></li>{{/owner_job_title}}
+                {{#owner_contact_company}}<li><span class="label">Company</span>          <span class="value">{{.}}</span></li>{{/owner_contact_company}}
+                {{#owner_email_id}}       <li><span class="label">Email</span>            <span class="value">{{.}}</span></li>{{/owner_email_id}}
+                {{#owner_mobile_number}}  <li><span class="label">Mobile</span>           <span class="value">{{.}}</span></li>{{/owner_mobile_number}}
+                {{#owner_address}}        <li class="full"><span class="label">Address</span>  <span class="value">{{.}}</span></li>{{/owner_address}}
+                {{#owner_city}}           <li><span class="label">City</span>             <span class="value">{{.}}</span></li>{{/owner_city}}
+                {{#owner_state}}          <li><span class="label">State</span>            <span class="value">{{.}}</span></li>{{/owner_state}}
+                {{#owner_zip}}            <li><span class="label">ZIP</span>              <span class="value">{{.}}</span></li>{{/owner_zip}}
+                {{#owner_country}}       <li><span class="label">Country</span>          <span class="value">{{.}}</span></li>{{/owner_country}}
+                {{#owner_region}}         <li><span class="label">Region</span>           <span class="value">{{.}}</span></li>{{/owner_region}}
+                {{#owner_vertical}}       <li><span class="label">Vertical</span>         <span class="value">{{.}}</span></li>{{/owner_vertical}}
+                {{#owner_company_domain}} <li><span class="label">Domain</span>           <span class="value">{{.}}</span></li>{{/owner_company_domain}}
+                {{#owner_website}}       <li><span class="label">Website</span>          <span class="value">{{.}}</span></li>{{/owner_website}}
+                {{#owner_country_code}}   <li><span class="label">Country&nbsp;Code</span><span class="value">{{.}}</span></li>{{/owner_country_code}}
+                </ul>
+            </div>
+        {{/owner_details}}
+        {{/report}}
       <div class="summary" *ngIf="report.kpi_overview">
       {{#report.kpi_overview.items}}
         <div class="summary-item">
@@ -1386,7 +1477,9 @@ margin-right: 30px;
                     logocolor2: this.safe(apiTheme.logoColor2, this.DEFAULT_THEME.logoColor2),
                     logocolor3: this.safe(apiTheme.logoColor3, this.DEFAULT_THEME.logoColor3),
                     footertextColor: this.safe(apiTheme.footertextColor, this.DEFAULT_THEME.footertextColor),
-                    headertextColor: this.safe(apiTheme.headertextColor, this.DEFAULT_THEME.headertextColor)
+                    headertextColor: this.safe(apiTheme.headertextColor, this.DEFAULT_THEME.headertextColor),
+                    headerHeadingTextColor: this.safe(apiTheme.headerHeadingTextColor, this.DEFAULT_THEME.headerHeadingTextColor),
+                    headerSubHeadingTextColor: this.safe(apiTheme.headerSubHeadingTextColor, this.DEFAULT_THEME.headerSubHeadingTextColor)
                 };
                 this.buildIframe();
             },

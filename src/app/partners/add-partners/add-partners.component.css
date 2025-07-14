@@ -370,3 +370,29 @@ background-color: unset!important;
 span.btn.btn-primary.transition.txt_pd-top3.pdt7{
   padding-top: 7px !important;
 }
+
+.oliveIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #5bb2f5;
+  border-radius: 50%;
+  cursor: pointer
+}
+
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oliveImg{
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}

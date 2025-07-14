@@ -1794,4 +1794,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.partnertoDateFilter = "";
         this.selectedPartnerCompanyIds = [];
     }
+
+    reloadAllPartnerTiles($event){
+            this.findActivePartnersCount();
+            this.findRedistributedCampaignsCount();
+            this.findThroughCampaignsCount();
+            this.findInActivePartnersCount();
+            this.findApprovePartnersCount();
+            this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+            this.findTotalPartnersCount();
+            this.findTotalDeactivatePartnersCount();
+            this.goToDeactivatePartnersDiv();
+    }
 }

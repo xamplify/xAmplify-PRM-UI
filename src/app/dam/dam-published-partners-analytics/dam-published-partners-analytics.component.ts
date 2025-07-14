@@ -14,15 +14,18 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { DamPostDto } from '../models/dam-post-dto'
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dam-published-partners-analytics',
   templateUrl: './dam-published-partners-analytics.component.html',
   styleUrls: ['./dam-published-partners-analytics.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties]
+  providers: [HttpRequestLoader, SortOption, Properties,DatePipe]
 })
 export class DamPublishedPartnersAnalyticsComponent implements OnInit {
+  damPostDto: DamPostDto = new DamPostDto();
   loggedInUserId: number = 0;
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
@@ -44,7 +47,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   isFromApprovalModule: boolean = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
               private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
-              public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
+              public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService, private datePipe: DatePipe) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     /****XNFR-169****/
@@ -63,6 +66,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damPartnerId = atob(this.route.snapshot.params['damPartnerId']);
     this.pagination.id = this.damPartnerId;
     this.validateDamId(this.damId);
+    this.getDamDetailsByDamId(this.damId);
   }
   validateDamId(damId: any) {
     this.damService.validateDamId(damId).subscribe(
@@ -175,16 +179,23 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
       this.referenceService.loading(this.listLoader, false);
       let data = result.data;
       const csvRows: string[] = [];
-      const headers = ['FIRST NAME', 'LAST NAME', 'EMAIL ID', 'COMPANY NAME', 'VIEW COUNT', 'DOWNLOAD COUNT'];
+      const headers = ['ASSET NAME','ASSET TYPE','CREATED BY','PARTNER NAME', 'EMAIL ID','COMPANY NAME',  'VIEW COUNT', 'DOWNLOAD COUNT','PUBLISHED ON(PST)'];
       csvRows.push(headers.join(','));
       data.list.forEach((item: any) => {
-        const row = [item.firstName, item.lastName, item.emailId, item.companyName, item.viewCount, item.downloadCount];
-        csvRows.push(row.join(','));});
+         const formattedDate = this.datePipe.transform(
+        item.publishedOn,
+        'MMM dd,yyyy hh:mm:ss a' 
+      ) || '';
+      const fullName = item.fullName && item.fullName.trim() !== '' ? item.fullName : '-';
+        const row = [item.assetName, item.assetType, item.createdBy, fullName, item.emailId, item.companyName, item.viewCount, item.downloadCount,  formattedDate
+          ].map(this.escapeCsv).join(',');
+          csvRows.push(row);  
+      });
       const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
       const downloadUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = `dam-partner-analytics.csv`;
+      link.download = `Dam-Partner-Analytics-Report.csv`;
       link.click();
       URL.revokeObjectURL(downloadUrl);
     }, error => {
@@ -192,5 +203,22 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
       this.xtremandLogger.errorPage(error);
     });
   }
-
+  escapeCsv(value: any): string {
+  const s = value == null ? '' : String(value).replace(/"/g, '""');
+  return `"${s}"`;
+}
+getDamDetailsByDamId(damId: any) {
+  this.damService.getDamDetailsById(damId).subscribe(
+    response => {
+      if (response.statusCode === 200) {
+        this.damPostDto = response.data;
+      } else {
+        console.error("Error fetching DAM details:", response);
+      }
+    },
+    error => {
+      console.error("Error fetching DAM details:", error);
+    }
+  );
+}
 }
