@@ -6,6 +6,8 @@ export interface ExecutiveReport {
   report_owner:      string;
   report_recipient:  string;
 
+  owner_details: OwnerDetails;
+
   /* -------- sections -------- */
   kpi_overview:            OverviewSection<KPIItem>;
   summary_overview:        OverviewSection<KPIItem>;
@@ -154,3 +156,20 @@ export interface CampaignPerformanceAnalysisData {
   }[];
   seriesString: string;
 }
+export interface OwnerDetails {
+  owner_full_name: string;
+  owner_country: string;
+  owner_city: string;
+  owner_address: string;
+  owner_contact_company: string;
+  owner_job_title: string;
+  owner_email_id: string;
+  owner_mobile_number: string;
+  owner_state: string;
+  owner_zip: string;
+  owner_vertical: string;
+  owner_region: string;
+  owner_company_domain: string;
+  owner_website: string;
+  owner_country_code: string;
+};

@@ -2697,20 +2697,20 @@ markdown pre,.aligin-para{
 table.nl-container tr:nth-child(odd) {
   background-color: transparent !important;
 }
-.pad div {
-  color: var(---text-color) !important;
-}
 /* content count css */
-.section-column,.front-count-card {
+.section-column,.front-count-card,.asset-card {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.stat-card {
+.stat-card,.asset-button,.asset-button:hover {
     background-color: var(--page-content) !important;
     border: 1px solid var(--border-color) !important;
   }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color: var(---text-color) !important;
+}
+.asset-button:hover{
+  transform: scale(1.02);
 }
 a.action-button{
   background-color: var(--btn-primary-bg-color) !important;
@@ -2731,4 +2731,13 @@ border: 1px solid var(--icon-border-color) !important;
 .oliver_input textarea:focus {
   border-color: none !important;
   outline: none !important;
+}
+  /* bee template send test email view */
+  table.heading_block.block-1 h1,table.heading_block.block-1 h2,table.heading_block.block-1 h3,
+  table.heading_block.block-1 h4,table.heading_block.block-1 h5,table.heading_block.block-1 h6 {
+    color: inherit !important;
+}
+table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
+table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
+    color: inherit !important;
 }

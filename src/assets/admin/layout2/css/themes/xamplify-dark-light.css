@@ -2845,20 +2845,23 @@ markdown pre,.aligin-para{
 .suggestion-direction-global-chat{
   border-bottom: 12px solid #22313a!important;
 }
-.pad div {
+/* .pad div {
   color: #ffffff !important;
-}
+} */
 /* content count css */
-.section-column,.front-count-card {
+.section-column,.front-count-card,.asset-card {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
-.stat-card{
+.stat-card,.asset-button,.asset-button:hover{
   background-color: #22313a!important;
   border: 1px solid #2f4857 !important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color:#fff !important;
+}
+.asset-button:hover{
+  transform: scale(1.02);
 }
 .oliveIcon {
 border: 1px solid #fff !important;
@@ -2879,3 +2882,13 @@ border: 1px solid #fff !important;
 }
 .summarize-card {
     background: linear-gradient(135deg, #7e8a96, #7d6a98ab)!important;}
+    
+  /* bee template send test email view */
+  table.heading_block.block-1 h1,table.heading_block.block-1 h2,table.heading_block.block-1 h3,
+  table.heading_block.block-1 h4,table.heading_block.block-1 h5,table.heading_block.block-1 h6 {
+    color: inherit !important;
+}
+table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
+table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
+    color: inherit !important;
+}

@@ -124,7 +124,9 @@
             <thead>
               <tr>
                 <th scope="row" class="center-aligned">Partner Details</th>
-                <th scope="row" class="center">Journey</th>
+                <th class="text-center" translate scope="row">Deactivated On</th>
+                <th class="text-center" translate scope="row">Activate</th>
+                <th scope="row" class="text-center">Journey</th>
               </tr>
             </thead>
             <tbody>
@@ -134,8 +136,22 @@
                     <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
                     </app-user-info>
                   </td>
+                  <td class="text-center hidden-xs">
+                    <app-timestamp *ngIf="item.deactivatedOn != null  && item.deactivatedOn !='' " [dateAndTime]="item.deactivatedOn">
+                    </app-timestamp>
+                    <h4 *ngIf="item.deactivatedOn == null  || item.deactivatedOn ===''"><strong>-</strong></h4>
+                  </td>
+                  <td class="text-center">
+                    <div class="actions-block override-actions" style="float:none !important;">
+                      <a class="custom-icon" data-toggle="tooltip" *ngIf="authenticationService?.module?.adminOrSuperVisor || hasAllAcces"
+                        data-placement="bottom" [title]="'Activate Partnership'" (click)="showActivatePartnersAlert(item.partnershipId)">
+                        <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+                        <div class="clickicons"></div>
+                      </a>
+                    </div>
+                  </td>
                   <td>
-                    <div class="actions-block override-actions">
+                    <div class="actions-block override-actions text-center">
                       <a class="custom-icon" data-rel="fancybox-button" (click)="(!item?.companyStatus || item.companyStatus === 'inactive') ? '':viewAnalytics(item.companyId)"
                         data-toggle="tooltip" data-placement="bottom" title="View Partner Journey" id="pj">
                         <i [ngClass]="(!item?.companyStatus || item.companyStatus === 'inactive') ? 'disabled gray':''" class="fas fa-route IconCustomization"></i>

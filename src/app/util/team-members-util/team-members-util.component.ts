@@ -1513,4 +1513,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         console.log('you clicked on option' + dismiss);
       });
     }
+    this.selectedPartnershipIds = event;
+  }
+
 }
