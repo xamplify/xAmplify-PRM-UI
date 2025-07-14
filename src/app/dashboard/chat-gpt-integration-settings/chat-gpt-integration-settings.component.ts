@@ -49,12 +49,19 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly CONTACTAGENT = "CONTACTAGENT";
 
+  contactAgentHelpText = "Effortlessly retrieve contact details using just a name or email address. Instantly generate summaries and detailed reports.";
+
   constructor(public referenceService:ReferenceService,
     public chatGptSettingsService:ChatGptSettingsService,public properties:Properties,
     public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.getSettings();
+    if (this.authenticationService.module.isVendor && !this.authenticationService.module.isPartner ) {
+      this.contactAgentHelpText = 'Enabling this option allows your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
+    } else if (this.authenticationService.module.isOrgAdmin) {
+      this.contactAgentHelpText = 'Enabling this option allows you and your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
+    }
   }
 
   getSettings(){
