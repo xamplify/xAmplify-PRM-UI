@@ -54,18 +54,18 @@
               </div>
               <ng-container *ngIf="authenticationService?.module?.damAccess">
                 <a class="asset-button" (click)="navigate('dam/select')">
-                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Design / Upload</span></span>
+                  <span><i class="fa fa-pencil label-icon"></i> <span translate>Design / Upload</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
                 <a class="asset-button" (click)="navigate('dam/manage')"
                   [ngClass]="authenticationService?.module?.damAccessAsPartner ? '' : 'border-none'">
-                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage My Assets</span></span>
+                  <span><i class="fa fa-folder-open label-icon"></i> <span translate>Manage My Assets</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
               <a *ngIf="authenticationService?.module?.damAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('dam/shared')">
-                <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
+                <span><i class="fa fa-share-alt  label-icon"></i> <span translate>Access Shared
                     Assets</span></span>
                 <i class="fa fa-arrow-right"></i>
               </a>
@@ -98,18 +98,18 @@
               </div>
               <ng-container *ngIf="authenticationService?.module?.lmsAccess">
                 <a class="asset-button" (click)="navigate('tracks/add')">
-                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Add Tracks</span></span>
+                  <span><i class="fa fa-pencil label-icon"></i> <span translate>Add Tracks</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
                 <a class="asset-button" (click)="navigate('tracks/manage')"
                   [ngClass]="authenticationService?.module?.lmsAccessAsPartner ? '' : 'border-none'">
-                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage Tracks</span></span>
+                  <span><i class="fa fa-folder-open label-icon"></i> <span translate>Manage Tracks</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
               <a *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('tracks/shared')">
-                <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Access Shared
+                <span><i class="fa fa-share-alt  label-icon"></i> <span translate>Access Shared
                     Tracks</span></span>
                 <i class="fa fa-arrow-right"></i>
               </a>
@@ -141,18 +141,18 @@
               </div>
               <ng-container *ngIf="authenticationService?.module?.playbookAccess">
                 <a class="asset-button" (click)="navigate('playbook/add')">
-                  <span><i class="fa fa-plus label-icon"></i> <span class="design-name" translate>Add Playbooks</span></span>
+                  <span><i class="fa fa-pencil label-icon"></i> <span translate>Add Playbooks</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
                 <a class="asset-button" (click)="navigate('playbook/manage')"
                   [ngClass]="authenticationService?.module?.playbookAccessAsPartner ? '' : 'border-none'">
-                  <span><i class="fa fa-list label-icon"></i> <span class="design-name" translate>Manage Playbooks</span></span>
+                  <span><i class="fa fa-folder-open label-icon"></i> <span translate>Manage Playbooks</span></span>
                   <i class="fa fa-arrow-right"></i>
                 </a>
               </ng-container>
               <a *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="asset-button mb0"
                 (click)="navigate('playbook/shared')">
-                <span><i class="fa fa-paper-plane label-icon"></i> <span class="design-name" translate>Access Shared
+                <span><i class="fa fa-share-alt label-icon"></i> <span translate>Access Shared
                     Playbooks</span></span>
                 <i class="fa fa-arrow-right"></i>
               </a>

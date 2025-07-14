@@ -130,10 +130,11 @@
                                     <div class="clickicons"></div>
                                 </a>
                                 <!-- XNFR-824 -->
-                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)"
+                                <a class="Iconhover custom-grid-icon" *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
                                     <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+                                      <div class="clickicons"></div>
                                 </a>
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
                                     data-placement="top" title="Delete" class="delete custom-icon"

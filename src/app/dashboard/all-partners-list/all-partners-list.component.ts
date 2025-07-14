@@ -69,7 +69,8 @@ export class AllPartnersListComponent implements OnInit {
     { text: 'IncompleteCompanyProfile', value: 'IncompleteCompanyProfile' },
     { text: 'Active', value: 'Active' },
     { text: 'Pending Signup', value: 'Pending Signup' },
-    { text: 'Dormant', value: 'Dormant' }
+    { text: 'Dormant', value: 'Dormant' },
+    { text: 'Deactivated', value: 'Deactivated'}
   ];
 
   constructor(public authenticationService: AuthenticationService,

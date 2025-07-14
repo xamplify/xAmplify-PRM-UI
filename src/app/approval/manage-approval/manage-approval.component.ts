@@ -192,13 +192,13 @@ export class ManageApprovalComponent implements OnInit {
   getImageSrc(item): any {
     switch (item.type) {
       case 'Track':
-        return 'assets/images/universal-search-images/universal-track.webp';
+        return 'assets/images/universal-search-images/universal-track.svg';
       case 'PlayBook':
-        return 'assets/images/universal-search-images/universal-playbook.webp';
+        return 'assets/images/universal-search-images/universal-playbook.svg';
       case 'Asset':
-        return 'assets/images/universal-search-images/universal-asset.webp';
+        return 'assets/images/universal-search-images/universal-asset.svg';
       default:
-        return 'assets/images/universal-search-images/universal-asset.webp';
+        return 'assets/images/universal-search-images/universal-asset.svg';
     }
   }
 

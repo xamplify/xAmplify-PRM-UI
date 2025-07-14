@@ -1194,7 +1194,7 @@
 
 																		<!--Ask Oliver-->
 																		<a class="oliveIcon"
-																			*ngIf="authenticationService?.isOliverActive && (isContactModule || isPartner)"
+																			*ngIf="authenticationService?.isOliverActive && (isContactModule || isPartner) && authenticationService.oliverContactAgentEnabled && showOliverContactAgent"
 																			data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contact)">
 																			<div class="oliveBackground">
 																				<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
