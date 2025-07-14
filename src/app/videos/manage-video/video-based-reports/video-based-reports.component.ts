@@ -752,28 +752,38 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         );
     }
 
-    downloadFunctionality(){
+    downloadFunctionality() {
         this.isLoadingDownloadList = true;
         if (this.downloadTypeName === 'minetesWatched') {
-        	this.totalMinutesWatchedByTopRecipients();
-           // this.downloadLogs();
-        } else if (this.downloadTypeName === 'watchedFully') {
-            this.watchedFullyTotalReport(this.pagination.totalRecords);
-        } else if (this.downloadTypeName === 'worldMapData') {
-            this.getCampaignCoutryViewsDetailsTotalReport(this.countryCode, this.pagination.totalRecords);
-        } else if (this.downloadTypeName === 'clickedMenetsWatched') {
-            this.clickedMinutesWatchedTotalList(this.userId, this.pagination.totalRecords);
+            this.totalMinutesWatchedByTopRecipients();
+            return;
         }
-        else if (this.downloadTypeName === 'playedDuration') {
+        if (this.downloadTypeName === 'watchedFully' && this.pagination.totalRecords > 0) {
+            this.watchedFullyTotalReport(this.pagination.totalRecords);
+            return;
+        }
+        if (this.downloadTypeName === 'worldMapData' && this.worldMapCampaignUsersTotalData.length > 0) {
+            this.getCampaignCoutryViewsDetailsTotalReport(this.countryCode, this.pagination.totalRecords);
+            return;
+        }
+        if (this.downloadTypeName === 'clickedMenetsWatched') {
+            this.clickedMinutesWatchedTotalList(this.userId, this.pagination.totalRecords);
+            return;
+        }
+        if (this.downloadTypeName === 'playedDuration' && this.videoPlayedPagination.totalRecords > 0) {
             this.isVideoPlayedDurationDownload = true;
             this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
+            return;
         }
-        else if (this.downloadTypeName === 'skippedDuration') {
+        if (this.downloadTypeName === 'skippedDuration' && this.pagination.totalRecords > 0) {
             this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
-        }else if (this.downloadTypeName === 'videoLeads') {
-            this.videoLeadsTotalList();
+            return;
         }
-
+        if (this.downloadTypeName === 'videoLeads') {
+            this.videoLeadsTotalList();
+            return;
+        }
+        this.isLoadingDownloadList = false;
     }
 
     downloadLogs() {
