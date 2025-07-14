@@ -45,6 +45,7 @@ export class DeactivatedPartnersTableComponent implements OnInit {
   @Input() toDateFilter: any = "";
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
   partnershipStatus: any;
 
 
@@ -66,6 +67,8 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     this.partnershipStatus = 'approved';
     } else if (this.fromDeactivatedPartnersDiv) {
     this.partnershipStatus = 'deactivated';
+    } else if (this.fromAllPartnersDiv) {
+    this.partnershipStatus = 'approved,deactivated';
     }
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;  
     this.sortOption.searchKey = "";/*** XNFR-835 ***/

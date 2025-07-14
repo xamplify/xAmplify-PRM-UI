@@ -30,6 +30,7 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
   shareLeadText: string = 'Share Leads';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -81,6 +82,8 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
       this.partnershipStatus = 'approved';
     } else if(this.fromDeactivatedPartnersDiv){
       this.partnershipStatus = 'deactivated';
+    } else if(this.fromAllPartnersDiv){
+      this.partnershipStatus = 'approved,deactivated';
     }
     if (!this.isTeamMemberAnalytics) {
       this.getCounts();
