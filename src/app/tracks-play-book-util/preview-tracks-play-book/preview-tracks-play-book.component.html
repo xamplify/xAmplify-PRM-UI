@@ -285,10 +285,8 @@
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
                                                             class="banner" translate>
                                                             Finished</h6>
-                                                        <h6 *ngIf="content.opened && !content.quiz.finished"
-                                                            style="background-color: #819081;" class="banner" translate>
-                                                            In
-                                                            Progress</h6>
+                                                        <h6 *ngIf="content.opened && !content.quiz.finished" class="banner" 
+                                                            style="background-color: #819081; width: 50%" translate>In Progress</h6>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">Form</td>
@@ -406,10 +404,8 @@
                                                                                             class="banner">
                                                                                             Finished
                                                                                         </h6>
-                                                                                        <h6 *ngIf="dam.opened && !dam.finished"
-                                                                                            style="background-color: #819081;"
-                                                                                            class="banner">In
-                                                                                            Progress</h6>
+                                                                                        <h6 *ngIf="dam.opened && !dam.finished" style="background-color: #819081; width: 50%" 
+                                                                                            class="banner">In Progress</h6>
                                                                                     </div>
                                                                                 </td>
                                                                                 <td class="text-center">{{dam?.assetType}}</td>

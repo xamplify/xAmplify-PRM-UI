@@ -164,7 +164,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.tracksPlayBookUtilService.updatePartnerProgress(progress).subscribe(
         (result: any) => {
           if (result.statusCode == 200) {
-            if(!this.isAssetGroupingEnabled) {
+            if (this.isAssetGroupingEnabled) {
+              this.getGroupedAssetsBySlug();
+            } else {
               this.getBySlug();
             }
             this.logger.info('Finished updatePartnerProgress()');
@@ -239,7 +241,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.showAsset = false;
     this.notifyShowAsset.emit(this.showAsset);
     this.assetDetails = "";
-    if(!this.isAssetGroupingEnabled) {
+    if (this.isAssetGroupingEnabled) {
+      this.getGroupedAssetsBySlug();
+    } else {
       this.getBySlug();
     }
     this.addMessage(customResponse);
