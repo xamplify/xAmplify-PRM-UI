@@ -762,11 +762,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             this.watchedFullyTotalReport(this.pagination.totalRecords);
             return;
         }
-        if (this.downloadTypeName === 'worldMapData' && this.worldMapCampaignUsersTotalData.length > 0) {
+        if (this.downloadTypeName === 'worldMapData' && this.pagination.totalRecords > 0) {
             this.getCampaignCoutryViewsDetailsTotalReport(this.countryCode, this.pagination.totalRecords);
             return;
         }
-        if (this.downloadTypeName === 'clickedMenetsWatched') {
+        if (this.downloadTypeName === 'clickedMenetsWatched' && this.pagination.totalRecords > 0) {
             this.clickedMinutesWatchedTotalList(this.userId, this.pagination.totalRecords);
             return;
         }
@@ -779,7 +779,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
             return;
         }
-        if (this.downloadTypeName === 'videoLeads') {
+        if (this.downloadTypeName === 'videoLeads' && this.videoLeadsDetailsPagination.totalRecords > 0) {
             this.videoLeadsTotalList();
             return;
         }
