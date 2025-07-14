@@ -52,4 +52,6 @@ export class EmailTemplate {
 	autoResponseType = "";
 	oliverTemplate: boolean;
 	/*******XNFR-330*****/
+	cdnSubject: string; //XNFR-1001
+
 }

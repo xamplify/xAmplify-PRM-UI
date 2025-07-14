@@ -1017,13 +1017,22 @@
                                              </a>
                                           </ng-container>
                                           <ng-container class="pull-right">
-                                             <div class="btn-group pull-right setting-icon-cu">
+                                             <div class="btn-group pull-right setting-icon-cu dropdown" #dropdownContainer>
+                                                <span [class.disablednew]="!campaign.hasAccess"
+                                                   class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu" data-toggle="dropdown" #gearBtn
+                                                   (click)="showGearIconOptions(gearBtn,campaign)">
+                                                </span>
+                                             <!-- <div class="btn-group pull-right setting-icon-cu">
                                                 <span [class.disablednew]="!campaign.hasAccess"
                                                    class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
-                                                   data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span>
+                                                   data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span> -->
                                                 <!-- <span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span> -->
-                                                <ul class="dropdown-menu pull-right"
-                                                   [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions">
+                                                <!-- <ul class="dropdown-menu pull-right"
+                                                   [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions"> -->
+                                                   <ul class="dropdown-menu pull-right" *ngIf="campaign.showGearIconOptions" #gearMenu [ngClass]="{
+                                                         'mobile-css': isLastElement,
+                                                         'dropdown-menu-up': campaign.dropUp
+                                                       }">
                                                    <li>
                                                       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                                    || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
@@ -1147,7 +1156,7 @@
                               </tbody>
                            </table>
                            <table class='table tgrid table-sm visible-xs' *ngIf="modulesDisplayType.isListView"
-                              aria-describedby="tableList">
+                              aria-describedby="tableList" style="overflow: inherit;">
                               <thead>
                                  <tr>
                                     <th colspan="1" translate scope="col">Campaign</th>

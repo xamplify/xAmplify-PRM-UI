@@ -30,6 +30,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   showBrainstormWithOliver: boolean = false;
   showOliverSparkWriter: boolean = false;
   showOliverParaphraser: boolean = false;
+  showOliverContactAgent: boolean = false;
   showAskOliver: boolean = true;
   updateButtonName: string = 'Update';
   disableUpdateButton: boolean;
@@ -39,12 +40,16 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     showBrainstormWithOliver: boolean;
     showOliverSparkWriter: boolean;
     showOliverParaphraser: boolean;
+    showOliverContactAgent: boolean;
   }>();
 
   private readonly INSIGHTAGENT = "INSIGHTAGENT";
   private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
   private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
+  private readonly CONTACTAGENT = "CONTACTAGENT";
+
+  contactAgentHelpText = "Effortlessly retrieve contact details using just a name or email address. Instantly generate summaries and detailed reports.";
 
   constructor(public referenceService:ReferenceService,
     public chatGptSettingsService:ChatGptSettingsService,public properties:Properties,
@@ -52,6 +57,11 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.getSettings();
+    if (this.authenticationService.module.isVendor && !this.authenticationService.module.isPartner ) {
+      this.contactAgentHelpText = 'Enabling this option allows your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
+    } else if (this.authenticationService.module.isOrgAdmin) {
+      this.contactAgentHelpText = 'Enabling this option allows you and your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
+    }
   }
 
   getSettings(){
@@ -64,6 +74,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
         this.showBrainstormWithOliver = this.chatGptIntegrationSettingsDto.showBrainstormWithOliver;
         this.showOliverSparkWriter = this.chatGptIntegrationSettingsDto.showOliverSparkWriter;
         this.showOliverParaphraser = this.chatGptIntegrationSettingsDto.showOliverParaphraser;
+        this.showOliverContactAgent = this.chatGptIntegrationSettingsDto.showOliverContactAgent;
         this.chatGptSettingsLoader = false;
       },error=>{
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -88,16 +99,15 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
               this.referenceService.closeSweetAlert();
 						}, 3000);
           }else{
-            if (!this.isFromOliverSettingsModalPopup) {
-              this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
-            }
+            this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
             this.getSettings();
           }
           this.updateOliverFlags.emit({
             showOliverInsights: this.chatGptIntegrationSettingsDto.showOliverInsights,
             showBrainstormWithOliver: this.chatGptIntegrationSettingsDto.showBrainstormWithOliver,
             showOliverSparkWriter: this.chatGptIntegrationSettingsDto.showOliverSparkWriter,
-            showOliverParaphraser: this.chatGptIntegrationSettingsDto.showOliverParaphraser
+            showOliverParaphraser: this.chatGptIntegrationSettingsDto.showOliverParaphraser,
+            showOliverContactAgent: this.chatGptIntegrationSettingsDto.showOliverContactAgent
           });
         }else{
           this.customResponse = new CustomResponse('ERROR',response.message,true);
@@ -123,7 +133,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   private checkCanUpdateOliverAgentAccessSettings() {
     this.chatGptIntegrationSettingsDto.updateOliverAgentSettings = this.authenticationService.module.adminOrSuperVisor
       && (this.authenticationService.oliverInsightsEnabled || this.authenticationService.brainstormWithOliverEnabled || this.authenticationService.oliverSparkWriterEnabled
-        || this.authenticationService.oliverParaphraserEnabled) && (this.authenticationService.vanityURLEnabled ? this.authenticationService.module.loggedInThroughOwnVanityUrl : true);
+        || this.authenticationService.oliverParaphraserEnabled || this.authenticationService.oliverContactAgentEnabled) && (this.authenticationService.vanityURLEnabled ? this.authenticationService.module.loggedInThroughOwnVanityUrl : true);
   }
 
   validateForm(){
@@ -149,6 +159,8 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.showOliverSparkWriter = isChecked;
     } else if (agentType === this.PARAPHRASERAGENT) {
       this.chatGptIntegrationSettingsDto.showOliverParaphraser = isChecked;
+    } else if (agentType === this.CONTACTAGENT) {
+      this.chatGptIntegrationSettingsDto.showOliverContactAgent = isChecked;
     }
   }
 

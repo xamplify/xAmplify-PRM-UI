@@ -187,6 +187,7 @@ export class AuthenticationService {
   brainstormWithOliverEnabled: boolean = false;
   oliverSparkWriterEnabled: boolean = false;
   oliverParaphraserEnabled: boolean = false;
+  oliverContactAgentEnabled: boolean = false;
 
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {

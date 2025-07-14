@@ -33,7 +33,7 @@
     }
 </style>
 
-<div class="page-content" style="overflow: hidden !important;">
+<div class="page-content" style="overflow: hidden !important;" *ngIf="!showAskOliverModalPopup">
     <ngx-loading [show]="pageLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="my-container">
         <ngx-loading [show]="loading || contactService.isLoadingList"
@@ -478,7 +478,7 @@
                     translate>Cancel</button>
             </div>
         </ng-template>
-        <div class="row" id="Gfile_preview">
+        <div *ngIf="filePreview" class="row" id="Gfile_preview">
             <div class="col-md-12 col-sm-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet light remove_cardBgcolor adjust_cloud_table">
@@ -1089,6 +1089,13 @@
                                                                 (click)="confirmDeactivatePartner(contact)"> 
                                                                 <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
+                                                            </a>
+
+                                                            <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive"
+                                                                data-toggle="tooltip" data-placement="bottom" title="Ask Oliver" (click)="askOliver(contact)">
+                                                                <div class="oliveBackground">
+                                                                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                                                </div>
                                                             </a>
                                                             
                                                             <!---XNFR-224--->
@@ -2002,3 +2009,6 @@
 <!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
     (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+[isFromManagePartner]="true" [isFromOnboardSection]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

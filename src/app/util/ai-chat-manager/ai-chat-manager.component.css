@@ -1246,6 +1246,8 @@ span.icon-alignments {
 .dropdown-container {
   position: relative;
   display: inline-block;
+  padding-top: 19px;
+  margin-top: -19px;
 }
 
 .dropdown-toggle::after {
@@ -1259,7 +1261,7 @@ span.icon-alignments {
   display: none;
   position: absolute;
   /* bottom: 100%; */
-  top: -129px;
+  top: -112px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;

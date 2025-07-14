@@ -334,9 +334,10 @@ export class DamService {
   }
 
    /**** XNFR-543 ****/
-   findPartnerCompanyUsers(pagination: Pagination) {
+   findPartnerCompanyUsers(pagination: Pagination, isExportToExcel: boolean) {
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartnerCompanyUsers/id/'+pagination.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartnerCompanyUsers/id/'+pagination.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token
+            +pageableUrl+"&isExportToExcel="+isExportToExcel;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 

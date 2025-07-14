@@ -378,12 +378,18 @@
                         </label>
                       </span> <span class="ng-scope"> <a style="cursor: default;border-radius:5px;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
+                          <!-- XNFR-1001  -->
                           <div class="image">
-                            <img
+                            <img *ngIf="!referenceService.isCloudFront"
                               ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
                               id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)"
                               class="thumb ng-scope img-format" src="{{file.thumbnailPath}}" alt="" height="100px">
+                              <img *ngIf="referenceService.isCloudFront"
+                              ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
+                              id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)"
+                              class="thumb ng-scope img-format" src="{{file.cdnThumbnailPath}}" alt="" height="100px">
                           </div>
+                          <!-- XNFR-1001  -->
                         </a> <a href="javascript:;"> </a>
                       </span>
                     </div>
@@ -726,7 +732,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <strong *ngIf="removeAlertType === 'asset'">Asset removed successfully</strong>
-        <strong *ngIf="removeAlertType === 'form'">Form canceled successfully</strong>
+        <strong *ngIf="removeAlertType === 'form'">Form removed successfully</strong>
       </div>
 
       <div class="modal-body">

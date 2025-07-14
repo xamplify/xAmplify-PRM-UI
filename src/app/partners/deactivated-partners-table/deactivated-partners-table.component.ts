@@ -11,7 +11,7 @@ import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { Properties } from 'app/common/models/properties';
-
+declare var $: any, swal: any;
 @Component({
   selector: 'app-deactivated-partners-table',
   templateUrl: './deactivated-partners-table.component.html',
@@ -34,6 +34,7 @@ export class DeactivatedPartnersTableComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Output() notifySelectedPartnerCompanyIds = new EventEmitter();
+  @Output() notifyActivatedPartnership = new EventEmitter();
   @Output() notifySelectedDateFilters = new EventEmitter();
   @Input() selectedPartnerCompanyIds: any = [];
   showFilterDropDown: boolean = false;
@@ -260,4 +261,48 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"deactivated-partners-report")
   }
 /*** XNFR-835 ***/
+
+showActivatePartnersAlert(partnershipId: number) {
+    let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
+    let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: message,
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, activate it!'
+    }).then(function (myData: any) {
+      console.log("ManageContacts showAlert then()" + myData);
+      self.activatePartner(partnershipId);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  }
+
+  activatePartner(partnershipId: number) {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    let partnershipIds = [];
+    partnershipIds.push(partnershipId);
+    this.parterService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
+      .subscribe(response => {
+        if (response.statusCode == 200) {
+          this.referenseService.loading(this.httpRequestLoader, false);
+          this.getDeactivatedPartners(this.pagination);
+          this.findCompanyNames();
+          this.setFilterColor();
+          this.notifyActivatedPartnership.emit();
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+        } else {
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        }
+      }, error => {
+        this.referenseService.loading(this.httpRequestLoader, false);
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      });
+  }
+
+
 }

@@ -31,6 +31,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() selectedContact: any;
   @Input() callActivity: any;
   @Input() isFromManageContact: boolean;
+  @Input() isFromManagePartner: boolean;
+   @Input() isFromOnboardSection: boolean = false;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -109,6 +111,7 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  pptLoader: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -134,7 +137,7 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
       // this.getThreadId(this.chatGptIntegrationSettingsDto);
-    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact) {
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact && !this.isFromManagePartner) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
@@ -154,7 +157,10 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromManageContact) {
       this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
-    } else {
+    } else if (this.isFromManagePartner) {
+      this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
+      this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
+    }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
@@ -349,7 +355,7 @@ export class AiChatManagerComponent implements OnInit {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
-      } else if (this.isFromContactJourney || this.isFromManageContact) {
+      } else if (this.isFromContactJourney || this.isFromManageContact || this.isFromManagePartner) {
         this.selectedContact = undefined;
         this.callActivity = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
@@ -575,7 +581,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact) {
+    if (this.isFromManageContact || this.isFromManagePartner) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -941,6 +947,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
           }
         }
       }, error => {
@@ -949,13 +956,36 @@ export class AiChatManagerComponent implements OnInit {
       if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
         this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
-      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact) {
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact && !this.isFromManagePartner) {
         this.getChatHistory();
       }
       if (this.isFromManageContact) {
         this.uploadContactDetails();
       }
+       if (this.isFromManagePartner) {
+        this.uploadPartnerDetails();
+      }
     });
+  }
+  uploadPartnerDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   getFileIcon(): string {
@@ -1158,6 +1188,24 @@ export class AiChatManagerComponent implements OnInit {
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
 
+      owner_details: {
+        owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
+        owner_country: j && j.owner_country ? j.owner_country : '',
+        owner_city: j && j.owner_city ? j.owner_city : '',
+        owner_address: j && j.owner_address ? j.owner_address : '',
+        owner_contact_company: j && j.owner_contact_company ? j.owner_contact_company : '',
+        owner_job_title: j && j.owner_job_title ? j.owner_job_title : '',
+        owner_email_id: j && j.owner_email_id ? j.owner_email_id : '',
+        owner_mobile_number: j && j.owner_mobile_number ? j.owner_mobile_number : '',
+        owner_state: j && j.owner_state ? j.owner_state : '',
+        owner_zip: j && j.owner_zip ? j.owner_zip : '',
+        owner_vertical: j && j.owner_vertical ? j.owner_vertical : '',
+        owner_region: j && j.owner_region ? j.owner_region : '',
+        owner_company_domain: j && j.owner_company_domain ? j.owner_company_domain : '',
+        owner_website: j && j.owner_website ? j.owner_website : '',
+        owner_country_code: j && j.owner_country_code ? j.owner_country_code : ''
+      },
+
       /* ---------- KPI overview ---------- */
       kpi_overview: {
         title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
@@ -1358,8 +1406,39 @@ export class AiChatManagerComponent implements OnInit {
       }, error => {
         this.isPdfUploading = false;
       }, () => {
-        
+
       });
+  }
+
+  onPptFile(el: HTMLElement): void {
+    this.pptLoader = true;
+    const rawText: string = (el.textContent || '').trim();
+    if (!rawText) {
+      console.warn('[pptx] No content');
+      this.pptLoader = false;
+      return;
+    }
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = rawText;
+    this.chatGptSettingsService
+      .getOpenAiResponse(dto)
+      .subscribe(
+        (response: any) => {
+          const data = response && response.data;
+          if (data) {
+            this.chatGptSettingsService.generateAndDownloadPpt(data);
+          } else {
+            console.warn('[pptx] No data returned from GPT');
+          }
+        },
+        (error: any) => {
+          console.error('[pptx] GPT error:', error);
+          this.pptLoader = false;
+        },
+        () => {
+          this.pptLoader = false;
+        }
+      );
   }
   
 }

@@ -1930,12 +1930,6 @@ button.image-only-button img {
 .status_message {
   float: inline-start;
 }
-
-/* Input area expand */
-.oliver_input {
-  transition: all 0.3s ease;
-}
-
 /* Default layout */
 .oliver_input.single-line {
   display: flex;

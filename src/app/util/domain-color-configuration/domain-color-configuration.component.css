@@ -137,9 +137,12 @@ button:disabled {
   color: #888;
   cursor: pointer;
   background-color: #f8f9fa;
-  padding: 4px 6px;
+  padding: 3px 7px;
   border-radius: 4px;
   border: 1px solid #ddd;
+}
+.fs-12{
+  font-size: 12px;
 }
 
 .section-header {
