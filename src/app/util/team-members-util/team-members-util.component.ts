@@ -25,13 +25,7 @@ import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
-import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import { FormControl } from '@angular/forms';
-import { tap} from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActiveThreadsInfoComponent } from 'app/dashboard/active-threads-info/active-threads-info.component';
 
 declare var $: any, swal: any;
 @Component({
@@ -142,28 +136,16 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   fromDateFilterInString: string;
   toDateFilterInString: string;
-  /***** XNFR-805 *****/
-  vendorInvitation: VendorInvitation = new VendorInvitation();
-  isEditorDisabled: boolean = true;
-  @ViewChild('tagInput') tagInput: SourceTagInput;
-  validators = [this.mustBeEmail.bind(this)];
-  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
-  onAddedFunc = this.beforeAdd.bind(this);
-  isValidationMessage = false;
-  addFirstAttemptFailed = false;
-  inviteTeamMemberLoading = false;
-  inviteTeamMemberHtmlBody: any;
-  inviteTeamMemberResponse: CustomResponse = new CustomResponse();
-  tableHeader: string = "";
   showTeamMemberName: any;
-  /***** XNFR-805 *****/
+  showInviteTeamMemberModal: boolean = false;
 
+  previousTeamMemberGroupId: number = 0;
+  selectedPartnershipIds = [];
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
     public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties,
-    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService, 
-    private sanitizer: DomSanitizer) {
+    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService) {
 
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.isSuperAdminAccessing = this.authenticationService.isSuperAdmin();
@@ -276,9 +258,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     $('#delete-team-member-popup').modal('hide');
     $('#preview-team-member-popup').modal('hide');
     swal.close();
-    this.isValidationMessage = false;
-    this.inviteTeamMemberLoading = false;
-    $('#invite_team_member_modal').modal('hide');
     this.csvErrors = false;
   }
 
@@ -392,6 +371,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
+      if(this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+        this.team.selectedPartnershipIds = this.selectedPartnershipIds;
+      }
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
@@ -1064,9 +1046,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
+        this.previousTeamMemberGroupId = this.team.teamMemberGroupId;
         if (this.team.teamMemberGroupId == null) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
+          this.previousTeamMemberGroupId = 0;
         } else if (this.team.firstName.length === 0) {
           this.team.validForm = false;
         } else {
@@ -1425,171 +1409,70 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-805 *****/
-  closeInviteTeamMemberModal() {
-    $('#invite_team_member_modal').modal('hide');
-    this.inviteTeamMemberResponse = new CustomResponse();
-    if (this.isValidationMessage) {
-      this.findAll(this.pagination);
-    }
-    this.emailIds = [];
-    this.vendorInvitation.emailIds = [];
-    this.inviteTeamMemberLoading = false;
-    this.addFirstAttemptFailed = false;
-    this.isValidationMessage = false;
-  }
-
-  /***** XNFR-805 *****/
   openInviteTeamMemberModal() {
-    this.emailIds = [];
-    this.vendorInvitation.emailIds = [];
-    this.inviteTeamMemberLoading = true;
-    $('#invite_team_member_modal').modal('show');
-    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
-    let templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
-    this.teamMemberService.getHtmlBody(templateId).subscribe(
-      response => {
-        if (response.statusCode === 200) {
-          let data = response.data;
-          this.inviteTeamMemberHtmlBody = this.sanitizer.bypassSecurityTrustHtml(data.body);
-          this.vendorInvitation.subject = data.subject;
-          setTimeout(() => {
-            const button = document.querySelector('div.button');
-            if (button) {
-              button.className = '';
-            }
-          });
-        } else {
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-        }
-        this.inviteTeamMemberLoading = false;
-      },
-      error => {
-        this.logger.errorPage(error);
-        this.inviteTeamMemberLoading = false;
-        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-      });
+    this.showInviteTeamMemberModal = true;
   }
 
   /***** XNFR-805 *****/
-  extractStylesFromHtml(html: string): string {
-    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-    const matches = styleRegex.exec(html);
-    return matches ? matches[1] : '';
-  }
-
-  /***** XNFR-805 *****/
-  mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
-    if (this.addFirstAttemptFailed && !this.isValidEmail(control.value)) {
-      return { "must_be_email": true };
+  hideInviteTeamMemberModal(event: any) {
+    this.showInviteTeamMemberModal = false;
+    if (event) {
+      this.refreshList();
     }
-    return null;
-  }
-
-  /***** XNFR-805 *****/
-  beforeAdd(tag: any): Observable<any> {
-    const isPaste = !!tag['value'];
-    const emailTag = isPaste ? tag.value : tag;
-    if (!this.isValidEmail(emailTag)) {
-      return this.handleInvalidEmail(emailTag, isPaste);
-    }
-    this.addFirstAttemptFailed = false;
-    return Observable.of(emailTag);
-  }
-
-  /***** XNFR-805 *****/
-  private handleInvalidEmail(tag: string, isPaste: boolean): Observable<any> {
-    if (!this.addFirstAttemptFailed) {
-      this.addFirstAttemptFailed = true;
-      if (!isPaste) {
-        this.tagInput.setInputValue(tag);
-      }
-    }
-    return isPaste ? Observable.throw(this.errorMessages['must_be_email'])
-      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
-  }
-
-  /***** XNFR-805 *****/
-  private isValidEmail(text: string): boolean {
-    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
-    return text ? EMAIL_REGEXP.test(text) : false;
-  }
-
-  /***** XNFR-805 *****/
-  sendTeamMemberInviteEmail() {
-    this.isValidationMessage = true;
-    this.inviteTeamMemberLoading = true;
-    this.inviteTeamMemberResponse = new CustomResponse();
-    this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
-    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
-    this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
-      .subscribe(data => {
-        if (data.statusCode == 200) {
-          this.isValidationMessage = true;
-          this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
-        } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
-          this.isValidationMessage = false;
-          this.vendorInvitation.emailIds = [];
-          let duplicateEmailIds = data.data.map((value: string, index: number) => `${index + 1}. ${value}`).join(" ");
-          let message = `${data.message} ${duplicateEmailIds}`;
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
-        } else {
-          this.isValidationMessage = false;
-          this.vendorInvitation.emailIds = [];
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-        }
-        this.inviteTeamMemberLoading = false;
-      }, error => {
-        this.logger.errorPage(error);
-        this.isValidationMessage = false;
-        this.vendorInvitation.emailIds = [];
-        this.inviteTeamMemberLoading = false;
-        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-      });
   }
 
   /***** XNFR-805 *****/
   navigateToTeamMemberReports() {
+    this.showInviteTeamMemberModal = false;
     this.referenceService.goToRouter("/home/team/team-member-request");
   }
+
   /**** XNFR-914  ****/
-    getModulesAccessGivenByVendorForPartners(){
-      this.partnerService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName,undefined, this.loggedInUserId).subscribe(
-        (response: any) => {
-          if (response.statusCode == 200) {
-             this.moduleAccessGivenByVendorForPartner(response.data);
-          }
-        },
-        (_error: any) => {
-          this.httpRequestLoader.isServerError = true;
-          //this.xtremandLogger.error(_error);
+  getModulesAccessGivenByVendorForPartners() {
+    this.partnerService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName, undefined, this.loggedInUserId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.moduleAccessGivenByVendorForPartner(response.data);
         }
-      );
-    }
-    moduleAccessGivenByVendorForPartner(partnerModules: any) {
-      for (let module of partnerModules) {
-        if (module.moduleId === 2) {
-          this.referenceService.campaignAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 3) {
-          this.referenceService.contactsAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 5) {
-          this.referenceService.assetAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 8) {
-          this.referenceService.mdfAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 9) {
-          this.referenceService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 12) {
-          this.referenceService.playBookAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 14) {
-          this.referenceService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 18) {
-          this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
-        } 
+      },
+      (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        //this.xtremandLogger.error(_error);
       }
-      if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
-        this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
-        this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
-        this.referenceService.showAnalytics = false;
+    );
+  }
+
+  moduleAccessGivenByVendorForPartner(partnerModules: any) {
+    for (let module of partnerModules) {
+      if (module.moduleId === 2) {
+        this.referenceService.campaignAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 3) {
+        this.referenceService.contactsAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 5) {
+        this.referenceService.assetAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 8) {
+        this.referenceService.mdfAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 9) {
+        this.referenceService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 12) {
+        this.referenceService.playBookAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 14) {
+        this.referenceService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 18) {
+        this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
       }
     }
     /** XNFR-914 ***/
+    if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
+      this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
+      this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
+      this.referenceService.showAnalytics = false;
+    }
+  }
+  /** XNFR-914 ***/
+
+  updateSelectedPartnershipIds(event: any) {
+    this.selectedPartnershipIds = event;
+  }
+
 }

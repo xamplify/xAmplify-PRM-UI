@@ -213,7 +213,10 @@ export class TeamMemberService{
 	}
 
 	findTeamMemberGroups(pagination: Pagination) {
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        pagination.vanityUrlFilter = vanityUrlFilter;
 		pagination.userId = this.authenticationService.getUserId();
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 		const url = this.URL + "teamMemberGroup/findAll" + '?access_token=' + this.authenticationService.access_token;
 		return this.http.post(url, pagination)
 			.map(this.extractData)

@@ -848,5 +848,9 @@ export class ParterService {
         return this.callApiForDashBoard("findTotalDeactivatePartnersCount", loggedInUserId, applyFilter);
     }
 
+    findTeamMemberPartnerCompany(pagination: Pagination, teamMemberGroupId: number) {
+        const apiUrl = this.URL + 'partnership/findTeamMemberPartnerCompany/' + teamMemberGroupId + '?access_token=' + this.authenticationService.access_token
+        return this.findPartnerCompainesOrGroups(apiUrl, pagination);
+    }
 }
 
