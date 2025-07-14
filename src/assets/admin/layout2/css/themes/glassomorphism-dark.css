@@ -4505,9 +4505,11 @@ markdown pre,.aligin-para{
     background: rgb(0 0 0 / 18%) !important;
     border: 1px solid #ffffff33! important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label,a.action-button,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
+
+.stat-label,.stat-unit,.front-count-number,.front-count-label,a.action-button,.label.text-align-left,.asset-info i,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color:#fff !important;
 }
+
 .asset-button:hover{
   transform: scale(1.01);
 }
