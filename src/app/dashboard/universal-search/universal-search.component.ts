@@ -185,11 +185,11 @@ export class UniversalSearchComponent implements OnInit {
   getImageSrc(quickLink): string {
     switch (quickLink.type) {
       case 'Track':
-        return 'assets/images/universal-search-images/universal-track.webp';
+        return 'assets/images/universal-search-images/universal-track.svg';
       case 'Play Book':
-        return 'assets/images/universal-search-images/universal-playbook.webp';
+        return 'assets/images/universal-search-images/universal-playbook.svg';
       case 'Asset':
-        return 'assets/images/universal-search-images/universal-asset.webp';
+        return 'assets/images/universal-search-images/universal-asset.svg';
       default:
         return 'assets/admin/pages/media/works/contacts2.png';
     }

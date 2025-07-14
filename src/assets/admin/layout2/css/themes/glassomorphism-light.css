@@ -4767,15 +4767,16 @@ input:checked + .toggle-slider {
   backdrop-filter:none!important;
   border:none!important;
 }
-.pad div {
-  color: #ffffff !important;
-}
 /* content count css */
-.section-column,.front-count-card,.stat-card {
+
+.section-column,.front-count-card,.stat-card,.asset-card,.asset-button,.asset-button:hover{
   background: rgb(255 255 255 / 15%) !important;
   border: 1px solid rgb(255 255 255 / 35%)!important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+.asset-button:hover{
+  transform: scale(1.01);
+}
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color:#000 !important;
 }
 button.btn.btn-primary.dropdown-toggle.border_btn{
@@ -4801,4 +4802,16 @@ a.action-button{
 .oliver_input textarea:active,.oliver_input textarea:focus{
       border-color:none !important;
       outline: none !important;
+}
+  /* bee template send test email view */
+  table.heading_block.block-1 h1,table.heading_block.block-1 h2,table.heading_block.block-1 h3,
+  table.heading_block.block-1 h4,table.heading_block.block-1 h5,table.heading_block.block-1 h6 {
+    color: inherit !important;
+}
+table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
+table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
+    color: inherit !important;
+}
+.modal-title, .modal-title b, h4.modal-title[id] {
+    color: #000000 !important;
 }

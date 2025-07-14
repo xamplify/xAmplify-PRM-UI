@@ -22,13 +22,8 @@
             <li><a class="default-cursor">{{partnerModuleCustomName}} Analytics</a>
             </li>
          </ul>
-         <a class="close-circle xamp-margin-left-icon only_light" (click)="goBackToPartnerCompanies()" aria-hidden="true">
-            <i class="fa fa-times" aria-hidden="true"></i>
-         </a>
-         <a class="close-circle xamp-margin-left-icon only_light" (click)="refreshPage()" aria-hidden="true">
-            <i class="fa fa-refresh" aria-hidden="true"></i>
-         </a>
-      </div>
+        </div>
+        <app-dam-analytics-details [damId]="damId"></app-dam-analytics-details>
       <div class="row">
          <div class="portlet box">
             <div class="clearfix">
@@ -55,11 +50,18 @@
                               </div>
                            </div>
                            <div class="inline-block pull-right ml10">
-                              <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" title="Export to Excel"
+                              
+                           </div>
+                                <a class="close-circle ref-mar ml10" (click)="goBackToPartnerCompanies()" aria-hidden="true">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                           </a>
+                           <a class="close-circle ref-mar" (click)="refreshPage()" aria-hidden="true">
+                              <i class="fa fa-refresh" aria-hidden="true"></i>
+                           </a>
+                           <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" title="Export to Excel"
                                  (click)="downloadDamAnalytics()" [disabled]="pagination?.totalRecords === 0">
                                  <i aria-hidden="true" class="fas fa-file-export p10"></i>
                               </button>
-                           </div>
                         </div>
                      </div>
                      <div class="table-responsive" style="overflow: hidden;">

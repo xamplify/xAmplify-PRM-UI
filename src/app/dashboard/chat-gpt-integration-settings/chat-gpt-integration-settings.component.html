@@ -22,7 +22,7 @@
     <div
       *ngIf="authenticationService?.module?.adminOrSuperVisor
                   && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
-                  || authenticationService.oliverParaphraserEnabled) 
+                  || authenticationService.oliverParaphraserEnabled || authenticationService.oliverContactAgentEnabled) 
                    && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
       role="tabpanel" class="tab-pane fade in active" id="settings">
       <div class="agent-content">
@@ -83,6 +83,19 @@
               <div class="agent-info">
                 <h5>Oliver Paraphraser</h5>
                 <p>Reword your content with clarity, variation, or different tones on demand.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 agent-card-align"  *ngIf="authenticationService.oliverContactAgentEnabled">
+            <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverContactAgent"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'CONTACTAGENT')">
+              </div>
+              <img src="assets/images/contact-agent-updated-icon.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Contact Agent</h5>
+                <p>{{contactAgentHelpText}}</p>
               </div>
             </div>
           </div>

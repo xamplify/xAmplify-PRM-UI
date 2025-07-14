@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatGptIntegrationSettingsDto } from './models/chat-gpt-integration-settings-dto';
 import { Injectable } from '@angular/core';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
@@ -312,6 +312,46 @@ listDefaultTemplates(userId:any){
     let urlPrefix = 'getSuggestedPromptsForFolderView/';
     const url = this.chatGptSettingsUrl + urlPrefix + categoryId + '/' + this.authenticationService.getUserId() + '/' + isPartnerFolderView + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
+  }
+
+  uploadPartnerDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+   let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
+    let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadPartnerDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+  
+   getOpenAiResponse(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + 'getOpenAiResponse/' + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);
+  }
+
+   generateAndDownloadPpt(blocks: any[]): void {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http.post('https://imageconverter.xamplify.co/generate_ppt', blocks, {
+      headers: headers,
+      responseType: 'blob' as 'json'
+    }).subscribe(
+      (blob: any) => this.downloadBlob(blob as Blob, 'Generated-Presentation.pptx'),
+      err  => console.error('PPT generation failed', err)
+    );
+  }
+
+  private downloadBlob(blob: Blob, filename: string) {
+    const url = (window.URL).createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href      = url;
+    a.download  = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    (window.URL).revokeObjectURL(url);
   }
 
 }

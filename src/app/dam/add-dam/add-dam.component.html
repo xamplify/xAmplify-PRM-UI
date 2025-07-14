@@ -1,5 +1,8 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div [ngClass]="isFromOliverPopup ? '' : 'page-content'" [style.background-color]="referenceService.pageContnetBgColor">
+<a *ngIf="isFromOliverPopup" class="close-circle close-align d-flex justify-content-center align-items-center mb5" (click)="closePopup()">
+   <i class="fa fa-times mt0" aria-hidden="true"></i>
+</a>
+<div [ngClass]="isFromOliverPopup ? '' : 'page-content'" [style.background-color]="isFromOliverPopup ? '' : referenceService.pageContnetBgColor">
    <div class="row">
       <div class="col-xs-12">
          <div class="tile remove_shadow_bgcolor" style="border-radius: 8px;">

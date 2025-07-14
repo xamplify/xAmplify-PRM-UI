@@ -36,6 +36,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   @Input()selectedPartnershipId = 0;
   @Input()campaignId = 0;
   @Input() hideHeaderText = false;
+  @Input() teamMemberGroupId = 0;
+  @Input() IsTeamMemberGroup:boolean = false;
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
@@ -43,23 +45,29 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   expandedUserList: any;
   colspanValue = 2;
   isTableLoaded: boolean = true;
+  selectedPartnershipIds = [];
+@Output() selectedPartnershipIdsEmitter = new EventEmitter();
+
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
-  ngOnInit() {
-	setTimeout(() =>{
-		this.isTableLoaded = true;
-	},2000);
-	if(this.hideHeaderText==undefined){
-		this.hideHeaderText = false;
-	}
-	this.pagination.campaignId = this.campaignId;
-	if(this.hideHeaderText){
-		this.pagination.maxResults = 4;
-	}
-    this.findPartnerCompanies(this.pagination);
-	this.disableThePartnerCompanyRadioButton();
-	
+	ngOnInit() {
+		setTimeout(() => {
+			this.isTableLoaded = true;
+		}, 2000);
+		if (this.hideHeaderText == undefined) {
+			this.hideHeaderText = false;
+		}
+		this.pagination.campaignId = this.campaignId;
+		if (this.hideHeaderText) {
+			this.pagination.maxResults = 4;
+		}
+		if (this.IsTeamMemberGroup && this.teamMemberGroupId > 0) {
+			this.findTeamMemberPartnerCompany(this.pagination);
+		} else {
+			this.findPartnerCompanies(this.pagination);
+			this.disableThePartnerCompanyRadioButton();
+		}
   }
 
   findPartnerCompanies(pagination: Pagination) {
@@ -84,12 +92,20 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	/************Page************** */
 	navigateToNextPage(event: any) {
 		this.pagination.pageIndex = event.page;
-		this.findPartnerCompanies(this.pagination);
+		if(this.IsTeamMemberGroup){
+			this.findTeamMemberPartnerCompany(this.pagination);
+		}else{
+			this.findPartnerCompanies(this.pagination);
+		}
 	}
 
 	getAllFilteredResults() {
 		this.pagination.pageIndex = 1;
-		this.findPartnerCompanies(this.pagination);
+		if(this.IsTeamMemberGroup){
+			this.findTeamMemberPartnerCompany(this.pagination);
+		}else{
+			this.findPartnerCompanies(this.pagination);
+		}
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
 	/***Select The Radio Button And Expand The List*/
@@ -256,4 +272,60 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			this.expandedUserList = userList;		
 		}
 	} 
+
+	  findTeamMemberPartnerCompany(pagination: Pagination) {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.partnerService.findTeamMemberPartnerCompany(pagination,this.teamMemberGroupId).
+    	subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, error => {
+			this.xtremandLogger.error(error);
+			this.xtremandLogger.errorPage(error);
+		});
+	}
+
+	selectOrUnSelectAllModules(event: any, partnerShipId: number) {
+		const isChecked = $('#partnerListTable_' + partnerShipId).is(':checked');
+		if (isChecked) {
+			if (!this.selectedPartnershipIds.includes(partnerShipId)) {
+				this.selectedPartnershipIds.push(partnerShipId);
+			}
+		} else {
+			this.selectedPartnershipIds.splice($.inArray(partnerShipId, this.selectedPartnershipIds), 1);
+
+		}
+		this.isHeaderCheckBoxChecked = this.selectedPartnershipIds.length === this.pagination.pagedItems.length;
+		this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+	}
+
+	checkAll(event: any) {
+		const isChecked = $(event.target).is(':checked');
+		if (isChecked) {
+			this.selectedPartnershipIds = this.pagination.pagedItems.map(item => item.partnershipId);
+		} else {
+			this.selectedPartnershipIds = [];
+		}
+		this.isHeaderCheckBoxChecked = isChecked;
+		this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+	}
+
+	notifyParentDropDown(pagination: any) {
+		if(this.IsTeamMemberGroup){
+			this.findTeamMemberPartnerCompany(pagination);
+		}else{
+			this.findPartnerCompanies(pagination);
+		}
+	}
+
+	ngOnChanges() {
+		if (this.IsTeamMemberGroup) {
+			setTimeout(() => {
+				this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+			});
+		}
+	}
 }
+

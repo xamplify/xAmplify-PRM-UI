@@ -215,13 +215,9 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     );
   }
 
- 
-
-  confirmAlert(teamMemberGroup:any) {
-    if(!teamMemberGroup.defaultGroup){
-      this.isDelete = true;
-      this.idToDelete = teamMemberGroup.id;
-    }
+  confirmAlert(teamMemberGroup: any) {
+    this.isDelete = true;
+    this.idToDelete = teamMemberGroup.id;
   }
 
   deleteGroup(event: any) {
@@ -300,9 +296,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   }
 
   findGroupDetailsById(group:any) {
-    if(!group.defaultGroup){
-      this.getTeamMemberGroupDetailsById(group,false);
-    }
+    this.getTeamMemberGroupDetailsById(group,false);
   }
 
 
@@ -395,10 +389,36 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     }
 
   }
-  
 
   private resetSelectedSSOGroupId() {
     this.isDefaultSSOGroupIconClicked = false;
     this.selectedGroupId = 0;
   }
+
+  /***** XNFR-1051 *****/
+  copySignUpUrl(inputElement: any) {
+    $(".success").hide();
+    $('#copied-signup-url').hide();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copied-signup-url').show(500);
+    $('#tick-mark').css('display', 'inline-block');
+  }
+
+  /***** XNFR-1051 *****/
+  copyGroupSignUpUrl(url: string) {
+    this.referenceService.goToTop();
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    let message = "Signup url copied successfully";
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+
 }

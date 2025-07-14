@@ -253,7 +253,7 @@
                                                         : content?.dam?.assetName }}
                                                     </strong>
                                                 </h4>
-                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
                                                         <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081; width: 50%;" class="banner">In Progress</h6>
@@ -280,7 +280,7 @@
                                                         data-placement="bottom" title="{{content.quiz.name}}">
                                                         <span><strong>{{content.quiz.name}}</strong></span>
                                                     </h4>
-                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
                                                             class="banner" translate>
@@ -399,7 +399,7 @@
                                                                                             {{ dam?.assetName?.length > 70 ? (dam?.assetName | slice:0:70) + '...' : dam?.assetName }}
                                                                                         </strong>
                                                                                     </h4>
-                                                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                                                         style="padding-top: 5px;">
                                                                                         <h6 *ngIf="dam.finished"
                                                                                             style="background-color: #5cb85c;"
