@@ -1658,6 +1658,24 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
 
+      owner_details: {
+        owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
+        owner_country: j && j.owner_country ? j.owner_country : '',
+        owner_city: j && j.owner_city ? j.owner_city : '',
+        owner_address: j && j.owner_address ? j.owner_address : '',
+        owner_contact_company: j && j.owner_contact_company ? j.owner_contact_company : '',
+        owner_job_title: j && j.owner_job_title ? j.owner_job_title : '',
+        owner_email_id: j && j.owner_email_id ? j.owner_email_id : '',
+        owner_mobile_number: j && j.owner_mobile_number ? j.owner_mobile_number : '',
+        owner_state: j && j.owner_state ? j.owner_state : '',
+        owner_zip: j && j.owner_zip ? j.owner_zip : '',
+        owner_vertical: j && j.owner_vertical ? j.owner_vertical : '',
+        owner_region: j && j.owner_region ? j.owner_region : '',
+        owner_company_domain: j && j.owner_company_domain ? j.owner_company_domain : '',
+        owner_website: j && j.owner_website ? j.owner_website : '',
+        owner_country_code: j && j.owner_country_code ? j.owner_country_code : ''
+      },
+
       /* ---------- KPI overview ---------- */
       kpi_overview: {
         title: j && j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
