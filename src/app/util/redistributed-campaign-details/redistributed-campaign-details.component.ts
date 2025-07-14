@@ -33,6 +33,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -58,6 +59,8 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.partnershipStatus = 'approved';
     } else if (this.fromDeactivatedPartnersDiv) {
     this.partnershipStatus = 'deactivated';
+    } else if (this.fromAllPartnersDiv) {
+    this.partnershipStatus = 'approved,deactivated';
     }
 
     this.pagination.pageIndex = 1;
