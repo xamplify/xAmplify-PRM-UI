@@ -1480,14 +1480,15 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   /** XNFR-914 ***/
 
   updateSelectedPartnershipIds(event: any) {
-      this.selectedPartnershipIds = event;
-    }
+    this.selectedPartnershipIds = event;
+  }
 
-      findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
+  findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
     this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          this.teamMemberPartnerCompanys = response.data;}
+          this.teamMemberPartnerCompanys = response.data;
+        }
       },
       (_error: any) => {
         this.httpRequestLoader.isServerError = true;
@@ -1495,25 +1496,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     );
   }
 
-  confirmUpdateAlert(teamMemberPartnerCompanys: any[]){
+  confirmUpdateAlert(teamMemberPartnerCompanys: any[]) {
     let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join(', ');
-      let self = this;
-      swal({
-        title: 'Are you sure?',
-        text: "'"+this.team.emailId+"' will be moved to '" + this.team.teamMemberGroupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
-        type: 'warning',
-        showCancelButton: true,
-        swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes, Move it!'
-  
-      }).then(function() {
-        self.updateTeamMember();
-      }, function(dismiss: any) {
-        console.log('you clicked on option' + dismiss);
-      });
-    }
-    this.selectedPartnershipIds = event;
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "'" + this.team.emailId + "' will be moved to '" + this.team.teamMemberGroupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Move it!'
+    }).then(function () {
+      self.updateTeamMember();
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
   }
 
 }
