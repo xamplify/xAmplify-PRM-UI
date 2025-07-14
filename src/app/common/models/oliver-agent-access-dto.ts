@@ -5,6 +5,7 @@ export class OliverAgentAccessDTO {
     showOliverSparkWriter: boolean = false;
     showOliverParaphraser: boolean = false;
     showOliverContactAgent: boolean = false;
+    showOliverPartnerAgent: boolean = false;
     updateOliverAgentSettings: boolean = false;
     
 }
