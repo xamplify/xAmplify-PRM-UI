@@ -99,9 +99,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
               this.referenceService.closeSweetAlert();
 						}, 3000);
           }else{
-            if (!this.isFromOliverSettingsModalPopup) {
-              this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
-            }
+            this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
             this.getSettings();
           }
           this.updateOliverFlags.emit({
