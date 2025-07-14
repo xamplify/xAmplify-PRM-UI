@@ -524,7 +524,7 @@
 							</span>
 							<ul class="dropdown-menu pull-right lowercase">
 								<li><a id="delete_button"
-										(click)="downloadTypeName = 'playedDuration'; downloadFunctionality()"
+										(click)="videoPlayedPagination.totalRecords == 0 ? '' : downloadTypeName = 'playedDuration'; downloadFunctionality()"
 										translate> Export To Excel </a></li>
 							</ul>
 						</div>
@@ -580,7 +580,7 @@
 							</span>
 							<ul class="dropdown-menu pull-right">
 								<li><a id="delete_button"
-										(click)="downloadTypeName = 'skippedDuration'; downloadFunctionality()"
+										(click)="videoSkippedDuration.length == 0 ? '' : downloadTypeName = 'skippedDuration'; downloadFunctionality()"
 										translate> Export To Excel </a></li>
 							</ul>
 						</div>
