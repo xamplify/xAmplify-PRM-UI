@@ -183,6 +183,8 @@ export class ReferenceService {
   OliverViewType = "";
   OliverCategoryId = 0;
   isCloudFront = true; //XNFR-1001
+  categoryType : string = '';
+  selectedTab: string;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

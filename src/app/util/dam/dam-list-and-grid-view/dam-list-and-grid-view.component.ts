@@ -415,6 +415,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
+		if(this.referenceService.categoryType.trim().length){
+		this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+		this.referenceService.categoryType = '';
+		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
 		this.damService.list(pagination).subscribe((result: any) => {
@@ -1137,7 +1141,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (event == this.approvalStatus.DRAFT) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
 			this.listAssets(this.pagination);
-		} else {
+		}  else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'UPDATED' ) {
+			this.pagination.selectedApprovalStatusCategory = event;
+			this.listAssets(this.pagination);
+		}else {
 			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}

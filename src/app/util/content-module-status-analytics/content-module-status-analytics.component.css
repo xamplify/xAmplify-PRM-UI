@@ -80,7 +80,7 @@
 }
 
 .dashboard-stat .details {
-    position: relative !important; 
+    position: relative !important;
 }
 
 .dashboard-stat .visual {
@@ -106,6 +106,7 @@
     .new-width-col {
         flex: 0 0 calc(100% - 0px);
     }
+
     .dashboard-stat .details {
         padding-right: 20px !important;
         width: auto !important;
@@ -162,7 +163,7 @@
 }
 
 .front-count-green {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
 }
 
 .front-count-orange {
@@ -172,6 +173,7 @@
 .front-count-purple {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
 }
+
 
 .front-count-blue i,
 .front-count-green i,
@@ -203,3 +205,48 @@
     }
 }
 
+.front-count-red {
+    background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+}
+
+.front-count-red i {
+    color: #fff;
+}
+
+.front-count-yellow {
+    background: #f59e0b;
+}
+
+.front-count-yellow i {
+    color: #fff;
+}
+
+.front-count-teal-green {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+.front-count-teal-green i {
+    color: #fff;
+}
+
+.front-count-purple i,
+.front-count-ait i {
+    color: #fff;
+}
+
+.front-count-card.active {
+    background: #f4f0ff;
+    border: 2px solid #8b5cf6;
+}
+
+.front-count-ait {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+
+}
+
+.selected-tile-purple {
+    border: 2px solid #9b51e0 !important;
+    background-color: #f4ecff !important;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(155, 81, 224, 0.2);
+}
