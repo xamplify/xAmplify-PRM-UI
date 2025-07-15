@@ -354,7 +354,7 @@ listDefaultTemplates(userId:any){
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     this.http.post(
-      'http://127.0.0.1:5000/generate_ppt',
+      'https://imageconverter.xamplify.co/generate_ppt',
       payload,
       { headers, responseType: 'blob' as 'blob' }
     ).subscribe(
