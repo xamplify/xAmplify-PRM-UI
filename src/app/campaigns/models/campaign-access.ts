@@ -75,6 +75,7 @@ export class CampaignAccess {
   oliverSparkWriterEnabled: boolean = false;
   oliverParaphraserEnabled: boolean = false;
   oliverContactAgentEnabled: boolean = false;
+  oliverPartnerAgentEnabled: boolean = false;
   oliverIntegrationType: string = '';
 
     /** XNFR-987 **/

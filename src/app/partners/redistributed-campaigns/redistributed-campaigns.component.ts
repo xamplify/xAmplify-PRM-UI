@@ -150,7 +150,8 @@ export class RedistributedCampaignsComponent implements OnInit {
     
   }
   
-  downloadCsv(){
-    window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.authenticationService.getUserId()+"/"+this.applyFilter+"/Redistributed-Campaigns.csv?access_token="+this.authenticationService.access_token,"taget_blank");
+  downloadCsv() {
+     let pageableUrl = this.referenceService.getPagebleUrl(this.channelCampaignsPagination);
+    window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.authenticationService.getUserId()+"/"+this.applyFilter+"/Redistributed-Campaigns.csv?access_token="+this.authenticationService.access_token+"&"+pageableUrl,"taget_blank");
   } 
 }
