@@ -207,4 +207,7 @@ export class Pagination {
    partnershipStatus: any;
 
 	exportToExcel: boolean = false;
+
+	selectedTab: string;
+
 }

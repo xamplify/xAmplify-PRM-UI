@@ -90,6 +90,7 @@ export class ModuleAccessComponent implements OnInit {
   oliverParaphraserEnabledFlag: boolean = false;
   oliverContactAgentEnabledFlag: boolean = false;
   oliverIntegrationTypeSelected: boolean = false;
+  oliverPartnerAgentEnabledFlag: boolean = false;
   oliverIntegrationType: string = "";
 
 
@@ -657,6 +658,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     this.oliverSparkWriterEnabledFlag = campaignAccess.oliverSparkWriterEnabled;
     this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
     this.oliverContactAgentEnabledFlag = campaignAccess.oliverContactAgentEnabled;
+    this.oliverPartnerAgentEnabledFlag = campaignAccess.oliverPartnerAgentEnabled;
   }
   /** XNFR-952 end **/
 
@@ -670,6 +672,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
       this.campaignAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
+      this.campaignAccess.oliverPartnerAgentEnabled = this.oliverPartnerAgentEnabledFlag;
     }
   }
 

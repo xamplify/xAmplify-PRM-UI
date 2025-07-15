@@ -32,7 +32,7 @@
         </p>
 
         <!-- Agent Cards Section -->
-        <div class="row agent-card-section">
+        <div [ngClass]=  "isFromOliverSettingsModalPopup ? 'row agent-card-section' : 'row agent-card-section-no-scroll'">
           <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverInsightsEnabled">
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
@@ -96,6 +96,21 @@
               <div class="agent-info">
                 <h5>Contact Agent</h5>
                 <p>{{contactAgentHelpText}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverPartnerAgentEnabled">
+            <div class="agent-card" style="position: relative;"
+              [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverPartnerAgent"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'PARTNERAGENT')">
+              </div>
+              <img src="assets/images/oliver-contact-agent-icon.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Partner Agent</h5>
+                <p>Enabling this option allows you to access the Partner Agent and generate summaries and detailed reports for partners..</p>
               </div>
             </div>
           </div>

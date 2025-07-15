@@ -827,7 +827,7 @@ private beforeAdd(tag: any) {
           this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
           this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
           this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
-        
+          this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
 					//XNFR-276
           this.menuItems = data.menuItems;
 
