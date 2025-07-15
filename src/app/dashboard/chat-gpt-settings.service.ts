@@ -332,16 +332,41 @@ listDefaultTemplates(userId:any){
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
 
-   generateAndDownloadPpt(blocks: any[]): void {
+  generateAndDownloadPpt(blocks: any[], selectedTemplate: string): void {
+    let slideBlocks: any[];
+    if (typeof blocks === 'string') {
+      try {
+        slideBlocks = JSON.parse(blocks);
+      } catch (e) {
+        console.error('[pptx] could not parse blocks JSON', e);
+        return;
+      }
+    } else {
+      slideBlocks = blocks;
+    }
+
+    if (!Array.isArray(slideBlocks) || slideBlocks.length === 0) {
+      console.warn('[pptx] no slide data to send');
+      return;
+    }
+
+    const payload = { ppt_id: selectedTemplate, blocks: slideBlocks };
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.post('https://imageconverter.xamplify.co/generate_ppt', blocks, {
-      headers: headers,
-      responseType: 'blob' as 'json'
-    }).subscribe(
-      (blob: any) => this.downloadBlob(blob as Blob, 'Generated-Presentation.pptx'),
-      err  => console.error('PPT generation failed', err)
+
+    this.http.post(
+      'http://127.0.0.1:5000/generate_ppt',
+      payload,
+      { headers, responseType: 'blob' as 'blob' }
+    ).subscribe(
+      (blob: Blob) => {
+        this.downloadBlob(blob, 'Generated-Presentation.pptx');
+      },
+      err => {
+        console.error('[pptx] generation failed', err.status, err.error);
+      }
     );
   }
+
 
   private downloadBlob(blob: Blob, filename: string) {
     const url = (window.URL).createObjectURL(blob);

@@ -161,6 +161,8 @@ export class ChatGptModalComponent implements OnInit {
   designAccess: boolean = false;
   uploadedFolders: any[];
   pptLoader: boolean = false;
+  showPptDesignPicker: boolean = false;
+  pptData: string;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -317,6 +319,8 @@ export class ChatGptModalComponent implements OnInit {
     this.autoResizeTextArea(event);
     this.designAccess = false;
     this.checkDesignAccess();
+    this.pptData = '';
+    this.showPptDesignPicker = false;
   }
 
   private checkDamAccess() {
@@ -396,6 +400,8 @@ export class ChatGptModalComponent implements OnInit {
     this.autoResizeTextArea(event);
     this.designAccess = false;
     this.checkDesignAccess();
+    this.pptData = '';
+    this.showPptDesignPicker = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -1926,7 +1932,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         (response: any) => {
           const data = response && response.data;
           if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data);
+            this.chatGptSettingsService.generateAndDownloadPpt(data,null);
           } else {
             console.warn('[pptx] No data returned from GPT');
           }
@@ -1939,6 +1945,24 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
           this.pptLoader = false;
         }
       );
+  }
+
+  openPptDesignPicker(el: HTMLElement): void {
+    this.pptData = (el.textContent || '').trim();
+    if (this.pptData.trim().length > 0) {
+      this.showPptDesignPicker = true;
+    }
+  }
+
+  emitSelectedTemplate(event: any) {
+    if (event) {
+      // this.onPptFile(this.pptData, event);
+      // this.emitterData(event);
+      this.showPptDesignPicker = false;
+      this.pptData = '';
+    } else {
+      this.resetValues();
+    }
   }
 
 }

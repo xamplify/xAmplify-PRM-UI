@@ -112,6 +112,9 @@ export class AiChatManagerComponent implements OnInit {
   private messageIndex: number = 0;
   private intervalSub: Subscription;
   pptLoader: boolean = false;
+  pptData: string;
+  showPptDesignPicker: boolean = false;
+
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -1426,7 +1429,7 @@ export class AiChatManagerComponent implements OnInit {
         (response: any) => {
           const data = response && response.data;
           if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data);
+            this.chatGptSettingsService.generateAndDownloadPpt(data,null);
           } else {
             console.warn('[pptx] No data returned from GPT');
           }
@@ -1440,5 +1443,25 @@ export class AiChatManagerComponent implements OnInit {
         }
       );
   }
+
+  openPptDesignPicker(el: HTMLElement): void {
+    this.pptData = (el.textContent || '').trim();
+    if (this.pptData.trim().length > 0) {
+      this.showPptDesignPicker = true;
+    }
+  }
+
+  emitSelectedTemplate(event: any) {
+    if (event) {
+      this.resetValues();
+    } else {
+      this.resetValues();
+    }
+  }
+  resetValues() {
+    this.pptData = '';
+    this.showPptDesignPicker = false;
+  }
+
   
 }

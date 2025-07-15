@@ -1,0 +1,35 @@
+<div *ngIf="pptLoader" class="ppt-mask">
+  <div class="ppt-badge">
+    <span class="msag">Generating&nbsp;PPT</span>
+    <span class="ring"></span>
+  </div>
+</div>
+
+<div [ngClass]="fromOliverPopup ? 'modal-body' : ''">
+<div class="ppt-wrapper" *ngIf="cards.length > 0">
+  <!-- Close Button -->
+  <button class="btn close_btn pull-right" (click)="close()">×</button>
+
+  <!-- Cards Row -->
+  <div class="row ppt-row-custom m0">
+    <div *ngFor="let card of cards" class="col-sm-4 ppt-col-custom ppt-card-wrapper">
+      <div class="ppt-card-label" [class.selected]="card.selected" (click)="selectCard(card)">
+        <img [src]="card.image" alt="">
+        <div class="ppt-card-body">
+          <p class="ppt-card-title">{{ card.title }}</p>
+        </div>
+        <!-- Checkbox visually reflects selection -->
+        <input type="checkbox" class="ppt-card-checkbox" [checked]="card.selected" />
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Generate Button -->
+  <div class="text-right mt-3" [ngClass]= "fromOliverPopup ? 'modal-footer' : 'pull-right generate-btn' ">
+    <button class="btn btn-primary mr10 " [disabled]="!hasAnySelectedCard()"
+      (click)="generateSelectedCard()">
+      Generate Selected
+    </button>
+  </div>
+</div>  
