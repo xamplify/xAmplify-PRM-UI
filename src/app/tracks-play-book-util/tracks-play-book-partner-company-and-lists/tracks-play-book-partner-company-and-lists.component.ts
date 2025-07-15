@@ -324,6 +324,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			this.selectedPartnershipIds.push(partnershipId);
+			this.selectedPartnerGroupIds = this.referenceService.removeDuplicates(this.selectedPartnerGroupIds);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
