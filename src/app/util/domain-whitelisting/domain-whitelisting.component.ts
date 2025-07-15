@@ -72,6 +72,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   copiedIndex: number = -1;
   showModulesPopup: boolean = false;
   teamMemberGroupId: number = 0;
+  teamMemberGroupPagination: Pagination = new Pagination();
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
@@ -131,7 +132,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.descriptionText = "Added domain users will be allowed to sign up as team members.";
     this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}", "team members");
     this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}", "team members");
-    this.findTeamMemberOrPartnerSignUpUrl();
+    this.findTeamMemberGroupSignUpUrls(this.teamMemberGroupPagination);
     this.findTeamMemberOrPartnerDomains(this.pagination);
   }
 
@@ -155,11 +156,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   findTeamMemberOrPartnerSignUpUrl() {
     this.dashboardService.findCompanySignUpUrl(this.selectedTab).subscribe(
       response => {
-        if (this.isTeamMemberDomains || this.isTeamMemberDomainsTabSelected) {
-          this.teamMemberGroups = response.data;
-        } else {
-          this.signUpUrl = response.data;
-        }
+        this.signUpUrl = response.data;
       }, error => {
         this.xtremandLogger.error(error);
       });
@@ -550,5 +547,33 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   hideModulesPreviewPopUp() {
     this.showModulesPopup = false;
   }
+
+  /***** XNFR-1051 *****/
+  findTeamMemberGroupSignUpUrls(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dashboardService.findTeamMemberGroupSignUpUrls(pagination).subscribe(
+      response => {
+        pagination = this.utilService.setPaginatedRows(response, pagination);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.xtremandLogger.error(error);
+      });
+  }
+
+  /***** XNFR-1051 *****/
+  paginateTeamMemberGroup(event: any) {
+    this.teamMemberGroupPagination.pageIndex = event.page;
+    this.findTeamMemberGroupSignUpUrls(this.teamMemberGroupPagination);
+  }
+
+  /***** XNFR-1051 *****/
+  searchTeamMemberGroup() {
+    let event = { page: 1 };
+    this.paginateTeamMemberGroup(event);
+  }
+
+  /***** XNFR-1051 *****/
+  searchTeamMemberGroupOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchTeamMemberGroup(); } }
 
 }

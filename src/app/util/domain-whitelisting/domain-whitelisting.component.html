@@ -74,35 +74,60 @@
 </ng-template>
 
 <ng-template #teamMemberDomianNgTemplate>
-  <div class="table-responsive">
-    <table class="table tgrid" style="margin-bottom: 0;">
-      <thead>
-        <tr>
-          <th>Team Member Group</th>
-          <th>Signup URL</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let group of teamMemberGroups; let i = index">
-          <td>
-            <span data-toggle="tooltip" data-placement="top" title="{{group.name}}" style="cursor: pointer;"
-              (click)="previewModules(group?.id)">{{ group.name }}</span>
-          </td>
-          <td>
-            <a class="groupUrl" [href]="" target="" aria-disabled="true" data-toggle="tooltip" data-placement="top"
-              title="{{group.signUpUrl}}">{{ group.signUpUrl }}</a><br>
+  <!--- Search Option --->
+  <div class="input-icon right float-right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+    <input type="text" class="form-control" [(ngModel)]="teamMemberGroupPagination.searchKey"
+      [ngModelOptions]="{standalone: true}" (keypress)="searchTeamMemberGroupOnKeyPress($event.keyCode)"
+      placeholder="Search for a group name">
+    <button *ngIf="teamMemberGroupPagination?.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+      (click)="teamMemberGroupPagination.searchKey='';searchTeamMemberGroup()"></button>
+    <button type="submit" class="search-box-item-click" (click)="searchTeamMemberGroup()"><i
+        class="fa fa-search"></i></button>
+  </div>
+  <!--- Team Member Group SignUpUrl Table --->
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt10">
+    <div class="table-responsive">
+      <table class="table tgrid">
+        <thead>
+          <tr>
+            <th style="width: 40%">Team Member Group</th>
+            <th style="width: 40%">Signup URL</th>
+            <th class="text-center" style="width: 20%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of teamMemberGroupPagination.pagedItems; let i = index">
+            <td>
+              <span data-toggle="tooltip" data-placement="top" [title]="group.name">{{ group.name }}</span>
+              <button class="btn btn-primary primaryBtnCu ml5" type="button" (click)="previewModules(group?.id)"
+                data-toggle="tooltip" data-placement="right" title="click to view available modules">
+                <i aria-hidden="true" class="fa fa-eye eyeCu"></i>&nbsp;View</button>
+            </td>
+            <td>
+              <span class="groupUrl" data-toggle="tooltip" data-placement="top"
+                title="{{group.signUpUrl}}">{{ group.signUpUrl }}</span><br>
               <span class="success" *ngIf="copiedIndex === i">
                 <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
               </span>
-          </td>
-          <td>
-            <button class="btn btn-primary" (click)="copyGroupSignUpUrl(group.signUpUrl, i)" data-toggle="tooltip"
-              data-placement="top" title="Copy Url">Copy Url</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-primary mr0 copyUrlBtn" (click)="copyGroupSignUpUrl(group.signUpUrl, i)" data-toggle="tooltip"
+                data-placement="top" title="Copy Url">Copy Url</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--- Total Records --->
+  <div class="pdl-mgt" *ngIf="teamMemberGroupPagination?.totalRecords>0">
+    <app-pagination [pagination]="teamMemberGroupPagination" (notifyParent)="paginateTeamMemberGroup($event)"
+      (notifyParentDropDown)="findTeamMemberGroupSignUpUrls($event)"></app-pagination>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+    <div *ngIf="teamMemberGroupPagination?.totalRecords == 0" class="alert alert-info text-center">
+      <strong>No Records Found</strong>
+    </div>
   </div>
 </ng-template>
 
@@ -259,7 +284,7 @@
           </div>
         </div>
       </fieldset>
-      <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info mt10 text-center">
+      <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info text-center">
         <strong>No Records Found</strong>
       </div>
     </tbody>
