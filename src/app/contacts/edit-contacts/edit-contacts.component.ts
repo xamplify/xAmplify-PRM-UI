@@ -130,7 +130,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	public clipboardTextareaText: string;
 	pagedItems: any[];
 	checkedUserList = [];
-	selectedInvalidContactIds = [];
+	selectedInvalidContactIds: number[] = [];
 	selectedContactListIds = [];
 	selectedCampaignIds = [];
 	fileTypeError: boolean;
@@ -321,6 +321,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	contact: any;
+
+	showOliverContactAgent: boolean = false;
+  	showOliverPartnerAgent: boolean = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
@@ -1745,24 +1748,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	invalidContactsSelectedUserIds(contactId: number, event: any) {
 		try {
-			let isChecked = $('#' + contactId).is(':checked');
+			const isChecked = $('#' + contactId).is(':checked');
+
 			if (isChecked) {
 				$('#row_' + contactId).addClass('invalid-contacts-selected');
-				this.selectedInvalidContactIds.push(contactId);
+				if (!this.selectedInvalidContactIds.includes(contactId)) {
+					this.selectedInvalidContactIds.push(contactId);
+				}
 			} else {
 				$('#row_' + contactId).removeClass('invalid-contacts-selected');
-				this.selectedInvalidContactIds.splice($.inArray(contactId, this.selectedInvalidContactIds), 1);
+				const index = this.selectedInvalidContactIds.indexOf(contactId);
+				if (index !== -1) {
+					this.selectedInvalidContactIds.splice(index, 1);
+				}
 			}
-			if (this.selectedInvalidContactIds.length == this.contactsByType.pagination.pagedItems.length) {
-				this.isInvalidHeaderCheckBoxChecked = true;
-			} else {
-				this.isInvalidHeaderCheckBoxChecked = false;
-			}
+
+			const visibleIds = this.contactsByType.pagination.pagedItems.map(c => c.id);
+			const isAllVisibleChecked = visibleIds.every(id =>
+				this.selectedInvalidContactIds.includes(id)
+			);
+			this.isInvalidHeaderCheckBoxChecked = isAllVisibleChecked;
+
 			event.stopPropagation();
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "checkingSelectedInvalidUsers()");
 		}
 	}
+
 
 	validateUndeliverableContacts(contactId: any) {
 		try {
@@ -3124,6 +3136,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();
 		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -4068,6 +4081,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}, error => {
 				this.loading = false;
 				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverContactAgent = data.showOliverContactAgent;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
 			});
 	}
 

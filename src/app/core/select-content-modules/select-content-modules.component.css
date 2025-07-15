@@ -382,3 +382,6 @@ p {
       .asset-cols{
         padding: 0px 13px;
       }
+  .asset-card .asset-button:last-child {
+  margin-bottom: 0;
+}

@@ -171,3 +171,6 @@ border-bottom: unset!important;
     .label-icon {
       margin-right: 10px;
     }
+.asset-card .asset-button:last-child {
+  margin-bottom: 0;
+}

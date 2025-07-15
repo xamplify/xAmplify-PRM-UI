@@ -60,5 +60,16 @@
   }
 .groupUrl {
   cursor: not-allowed;
-  color: black;
+}
+button.primaryBtnCu {
+  padding: 0px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+i.eyeCu {
+  font-size: 11px;
+}
+.copyUrlBtn {
+  font-size: 12px;
+  padding: 5px 10px;
 }
