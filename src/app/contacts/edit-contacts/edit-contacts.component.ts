@@ -322,6 +322,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	contact: any;
 
+	showOliverContactAgent: boolean = false;
+  	showOliverPartnerAgent: boolean = false;
+
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
 		private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3133,6 +3136,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();
 		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -4077,6 +4081,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}, error => {
 				this.loading = false;
 				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverContactAgent = data.showOliverContactAgent;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
 			});
 	}
 
