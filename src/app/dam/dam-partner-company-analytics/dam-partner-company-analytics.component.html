@@ -28,8 +28,8 @@
     *ngIf="isPartnerSignatureRequired && isPublished" [damId]="damId"
     (filterContentByType)="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
   <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space" *ngIf="isPublished">
+  <app-dam-analytics-details [damId]="damId"></app-dam-analytics-details>
     <div class="row">
-        <app-dam-analytics-details [damId]="damId"></app-dam-analytics-details>
       <div class="col-md-12">
         <div class="clearfix">
           <div class="portlet-title pb-3px" *ngIf="isPublished">
@@ -55,14 +55,14 @@
                     <div class="pb3">
                       <select class="form-control mDamSort"
                         [(ngModel)]="partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption"
-                        (ngModelChange)="sortPartnerCompanies($event)" style="position: relative; right: -3px;">
+                        (ngModelChange)="sortPartnerCompanies($event)" style="position: relative;">
                         <option *ngFor="let option of partnerCompaniesSortOption.damPartnerCompaniesDropDown"
                           [ngValue]="option">{{option.name}}</option>
                       </select>
                     </div>
                     <!--Search-->
-                    <div class="portlet-input input-inline mr10">
-                      <div class="input-icon right mDamSearch rSearch" style="position: relative; right: -6px;">
+                    <div class="portlet-input input-inline ml5">
+                      <div class="input-icon right mDamSearch rSearch" style="position: relative;">
                         <input type="text" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey"
                           [ngModelOptions]="{standalone: true}" placeholder="Search..."
                           (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
@@ -73,7 +73,7 @@
                             class="fa fa-search" aria-hidden="true"></i></button>
                       </div>
                     </div>
-                    <div class="inline-block pull-right ml10">
+                    <div class="inline-block pull-right ml5">
                       <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
                         title="Export to Excel" (click)="downloadDamAnalytics()"
                         [disabled]="pagination?.totalRecords === 0">
@@ -81,11 +81,11 @@
                       </button>
                     </div>
                     <!--Refresh-->
-                    <a class="close-circle ref-mar ml10" (click)="refreshList()" data-toggle="tooltip"
+                    <a class="close-circle ref-mar ml5" (click)="refreshList()" data-toggle="tooltip"
                       data-placement="bottom" title="Refresh">
                       <i class="fa fa-refresh" aria-hidden="true"></i>
                     </a>
-                    <a class="close-circle ref-mar ml10" (click)="goBack()" aria-hidden="true">
+                    <a class="close-circle ref-mar ml5" (click)="goBack()" aria-hidden="true">
                       <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                   </div>
