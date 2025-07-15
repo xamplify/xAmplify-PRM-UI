@@ -18,6 +18,7 @@ import { VideoBasedReportsComponent } from '../videos/manage-video/video-based-r
 import { VideoBaseReportService } from '../videos/services/video-base-report.service';
 import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
 import { DamAnalyticsDetailsComponent } from './dam-analytics-details/dam-analytics-details.component';
+import { SelectAssetTypeFilterPipe } from './select-asset-type-filter.pipe';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { DamAnalyticsDetailsComponent } from './dam-analytics-details/dam-analyt
   declarations: [ManageDamComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
                   VideoBasedReportsComponent,
                   DamPartnerCompanyAnalyticsComponent,
-                  DamAnalyticsDetailsComponent],
+                  DamAnalyticsDetailsComponent,
+                  SelectAssetTypeFilterPipe],
   providers: [DamService, VideoBaseReportService]
 })
 export class DamModule { }

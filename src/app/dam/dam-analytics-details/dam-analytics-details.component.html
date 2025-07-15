@@ -36,20 +36,20 @@
         </span>
       </div>
     </div>
-    <div class="asset-info">
-      <i class="fas fa-file-pdf"></i>
-      <div class="text-group">
-        <span class="label text-align-left">Asset Type</span>
-        <span class="value">
-          <span class="badge"
-                data-toggle="tooltip" data-placement="bottom"
-                [attr.title]="damPostDto.assetType">
-            {{ damPostDto.assetType | slice:0:20 }}
-            <span *ngIf="damPostDto.assetType?.length > 20">…</span>
-          </span>
-        </span> 
-      </div>
+  <!-- updated snippet -->
+  <div class="asset-info">
+    <i class="fas" [ngClass]="damPostDto.assetType | fileIcon"></i>
+  
+    <div class="text-group">
+      <span class="label text-align-left">Asset Type</span>
+      <span class="value">
+        <span class="badge" data-toggle="tooltip" data-placement="bottom" [attr.title]="damPostDto.assetType">
+          {{ damPostDto.assetType | slice:0:20 }}
+          <span *ngIf="damPostDto.assetType?.length > 20">…</span>
+        </span>
+      </span>
     </div>
+  </div>
     <div class="asset-info">
       <i class="fas fa-calendar-alt"></i>
       <div class="text-group">
