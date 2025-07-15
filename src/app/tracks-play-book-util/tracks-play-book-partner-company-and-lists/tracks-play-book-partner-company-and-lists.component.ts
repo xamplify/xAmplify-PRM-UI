@@ -324,7 +324,6 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			this.selectedPartnershipIds.push(partnershipId);
-			this.selectedPartnerGroupIds = this.referenceService.removeDuplicates(this.selectedPartnerGroupIds);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
@@ -333,6 +332,8 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
 		}
+		this.selectedPartnerGroupIds = this.referenceService.removeDuplicates(this.selectedPartnerGroupIds);
+		this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 		ev.stopPropagation();
 		this.notifyParent();
 	}
