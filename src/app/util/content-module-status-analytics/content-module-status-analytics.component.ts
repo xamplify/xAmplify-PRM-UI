@@ -4,6 +4,8 @@ import { DamService } from 'app/dam/services/dam.service';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { LmsService } from 'app/lms/services/lms.service';
+import { Router } from '@angular/router';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-content-module-status-analytics',
@@ -27,13 +29,17 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   manageContentCounts: any;
   contentCountsLoader: boolean = false;
   hideContentTiles: boolean = false;
-
-  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService:LmsService) {
+ selectedFilter: string = '';
+  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService:LmsService,private router: Router, private referenceService: ReferenceService,) {
 
   }
 
   ngOnInit() {
-     this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
+    //  this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
+  const selected = this.referenceService.selectedTab || 'all';
+  this.selectedFilter = selected;
+  this.contentModuleStatusAnalyticsDTO.selectedCategory = selected.toUpperCase(); 
+  this.referenceService.selectedTab = '';
       this.setModuleTypeLabel();
       if (this.moduleType == 'APPROVE') {
         this.getTileCountsForApproveModule();
@@ -79,8 +85,19 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   }
 
   loadContentByType(selectedCategory: string) {
-    this.contentModuleStatusAnalyticsDTO.selectedCategory = selectedCategory;
-    this.filterContentByType.emit(selectedCategory);
+    const isFolderView = this.router.url.includes('/manage/fg') || this.router.url.includes('/manage/fl');
+    this.selectedFilter = '';
+
+    if (selectedCategory === 'folder') {
+      this.filterAssets(selectedCategory, false);
+    }
+    else if (isFolderView) {
+      this.filterAssets(selectedCategory, true);
+    }
+    else {
+      this.contentModuleStatusAnalyticsDTO.selectedCategory = selectedCategory;
+      this.filterContentByType.emit(selectedCategory);
+    }
   }
 
   getTileCountsForApproveModule() {
@@ -128,4 +145,59 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
       );
     }
 
+    filterAssets(tabName: string, isFolderView: any): void {
+    const isTracks = this.router.url.includes('/tracks/');
+  const isPlaybook = this.router.url.includes('/playbook/');
+    this.selectedFilter = tabName;
+      this.contentModuleStatusAnalyticsDTO.selectedCategory = tabName.toUpperCase();
+
+      this.referenceService.selectedTab = tabName;
+    if (isFolderView && tabName !== 'folder') {
+      this.referenceService.categoryType = tabName;
+      if (isTracks) {
+        this.referenceService.goToRouter('/home/tracks/manage/l');
+      } else if (isPlaybook) {
+        this.referenceService.goToRouter('/home/playbook/manage/l');
+      } else {
+        this.referenceService.goToRouter('/home/dam/manage/l');
+      }
+    } else {
+
+      if (tabName == 'folder') {
+        let viewType = localStorage.getItem('defaultDisplayType') || 'FOLDER_GRID';
+
+        if (this.router.url.includes('/tracks/')) {
+          if (viewType === 'FOLDER_GRID') {
+            this.referenceService.goToRouter('/home/tracks/manage/fg');
+          } else if (viewType === 'FOLDER_LIST') {
+            this.referenceService.goToRouter('/home/tracks/manage/fl');
+          } else {
+            this.referenceService.goToRouter('/home/tracks/manage/fg');
+          }
+
+        } else if (this.router.url.includes('/playbook/')) {
+          if (viewType === 'FOLDER_GRID') {
+            this.referenceService.goToRouter('/home/playbook/manage/fg');
+          } else if (viewType === 'FOLDER_LIST') {
+            this.referenceService.goToRouter('/home/playbook/manage/fl');
+          } else {
+            this.referenceService.goToRouter('/home/playbook/manage/fg');
+          }
+
+        } else {
+          if (viewType === 'FOLDER_GRID') {
+            this.referenceService.goToRouter('/home/dam/manage/fg');
+          } else if (viewType === 'FOLDER_LIST') {
+            this.referenceService.goToRouter('/home/dam/manage/fl');
+          } else {
+            this.referenceService.goToRouter('/home/dam/manage/fg');
+          }
+        }
+
+      } else {
+        this.loadContentByType(tabName);
+      }
+    }
+  }
+  return;
 }
