@@ -232,6 +232,7 @@ import { DomainColorConfigurationComponent } from 'app/util/domain-color-configu
 import { ExecutiveSummaryReportComponent } from 'app/executive-summary-report/executive-summary-report.component';
 import { SelectPartnersAndShareLeadsComponent } from 'app/campaigns/select-partners-and-share-leads/select-partners-and-share-leads.component';
 import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member-modal-popup/invite-team-member-modal-popup.component';
+import { PptDesignPickerComponent } from 'app/util/ppt-design-picker/ppt-design-picker.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -276,7 +277,8 @@ import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,
+		PptDesignPickerComponent
 	],
 
 
@@ -320,7 +322,8 @@ import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent
+		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,
+		PptDesignPickerComponent
 	]
 
 

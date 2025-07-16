@@ -160,7 +160,8 @@ export class ChatGptModalComponent implements OnInit {
   socialShareOption: boolean = false;
   designAccess: boolean = false;
   uploadedFolders: any[];
-  pptLoader: boolean = false;
+  showPptDesignPicker: boolean = false;
+  pptData: string;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -317,6 +318,8 @@ export class ChatGptModalComponent implements OnInit {
     this.autoResizeTextArea(event);
     this.designAccess = false;
     this.checkDesignAccess();
+    this.pptData = '';
+    this.showPptDesignPicker = false;
   }
 
   private checkDamAccess() {
@@ -396,6 +399,8 @@ export class ChatGptModalComponent implements OnInit {
     this.autoResizeTextArea(event);
     this.designAccess = false;
     this.checkDesignAccess();
+    this.pptData = '';
+    this.showPptDesignPicker = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -1910,35 +1915,22 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
-  onPptFile(el: HTMLElement): void {
-    this.pptLoader = true;
-    const rawText: string = (el.textContent || '').trim();
-    if (!rawText) {
-      console.warn('[pptx] No content');
-      this.pptLoader = false;
-      return;
+
+
+  openPptDesignPicker(el: HTMLElement): void {
+    this.pptData = (el.textContent || '').trim();
+    if (this.pptData.trim().length > 0) {
+      this.showPptDesignPicker = true;
     }
-    const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = rawText;
-    this.chatGptSettingsService
-      .getOpenAiResponse(dto)
-      .subscribe(
-        (response: any) => {
-          const data = response && response.data;
-          if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data);
-          } else {
-            console.warn('[pptx] No data returned from GPT');
-          }
-        },
-        (error: any) => {
-          console.error('[pptx] GPT error:', error);
-          this.pptLoader = false;
-        },
-        () => {
-          this.pptLoader = false;
-        }
-      );
+  }
+
+  emitSelectedTemplate(event: any) {
+    if (event) {
+      this.showPptDesignPicker = false;
+      this.pptData = '';
+    } else {
+      this.resetValues();
+    }
   }
 
 }

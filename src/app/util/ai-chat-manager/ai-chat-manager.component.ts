@@ -111,7 +111,9 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
-  pptLoader: boolean = false;
+  pptData: string;
+  showPptDesignPicker: boolean = false;
+
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -1410,35 +1412,24 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
 
-  onPptFile(el: HTMLElement): void {
-    this.pptLoader = true;
-    const rawText: string = (el.textContent || '').trim();
-    if (!rawText) {
-      console.warn('[pptx] No content');
-      this.pptLoader = false;
-      return;
+  openPptDesignPicker(el: HTMLElement): void {
+    this.pptData = (el.textContent || '').trim();
+    if (this.pptData.trim().length > 0) {
+      this.showPptDesignPicker = true;
     }
-    const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = rawText;
-    this.chatGptSettingsService
-      .getOpenAiResponse(dto)
-      .subscribe(
-        (response: any) => {
-          const data = response && response.data;
-          if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data);
-          } else {
-            console.warn('[pptx] No data returned from GPT');
-          }
-        },
-        (error: any) => {
-          console.error('[pptx] GPT error:', error);
-          this.pptLoader = false;
-        },
-        () => {
-          this.pptLoader = false;
-        }
-      );
   }
+
+  emitSelectedTemplate(event: any) {
+    if (event) {
+      this.resetValues();
+    } else {
+      this.resetValues();
+    }
+  }
+  resetValues() {
+    this.pptData = '';
+    this.showPptDesignPicker = false;
+  }
+
   
 }

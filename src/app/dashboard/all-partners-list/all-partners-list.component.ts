@@ -298,7 +298,8 @@ applyFilters(pagination: Pagination) {
     let regionFilter = this.regionName;
     this.pagination.maxResults = this.pagination.totalRecords;
     let pageableUrl = this.referenseService.getPagebleUrl(this.pagination);
-    let sortColumn = this.pagination.sortcolumn;
+    let sortColumn = this.pagination.sortcolumn?this.pagination.sortcolumn:'';
+    let partnerTeamMemberGroupFilter = this.applyFilter;
     let selectedRegionIds = this.pagination.selectedRegionIds.join(',');
     if (this.pagination.selectedRegionIds && this.pagination.selectedRegionIds.includes(this.regionName)) {
       regionFilter = '';
@@ -306,7 +307,7 @@ applyFilters(pagination: Pagination) {
     let selectedStatusIds = this.pagination.selectedStatusIds.join(',');
     this.pagination.maxResults = maxResults
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
-      + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+"&selectedRegionIds="+selectedRegionIds+"&selectedStatusIds="+selectedStatusIds+"&access_token=" + this.authenticationService.access_token + pageableUrl;
+      + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+"&selectedRegionIds="+selectedRegionIds+"&selectedStatusIds="+selectedStatusIds+"&partnerTeamMemberGroupFilter="+partnerTeamMemberGroupFilter+"&access_token=" + this.authenticationService.access_token + pageableUrl;
    }
   /****** XNFR-1015 *****/
   getUniqueId(item: any): string {
