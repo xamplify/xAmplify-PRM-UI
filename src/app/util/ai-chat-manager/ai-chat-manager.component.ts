@@ -111,7 +111,6 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
-  pptLoader: boolean = false;
   pptData: string;
   showPptDesignPicker: boolean = false;
 
@@ -1411,37 +1410,6 @@ export class AiChatManagerComponent implements OnInit {
       }, () => {
 
       });
-  }
-
-  onPptFile(el: HTMLElement): void {
-    this.pptLoader = true;
-    const rawText: string = (el.textContent || '').trim();
-    if (!rawText) {
-      console.warn('[pptx] No content');
-      this.pptLoader = false;
-      return;
-    }
-    const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = rawText;
-    this.chatGptSettingsService
-      .getOpenAiResponse(dto)
-      .subscribe(
-        (response: any) => {
-          const data = response && response.data;
-          if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data,null);
-          } else {
-            console.warn('[pptx] No data returned from GPT');
-          }
-        },
-        (error: any) => {
-          console.error('[pptx] GPT error:', error);
-          this.pptLoader = false;
-        },
-        () => {
-          this.pptLoader = false;
-        }
-      );
   }
 
   openPptDesignPicker(el: HTMLElement): void {

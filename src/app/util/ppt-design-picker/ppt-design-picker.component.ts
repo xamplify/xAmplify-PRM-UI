@@ -15,19 +15,19 @@ export class PptDesignPickerComponent implements OnInit {
   cards = [
     {
       id: 'template1',
-      title: 'Mobile Wireframe PowerPoint Template',
+      title: 'Facet PowerPoint Template',
       image: 'assets/images/pptblueimage.png',
       selected: false
     },
     {
       id: 'template2',
-      title: 'Customer Card UI PowerPoint Template',
+      title: 'Organic PowerPoint Template',
       image: 'assets/images/custompptdesign.png',
       selected: false
     },
     {
       id: 'template3',
-      title: 'User Login Mockup PowerPoint Template',
+      title: 'Parallax PowerPoint Template',
       image: 'assets/images/neworangeimage.png',
       selected: false
     }

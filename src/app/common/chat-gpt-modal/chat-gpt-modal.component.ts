@@ -160,7 +160,6 @@ export class ChatGptModalComponent implements OnInit {
   socialShareOption: boolean = false;
   designAccess: boolean = false;
   uploadedFolders: any[];
-  pptLoader: boolean = false;
   showPptDesignPicker: boolean = false;
   pptData: string;
 
@@ -1916,36 +1915,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
-  onPptFile(el: HTMLElement): void {
-    this.pptLoader = true;
-    const rawText: string = (el.textContent || '').trim();
-    if (!rawText) {
-      console.warn('[pptx] No content');
-      this.pptLoader = false;
-      return;
-    }
-    const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = rawText;
-    this.chatGptSettingsService
-      .getOpenAiResponse(dto)
-      .subscribe(
-        (response: any) => {
-          const data = response && response.data;
-          if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data,null);
-          } else {
-            console.warn('[pptx] No data returned from GPT');
-          }
-        },
-        (error: any) => {
-          console.error('[pptx] GPT error:', error);
-          this.pptLoader = false;
-        },
-        () => {
-          this.pptLoader = false;
-        }
-      );
-  }
+
 
   openPptDesignPicker(el: HTMLElement): void {
     this.pptData = (el.textContent || '').trim();
@@ -1956,8 +1926,6 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
   emitSelectedTemplate(event: any) {
     if (event) {
-      // this.onPptFile(this.pptData, event);
-      // this.emitterData(event);
       this.showPptDesignPicker = false;
       this.pptData = '';
     } else {

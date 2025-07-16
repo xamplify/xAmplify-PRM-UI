@@ -35,13 +35,6 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div *ngIf="pptLoader" class="ppt-mask">
-      <div class="ppt-badge">
-        <span class="msag">Generating&nbsp;PPT</span>
-        <!-- ring spinner -->
-        <span class="ring"></span>
-      </div>
-    </div>
     <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage || showPptDesignPicker ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
@@ -590,7 +583,7 @@
                           <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
                             [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
                             <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-                              aria-hidden="true" (click)="speakTextForParaprasher(markdownComponent)">
+                              aria-hidden="true" (click)="speakTextOn(i, markdownComponent)">
                             </i>
                           </div>
                           <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
@@ -897,9 +890,10 @@
         </div>
       </div>
       <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
-        <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
-          <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-            aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
+          [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
+          <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
+            (click)="speakTextOn(i, markdownComponent)">
           </i>
         </div>
         <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
