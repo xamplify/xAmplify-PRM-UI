@@ -485,7 +485,7 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf=" team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 && previousTeamMemberGroupId != team.teamMemberGroupId" [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <app-select-partners-and-share-leads *ngIf=" editTeamMember && !loading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
                 <!---Enable As An Admin--->
                 <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
                   <div class="form-group">

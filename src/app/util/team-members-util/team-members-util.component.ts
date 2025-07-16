@@ -142,6 +142,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   previousTeamMemberGroupId: number = 0;
   selectedPartnershipIds = [];
   teamMemberPartnerCompanys: any[] = [];
+  existingPartnershipIds: any[] = [];
+
+  deletedPartnershipIds: any[] = [];
+  
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -372,8 +376,13 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
+      this.updateSelectedPartnerMappings();
       if(this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
         this.team.selectedPartnershipIds = this.selectedPartnershipIds;
+        this.team.newPartnersAdded = true;
+      }
+      if( this.deletedPartnershipIds && this.deletedPartnershipIds.length > 0) {
+        this.team.deletedPartnershipIds = this.deletedPartnershipIds;
       }
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
@@ -382,6 +391,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
             this.loading = false;
             if (data.statusCode == 200) {
               this.editTeamMember = false;
+              this.existingPartnershipIds = [];
+              this.deletedPartnershipIds = [];
+              this.selectedPartnershipIds = [];
               this.customResponse = new CustomResponse('SUCCESS', data.message, true);
               this.pagination = new Pagination();
               this.findAll(this.pagination);
@@ -424,7 +436,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           self.selectedTeamMemberEmailId = teamMember.emailId;
           self.delete();
         }, function (dismiss: any) {
-
         });
       } else {
         this.selectedId = 0;
@@ -722,6 +733,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.showUploadedTeamMembers = false;
     this.editTeamMember = false;
     this.saveOrUpdateButtonText = "Save";
+    this.existingPartnershipIds = [];
+    this.deletedPartnershipIds = [];
+    this.selectedPartnershipIds = [];
     this.refreshList();
   }
 
@@ -734,16 +748,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addOrUpdateTeamMember() {
     this.customResponse = new CustomResponse();
     if (this.team.validForm) {
-      this.referenceService.loading(this.addTeamMemberLoader, true);
       this.team.userId = this.loggedInUserId;
       if (this.editTeamMember) {
         if (this.previousTeamMemberGroupId != this.team.teamMemberGroupId
           && this.teamMemberPartnerCompanys && this.teamMemberPartnerCompanys.length > 0) {
           this.confirmUpdateAlert(this.teamMemberPartnerCompanys);
         } else {
+          this.referenceService.loading(this.addTeamMemberLoader, true);
           this.updateTeamMember();
         }
       } else {
+        this.referenceService.loading(this.addTeamMemberLoader, true);
         this.addTeamMember();
       }
     } else {
@@ -759,6 +774,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
+
     this.teamMemberService.saveTeamMembersXNFR2(teamInput).
       subscribe(
         data => {
@@ -1483,11 +1499,19 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.selectedPartnershipIds = event;
   }
 
+  private updateSelectedPartnerMappings() {
+    if (this.previousTeamMemberGroupId === this.team.teamMemberGroupId) {
+      this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
+      this.selectedPartnershipIds = this.selectedPartnershipIds.filter((id: any) => !this.existingPartnershipIds.includes(id));
+    }
+  }
+
   findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
     this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          this.teamMemberPartnerCompanys = response.data;
+          this.teamMemberPartnerCompanys = response.map.partnerCompanyDTOs;
+          this.existingPartnershipIds = response.map.partnershipIds;
         }
       },
       (_error: any) => {
@@ -1508,6 +1532,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       swalCancelButtonColor: '#999',
       confirmButtonText: 'Yes, Move it!'
     }).then(function () {
+      self.referenceService.loading(self.addTeamMemberLoader, true);
       self.updateTeamMember();
     }, function (dismiss: any) {
       console.log('you clicked on option' + dismiss);

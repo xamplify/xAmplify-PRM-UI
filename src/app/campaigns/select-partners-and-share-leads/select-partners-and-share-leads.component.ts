@@ -38,6 +38,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   @Input() hideHeaderText = false;
   @Input() teamMemberGroupId = 0;
   @Input() IsTeamMemberGroup:boolean = false;
+  @Input() existingPartnershipIds: any[] = [];
+  @Input() teamMemberId = 0;
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
@@ -46,6 +48,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   colspanValue = 2;
   isTableLoaded: boolean = true;
   selectedPartnershipIds = [];
+  
 @Output() selectedPartnershipIdsEmitter = new EventEmitter();
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
@@ -275,16 +278,32 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 	  findTeamMemberPartnerCompany(pagination: Pagination) {
 		this.referenceService.startLoader(this.httpRequestLoader);
+		pagination.teamMemberId = this.teamMemberId;
 		this.partnerService.findTeamMemberPartnerCompany(pagination,this.teamMemberGroupId).
     	subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
+
 		}, error => {
 			this.xtremandLogger.error(error);
 			this.xtremandLogger.errorPage(error);
+		},
+		()=>{
+			this.updatePartnerCheckBoxDetails();
 		});
+	}
+
+	private updatePartnerCheckBoxDetails() {
+		for (let partner of this.pagination.pagedItems) {
+			if (this.existingPartnershipIds != null && this.existingPartnershipIds.length > 0 
+				&& this.existingPartnershipIds.includes(partner.partnershipId)) {
+				this.selectedPartnershipIds.push(partner.partnershipId);
+				$('#partnerListTable_' + partner.partnershipId).prop('checked', true);
+			}
+		}
+		this.isHeaderCheckBoxChecked = this.selectedPartnershipIds.length === this.pagination.pagedItems.length;
 	}
 
 	selectOrUnSelectAllModules(event: any, partnerShipId: number) {
