@@ -81,7 +81,7 @@ export class AllPartnerTableComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.partnershipStatus = this.partnershipStatus;
-    this.parterService.getAllPartners(this.pagination).subscribe(
+    this.parterService.getAllPartnersDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         this.sortOption.totalRecords = response.data.totalRecords;
