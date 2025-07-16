@@ -17,9 +17,9 @@
           <!-- XNFR-835 -->
           <div class="SotybyBoxPosition mr5">
             <div style="float: left;" *ngIf="!isCollapsed">
-              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOptionForPartnerJourney"
+              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOptionForDeactivatedPartnerJourney"
                 (ngModelChange)="getSortedResults($event)">
-                <option *ngFor="let option of sortOption.sortByDropDownForPartnerJourney" [ngValue]="option">{{option.name}}</option>
+                <option *ngFor="let option of sortOption.sortByDropDownForDeactivatedPartnerJourney" [ngValue]="option">{{option.name}}</option>
               </select>
             </div>
           </div>
@@ -59,8 +59,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!isCollapsed" class="alert alert-info mt10 mb10"> List Of 
-      {{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}    </div>
+    <div *ngIf="!isCollapsed" class="alert alert-info mt10 mb10"> List Of All  {{authenticationService?.partnerModule?.customName}}  </div>
     <ng-template [ngTemplateOutlet]="filter"></ng-template>
     <ng-template #filter>
 
@@ -140,12 +139,12 @@
                         [src]="authenticationService.MEDIA_URL+item.companyLogo">
                     </span>
                   </td>
-                  <td>
-                    <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
-                      {{item?.companyName | slice:0:25}}
-                      <span *ngIf="item?.companyName?.length>25">...</span>
-                    </h4>
-                  </td>
+                <td>
+                  <h4 class="ellipsis" style="font-size: 14px;" [title]="item?.companyName || 'N/A'">
+                    {{ item?.companyName ? (item.companyName | slice:0:25) : 'N/A' }}
+                    <span *ngIf="item?.companyName?.length > 25">...</span>
+                  </h4>
+                </td>
                   <td>
                     <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
                     </app-user-info>
@@ -158,10 +157,10 @@
                   </td>
                   <td>
                     <div class="actions-block override-actions">
-                      <a class="custom-icon" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"
+                      <a class="custom-icon" data-rel="fancybox-button" (click)="(item.status === 'Active') ? viewAnalytics(item.companyId) :'' "
                         data-toggle="tooltip" data-placement="bottom" title="View Partner Journey" id="pj">
                         <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
-                        <i class="fas fa-route IconCustomization"></i>
+                        <i [ngClass]="(item.status != 'Active') ? 'disabled gray':''" class="fas fa-route IconCustomization"></i>
                         <div class="clickicons"></div>
                       </a>
                     </div>
