@@ -185,6 +185,7 @@ export class ReferenceService {
   isCloudFront = true; //XNFR-1001
   categoryType : string = '';
   selectedTab: string;
+  categoryTrackPlaybookType:boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

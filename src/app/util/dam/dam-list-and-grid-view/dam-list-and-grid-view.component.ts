@@ -1141,10 +1141,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (event == this.approvalStatus.DRAFT) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
 			this.listAssets(this.pagination);
-		}  else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'UPDATED' ) {
+		}  else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL' ) {
 			this.pagination.selectedApprovalStatusCategory = event;
 			this.listAssets(this.pagination);
-		}else {
+		} else {
 			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}
