@@ -1,7 +1,8 @@
 <!--Partner Companies-->
-<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
+<div [ngClass]="IsTeamMemberGroup ? 'row card_margin' : ''">
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid" [ngClass]="IsTeamMemberGroup ? 'BgForCard' : ''">
    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-   <div class="dataTables_wrapper form-inline no-footer pt10" *ngIf="!httpRequestLoader.isLoading">
+   <div class="dataTables_wrapper form-inline no-footer" *ngIf="!httpRequestLoader.isLoading">
       <div class="note-vid pull-left" *ngIf="!hideHeaderText && !IsTeamMemberGroup">
          Select One {{authenticationService?.partnerModule?.customName}} Company
       </div>
@@ -290,6 +291,7 @@
          </div>
       </div>
    </div>
+</div>
 </div>
 <ng-container *ngIf="showLeadsPreview">
    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"

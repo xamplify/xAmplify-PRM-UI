@@ -48,7 +48,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   colspanValue = 2;
   isTableLoaded: boolean = true;
   selectedPartnershipIds = [];
-  
+  deletedPartnershipIds = [];
 @Output() selectedPartnershipIdsEmitter = new EventEmitter();
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
@@ -297,8 +297,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 	private updatePartnerCheckBoxDetails() {
 		for (let partner of this.pagination.pagedItems) {
-			if (this.existingPartnershipIds != null && this.existingPartnershipIds.length > 0 
-				&& this.existingPartnershipIds.includes(partner.partnershipId)) {
+			if ( this.existingPartnershipIds.includes(partner.partnershipId) 
+				&& !this.deletedPartnershipIds.includes(partner.partnershipId)) {
 				this.selectedPartnershipIds.push(partner.partnershipId);
 				$('#partnerListTable_' + partner.partnershipId).prop('checked', true);
 			}
@@ -312,23 +312,32 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			if (!this.selectedPartnershipIds.includes(partnerShipId)) {
 				this.selectedPartnershipIds.push(partnerShipId);
 			}
+			if( this.deletedPartnershipIds.includes(partnerShipId)) {
+				this.deletedPartnershipIds.splice($.inArray(partnerShipId, this.deletedPartnershipIds), 1);
+			}
 		} else {
 			this.selectedPartnershipIds.splice($.inArray(partnerShipId, this.selectedPartnershipIds), 1);
+			if (!this.deletedPartnershipIds.includes(partnerShipId) && this.existingPartnershipIds.includes(partnerShipId)) {
+				this.deletedPartnershipIds.push(partnerShipId);
+			}
 
 		}
-		this.isHeaderCheckBoxChecked = this.selectedPartnershipIds.length === this.pagination.pagedItems.length;
-		this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+		this.isHeaderCheckBoxChecked = this.pagination.pagedItems.every(item => this.selectedPartnershipIds.includes(item.partnershipId));
+this.selectedPartnershipIdsEmitter.emit({ added: this.selectedPartnershipIds, removed: this.deletedPartnershipIds });
 	}
 
 	checkAll(event: any) {
 		const isChecked = $(event.target).is(':checked');
 		if (isChecked) {
 			this.selectedPartnershipIds = this.pagination.pagedItems.map(item => item.partnershipId);
+			this.deletedPartnershipIds = this.deletedPartnershipIds.filter(item => !this.existingPartnershipIds.includes(item));
+
 		} else {
 			this.selectedPartnershipIds = [];
+			this.deletedPartnershipIds = this.pagination.pagedItems.filter(item => this.existingPartnershipIds.includes(item.partnershipId)).map(item => item.partnershipId);
 		}
 		this.isHeaderCheckBoxChecked = isChecked;
-		this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+		this.selectedPartnershipIdsEmitter.emit({ added: this.selectedPartnershipIds, removed: this.deletedPartnershipIds });
 	}
 
 	notifyParentDropDown(pagination: any) {
@@ -342,7 +351,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	ngOnChanges() {
 		if (this.IsTeamMemberGroup) {
 			setTimeout(() => {
-				this.selectedPartnershipIdsEmitter.emit(this.selectedPartnershipIds);
+this.selectedPartnershipIdsEmitter.emit({ added: this.selectedPartnershipIds, removed: this.deletedPartnershipIds });
 			});
 		}
 	}

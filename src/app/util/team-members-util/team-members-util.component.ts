@@ -1495,13 +1495,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   /** XNFR-914 ***/
 
-  updateSelectedPartnershipIds(event: any) {
-    this.selectedPartnershipIds = event;
+  updateSelectedPartnershipIds(changes: { added: number[], removed: number[] }) {
+    this.selectedPartnershipIds = changes.added;
+    this.deletedPartnershipIds = changes.removed;
   }
 
   private updateSelectedPartnerMappings() {
     if (this.previousTeamMemberGroupId === this.team.teamMemberGroupId) {
-      this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
+      //this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
       this.selectedPartnershipIds = this.selectedPartnershipIds.filter((id: any) => !this.existingPartnershipIds.includes(id));
     }
   }
@@ -1521,11 +1522,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   confirmUpdateAlert(teamMemberPartnerCompanys: any[]) {
-    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join(', ');
+    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join('<br> ');
+    let groupName = this.teamMemberGroups.find((group: any) => group.id === this.team.teamMemberGroupId).name || this.team.teamMemberGroupName;
     let self = this;
     swal({
       title: 'Are you sure?',
-      text: "'" + this.team.emailId + "' will be moved to '" + this.team.teamMemberGroupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
+      text: "'" + this.team.emailId + "' will be moved to '" + groupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
       type: 'warning',
       showCancelButton: true,
       swalConfirmButtonColor: '#54a7e9',
