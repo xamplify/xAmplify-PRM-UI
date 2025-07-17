@@ -2217,4 +2217,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.disableOliverAgentModuleOptions = !event;
         this.campaignAccess.oliverActive = event;
     }
+
+    /*** XNFR-1066 ***/
+    onVanityUrlChange() {
+        if (!this.campaignAccess.vanityUrlDomain) {
+            this.campaignAccess.marketingModulesEnabled = false;
+        }
+    }
+
 }

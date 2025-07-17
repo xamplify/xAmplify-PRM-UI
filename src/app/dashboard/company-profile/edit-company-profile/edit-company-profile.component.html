@@ -298,11 +298,14 @@
 												</tr>
 												<tr>
 													<th scope="col">Vanity URL</th>
-													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.vanityUrlDomain"
-															[ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain" 
+														[ngModelOptions]="{standalone: true}" (change)="onVanityUrlChange()"></td>
 												</tr>
-
+												<tr>
+													<th scope="col">Marketing Modules</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.marketingModulesEnabled"
+															[ngModelOptions]="{standalone: true}" [disabled]="!campaignAccess.vanityUrlDomain"></td>
+												</tr>
 												<tr>
 													<th scope="col">MDF</th>
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.mdf"
