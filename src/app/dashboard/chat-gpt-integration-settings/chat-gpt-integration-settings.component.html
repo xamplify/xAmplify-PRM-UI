@@ -86,7 +86,8 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 agent-card-align"  *ngIf="authenticationService.oliverContactAgentEnabled">
+
+          <div class="col-sm-6 agent-card-align"  *ngIf="authenticationService?.module?.isContact && authenticationService.oliverContactAgentEnabled">
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverContactAgent"
@@ -100,7 +101,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverPartnerAgentEnabled">
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService?.module?.isPartner && authenticationService.oliverPartnerAgentEnabled">
             <div class="agent-card" style="position: relative;"
               [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>

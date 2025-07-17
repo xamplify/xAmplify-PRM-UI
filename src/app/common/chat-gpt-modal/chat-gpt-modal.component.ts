@@ -1317,11 +1317,13 @@ closeDesignTemplate(event: any) {
           this.showOliverSparkWriter = data.showOliverSparkWriter;
           this.showOliverParaphraser = data.showOliverParaphraser;
           this.showOliverContactAgent = data.showOliverContactAgent;
+          this.showOliverPartnerAgent = data.showOliverPartnerAgent;
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
           this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
           this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
+          this.oliverAgentAccessDTO.showOliverPartnerAgent = this.showOliverPartnerAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
