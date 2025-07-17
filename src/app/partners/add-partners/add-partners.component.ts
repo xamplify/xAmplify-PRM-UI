@@ -344,6 +344,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	showAskOliverModalPopup: boolean = false;
+	showOliverPartnerAgent: boolean = false;
+
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -2748,6 +2750,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
 		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -5097,6 +5100,18 @@ triggerUniversalSearch(){
 				}
 			}, error => {
 				console.log('Error in fetchOliverActiveIntegration() ', error);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
 			});
 	}
 
