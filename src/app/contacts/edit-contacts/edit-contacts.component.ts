@@ -2066,6 +2066,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.moduleName = this.module;
 			this.contactListObject.editList = true;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.userListPaginationWrapper.pagination.exportToExcel = false;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2950,6 +2951,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.isDownload = true;
 			this.userListPaginationWrapper.pagination = pagination;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.userListPaginationWrapper.pagination.exportToExcel = true;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -3725,7 +3727,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.userList.editList = true;
 			this.contactListObj.id = this.selectedContactListId;
-			this.contactListObj.moduleName = this.checkingContactTypeName + 's';
+			this.contactListObj.moduleName = this.module;
 			this.contactListObj.name = this.contactListName;
 			this.contactListObj.sharedLeads = this.sharedLeads;
 			this.contactListObj.isPartnerUserList = this.isPartner;
