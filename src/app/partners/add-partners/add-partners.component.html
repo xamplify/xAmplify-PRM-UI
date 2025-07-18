@@ -1091,7 +1091,7 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
 
-                                                            <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive"
+                                                            <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive && showOliverPartnerAgent && authenticationService.oliverPartnerAgentEnabled"
                                                                 data-toggle="tooltip" data-placement="bottom" title="Ask Oliver" (click)="askOliver(contact)">
                                                                 <div class="oliveBackground">
                                                                     <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">

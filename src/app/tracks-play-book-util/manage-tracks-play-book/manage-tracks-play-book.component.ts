@@ -206,10 +206,21 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     if(!this.folderListView){
 			this.referenceService.goToTop();
 		}
-    if(this.referenceService.categoryType.trim().length){
-		this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
-		this.referenceService.categoryType = '';
-		}
+    if (this.referenceService.categoryTrackPlaybookType) {
+      if (this.referenceService.categoryType.trim().length > 0) {
+        this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+        this.referenceService.categoryTrackPlaybookType = false;
+      }
+    } else {
+      if (this.referenceService.categoryType.trim().length > 0) {
+        this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+        this.referenceService.categoryType = '';
+      } else {
+        this.pagination.selectedApprovalStatusCategory = "all"
+        this.referenceService.categoryTrackPlaybookType = false;
+      }
+
+    }
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
@@ -556,7 +567,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (event == this.approvalStatus.CREATED) {
       this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
       this.listLearningTracks(this.pagination);
-    }else if (event == 'published' || event == 'unpublished' || event == 'all') {
+    }else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL') {
       this.pagination.selectedApprovalStatusCategory = event;
       this.pagination.selectedApprovalStatusCategory = event;
       this.listLearningTracks(this.pagination);
