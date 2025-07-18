@@ -189,7 +189,7 @@ export class AuthenticationService {
   oliverParaphraserEnabled: boolean = false;
   oliverContactAgentEnabled: boolean = false;
   oliverPartnerAgentEnabled: boolean = false;
-
+  marketingModulesAccessForPartner: boolean = false;
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -798,7 +798,7 @@ export class AuthenticationService {
     // }else{
     //   url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
     // }
-    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
+    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token+ "&companyProfileName=" + this.companyProfileName)
       .map(this.extractData)
       .catch(this.handleError);
   }

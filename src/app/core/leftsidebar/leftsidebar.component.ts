@@ -216,7 +216,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
 					this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
 					this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
-					 this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
+					this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
+					this.authenticationService.marketingModulesAccessForPartner = data.marketingModulesAccessForPartner;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

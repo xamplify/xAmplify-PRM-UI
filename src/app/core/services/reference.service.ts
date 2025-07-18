@@ -2348,7 +2348,7 @@ export class ReferenceService {
     return this.http
       .get(
         this.authenticationService.REST_URL +
-          `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`
+          `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`
       )
       .map(this.extractData)
       .catch(this.handleError);

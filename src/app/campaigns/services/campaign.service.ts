@@ -859,7 +859,7 @@ export class CampaignService {
 
 
     getOrgCampaignTypes(companyId: any) {
-        return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`)
+        return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1011,7 +1011,7 @@ export class CampaignService {
     }
 
     hasCampaignCreateAccess() {
-        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
+        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + this.authenticationService.companyProfileName, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
