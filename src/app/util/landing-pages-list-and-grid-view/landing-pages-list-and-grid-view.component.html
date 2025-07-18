@@ -48,10 +48,9 @@
                                 <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                     <!-- XNFR-1001  -->
                                     <td class="hidden-xs custom-icon-width">
-                                        <img id="landing-page-image-preview-custom-css" *ngIf="!referenceService.isCloudFront" class="pages_image_border"
+                                        <img id="landing-page-image-preview-custom-css"  class="pages_image_border"
                                             src="{{landingPage.thumbnailPath+cacheBuster}}" alt="Image Not Found">
-                                            <img id="landing-page-image-preview-custom-css" *ngIf="referenceService.isCloudFront" class="pages_image_border"
-                                            src="{{landingPage.cdnLandingPageThumbnailPath+cacheBuster}}" alt="Image Not Found">
+                                           
                                     </td>
                                     <!-- XNFR-1001  -->
                                     <td>
