@@ -159,6 +159,7 @@ export class ContactDetailsComponent implements OnInit {
   callActivity: any;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   isFromManageContact: boolean = false;
+  showOliverContactAgent: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -204,6 +205,7 @@ export class ContactDetailsComponent implements OnInit {
       this.getLegalBasisOptions();
       this.getVendorRegisterDealValue();
       this.fetchOliverActiveIntegration();
+      this.getOliverAgentAccessSettings();
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
@@ -1085,6 +1087,18 @@ export class ContactDetailsComponent implements OnInit {
         }
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
+      });
+  }
+
+  getOliverAgentAccessSettings() {
+    this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+      result => {
+        if (result.data && result.statusCode == 200) {
+          let data = result.data;
+          this.showOliverContactAgent = data.showOliverContactAgent;
+        }
+      }, error => {
+        console.log('Error in getOliverAgentAccessSettings() ', error);
       });
   }
   
