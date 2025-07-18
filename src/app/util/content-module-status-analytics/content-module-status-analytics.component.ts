@@ -21,6 +21,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   @Input() fromDateFilter : string;
   @Output() filterContentByType = new EventEmitter();
   @Input() showApprovalTiles : boolean = false;
+  @Input() isPartnerView : boolean = false;
 
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
@@ -48,6 +49,9 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
         this.getTileCounts();
         this.getContentCounts();
       }
+    if (this.isPartnerView) {
+      this.getSharedContentCounts();
+    }
   }
 
   ngOnChanges() {
@@ -133,6 +137,21 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
      getContentCounts() {
     this.contentCountsLoader = true;
       this.lmsService.getManageContentCounts(this.moduleType).subscribe(
+        (response: any) => {
+          this.contentCountsLoader = false;
+          if (response.statusCode == 200) {
+            this.manageContentCounts = response.map;
+          }
+        },
+        (_error: any) => {
+          this.contentCountsLoader = false;
+        }
+      );
+    }
+
+    getSharedContentCounts() {
+    this.contentCountsLoader = true;
+      this.lmsService.getManageSharedContentCounts(this.moduleType).subscribe(
         (response: any) => {
           this.contentCountsLoader = false;
           if (response.statusCode == 200) {
