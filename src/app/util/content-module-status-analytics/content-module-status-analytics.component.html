@@ -1,4 +1,4 @@
-<div *ngIf="showApprovalTiles" class="p0" style="padding-bottom:10px;padding-right: 12px;">
+<div *ngIf="showApprovalTiles && !isPartnerView" class="p0" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
 
    <ng-container *ngIf="!countsLoader && !contentCountsLoader">
@@ -162,7 +162,7 @@
    </ng-container>
 </div>
 
-<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles" class="front-count-row mb10">
+<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles && !isPartnerView" class="front-count-row mb10">
    <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
 
    <div class="front-count-col" style="padding-left: 12px;">
@@ -252,6 +252,176 @@
 
          <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
                title="Total folders"></i></div>
+      </div>
+   </div>
+</div>
+
+<div *ngIf="isPartnerView && !contentCountsLoader" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
+   <div class="front-count-col" [class.active]="selectedFilter === 'all'" (click)="filterAssets('all')"
+      style="cursor:pointer;" [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
+
+      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter === 'all'">
+
+         <!-- Icon container -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-purple': selectedFilter === 'all',
+           'front-count-blue': selectedFilter !== 'all'
+         }">
+            <i *ngIf="selectedFilter === 'all'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'all'" class="fa fa-database"></i>
+         </div>
+
+         <!-- Count and Label -->
+         <div class="front-count-number">{{ manageContentCounts?.allSharedCount }}</div>
+         <div class="front-count-label">
+            All
+            <i class="fa fa-info-circle ml5" aria-hidden="true" title="{{ 'Total records of ' + moduleLabel }}"></i>
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter == 'published'"
+         (click)="filterAssets('published')" style="cursor:pointer;">
+
+
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'published',
+           'front-count-green': selectedFilter !== 'published'
+         }">
+
+            <!-- Icon changes based on selection -->
+            <i *ngIf="selectedFilter == 'published'" class="fa fa-check-circle"></i>
+            <i *ngIf="selectedFilter !== 'published'" class="fa fa-bullhorn"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.inProgressCount}}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">In Progress <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total published assets "></i></div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'" [class.active]="selectedFilter == 'unpublished'" (click)="filterAssets('unpublished')"
+      style="cursor:pointer;">
+
+      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter == 'unpublished'">
+
+         <!-- Icon section -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'unpublished',
+           'front-count-orange': selectedFilter !== 'unpublished'
+         }">
+
+            <!-- Show correct icon -->
+            <i *ngIf="selectedFilter == 'unpublished'" class="fa fa-clock"></i>
+            <i *ngIf="selectedFilter !== 'unpublished'" class="fa fa-clock-o"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.completedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">
+            Completed
+            <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total unpublished assets"></i>
+         </div>
+      </div>
+   </div>
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+         (click)="filterAssets('folder')" style="cursor:pointer;">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'folder',
+           'front-count-purple': selectedFilter !== 'folder'
+         }">
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
+            <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.notViewedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Not Viewed <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders assets "></i></div>
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+         (click)="filterAssets('folder')" style="cursor:pointer;">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'folder',
+           'front-count-purple': selectedFilter !== 'folder'
+         }">
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
+            <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.interacted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Interacted <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders assets "></i></div>
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+         (click)="filterAssets('folder')" style="cursor:pointer;">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'folder',
+           'front-count-purple': selectedFilter !== 'folder'
+         }">
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
+            <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.nonInteracted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Non Interacted <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders assets "></i></div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+         (click)="filterAssets('folder')" style="cursor:pointer;">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-blue': selectedFilter == 'folder',
+           'front-count-purple': selectedFilter !== 'folder'
+         }">
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
+            <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.managerSharedFoldersCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders assets "></i></div>
       </div>
    </div>
 </div>

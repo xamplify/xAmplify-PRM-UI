@@ -22,6 +22,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   @Input() fromDateFilter: string;
   @Output() filterContentByType = new EventEmitter();
   @Input() showApprovalTiles: boolean = false;
+  @Input() isPartnerView : boolean = false;
 
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
@@ -59,6 +60,9 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
         selected = '';
 
       }
+    }
+    if (this.isPartnerView) {
+      this.getSharedContentCounts();
     }
 
     else if (
@@ -198,7 +202,23 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     );
   }
 
-  filterAssets(tabName: string, isFolderView: any): void {
+
+    getSharedContentCounts() {
+    this.contentCountsLoader = true;
+      this.lmsService.getManageSharedContentCounts(this.moduleType).subscribe(
+        (response: any) => {
+          this.contentCountsLoader = false;
+          if (response.statusCode == 200) {
+            this.manageContentCounts = response.map;
+          }
+        },
+        (_error: any) => {
+          this.contentCountsLoader = false;
+        }
+      );
+    }
+
+    filterAssets(tabName: string, isFolderView: any): void {
     const isTracks = this.router.url.includes('/tracks/');
     const isPlaybook = this.router.url.includes('/playbook/');
     if (tabName != 'folder' && tabName != 'published' && tabName != 'unpublished' && tabName != 'all' && tabName != 'DRAFT' && tabName != 'CREATED' && tabName != 'REJECTED' && tabName != 'ALL' && tabName != 'APPROVED') {
