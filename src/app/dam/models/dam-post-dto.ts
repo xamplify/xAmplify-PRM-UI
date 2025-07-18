@@ -40,4 +40,9 @@ export class DamPostDto {
 
 	/** XNFR-884 **/
 	slug: string = "";
+	trackName: string = "";
+	folder: string = "";
+	fullName: string = "";
+	publishedOn: string = "";
+
 }

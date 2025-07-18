@@ -20,6 +20,7 @@ import { FormService } from '../../forms/services/form.service';
 import { ColumnInfo } from '../../forms/models/column-info';
 import { FormOption } from '../../forms/models/form-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var $, swal: any;
 
@@ -27,7 +28,7 @@ declare var $, swal: any;
   selector: 'app-tracks-play-book-partner-analytics',
   templateUrl: './tracks-play-book-partner-analytics.component.html',
   styleUrls: ['./tracks-play-book-partner-analytics.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties, FormService]
+  providers: [HttpRequestLoader, SortOption, Properties, FormService,DamService]
 })
 export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
@@ -99,6 +100,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
     pagination.partnerCompanyId = this.partnerCompanyId;
     pagination.lmsType = this.type;
     this.referenceService.startLoader(this.httpRequestLoader);
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForPartnerTrackDetails, this.pagination);
     this.tracksPlayBookUtilService.getPartnerAnalytics(pagination).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
@@ -353,5 +355,22 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
             }
         );
 }
-  
+  downloadPartnerTrackAndPlaybooksAnalytics(){
+    let userId = this.loggedInUserId;
+    let learningTrackId = this.learningTrackId;
+    let partnerCompanyId = this.partnerCompanyId;
+    let searchKey = this.sortOption.searchKey && this.sortOption.searchKey.trim() !== "" ? this.sortOption.searchKey : "-";
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForPartnerTrackDetails, this.pagination);
+    let lmsType = this.type;
+    let teamMemberPartnerFilter = this.pagination.partnerTeamMemberGroupFilter ? "true":"false";
+    let url = this.authenticationService.REST_URL + "lms" + "/downloadPartnerTrackAnalytics/userId/" + userId + "/learningTrackId/" + learningTrackId
+      + "/sortOrder/" + this.pagination.sortingOrder + "/sortColumn/" + this.pagination.sortcolumn
+      + "/partnerCompanyId/" + partnerCompanyId + "/searchKey/" + searchKey
+      + "/lmsType/" + lmsType+ "/teamMemberPartnerFilter/" + teamMemberPartnerFilter + "?access_token=" + this.authenticationService.access_token;
+    this.referenceService.openWindowInNewTab(url);
+  }
+   sortPartnerCompanies(text: any) {
+    this.sortOption.selectedSortOptionForPartnerTrackDetails = text;
+    this.getPartnerAnalytics(this.pagination);
+  }
 }
