@@ -2935,7 +2935,7 @@ border:0px!important;
 }
 .BgForCard{
   border:   1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2b2f33!important;
+  background: rgb(0 0 0 / 18%) !important;
 }
 /* manikanta */
 /* .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
@@ -4542,4 +4542,8 @@ button.btn.btn-primary.dropdown-toggle.border_btn{
 table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
 table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
     color: inherit !important;
+}
+.front-count-card.active {
+    border: 1.6px solid #007bff !important;
+    backdrop-filter: blur(4px);
 }

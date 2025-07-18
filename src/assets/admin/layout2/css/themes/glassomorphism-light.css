@@ -4815,3 +4815,7 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
 .modal-title, .modal-title b, h4.modal-title[id] {
     color: #000000 !important;
 }
+.front-count-card.active {
+    border: 1.6px solid #007bff !important;
+    backdrop-filter: blur(4px);
+}
