@@ -537,7 +537,7 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf=" editTeamMember && !loading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <app-select-partners-and-share-leads *ngIf=" editTeamMember && !loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
                 <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
                   (click)="addOrUpdateTeamMember()"><span
                     class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>

@@ -145,7 +145,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   existingPartnershipIds: any[] = [];
 
   deletedPartnershipIds: any[] = [];
-  
+  selectedPartnershipIdsLoading: boolean = false;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -1508,14 +1508,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
+    this.selectedPartnershipIdsLoading = true
     this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
           this.teamMemberPartnerCompanys = response.map.partnerCompanyDTOs;
           this.existingPartnershipIds = response.map.partnershipIds;
         }
+        this.selectedPartnershipIdsLoading = false;
       },
       (_error: any) => {
+        this.selectedPartnershipIdsLoading = false;
         this.httpRequestLoader.isServerError = true;
       }
     );

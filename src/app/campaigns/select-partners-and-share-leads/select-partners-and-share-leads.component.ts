@@ -303,7 +303,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 				$('#partnerListTable_' + partner.partnershipId).prop('checked', true);
 			}
 		}
-		this.isHeaderCheckBoxChecked = this.selectedPartnershipIds.length === this.pagination.pagedItems.length;
+		this.isHeaderCheckBoxChecked = this.pagination.pagedItems.every(item => this.selectedPartnershipIds.includes(item.partnershipId));
 	}
 
 	selectOrUnSelectAllModules(event: any, partnerShipId: number) {
