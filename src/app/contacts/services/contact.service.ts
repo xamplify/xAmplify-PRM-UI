@@ -164,7 +164,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
-            pagination.exportToExcel = false; 
+            pagination.exportToExcel = userListPaginationWrapper.pagination.exportToExcel; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -224,7 +224,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
-            pagination.exportToExcel = false; 
+            pagination.exportToExcel = userListPaginationWrapper.pagination.exportToExcel; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;

@@ -4,23 +4,24 @@ import { DamService } from 'app/dam/services/dam.service';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { LmsService } from 'app/lms/services/lms.service';
-import { Router } from '@angular/router';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-module-status-analytics',
   templateUrl: './content-module-status-analytics.component.html',
   styleUrls: ['./content-module-status-analytics.component.css'],
-  providers: [DamService,ApproveService,LmsService]
+  providers: [DamService, ApproveService, LmsService]
 })
 export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   @Input() moduleType: string;
   @Input() filterType: string;
-  @Input() toDateFilter : string;
-  @Input() fromDateFilter : string;
+  @Input() toDateFilter: string;
+  @Input() fromDateFilter: string;
   @Output() filterContentByType = new EventEmitter();
-  @Input() showApprovalTiles : boolean = false;
+  @Input() showApprovalTiles: boolean = false;
   @Input() isPartnerView : boolean = false;
 
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
@@ -30,36 +31,74 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   manageContentCounts: any;
   contentCountsLoader: boolean = false;
   hideContentTiles: boolean = false;
- selectedFilter: string = '';
-  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService:LmsService,private router: Router, private referenceService: ReferenceService,) {
+  selectedFilter: string = '';
+  tracksModule: boolean = false;
+  @Input() type: string;
+  titleHeader: string = "";
+
+  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService: LmsService, private referenceService: ReferenceService,
+    private router: Router) {
 
   }
 
   ngOnInit() {
-    //  this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
-  const selected = this.referenceService.selectedTab || 'all';
-  this.selectedFilter = selected;
-  this.contentModuleStatusAnalyticsDTO.selectedCategory = selected.toUpperCase(); 
-  this.referenceService.selectedTab = '';
-      this.setModuleTypeLabel();
-      if (this.moduleType == 'APPROVE') {
-        this.getTileCountsForApproveModule();
-        this.hideContentTiles = true;
+
+    let selected;
+    let isFolderView = this.router.url.includes('/manage/fg') || this.router.url.includes('/manage/fl');
+    if (isFolderView) {
+      selected = this.referenceService.categoryType = 'folder';
+    } else if (this.referenceService.categoryType) {
+      selected = this.referenceService.categoryType;
+    }
+
+    else if (this.referenceService.categoryType == 'folder') {
+      if (this.referenceService.categoryTrackPlaybookType) {
+        selected = this.referenceService.categoryType;
+        this.referenceService.categoryTrackPlaybookType = false;
       } else {
-        this.getTileCounts();
-        this.getContentCounts();
+        this.referenceService.categoryTrackPlaybookType = false;
+        selected = '';
+
       }
+    }
     if (this.isPartnerView) {
       this.getSharedContentCounts();
     }
-  }
 
+    else if (
+      this.referenceService.categoryType != 'undefined' &&
+      (this.referenceService.categoryType == 'folder' ||
+        this.referenceService.categoryType == 'published' ||
+        this.referenceService.categoryType == 'DRAFT' ||
+        this.referenceService.categoryType == 'ALL' ||
+        this.referenceService.categoryType == 'CREATED' ||
+        this.referenceService.categoryType == 'REJECTED' ||
+        this.referenceService.categoryType == 'APPROVED' ||
+        this.referenceService.categoryType == 'unpublished')) {
+      selected = this.referenceService.categoryType;
+      this.referenceService.categoryType = '';
+    }
+    else {
+      selected = this.referenceService.categoryType = 'all';
+    }
+
+    this.selectedFilter = selected;
+    this.contentModuleStatusAnalyticsDTO.selectedCategory = selected.toUpperCase();
+    this.setModuleTypeLabel();
+    if (this.moduleType == 'APPROVE') {
+      this.getTileCountsForApproveModule();
+      this.hideContentTiles = true;
+    } else {
+      this.getTileCounts();
+      this.getContentCounts();
+    }
+  }
   ngOnChanges() {
     if (this.moduleType == 'APPROVE') {
       this.getTileCountsForApproveModule();
       this.hideContentTiles = true;
-    } else if(!this.showApprovalTiles){
-       this.getContentCounts();
+    } else if (!this.showApprovalTiles) {
+      this.getContentCounts();
     }
   }
 
@@ -87,18 +126,32 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     this.contentModuleStatusAnalyticsDTO.draftCount = data.draftCount;
     this.contentModuleStatusAnalyticsDTO.pendingCount = data.pendingCount;
   }
+  loadContentByType(selectedCategory: string): void {
 
-  loadContentByType(selectedCategory: string) {
     const isFolderView = this.router.url.includes('/manage/fg') || this.router.url.includes('/manage/fl');
-    this.selectedFilter = '';
-
+    if (selectedCategory != 'folder' && selectedCategory != 'published' && selectedCategory != 'unpublished' && selectedCategory != 'all' && selectedCategory != 'DRAFT' && selectedCategory != 'CREATED' && selectedCategory != 'REJECTED' && selectedCategory != 'ALL' && selectedCategory != 'APPROVED') {
+      this.selectedFilter = '';
+    }
     if (selectedCategory === 'folder') {
       this.filterAssets(selectedCategory, false);
     }
     else if (isFolderView) {
+      this.referenceService.categoryTrackPlaybookType = true;
       this.filterAssets(selectedCategory, true);
     }
+
     else {
+      if (!this.referenceService.categoryTrackPlaybookType) {
+        this.referenceService.categoryType = '';
+        this.referenceService.categoryTrackPlaybookType = false;
+        this.selectedFilter = '';
+      }
+      if (this.router.url.includes('/manage/l') || this.router.url.includes('/tracks/manage') || this.router.url.includes('/playbook/manage') || this.router.url.includes('/dam/manage')) {
+        this.selectedFilter = selectedCategory;
+      }
+
+
+      this.referenceService.categoryType = selectedCategory
       this.contentModuleStatusAnalyticsDTO.selectedCategory = selectedCategory;
       this.filterContentByType.emit(selectedCategory);
     }
@@ -134,20 +187,21 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     }
   }
 
-     getContentCounts() {
+  getContentCounts() {
     this.contentCountsLoader = true;
-      this.lmsService.getManageContentCounts(this.moduleType).subscribe(
-        (response: any) => {
-          this.contentCountsLoader = false;
-          if (response.statusCode == 200) {
-            this.manageContentCounts = response.map;
-          }
-        },
-        (_error: any) => {
-          this.contentCountsLoader = false;
+    this.lmsService.getManageContentCounts(this.moduleType).subscribe(
+      (response: any) => {
+        this.contentCountsLoader = false;
+        if (response.statusCode == 200) {
+          this.manageContentCounts = response.map;
         }
-      );
-    }
+      },
+      (_error: any) => {
+        this.contentCountsLoader = false;
+      }
+    );
+  }
+
 
     getSharedContentCounts() {
     this.contentCountsLoader = true;
@@ -166,11 +220,13 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
     filterAssets(tabName: string, isFolderView: any): void {
     const isTracks = this.router.url.includes('/tracks/');
-  const isPlaybook = this.router.url.includes('/playbook/');
+    const isPlaybook = this.router.url.includes('/playbook/');
+    if (tabName != 'folder' && tabName != 'published' && tabName != 'unpublished' && tabName != 'all' && tabName != 'DRAFT' && tabName != 'CREATED' && tabName != 'REJECTED' && tabName != 'ALL' && tabName != 'APPROVED') {
+      this.selectedFilter = '';
+    }
     this.selectedFilter = tabName;
-      this.contentModuleStatusAnalyticsDTO.selectedCategory = tabName.toUpperCase();
-
-      this.referenceService.selectedTab = tabName;
+    this.contentModuleStatusAnalyticsDTO.selectedCategory = tabName.toUpperCase();
+    this.referenceService.categoryType = tabName;
     if (isFolderView && tabName !== 'folder') {
       this.referenceService.categoryType = tabName;
       if (isTracks) {
@@ -219,4 +275,5 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     }
   }
   return;
+  
 }

@@ -43,6 +43,7 @@ import { ParterService } from 'app/partners/services/parter.service';
 import { Partnership } from '../models/partnership.model';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var $: any, Papa: any, swal: any;
 
@@ -53,7 +54,7 @@ declare var $: any, Papa: any, swal: any;
 		'../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
 		'../../../assets/css/phone-number-plugin.css'],
 	providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch]
+		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch,DamService]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
 	isPartnerPopupShow: boolean = false;
@@ -343,6 +344,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	showAskOliverModalPopup: boolean = false;
+	showOliverPartnerAgent: boolean = false;
+
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -2747,6 +2750,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
 		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -5096,6 +5100,18 @@ triggerUniversalSearch(){
 				}
 			}, error => {
 				console.log('Error in fetchOliverActiveIntegration() ', error);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
 			});
 	}
 

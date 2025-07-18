@@ -145,7 +145,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   existingPartnershipIds: any[] = [];
 
   deletedPartnershipIds: any[] = [];
-  
+  selectedPartnershipIdsLoading: boolean = false;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -1495,37 +1495,42 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   /** XNFR-914 ***/
 
-  updateSelectedPartnershipIds(event: any) {
-    this.selectedPartnershipIds = event;
+  updateSelectedPartnershipIds(changes: { added: number[], removed: number[] }) {
+    this.selectedPartnershipIds = changes.added;
+    this.deletedPartnershipIds = changes.removed;
   }
 
   private updateSelectedPartnerMappings() {
     if (this.previousTeamMemberGroupId === this.team.teamMemberGroupId) {
-      this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
+      //this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
       this.selectedPartnershipIds = this.selectedPartnershipIds.filter((id: any) => !this.existingPartnershipIds.includes(id));
     }
   }
 
   findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
+    this.selectedPartnershipIdsLoading = true
     this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
           this.teamMemberPartnerCompanys = response.map.partnerCompanyDTOs;
           this.existingPartnershipIds = response.map.partnershipIds;
         }
+        this.selectedPartnershipIdsLoading = false;
       },
       (_error: any) => {
+        this.selectedPartnershipIdsLoading = false;
         this.httpRequestLoader.isServerError = true;
       }
     );
   }
 
   confirmUpdateAlert(teamMemberPartnerCompanys: any[]) {
-    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join(', ');
+    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join('<br> ');
+    let groupName = this.teamMemberGroups.find((group: any) => group.id === this.team.teamMemberGroupId).name || this.team.teamMemberGroupName;
     let self = this;
     swal({
       title: 'Are you sure?',
-      text: "'" + this.team.emailId + "' will be moved to '" + this.team.teamMemberGroupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
+      text: "'" + this.team.emailId + "' will be moved to '" + groupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
       type: 'warning',
       showCancelButton: true,
       swalConfirmButtonColor: '#54a7e9',
