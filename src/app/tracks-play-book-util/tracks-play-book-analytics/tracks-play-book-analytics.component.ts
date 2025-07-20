@@ -177,12 +177,12 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     let userId = this.loggedInUserId;
     let learningTrackId = this.learningTrackId;
     let lmsType = this.type;
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForTracks, this.pagination);
-    let searchKey = this.sortOption.searchKey && this.sortOption.searchKey.trim() !== "" ? this.sortOption.searchKey : "-";
-    let teamMemberPartnerFilter = this.pagination.partnerTeamMemberGroupFilter ? "true":"false";
-    let url = this.authenticationService.REST_URL + "lms" + "/downloadTrackAnalytics/userId/" + userId + "/learningTrackId/" + learningTrackId
-      + "/sortOrder/" + this.pagination.sortingOrder + "/sortColumn/" + this.pagination.sortcolumn + "/searchKey/" + searchKey
-      + "/lmsType/" + lmsType+ "/teamMemberPartnerFilter/" + teamMemberPartnerFilter+ "?access_token=" + this.authenticationService.access_token;
+    let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
+    let url = this.authenticationService.REST_URL + "lms" 
+    + "/downloadTrackAnalytics/userId/" + userId 
+    + "/learningTrackId/" + learningTrackId
+    + "/lmsType/" + lmsType 
+    + "?access_token=" + this.authenticationService.access_token + pageableUrl;
     this.referenceService.openWindowInNewTab(url);
   }
   sortPartnerCompanies(text: any) {
