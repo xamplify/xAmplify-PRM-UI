@@ -28,7 +28,7 @@ declare var $, swal: any;
   selector: 'app-tracks-play-book-partner-analytics',
   templateUrl: './tracks-play-book-partner-analytics.component.html',
   styleUrls: ['./tracks-play-book-partner-analytics.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties, FormService,DamService]
+  providers: [HttpRequestLoader, SortOption, Properties, FormService, DamService]
 })
 export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
@@ -51,7 +51,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   @Output() notifyAnalyticsRouter: EventEmitter<any>;
   @ViewChild('formPreviewWithSubmittedAnswersComponent') formPreviewWithSubmittedAnswersComponent: FormPreviewWithSubmittedAnswersComponent;
   formInput: Form;
-  selectedPartnerFormAnswers : Map<number, any> = new Map<number, any>();
+  selectedPartnerFormAnswers: Map<number, any> = new Map<number, any>();
   quizId: number;
   formBackgroundImage = "";
   pageBackgroundColor = "";
@@ -62,7 +62,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   isFromApprovalModule: boolean;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
-    public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,private formService: FormService,
+    public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private formService: FormService,
     private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.notifyAnalyticsRouter = new EventEmitter<any>();
@@ -241,7 +241,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
 
   viewAnalytics(partner: any, selectedIndex: number) {
     this.selectedPartnerId = partner.id;
-     /**XBI-3223**/
+    /**XBI-3223**/
     this.detailedAnalyticsSortOption.searchKey = "";
     this.detailedAnalyticsPagination.searchKey = "";
     this.getPartnerDetailedAnalytics(this.detailedAnalyticsPagination);
@@ -249,7 +249,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
 
   }
 
-  showFormAnalytics(partner: any){
+  showFormAnalytics(partner: any) {
     let formAnalytics: TracksPlayBook = new TracksPlayBook();
     formAnalytics.userId = this.loggedInUserId;
     formAnalytics.partnershipId = partner.id;
@@ -258,7 +258,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
     this.getPartnerFormAnalytics(formAnalytics);
   }
 
-  showFormAnalyticsFromPopup(detailedAnalytics: any){
+  showFormAnalyticsFromPopup(detailedAnalytics: any) {
     this.detailedAnalyticsLoader.isLoading = true;
     let formAnalytics: TracksPlayBook = new TracksPlayBook();
     formAnalytics.userId = this.loggedInUserId;
@@ -276,7 +276,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
           const data = response.data;
           this.selectedPartnerFormAnswers = data;
           this.referenceService.stopLoader(this.httpRequestLoader);
-          if(this.formInput == undefined || this.formInput.id != formAnalytics.quizId) {
+          if (this.formInput == undefined || this.formInput.id != formAnalytics.quizId) {
             this.previewForm(formAnalytics.quizId);
           } else {
             this.detailedAnalyticsLoader.isLoading = false;
@@ -292,12 +292,12 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
       this.referenceService.stopLoader(this.httpRequestLoader);
       this.customResponse = new CustomResponse('ERROR', 'Unable to get data.Please Contact Admin.', true);
     }
-  } 
+  }
 
   previewForm(id: number) {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
-    let formInput:Form = new Form();
+    let formInput: Form = new Form();
     formInput.id = id;
     formInput.userId = this.authenticationService.getUserId();
     let companyProfileName = this.authenticationService.companyProfileName;
@@ -306,70 +306,72 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
       formInput.vanityUrlFilter = true;
     }
     this.formService.getById(formInput)
-        .subscribe(
-            (data: any) => {
-                if (data.statusCode === 200) {
-                    this.formInput = data.data;
-                    if(this.formInput.showBackgroundImage){
-                        this.formBackgroundImage = this.formInput.backgroundImage;
-                        this.pageBackgroundColor = "";
-                    }else{
-                        this.pageBackgroundColor = this.formInput.pageBackgroundColor;
-                        this.formBackgroundImage = "";
-                    }
-                    $.each(this.formInput.formLabelDTORows, function (index: number, formLabelDTORow: any) {
-                      $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
-                        if (value.labelType == 'quiz_radio') {
-                            value.choices = value.radioButtonChoices;
-                        } else if (value.labelType == 'quiz_checkbox') {
-                            value.choices = value.checkBoxChoices;
-                        }
-                        if((value.labelType == 'quiz_radio') || (value.labelType == 'quiz_checkbox')){
-                            let correctValues = "";
-                            $.each(value.choices, function (index: number, value: FormOption) {
-                                if(value.correct){
-                                    if(correctValues.length > 0){
-                                        correctValues = correctValues + "," + value.name
-                                    } else {
-                                        correctValues = value.name  
-                                    }
-                                }
-                            });
-                            value.correctValues = correctValues; 
-                        }
-                    });
-                  });
-                    this.formError = false;
-                    this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, id, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
-                } else {
-                    this.formError = true;
-                    this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
-                }
-                this.detailedAnalyticsLoader.isLoading = false;
-                this.referenceService.stopLoader(this.httpRequestLoader);
-              },
-            (error: string) => {
-              this.detailedAnalyticsLoader.isLoading = false;
-              this.referenceService.stopLoader(this.httpRequestLoader);
-              this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
+      .subscribe(
+        (data: any) => {
+          if (data.statusCode === 200) {
+            this.formInput = data.data;
+            if (this.formInput.showBackgroundImage) {
+              this.formBackgroundImage = this.formInput.backgroundImage;
+              this.pageBackgroundColor = "";
+            } else {
+              this.pageBackgroundColor = this.formInput.pageBackgroundColor;
+              this.formBackgroundImage = "";
             }
-        );
-}
-  downloadPartnerTrackAndPlaybooksAnalytics(){
+            $.each(this.formInput.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+              $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
+                if (value.labelType == 'quiz_radio') {
+                  value.choices = value.radioButtonChoices;
+                } else if (value.labelType == 'quiz_checkbox') {
+                  value.choices = value.checkBoxChoices;
+                }
+                if ((value.labelType == 'quiz_radio') || (value.labelType == 'quiz_checkbox')) {
+                  let correctValues = "";
+                  $.each(value.choices, function (index: number, value: FormOption) {
+                    if (value.correct) {
+                      if (correctValues.length > 0) {
+                        correctValues = correctValues + "," + value.name
+                      } else {
+                        correctValues = value.name
+                      }
+                    }
+                  });
+                  value.correctValues = correctValues;
+                }
+              });
+            });
+            this.formError = false;
+            this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, id, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
+          } else {
+            this.formError = true;
+            this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
+          }
+          this.detailedAnalyticsLoader.isLoading = false;
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+        (error: string) => {
+          this.detailedAnalyticsLoader.isLoading = false;
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
+        }
+      );
+  }
+  downloadPartnerTrackAndPlaybooksAnalytics() {
+    let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
     let userId = this.loggedInUserId;
     let learningTrackId = this.learningTrackId;
     let partnerCompanyId = this.partnerCompanyId;
-    let searchKey = this.sortOption.searchKey && this.sortOption.searchKey.trim() !== "" ? this.sortOption.searchKey : "-";
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForPartnerTrackDetails, this.pagination);
     let lmsType = this.type;
-    let teamMemberPartnerFilter = this.pagination.partnerTeamMemberGroupFilter ? "true":"false";
-    let url = this.authenticationService.REST_URL + "lms" + "/downloadPartnerTrackAnalytics/userId/" + userId + "/learningTrackId/" + learningTrackId
-      + "/sortOrder/" + this.pagination.sortingOrder + "/sortColumn/" + this.pagination.sortcolumn
-      + "/partnerCompanyId/" + partnerCompanyId + "/searchKey/" + searchKey
-      + "/lmsType/" + lmsType+ "/teamMemberPartnerFilter/" + teamMemberPartnerFilter + "?access_token=" + this.authenticationService.access_token;
+    let url = this.authenticationService.REST_URL + "lms" +
+      "/downloadPartnerTrackAnalytics/userId/" + userId +
+      "/learningTrackId/" + learningTrackId +
+      "/partnerCompanyId/" + partnerCompanyId +
+      "/lmsType/" + lmsType +   
+      "?access_token=" + this.authenticationService.access_token + pageableUrl;
+
     this.referenceService.openWindowInNewTab(url);
   }
-   sortPartnerCompanies(text: any) {
+
+  sortPartnerCompanies(text: any) {
     this.sortOption.selectedSortOptionForPartnerTrackDetails = text;
     this.getPartnerAnalytics(this.pagination);
   }
