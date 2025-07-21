@@ -26,7 +26,11 @@ export interface ExecutiveReport {
   conclusion: Conclusion;
 
   dealPipelinePrograssion: DealPipelineProgression;
-  campaignPerformanceAnalysis: CampaignPerformanceAnalysisData
+  campaignPerformanceAnalysis: CampaignPerformanceAnalysisData;
+  trackContentEngagement  : TrackContentEngagement;
+  trackEngagementAnalysis : TrackEngagementAnalysis<TrackEngagementAnalysisItem>;
+  playbookContentEngagementOverview : PlayBookContentEngagementOverview;
+  assetEngagementOverview : AssetEnagementOverview;
 }
 
 /* ----------  Re-usable building blocks ---------- */
@@ -173,3 +177,52 @@ export interface OwnerDetails {
   owner_website: string;
   owner_country_code: string;
 };
+
+export interface TrackContentEngagement {
+  title: string;
+  description: string;
+  categories: string[];
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+}
+
+export interface AssetEnagementOverview {
+  title: string;
+  description: string;
+  categories: string[];
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+  mostOpenedAsset: string | number;
+  openCountForMostViewedAsset: string | number;
+  totalAssetsOpenCount: string | number;
+  avgEngagementRate: string | number;
+}
+
+export interface PlayBookContentEngagementOverview {
+  title: string;
+  description: string;
+  categories: string[];
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+}
+
+export interface TrackEngagementAnalysis<TItem> {
+  title: string;
+  description: string;
+  items: TItem[];
+}
+
+export interface TrackEngagementAnalysisItem {
+  name: string;
+  opens: string | number;
+  views: string | number;
+  downloads: string | number;
+  assets: string | number;
+  progress_rate: string | number;
+  engagement_level: string;
+  notes: string;
+}
+
