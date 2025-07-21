@@ -27,6 +27,7 @@ export class EmailTemplateService {
        }
 
     save(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.URL+"admin/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
