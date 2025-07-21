@@ -415,9 +415,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
-		if(this.referenceService.categoryType.trim().length){
-		this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
-		this.referenceService.categoryType = '';
+		if (this.referenceService.categoryType.trim().length) {
+			this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+			this.referenceService.categoryType = '';
+		}
+		if (this.pagination.selectedApprovalStatusCategory === this.approvalStatus.APPROVED) {
+			this.pagination.publishedFilter = true;
+		} else {
+			this.pagination.publishedFilter = false;
 		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
@@ -1131,20 +1136,26 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.pageIndex = 1;
 		if (event == this.approvalStatus.APPROVED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
+	        this.pagination.publishedFilter = true;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.REJECTED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
+		     this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.CREATED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+			      this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.DRAFT) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
+		    this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		}  else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL' ) {
 			this.pagination.selectedApprovalStatusCategory = event;
+			      this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		} else {
+			this.pagination.publishedFilter = false;
 			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}

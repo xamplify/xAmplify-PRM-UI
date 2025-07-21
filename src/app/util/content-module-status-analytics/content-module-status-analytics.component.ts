@@ -255,4 +255,5 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     }
   }
   return;
+  
 }
