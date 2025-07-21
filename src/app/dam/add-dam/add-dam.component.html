@@ -1,7 +1,12 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<a *ngIf="isFromOliverPopup" class="close-circle close-align d-flex justify-content-center align-items-center mb5" (click)="closePopup()">
+<!-- <a *ngIf="isFromOliverPopup" class="close-circle close-align d-flex justify-content-center align-items-center mb5" (click)="closePopup()">
    <i class="fa fa-times mt0" aria-hidden="true"></i>
-</a>
+</a> -->
+<div *ngIf="isFromOliverPopup" class="modal-header popup_header">
+   <button class="close-circle" type="button" (click)="closePopup()">
+      <i aria-hidden="true" class="fa fa-times" style="margin-top: 0px;"></i></button>
+   <h4 class="modal-title size-font" translate=""> Design PDF</h4>
+</div>
 <div [ngClass]="isFromOliverPopup ? '' : 'page-content'" [style.background-color]="isFromOliverPopup ? '' : referenceService.pageContnetBgColor">
    <div class="row">
       <div class="col-xs-12">

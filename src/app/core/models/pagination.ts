@@ -210,4 +210,6 @@ export class Pagination {
 
 	selectedTab: string;
 
+    publishedFilter : boolean = false;
+
 }

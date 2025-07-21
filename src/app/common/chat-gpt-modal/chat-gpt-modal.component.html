@@ -839,8 +839,8 @@
                     <div *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'partneragent'" class="action-buttons">
                       <button class="action-btn" (click)="setInputText('Give me the details of the partner')">Give me the details of the
                         partner</button>
-                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an
-                        Executive Summary of the...</button>
+                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary')">Generate an
+                        Executive Summary</button>
                       <button class="action-btn" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the
                         partner</button>
                     </div>
@@ -884,7 +884,7 @@
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
             <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-             <app-executive-summary-report   *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             <app-executive-summary-report [activeTab]="activeTab"  *ngIf="message?.isReport == 'true'" [reportData]="message.content">
              </app-executive-summary-report>
           </div>
         </div>

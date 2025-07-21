@@ -1,7 +1,12 @@
 <div [ngClass]="fromOliverPopup ? '' : 'portlet light'">
+  <div class="modal-header popup_header">
+    <button class="close-circle" type="button" (click)="closeSelectionTemplate()">
+      <i aria-hidden="true" class="fa fa-times" style="margin-top: 0px;"></i></button>
+    <h4 class="modal-title size-font" translate="">{{pageView ? 'Design Page' : 'Select Template' | translate}}</h4>
+  </div>
   <div class="modal-body">
     <div class="row" [ngClass]="fromOliverPopup ? 'template-selection' : ''">
-      <button class="btn close_btn" (click)="closeSelectionTemplate()">×</button>
+      <!-- <button class="btn close_btn" (click)="closeSelectionTemplate()">×</button> -->
       <ul *ngIf="!pageView" class="mix-filter">
           <li class="filter" [class.active]="filterType === 'All'" (click)="showEmailTemplates('All')" translate>All </li>
           <li class="filter" [class.active]="filterType === 'Email'" (click)="showEmailTemplates('Email')" translate>Email</li>

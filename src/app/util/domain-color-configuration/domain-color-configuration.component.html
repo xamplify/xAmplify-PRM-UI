@@ -4,7 +4,7 @@
     <a (click)="!selectedRefereshButton && getColorsByReferesh()" class="reload-btn"
       [class.disabled]="selectedRefereshButton" [attr.aria-disabled]="selectedRefereshButton"
       [style.pointer-events]="selectedRefereshButton ? 'none' : 'auto'" data-toggle="tooltip" data-placement="top"
-      title="Click to refresh and get updated colors">
+      [attr.data-original-title]="'Click to refresh and retrieve color palette from: ' + authenticationService?.user?.websiteUrl">
       <i class="fa fa-refresh fs-12" aria-hidden="true"></i>
     </a>
 
