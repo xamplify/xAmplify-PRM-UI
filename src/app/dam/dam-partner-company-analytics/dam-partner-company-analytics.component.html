@@ -28,7 +28,7 @@
     *ngIf="isPartnerSignatureRequired && isPublished" [damId]="damId"
     (filterContentByType)="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
   <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space" *ngIf="isPublished">
-  <app-dam-analytics-details [damId]="damId"></app-dam-analytics-details>
+  <app-dam-analytics-details [contentId]="damId" [contentType]="'DAM'"></app-dam-analytics-details>
     <div class="row">
       <div class="col-md-12">
         <div class="clearfix">

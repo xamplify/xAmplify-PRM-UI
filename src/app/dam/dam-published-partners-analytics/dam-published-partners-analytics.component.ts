@@ -66,7 +66,6 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damPartnerId = atob(this.route.snapshot.params['damPartnerId']);
     this.pagination.id = this.damPartnerId;
     this.validateDamId(this.damId);
-    this.getDamDetailsByDamId(this.damId);
   }
   validateDamId(damId: any) {
     this.damService.validateDamId(damId).subscribe(
@@ -206,19 +205,5 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   escapeCsv(value: any): string {
   const s = value == null ? '' : String(value).replace(/"/g, '""');
   return `"${s}"`;
-}
-getDamDetailsByDamId(damId: any) {
-  this.damService.getDamDetailsById(damId).subscribe(
-    response => {
-      if (response.statusCode === 200) {
-        this.damPostDto = response.data;
-      } else {
-        console.error("Error fetching DAM details:", response);
-      }
-    },
-    error => {
-      console.error("Error fetching DAM details:", error);
-    }
-  );
 }
 }
