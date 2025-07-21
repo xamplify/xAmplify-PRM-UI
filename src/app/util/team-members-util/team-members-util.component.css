@@ -606,3 +606,9 @@ border-radius: 7px;
   justify-content:center;
 }
 }
+.btn-pad8{
+padding: 8px 16px !important;
+}
+.btn-info{
+  background-color: #38a8df;
+}

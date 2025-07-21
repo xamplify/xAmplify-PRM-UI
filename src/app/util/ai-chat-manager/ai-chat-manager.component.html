@@ -1,11 +1,4 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div *ngIf="pptLoader" class="ppt-mask">
-  <div class="ppt-badge">
-    <span class="msag">Generating&nbsp;PPT</span>
-    <!-- ring spinner -->
-    <span class="ring"></span>
-  </div>
-</div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
@@ -21,8 +14,9 @@
     <app-choose-emailtemplate  [selectedTemplateList]="selectedTemplateList"
       (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
   </div>
+<app-ppt-design-picker *ngIf="showPptDesignPicker" [pptData]="pptData" [fromOliverPopup]="false" (notifyData)="emitSelectedTemplate($event)"></app-ppt-design-picker>
 
-  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage" class="pdf_body">
+  <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage && !showPptDesignPicker" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -186,7 +180,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+  <div *ngIf="openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage && !showPptDesignPicker" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
     <div *ngIf="showPreview" class="pdf-viewer">
       <div class="toolbar">
         <select class="zoom" [(ngModel)]="zoomLevel">
@@ -276,7 +270,7 @@
                         (click)="createAsset(markdownComponent)">Design Pdf</button>
                       <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
                         class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
-                        <button class="share-btn" (click)="onPptFile(markdownComponent)">Design PPT</button>
+                        <button class="share-btn" (click)="openPptDesignPicker(markdownComponent)">Design PPT</button>
                     </div>
                   </div>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>

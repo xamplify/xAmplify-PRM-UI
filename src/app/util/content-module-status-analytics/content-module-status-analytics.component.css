@@ -62,11 +62,9 @@
 }
 
 .new-width-row {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+     margin: 0px -8px 7px -8px;
 }
 
 .new-width-col {
@@ -139,7 +137,7 @@
 .front-count-label {
     font-size: 15px;
     font-weight: 500;
-    color: #6c757d;
+    color: #545c62;
 }
 
 .front-count-icon {
@@ -235,18 +233,11 @@
 }
 
 .front-count-card.active {
-    background: #f4f0ff;
-    border: 2px solid #8b5cf6;
+     background-color: #eaf4ff;
+    border: 1.6px solid #007bff;
 }
 
 .front-count-ait {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
 
-}
-
-.selected-tile-purple {
-    border: 2px solid #9b51e0 !important;
-    background-color: #f4ecff !important;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(155, 81, 224, 0.2);
 }

@@ -1,5 +1,6 @@
 <div *ngIf="showApprovalTiles" class="p0" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
+
    <ng-container *ngIf="!countsLoader && !contentCountsLoader">
       <div class="new-width-row">
          <div class="front-count-col" style="padding-left: 12px;">
@@ -9,7 +10,7 @@
                [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
 
                <div class="front-count-icon" [ngClass]="{
-           'front-count-purple': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
            'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'
          }">
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" class="fa fa-check"></i>
@@ -30,24 +31,21 @@
 
          <!-- published -->
          <div class="front-count-col">
-            <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'published'"
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
                (click)="filterAssets('published')" style="cursor:pointer;">
 
-
                <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': selectedFilter == 'published',
-           'front-count-green': selectedFilter !== 'published'
+           'front-count-green': selectedFilter == 'published',
+           'front-count-purple': selectedFilter != 'published'
          }">
 
-                  <!-- Icon changes based on selection -->
-                  <i *ngIf="selectedFilter == 'published'" class="fa fa-check-circle"></i>
-                  <i *ngIf="selectedFilter !== 'published'" class="fa fa-bullhorn"></i>
+                  <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
+                  <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
                </div>
 
-               <!-- Count -->
-               <div class="front-count-number">{{ manageContentCounts?.publishedCount}}</div>
+               <div class="front-count-number">{{ manageContentCounts?.publishedCount}} </div>
 
-               <!-- Label -->
                <div class="front-count-label">Published <i class="fa fa-info-circle ml5" aria-hidden="true"
                      title="Total published assets "></i></div>
             </div>
@@ -60,9 +58,8 @@
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'"
                (click)="loadContentByType('APPROVED')" style="cursor:pointer;"
                [class.disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
-
-               <div class="front-count-icon front-count-teal-green " [ngClass]="{
-           'front-count-purple': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED',
+               <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED',
            'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'APPROVED'
          }">
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory === 'APPROVED'" class="fa fa-check"></i>
@@ -76,28 +73,20 @@
             </div>
          </div>
 
-
          <div class="front-count-col">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory &&  contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'"
                (click)="loadContentByType('CREATED')"
                [class.disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0" style="cursor:pointer;">
 
-               <div class="front-count-icon front-count-ait" [ngClass]="{
-       'front-count-purple': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED',
-       'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'CREATED'
+               <div class="front-count-icon" [ngClass]="{
+       'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED',
+       'front-count-ait': contentModuleStatusAnalyticsDTO.selectedCategory !== 'CREATED'
      }">
-                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'"
-                     class="fa fa-hourglass-half"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'" class="fa fa-check"></i>
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'CREATED'" class="fa fa-hourglass"></i>
                </div>
-
-
-
-               <!-- Count -->
                <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.pendingCount }}</div>
-
-               <!-- Label and tooltip -->
                <div class="front-count-label">
                   Pending Approval
                   <span style="pointer-events: auto;">
@@ -107,6 +96,7 @@
                </div>
             </div>
          </div>
+
          <!-- Rejected -->
          <div class="front-count-col">
             <div class="front-count-card tiles_hover_effect"
@@ -115,11 +105,10 @@
                [class.disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
 
                <div class="front-count-icon" [ngClass]="{
-           'front-count-purple': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED',
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED',
            'front-count-red': contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'
          }">
-                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'"
-                     class="fa fa-times-circle"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" class="fa fa-check"></i>
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'" class="fa fa-ban"></i>
                </div>
                <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.rejectedCount }}</div>
@@ -138,11 +127,10 @@
                [class.disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
 
                <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT',
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT',
            'front-count-yellow': contentModuleStatusAnalyticsDTO.selectedCategory !== 'DRAFT'
          }">
-                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'"
-                     class="fa fa-pencil-square-o"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" class="fa fa-check"></i>
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'DRAFT'" class="fa fa-edit"></i>
                </div>
                <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.draftCount }}</div>
@@ -156,78 +144,69 @@
             <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
                (click)="filterAssets('folder')" style="cursor:pointer;">
 
-               <!-- Icon background and icon switch -->
                <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': selectedFilter == 'folder',
+           'front-count-green': selectedFilter == 'folder',
            'front-count-purple': selectedFilter !== 'folder'
          }">
-
-                  <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
-
+                  <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
                   <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
                </div>
-
-               <!-- Count -->
                <div class="front-count-number">{{ manageContentCounts?.manageFolderCount }}</div>
 
-               <!-- Label -->
                <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
-                     title="Total folders assets "></i></div>
+                     title="Total folders"></i></div>
             </div>
          </div>
 
       </div>
-
    </ng-container>
 </div>
 
-<!-- Keep the existing bottom section for when showApprovalTiles is false -->
 <div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles" class="front-count-row mb10">
    <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
-   <div class="front-count-col" [class.active]="selectedFilter === 'all'" (click)="filterAssets('all')"
-      style="cursor:pointer;" [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
 
-      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter === 'all'">
+   <div class="front-count-col" style="padding-left: 12px;">
+      <div class="front-count-card tiles_hover_effect"
+         [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
+         (click)="loadContentByType('ALL')" style="cursor:pointer;"
+         [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
 
-         <!-- Icon container -->
          <div class="front-count-icon" [ngClass]="{
-           'front-count-purple': selectedFilter === 'all',
-           'front-count-blue': selectedFilter !== 'all'
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
+           'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'
          }">
-            <i *ngIf="selectedFilter === 'all'" class="fa fa-check"></i>
-            <i *ngIf="selectedFilter !== 'all'" class="fa fa-database"></i>
+            <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" class="fa fa-check"></i>
+            <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'" class="fa fa-database"></i>
          </div>
 
-         <!-- Count and Label -->
-         <div class="front-count-number">{{ manageContentCounts?.allCount }}</div>
+         <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.totalCount }}</div>
+
          <div class="front-count-label">
             All
-            <i class="fa fa-info-circle ml5" aria-hidden="true" title="{{ 'Total records of ' + moduleLabel }}"></i>
+            <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+               title="{{ 'Total records of ' + moduleLabel }}"></i>
+            <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total records of approval hub"></i>
          </div>
       </div>
    </div>
 
-
-
    <div class="front-count-col">
-      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter == 'published'"
+      <div class="front-count-card tiles_hover_effect"
+         [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
          (click)="filterAssets('published')" style="cursor:pointer;">
 
-
          <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': selectedFilter == 'published',
-           'front-count-green': selectedFilter !== 'published'
+           'front-count-green': selectedFilter == 'published',
+           'front-count-purple': selectedFilter != 'published'
          }">
 
-            <!-- Icon changes based on selection -->
-            <i *ngIf="selectedFilter == 'published'" class="fa fa-check-circle"></i>
-            <i *ngIf="selectedFilter !== 'published'" class="fa fa-bullhorn"></i>
+            <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
          </div>
 
-         <!-- Count -->
-         <div class="front-count-number">{{ manageContentCounts?.publishedCount}}</div>
+         <div class="front-count-number">{{ manageContentCounts?.publishedCount}} </div>
 
-         <!-- Label -->
          <div class="front-count-label">Published <i class="fa fa-info-circle ml5" aria-hidden="true"
                title="Total published assets "></i></div>
       </div>
@@ -238,23 +217,19 @@
    <div class="front-count-col" [class.active]="selectedFilter == 'unpublished'" (click)="filterAssets('unpublished')"
       style="cursor:pointer;">
 
-      <div class="front-count-card tiles_hover_effect" [class.selected-tile-purple]="selectedFilter == 'unpublished'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'unpublished'">
 
-         <!-- Icon section -->
          <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': selectedFilter == 'unpublished',
+           'front-count-green': selectedFilter == 'unpublished',
            'front-count-orange': selectedFilter !== 'unpublished'
          }">
 
-            <!-- Show correct icon -->
-            <i *ngIf="selectedFilter == 'unpublished'" class="fa fa-clock"></i>
+            <i *ngIf="selectedFilter == 'unpublished'" class="fa fa-check"></i>
             <i *ngIf="selectedFilter !== 'unpublished'" class="fa fa-clock-o"></i>
          </div>
 
-         <!-- Count -->
          <div class="front-count-number">{{ manageContentCounts?.unPublishedCount }}</div>
 
-         <!-- Label -->
          <div class="front-count-label">
             UnPublished
             <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total unpublished assets"></i>
@@ -262,26 +237,21 @@
       </div>
    </div>
 
-
    <div class="front-count-col">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
          (click)="filterAssets('folder')" style="cursor:pointer;">
 
-         <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{
-           'front-count-blue': selectedFilter == 'folder',
+           'front-count-green': selectedFilter == 'folder',
            'front-count-purple': selectedFilter !== 'folder'
          }">
-            <i *ngIf="selectedFilter == 'folder'" class="fa fa-file	"></i>
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
             <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
          </div>
-
-         <!-- Count -->
          <div class="front-count-number">{{ manageContentCounts?.manageFolderCount }}</div>
 
-         <!-- Label -->
          <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
-               title="Total folders assets "></i></div>
+               title="Total folders"></i></div>
       </div>
    </div>
 </div>

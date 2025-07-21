@@ -33,4 +33,6 @@ export class CustomLinkDto {
     alternateUrl="";
     alternateUrls=[];
 
+    cdnBannerImagePath = "";
+
 }

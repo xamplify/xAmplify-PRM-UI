@@ -61,8 +61,9 @@
         </span>
       </div>
     </div>
+    
     <div *ngIf="isDam" class="asset-info">
-      <i class="fas fa-file-pdf"></i>
+      <i class="fas" [ngClass]="damPostDto.assetType | fileIcon"></i>
       <div class="text-group">
         <span class="label text-align-left">Asset Type</span>
         <span class="value">
@@ -74,7 +75,8 @@
           </span>
         </span> 
       </div>
-    </div>
+  </div>
+    
     <div class="asset-info">
       <i class="fas fa-calendar-alt"></i>
       <div class="text-group">

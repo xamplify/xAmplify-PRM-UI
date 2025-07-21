@@ -156,14 +156,15 @@
         <div class="button-container">
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
-            <ul class="textDecoration" *ngIf="!showBackButton">
-              <li *ngIf="!isMyprofile"><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
-                  (change)="setMyPreferances($event)" /></li>
-              <li> <label for="setAsDefault">
-                  <b *ngIf="!isMyprofile">Set as My Preferences</b>
-                  <!-- <b *ngIf="isMyprofile">Set My Default Fields</b> -->
-                </label></li>
-            </ul>
+            <div *ngIf="formId"> <!-- XBI-4921-->
+              <ul class="textDecoration" *ngIf="!showBackButton">
+                <li *ngIf="!isMyprofile"><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
+                    (change)="setMyPreferances($event)" /></li>
+                <li> <label for="setAsDefault">
+                    <b *ngIf="!isMyprofile">Set as My Preferences</b>
+                  </label></li>
+              </ul>
+            </div>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">

@@ -52,6 +52,7 @@ export class SelectfieldComponent implements OnInit {
   isMyprofile: boolean = false;
   defaultSelectedFieldsDtos: Array<any> = new Array<any>();
   customFieldsResponse: CustomResponse = new CustomResponse();
+  formId:any;
   constructor(public dashboardService: DashboardService, public authenticationService: AuthenticationService, private pagerService: PagerService,
     public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService, public paginationComponent: PaginationComponent
     , public router: Router
@@ -119,6 +120,7 @@ export class SelectfieldComponent implements OnInit {
     this.dashboardService.isMyPreferances(this.opportunityType)
       .subscribe(
         result => {
+          this.formId = result.map.formId;
           this.myPreferances = this.isMyprofile ? false : result.data;
           this.isSelectDivOpen = this.myPreferances ? false : true;
           this.getExportExcelHeader(this.pagination);

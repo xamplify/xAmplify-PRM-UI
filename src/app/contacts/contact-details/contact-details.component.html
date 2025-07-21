@@ -166,7 +166,7 @@
               </div>
               <div class="icon-label">Call</div>
             </div>
-            <div class="icon-item mt10" *ngIf="authenticationService?.isOliverActive && !isCompanyJourney" data-toggle="tooltip" data-placement="top"
+            <div class="icon-item mt10" *ngIf="!isCompanyJourney && authenticationService?.isOliverActive && (authenticationService?.oliverContactAgentEnabled && showOliverContactAgent)" data-toggle="tooltip" data-placement="top"
               title="Ask Oliver" (click)="askOliver()">
               <div class="icon-btns">
                 <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
