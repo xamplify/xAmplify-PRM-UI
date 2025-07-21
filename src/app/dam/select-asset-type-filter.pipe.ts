@@ -21,8 +21,8 @@ export class SelectAssetTypeFilterPipe implements PipeTransform {
 
     ['ppt', 'fa-file-powerpoint'], ['pptx', 'fa-file-powerpoint'],
 
-    ['zip', 'fa-file-zipper'], ['rar', 'fa-file-zipper'],
-    ['gz',  'fa-file-zipper'],  ['7z',  'fa-file-zipper'],
+    ['zip', 'fa-file-archive'], ['rar', 'fa-file-archive'],
+    ['gz',  'fa-file-archive'],  ['7z',  'fa-file-archive'],
 
     ['exe', 'fa-file-code'], ['sh',  'fa-file-code'],
     ['bat', 'fa-file-code'], ['jar', 'fa-file-code'],
