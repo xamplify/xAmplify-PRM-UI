@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 declare var $: any;
 @Component({
@@ -31,7 +32,8 @@ export class DomainColorConfigurationComponent implements OnInit {
 
 
 
-  constructor(public chatGptSettingsService: ChatGptSettingsService) {}
+  constructor(public chatGptSettingsService: ChatGptSettingsService,public authenticationService: AuthenticationService
+) {}
 
   ngOnInit() {
     this.loadColorConfiguration();
