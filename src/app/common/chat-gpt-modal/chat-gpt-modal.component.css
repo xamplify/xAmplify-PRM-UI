@@ -1698,7 +1698,7 @@ circle.front {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: -95px;
+  top: -128px;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;

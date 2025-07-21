@@ -1593,7 +1593,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
-
+			this.userListPaginationWrapper.pagination.exportToExcel = false;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2107,6 +2107,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
 			this.userListPaginationWrapper.userList.isDownload = true;
+			this.userListPaginationWrapper.pagination.exportToExcel = true;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {

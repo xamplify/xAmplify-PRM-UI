@@ -35,14 +35,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div *ngIf="pptLoader" class="ppt-mask">
-      <div class="ppt-badge">
-        <span class="msag">Generating&nbsp;PPT</span>
-        <!-- ring spinner -->
-        <span class="ring"></span>
-      </div>
-    </div>
-    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage  ? 'modal-content': 'modal-content oliver-content'">
+    <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage || showPptDesignPicker ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -55,8 +48,10 @@
       <app-add-landing-page *ngIf="showPage" [isFromOliver]="true" (notifyEmit)="closeDesignTemplate($event)"></app-add-landing-page>
       <app-choose-emailtemplate *ngIf="selectTemplate" [selectedTemplateList]="selectedTemplateList" [fromOliverPopup] = "true"
           (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
+          <app-ppt-design-picker *ngIf="showPptDesignPicker" [pptData]="pptData" [fromOliverPopup]="true"
+            (notifyData)="emitSelectedTemplate($event)"></app-ppt-design-picker>
       <ngx-loading [show]="templateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate && !showPage " [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
+      <div *ngIf="!openShareOption && !showTemplate && !selectTemplate && !showPage && !showPptDesignPicker" [ngClass]="showView || openAssetPage ? 'modal-body': 'modal-body oliver-header'"
         [ngStyle]="{ 'max-height': showView || openAssetPage ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           [oliverIntegrationType]="chatGptIntegrationSettingsDto?.oliverIntegrationType" [selectedItemFromOliver]="selectedAssets"
@@ -588,7 +583,7 @@
                           <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
                             [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
                             <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-                              aria-hidden="true" (click)="speakTextForParaprasher(markdownComponent)">
+                              aria-hidden="true" (click)="speakTextOn(i, markdownComponent)">
                             </i>
                           </div>
                           <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
@@ -895,9 +890,10 @@
         </div>
       </div>
       <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
-        <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
-          <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-            aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
+          [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
+          <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
+            (click)="speakTextOn(i, markdownComponent)">
           </i>
         </div>
         <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
@@ -920,7 +916,7 @@
               (click)="createAsset(markdownComponent)">Design Pdf</button>
             <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
               class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
-              <button  class="share-btn" (click)="onPptFile(markdownComponent)" >Design PPT</button>
+              <button  class="share-btn" (click)="openPptDesignPicker(markdownComponent)" >Design PPT</button>
           </div>
         </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>

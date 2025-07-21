@@ -237,7 +237,7 @@ export class TeamMemberService{
 		let input = {};
 		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
 		input['vanityUrlFilter'] = vanityUrlFilter;
-		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
 		input['userId'] = this.authenticationService.getUserId();
 		let map = { "teamMemberGroupId": id };
 		input['map'] = map;
