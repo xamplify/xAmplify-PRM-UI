@@ -16,7 +16,6 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { VideoBasedReportsComponent } from '../videos/manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from '../videos/services/video-base-report.service';
 import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
-import { SelectAssetTypeFilterPipe } from './select-asset-type-filter.pipe';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
 
 @NgModule({
@@ -26,7 +25,7 @@ import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
   declarations: [ManageDamComponent, PublishedDamListComponent, UploadAssetComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
                   VideoBasedReportsComponent,
                   DamPartnerCompanyAnalyticsComponent,
-                  SelectAssetTypeFilterPipe,DamAnalyticsComponent],
+                  DamAnalyticsComponent],
   providers: [DamService, VideoBaseReportService]
 })
 export class DamModule { }
