@@ -473,8 +473,8 @@ getSharedAssetDetailsByIdForVendor(id: number) {
     let url = this.DAM_PREFIX_URL+"/getAssetDetailBySlug/"+companyId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token + slugValue+loggedInUserValue;
     return this.authenticationService.callGetMethod(url);
   }
-  getDamDetailsById(damId: number) {
-        return this.http.get(this.URL + "damDetailsByDamId/" + damId + "?access_token=" + this.authenticationService.access_token)
+  getDamDetailsById(contentId: number, contentType: string) {
+    return this.http.get(this.URL + "damDetailsByDamId/" + contentId +"/contentType/"+ contentType + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
     }
