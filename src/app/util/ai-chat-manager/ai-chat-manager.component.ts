@@ -112,6 +112,7 @@ export class AiChatManagerComponent implements OnInit {
   private messageIndex: number = 0;
   private intervalSub: Subscription;
   pptLoader: boolean = false;
+  activeTab: string = '';
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -577,6 +578,7 @@ export class AiChatManagerComponent implements OnInit {
     this.loading = false;
     this.ngxLoading  = false;
     this.UploadedFile = false;
+    this.activeTab = ''; 
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
@@ -970,6 +972,7 @@ export class AiChatManagerComponent implements OnInit {
   uploadPartnerDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+    this.activeTab = 'partneragent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1109,6 +1112,7 @@ export class AiChatManagerComponent implements OnInit {
   uploadContactDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "CONTACTAGENT";
+    this.activeTab = 'contactagent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadContactDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1141,14 +1145,13 @@ export class AiChatManagerComponent implements OnInit {
 
     const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
+    const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
+
+    const trackEngagementItems = j.track_content_engagement_by_team && j.track_content_engagement_by_team.items ? j.track_content_engagement_by_team.items : [];
+
     const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
 
-    const playBookEngagementItems = j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
-
-    const trackEngagementItems = j.track_content_engagement_by_team.items ? j.track_content_engagement_by_team.items : [];
-
-    const assetsEngagementItems = j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
-
+    const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
     const dealPipelinePrograssion = {
       title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
@@ -1187,75 +1190,100 @@ export class AiChatManagerComponent implements OnInit {
       seriesString: '',
     };
 
-      const trackContentEngagement = {
-      title: j.track_content_engagement_by_team.title ? j.track_content_engagement_by_team.title : '',
-      categories: trackEngagementItems.map((item: any) => item.email ? item.email : ''), // dynamic categories (emails)
+    const trackContentEngagement = {
+      title: j.track_content_engagement_by_team && j.track_content_engagement_by_team.title
+        ? j.track_content_engagement_by_team.title
+        : '',
+      categories: trackEngagementItems.map((item: any) => item.email ? item.email : ''),
       series: [
         {
           name: 'Views',
           data: trackEngagementItems.map((item: any) =>
-            item.tracks_viewed !== undefined ? item.tracks_viewed : 0
+            item && item.tracks_viewed !== undefined ? item.tracks_viewed : 0
           ),
         },
         {
           name: 'Downloads',
           data: trackEngagementItems.map((item: any) =>
-            item.tracks_downloaded !== undefined ? item.tracks_downloaded : 0
+            item && item.tracks_downloaded !== undefined ? item.tracks_downloaded : 0
           ),
         }
       ],
       categoriesString: '',
       seriesString: '',
-      description : j.track_content_engagement_by_team.description ? j.track_content_engagement_by_team.description : '',
+      description: j.track_content_engagement_by_team && j.track_content_engagement_by_team.description
+        ? j.track_content_engagement_by_team.description
+        : '',
     };
 
     const playbookContentEngagementOverview = {
-      title: j.playbook_content_engagement_overview.title ? j.playbook_content_engagement_overview.title : '',
-      categories: playBookEngagementItems.map((item: any) => item.name ? item.name : ''), // dynamic categories (names)
+      title: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.title
+        ? j.playbook_content_engagement_overview.title
+        : '',
+      categories: playBookEngagementItems.map((item: any) =>
+        item && item.name ? item.name : ''
+      ),
       series: [
         {
           name: 'Views',
           data: playBookEngagementItems.map((item: any) =>
-            item.view_count !== undefined ? item.view_count : 0
+            item && item.view_count !== undefined ? item.view_count : 0
           ),
         },
         {
           name: 'Completed',
           data: playBookEngagementItems.map((item: any) =>
-            item.completion_count !== undefined ? item.completion_count : 0
+            item && item.completion_count !== undefined ? item.completion_count : 0
           ),
         }
       ],
       categoriesString: '',
       seriesString: '',
-      description : j.playbook_content_engagement_overview.description ? j.playbook_content_engagement_overview.description : '',
+      description: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.description
+        ? j.playbook_content_engagement_overview.description
+        : '',
     };
 
     const assetEngagementOverview = {
-      title: j.asset_engagement_overview.title ? j.asset_engagement_overview.title : '',
-      categories: assetsEngagementItems.map((item: any) => item.email ? item.email : ''), // dynamic categories (emails)
+      title: j.asset_engagement_overview && j.asset_engagement_overview.title
+        ? j.asset_engagement_overview.title
+        : '',
+      categories: assetsEngagementItems.map((item: any) =>
+        item && item.email ? item.email : ''
+      ),
       series: [
         {
           name: 'Views',
           data: assetsEngagementItems.map((item: any) =>
-            item.asset_views !== undefined ? item.asset_views : 0
+            item && item.asset_views !== undefined ? item.asset_views : 0
           ),
         },
         {
           name: 'Downloaded',
           data: assetsEngagementItems.map((item: any) =>
-            item.asset_downloads !== undefined ? item.asset_downloads : 0
+            item && item.asset_downloads !== undefined ? item.asset_downloads : 0
           ),
         }
       ],
       categoriesString: '',
       seriesString: '',
-      description: j.asset_engagement_overview.description ? j.asset_engagement_overview.description : '',
-      mostOpenedAsset : j.asset_engagement_overview.most_opened_asset ? j.asset_engagement_overview.most_opened_asset : 0,
-      openCountForMostViewedAsset : j.asset_engagement_overview.total_opens_for_most_opened_asset ? j.asset_engagement_overview.total_opens_for_most_opened_asset : 0,
-      totalAssetsOpenCount : j.asset_engagement_overview.assets_opened_count ? j.asset_engagement_overview.assets_opened_count : 0,
-      avgEngagementRate : j.asset_engagement_overview.avg_engagement_rate ? j.asset_engagement_overview.avg_engagement_rate : 0
-    }
+      description: j.asset_engagement_overview && j.asset_engagement_overview.description
+        ? j.asset_engagement_overview.description
+        : '',
+      mostOpenedAsset: j.asset_engagement_overview && j.asset_engagement_overview.most_opened_asset
+        ? j.asset_engagement_overview.most_opened_asset
+        : 0,
+      openCountForMostViewedAsset: j.asset_engagement_overview && j.asset_engagement_overview.total_opens_for_most_opened_asset
+        ? j.asset_engagement_overview.total_opens_for_most_opened_asset
+        : 0,
+      totalAssetsOpenCount: j.asset_engagement_overview && j.asset_engagement_overview.assets_opened_count
+        ? j.asset_engagement_overview.assets_opened_count
+        : 0,
+      avgEngagementRate: j.asset_engagement_overview && j.asset_engagement_overview.avg_engagement_rate
+        ? j.asset_engagement_overview.avg_engagement_rate
+        : 0,
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1359,7 +1387,7 @@ export class AiChatManagerComponent implements OnInit {
             : ''
       },
 
-
+      
       /* ---------- contact-journey timeline ---------- */
       contact_journey_timeline: {
         title:
@@ -1418,7 +1446,7 @@ export class AiChatManagerComponent implements OnInit {
       dealPipelinePrograssion: dealPipelinePrograssion,
 
       campaignPerformanceAnalysis: campaignPerformanceAnalysis,
-       trackContentEngagement : trackContentEngagement,
+      trackContentEngagement : trackContentEngagement,
       trackEngagementAnalysis: {
         title:
           j && j.track_engagement_analysis && j.track_engagement_analysis.title
@@ -1439,7 +1467,7 @@ export class AiChatManagerComponent implements OnInit {
 
     return dto;
   }
-
+  
   startStatusRotation() {
     this.statusMessage = this.loaderMessages[0];
     this.messageIndex = 1;
