@@ -341,6 +341,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     }
     goToAllPartnersDiv(){
+        this.resetPartnerFilters();
         this.totalPartnersDiv = true;
         this.isAllPartners = false; //XNFR-1015
          this.loadAllCharts = false;
@@ -354,6 +355,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.isSingUpPendingDiv = false;
          this.isdeactivatePartnersDiv = false;
          this.allPartnersStatusForMail();
+          this.loadCountryData();
+        setTimeout(() => {
+             this.getPartnersRedistributedCampaignsData();
+             this.reloadWithFilter = true;
+             this.loadAllCharts = false;
+        }, 500);
     }
     
     
@@ -898,7 +905,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             } else {
                 this.loadCountryData();
                 this.getPartnersRedistributedCampaignsData();
-                this.goToActivePartnersDiv();
+                this.goToAllPartnersDiv();
             }
             if (localStorage != undefined) {
                 this.throughPartnerCampaignsTabName = "Through " + localStorage.getItem('partnerModuleCustomName') + " Campaigns";
@@ -914,7 +921,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     ngOnChanges(){
-        this.goToActivePartnersDiv();
+        this.goToAllPartnersDiv();
+        // this.goToActivePartnersDiv();
         // this.goToDeactivatePartnersDiv();
     }
 
@@ -1027,7 +1035,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         }else if(self.selectedTabIndex == 1){
         	self.goToInActivePartnersDiv();
         } else{
-            self.goToActivePartnersDiv();
+            self.goToAllPartnersDiv();
         }
         self.throughPartnerCampaignsCountLoader = false;
         }, 500);
@@ -1143,8 +1151,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.goToActivePartnersDiv();
         } else if (this.isdeactivatePartnersDiv) {
             this.goToDeactivatePartnersDiv
+        } else if(this.totalPartnersDiv){
+           this.goToAllPartnersDiv();
         } else {
-            this.goToActivePartnersDiv();
+            this.goToAllPartnersDiv();
         }
     }
 

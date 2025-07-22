@@ -332,7 +332,7 @@ applyFilters(pagination: Pagination) {
   }
 
   isItemSelectable(item: any): boolean {
-    return item.status !== 'Active';
+    return item.status !== 'Active' && item.status !== 'Deactivated';
   }
 
   hasSelectableItems(): boolean {
