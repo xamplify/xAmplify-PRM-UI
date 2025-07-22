@@ -15,6 +15,12 @@
       (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
   </div>
 <app-ppt-design-picker *ngIf="showPptDesignPicker" [pptData]="pptData" [fromOliverPopup]="false" (notifyData)="emitSelectedTemplate($event)"></app-ppt-design-picker>
+<div *ngIf="referenceService?.docxLoader" class="ppt-mask">
+  <div class="ppt-badge">
+    <span class="msag">Generating&nbsp;DOCX</span>
+    <span class="ring"></span>
+  </div>
+</div>
 
   <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage && !showPptDesignPicker" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
@@ -271,6 +277,7 @@
                       <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
                         class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
                         <button class="share-btn" (click)="openPptDesignPicker(markdownComponent)">Design PPT</button>
+                        <button  class="share-btn" (click)="downloadDocxFile(markdownComponent)" >Design DOCX</button>
                     </div>
                   </div>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>

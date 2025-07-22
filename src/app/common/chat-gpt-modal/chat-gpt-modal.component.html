@@ -35,6 +35,12 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
+    <div *ngIf="referenceService?.docxLoader" class="ppt-mask">
+      <div class="ppt-badge">
+        <span class="msag">Generating&nbsp;DOCX</span>
+        <span class="ring"></span>
+      </div>
+    </div>
     <div [ngClass]="showView || showTemplate  || selectTemplate || openAssetPage || showPage || showPptDesignPicker ? 'modal-content': 'modal-content oliver-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
@@ -917,6 +923,7 @@
             <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
               class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
               <button  class="share-btn" (click)="openPptDesignPicker(markdownComponent)" >Design PPT</button>
+              <button  class="share-btn" (click)="downloadDocxFile(markdownComponent)" >Design DOCX</button>
           </div>
         </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
