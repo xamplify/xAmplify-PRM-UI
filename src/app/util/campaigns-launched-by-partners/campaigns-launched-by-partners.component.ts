@@ -22,6 +22,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
         @Input() toDateFilter: string = '';
         @Input() fromActivePartnersDiv: boolean = false;
         @Input() fromDeactivatedPartnersDiv: boolean = false;
+        @Input() fromAllPartnersDiv: boolean = false;
         activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -39,10 +40,13 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
         ngOnChanges() {
                 if(this.fromActivePartnersDiv){
                         this.partnershipStatus = 'approved';
-						this.partnerStatus = 'Active';
+                                                this.partnerStatus = 'Active';
                 } else if(this.fromDeactivatedPartnersDiv){
                         this.partnershipStatus = 'deactivated';
-						this.partnerStatus = 'Deactivated';
+                                                this.partnerStatus = 'Deactivated';
+                } else if(this.fromAllPartnersDiv){
+                        this.partnershipStatus = 'approved,deactivated';
+                        this.partnerStatus = 'All';
                 }
                 this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
 				this.activePartnersPagination.partnershipStatus = this.partnershipStatus;

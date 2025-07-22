@@ -35,7 +35,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
-   filterFromDate : string = '';
+  @Input() fromAllPartnersDiv: boolean = false;
+  filterFromDate : string = '';
   filterToDate : string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -87,6 +88,8 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.partnershipStatus = 'approved';
     } else if (this.fromDeactivatedPartnersDiv) {
     this.partnershipStatus = 'deactivated';
+    } else if (this.fromAllPartnersDiv) {
+    this.partnershipStatus = 'approved,deactivated';
     }
     this.pagination.pageIndex = 1;
     this.findAssetNames();

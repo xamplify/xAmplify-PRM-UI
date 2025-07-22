@@ -32,6 +32,7 @@ export class ShareLeadDetailsComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
   headerText:string = 'Share Leads Details';
   
 
@@ -57,6 +58,8 @@ export class ShareLeadDetailsComponent implements OnInit {
       this.partnershipStatus = 'approved';
     } else if(this.fromDeactivatedPartnersDiv){
       this.partnershipStatus = 'deactivated';
+    } else if(this.fromAllPartnersDiv){
+      this.partnershipStatus = 'approved,deactivated';
     }
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
