@@ -1680,8 +1680,6 @@ circle.front {
 .dropdown-container {
   position: relative;
   display: inline-block;
-  padding-top: 19px;
-  margin-top: -19px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1698,7 +1696,7 @@ circle.front {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: -128px;
+  top: auto;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1708,6 +1706,7 @@ circle.front {
   padding: 4px 0px;
   margin: 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+ bottom: 100%;
 }
 .dropdown-container:hover .dropdown-menu {
   display: block;

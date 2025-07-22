@@ -82,13 +82,13 @@
                   {{ selectedContact?.contactName | slice:0:25 }}
                   <span *ngIf="selectedContact?.contactName?.length > 25">...</span>
                 </a>
-                <a *ngIf="selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0"
+                <a *ngIf="(selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0) && selectedContact?.emailId != undefined"
                   title="{{ selectedContact?.emailId }}">
                   {{ selectedContact?.emailId | slice:0:25 }}
                   <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
                 </a>
               </div>
-              <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+              <div *ngIf="selectedContact?.contactName && selectedContact?.emailId" class="published-on">Email Id: {{selectedContact.emailId }}
               </div>
             </div>
             <div class="file-icon" *ngIf="callActivity != undefined">
@@ -150,9 +150,9 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
 
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')"> Give me the details of partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">{{ isFromGroupOfPartners ? 'Give me the details of partners' : 'Give me the details of partner' }}</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">{{ isFromGroupOfPartners ? 'Generate a QBR of the partners' : 'Generate a QBR of the partner' }}</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -372,7 +372,7 @@
                     <a *ngIf="!isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div>
                         <span *ngIf="selectedContact.contactName">
-                          Contact Name: {{selectedContact.contactName}} | </span><span>
+                          {{ isFromGroupOfPartners ? 'Group' : 'Contact' }} Name: {{selectedContact.contactName}} | </span><span *ngIf="selectedContact?.emailId">
                           Email Id: {{selectedContact.emailId}} </span><span *ngIf="!isFromManageContact && !isFromManagePartner"> | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
                       </div>
                       <i class="fa fa-chevron-up toggle-icon"></i>
@@ -408,7 +408,7 @@
                               <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
                             </a>
                           </div>
-                          <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+                          <div *ngIf="selectedContact?.contactName && selectedContact?.emailId" class="published-on">Email Id: {{selectedContact.emailId }}
                           </div>
                         </div>
                         <div class="Ai-file-details">
@@ -483,9 +483,9 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">Give me the details of partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">{{ isFromGroupOfPartners ? 'Give me the details of partners' : 'Give me the details of partner' }}</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">{{ isFromGroupOfPartners ? 'Generate a QBR of the partners' : 'Generate a QBR of the partner' }}</button>
               
               </div>
               <div *ngIf="isFromFolderView">

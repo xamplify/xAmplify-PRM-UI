@@ -32,7 +32,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() callActivity: any;
   @Input() isFromManageContact: boolean;
   @Input() isFromManagePartner: boolean;
-   @Input() isFromOnboardSection: boolean = false;
+  @Input() isFromOnboardSection: boolean = false;
+  @Input() isFromGroupOfPartners: boolean = false;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -263,6 +264,9 @@ export class AiChatManagerComponent implements OnInit {
 
   setInputText(text: string) {
     this.inputText = text;
+    if (this.isFromGroupOfPartners) {
+      this.inputText += 's';
+    }
     this.validateInputText();
   }
 

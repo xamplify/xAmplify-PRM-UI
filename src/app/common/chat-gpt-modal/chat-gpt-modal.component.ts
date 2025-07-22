@@ -162,6 +162,7 @@ export class ChatGptModalComponent implements OnInit {
   uploadedFolders: any[];
   showPptDesignPicker: boolean = false;
   pptData: string;
+  isResponseInProgress: boolean;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -364,7 +365,6 @@ export class ChatGptModalComponent implements OnInit {
     this.showGlobalPromptBoxAbove = false;
     this.isValidInputText = false;
     this.inputText = "";
-    this.isTextLoading = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
@@ -378,6 +378,11 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedAssets = [];
     this.selectedFolders = [];
     this.isSaveHistoryPopUpVisible = true;
+    if (this.isTextLoading) {
+      this.isResponseInProgress = true;
+    } else {
+      this.isResponseInProgress = false;
+    }
     this.activeTab = tab;
     if (tab == 'history') {
       this.showChatHistories();
@@ -401,6 +406,7 @@ export class ChatGptModalComponent implements OnInit {
     this.checkDesignAccess();
     this.pptData = '';
     this.showPptDesignPicker = false;
+    this.isTextLoading = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -824,7 +830,6 @@ export class ChatGptModalComponent implements OnInit {
     }
     self.isValidInputText = false;
     self.startStatusRotation();
-    let previousTab = this.activeTab;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         let statusCode = response.statusCode;
@@ -869,9 +874,15 @@ export class ChatGptModalComponent implements OnInit {
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
-        if (previousTab != self.activeTab) {
+        if (self.isResponseInProgress) {
           self.showOpenHistory = false;
           self.isCopyButtonDisplayed = false;
+          self.messages = [];
+          self.chatGptGeneratedText = '';
+          self.isTextLoading = false;
+          self.isValidInputText = false;
+          self.inputText = '';
+          self.isResponseInProgress = false;
         }
         console.log(self.messages);
       },
