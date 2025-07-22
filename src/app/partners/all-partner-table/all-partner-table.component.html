@@ -157,7 +157,7 @@
                   </td>
                   <td>
                     <div class="actions-block override-actions">
-                      <a class="custom-icon" data-rel="fancybox-button" (click)="(item.status === 'Active') ? viewAnalytics(item.companyId) :'' "
+                      <a class="custom-icon" data-rel="fancybox-button" (click)="(item.status === 'Active') ? viewAnalytics(item.userCompanyId) :'' "
                         data-toggle="tooltip" data-placement="bottom" title="View Partner Journey" id="pj">
                         <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
                         <i [ngClass]="(item.status != 'Active') ? 'disabled gray':''" class="fas fa-route IconCustomization"></i>
