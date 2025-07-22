@@ -770,7 +770,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin, 'newAndSinglePartner': true };
+    if (this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+      teamMemberDto['selectedPartnershipIds'] = this.selectedPartnershipIds;
+    }
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
