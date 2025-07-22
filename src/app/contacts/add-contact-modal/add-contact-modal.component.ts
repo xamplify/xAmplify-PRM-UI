@@ -434,7 +434,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                     this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
                     subscribe(
                         response=>{
-                            this.teamMemberGroups = response.data;
+                            this.teamMemberGroups = this.contactService.filterValidTeamMemberGroups(response.data);
                             this.enableOrDisableTeamMemberGroupDropDown();
                             this.loading = false;
                         },error=>{

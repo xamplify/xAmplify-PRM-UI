@@ -1402,7 +1402,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.users = data.data;
 				/********XNFR-85********/
 				let teamMemberGroups = data.map['teamMemberGroups'];
-				this.teamMemberGroups = teamMemberGroups;
+				this.teamMemberGroups = this.contactService.filterValidTeamMemberGroups(teamMemberGroups);
 				this.loading = false;
 				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
