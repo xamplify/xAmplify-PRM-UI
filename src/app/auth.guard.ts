@@ -102,11 +102,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 }
 
             } else {
-                this.authenticationService.redirectUrl = url;
+                // this.authenticationService.redirectUrl = url;
                 if (this.authenticationService.unauthorized) {
                     this.router.navigate(['/401']);
                 } else {
-                    this.router.navigate(['/login']);
+                    //XNFR-1076
+                    const encodedUrl = encodeURIComponent(url);
+                    localStorage.setItem('returnUrl', url);
+                    this.router.navigate(['/login'], { queryParams: { returnUrl: encodedUrl } });
+                    // this.router.navigate(['/login']);
                 }
 
                 return false;
