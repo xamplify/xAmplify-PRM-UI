@@ -419,7 +419,8 @@
 
 <!--Spam Check-->
 <ng-template #spamCheckIcon let-emailTemplate="emailTemplate">
-   <a class="Iconhover custom-grid-icon" (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
+   <a class="Iconhover custom-grid-icon" (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}"
+    *ngIf="emailTemplate.type!='PARTNER'">
       <i class="fa fa-inbox" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
       <div class="clickicons"></div>
     </a>
@@ -427,8 +428,9 @@
 <!--Edit-->
 <ng-template #editIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-grid-icon mMobileDisable" (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.template_edit}}"
-         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-          authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
+         *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
+          authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) 
+          && emailTemplate.type!='PARTNER') || (marketingModulesAccessForPartner && emailTemplate.type!='PARTNER')">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -436,7 +438,7 @@
 <!--Copy-->
 <ng-template #copyIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
-         *ngIf="emailTemplate.type!='PARTNER' && !emailTemplate.draft">
+         *ngIf="!emailTemplate.draft">
         <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -454,8 +456,9 @@
 <ng-template #deleteIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete"
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
-         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
-           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
+         *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
+           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) 
+           && emailTemplate.type!='PARTNER' ) || (marketingModulesAccessForPartner && emailTemplate.type!='PARTNER')">
         <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
@@ -465,7 +468,7 @@
 
 <!--Send Test Email (XNFR-317)-->
 <ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" 
+    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate?.draft && emailTemplate.type!='PARTNER'" (click)="openSendTestEmailModalPopup(emailTemplate)" 
             data-toggle="tooltip" data-placement="top" title="{{actionsDescription?.sendTestEmail}}">
         <i class="fa fa-envelope-o" aria-hidden="true"></i>
         <div class="clickicons"></div>
