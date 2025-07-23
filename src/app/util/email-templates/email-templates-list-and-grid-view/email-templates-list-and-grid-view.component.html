@@ -241,7 +241,7 @@
     <div class="portlet-title mb10">
         <div class="row">
             <div class="colxs-12 col-sm-12 col-md-5 col-lg-6" style="padding-top: 5px;">
-                <div *ngIf="!isOnlyPartner">
+                <div>
                     <ul class="mix-filter"
                         *ngIf="!modulesDisplayType?.isFolderGridView &&!modulesDisplayType?.isFolderListView">
                         <li class="filter" (click)="filterTemplates('NONE',false,0)"
@@ -270,11 +270,11 @@
                         </li>
                         <li class="filter" (click)="filterTemplates('EVENT',false,9)"
                             [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex"
-                            *ngIf="referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign" translate>
+                            *ngIf="(referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !campaignAccess?.marketingModulesEnabled" translate>
                             Event
                         </li>
                         <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)"
-                            *ngIf="(referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !authenticationService?.module?.isMarketingCompany"
+                            *ngIf="((referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !authenticationService?.module?.isMarketingCompany) && !campaignAccess?.marketingModulesEnabled"
                             [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" translate>Event Co-Branding
                         </li>
                         <li class="filter" (click)="filterTemplates('SURVEY',false,11)"

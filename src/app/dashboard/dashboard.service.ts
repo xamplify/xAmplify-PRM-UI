@@ -275,7 +275,7 @@ export class DashboardService {
     }
 
     getModulesAccessByUserId() {
-        return this.http.get(this.authenticationService.REST_URL + `admin/getModulesAccessByLoggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+        return this.http.get(this.authenticationService.REST_URL + `admin/getModulesAccessByLoggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
