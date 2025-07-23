@@ -186,6 +186,7 @@ export class ReferenceService {
   categoryType : string = '';
   selectedTab: string;
   categoryTrackPlaybookType:boolean = false;
+  docxLoader: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
