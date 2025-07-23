@@ -656,8 +656,8 @@ export class SortOption {
 	trackDetailsDropDownOptions = [
 		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-Asc' },
 		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-Desc' },
-		{ 'name': 'Count(ASC)', 'value': 'count-Asc' },
-		{ 'name': 'Count(DESC)', 'value': 'count-Desc' }
+		{ 'name': 'View Count (ASC)', 'value': 'count-Asc' },
+		{ 'name': 'View Count (DESC)', 'value': 'count-Desc' }
 	];
 	partnerTrackDetailsDropDownOptions = [
 		{ 'name': 'Partner Name (A-Z)', 'value': 'partnerName-Asc' },
