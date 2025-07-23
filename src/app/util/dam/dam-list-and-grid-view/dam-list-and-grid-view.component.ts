@@ -466,6 +466,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
+		if(this.referenceService.categoryType.trim().length){
+		this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+		this.referenceService.categoryType = '';
+		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
 		this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
@@ -1141,15 +1145,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (event == this.approvalStatus.DRAFT) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
 			this.listAssets(this.pagination);
-		}  else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL' ) {
+		} else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL') {
 			this.pagination.selectedApprovalStatusCategory = event;
 			this.listAssets(this.pagination);
-		} else {
+		}
+		else if (this.isPartnerView && (event == 'interacted' || event == 'notInteracted' || event == 'folders' || event == 'alll' || event == 'in-progress' || event == 'not-viewd' || event == 'completed')) {
+			this.pagination.selectedApprovalStatusCategory = event;
+			this.listPublishedAssets(this.pagination);
+		}
+		else {
 			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}
 	}
-	
+
 	cancelSegmentationRowEmitter(event:any){
 		if(event.property === 'Tags') {
 			if( this.pagination.criterias !=undefined && this.pagination.criterias != null && this.pagination.criterias.length > 0 ){
