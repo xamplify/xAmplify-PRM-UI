@@ -1684,18 +1684,32 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
 
-    showGearIconOptions(button: HTMLElement,campaign: any, index: number) {
+    showGearIconOptions(button: HTMLElement, campaign: any, index: number) {
         /* dropdown menu for gear icon start start*/
         campaign.showGearIconOptions = true;
+
         setTimeout(() => {
             const menu = button.nextElementSibling as HTMLElement;
             if (!menu) return;
+
             const menuHeight = menu.offsetHeight;
             const buttonRect = button.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - buttonRect.bottom;
-            const spaceAbove = buttonRect.top;
-            campaign.dropUp = spaceBelow < menuHeight && spaceAbove > menuHeight;
+
+            const topSafeMargin = 50;       
+            const bottomSafeMargin = 16;     
+            const fixedHeaderHeight = 45;
+
+            const spaceBelow = window.innerHeight - buttonRect.bottom - bottomSafeMargin;
+            const spaceAbove = buttonRect.top - fixedHeaderHeight - topSafeMargin;
+            if (spaceBelow >= menuHeight) {
+                campaign.dropUp = false; 
+            } else if (spaceAbove >= menuHeight) {
+                campaign.dropUp = true;  
+            } else {
+                campaign.dropUp = spaceAbove > spaceBelow; 
+            }
         }, 0);
+
         /* End*/
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
             .subscribe(
