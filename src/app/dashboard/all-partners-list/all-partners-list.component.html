@@ -135,13 +135,13 @@
               </td>
                <td>
                   <div class="actions-block float-none">
-                    <a *ngIf="item.status !== 'Active'" (click)="callParentMethod(item)" class="custom-icon" 
+                    <a *ngIf="item.status !== 'Active' && item.status !== 'Deactivated'" (click)="callParentMethod(item)" class="custom-icon" 
                     data-toggle="tooltip" data-placement="left" title="Send reminder email">
                       <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
                     </a>
-                    <a *ngIf="item.status === 'Active'" data-toggle="tooltip" data-placement="bottom"
-                       title="Invitation cannot be sent as the account is created successfully"
+                    <a *ngIf="item.status === 'Active' || item.status === 'Deactivated'" data-toggle="tooltip" data-placement="bottom"
+                       title="Invitation cannot sent to this account"
                        class="inactive custom-icon">
                       <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>

@@ -787,7 +787,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.iteratePartnersAndAssignContactsCount(response.data);
 				/********XNFR-85********/
 				let teamMemberGroups = response.map['teamMemberGroups'];
-				this.teamMemberGroups = teamMemberGroups;
+				this.teamMemberGroups = this.contactService.filterValidTeamMemberGroups(teamMemberGroups);
 			}, error => {
 				this.iteratePartnersAndAssignContactsCount(false);
 			});

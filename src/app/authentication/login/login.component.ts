@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   hideCloseButton: boolean = false;
   /** XNFR-721 **/
   vanityMicrosoftSSOProvider: any;
+  returnUrl: string = '/';
 
   messageKeys = {
     ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
@@ -97,6 +98,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authenticationService.showVanityURLError1 = false;
     }
     "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
+
+   this.route.queryParams.subscribe(params => {
+  if (params['returnUrl']) {
+    this.returnUrl = decodeURIComponent(params['returnUrl']);
+    localStorage.setItem('returnUrl', this.returnUrl); // persist in storage too
+  } else {
+    this.returnUrl = localStorage.getItem('returnUrl') || '/';
+  }
+});
+
   }
 
   public login() {
@@ -224,6 +235,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   redirectTo(user: User) {
     this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = true;
+    if (this.returnUrl && this.returnUrl !== '/') {
+      localStorage.removeItem('returnUrl'); // clean up
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
@@ -440,6 +456,8 @@ bgIMage2:any;
   }
 
   loginUsingSocialAccounts(socialProvider: any) {
+    const currentPath = this.router.url;
+    localStorage.setItem('returnUrl', currentPath);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser != undefined) {
       this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
@@ -530,6 +548,12 @@ bgIMage2:any;
   }
 
   loginSSOUser(userName: string, client_id: string, client_secret: string) {
+    const storedReturnUrl = localStorage.getItem('returnUrl');
+    if (storedReturnUrl && storedReturnUrl !== '/') {
+      localStorage.removeItem('returnUrl');
+      this.router.navigateByUrl(storedReturnUrl);
+      return;
+    }
    if(userName!=undefined && userName!="undefined"){
     const authorization = 'Basic' + btoa(client_id + ':');
     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';

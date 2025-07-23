@@ -297,9 +297,11 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 	private updatePartnerCheckBoxDetails() {
 		for (let partner of this.pagination.pagedItems) {
-			if ( this.existingPartnershipIds.includes(partner.partnershipId) 
+			if ( (this.existingPartnershipIds.includes(partner.partnershipId) || this.selectedPartnershipIds.includes(partner.partnershipId)) 
 				&& !this.deletedPartnershipIds.includes(partner.partnershipId)) {
-				this.selectedPartnershipIds.push(partner.partnershipId);
+			    if(!this.selectedPartnershipIds.includes(partner.partnershipId)){
+					this.selectedPartnershipIds.push(partner.partnershipId);
+				}
 				$('#partnerListTable_' + partner.partnershipId).prop('checked', true);
 			}
 		}
@@ -323,7 +325,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 		}
 		this.isHeaderCheckBoxChecked = this.pagination.pagedItems.every(item => this.selectedPartnershipIds.includes(item.partnershipId));
-this.selectedPartnershipIdsEmitter.emit({ added: this.selectedPartnershipIds, removed: this.deletedPartnershipIds });
+        this.selectedPartnershipIdsEmitter.emit({ added: this.selectedPartnershipIds, removed: this.deletedPartnershipIds });
 	}
 
 	checkAll(event: any) {

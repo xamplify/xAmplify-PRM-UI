@@ -1417,7 +1417,7 @@ body {
   margin-right: 16px;
   border-radius: 50%;
   object-fit: contain;
-  background: #f1f1f1;
+  background: #dce9fe;
 }
 .agent-info {
   background-color: #e2eeff;
@@ -1764,8 +1764,6 @@ body {
 .dropdown-container {
   position: relative;
   display: inline-block;
-  padding-top: 120px;
-  margin-top: -120px;
 }
 .dropdown-toggle::after {
   content: "▼";
@@ -1782,7 +1780,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top:5px;
+  top: auto;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;
@@ -1792,6 +1790,7 @@ body {
   padding: 4px 0px;
   margin: 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  bottom: 100%;
 }
 .dropdown-container:hover .dropdown-menu {
   display: block;

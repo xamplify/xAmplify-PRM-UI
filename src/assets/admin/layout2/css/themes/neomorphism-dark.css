@@ -4734,3 +4734,7 @@ table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1
 table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
     color: inherit !important;
 }
+.front-count-card.active{
+  border: 1.6px solid #007bff !important;
+  background-color: rgba(39, 41, 50, 0.85) !important;
+}

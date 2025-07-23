@@ -379,4 +379,24 @@ listDefaultTemplates(userId:any){
     (window.URL).revokeObjectURL(url);
   }
 
+  /** XNFR-1079  **/
+  downloadDocx(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + 'generate-docx/?access_token=' + this.authenticationService.access_token;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(url, chatGptSettings, {
+      headers,
+      responseType: 'blob' as 'json'
+    });
+  }
+
+  /** XNFR-1079  **/
+  downloadWordFile(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    this.downloadDocx(chatGptSettings).subscribe((blob: Blob) => {
+      this.downloadBlob(blob, 'document.docx');
+      this.referenceService.docxLoader = false;
+    }, error => {
+      console.error('Download failed', error);
+    });
+  }
+
 }

@@ -15,6 +15,12 @@
       (notifyData)="closeSelectionTemplate($event)" [pageView]="chatGptIntegrationSettingsDto.designPage"></app-choose-emailtemplate>
   </div>
 <app-ppt-design-picker *ngIf="showPptDesignPicker" [pptData]="pptData" [fromOliverPopup]="false" (notifyData)="emitSelectedTemplate($event)"></app-ppt-design-picker>
+<div *ngIf="referenceService?.docxLoader" class="ppt-mask">
+  <div class="ppt-badge">
+    <span class="msag">Generating&nbsp;DOCX</span>
+    <span class="ring"></span>
+  </div>
+</div>
 
   <div *ngIf="!openHistory && !openShareOption && !isBeeTemplateComponentCalled && !selectTemplate && !showTemplate && !openAssetPage && !showPage && !showPptDesignPicker" class="pdf_body">
     <button class="btn close_btn mt5" (click)="closeAi()">×</button>
@@ -82,13 +88,13 @@
                   {{ selectedContact?.contactName | slice:0:25 }}
                   <span *ngIf="selectedContact?.contactName?.length > 25">...</span>
                 </a>
-                <a *ngIf="selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0"
+                <a *ngIf="(selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0) && selectedContact?.emailId != undefined"
                   title="{{ selectedContact?.emailId }}">
                   {{ selectedContact?.emailId | slice:0:25 }}
                   <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
                 </a>
               </div>
-              <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+              <div *ngIf="selectedContact?.contactName && selectedContact?.emailId" class="published-on">Email Id: {{selectedContact.emailId }}
               </div>
             </div>
             <div class="file-icon" *ngIf="callActivity != undefined">
@@ -150,9 +156,9 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
 
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')"> Give me the details of partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">{{ isFromGroupOfPartners ? 'Give me the details of partners' : 'Give me the details of partner' }}</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">{{ isFromGroupOfPartners ? 'Generate a QBR of the partners' : 'Generate a QBR of the partner' }}</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -231,7 +237,7 @@
                     <div class="chat-container">
                       <div #markdownComponent class="chat-history">
                         <markdown *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content">
                         </app-executive-summary-report>
                       </div>
                     </div>
@@ -260,7 +266,7 @@
                   <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design
                     Pdf</button>
                   <button *ngIf="authenticationService.module.hasLandingPageAccess &&!authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button> -->
-                  <div class="dropdown-container">
+                  <div *ngIf="designAccess" class="dropdown-container">
                     <button class="share-btn dropdown-toggle">Design</button>
                     <div class="dropdown-menu">
                       <button
@@ -271,6 +277,7 @@
                       <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
                         class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
                         <button class="share-btn" (click)="openPptDesignPicker(markdownComponent)">Design PPT</button>
+                        <button  class="share-btn" (click)="downloadDocxFile(markdownComponent)" >Design DOCX</button>
                     </div>
                   </div>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
@@ -372,7 +379,7 @@
                     <a *ngIf="!isCollapsed && selectedContact != undefined && callActivity == undefined" (click)="toggleAction()">
                       <div>
                         <span *ngIf="selectedContact.contactName">
-                          Contact Name: {{selectedContact.contactName}} | </span><span>
+                          {{ isFromGroupOfPartners ? 'Group' : 'Contact' }} Name: {{selectedContact.contactName}} | </span><span *ngIf="selectedContact?.emailId">
                           Email Id: {{selectedContact.emailId}} </span><span *ngIf="!isFromManageContact && !isFromManagePartner"> | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
                       </div>
                       <i class="fa fa-chevron-up toggle-icon"></i>
@@ -408,7 +415,7 @@
                               <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
                             </a>
                           </div>
-                          <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+                          <div *ngIf="selectedContact?.contactName && selectedContact?.emailId" class="published-on">Email Id: {{selectedContact.emailId }}
                           </div>
                         </div>
                         <div class="Ai-file-details">
@@ -483,9 +490,9 @@
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the contact')">Generate a QBR of the contact</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">Give me the details of partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Give me the details of partner')">{{ isFromGroupOfPartners ? 'Give me the details of partners' : 'Give me the details of partner' }}</button>
             <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the partner</button>
+            <button *ngIf="isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Generate a QBR of the partner')">{{ isFromGroupOfPartners ? 'Generate a QBR of the partners' : 'Generate a QBR of the partner' }}</button>
               
               </div>
               <div *ngIf="isFromFolderView">

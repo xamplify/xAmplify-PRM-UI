@@ -32,7 +32,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() callActivity: any;
   @Input() isFromManageContact: boolean;
   @Input() isFromManagePartner: boolean;
-   @Input() isFromOnboardSection: boolean = false;
+  @Input() isFromOnboardSection: boolean = false;
+  @Input() isFromGroupOfPartners: boolean = false;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -111,11 +112,13 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  pptLoader: boolean = false;
+  activeTab: string = '';
   pptData: string;
   showPptDesignPicker: boolean = false;
+  designAccess: boolean;
 
-
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, public referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
 
@@ -192,6 +195,7 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
+    this.checkDesignAccess();
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -262,6 +266,9 @@ export class AiChatManagerComponent implements OnInit {
 
   setInputText(text: string) {
     this.inputText = text;
+    if (this.isFromGroupOfPartners) {
+      this.inputText += 's';
+    }
     this.validateInputText();
   }
 
@@ -579,6 +586,7 @@ export class AiChatManagerComponent implements OnInit {
     this.loading = false;
     this.ngxLoading  = false;
     this.UploadedFile = false;
+    this.activeTab = ''; 
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
@@ -972,6 +980,7 @@ export class AiChatManagerComponent implements OnInit {
   uploadPartnerDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+    this.activeTab = 'partneragent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1111,6 +1120,7 @@ export class AiChatManagerComponent implements OnInit {
   uploadContactDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "CONTACTAGENT";
+    this.activeTab = 'contactagent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadContactDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1143,7 +1153,13 @@ export class AiChatManagerComponent implements OnInit {
 
     const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
+    const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
+
+    const trackEngagementItems = j.track_content_engagement_by_team && j.track_content_engagement_by_team.items ? j.track_content_engagement_by_team.items : [];
+
     const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
+    const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
     const dealPipelinePrograssion = {
       title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
@@ -1181,6 +1197,101 @@ export class AiChatManagerComponent implements OnInit {
       }],
       seriesString: '',
     };
+
+    const trackContentEngagement = {
+      title: j.track_content_engagement_by_team && j.track_content_engagement_by_team.title
+        ? j.track_content_engagement_by_team.title
+        : '',
+      categories: trackEngagementItems.map((item: any) => item.email ? item.email : ''),
+      series: [
+        {
+          name: 'Views',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_viewed !== undefined ? item.tracks_viewed : 0
+          ),
+        },
+        {
+          name: 'Downloads',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_downloaded !== undefined ? item.tracks_downloaded : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.track_content_engagement_by_team && j.track_content_engagement_by_team.description
+        ? j.track_content_engagement_by_team.description
+        : '',
+    };
+
+    const playbookContentEngagementOverview = {
+      title: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.title
+        ? j.playbook_content_engagement_overview.title
+        : '',
+      categories: playBookEngagementItems.map((item: any) =>
+        item && item.name ? item.name : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.view_count !== undefined ? item.view_count : 0
+          ),
+        },
+        {
+          name: 'Completed',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.completion_count !== undefined ? item.completion_count : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.description
+        ? j.playbook_content_engagement_overview.description
+        : '',
+    };
+
+    const assetEngagementOverview = {
+      title: j.asset_engagement_overview && j.asset_engagement_overview.title
+        ? j.asset_engagement_overview.title
+        : '',
+      categories: assetsEngagementItems.map((item: any) =>
+        item && item.email ? item.email : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_views !== undefined ? item.asset_views : 0
+          ),
+        },
+        {
+          name: 'Downloaded',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_downloads !== undefined ? item.asset_downloads : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.asset_engagement_overview && j.asset_engagement_overview.description
+        ? j.asset_engagement_overview.description
+        : '',
+      mostOpenedAsset: j.asset_engagement_overview && j.asset_engagement_overview.most_opened_asset
+        ? j.asset_engagement_overview.most_opened_asset
+        : 0,
+      openCountForMostViewedAsset: j.asset_engagement_overview && j.asset_engagement_overview.total_opens_for_most_opened_asset
+        ? j.asset_engagement_overview.total_opens_for_most_opened_asset
+        : 0,
+      totalAssetsOpenCount: j.asset_engagement_overview && j.asset_engagement_overview.assets_opened_count
+        ? j.asset_engagement_overview.assets_opened_count
+        : 0,
+      avgEngagementRate: j.asset_engagement_overview && j.asset_engagement_overview.avg_engagement_rate
+        ? j.asset_engagement_overview.avg_engagement_rate
+        : 0,
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1284,7 +1395,7 @@ export class AiChatManagerComponent implements OnInit {
             : ''
       },
 
-
+      
       /* ---------- contact-journey timeline ---------- */
       contact_journey_timeline: {
         title:
@@ -1342,12 +1453,29 @@ export class AiChatManagerComponent implements OnInit {
 
       dealPipelinePrograssion: dealPipelinePrograssion,
 
-      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis,
+      trackContentEngagement : trackContentEngagement,
+      trackEngagementAnalysis: {
+        title:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.title
+            ? j.track_engagement_analysis.title
+            : '',
+        description:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.description
+            ? j.track_engagement_analysis.description
+            : '',
+        items:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.items
+            ? j.track_engagement_analysis.items
+            : []
+      },
+      playbookContentEngagementOverview : playbookContentEngagementOverview,
+      assetEngagementOverview :assetEngagementOverview,
     };
 
     return dto;
   }
-
+  
   startStatusRotation() {
     this.statusMessage = this.loaderMessages[0];
     this.messageIndex = 1;
@@ -1431,5 +1559,18 @@ export class AiChatManagerComponent implements OnInit {
     this.showPptDesignPicker = false;
   }
 
-  
+  /** XNFR-1079  **/
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+  private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
 }

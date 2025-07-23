@@ -11,13 +11,13 @@ import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { Properties } from 'app/common/models/properties';
-declare var $: any, swal: any;
+
 @Component({
-  selector: 'app-deactivated-partners-table',
-  templateUrl: './deactivated-partners-table.component.html',
-  styleUrls: ['./deactivated-partners-table.component.css']
+  selector: 'app-all-partner-table',
+  templateUrl: './all-partner-table.component.html',
+  styleUrls: ['./all-partner-table.component.css']
 })
-export class DeactivatedPartnersTableComponent implements OnInit {
+export class AllPartnerTableComponent implements OnInit {
   @Input() applyFilter: boolean;
   loggedInUserId: number = 0;
   searchKey: string = "";
@@ -34,7 +34,6 @@ export class DeactivatedPartnersTableComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Output() notifySelectedPartnerCompanyIds = new EventEmitter();
-  @Output() notifyActivatedPartnership = new EventEmitter();
   @Output() notifySelectedDateFilters = new EventEmitter();
   @Input() selectedPartnerCompanyIds: any = [];
   showFilterDropDown: boolean = false;
@@ -59,7 +58,7 @@ export class DeactivatedPartnersTableComponent implements OnInit {
 
   ngOnInit() {
     //this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    //this.getDeactivatedPartners(this.pagination);
+    //this.getAllPartners(this.pagination);
   }
 
   ngOnChanges(){
@@ -72,17 +71,17 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     }
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;  
     this.sortOption.searchKey = "";/*** XNFR-835 ***/
-    this.getDeactivatedPartners(this.pagination);
+    this.getAllPartners(this.pagination);
     this.findCompanyNames();
     this.setFilterColor();
   }
 
-  getDeactivatedPartners(pagination: Pagination) {
+  getAllPartners(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.partnershipStatus = this.partnershipStatus;
-    this.parterService.getDeactivatedPartners(this.pagination).subscribe(
+    this.parterService.getAllPartnersDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         this.sortOption.totalRecords = response.data.totalRecords;
@@ -97,7 +96,7 @@ export class DeactivatedPartnersTableComponent implements OnInit {
   search() {
     // this.pagination.pageIndex = 1;
     // this.pagination.searchKey = this.searchKey;
-    // this.getDeactivatedPartners(this.pagination);
+    // this.getAllPartners(this.pagination);
     this.getAllFilteredResults(this.pagination);
   }
 
@@ -111,17 +110,17 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOptionForPartnerJourney, pagination);
-    this.getDeactivatedPartners(this.pagination);
+    this.getAllPartners(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getDeactivatedPartners(this.pagination);
+    this.getAllPartners(this.pagination);
   }
 
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
-    this.getDeactivatedPartners(this.pagination);
+    this.getAllPartners(this.pagination);
   }
 
   getSortedResults(text: any) {
@@ -185,7 +184,7 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     this.filterApplied = true;
     this.setDateFilterOptions();
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
-    this.showDeactivatedPartnersTable();
+    this.showAllPartnerTable();
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
   }
@@ -254,58 +253,14 @@ export class DeactivatedPartnersTableComponent implements OnInit {
     }
   }
 
-  showDeactivatedPartnersTable() {
+  showAllPartnerTable() {
     if(this.selectedCompanyIds.length > 0){
       this.isCollapsed = false;
     }
   }
 /*** XNFR-835 ***/
-  downloadDeactivatedPartnerReport() {
-    this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"deactivated-partners-report")
+  downloadAllPartnerReport() {
+    this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"all-partners-report")
   }
 /*** XNFR-835 ***/
-
-showActivatePartnersAlert(partnershipId: number) {
-    let suffexMessage = this.authenticationService.module.isPrmCompany ? ' sharing' : ' and campaign sharing.';
-    let message = this.properties.SINGLE_ACTIVATE_PARTNER + suffexMessage;
-    let self = this;
-    swal({
-      title: 'Are you sure?',
-      text: message,
-      type: 'warning',
-      showCancelButton: true,
-      swalConfirmButtonColor: '#54a7e9',
-      swalCancelButtonColor: '#999',
-      confirmButtonText: 'Yes, activate it!'
-    }).then(function (myData: any) {
-      console.log("ManageContacts showAlert then()" + myData);
-      self.activatePartner(partnershipId);
-    }, function (dismiss: any) {
-      console.log('you clicked on option' + dismiss);
-    });
-  }
-
-  activatePartner(partnershipId: number) {
-    this.referenseService.loading(this.httpRequestLoader, true);
-    let partnershipIds = [];
-    partnershipIds.push(partnershipId);
-    this.parterService.updatePartnerShipStatusForPartner(partnershipIds, 'approved')
-      .subscribe(response => {
-        if (response.statusCode == 200) {
-          this.referenseService.loading(this.httpRequestLoader, false);
-          this.getDeactivatedPartners(this.pagination);
-          this.findCompanyNames();
-          this.setFilterColor();
-          this.notifyActivatedPartnership.emit();
-          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-        } else {
-          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        }
-      }, error => {
-        this.referenseService.loading(this.httpRequestLoader, false);
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-      });
-  }
-
-
 }

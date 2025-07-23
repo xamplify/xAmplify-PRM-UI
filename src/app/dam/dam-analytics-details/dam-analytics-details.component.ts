@@ -8,15 +8,26 @@ import { DamPostDto } from '../models/dam-post-dto';
 })
 export class DamAnalyticsDetailsComponent implements OnInit {
   damPostDto: DamPostDto = new DamPostDto();
-  @Input() damId: any;
+  @Input() contentId: any;
+  @Input() contentType: string;
+  isDam: boolean = false;
+  isTrack: boolean = false;
+  isPlaybook: boolean = false;
   constructor(public damService: DamService) {
   }
 
   ngOnInit() {
-    this.getDamDetailsByDamId(this.damId);
+    if(this.contentType == 'DAM'){
+        this.isDam = true;
+    } else if (this.contentType == 'TRACK') {
+        this.isTrack = true;
+    } else if (this.contentType == 'PLAYBOOK') {
+        this.isPlaybook = true;
+    }
+    this.getDamDetailsByDamId();
   }
-  getDamDetailsByDamId(damId: any) {
-    this.damService.getDamDetailsById(damId).subscribe(
+  getDamDetailsByDamId() {
+    this.damService.getDamDetailsById(this.contentId, this.contentType).subscribe(
       response => {
         if (response.statusCode === 200) {
           this.damPostDto = response.data;

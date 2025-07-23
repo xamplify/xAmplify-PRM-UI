@@ -30,7 +30,7 @@
          </div>
 
          <!-- published -->
-         <div class="front-count-col">
+         <div class="front-count-col" *ngIf ="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
                (click)="filterAssets('published')" style="cursor:pointer;">
@@ -109,7 +109,7 @@
            'front-count-red': contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'
          }">
                   <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" class="fa fa-check"></i>
-                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'" class="fa fa-ban"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'" class="fa fa-times-circle"></i>
                </div>
                <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.rejectedCount }}</div>
                <div class="front-count-label">Rejected <i class="fa fa-info-circle ml5" aria-hidden="true"
@@ -119,7 +119,7 @@
 
 
          <!-- Drafts -->
-         <div class="front-count-col"
+         <div class="front-count-col" 
             *ngIf="(moduleType === 'DAM' || (moduleType === 'APPROVE' && (filterType === 'ALL' || filterType === 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'"
@@ -140,7 +140,7 @@
          </div>
 
 
-         <div class="front-count-col">
+         <div class="front-count-col" *ngIf ="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
                (click)="filterAssets('folder')" style="cursor:pointer;">
 

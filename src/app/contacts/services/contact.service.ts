@@ -1093,5 +1093,10 @@ export class ContactService {
             + "&moduleName=" + moduleName + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
-
+    filterValidTeamMemberGroups(teamMemberGroups: any[]): any[] {
+        if (!Array.isArray(teamMemberGroups)) return [];
+        return teamMemberGroups.filter(
+            group => group.teamMembersCount > 0 || group.name === '--Please Select--'
+        );
+    }
 }

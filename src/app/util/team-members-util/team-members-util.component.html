@@ -521,15 +521,10 @@
                         </button>
                       </span>
                       </div>
-                      <span
-                        *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"
-                        class="info-text-color">
-                        <strong>
-                          <span
-                            [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span>
+                        <strong *ngIf="team?.partnersCount==0 && team?.teamMemberGroupPartnersCount === 0 && team.teamMemberGroupId!=0">
+                          <span class="inactive-status">0</span>
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                         </strong>
-                      </span>
                       <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
@@ -537,10 +532,12 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf=" editTeamMember && !loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
-                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
-                  (click)="addOrUpdateTeamMember()"><span
-                    class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
+                <app-select-partners-and-share-leads *ngIf="!loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <div class="col-lg-11 p0 mt10">
+                  <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
+                    (click)="addOrUpdateTeamMember()"><span
+                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
+                </div>
               </div>
             </div>
           </form>
