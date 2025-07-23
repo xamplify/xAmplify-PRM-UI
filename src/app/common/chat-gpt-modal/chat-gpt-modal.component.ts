@@ -2064,4 +2064,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     }
   }
 
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+
 }

@@ -116,8 +116,9 @@ export class AiChatManagerComponent implements OnInit {
   activeTab: string = '';
   pptData: string;
   showPptDesignPicker: boolean = false;
+  designAccess: boolean;
 
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, public referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
 
@@ -194,6 +195,7 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
+    this.checkDesignAccess();
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -1557,5 +1559,18 @@ export class AiChatManagerComponent implements OnInit {
     this.showPptDesignPicker = false;
   }
 
-  
+  /** XNFR-1079  **/
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+  private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
 }
