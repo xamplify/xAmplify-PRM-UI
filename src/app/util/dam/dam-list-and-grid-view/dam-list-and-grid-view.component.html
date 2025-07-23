@@ -1,4 +1,4 @@
-<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" *ngIf="(!isPartnerView && !folderListViewExpanded 
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" [isPartnerView]="isPartnerView" *ngIf="(!folderListViewExpanded 
 		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled) && !FromOliverPopUp">
 </app-content-module-status-analytics>
 
