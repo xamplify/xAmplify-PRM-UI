@@ -650,6 +650,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           $.each(this.newlyAddedTeamMembers,function(_index:number,teamMember:any){
             teamMember['teamMemberGroupId'] = teamMemberGroupId;
           });
+          this.validateAddTeamMemberForm("teamMemberGroup");
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
