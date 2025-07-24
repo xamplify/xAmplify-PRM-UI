@@ -75,7 +75,9 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     pagination.learningTrackId = this.learningTrackId
     pagination.lmsType = this.type;
     this.referenceService.startLoader(this.httpRequestLoader);
+    const desiredPage = pagination.pageIndex;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForTracks, this.pagination);
+    this.pagination.pageIndex = desiredPage;
     this.tracksPlayBookUtilService.getAnalytics(this.pagination).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
