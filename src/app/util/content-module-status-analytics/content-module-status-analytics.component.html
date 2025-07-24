@@ -256,8 +256,8 @@
    </div>
 </div>
 
-<div *ngIf="isPartnerView && !contentCountsLoader && !hideContentTiles" class="front-count-row mb10">
-   <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
+<div *ngIf="isPartnerView && !sharedcontentCountsLoader && !hideContentTiles" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="sharedcontentCountsLoader"></app-box-loader>
    <div class="front-count-col">
 
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'alll'"
@@ -430,7 +430,7 @@
 
    <div class="front-count-col">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folders'"
-         (click)="filterAssets('folders')" style="cursor:pointer;" [class.disabled]="selectedFilter == 0">
+         (click)="filterAssets('folders')" style="cursor:pointer;" [class.disabled]="manageContentCounts?.managerSharedFoldersCount == 0">
 
          <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{

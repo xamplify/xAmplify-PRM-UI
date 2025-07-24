@@ -37,9 +37,13 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   titleHeader: string = "";
   tabNameTile: string;
   isFolderViewTile: any;
+  vendorCompanyProfileName: string = null;
+  sharedcontentCountsLoader: boolean = false;
   constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService: LmsService, private referenceService: ReferenceService,
     private router: Router) {
-
+ if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    }
   }
   ngOnInit() {
     let selected;
@@ -50,6 +54,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
       this.router.url.includes('/shared/fg') || this.router.url.includes('/shared/fl');
 
     if (this.isPartnerView) {
+            this.getSharedContentCounts();
       if (isSharedFolderView) {
         selected = this.referenceService.categoryType = 'folders';
       } else if (this.referenceService.categoryType) {
@@ -82,8 +87,6 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
       }
       this.selectedFilter = selected;
       this.contentModuleStatusAnalyticsDTO.selectedCategory = 'alll';
-      this.getSharedContentCounts();
-
     } else {
       if (isFolderView) {
         selected = this.referenceService.categoryType = 'folder';
@@ -135,6 +138,8 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     if (this.moduleType == 'APPROVE') {
       this.getTileCountsForApproveModule();
       this.hideContentTiles = true;
+    }  else if (this.isPartnerView){
+      this.getSharedContentCounts();
     } else if (!this.showApprovalTiles) {
       this.getContentCounts();
     }
@@ -268,16 +273,16 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
 
     getSharedContentCounts() {
-    this.contentCountsLoader = true;
-      this.lmsService.getManageSharedContentCounts(this.moduleType).subscribe(
+    this.sharedcontentCountsLoader = true;
+      this.lmsService.getManageSharedContentCounts(this.moduleType, this.vendorCompanyProfileName).subscribe(
         (response: any) => {
-          this.contentCountsLoader = false;
+          this.sharedcontentCountsLoader = false;
           if (response.statusCode == 200) {
             this.manageContentCounts = response.map;
           }
         },
         (_error: any) => {
-          this.contentCountsLoader = false;
+          this.sharedcontentCountsLoader = false;
         }
       );
     }
