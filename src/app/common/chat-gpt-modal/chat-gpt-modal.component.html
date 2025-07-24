@@ -912,7 +912,7 @@
         <button *ngIf="authenticationService.module.damAccess" class="share-btn" (click)="createAsset(markdownComponent)">Design Pdf</button>
         <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany" class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button> -->
         <!-- <button class="share-btn">Design Page</button> -->
-        <div *ngIf="designAccess" class="dropdown-container">
+        <div  class="dropdown-container">
           <button class="share-btn dropdown-toggle">Design</button>
           <div class="dropdown-menu">
             <button
