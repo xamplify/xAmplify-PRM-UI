@@ -73,6 +73,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   refreshFolderListView = false;
   updatedItemsCount = 0;
   cacheBuster = '?t=' + new Date().getTime();
+  hasMarketingModulesAccessToPartner: boolean = false;
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -188,6 +189,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination,data.emailTemplates);
+          this.hasMarketingModulesAccessToPartner = data.hasMarketingModulesAccessToPartner;
           this.referenceService.loading(this.httpRequestLoader, false);
         },
         (error: string) => {
