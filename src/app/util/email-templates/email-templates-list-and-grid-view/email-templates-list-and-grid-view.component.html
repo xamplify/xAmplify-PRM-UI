@@ -430,7 +430,7 @@
     <a class="Iconhover custom-grid-icon mMobileDisable" (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.template_edit}}"
          *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) 
-          && emailTemplate.type!='PARTNER') || (marketingModulesAccessForPartner && emailTemplate.type!='PARTNER')">
+          && emailTemplate.type!='PARTNER') || (hasMarketingModulesAccessToPartner && emailTemplate.type!='PARTNER')">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -458,7 +458,7 @@
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
          *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
            authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) 
-           && emailTemplate.type!='PARTNER' ) || (marketingModulesAccessForPartner && emailTemplate.type!='PARTNER')">
+           && emailTemplate.type!='PARTNER' ) || (hasMarketingModulesAccessToPartner && emailTemplate.type!='PARTNER')">
         <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
