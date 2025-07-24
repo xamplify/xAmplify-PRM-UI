@@ -172,7 +172,12 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     )
   }
 
-  marketingModulesChange() {
+  marketingModulesChange(event: any) {
+    this.isContactsModuleToggleDisabled = event;
+    this.hasMarketingModulesAccessToPartner = event;
+    this.defaultModules.forEach((module) => {
+      module.partnerAccessModule = module.moduleId === 3 ? true : module.partnerAccessModule;
+    });
     if (this.isAdd) {
       this.currentPartner.marketingModules = this.marketingModules;
       this.currentPartner.marketingModulesAccessToVendor = this.hasMarketingModulesAccessToVendor;

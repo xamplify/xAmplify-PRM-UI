@@ -70,7 +70,7 @@
         </td>
         <td class="override-actions">
           <app-custom-ui-switch [customSwitch]="hasMarketingModulesAccessToPartner"
-            (customUiSwitchEventEmitter)="hasMarketingModulesAccessToPartner = $event; marketingModulesChange()"></app-custom-ui-switch>
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
         </td>
       </tr>
       <ng-container *ngIf="hasMarketingModulesAccessToPartner">

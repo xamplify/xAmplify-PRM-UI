@@ -1303,6 +1303,7 @@ export class CampaignService {
     /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination: Pagination) {
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
+        emailTemplatesPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         let encodedUrl = this.referenceService.getEncodedUri(emailTemplatesPagination.searchKey);
         let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey=" + encodedUrl + "&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)

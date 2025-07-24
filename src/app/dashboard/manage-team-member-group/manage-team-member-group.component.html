@@ -118,7 +118,8 @@
               <br>
             </th>
             <td>
-              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"
+                [isSwitchOptionDisabled]="defaultModule.roleId === 6 ? isContactsModuleToggleDisabled : false"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -146,7 +147,7 @@
         </td>
         <td>
           <app-custom-ui-switch [customSwitch]="groupDto?.marketingModulesAccessToTeamMemberGroup"
-            (customUiSwitchEventEmitter)="groupDto.marketingModulesAccessToTeamMemberGroup = $event; validateForm()"></app-custom-ui-switch>
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
         </td>
       </tr>
       <ng-container *ngIf="groupDto?.marketingModulesAccessToTeamMemberGroup">

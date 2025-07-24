@@ -46,7 +46,9 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   isDefaultSSOGroupIconClicked = false;
   activateDefaultSSOSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   marketingModules: Array<any> = new Array<any>();
+  isContactsModuleToggleDisabled: boolean = false;
   vendorCompanyProfileName: string = '';
+  
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
@@ -168,6 +170,10 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
       allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
     }
     this.validateForm();
+    this.addRoleIds();
+  }
+
+  addRoleIds() {
     let enabledModules = this.defaultModules.filter((item) => item.enabled);
     let roleIds = enabledModules.map(function (a) { return a.roleId; });
     this.groupDto.roleIds = roleIds;
@@ -183,7 +189,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   validateForm() {
     let validName = $.trim(this.groupDto.name).length > 0;
     let enabledModulesCount = this.defaultModules.filter((item) => item.enabled).length;
-    this.groupDto.isValidForm = validName && (enabledModulesCount > 0 || this.groupDto.marketingModulesAccessToTeamMemberGroup);
+    this.groupDto.isValidForm = validName && enabledModulesCount > 0;
   }
 
   saveOrUpdate() {
@@ -430,6 +436,15 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     document.body.removeChild(tempInput);
     let message = "Signup url copied successfully";
     this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+
+  /***** XNFR-1066 *****/
+  marketingModulesChange(event: any) {
+    this.isContactsModuleToggleDisabled = event;
+    this.groupDto.marketingModulesAccessToTeamMemberGroup = event;
+    this.defaultModules.forEach((module) => { module.enabled = module.roleId === 6 ? true : module.enabled; });
+    this.validateForm();
+    this.addRoleIds();
   }
 
 }

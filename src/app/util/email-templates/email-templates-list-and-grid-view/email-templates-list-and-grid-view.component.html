@@ -270,11 +270,11 @@
                         </li>
                         <li class="filter" (click)="filterTemplates('EVENT',false,9)"
                             [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex"
-                            *ngIf="(referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !campaignAccess?.marketingModulesEnabled" translate>
+                            *ngIf="referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign" translate>
                             Event
                         </li>
                         <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)"
-                            *ngIf="((referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !authenticationService?.module?.isMarketingCompany) && !campaignAccess?.marketingModulesEnabled"
+                            *ngIf="(referenceService?.eventCampaignTabAccess || campaignAccess?.eventCampaign) && !authenticationService?.module?.isMarketingCompany"
                             [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" translate>Event Co-Branding
                         </li>
                         <li class="filter" (click)="filterTemplates('SURVEY',false,11)"
@@ -428,9 +428,8 @@
 <!--Edit-->
 <ng-template #editIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-grid-icon mMobileDisable" (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.template_edit}}"
-         *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-          authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) 
-          && emailTemplate.type!='PARTNER') || (hasMarketingModulesAccessToPartner && emailTemplate.type!='PARTNER')">
+         *ngIf="(hasAllAccess||((hasEmailTemplateRole || hasMarketingModulesAccessToPartner) && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor
+          || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -456,9 +455,8 @@
 <ng-template #deleteIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete"
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
-         *ngIf="((hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
-           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) 
-           && emailTemplate.type!='PARTNER' ) || (hasMarketingModulesAccessToPartner && emailTemplate.type!='PARTNER')">
+         *ngIf="(hasAllAccess||((hasEmailTemplateRole || hasMarketingModulesAccessToPartner) && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor
+          || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
         <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>

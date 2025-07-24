@@ -34,6 +34,7 @@ export class EmailTemplateService {
     }
 
     update(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.URL+"admin/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
@@ -181,11 +182,13 @@ export class EmailTemplateService {
             .catch(this.handleError);
     }
     saveMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.MARKETO_URL + "/marketo/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
     }
     updateMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.MARKETO_URL + "/marketo/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
