@@ -26,6 +26,13 @@
          </li>
       </ul>
       <div class="pull-right" style="padding: 4px 4px 4px;">
+         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="marketingModulesEnabled && !partnerMarketingCampaign"
+            (click)="showPartnerCampaigns()"> Partner Campaigns
+            </button>
+         <button type="button" class="btn btn-primary breadcrumb-right-btn active-campaign-color" *ngIf="marketingModulesEnabled && partnerMarketingCampaign"
+            style="background-color: #5cb85c !important;border:none !important" (click)="showVendorCampaigns()"><i
+               class="fa fa-check-circle-o"></i>
+            Partner Campaigns</button>
          <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
             (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i> Archived
             Campaigns</button>

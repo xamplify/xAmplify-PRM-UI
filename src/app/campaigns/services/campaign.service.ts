@@ -29,7 +29,7 @@ export class CampaignService {
     archived: boolean = false;
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     campaignSchedulerUrl = this.authenticationService.SCHEDULER_URL;
-
+    partnerMarketingCampaign: boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -1295,7 +1295,9 @@ export class CampaignService {
 
     /*******XNFR-318******/
     findCampaignDetailsData() {
-        return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+        let vanityCompanyName = this.authenticationService.getSubDomain();
+        let vanityCompanyUrl = vanityCompanyName ? "companyProfileName="+vanityCompanyName +"&": "";
+        return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?"+vanityCompanyUrl+"access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
