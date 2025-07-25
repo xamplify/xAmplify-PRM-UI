@@ -521,10 +521,13 @@
                         </button>
                       </span>
                       </div>
-                        <strong *ngIf="team?.partnersCount==0 && team?.teamMemberGroupPartnersCount === 0 && team.teamMemberGroupId!=0">
-                          <span class="inactive-status">0</span>
-                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
-                        </strong>
+                      <span  class="info-text-color" *ngIf=" team?.teamMemberGroupPartnersCount === 0  && team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
+                        <strong>
+                          <span
+                            class="inactive-status">0</span>
+                        {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+                          </strong>
+                        </span>
                       <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
