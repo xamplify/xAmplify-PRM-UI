@@ -34,6 +34,7 @@ export class EmailTemplateService {
     }
 
     update(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.URL+"admin/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
@@ -74,7 +75,8 @@ export class EmailTemplateService {
     }
 
      listDefaultTemplates(userId:any){
-        return this.http.get(this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        return this.http.get(this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token
+            +"&companyProfileName="+this.authenticationService.companyProfileName,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
@@ -180,11 +182,13 @@ export class EmailTemplateService {
             .catch(this.handleError);
     }
     saveMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.MARKETO_URL + "/marketo/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
     }
     updateMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
         return this.http.post(this.MARKETO_URL + "/marketo/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
@@ -226,8 +230,9 @@ export class EmailTemplateService {
 
     /*  XNFR-431 */
     copy(emailTemplate:EmailTemplate){
-        let url = this.URL+"/email-template/copy?access_token="+this.authenticationService.access_token;
         emailTemplate.userId = this.authenticationService.getUserId();
+        emailTemplate.vendorOrganizationName = this.authenticationService.companyProfileName;
+        let url = this.URL+"/email-template/copy?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url,emailTemplate);
     }
 

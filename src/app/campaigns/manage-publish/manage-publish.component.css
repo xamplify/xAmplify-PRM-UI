@@ -333,3 +333,7 @@ span.gearicon-font-cu {
   top: unset!important;
   border-bottom: unset !important;
 }
+ .active-tab-campaign {
+  background-color: #5cb85c !important;
+  border: none !important;
+}

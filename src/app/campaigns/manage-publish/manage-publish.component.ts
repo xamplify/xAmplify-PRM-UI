@@ -142,6 +142,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     campaignName = "";
     campaignId: number;
     /*XNFR-832*/
+    partnerMarketingCampaign = false;
+    marketingModulesEnabled = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -172,6 +174,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
+
     }
 
 
@@ -201,6 +204,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vanityUrlFilter = true;
         }
         this.pagination.archived = this.archived;
+        this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign;
+        
         this.pagination.campaignViewType = this.campaignViewType;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -224,6 +229,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
                         pagination.pagedItems.forEach(item => item['isExpand'] = false);
                         this.refService.loading(this.httpRequestLoader, false);
+                        this.marketingModulesEnabled = data.marketingModulesEnabled;
                     } else {
                         this.authenticationService.forceToLogout();
                     }
@@ -300,6 +306,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.archived = this.campaignService.archived;
+            this.partnerMarketingCampaign = this.campaignService.partnerMarketingCampaign;
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }
@@ -1158,6 +1165,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+
             if (this.categoryId > 0) {
                 this.navigatingToRelatedComponent = true;
                 if (this.teamMemberId != undefined && this.teamMemberId > 0) {
@@ -1177,6 +1186,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
             this.exportObject['campaignAnalyticsSettingsOptionEnabled']= this.campaignAnalyticsSettingsOptionEnabled;
             this.closeFilterOption();
         }
@@ -2003,4 +2013,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
 
+    showPartnerCampaigns() {
+        this.partnerMarketingCampaign = true;
+        this.campaignService.partnerMarketingCampaign = true;
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        this.listCampaign(this.pagination);
+    }
+
+    showVendorCampaigns() {
+        this.partnerMarketingCampaign = false;
+        this.campaignService.partnerMarketingCampaign = false;
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        this.listCampaign(this.pagination);
+    }
 }
