@@ -12,6 +12,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CountryNames } from 'app/common/models/country-names';
 import { ContactService } from '../services/contact.service';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var swal: any, $: any;
 
@@ -56,6 +57,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   customCsvHeaders: any[];
   duplicateMappedColumns = [];
   paginationType = '';
+  regularExpressions = new RegularExpressions();
   parsedCsvDtos: Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
   defaultContactsCsvColumnHeaderDtos: Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
   duplicateColumnsMappedErrorResponse: CustomResponse = new CustomResponse();
@@ -533,7 +535,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       let emailId = emailIds[i];
       user.emailId = emailId;
       if (emailId != undefined && $.trim(emailId).length > 0) {
-        user.isValidEmailIdPattern = this.referenceService.validateEmailId(emailId);
+        user.isValidEmailIdPattern = this.validateEmail(emailId);
       }
     }
   }
@@ -616,7 +618,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   validateEmailAddressPattern(user: User) {
-    user.isValidEmailIdPattern = this.referenceService.validateEmailId(user.emailId);
+    user.isValidEmailIdPattern = this.validateEmail(user.emailId);
     this.showSuccessMessage();
   }
 
@@ -626,7 +628,13 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts, index);
     $('#mapped-csv-column-row' + index).remove();
     $('#expanded-table-row' + index).remove();
-    this.setPage(1);
+    const totalContacts = this.contacts.length;
+    const totalPages = Math.ceil(totalContacts / 12);
+    if (this.pager.currentPage > totalPages) {
+      this.setPage(totalPages);
+    } else{
+      this.setPage(this.pager.currentPage);
+    }
     let emailAddress = this.contacts.map(function (contact) { return contact.emailId });
     console.log(emailAddress);
     this.showSuccessMessage();
@@ -685,7 +693,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     const emailCounts = this.contacts.reduce((acc, user) => {
       if (user.emailId.length == 0) {
         acc.empty++;
-      } else if (this.referenceService.validateEmailId(user.emailId)) {
+      } else if (this.validateEmail(user.emailId)) {
         acc.valid++;
       } else {
         acc.invalid++;
@@ -711,12 +719,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-718 *****/
   saveCustomCsvContacts() {
-    this.csvContacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+    this.csvContacts = this.contacts.filter(user => this.validateEmail(user.emailId));
     this.CloseCustomCsvModelPopup();
     if (this.csvContacts.length == 0) {
       this.notifyParentCustomResponse.emit();
     } else {
-      this.contacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+      this.contacts = this.contacts.filter(user => this.validateEmail(user.emailId));
       this.notifyParent.emit(this.contacts);
       this.notifyParentSave.emit();
     }
@@ -790,9 +798,14 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.isListLoader = true;
     this.mappingLoader = true;
     this.contacts = this.contacts.filter((contact) => contact.id != user.id);
-    this.invalidUsers.splice(index, 1);
-
-    this.setInvalidUsersPage(1);
+    this.invalidUsers = this.invalidUsers.filter((contact) => contact.id != user.id);
+    const totalContacts = this.invalidUsers.length;
+    const totalPages = Math.ceil(totalContacts / 12);
+    if (this.csvPager.currentPage > totalPages) {
+      this.setInvalidUsersPage(totalPages);
+    } else{
+      this.setInvalidUsersPage(this.csvPager.currentPage);
+    }
     this.setPage(1);
     this.showSuccessMessage();
     if (this.contacts.length == 0) {
@@ -812,6 +825,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-772 *****/
   validateMobileNumber(inputString: string): boolean {
     return inputString && (!/^\d+$/.test(inputString) || inputString.length > 20);
+  }
+
+  /***** XNFR-772 *****/
+  validateEmail(inputString: string): boolean {
+    return this.regularExpressions.EMAIL_ID_PATTERN.test(inputString);
   }
 
   /***** XNFR-772 *****/
