@@ -349,7 +349,7 @@
 											[ngModelOptions]="{standalone: true}" (change)="onVanityUrlChange()"></td>
 								</tr>
 								<tr *ngIf="companyAndUserDetails?.roleName === 'ROLE_VENDOR' || companyAndUserDetails?.roleName === 'ROLE_ORG_ADMIN'">
-									<th scope="row">Marketing Modules</th>
+									<th scope="row">Enable Marketing Modules</th>
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.marketingModulesEnabled"
 											[ngModelOptions]="{standalone: true}" [disabled]="!campaignAccess.vanityUrlDomain"></td>
 								</tr>
