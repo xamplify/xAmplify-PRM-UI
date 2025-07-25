@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
@@ -73,9 +73,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   invalidPatternEmails = [];
   csvCustomResponse = new CustomResponse();
   contactStatusStages = [];
+  removedContactIds: Set<number> = new Set();
+  rowIndices: number[];
 
-  constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger, public countryNames: CountryNames, public contactService: ContactService) {
+  constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, 
+    public properties: Properties, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, 
+    public contactService: ContactService, private cdr: ChangeDetectorRef) {
     this.notifyParent = new EventEmitter();
     this.notifyParentCancel = new EventEmitter();
     this.notifyParentSave = new EventEmitter();
@@ -114,6 +117,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       let rows = this.csvRows[i];
       this.addEmptyToRows(rows, csvHeaders);
       let parsedCsvDto = new ParsedCsvDto();
+      parsedCsvDto.rowIndex = i;
       parsedCsvDto.expanded = false;
       let emptyValues = [];
       this.iterateDTOAndCsvRows(rows, i, self, parsedCsvDto);
@@ -300,7 +304,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         if (!isDuplicateColumnsMapped) {
           let defaultColumns = filteredColumnHeaderDtos.map(function (dto) { return dto.defaultColumn }).filter(function (v) { return v !== '' });
           if (defaultColumns.indexOf(this.xAmplifyDefaultCsvHeaders[4]) > -1) {
-            let self = this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
+            this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
             let firstNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[0]);
             let lastNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[1]);
             let companyRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[2]);
@@ -329,7 +333,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             });
             this.isValidEmailAddressMapped = invalidEmailIds != undefined && invalidEmailIds.length == 0;
             this.paginationType = "csvContacts";
-            self.setPage(1);
+            this.setPage(1);
             this.isColumnMapped = true;
             if(isSubmitButtonClicked) {
               this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
@@ -436,7 +440,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.addContactStatus(contactStatusRows, user, i);
       /****Flexi-Fields****/
       this.addFlexiFields(flexiFieldRows, user, i);
-      user.id = i+1;
+      user.id = this.rowIndices[i];
       mappedContactUsers.push(user);
     }
   }
@@ -575,20 +579,18 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   private iterateDtoAndAddMappedRows(filteredColumnHeaderDtos: DefaultContactsCsvColumnHeaderDto[]) {
-    let self = this;
-    $.each(filteredColumnHeaderDtos, function (index: number, dto: DefaultContactsCsvColumnHeaderDto) {
-      let mappedColumn = dto.mappedColumn;
-      $.each(self.parsedCsvDtos, function (parsedCsvDtoIndex: number, parsedCsvDto: ParsedCsvDto) {
-        let csvRows = parsedCsvDto.csvRows;
-        $.each(csvRows, function (csvRowIndex: number, csvRowDto: CsvRowDto) {
-          let column = csvRowDto.columnHeader;
-          if (column == mappedColumn) {
-            dto.mappedRows.push(csvRowDto.value);
+    this.rowIndices = [];
+    const rowsToMap = this.parsedCsvDtos.filter(dto => !this.removedContactIds.has(dto.rowIndex));
+    for (const dto of filteredColumnHeaderDtos) {
+      for (const parsed of rowsToMap) {
+        for (const csvRow of parsed.csvRows) {
+          if (csvRow.columnHeader === dto.mappedColumn) {
+            dto.mappedRows.push(csvRow.value);
           }
-        });
-      });
-    });
-    return self;
+        }
+      }
+    }
+    this.rowIndices = rowsToMap.map(r => r.rowIndex);
   }
 
   /***** XNFR-671 *****/
@@ -612,6 +614,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.csvContacts = [];
     this.invalidUsers = [];
     this.invalidPatternEmails = [];
+    this.removedContactIds = new Set();
     this.csvCustomResponse = new CustomResponse();
     this.referenceService.goToTop();
   }
@@ -623,11 +626,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-671 *****/
-  removeContact(index: number) {
+  removeContact(user: User) {
     this.isListLoader = true;
-    this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts, index);
-    $('#mapped-csv-column-row' + index).remove();
-    $('#expanded-table-row' + index).remove();
+    this.removedContactIds.add(user.id);
+    this.contacts = this.contacts.filter((contact) => contact.id != user.id);
     const totalContacts = this.contacts.length;
     const totalPages = Math.ceil(totalContacts / 12);
     if (this.pager.currentPage > totalPages) {
@@ -794,9 +796,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-718 *****/
-  removeInvalidUser(index: number, user: User) {
+  removeInvalidUser(user: User) {
     this.isListLoader = true;
     this.mappingLoader = true;
+    this.removedContactIds.add(user.id);
     this.contacts = this.contacts.filter((contact) => contact.id != user.id);
     this.invalidUsers = this.invalidUsers.filter((contact) => contact.id != user.id);
     const totalContacts = this.invalidUsers.length;
@@ -861,6 +864,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     user.mobileNumber = event.mobileNumber;
     user.countryCode = event.selectedCountry.code;
     user.isValidMobileNumber = event.isValidMobileNumber;
+    this.cdr.detectChanges();
   }
 
   findContactStatusStages() {
