@@ -560,7 +560,28 @@
       </div>
       <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-xs-12 pull-right">
+            <div class="form-group">
+              <strong for="globalGroupSelect" style="font-weight: 500;">Select Team Member Group<span class="ml5"><i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+               title="Selected group will be assigned to all team members."></i></span></strong>
+              <div class="input-group">
+                <select id="globalGroupSelect" class="form-control" [(ngModel)]="selectedGlobalGroupId"
+                  (ngModelChange)="applyGroupToAllTeamMembers()">
+                  <option *ngFor="let g of teamMemberGroups" [ngValue]="g.id">
+                    {{ g.name }}
+                  </option>
+                </select>
+                <span class="input-group-btn">
+                  <button class="btn btn-info mbtpxni" [disabled]="!selectedGlobalGroupId" type="button" tabindex="-1"
+                    (click)="previewModules(selectedGlobalGroupId!)">
+                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped silvertm tgrid" id="add-team-member-table" aria-describedby="TeamMemberList">
             <thead>
@@ -605,8 +626,8 @@
                     [disabled]="!teamMember.enableOption">
                   </switch>
                 </td>
-                <td>
-                  <div class="input-group spxni-width">
+                <td style="width: 25%;">
+                  <div class="input-group">
                     <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId"
                       (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
@@ -622,7 +643,7 @@
                       </strong>
                     </span>
                     <span class="input-group-btn">
-                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button"
+                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button"
                         tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
                         <i class="fa fa-eye white" aria-hidden="true"></i>
                       </button>
@@ -631,7 +652,11 @@
                 </td>
                 <!---Delete-->
                 <td>
-                  <a (click)="deleteRow(i,teamMember)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                  <div class="actions-block override-actions ActionAlign">
+                  <a class="custom-icon" (click)="deleteRow(i,teamMember)"><i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                  <div class="del-icon"></div>
+                  </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
