@@ -2451,7 +2451,7 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
   color: var(---text-color) !important;
 }
 
-.tgrid > tbody > tr:hover{
+.tgrid > tbody > tr:hover, .tgrid > tbody > tr.content-in-view {
   background-color: var(--table-header) !important;
 }
 
