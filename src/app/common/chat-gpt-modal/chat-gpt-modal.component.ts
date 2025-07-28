@@ -163,6 +163,7 @@ export class ChatGptModalComponent implements OnInit {
   showPptDesignPicker: boolean = false;
   pptData: string;
   isResponseInProgress: boolean;
+  intentMessages: any[] = [];
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -289,6 +290,7 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];
+    this.intentMessages = [];
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
@@ -355,6 +357,7 @@ export class ChatGptModalComponent implements OnInit {
       this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
     }else{
       this.messages = [];
+      this.intentMessages = [];
     }
     this.searchTerm = "";
     this.showPromptBoxBelow = false;
@@ -407,6 +410,7 @@ export class ChatGptModalComponent implements OnInit {
     this.pptData = '';
     this.showPptDesignPicker = false;
     this.isTextLoading = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -801,6 +805,7 @@ export class ChatGptModalComponent implements OnInit {
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
+    self.intentMessages.push({ role: 'user', content: self.inputText });
     this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     if (this.activeTab == 'askpdf') {
@@ -824,6 +829,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     self.chatGptIntegrationSettingsDto.isContact = this.authenticationService.module.isContact;
+    self.chatGptIntegrationSettingsDto.contents = self.intentMessages;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
       this.removeStyleForTextArea();
@@ -837,10 +843,12 @@ export class ChatGptModalComponent implements OnInit {
         if (statusCode === 200) {
           self.isTextLoading = false;
           let isReport = response.data.isReport;
+          self.chatGptIntegrationSettingsDto.isGlobalSearchDone = response.data.isGlobalSearchDone;
           console.log('API Response:', response);
           var content = response.data;
           if (content) {
             let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport });
             if (isReport == 'true') {
               try {
                 const cleanJsonStr = self.extractJsonString(message);
@@ -859,6 +867,7 @@ export class ChatGptModalComponent implements OnInit {
 
           } else {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
           if (!(self.inputText != undefined && self.inputText.length > 0)) {
@@ -872,12 +881,15 @@ export class ChatGptModalComponent implements OnInit {
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+          self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
         if (self.isResponseInProgress) {
           self.showOpenHistory = false;
           self.isCopyButtonDisplayed = false;
           self.messages = [];
+          self.intentMessages = [];
+          self.intentMessages = [];
           self.chatGptGeneratedText = '';
           self.isTextLoading = false;
           self.isValidInputText = false;
@@ -890,6 +902,7 @@ export class ChatGptModalComponent implements OnInit {
         console.log('API Error:', error);
         self.isTextLoading = false;
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
+        self.intentMessages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.selectedPromptId = null;
         self.stopStatusRotation();
       }
@@ -1057,6 +1070,7 @@ export class ChatGptModalComponent implements OnInit {
           messages.forEach((message: any) => {
 
             if (message.role === 'assistant') {
+              this.intentMessages.push({ role: 'assistant', content: message.content, isReport: isReport });
               if (isReport == 'true') {
                 let reponseJson = this.extractJsonString(message.content);
                 message.content = this.parseOliverReport(reponseJson);
@@ -1065,7 +1079,8 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent') && this.checkKeywords(message.content)) {
+              this.intentMessages.push({ role: 'user', content: message.content });
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'globalchat') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
