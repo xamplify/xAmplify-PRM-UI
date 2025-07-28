@@ -144,6 +144,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   selectedCampaignId = 0;
   showCalendarView = false;
   isValidCopyCampaignName = true;
+  partnerMarketingCampaign = false;
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, 
     private router: Router, private logger: XtremandLogger,
     private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -278,6 +279,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
         this.pagination.vanityUrlFilter = true;
     }
     this.pagination.archived = this.archived;
+    this.pagination.partnerMarketingCompany = this.partnerMarketingCampaign
     if(this.categoryId!=undefined){
         this.pagination.categoryId = this.categoryId;
         this.pagination.categoryType = 'c';
@@ -1219,4 +1221,18 @@ callFolderListViewEmitter(){
     this.isValidCopyCampaignName = trimmedData.length>0;
 }
 
+showPartnerCampaigns() {
+  this.partnerMarketingCampaign = true;
+  this.campaignService.partnerMarketingCampaign = true;
+  this.resetPagination();        
+  this.findCampaigns(this.pagination);
+
+}
+
+showVendorCampaigns() {
+  this.partnerMarketingCampaign = false;
+  this.campaignService.partnerMarketingCampaign = false;  
+  this.resetPagination();      
+  this.findCampaigns(this.pagination);
+}
 }

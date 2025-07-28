@@ -190,6 +190,7 @@
                                 </ng-container>
                                 <ng-container *ngIf="selectedModuleType==4">
                                     <app-campaigns-list-view-util [archived]="archived"
+                                        [showPartnerCreatedCampaigns]="showPartnerCreatedCampaigns"
                                         [campaignAnalyticsSettingsOptionEnabled] = "campaignAnalyticsSettingsOptionEnabled"
                                         [folderListViewInput]="folderListViewInput"
                                         (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
