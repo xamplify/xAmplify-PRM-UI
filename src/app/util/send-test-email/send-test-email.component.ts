@@ -107,6 +107,9 @@ export class SendTestEmailComponent implements OnInit {
   @Input() sendTestEmailDtoAttachments: any[] = [];
   hasVanityAccess: boolean = false;
 
+  showCCEmailInputField:boolean = false;
+  showBCCEmailInputField:boolean = false;
+
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
 
@@ -682,6 +685,8 @@ export class SendTestEmailComponent implements OnInit {
   sendWelcomeMailRemainder() {
     this.processing = true;
     this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.ccEmailIds = (this.sendTestEmailDto.ccEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.bccEmailIds = (this.sendTestEmailDto.bccEmailIds || []).map(tag => tag.value);
     this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
     this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
     this.prepareFormData();

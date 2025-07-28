@@ -81,7 +81,62 @@
                            [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
                         </tag-input>
 
-                     </div>    
+                     </div>
+                     
+                     <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r" style="float:right;">
+                        <span class="mr5" *ngIf="!showCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip"
+                              data-placement="bottom" title="Add Cc recipients"
+                              (click)="showCCEmailInputField = 'true'"><span>Cc</span></a></span>
+                        <span *ngIf="!showBCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom"
+                              title="Add Bcc recipients" (click)="showBCCEmailInputField = 'true'"><span>Bcc</span></a></span>
+                     </div>
+
+                     <!-- cc -->
+                     <div class="form-group" *ngIf="showCCEmailInputField">
+                        <label>Cc</label>
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.ccEmailIds"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder " autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.ccEmailIds" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
+                  
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                           Please enter a valid email address
+                        </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.ccEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
+                     </div>
+
+                     <!-- Bcc -->
+                     <div class="form-group" *ngIf="showBCCEmailInputField">
+                        <label>Bcc</label>
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.bccEmailIds"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder " autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.bccEmailIds" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
+                  
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                           Please enter a valid email address
+                        </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.bccEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
+                     </div>
+
                        <!--XNFR-832-->
                        <div class="form-group" *ngIf="isSendMdfRequestOptionClicked">
                         <label>Recipient Name</label>
