@@ -129,7 +129,7 @@
       </div>
       <ng-template *ngIf="vendorCompanyProfileName && groupDto?.marketingModulesAccessToPartner" [ngTemplateOutlet]="showMarketingModules"></ng-template>
       <div id="right">
-        <button type="button" [disabled]="!groupDto.isValidForm"
+        <button type="button" [disabled]="!groupDto.isValidForm || previewGroup"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
             class="btn btn-primary transition txt_pd-top3">{{groupSubmitButtonText}}</span></button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManageOrPreview()"
@@ -227,8 +227,8 @@
         </table>
       </div>
       <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
-        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Copy URL" 
-          (click)="copyGroupSignUpUrl(group.signUpUrl)">
+        <a class="Iconhover custom-icon" (click)="copyGroupSignUpUrl(group.signUpUrl)" data-toggle="tooltip"
+          data-placement="top" title="Copy the sign-up URL. Only whitelisted domain users can register using this link.">
           <i class="fa fa-link" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>

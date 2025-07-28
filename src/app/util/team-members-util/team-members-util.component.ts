@@ -1551,6 +1551,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     });
   }
    private setGlobalGroupAndApply() {
+    if (!this.showUploadedTeamMembers) {
+    return;
+  }
     if (this.teamMemberGroups.length > 0) {
       this.selectedGlobalGroupId = this.teamMemberGroups[0].id;
       this.applyGroupToAllTeamMembers();

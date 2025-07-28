@@ -406,7 +406,7 @@ export class ChatGptModalComponent implements OnInit {
     this.checkDesignAccess();
     this.pptData = '';
     this.showPptDesignPicker = false;
-    this.isTextLoading = false;
+    // this.isTextLoading = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {

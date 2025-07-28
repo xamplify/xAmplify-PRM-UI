@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
@@ -12,6 +12,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CountryNames } from 'app/common/models/country-names';
 import { ContactService } from '../services/contact.service';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var swal: any, $: any;
 
@@ -56,6 +57,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   customCsvHeaders: any[];
   duplicateMappedColumns = [];
   paginationType = '';
+  regularExpressions = new RegularExpressions();
   parsedCsvDtos: Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
   defaultContactsCsvColumnHeaderDtos: Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
   duplicateColumnsMappedErrorResponse: CustomResponse = new CustomResponse();
@@ -71,9 +73,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   invalidPatternEmails = [];
   csvCustomResponse = new CustomResponse();
   contactStatusStages = [];
+  removedContactIds: Set<number> = new Set();
+  rowIndices: number[];
 
-  constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger, public countryNames: CountryNames, public contactService: ContactService) {
+  constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, 
+    public properties: Properties, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, 
+    public contactService: ContactService, private cdr: ChangeDetectorRef) {
     this.notifyParent = new EventEmitter();
     this.notifyParentCancel = new EventEmitter();
     this.notifyParentSave = new EventEmitter();
@@ -112,6 +117,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       let rows = this.csvRows[i];
       this.addEmptyToRows(rows, csvHeaders);
       let parsedCsvDto = new ParsedCsvDto();
+      parsedCsvDto.rowIndex = i;
       parsedCsvDto.expanded = false;
       let emptyValues = [];
       this.iterateDTOAndCsvRows(rows, i, self, parsedCsvDto);
@@ -298,7 +304,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         if (!isDuplicateColumnsMapped) {
           let defaultColumns = filteredColumnHeaderDtos.map(function (dto) { return dto.defaultColumn }).filter(function (v) { return v !== '' });
           if (defaultColumns.indexOf(this.xAmplifyDefaultCsvHeaders[4]) > -1) {
-            let self = this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
+            this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
             let firstNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[0]);
             let lastNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[1]);
             let companyRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[2]);
@@ -327,7 +333,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             });
             this.isValidEmailAddressMapped = invalidEmailIds != undefined && invalidEmailIds.length == 0;
             this.paginationType = "csvContacts";
-            self.setPage(1);
+            this.setPage(1);
             this.isColumnMapped = true;
             if(isSubmitButtonClicked) {
               this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
@@ -434,7 +440,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.addContactStatus(contactStatusRows, user, i);
       /****Flexi-Fields****/
       this.addFlexiFields(flexiFieldRows, user, i);
-      user.id = i+1;
+      user.id = this.rowIndices[i];
       mappedContactUsers.push(user);
     }
   }
@@ -533,7 +539,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       let emailId = emailIds[i];
       user.emailId = emailId;
       if (emailId != undefined && $.trim(emailId).length > 0) {
-        user.isValidEmailIdPattern = this.referenceService.validateEmailId(emailId);
+        user.isValidEmailIdPattern = this.validateEmail(emailId);
       }
     }
   }
@@ -573,20 +579,18 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   private iterateDtoAndAddMappedRows(filteredColumnHeaderDtos: DefaultContactsCsvColumnHeaderDto[]) {
-    let self = this;
-    $.each(filteredColumnHeaderDtos, function (index: number, dto: DefaultContactsCsvColumnHeaderDto) {
-      let mappedColumn = dto.mappedColumn;
-      $.each(self.parsedCsvDtos, function (parsedCsvDtoIndex: number, parsedCsvDto: ParsedCsvDto) {
-        let csvRows = parsedCsvDto.csvRows;
-        $.each(csvRows, function (csvRowIndex: number, csvRowDto: CsvRowDto) {
-          let column = csvRowDto.columnHeader;
-          if (column == mappedColumn) {
-            dto.mappedRows.push(csvRowDto.value);
+    this.rowIndices = [];
+    const rowsToMap = this.parsedCsvDtos.filter(dto => !this.removedContactIds.has(dto.rowIndex));
+    for (const dto of filteredColumnHeaderDtos) {
+      for (const parsed of rowsToMap) {
+        for (const csvRow of parsed.csvRows) {
+          if (csvRow.columnHeader === dto.mappedColumn) {
+            dto.mappedRows.push(csvRow.value);
           }
-        });
-      });
-    });
-    return self;
+        }
+      }
+    }
+    this.rowIndices = rowsToMap.map(r => r.rowIndex);
   }
 
   /***** XNFR-671 *****/
@@ -610,23 +614,29 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.csvContacts = [];
     this.invalidUsers = [];
     this.invalidPatternEmails = [];
+    this.removedContactIds = new Set();
     this.csvCustomResponse = new CustomResponse();
     this.referenceService.goToTop();
   }
 
   /***** XNFR-671 *****/
   validateEmailAddressPattern(user: User) {
-    user.isValidEmailIdPattern = this.referenceService.validateEmailId(user.emailId);
+    user.isValidEmailIdPattern = this.validateEmail(user.emailId);
     this.showSuccessMessage();
   }
 
   /***** XNFR-671 *****/
-  removeContact(index: number) {
+  removeContact(user: User) {
     this.isListLoader = true;
-    this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts, index);
-    $('#mapped-csv-column-row' + index).remove();
-    $('#expanded-table-row' + index).remove();
-    this.setPage(1);
+    this.removedContactIds.add(user.id);
+    this.contacts = this.contacts.filter((contact) => contact.id != user.id);
+    const totalContacts = this.contacts.length;
+    const totalPages = Math.ceil(totalContacts / 12);
+    if (this.pager.currentPage > totalPages) {
+      this.setPage(totalPages);
+    } else{
+      this.setPage(this.pager.currentPage);
+    }
     let emailAddress = this.contacts.map(function (contact) { return contact.emailId });
     console.log(emailAddress);
     this.showSuccessMessage();
@@ -685,7 +695,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     const emailCounts = this.contacts.reduce((acc, user) => {
       if (user.emailId.length == 0) {
         acc.empty++;
-      } else if (this.referenceService.validateEmailId(user.emailId)) {
+      } else if (this.validateEmail(user.emailId)) {
         acc.valid++;
       } else {
         acc.invalid++;
@@ -711,12 +721,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-718 *****/
   saveCustomCsvContacts() {
-    this.csvContacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+    this.csvContacts = this.contacts.filter(user => this.validateEmail(user.emailId));
     this.CloseCustomCsvModelPopup();
     if (this.csvContacts.length == 0) {
       this.notifyParentCustomResponse.emit();
     } else {
-      this.contacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+      this.contacts = this.contacts.filter(user => this.validateEmail(user.emailId));
       this.notifyParent.emit(this.contacts);
       this.notifyParentSave.emit();
     }
@@ -786,13 +796,19 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-718 *****/
-  removeInvalidUser(index: number, user: User) {
+  removeInvalidUser(user: User) {
     this.isListLoader = true;
     this.mappingLoader = true;
+    this.removedContactIds.add(user.id);
     this.contacts = this.contacts.filter((contact) => contact.id != user.id);
-    this.invalidUsers.splice(index, 1);
-
-    this.setInvalidUsersPage(1);
+    this.invalidUsers = this.invalidUsers.filter((contact) => contact.id != user.id);
+    const totalContacts = this.invalidUsers.length;
+    const totalPages = Math.ceil(totalContacts / 12);
+    if (this.csvPager.currentPage > totalPages) {
+      this.setInvalidUsersPage(totalPages);
+    } else{
+      this.setInvalidUsersPage(this.csvPager.currentPage);
+    }
     this.setPage(1);
     this.showSuccessMessage();
     if (this.contacts.length == 0) {
@@ -812,6 +828,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-772 *****/
   validateMobileNumber(inputString: string): boolean {
     return inputString && (!/^\d+$/.test(inputString) || inputString.length > 20);
+  }
+
+  /***** XNFR-772 *****/
+  validateEmail(inputString: string): boolean {
+    return this.regularExpressions.EMAIL_ID_PATTERN.test(inputString);
   }
 
   /***** XNFR-772 *****/
@@ -843,6 +864,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     user.mobileNumber = event.mobileNumber;
     user.countryCode = event.selectedCountry.code;
     user.isValidMobileNumber = event.isValidMobileNumber;
+    this.cdr.detectChanges();
   }
 
   findContactStatusStages() {
