@@ -109,7 +109,7 @@
 
                                             <!--Through Partner / To Partner / To Recipients-->
                                             <div class="form-group"
-                                                *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                *ngIf="!authenticationService?.module?.isMarketingCompany && !isPartnerMarketingCompany ">
                                                 <!--Through Partner Label-->
                                                 <label class="control-label col-sm-4 cursor-pointer tab_p0"
                                                     data-toggle="tooltip" data-placement="top"
@@ -1080,7 +1080,7 @@
                                                 (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
                                             </li>
                                             <li class="filter"
-                                                *ngIf="!authenticationService?.module?.isMarketingCompany"
+                                                *ngIf="!authenticationService?.module?.isMarketingCompany && !isPartnerMarketingCompany"
                                                 [class.active]="'MY-PARTNERS' == campaignRecipientsPagination.filterBy"
                                                 (click)="filterContacts('MY-PARTNERS')" translate>My Partners
                                             </li>

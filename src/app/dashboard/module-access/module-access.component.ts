@@ -697,4 +697,11 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       });
   }
 
+  /*** XNFR-1066 ***/
+  onVanityUrlChange() {
+    if (!this.campaignAccess.vanityUrlDomain) {
+      this.campaignAccess.marketingModulesEnabled = false;
+    }
+  }
+
 }

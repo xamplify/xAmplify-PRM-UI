@@ -26,9 +26,6 @@ export class MultiSelectDropdownComponent implements OnInit {
     if(this.singleSelection==undefined){
       this.singleSelection = false;
     }
-    if(this.selectedItems==undefined){
-      this.selectedItems = [];
-    }
 
     this.dropdownSettings = {
       singleSelection: this.singleSelection,
@@ -54,9 +51,11 @@ export class MultiSelectDropdownComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.selectedItems = [];
     if (changes.displayText) {
       this.updateDropdownValue(changes.displayText.currentValue);
+    }
+    if (changes.selectedItems && !changes.selectedItems.firstChange) {
+      this.selectedItems = [...changes.selectedItems.currentValue];
     }
   }
 

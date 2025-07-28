@@ -4,6 +4,7 @@ import { Properties } from 'app/common/models/properties';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 declare var $;
 
@@ -21,6 +22,7 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
   @Output() notifySubmit = new EventEmitter();
   @Output() notifyUpdateSuccess = new EventEmitter();
   @Output() notifyUpdateFailed = new EventEmitter();
+  @Output() notifyMarketingModulesChange = new EventEmitter();
 
   ngxLoading:boolean = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -29,8 +31,15 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
   isAdd:boolean = false;
   isEdit:boolean = false;
   isContactsModuleToggleDisabled:boolean = false;
+  hasMarketingModulesAccessToPartner: boolean = false;
+  hasMarketingModulesAccessToVendor: boolean = false;
+  vendorCompanyProfileName: string = '';
+  marketingModules:any[];
 
-  constructor(public referenceService: ReferenceService, public dashboardService: DashboardService, public properties: Properties) { }
+  constructor(public referenceService: ReferenceService, public dashboardService: DashboardService, public properties: Properties, 
+    private authenticationService: AuthenticationService) {
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+  }
 
   ngOnInit() {
     if (this.actionType == 'add') {
@@ -46,7 +55,6 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
       this.fetchModulesForEdit();
       this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
     }
-    // this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
   }
   
   ngOnDestroy(){
@@ -67,7 +75,10 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     this.ngxLoading = true;
     this.dashboardService.fetchModuleForPartnerModuleAccess().subscribe(
       response => {
-        this.defaultModules = response.data;
+        this.defaultModules = response.data.defaultModules;
+        this.marketingModules = response.data.marketingModules;
+        this.hasMarketingModulesAccessToVendor = response.data.hasMarketingModulesAccessToVendor;
+        this.hasMarketingModulesAccessToPartner = response.data.hasMarketingModulesAccessToPartner;
         this.checkAndDisableContactsModuleToggleUsingCampaignModule();
         this.ngxLoading = false;
       }, error => {
@@ -125,7 +136,10 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     this.dashboardService.fetchModulesForEditPartnerModule(this.currentPartner.partnershipId).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.defaultModules = response.data;
+          this.defaultModules = response.data.defaultModules;
+          this.marketingModules = response.data.marketingModules;
+          this.hasMarketingModulesAccessToVendor = response.data.hasMarketingModulesAccessToVendor;
+          this.hasMarketingModulesAccessToPartner = response.data.hasMarketingModulesAccessToPartner;
           this.checkAndDisableContactsModuleToggleUsingCampaignModule();
         }
         this.ngxLoading = false;
@@ -138,6 +152,9 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
   update() {
     this.ngxLoading = true;
     this.currentPartner.defaultModules = this.defaultModules;
+    this.currentPartner.marketingModules = this.marketingModules;
+    this.currentPartner.marketingModulesAccessToVendor = this.hasMarketingModulesAccessToVendor;
+    this.currentPartner.marketingModulesAccessToPartner = this.hasMarketingModulesAccessToPartner;
     this.dashboardService.updatePartnerModulesAccess(this.currentPartner).subscribe(
       response => {
         this.ngxLoading = false;
@@ -153,6 +170,23 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
         this.notifyUpdateFailed.emit(this.properties.serverErrorMessage);
       }
     )
+  }
+
+  marketingModulesChange(event: any) {
+    const isCampaignModule= this.defaultModules.find(module => module.moduleId === 2);
+    if (!isCampaignModule.partnerAccessModule) {
+      this.isContactsModuleToggleDisabled = event;
+    }
+    this.hasMarketingModulesAccessToPartner = event;
+    this.defaultModules.forEach((module) => {
+      module.partnerAccessModule = module.moduleId === 3 ? true : module.partnerAccessModule;
+    });
+    if (this.isAdd) {
+      this.currentPartner.marketingModules = this.marketingModules;
+      this.currentPartner.marketingModulesAccessToVendor = this.hasMarketingModulesAccessToVendor;
+      this.currentPartner.marketingModulesAccessToPartner = this.hasMarketingModulesAccessToPartner;
+      this.notifySubmit.emit(this.currentPartner);
+    }
   }
 
 }
