@@ -714,35 +714,33 @@ export class SendTestEmailComponent implements OnInit {
     return text ? EMAIL_REGEXP.test(text) : false;
   }
 
-  beforeAdd(tag: any): Observable<any> {
-    const isPaste = !!tag['value'];
-    const email = isPaste ? tag.value : tag;
-    if (!this.isValidEmail(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['must_be_email']);
+  private beforeAdd(tag: any): Observable<any> {
+    let isPaste = false;
+    if (tag['value']) {
+      isPaste = true;
+      tag = tag.value;
     }
-
-    if (this.isDeactivatedDomain(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['deactivated_domain']);
-    }
-
-    if (!this.isAllowedDomain(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['invalid_domain']);
-    }
-
-    this.addFirstAttemptFailed = false;
-    return Observable.of(email);
-  }
-
-  private handleInvalidEmail(tag: string, isPaste: boolean, message: string): Observable<any> {
-    if (!this.addFirstAttemptFailed) {
-      this.addFirstAttemptFailed = true;
-      if (!isPaste) {
-        this.tagInput.setInputValue(tag);
+    if (!this.isValidEmail(tag)) {
+      if (!this.addFirstAttemptFailed) {
+        this.addFirstAttemptFailed = true;
+        if (!isPaste) {
+          this.tagInput.setInputValue(tag);
+        }
       }
+      return isPaste
+        ? Observable.throw(this.errorMessages['must_be_email'])
+        : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
     }
-    return isPaste ? Observable.throw(message)
-      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+    if (this.isDeactivatedDomain(tag)) {
+      return Observable.throw(this.errorMessages['deactivated_domain']);
+    }
+    if (!this.isAllowedDomain(tag)) {
+      return Observable.throw(this.errorMessages['invalid_domain']);
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(tag);
   }
+
 
   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
     const email = control.value;
