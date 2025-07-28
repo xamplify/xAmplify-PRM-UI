@@ -2029,7 +2029,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
 
-XNFR-1073
+    //XNFR-1073
     showPartnerCampaigns() {
         this.partnerMarketingCampaign = true;
         this.campaignService.partnerMarketingCampaign = true;
@@ -2045,4 +2045,5 @@ XNFR-1073
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
     }
+
 }
