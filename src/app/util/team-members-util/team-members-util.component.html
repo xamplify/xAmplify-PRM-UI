@@ -639,7 +639,7 @@
                       </option>
                     </select>
                     <span class="info-text-color float-left"
-                      *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
+                      *ngIf="teamMember?.teamMemberGroupPartnersCount >= 0 && teamMember.teamMemberGroupId !== 0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
                       <strong>
                         <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span>
                         {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
