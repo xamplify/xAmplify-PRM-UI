@@ -146,6 +146,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   deletedPartnershipIds: any[] = [];
   selectedPartnershipIdsLoading: boolean = false;
+  selectedGlobalGroupId: number | null = null;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -308,6 +309,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
@@ -644,6 +646,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           let teamMemberGroup = this.teamMemberGroups[0];
           let teamMemberGroupId = teamMemberGroup.id;
           this.team.teamMemberGroupId = teamMemberGroupId;
@@ -1547,5 +1550,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       console.log('you clicked on option' + dismiss);
     });
   }
-
+   private setGlobalGroupAndApply() {
+    if (!this.showUploadedTeamMembers) {
+    return;
+  }
+    if (this.teamMemberGroups.length > 0) {
+      this.selectedGlobalGroupId = this.teamMemberGroups[0].id;
+      this.applyGroupToAllTeamMembers();
+    }
+  }
+    applyGroupToAllTeamMembers() {
+    if (this.selectedGlobalGroupId == null) return;
+    for (let member of this.newlyAddedTeamMembers) {
+      member.teamMemberGroupId = this.selectedGlobalGroupId;
+      this.validateSecondAdminOptionForCsvUsers(this.selectedGlobalGroupId, member);
+    }
+  }
 }

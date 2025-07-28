@@ -35,6 +35,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     titleHeader ="";
     moduleName = "";
     campaignAnalyticsSettingsOptionEnabled:boolean = false;
+    showPartnerCreatedCampaigns:boolean = false;
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -59,6 +60,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.selectedModuleType = this.moduleType['type'];
         this.archived = this.moduleType['archived'];
         this.campaignAnalyticsSettingsOptionEnabled = this.moduleType['campaignAnalyticsSettingsOptionEnabled'];
+        this.showPartnerCreatedCampaigns = this.moduleType['showPartnerCreatedCampaigns'];
         this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
     }
@@ -105,6 +107,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         }
         this.referenceService.startLoader(this.httpRequestLoader);
         this.authenticationService.setVanityUrlFilter(this.pagination);
+        pagination.showPartnerCreatedCampaigns = this.showPartnerCreatedCampaigns;
         this.userService.getCategories(this.pagination)
             .subscribe(
                 response => {

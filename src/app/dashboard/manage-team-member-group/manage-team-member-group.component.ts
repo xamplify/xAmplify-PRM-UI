@@ -45,9 +45,14 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   /***XNFR-883***/
   isDefaultSSOGroupIconClicked = false;
   activateDefaultSSOSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  marketingModules: Array<any> = new Array<any>();
+  isContactsModuleToggleDisabled: boolean = false;
+  vendorCompanyProfileName: string = '';
+  
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
   }
   ngOnDestroy(): void {
     this.referenceService.closeSweetAlert();
@@ -130,6 +135,11 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
       subscribe(
         response => {
           this.defaultModules = response.data.modules;
+          if (this.vendorCompanyProfileName) {
+            this.marketingModules = response.data.marketingModules;
+            this.groupDto.marketingModulesAccessToPartner = response.data.hasMarketingModulesAccessToPartner;
+            this.groupDto.marketingModulesAccessToTeamMemberGroup = response.data.hasMarketingModulesAccessToTeamMemberGroup;
+          }
           this.referenceService.loading(this.addGroupLoader, false);
         }, error => {
           this.referenceService.loading(this.addGroupLoader, false);
@@ -160,6 +170,10 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
       allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
     }
     this.validateForm();
+    this.addRoleIds();
+  }
+
+  addRoleIds() {
     let enabledModules = this.defaultModules.filter((item) => item.enabled);
     let roleIds = enabledModules.map(function (a) { return a.roleId; });
     this.groupDto.roleIds = roleIds;
@@ -324,6 +338,9 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
         }else{
           this.groupSubmitButtonText = "Update";
         }
+        if (this.vendorCompanyProfileName) {
+          this.marketingModules = map['marketingModules'];
+        }
         this.groupDto.isValidForm = map['validForm'];
         $('#manage-team-member-groups').hide(500);
         $('#add-team-member-group').show(500);
@@ -419,6 +436,15 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
     document.body.removeChild(tempInput);
     let message = "Signup url copied successfully";
     this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+
+  /***** XNFR-1066 *****/
+  marketingModulesChange(event: any) {
+    this.isContactsModuleToggleDisabled = event;
+    this.groupDto.marketingModulesAccessToTeamMemberGroup = event;
+    this.defaultModules.forEach((module) => { module.enabled = module.roleId === 6 ? true : module.enabled; });
+    this.validateForm();
+    this.addRoleIds();
   }
 
 }

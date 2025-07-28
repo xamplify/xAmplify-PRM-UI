@@ -10,6 +10,7 @@
       <div class="modal-body">
        <!-- XNFR-938 (avoid deplicate code)-->
       <ng-template *ngIf="isEdit" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
+      <ng-template *ngIf="vendorCompanyProfileName && hasMarketingModulesAccessToVendor" [ngTemplateOutlet]="showMarketingModules"></ng-template>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
@@ -24,6 +25,7 @@
 <!-- XNFR-938-->
 <div *ngIf="isAdd">
   <ng-template *ngIf="isAdd" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
+  <ng-template *ngIf="vendorCompanyProfileName && hasMarketingModulesAccessToVendor" [ngTemplateOutlet]="showMarketingModules"></ng-template>
 </div>
 
 <ng-template #showPartnerModulesWithToggle>
@@ -39,7 +41,7 @@
           <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
             [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
             aria-hidden="true"></i>
-          {{defaultModule?.moduleName}}<sup
+            {{ (defaultModule.moduleId === 2 ? 'Redistribute ' : '') + defaultModule.moduleName }}<sup
             *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
           <br>
         </td>
@@ -56,3 +58,32 @@
   </div>
 </ng-template>
 <!-- XNFR-938-->
+
+<!--- Marketing Modules --->
+<ng-template #showMarketingModules>
+  <div class="table-responsive">
+    <table class="table tgrid table-hover full-width" aria-describedby="">
+      <tr>
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Enable Marketing Modules
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Enable this toggle to allow your partner to access marketing modules."></i>
+        </td>
+        <td class="override-actions">
+          <app-custom-ui-switch [customSwitch]="hasMarketingModulesAccessToPartner"
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
+        </td>
+      </tr>
+      <ng-container *ngIf="hasMarketingModulesAccessToPartner">
+        <tr *ngFor="let marketingModule of marketingModules">
+          <td scope="row" class="fstcw-tm" style="font-weight: 500;">
+            <i class="{{marketingModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
+            {{ (marketingModule.moduleId === 6 ? 'Design Template' : marketingModule.moduleId === 2 ? 'Create Campaign' : marketingModule.moduleName) }}
+          </td>
+          <td class="override-actions">
+            <i class="fa fa-check success" aria-hidden="true"></i>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</ng-template>

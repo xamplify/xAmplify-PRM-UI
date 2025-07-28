@@ -612,3 +612,7 @@ padding: 8px 16px !important;
 .btn-info{
   background-color: #38a8df;
 }
+.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+    z-index: 2;
+    margin-left: -1px;
+}

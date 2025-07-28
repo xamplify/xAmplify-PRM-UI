@@ -210,6 +210,10 @@ export class Pagination {
 
 	selectedTab: string;
 
-    publishedFilter : boolean = false;
+	partnerMarketingCompany: boolean = false; 
+
+	showPartnerCreatedCampaigns: boolean = false;
+  
+   publishedFilter : boolean = false;
 
 }

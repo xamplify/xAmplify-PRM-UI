@@ -58,7 +58,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.campaignAccess.videoCampaign = data.video;
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;
-        this.campaignAccess.eventCampaign = data.event
+        this.campaignAccess.eventCampaign = data.event;
         this.campaignAccess.smsCampaign = data.sms;
         this.campaignAccess.landingPageCampaign = data.landingPageCampaign;
         this.campaignAccess.survey = data.survey;

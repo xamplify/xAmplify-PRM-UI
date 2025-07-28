@@ -411,6 +411,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showPptDesignPicker = false;
     this.isTextLoading = false;
     this.chatGptIntegrationSettingsDto.isGlobalSearchDone = false;
+    // this.isTextLoading = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {

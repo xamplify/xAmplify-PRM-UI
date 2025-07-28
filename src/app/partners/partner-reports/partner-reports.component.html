@@ -313,6 +313,22 @@
       </div>
     </div>
   </div>
+  
+<!-- XNFR-944 -->
+    <!--******************All Partners Donut and List Details******************-->
+  <div class="row" *ngIf="totalPartnersDiv">
+    <div class="ml15m">
+        <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" 
+        [fromAllPartners]="totalPartnersDiv"
+        [applyFilter]="applyFilter"
+        (notifySelectSlice)="interactionRegionDonutSliceSelected($event)"
+        (notifyUnSelectSlice)="interactionRegionDonutSliceUnSelected($event)"></app-donut-pie-chart>
+    </div>
+    <div class="ml15m">
+      <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
+      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (partnersSelected)="openSendTestPopupFromAllPartner($event)" [isSentEmailNotification]="isSentEmailNotification" ></app-all-partners-list>
+    </div>
+  </div>
 
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
   <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
@@ -961,23 +977,6 @@
             (notifyParent)="setCompanyProfileIncompleteAndSignupPendingPartnesPage($event)"></app-pagination>
         </div>
       </div>
-    </div>
-  </div>
-
-
-  <!-- XNFR-944 -->
-    <!--******************All Partners Donut and List Details******************-->
-  <div class="row" *ngIf="totalPartnersDiv">
-    <div class="ml15m">
-        <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" 
-        [fromAllPartners]="totalPartnersDiv"
-        [applyFilter]="applyFilter"
-        (notifySelectSlice)="interactionRegionDonutSliceSelected($event)"
-        (notifyUnSelectSlice)="interactionRegionDonutSliceUnSelected($event)"></app-donut-pie-chart>
-    </div>
-    <div class="ml15m">
-      <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
-      [applyFilter]="applyFilter" (triggerSendEmailPopup)="openSendTestEmailModalPopup($event)" (partnersSelected)="openSendTestPopupFromAllPartner($event)" [isSentEmailNotification]="isSentEmailNotification" ></app-all-partners-list>
     </div>
   </div>
 

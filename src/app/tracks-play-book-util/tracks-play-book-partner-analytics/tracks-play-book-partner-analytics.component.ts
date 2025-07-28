@@ -100,7 +100,9 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
     pagination.partnerCompanyId = this.partnerCompanyId;
     pagination.lmsType = this.type;
     this.referenceService.startLoader(this.httpRequestLoader);
+    const desiredPage = pagination.pageIndex;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForPartnerTrackDetails, this.pagination);
+    this.pagination.pageIndex = desiredPage;
     this.tracksPlayBookUtilService.getPartnerAnalytics(pagination).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
