@@ -121,11 +121,13 @@
               <br>
             </th>
             <td>
-              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"
+                [isSwitchOptionDisabled]="defaultModule.roleId === 6 ? isContactsModuleToggleDisabled : false"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
       </div>
+      <ng-template *ngIf="vendorCompanyProfileName && groupDto?.marketingModulesAccessToPartner" [ngTemplateOutlet]="showMarketingModules"></ng-template>
       <div id="right">
         <button type="button" [disabled]="!groupDto.isValidForm"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
@@ -138,6 +140,33 @@
 </div>
 
 
+<ng-template #showMarketingModules>
+  <div class="table-responsive">
+    <table class="table tgrid table-hover full-width" aria-describedby="">
+      <tr>
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Enable Marketing Modules
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Enable this toggle to allow your team member to access marketing modules."></i>
+        </td>
+        <td>
+          <app-custom-ui-switch [customSwitch]="groupDto?.marketingModulesAccessToTeamMemberGroup"
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
+        </td>
+      </tr>
+      <ng-container *ngIf="groupDto?.marketingModulesAccessToTeamMemberGroup">
+        <tr *ngFor="let marketingModule of marketingModules">
+          <td scope="row" class="fstcw-tm">
+            <i class="{{marketingModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+            {{ marketingModule?.moduleName }}
+          </td>
+          <td>
+            <i class="fa fa-check success" aria-hidden="true" style="margin-left: 20px;"></i>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</ng-template>
 
 
 <!--Preview Team Member Group-->

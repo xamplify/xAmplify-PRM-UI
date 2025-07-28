@@ -216,10 +216,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         if (this.referenceService.categoryType.trim().length > 0) {
           this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
           this.referenceService.categoryType = '';
-        } else {
-          this.pagination.selectedApprovalStatusCategory = "alll"
-          this.referenceService.categoryTrackPlaybookType = false;
-        }
+        } 
       }
     } else {
       if (this.referenceService.categoryTrackPlaybookType) {
@@ -231,9 +228,6 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         if (this.referenceService.categoryType.trim().length > 0) {
           this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
           this.referenceService.categoryType = '';
-        } else {
-          this.pagination.selectedApprovalStatusCategory = 'all';
-          this.referenceService.categoryTrackPlaybookType = false;
         }
       }
     }

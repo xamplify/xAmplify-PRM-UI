@@ -43,8 +43,7 @@
 		</ng-container>
 		<h5 *ngIf="!isFromAdminList && (userInfo?.firstName?.length>0 || userInfo?.lastName?.length>0) && !isAllPartnersList" class="m0">
 			<span data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
-				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span>
-				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span> {{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 			</span>
 		</h5>
 		<h6 class='mb0 mt5' *ngIf="!isAllPartnersList">

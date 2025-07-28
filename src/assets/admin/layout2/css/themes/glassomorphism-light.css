@@ -3550,9 +3550,9 @@ i.download_file:hover {
   margin-left: 0px!important; 
   }
 /* manage-publish card */
-.border-b-unset:hover{
+/* .border-b-unset:hover{
 border-bottom: unset!important;
-}
+} */
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;

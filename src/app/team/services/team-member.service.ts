@@ -204,7 +204,7 @@ export class TeamMemberService{
 		let input = {};
 		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
 		input['vanityUrlFilter'] = vanityUrlFilter;
-		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
 		input['userId'] = this.authenticationService.getUserId();
 		var url = this.URL + "teamMemberGroup/findDefaultModules?access_token=" + this.authenticationService.access_token;
 		return this.http.post(url, input)

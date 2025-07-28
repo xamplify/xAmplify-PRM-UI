@@ -239,7 +239,7 @@ export class HomeComponent implements OnInit {
       const url = "admin/get-company-id/" + this.userId + "?access_token=" + this.token;
       this.referenceService.getHomeCompanyIdByUserId(url)
         .subscribe(response => {
-          const campaignUrl = "campaign/access/" + response + "?access_token=" + this.token;
+          const campaignUrl = "campaign/access/" + response + "?access_token=" + this.token + "&companyProfileName=" + this.authenticationService.companyProfileName;
           this.referenceService.getHomeOrgCampaignTypes(campaignUrl)
             .subscribe(data => {
               this.authenticationService.enableLeads = data.enableLeads;
