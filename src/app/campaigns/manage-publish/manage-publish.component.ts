@@ -142,8 +142,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     campaignName = "";
     campaignId: number;
     /*XNFR-832*/
+    //XNFR-1073
     partnerMarketingCampaign = false;
     marketingModulesEnabled = false;
+    
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -2013,6 +2015,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
 
+XNFR-1073
     showPartnerCampaigns() {
         this.partnerMarketingCampaign = true;
         this.campaignService.partnerMarketingCampaign = true;
