@@ -150,6 +150,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
   }
   goToManage() {
     this.groupDto = {};
+    this.isContactsModuleToggleDisabled = false;
     this.referenceService.stopLoader(this.addGroupLoader);
     this.referenceService.stopLoader(this.httpRequestLoader);
     this.customResponse = new CustomResponse();
@@ -342,6 +343,7 @@ export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
           this.marketingModules = map['marketingModules'];
         }
         this.groupDto.isValidForm = map['validForm'];
+        this.isContactsModuleToggleDisabled = this.groupDto.marketingModulesAccessToTeamMemberGroup;
         $('#manage-team-member-groups').hide(500);
         $('#add-team-member-group').show(500);
       }, error => {
