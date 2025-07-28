@@ -66,7 +66,7 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     if (campignModule != undefined) {
       let contactModule = this.defaultModules.filter((item) => item.moduleName == "Contacts")[0];
       contactModule.partnerAccessModule = campignModule.partnerAccessModule ? true : contactModule.partnerAccessModule;
-      this.isContactsModuleToggleDisabled = campignModule.partnerAccessModule;
+      this.isContactsModuleToggleDisabled = campignModule.partnerAccessModule || this.hasMarketingModulesAccessToPartner;
     }
   }
 
@@ -95,13 +95,9 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
       module.partnerAccessModule = event;
       let contactModule = this.defaultModules.filter((item) => item.moduleName == "Contacts")[0];
       contactModule.partnerAccessModule = module.partnerAccessModule ? true : contactModule.partnerAccessModule;
-      this.isContactsModuleToggleDisabled = module.partnerAccessModule;
+      this.isContactsModuleToggleDisabled = module.partnerAccessModule || this.hasMarketingModulesAccessToPartner;
     } else {
       module.partnerAccessModule = event;
-      // let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
-      // let enabledModulesLength = modulesWithoutAll.filter((item) => item.partnerAccessModule).length;
-      // let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
-      // allModule.partnerAccessModule = (modulesWithoutAll.length == enabledModulesLength);
     }
     let enabledModules = this.defaultModules.filter((item) => item.partnerAccessModule);
     let roleIds = enabledModules.map(function (a) { return a.roleId; });
@@ -172,6 +168,7 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     )
   }
 
+  /***** XNFR-1066 *****/
   marketingModulesChange(event: any) {
     const isCampaignModule= this.defaultModules.find(module => module.moduleId === 2);
     if (!isCampaignModule.partnerAccessModule) {
