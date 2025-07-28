@@ -442,17 +442,61 @@
                     </div>
                   </div>
                 </div>
-
+                  <!---Enable As An Admin--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group row">
+                    <div class="col-sm-6" *ngIf="showSecondAdmin">
+                      <div class="form-group">
+                        <label class="control-label col-sm-6">Enable As An Admin</label>
+                        <div class="col-sm-4">
+                          <div>
+                            <switch class="switchbtns" *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
+                              data-toggle="tooltip" data-placement="bottom"
+                              [title]="!team?.enableOption? 'This option is not available for the selected group':''"
+                              [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
+                            </switch>
+                            <switch class="switchbtns" *ngIf="team.enableOption" [status]="team.secondAdmin"
+                              [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                              [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                              [size]="callActionSwitch.defaultSize" (statusChange)="changeOrgAdminStatus(team,$event)"
+                              [disabled]="!team.enableOption">
+                            </switch>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!---Status--->
+                    <div class="col-sm-6 p0" *ngIf="editTeamMember">
+                      <div class="form-group row">
+                        <label class="control-label col-sm-1 text-center pl0">Status</label>
+                        <div class="col-sm-4">
+                          <div
+                            [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
+                            <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              [disabled]="callActionSwitch.disabled">
+                            </switch>
+                            <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              (statusChange)="changeTeamMemberStatus(team,$event)">
+                            </switch>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <!---Team Member Group--->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Team Member Group<span class="required">*</span></label>
-                    <button class="btn btn-info margin-left-negative-fifteen-px mb_10"
-                      [disabled]="team?.teamMemberGroupId==0" data-toggle="tooltip" data-placement="bottom"
-                      title="click to view available modules " (click)="previewModules(team.teamMemberGroupId)">
-                      <i class="fa fa-eye white" aria-hidden="true"></i>
-                    </button>
                     <div class="col-sm-8">
+                      <div class="input-group">
                       <select
                         title="Team Member Group cannot be changed.One or more {{authenticationService?.partnerModule?.customName}} part of the group"
                         disabled class="form-control" *ngIf=" false && team?.partnersCount>0">
@@ -469,15 +513,18 @@
                           <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                         </option>
                       </select>
-                      <span
-                        *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"
-                        class="info-text-color">
-                        <strong>
-                          <span
-                            [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span>
+                      <span class="input-group-btn">
+                        <button class="btn btn-info btn-pad8" [disabled]="team?.teamMemberGroupId==0"
+                          data-toggle="tooltip" data-placement="bottom" title="click to view available modules "
+                          (click)="previewModules(team.teamMemberGroupId)">
+                          <i class="fa fa-eye white" aria-hidden="true"></i>
+                        </button>
+                      </span>
+                      </div>
+                        <strong *ngIf="team?.partnersCount==0 && team?.teamMemberGroupPartnersCount === 0 && team.teamMemberGroupId!=0">
+                          <span class="inactive-status">0</span>
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                         </strong>
-                      </span>
                       <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
@@ -485,58 +532,12 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf=" team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 && previousTeamMemberGroupId != team.teamMemberGroupId" [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
-                <!---Enable As An Admin--->
-                <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3">Enable As An Admin</label>
-                    <div class="col-sm-8">
-                      <div>
-                        <switch class="switchbtns" *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
-                          data-toggle="tooltip" data-placement="bottom"
-                          [title]="!team?.enableOption? 'This option is not available for the selected group':''"
-                          [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
-                          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                        </switch>
-                        <switch class="switchbtns" *ngIf="team.enableOption" [status]="team.secondAdmin"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                        </switch>
-                      </div>
-                    </div>
-                  </div>
+                <app-select-partners-and-share-leads *ngIf="!loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <div class="col-lg-11 p0 mt10">
+                  <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
+                    (click)="addOrUpdateTeamMember()"><span
+                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
                 </div>
-
-                <!---Status--->
-                <div class="col-md-12 col-lg-12" *ngIf="editTeamMember">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3">Status</label>
-                    <div class="col-sm-8">
-                      <div
-                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
-                        <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          [disabled]="callActionSwitch.disabled">
-                        </switch>
-                        <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeTeamMemberStatus(team,$event)">
-                        </switch>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
-                  (click)="addOrUpdateTeamMember()"><span
-                    class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
               </div>
             </div>
           </form>
@@ -559,7 +560,28 @@
       </div>
       <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-xs-12 pull-right">
+            <div class="form-group">
+              <strong for="globalGroupSelect" style="font-weight: 500;">Select Team Member Group<span class="ml5"><i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+               title="Selected group will be assigned to all team members."></i></span></strong>
+              <div class="input-group">
+                <select id="globalGroupSelect" class="form-control" [(ngModel)]="selectedGlobalGroupId"
+                  (ngModelChange)="applyGroupToAllTeamMembers()">
+                  <option *ngFor="let g of teamMemberGroups" [ngValue]="g.id">
+                    {{ g.name }}
+                  </option>
+                </select>
+                <span class="input-group-btn">
+                  <button class="btn btn-info mbtpxni" [disabled]="!selectedGlobalGroupId" type="button" tabindex="-1"
+                    (click)="previewModules(selectedGlobalGroupId!)">
+                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped silvertm tgrid" id="add-team-member-table" aria-describedby="TeamMemberList">
             <thead>
@@ -604,8 +626,8 @@
                     [disabled]="!teamMember.enableOption">
                   </switch>
                 </td>
-                <td>
-                  <div class="input-group spxni-width">
+                <td style="width: 25%;">
+                  <div class="input-group">
                     <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId"
                       (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
@@ -621,7 +643,7 @@
                       </strong>
                     </span>
                     <span class="input-group-btn">
-                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button"
+                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button"
                         tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
                         <i class="fa fa-eye white" aria-hidden="true"></i>
                       </button>
@@ -630,7 +652,11 @@
                 </td>
                 <!---Delete-->
                 <td>
-                  <a (click)="deleteRow(i,teamMember)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                  <div class="actions-block override-actions ActionAlign">
+                  <a class="custom-icon" (click)="deleteRow(i,teamMember)"><i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                  <div class="del-icon"></div>
+                  </a>
+                  </div>
                 </td>
               </tr>
             </tbody>

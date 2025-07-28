@@ -44,8 +44,9 @@ export class TeamMember{
     validFirstName=false;
     lastNameErrorMessage="";
     selectedPartnershipIds = [];
+    deletedPartnershipIds = [];
 
+    newPartnersAdded = false;
 
-
-
+    newAndSinglePartner = false;
 }

@@ -1,7 +1,7 @@
 <ngx-loading [show]="campaignLoader" [config]="{ backdropBorderRadius: '14px' }"
    style="padding-bottom:20px"></ngx-loading>
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-   <div class="page-bar mb-height_auto" *ngIf="!showEdit" style="height: 48px;">
+   <div class="page-bar mb-height_auto" *ngIf="!showEdit && !showAskOliverModalPopup" style="height: 48px;">
       <ul class="page-breadcrumb">
          <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
                [routerLink]="referenceService.homeRouter" translate>Home</a>
@@ -82,7 +82,7 @@
    </div>
    </div>
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <div id="manageContacts">
+   <div id="manageContacts" *ngIf="!showAskOliverModalPopup">
       <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
       <div *ngIf="showAll">
          <!-- END PAGE HEADER-->
@@ -816,6 +816,13 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                    <!--XNFR-342---->
+                                                   <!-- Ask OLiver -->
+                                                   <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && module == 'partners' && false"
+                                                      data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contactList.id,contactList.name)">
+                                                      <div class="oliveBackground">
+                                                         <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                                      </div>
+                                                   </a>
                                                 </div>
                                                 <div class="actions-block override-actions"
                                                    *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !(masterContactListSync && contactList.isDefaultContactList) && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
@@ -1140,7 +1147,7 @@
 
 
 
-   <div *ngIf="! showListOfContactList">
+   <div *ngIf="! showListOfContactList && !showAskOliverModalPopup">
       <div class="alert alert-success alert-dismissible" *ngIf="invalidDeleteSucessMessage"
          style="margin-bottom: 20px;">
          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -1787,6 +1794,9 @@
       <app-scroll-top></app-scroll-top>
    </div>
 
+   <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+   [isFromManagePartner]="'true'" [selectedContact]="selectedList" [isFromGroupOfPartners]="'true'"
+   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
 </div>
 <!-- Filter Modal -->
 <div id="filterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">

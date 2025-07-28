@@ -3,6 +3,8 @@
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space">
+   <app-dam-analytics-details [contentId]="learningTrackId" [contentType]="type"></app-dam-analytics-details> 
+   
   <div class="row">
     <div class="col-md-12">
       <div class=" clearfix">
@@ -10,7 +12,15 @@
           <div class="row">
             <div class="page-toolbar col-xs-12">
               <div class="btn-group pull-right">
-                <div class="inputs" style="float: right">
+                <div class="d-flex" style="float: right">
+                  <div class="pb3">
+                      <select class="form-control mDamSort"
+                        [(ngModel)]="sortOption.selectedSortOptionForPartnerTrackDetails"
+                        (ngModelChange)="sortPartnerCompanies($event)" style="position: relative;">
+                        <option *ngFor="let option of sortOption.partnerTrackDetailsDropDownOptions"
+                          [ngValue]="option">{{option.name}}</option>
+                      </select>
+                    </div>
                   <div class="portlet-input input-inline" style="margin-right: 15px;width: 180px;">
                     <div class="input-icon right" style="position: relative;right: -11px;">
                       <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -22,6 +32,13 @@
                         <i class="fa fa-search" aria-hidden="true"></i></button>
                     </div>
                   </div>
+                      <div class="inline-block pull-right ml5">
+                      <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+                        title="Export to Excel" (click)="downloadPartnerTrackAndPlaybooksAnalytics()"
+                        [disabled]="pagination?.totalRecords === 0">
+                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                      </button>
+                    </div>
                   <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </a>

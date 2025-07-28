@@ -213,4 +213,7 @@ export class Pagination {
 	partnerMarketingCompany: boolean = false; 
 
 	showPartnerCreatedCampaigns: boolean = false;
+  
+   publishedFilter : boolean = false;
+
 }

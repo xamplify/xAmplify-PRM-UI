@@ -35,10 +35,9 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div *ngIf="pptLoader" class="ppt-mask">
+    <div *ngIf="referenceService?.docxLoader" class="ppt-mask">
       <div class="ppt-badge">
-        <span class="msag">Generating&nbsp;PPT</span>
-        <!-- ring spinner -->
+        <span class="msag">Generating&nbsp;DOCX</span>
         <span class="ring"></span>
       </div>
     </div>
@@ -590,7 +589,7 @@
                           <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
                             [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
                             <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-                              aria-hidden="true" (click)="speakTextForParaprasher(markdownComponent)">
+                              aria-hidden="true" (click)="speakTextOn(i, markdownComponent)">
                             </i>
                           </div>
                           <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
@@ -846,8 +845,8 @@
                     <div *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'partneragent'" class="action-buttons">
                       <button class="action-btn" (click)="setInputText('Give me the details of the partner')">Give me the details of the
                         partner</button>
-                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary of the partner')">Generate an
-                        Executive Summary of the...</button>
+                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary')">Generate an
+                        Executive Summary</button>
                       <button class="action-btn" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the
                         partner</button>
                     </div>
@@ -891,15 +890,16 @@
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
             <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-             <app-executive-summary-report   *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             <app-executive-summary-report [activeTab]="activeTab"  *ngIf="message?.isReport == 'true'" [reportData]="message.content">
              </app-executive-summary-report>
           </div>
         </div>
       </div>
       <div class="footer-icons mb10" *ngIf="message?.isReport == 'false'">
-        <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
-          <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-            aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
+          [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
+          <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
+            (click)="speakTextOn(i, markdownComponent)">
           </i>
         </div>
         <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
@@ -923,6 +923,7 @@
             <button *ngIf="authenticationService.module.hasLandingPageAccess &&  !authenticationService?.module?.isPrmCompany"
               class="share-btn" (click)="desginPage(markdownComponent)">Design Page</button>
               <button  class="share-btn" (click)="openPptDesignPicker(markdownComponent)" >Design PPT</button>
+              <button  class="share-btn" (click)="downloadDocxFile(markdownComponent)" >Design DOCX</button>
           </div>
         </div>
         <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>

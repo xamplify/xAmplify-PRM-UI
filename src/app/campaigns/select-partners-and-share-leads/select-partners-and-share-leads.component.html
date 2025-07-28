@@ -1,11 +1,12 @@
 <!--Partner Companies-->
-<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
+<div [ngClass]="IsTeamMemberGroup ? 'row card_margin' : ''">
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid" [ngClass]="IsTeamMemberGroup ? 'BgForCard' : ''">
    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-   <div class="dataTables_wrapper form-inline no-footer pt10" *ngIf="!httpRequestLoader.isLoading">
+   <div class="dataTables_wrapper form-inline no-footer" *ngIf="!httpRequestLoader.isLoading">
       <div class="note-vid pull-left" *ngIf="!hideHeaderText && !IsTeamMemberGroup">
          Select One {{authenticationService?.partnerModule?.customName}} Company
       </div>
-      <div class="note-vid pull-left" *ngIf="!hideHeaderText && IsTeamMemberGroup">
+      <div class="note-vid2 pull-left" *ngIf="!hideHeaderText && IsTeamMemberGroup">
          Select {{authenticationService?.partnerModule?.customName}} Companies
       </div>
       <!---Search & Sort-->
@@ -31,6 +32,7 @@
                         <input type="checkbox" *ngIf="IsTeamMemberGroup" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                      </th>
                      <th scope="col">Company Logo</th>
+                     <th scope="col" *ngIf="IsTeamMemberGroup" class="text-center">Partner Info</th>
                      <th scope="col" class="text-center">Company Name</th>
                      <th scope="col">Created Time</th>
                      <th scope="col"  *ngIf="!IsTeamMemberGroup" class="text-center">Share Leads</th>
@@ -57,17 +59,22 @@
                                  [src]="authenticationService.MEDIA_URL+partner?.companyLogo">
                            </div>
                         </td>
+                        <td class="text-center" *ngIf="IsTeamMemberGroup">
+                           <ng-container>
+                              <p class="mb0" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{partner?.firstName || ''}} {{partner?.lastName || ''}} ">
+                                 <b>Name:</b> {{partner?.partnerName | slice:0:15}} <span *ngIf="partner?.partnerName?.length>15">...</span>
+                              </p>
+                              <p class="mb0" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{partner?.partnerEmail}}">
+                                 <b>Email Id:</b> {{partner?.partnerEmail | slice:0:30}}<span *ngIf="partner?.partnerEmail?.length>30">...</span>
+                              </p>
+                           </ng-container>
+                        
+                        </td>
                         <td class="text-center">
                            <span title="{{partner?.companyName}}">{{partner?.companyName | slice:0:50}}</span>
                            <span *ngIf="partner?.companyName.length>50">...</span>
-                           <h5>
-                              <strong>
-                                 Company Name By Vendor :
-                                 <span title="{{partner?.companyNameAddedByVendor}}">{{partner?.companyNameAddedByVendor
-                                    | slice:0:50}}</span>
-                                 <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
-                              </strong>
-                           </h5>
                            <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
                               data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                         </td>
@@ -290,6 +297,7 @@
          </div>
       </div>
    </div>
+</div>
 </div>
 <ng-container *ngIf="showLeadsPreview">
    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"

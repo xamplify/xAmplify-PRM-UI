@@ -164,7 +164,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
-            pagination.exportToExcel = false; 
+            pagination.exportToExcel = userListPaginationWrapper.pagination.exportToExcel; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -224,7 +224,7 @@ export class ContactService {
             this.logger.info("user-list-contacts pagination: V2 API Executed, Type: " + userListPaginationWrapper.userList.contactType);
             let pagination = new Pagination();
             pagination = userListPaginationWrapper.pagination;
-            pagination.exportToExcel = false; 
+            pagination.exportToExcel = userListPaginationWrapper.pagination.exportToExcel; 
             pagination.userId = this.authenticationService.getUserId();
             pagination.userListId = userListPaginationWrapper.userList.id;
             pagination.type = userListPaginationWrapper.userList.contactType;
@@ -1093,5 +1093,10 @@ export class ContactService {
             + "&moduleName=" + moduleName + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
-
+    filterValidTeamMemberGroups(teamMemberGroups: any[]): any[] {
+        if (!Array.isArray(teamMemberGroups)) return [];
+        return teamMemberGroups.filter(
+            group => group.teamMembersCount > 0 || group.name === '--Please Select--'
+        );
+    }
 }

@@ -319,9 +319,6 @@
 .dropdown-menu li > a {
   color: #333;
 }
-.border_btn{
-    border-left: 1px solid #1ca6f3;
-}
     .fileinput-button {
       position: relative;
       overflow: hidden;
@@ -347,16 +344,8 @@
   align-items: center;
   padding: 0px;
 }
-.download-btn {
-  border-left: 1px solid #1ca6f3;
-  padding: 0 12px;
-  border-radius: 0 7px 7px 0 !important;
-}
-.dropdown-menu li > a {
-  color: #333;
-}
 .border_btn{
-    border-left: 1px solid #1ca6f3;
+    border-left: 1px solid #2b569d;
 }
     .fileinput-button {
       position: relative;

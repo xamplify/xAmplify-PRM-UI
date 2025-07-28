@@ -16,12 +16,13 @@ import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DamService } from 'app/dam/services/dam.service';
 
 @Component({
   selector: 'app-tracks-play-book-analytics',
   templateUrl: './tracks-play-book-analytics.component.html',
   styleUrls: ['./tracks-play-book-analytics.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties]
+  providers: [HttpRequestLoader, SortOption, Properties,DamService]
 })
 export class TracksPlayBookAnalyticsComponent implements OnInit {
 
@@ -74,6 +75,9 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     pagination.learningTrackId = this.learningTrackId
     pagination.lmsType = this.type;
     this.referenceService.startLoader(this.httpRequestLoader);
+    const desiredPage = pagination.pageIndex;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortOptionForTracks, this.pagination);
+    this.pagination.pageIndex = desiredPage;
     this.tracksPlayBookUtilService.getAnalytics(this.pagination).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
@@ -131,10 +135,10 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
 
   goBack() {
     if ((this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) && !this.isFromApprovalModule) {
-      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]  && !this.isFromApprovalModule) {
-      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-    }else if(this.isFromApprovalModule){
+      this.referenceService.navigateToManageTracksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && !this.isFromApprovalModule) {
+      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+    } else if (this.isFromApprovalModule) {
       this.goBackToManageApproval();
     }
   }
@@ -171,5 +175,20 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
     this.referenceService.goToRouter(url);
   }
-
+  downloadTrackAndPlaybooksAnalytics() {
+    let userId = this.loggedInUserId;
+    let learningTrackId = this.learningTrackId;
+    let lmsType = this.type;
+    let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
+    let url = this.authenticationService.REST_URL + "lms" 
+    + "/downloadTrackAnalytics/userId/" + userId 
+    + "/learningTrackId/" + learningTrackId
+    + "/lmsType/" + lmsType 
+    + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+    this.referenceService.openWindowInNewTab(url);
+  }
+  sortPartnerCompanies(text: any) {
+    this.sortOption.selectedSortOptionForTracks = text;
+    this.getAnalytics(this.pagination);
+  }
 }

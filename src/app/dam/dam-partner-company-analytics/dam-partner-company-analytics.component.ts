@@ -143,12 +143,18 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     }
 		this.damService.findPartnerCompanies(pagination,this.damId).
     	subscribe((result: any) => {
-			let data = result.data;
-			pagination.totalRecords = data.totalRecords;
-			pagination = this.pagerService.getPagedItems(pagination, data.list);
-      let map = result.map;
-      this.isPublished = map['isPublished'];
-      this.isAllPartnerSignesCompleted = pagination.pagedItems.every(item => item.partnerSignatureCompleted);
+        let data = result.data;
+        if (!data || !Array.isArray(data.list) || data.list.length === 0) {
+          pagination.totalRecords = 0;
+          pagination.pagedItems = [];
+          this.isAllPartnerSignesCompleted = false;
+        } else {
+          pagination.totalRecords = data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, data.list);
+          this.isAllPartnerSignesCompleted = pagination.pagedItems.every(item => item.partnerSignatureCompleted);
+        }
+        let map = result.map;
+        this.isPublished = map['isPublished'];
 
       if(!this.isPublished){
         this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the analytics.',true);

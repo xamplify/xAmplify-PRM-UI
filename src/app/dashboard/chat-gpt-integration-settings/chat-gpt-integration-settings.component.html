@@ -86,6 +86,7 @@
               </div>
             </div>
           </div>
+
           <div class="col-sm-6 agent-card-align"  *ngIf="authenticationService.oliverContactAgentEnabled">
             <div class="agent-card" style="position: relative;" [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
               <div>
@@ -107,7 +108,7 @@
                 <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverPartnerAgent"
                   [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'PARTNERAGENT')">
               </div>
-              <img src="assets/images/oliver-contact-agent-icon.svg" class="agent-icon">
+              <img src="assets/images/oliver-partner-agent-icon.svg" class="agent-icon">
               <div class="agent-info">
                 <h5>Partner Agent</h5>
                 <p>Enabling this option allows you to access the Partner Agent and generate summaries and detailed reports for partners..</p>

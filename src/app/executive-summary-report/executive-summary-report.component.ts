@@ -19,6 +19,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
   @Input() reportData: ExecutiveReport;
   @Input() reportType: any;
+  @Input() activeTab: string;
 
   public currentYear: number = new Date().getFullYear();
 
@@ -1451,6 +1452,1698 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
 </html>`;
 
+ iframePartnerContent: any = `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ report?.meta?.report_title }}</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- Funnel module -->
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ------------- ORIGINAL CSS — UNCHANGED ------------- */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: {{theme.backgroundColor}}
+        }
+
+        .main-wrapper {
+         width:100%
+         margin: auto;
+        }
+
+        .header-card {
+            background: linear-gradient(to bottom right,{{theme.darkHeaderColor}},{{theme.lightHeaderColor}});
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .header-left h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .header-left h2 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .header-left p {
+            color: {{theme.headertextColor}};  /* #bfdbfe;  */
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .header-left span {
+            font-size: 14px;
+            color: {{theme.headertextColor}};  /*  #cbd5e1;  */
+        }
+
+        .header-left h1,
+        .header-left h2 {
+            color: {{theme.headertextColor}};
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .header-right span {
+            display: block;
+            color: {{theme.headertextColor}};    /* #cbd5e1;  */
+        }
+
+        .header-right h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color:  {{theme.headertextColor}};    /* white; */
+            margin-top: 2px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 25px 20px;
+        }
+
+        .owner-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.08);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 25px 20px;
+        }
+
+        .owner-summary:not(:has(li)) {
+            display: none;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-item h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .summary-item p {
+            font-size: 16px;
+            color: {{theme.headertextColor}};       /* #cbd5e1;  */
+            margin-bottom: 4px;
+        }
+
+        .summary-item span {
+            font-size: 13px;
+            color: {{theme.headertextColor}};      /* #94a3b8; */
+        }
+
+        .green {
+            color: {{theme.headerHeadingTextColor}}            /* #34d399; */
+        }
+
+        .yellow {
+            color: #facc15;
+        }
+
+        .blue {
+            color: #60a5fa;
+        }
+
+        .white-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        .white-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+
+        .white-card p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 14px 12px;
+            vertical-align: top;
+        }
+
+        th {
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            font-size: 14px;
+            color: #0f172a;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        td b {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .card:hover,
+        .white-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: rgb(71 85 105);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #10b981;
+        }
+
+        .status-label::before {
+            /* content: '↗'; */
+            font-size: 15px;
+            margin-right: 4px;
+        }
+
+        .card-value {
+            font-size: 21px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .card-subtext {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-right: 30px;
+            margin-left: 30px
+        }
+
+        .chart-img {
+            width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .bottom-metrics {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #374151;
+            margin-top: 10px;
+        }
+
+        .bottom-metrics b {
+            display: block;
+            font-weight: 600;
+        }
+
+        /* --- Funnel Step Styles --- */
+        .funnel-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .funnel-left {
+            display: flex;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .funnel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .funnel-info {
+            flex: 1;
+        }
+
+        .funnel-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            display: block;
+        }
+
+        .funnel-sub {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .funnel-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+            margin-left: auto; /* Push to the right */
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .status.complete {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.progress {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status.pending {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .progress-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #e5e7eb;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .progress-footer .blue {
+            color: #3b82f6;
+        }
+
+        .progress-footer .green {
+            color: #10b981;
+        }
+
+        .analysis-section {
+            margin: 40px 0;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+   margin-right: 30px;
+            margin-left: 30px
+        }
+
+        .analysis-section:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .analysis-section h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .analysis-section p {
+            color: rgb(71 85 105);
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .insight-card {
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .insight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #1e293b;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .badge.green {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge.blue {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge.teal {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .badge.yellow {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .action-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #6b7280;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0f172a;
+            background: rgba(0, 0, 0, 0.03);
+            border-left: 4px solid #94a3b8;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+
+        .action strong {
+            display: block;
+            margin-top: 4px;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .insight-card p {
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 14px;
+        }
+
+        .insight-card.green {
+            background: rgb(240 253 244);
+            border: 1px solid rgb(187 247 208);
+        }
+
+        .insight-card.blue {
+            background: rgb(239 246 255);
+            border: 1px solid rgb(191 219 254);
+        }
+
+        .insight-card.teal {
+            background: rgb(240 253 244);
+            border: 1px solid rgb(187 247 208);
+        }
+
+        .insight-card.yellow {
+            background: rgb(254 252 232);
+            border: 1px solid rgb(254 240 138);
+        }
+
+        .next-steps-wrapper h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .next-steps-wrapper p {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            margin-bottom: 24px;
+        }
+
+        .step-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-top {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .step-icon {
+            background-color: #f1f5ff;
+            color: #3b82f6;
+            font-size: 22px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .step-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .priority-tag {
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .insight-type-tag {
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #e8c5ee;
+            color: #7967eb;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .step-details {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8fafc;
+            padding: 16px 20px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .step-details .label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .step-details .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .step-details .green {
+            color: #16a34a;
+        }
+
+        .bottom-line-card {
+            background: linear-gradient(to right, {{theme.footerColor}},{{theme.footerColorTwo}});
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bottom-line-inner {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .bottom-line-inner h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: {{theme.footertextColor}};         /*   #0f172a */
+            margin-bottom: 12px;
+        }
+
+        .bottom-line-inner p {
+            font-size: 15px;
+            color: {{theme.footertextColor}};      /*   #334155  */
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .bottom-line-stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .bottom-line-stats .green {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        /* Tablet (768px to 1024px) */
+        @media (max-width: 1024px) {
+            .header-card {
+                padding: 30px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 20px;
+            }
+
+            .header-right {
+                text-align: left;
+                margin-top: 20px;
+            }
+
+            .summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .owner-summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .white-card {
+                padding: 20px;
+            }
+
+            table {
+                display: block;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-section {
+                padding: 20px;
+            }
+
+            .step-card {
+                padding: 20px;
+            }
+
+            .step-details {
+                flex-direction: column;
+            }
+
+            .bottom-line-card {
+                padding: 20px;
+            }
+
+            .bottom-line-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            /* Tablet-specific Funnel adjustments */
+            .funnel-step {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+            }
+
+            .funnel-left {
+                flex: 1;
+                flex-basis: auto;
+                justify-content: flex-start;
+            }
+
+            .funnel-info {
+                flex: 1;
+                padding-right: 10px;
+            }
+
+            .status {
+                margin-left: auto;
+                margin-top: 4px;
+                align-self: flex-start;
+            }
+        }
+
+        /* Mobile (up to 767px) */
+        @media (max-width: 767px) {
+            .header-card {
+                padding: 20px;
+            }
+
+            .header-left h1 {
+                font-size: 24px;
+            }
+
+            .header-left h2 {
+                font-size: 16px;
+            }
+
+            .header-right h3 {
+                font-size: 18px;
+            }
+
+            .summary {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .owner-summary  {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .summary-item {
+                flex-basis: 100%;
+            }
+
+            .summary-item h1 {
+                font-size: 24px;
+            }
+
+            .summary-item p {
+                font-size: 14px;
+            }
+
+            .white-card {
+                padding: 15px;
+            }
+
+            th,
+            td {
+                font-size: 12px;
+                padding: 8px 6px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px 20px;
+            }
+
+            .card h2 {
+                font-size: 18px;
+            }
+
+            .card-value {
+                font-size: 18px;
+            }
+
+            .bottom-metrics {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .funnel-step {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .funnel-left {
+                width: 100%;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+            }
+
+            .funnel-dot {
+                margin-right: 10px;
+                margin-bottom: 0;
+            }
+
+            .funnel-info {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .status {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-start;
+                width: auto;
+            }
+
+            .progress-footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .analysis-section {
+                padding: 15px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insight-card {
+                padding: 15px;
+            }
+
+            .insight-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .action {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .step-card {
+                padding: 15px;
+            }
+
+            .step-top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .step-icon {
+                margin-bottom: 10px;
+            }
+
+            .step-title {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .priority-tag {
+                margin-top: 5px;
+            }
+
+            .step-details {
+                flex-direction: column;
+                padding: 10px 15px;
+            }
+
+            .bottom-line-inner h3 {
+                font-size: 16px;
+            }
+
+            .bottom-line-inner p {
+                font-size: 14px;
+            }
+
+            .bottom-line-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            /* ── Contact-Journey Timeline ─────────────────────────────── */
+            .timeline-card .timeline-wrapper {
+             /*max-height: 260px; */
+             /*overflow-y: auto; */
+            margin: 20px 0;
+            padding-right: 6px;             /* room for scrollbar */
+            }
+
+            .timeline-card-duplicate {
+                margin-left: 0px !important; 
+                margin-right: 0px !important; 
+                margin-bottom: 10px !important; 
+            }
+
+            .timeline-card .timeline-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            }
+
+            .timeline-card .timeline-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            }
+
+            .timeline-card .timeline-head .date {
+            min-width: 65px;
+            color: #475569;
+            }
+
+            .timeline-card .timeline-body {
+            font-size: 15px;
+            color: #1e293b;
+            }
+
+            .timeline-card .badge.purple  { background:#ede9fe; color:#6d28d9; }
+            .timeline-card .badge.dark    { background:#1e293b; color:#f8fafc; }
+
+            .timeline-card .timeline-footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            }
+
+            .timeline-card .timeline-footer span {
+            display: flex;
+            gap: 4px;
+            align-items: baseline;
+            }
+            .timeline-card .timeline-footer .blue  { color:#3b82f6; }
+            .timeline-card .timeline-footer .green { color:#16a34a; }
+            .timeline-card .timeline-footer .orange{ color:#ea580c; }
+        }
+        .timeline-card .timeline-item{
+            background:#f8fafc;   /* ← the soft grey */
+            border-radius:12px;
+            padding:16px 20px;
+            margin-bottom:16px;
+        }
+
+        .timeline-card .badge.purple  { background:#ede9fe; color:#6d28d9; }
+        .timeline-card .badge.dark    { background:#1e293b; color:#f8fafc; }
+
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .stat-value.blue { color: #3b82f6; }
+        .stat-value.green { color: #10b981; }
+        .stat-value.orange { color: #f59e0b; }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.125rem;
+        }
+
+        .timeline-card-duplicate {
+                margin-left: 0px !important; 
+                margin-right: 0px !important; 
+        }
+
+    .owner-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px 40px;
+      padding: 0;
+    }
+
+    .owner-list .full {
+      grid-column: 1 / -1;
+    }
+
+    .owner-list .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: {{theme.headerSubHeadingTextColor}};
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 2px;
+    }
+
+    .owner-list .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: {{theme.headertextColor}};
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    
+     .card-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .track-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 0 1px #e1e8f0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .track-header {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .track-header.green {
+      color: #16a34a;
+    }
+
+    .track-header.red {
+      color: #dc2626;
+    }
+
+    .track-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .track-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .opens {
+      background-color: #e8f0fe;
+      color: #2563eb;
+    }
+
+    .views {
+      background-color: #e6f8ec;
+      color: #16a34a;
+    }
+
+    .downloads {
+      background-color:  #fffbea;
+      color: #ca8a04;
+    }
+
+    .assets {
+      background-color: #f5f3ff;
+      color: #9333ea;
+    }
+
+    .stat-number {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+    }
+
+    .progress-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      width:fit-content;
+    }
+
+    .progress-green {
+      background-color: #d1fae5;
+      color: #16a34a;
+    }
+
+    .progress-red {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+
+    /* ✅ Responsive Layout */
+    @media (max-width: 768px) {
+      .card-container {
+        grid-template-columns: 1fr;
+        padding: 6px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .track-card {
+        padding: 20px;
+      }
+
+      .stat-box {
+        padding: 16px;
+      }
+
+      .track-title {
+        font-size: 16px;
+      }
+
+      .stat-number {
+        font-size: 18px;
+      }
+    }
+ 
+    .asset-summary-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 35px;
+    }
+
+    .asset-card {
+      background-color: #e8f5e833;
+      border-radius: 12px;
+      padding: 15px 20px;
+      box-shadow: 0 0 0 1px #ecf4e8;
+    }
+
+    .asset-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 7px;
+    }
+
+    .asset-label {
+      font-size: 15px;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .asset-subtext {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    @media (max-width: 480px) {
+      .asset-value {
+        font-size: 24px;
+      }
+      .asset-label {
+        font-size: 14px;
+      }
+      .asset-subtext {
+        font-size: 12px;
+      }
+    }
+
+    </style> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.owner-summary').forEach(function (block) {
+                if (!block.querySelector('li')) {
+                    block.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+  <div class="main-wrapper">
+
+    <!-- Header Section -->
+    <div class="header-card">
+      <div class="header">
+        <div class="header-left">
+          <h1>{{ report.report_title }}</h1>
+          <h2>{{ report.subtitle }}</h2>
+           <!-- <span *ngIf="report.meta.date_range">Data range: {{ report.date_range }}</span> -->
+        </div>
+        <div class="header-right">
+        {{#report.report_recipient}}
+          <span>Prepared for</span>
+          {{/report.report_recipient}}
+          <h3>{{ report.report_recipient }}</h3>
+          <span>{{ report.report_owner }}</span>
+        </div>
+      </div>
+
+        {{#report}}
+            {{#owner_details}}
+                <div class="owner-summary" style="margin-bottom: 15px;">
+                <ul class="owner-list">
+                {{#owner_full_name}}      <li><span class="label">Name</span>            <span class="value">{{.}}</span></li>{{/owner_full_name}}
+                {{#owner_job_title}}      <li><span class="label">Job&nbsp;Title</span>   <span class="value">{{.}}</span></li>{{/owner_job_title}}
+                {{#owner_contact_company}}<li><span class="label">Company</span>          <span class="value">{{.}}</span></li>{{/owner_contact_company}}
+                {{#owner_email_id}}       <li><span class="label">Email</span>            <span class="value">{{.}}</span></li>{{/owner_email_id}}
+                {{#owner_mobile_number}}  <li><span class="label">Mobile</span>           <span class="value">{{.}}</span></li>{{/owner_mobile_number}}
+                {{#owner_address}}        <li class="full"><span class="label">Address</span>  <span class="value">{{.}}</span></li>{{/owner_address}}
+                {{#owner_city}}           <li><span class="label">City</span>             <span class="value">{{.}}</span></li>{{/owner_city}}
+                {{#owner_state}}          <li><span class="label">State</span>            <span class="value">{{.}}</span></li>{{/owner_state}}
+                {{#owner_zip}}            <li><span class="label">ZIP</span>              <span class="value">{{.}}</span></li>{{/owner_zip}}
+                {{#owner_country}}       <li><span class="label">Country</span>          <span class="value">{{.}}</span></li>{{/owner_country}}
+                {{#owner_region}}         <li><span class="label">Region</span>           <span class="value">{{.}}</span></li>{{/owner_region}}
+                {{#owner_vertical}}       <li><span class="label">Vertical</span>         <span class="value">{{.}}</span></li>{{/owner_vertical}}
+                {{#owner_company_domain}} <li><span class="label">Domain</span>           <span class="value">{{.}}</span></li>{{/owner_company_domain}}
+                {{#owner_website}}       <li><span class="label">Website</span>          <span class="value">{{.}}</span></li>{{/owner_website}}
+                {{#owner_country_code}}   <li><span class="label">Country&nbsp;Code</span><span class="value">{{.}}</span></li>{{/owner_country_code}}
+                </ul>
+            </div>
+        {{/owner_details}}
+        {{/report}}
+      <div class="summary" *ngIf="report.kpi_overview">
+      {{#report.kpi_overview.items}}
+        <div class="summary-item">
+          <h1 class="green">{{ value }}</h1>
+          <p>{{name}}</p>
+          <span>{{notes}}</span>
+        </div>
+        {{/report.kpi_overview.items}}
+      </div>
+    </div>
+
+    <!-- KPI Table -->
+    <div class="white-card" *ngIf="report.summary_overview?.length">
+      <h2>{{report.summary_overview.title}}</h2>
+      <p>{{report.summary_overview.description}}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Volume</th>
+            <th>Trend / Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#report.summary_overview.items}}
+      <tr>
+        {{#name}}
+        <td>{{name}}</td>
+        {{/name}}
+        {{#value}}
+        <td>{{value}}</td>
+        {{/value}}
+        {{#notes}}
+        <td>{{notes}}</td>
+        {{/notes}}
+      </tr>
+    {{/report.summary_overview.items}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Metric Cards -->
+    <div class="cards-grid" *ngIf="report.performance_indicators">
+     {{#report.performance_indicators.items}}
+      <div class="card">
+        <div class="card-header">
+          {{name}}
+          <div class="status-label" style="color:{{color}}">{{symbol}} {{rating}}</div>
+        </div>
+        <div class="card-value">{{ value }}</div>
+        <div class="card-subtext">{{notes}}</div>
+      </div>
+       {{/report.performance_indicators.items}}
+    </div>
+   
+
+  <div class="dashboard">
+    <!-- Contact Journey Timeline -->
+    {{#report.contact_journey_timeline.title}}
+    <div class="white-card timeline-card timeline-card-duplicate"  *ngIf="report.contact_journey_timeline">
+        <h2>{{report.contact_journey_timeline.title}}</h2>
+        <p>{{report.contact_journey_timeline.description}}</p>
+
+        <div class="timeline-wrapper">
+            {{#report.contact_journey_timeline.items}}
+                <div class="timeline-item">
+                <div class="timeline-head">
+                    <span class="date">{{date}}</span>
+                    <span class="badge purple">{{status}}</span>
+                </div>
+                <div class="timeline-body">
+                    {{interaction}}
+                </div>
+                </div>
+            {{/report.contact_journey_timeline.items}}
+        </div>
+        </div>
+    {{/report.contact_journey_timeline.title}}
+
+
+    {{#report.lead_progression_funnel.title}}
+    <div class="white-card timeline-card-duplicate" *ngIf="report.lead_progression_funnel">
+        <h2>{{report.lead_progression_funnel.title}}</h2>
+        <p>{{report.lead_progression_funnel.description}}</p>
+        
+        {{#report.lead_progression_funnel.items}}
+        <div class="funnel-step">
+          
+            <div class="funnel-left">
+                
+              <div class="funnel-dot" style="background:#10b981;"></div>
+              <div class="funnel-info">
+                <span class="funnel-title">{{name}} ({{count}})</span>
+                <div class="funnel-bar">
+                  <div class="bar-fill" style="width:{{count}}%;background:#10b981;"></div>
+                </div>
+                <div class="funnel-sub">{{notes}}</div>
+              </div>
+              
+            </div>
+          
+        </div>
+        {{/report.lead_progression_funnel.items}}
+      </div>
+    </div>
+    {{/report.lead_progression_funnel.title}}
+  </div>
+    
+    
+
+       
+    <!-- Bar-chat -->
+    {{#report.dealPipelinePrograssion.title}}
+    <div class="white-card">
+      <div style="widht:100%;height:99%" id="dealPipelinePrograssion-bar-chart"></div>
+        <div class="stats-row">
+            <div class="stat-item">
+                {{#report.dealPipelinePrograssion.average_deal_value}}
+                    <div class="stat-value blue">{{report.dealPipelinePrograssion.average_deal_value}}</div>
+                    <div class="stat-label">Average deal value</div>
+                {{/report.dealPipelinePrograssion.average_deal_value}}
+            </div>
+            <div class="stat-item">
+                {{#report.dealPipelinePrograssion.highest_deal_value}}
+                    <div class="stat-value orange">{{report.dealPipelinePrograssion.highest_deal_value}}</div>
+                    <div class="stat-label">Highest deal value</div>
+                {{/report.dealPipelinePrograssion.highest_deal_value}}
+            </div>
+        </div>
+    </div>
+    {{/report.dealPipelinePrograssion.title}}
+
+    <!-- Pie-chat -->
+    {{#report.campaignPerformanceAnalysis.title}}
+    <div class="white-card">
+      <div style="widht:100%;height:99%" id="pie-chart"></div>
+    </div>
+    {{/report.campaignPerformanceAnalysis.title}}
+    
+      <!-- Bar-chat -->
+    {{#report.trackContentEngagement.title}}
+    <div class="white-card">
+      <div style="widht:100%;height:99%" id="track-bar-chart"></div>
+    </div>
+    {{/report.trackContentEngagement.title}}
+    
+    {{#report.trackEngagementAnalysis.title}}
+ <div class="analysis-section">
+  <h2>{{report.trackEngagementAnalysis.title}}</h2>
+  <div class="track-subtitle">  </div>
+  <p>{{report.trackEngagementAnalysis.description}}</p>
+ <div class="card-container">
+      {{#report.trackEngagementAnalysis.items}}
+    <!-- Engagement Card -->
+    <div class="track-card">
+      <div class="track-header" style="color:{{engagementColor}}">{{engagement_level}} Engagement Track</div>
+      <div class="track-title">{{name}}</div>
+      <div class="stat-grid">
+        <div class="stat-box opens">
+          <div class="stat-number">{{opens}}</div>
+          <div class="stat-label">Opens</div>
+        </div>
+        <div class="stat-box views">
+          <div class="stat-number">{{views}}</div>
+          <div class="stat-label">Views</div>
+        </div>
+        <div class="stat-box downloads">
+          <div class="stat-number">{{downloads}}</div>
+          <div class="stat-label">Downloads</div>
+        </div>
+        <div class="stat-box assets">
+          <div class="stat-number">{{assets}}</div>
+          <div class="stat-label">Assets</div>
+        </div>
+      </div>
+      <div class="progress-pill">{{progress_rate}} Progress Rate</div>
+    </div>
+     {{/report.trackEngagementAnalysis.items}}
+  </div>
+  {{/report.trackEngagementAnalysis.title}}
+</div>
+
+ <!-- PlayBook Bar-chat -->
+    {{#report.playbookContentEngagementOverview.title}}
+    <div class="white-card">
+      <div style="widht:100%;height:99%" id="playbook-bar-chart"></div>
+    </div>
+    {{/report.playbookContentEngagementOverview.title}}
+    
+  <!-- Assets Bar-chat -->  
+  {{#report.assetEngagementOverview.title}}
+<div class="analysis-section">
+ <h2>{{report.assetEngagementOverview.title}}</h2>
+ <p>{{report.assetEngagementOverview.description}}</p>
+     <div style="height: 99%; overflow: hidden;" id="asset-bar-chart" data-highcharts-chart="0">
+      </div>
+  <div class="asset-summary-container">
+    <!-- Card 1 -->
+    <div class="asset-card">
+      <div class="asset-value">{{report.assetEngagementOverview.openCountForMostViewedAsset}}</div>
+      <div class="asset-label">Most Opened Asset</div>
+      <div class="asset-subtext">{{report.assetEngagementOverview.mostOpenedAsset}}</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="asset-card">
+      <div class="asset-value">{{report.assetEngagementOverview.totalAssetsOpenCount}}</div>
+      <div class="asset-label">Total Asset Opens</div>
+      <div class="asset-subtext">Across all Company Members</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="asset-card">
+      <div class="asset-value">{{report.assetEngagementOverview.avgEngagementRate}}</div>
+      <div class="asset-label">Avg Engagement Rate</div>
+      <div class="asset-subtext">Opens to downloads ratio</div>
+    </div>
+  </div>
+  {{/report.assetEngagementOverview.title}}
+ </div>
+
+    <!-- Strategic Insights & Analysis -->
+    {{#report.strategic_insights.title}}
+    <div class="analysis-section" *ngIf="report.strategic_insights?.length">
+      <h2>{{report.strategic_insights.title}}</h2>
+      <p>{{report.strategic_insights.description}}</p>
+
+      <div class="insights-grid">
+      {{#report.strategic_insights.items}}
+        <div class="insight-card blue">
+          <div class="insight-header">
+            <span>{{ title }}</span>
+            <div class="insight-type-tag">{{ insight_type }}</div>
+          </div>
+          <p>{{ analysis }}</p>
+          <div class="action">IMMEDIATE ACTION<br><strong>{{ recommended_action }}</strong></div>
+        </div>
+        {{/report.strategic_insights.items}}
+      </div>
+    </div>
+    {{/report.strategic_insights.title}}
+
+    <!-- Next Steps -->
+    {{#report.recommended_next_steps.title}}
+    <div class="white-card" *ngIf="report.recommended_next_steps?.length">
+      <div class="next-steps-wrapper">
+        <h2>{{report.recommended_next_steps.title}}</h2>
+        <p>{{report.recommended_next_steps.description}}</p>
+        {{#report.recommended_next_steps.items}}
+        <div class="step-card">
+          <div class="step-top">
+            <div class="step-icon">🎯</div>
+            <div class="step-content">
+              <div class="step-title">
+                <h3>{{ title }}</h3>
+                <span class="priority-tag">{{priority}}</span>
+              </div>
+              <p class="step-description">{{ action }}</p>
+              <div class="step-details">
+                <div>
+                  <span class="label">OWNER</span>
+                  <p class="value">{{ owner }}</p>
+                </div>
+                <div>
+                  <span class="label">TIMELINE</span>
+                  <p class="value">{{ timeline }}</p>
+                </div>
+                <div>
+                  <span class="label">EXPECTED IMPACT</span>
+                  <p class="value green">{{ expected_impact }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/report.recommended_next_steps.items}}
+      </div>
+      {{/report.recommended_next_steps.title}}
+
+      <!-- Bottom Line -->
+      {{#report.conclusion.title}}
+      <div class="bottom-line-card" *ngIf="report.conclusion">
+        <div class="bottom-line-inner">
+          <h3>{{report.conclusion.title}}</h3>
+          <p>{{ report.conclusion.description }}</p>
+        </div>
+      </div>
+      {{/report.conclusion.title}}
+    </div>
+
+
+   <script>
+  window.onload = function () {
+
+      setTimeout(() => {
+      Highcharts.chart('pie-chart', {
+        chart: { type: 'pie' },
+        credits: { enabled: false },
+        title: { text: '{{report.campaignPerformanceAnalysis.title}}' },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: { enabled: true, format: '{point.name}' }
+          }
+        },
+        series: {{{report.campaignPerformanceAnalysis.seriesString}}}
+      });
+    }, 0);
+  };
+
+    setTimeout(() => {
+      Highcharts.chart('track-bar-chart', {
+        chart: { type: 'column' },
+        credits: { enabled: false },
+        title: { text: '{{report.trackContentEngagement.title}}' },
+        xAxis: { categories: {{{report.trackContentEngagement.categoriesString}}} },
+        series: {{{report.trackContentEngagement.seriesString}}}
+      });
+    }, 40);
+
+    setTimeout(() => {
+      Highcharts.chart('playbook-bar-chart', {
+        chart: { type: 'column' },
+        credits: { enabled: false },
+        title: { text: '{{report.playbookContentEngagementOverview.title}}' },
+        xAxis: { categories: {{{report.playbookContentEngagementOverview.categoriesString}}} },
+        series: {{{report.playbookContentEngagementOverview.seriesString}}}
+      });
+    }, 30);
+
+    setTimeout(() => {
+      Highcharts.chart('asset-bar-chart', {
+        chart: { type: 'column' },
+        credits: { enabled: false },
+        title: { text: '  ' },
+        xAxis: { categories: {{{report.assetEngagementOverview.categoriesString}}} },
+        series: {{{report.assetEngagementOverview.seriesString}}}
+      });
+    }, 0);
+
+    setTimeout(() => {
+      Highcharts.chart('dealPipelinePrograssion-bar-chart', {
+        chart: { type: 'column' },
+        credits: { enabled: false },
+        title: { text: '{{report.dealPipelinePrograssion.title}}' },
+        xAxis: { categories: {{{report.dealPipelinePrograssion.categoriesString}}} },
+        yAxis: { title: { text: '{{report.dealPipelinePrograssion.revenue}}' } },
+        series: {{{report.dealPipelinePrograssion.seriesString}}}
+      });
+    }, 200);
+
+</script>
+</body>
+</html>`;
+
+
+
     constructor(private sanitizer: DomSanitizer, public chatGptSettingsService: ChatGptSettingsService) { }
 
     ngOnInit(): void {
@@ -1495,10 +3188,13 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
     buildIframe(): void {
         if (!this.reportData || !this.theme.lightHeaderColor) { return; }
-
-        const merged = Mustache.render(this.iframeContent, {
+        let iframeContentData = this.iframeContent;
+        if (this.activeTab === 'partneragent') {
+            iframeContentData = this.iframePartnerContent;
+        }
+        const merged = Mustache.render(iframeContentData, {
             report: this.reportData,
-            theme: this.theme 
+            theme: this.theme
         });
 
         if (this.safeUrl) {
@@ -1560,22 +3256,6 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   }
 
     ngAfterViewInit(): void {
-        // if (typeof Chart === 'undefined') {
-        //     console.error('Chart.js is not loaded. Please ensure it is included globally in your Angular project (e.g., in angular-cli.json scripts or index.html).');
-        //     return;
-        //     }
-        //     setTimeout(() => {
-        // this.createLeadPipelineChart();
-        // this.createDealAmountBarChart();
-        // this.createCampaignTypePieChart();
-        //     }, 0);       
-        //       this.reportData.dealPipelinePrograssion.categoriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
-        //       this.reportData.dealPipelinePrograssion.seriesString = JSON.stringify(this.reportData.dealPipelinePrograssion.series);
-        //       this.reportData.campaignPerformanceAnalysis.seriesString = JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
-        // const mergedContent = Mustache.render(this.iframeContent, { report: this.reportData });
-        //     const blob = new Blob([mergedContent], { type: 'text/html' });
-        //     const url = URL.createObjectURL(blob);
-        //     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
         const ratingColors = {
             Poor: '#ef4444',       // red
@@ -1597,6 +3277,11 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
             High: '↗'
         };
 
+        const engagementColors = {
+            Lowest: '#ef4444',       // red
+            Highest: '#10b981'
+        };
+
         this.reportData.performance_indicators.items = this.reportData.performance_indicators.items.map(item => {
             return {
                 ...item,
@@ -1604,12 +3289,31 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
                 symbol: ratingSymbols[item.rating] || '•'
             };
         });
+
+        this.reportData.trackEngagementAnalysis.items = this.reportData.trackEngagementAnalysis.items.map(item => {
+            return {
+                ...item,
+                engagementColor: engagementColors[item.engagement_level] || '#6b7280'
+            };
+        });
+        this.reportData.playbookContentEngagementOverview.categoriesString =
+            JSON.stringify(this.reportData.playbookContentEngagementOverview.categories);
+        this.reportData.playbookContentEngagementOverview.seriesString =
+            JSON.stringify(this.reportData.playbookContentEngagementOverview.series);
         this.reportData.dealPipelinePrograssion.categoriesString =
             JSON.stringify(this.reportData.dealPipelinePrograssion.categories);
         this.reportData.dealPipelinePrograssion.seriesString =
             JSON.stringify(this.reportData.dealPipelinePrograssion.series);
         this.reportData.campaignPerformanceAnalysis.seriesString =
             JSON.stringify(this.reportData.campaignPerformanceAnalysis.series);
+        this.reportData.trackContentEngagement.categoriesString =
+            JSON.stringify(this.reportData.trackContentEngagement.categories);
+        this.reportData.trackContentEngagement.seriesString =
+            JSON.stringify(this.reportData.trackContentEngagement.series);
+        this.reportData.assetEngagementOverview.categoriesString =
+            JSON.stringify(this.reportData.assetEngagementOverview.categories);
+        this.reportData.assetEngagementOverview.seriesString =
+            JSON.stringify(this.reportData.assetEngagementOverview.series);
         this.buildIframe();
     }
 

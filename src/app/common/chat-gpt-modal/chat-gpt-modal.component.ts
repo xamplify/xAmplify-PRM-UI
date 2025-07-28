@@ -160,9 +160,9 @@ export class ChatGptModalComponent implements OnInit {
   socialShareOption: boolean = false;
   designAccess: boolean = false;
   uploadedFolders: any[];
-  pptLoader: boolean = false;
   showPptDesignPicker: boolean = false;
   pptData: string;
+  isResponseInProgress: boolean;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -365,7 +365,6 @@ export class ChatGptModalComponent implements OnInit {
     this.showGlobalPromptBoxAbove = false;
     this.isValidInputText = false;
     this.inputText = "";
-    this.isTextLoading = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
@@ -379,6 +378,11 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedAssets = [];
     this.selectedFolders = [];
     this.isSaveHistoryPopUpVisible = true;
+    if (this.isTextLoading) {
+      this.isResponseInProgress = true;
+    } else {
+      this.isResponseInProgress = false;
+    }
     this.activeTab = tab;
     if (tab == 'history') {
       this.showChatHistories();
@@ -402,6 +406,7 @@ export class ChatGptModalComponent implements OnInit {
     this.checkDesignAccess();
     this.pptData = '';
     this.showPptDesignPicker = false;
+    this.isTextLoading = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -825,7 +830,6 @@ export class ChatGptModalComponent implements OnInit {
     }
     self.isValidInputText = false;
     self.startStatusRotation();
-    let previousTab = this.activeTab;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         let statusCode = response.statusCode;
@@ -870,9 +874,15 @@ export class ChatGptModalComponent implements OnInit {
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
-        if (previousTab != self.activeTab) {
+        if (self.isResponseInProgress) {
           self.showOpenHistory = false;
           self.isCopyButtonDisplayed = false;
+          self.messages = [];
+          self.chatGptGeneratedText = '';
+          self.isTextLoading = false;
+          self.isValidInputText = false;
+          self.inputText = '';
+          self.isResponseInProgress = false;
         }
         console.log(self.messages);
       },
@@ -1318,11 +1328,13 @@ closeDesignTemplate(event: any) {
           this.showOliverSparkWriter = data.showOliverSparkWriter;
           this.showOliverParaphraser = data.showOliverParaphraser;
           this.showOliverContactAgent = data.showOliverContactAgent;
+          this.showOliverPartnerAgent = data.showOliverPartnerAgent;
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
           this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
           this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
+          this.oliverAgentAccessDTO.showOliverPartnerAgent = this.showOliverPartnerAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
@@ -1624,7 +1636,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
+    const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
+
+    const trackEngagementItems = j.track_content_engagement_by_team && j.track_content_engagement_by_team.items ? j.track_content_engagement_by_team.items : [];
+
     const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
+
+    const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
     const dealPipelinePrograssion = {
       title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
@@ -1662,6 +1680,101 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       }],
       seriesString: '',
     };
+
+    const trackContentEngagement = {
+      title: j.track_content_engagement_by_team && j.track_content_engagement_by_team.title
+        ? j.track_content_engagement_by_team.title
+        : '',
+      categories: trackEngagementItems.map((item: any) => item.email ? item.email : ''),
+      series: [
+        {
+          name: 'Views',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_viewed !== undefined ? item.tracks_viewed : 0
+          ),
+        },
+        {
+          name: 'Downloads',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_downloaded !== undefined ? item.tracks_downloaded : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.track_content_engagement_by_team && j.track_content_engagement_by_team.description
+        ? j.track_content_engagement_by_team.description
+        : '',
+    };
+
+    const playbookContentEngagementOverview = {
+      title: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.title
+        ? j.playbook_content_engagement_overview.title
+        : '',
+      categories: playBookEngagementItems.map((item: any) =>
+        item && item.name ? item.name : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.view_count !== undefined ? item.view_count : 0
+          ),
+        },
+        {
+          name: 'Completed',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.completion_count !== undefined ? item.completion_count : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.description
+        ? j.playbook_content_engagement_overview.description
+        : '',
+    };
+
+    const assetEngagementOverview = {
+      title: j.asset_engagement_overview && j.asset_engagement_overview.title
+        ? j.asset_engagement_overview.title
+        : '',
+      categories: assetsEngagementItems.map((item: any) =>
+        item && item.email ? item.email : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_views !== undefined ? item.asset_views : 0
+          ),
+        },
+        {
+          name: 'Downloaded',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_downloads !== undefined ? item.asset_downloads : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.asset_engagement_overview && j.asset_engagement_overview.description
+        ? j.asset_engagement_overview.description
+        : '',
+      mostOpenedAsset: j.asset_engagement_overview && j.asset_engagement_overview.most_opened_asset
+        ? j.asset_engagement_overview.most_opened_asset
+        : 0,
+      openCountForMostViewedAsset: j.asset_engagement_overview && j.asset_engagement_overview.total_opens_for_most_opened_asset
+        ? j.asset_engagement_overview.total_opens_for_most_opened_asset
+        : 0,
+      totalAssetsOpenCount: j.asset_engagement_overview && j.asset_engagement_overview.assets_opened_count
+        ? j.asset_engagement_overview.assets_opened_count
+        : 0,
+      avgEngagementRate: j.asset_engagement_overview && j.asset_engagement_overview.avg_engagement_rate
+        ? j.asset_engagement_overview.avg_engagement_rate
+        : 0,
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1823,7 +1936,24 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
       dealPipelinePrograssion: dealPipelinePrograssion,
 
-      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis,
+      trackContentEngagement : trackContentEngagement,
+      trackEngagementAnalysis: {
+        title:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.title
+            ? j.track_engagement_analysis.title
+            : '',
+        description:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.description
+            ? j.track_engagement_analysis.description
+            : '',
+        items:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.items
+            ? j.track_engagement_analysis.items
+            : []
+      },
+      playbookContentEngagementOverview : playbookContentEngagementOverview,
+      assetEngagementOverview :assetEngagementOverview,
     };
 
     return dto;
@@ -1916,36 +2046,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
   }
 
-  onPptFile(el: HTMLElement): void {
-    this.pptLoader = true;
-    const rawText: string = (el.textContent || '').trim();
-    if (!rawText) {
-      console.warn('[pptx] No content');
-      this.pptLoader = false;
-      return;
-    }
-    const dto = new ChatGptIntegrationSettingsDto();
-    dto.prompt = rawText;
-    this.chatGptSettingsService
-      .getOpenAiResponse(dto)
-      .subscribe(
-        (response: any) => {
-          const data = response && response.data;
-          if (data) {
-            this.chatGptSettingsService.generateAndDownloadPpt(data,null);
-          } else {
-            console.warn('[pptx] No data returned from GPT');
-          }
-        },
-        (error: any) => {
-          console.error('[pptx] GPT error:', error);
-          this.pptLoader = false;
-        },
-        () => {
-          this.pptLoader = false;
-        }
-      );
-  }
+
 
   openPptDesignPicker(el: HTMLElement): void {
     this.pptData = (el.textContent || '').trim();
@@ -1956,13 +2057,20 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
   emitSelectedTemplate(event: any) {
     if (event) {
-      // this.onPptFile(this.pptData, event);
-      // this.emitterData(event);
       this.showPptDesignPicker = false;
       this.pptData = '';
     } else {
       this.resetValues();
     }
   }
+
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
 
 }

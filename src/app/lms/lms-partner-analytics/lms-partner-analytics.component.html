@@ -10,7 +10,7 @@
                 <a *ngIf="!isFromApprovalModule" (click)="goToManageTracks()">Manage Tracks</a>
                 <a *ngIf="isFromApprovalModule" [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a (click)="routeToAnalytics()">Analytics</a>
+                <a (click)="routeToAnalytics()">Partner Companies</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>{{authenticationService?.partnerModule?.customName}} Analytics</a>
             </li>

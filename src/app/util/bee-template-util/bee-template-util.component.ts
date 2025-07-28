@@ -295,8 +295,10 @@ export class BeeTemplateUtilComponent implements OnInit {
 
 	mydownloadPdf(htmlContent: string,input:any) {
 		this.formLoader = true;
+		const sanitizedHtml = htmlContent.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                                 .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 		
-		  this.damService.downloadPdf(htmlContent).subscribe(
+		  this.damService.downloadPdf(sanitizedHtml).subscribe(
 			(blob: Blob) => {
 			  if (!blob || blob.size === 0) {
 				console.error("Received an empty or invalid PDF file.");

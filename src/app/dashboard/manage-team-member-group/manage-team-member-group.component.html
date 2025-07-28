@@ -82,10 +82,13 @@
       </div>
       <!------ XNFR-1051 ----->
       <div class="form-group" *ngIf="groupDto?.signUpUrl && !isAdd">
-        <label class="control-label" translate>SignUp URL</label>
+        <label class="control-label" translate>SignUp URL
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Only whitelisted domain users can register using this link."></i></label>
         <div class="d-flex">
           <input type="text" [value]="groupDto?.signUpUrl" class="form-control" readonly #signUpUrlInput />
-          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">Copy Url</a>
+          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)" data-toggle="tooltip"
+            data-placement="top" title="Copy Url">Copy Url</a>
         </div>
         <span class="success" id="copied-signup-url" style="display: none;">
           <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
@@ -141,7 +144,7 @@
   <div class="table-responsive">
     <table class="table tgrid table-hover full-width" aria-describedby="">
       <tr>
-        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Marketing Modules Access
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Enable Marketing Modules
           <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
             title="Enable this toggle to allow your team member to access marketing modules."></i>
         </td>
@@ -251,9 +254,9 @@
          <div class="clickicons"></div>
         </a>
         <a class="delete custom-icon" data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'Default group cannot be deleted':'Delete'"
-          [className]="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? 'delete inactive custom-icon':'delete custom-icon'"
-          (click)="group?.defaultGroup && authenticationService?.module?.isOnlyPartner ? '' : confirmAlert(group)">
+          [title]="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? 'Default group cannot be deleted':'Delete'"
+          [className]="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? 'delete inactive custom-icon':'delete custom-icon'"
+          (click)="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? '' : confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           <div class="del-icon"></div>
         </a>

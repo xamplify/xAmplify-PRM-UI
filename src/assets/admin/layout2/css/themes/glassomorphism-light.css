@@ -3550,9 +3550,9 @@ i.download_file:hover {
   margin-left: 0px!important; 
   }
 /* manage-publish card */
-.border-b-unset:hover{
+/* .border-b-unset:hover{
 border-bottom: unset!important;
-}
+} */
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;
@@ -4814,4 +4814,8 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
 }
 .modal-title, .modal-title b, h4.modal-title[id] {
     color: #000000 !important;
+}
+.front-count-card.active {
+    border: 1.6px solid #007bff !important;
+    backdrop-filter: blur(4px);
 }

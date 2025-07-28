@@ -33,6 +33,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Location } from '@angular/common';
 import { ParterService } from 'app/partners/services/parter.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 
 declare var $: any, swal: any;
@@ -259,6 +260,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	isFromCompanyModule: boolean;
 	isContactModule: boolean;
+	selectedList: any = {
+		userListId:0,
+		contactName:'',
+		emailId:''
+	};
+	showAskOliverModalPopup: boolean = false;
+	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -1593,7 +1601,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
-
+			this.userListPaginationWrapper.pagination.exportToExcel = false;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2107,6 +2115,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
 			this.userListPaginationWrapper.userList.isDownload = true;
+			this.userListPaginationWrapper.pagination.exportToExcel = true;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -3288,6 +3297,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} else {
 			return input.toString();
 		}
+	}
+
+	askOliver(selectedListId,listName) {
+		this.selectedList.userListId = selectedListId;
+		this.selectedList.contactName = listName;
+		this.showAskOliverModalPopup = true;
+	}
+
+	closeAskAI(event: any) {
+		this.chatGptSettingDTO = event;
+		this.showAskOliverModalPopup = false;
 	}
 
 }
