@@ -113,11 +113,11 @@
   min-height: auto !important;
   padding-left: 10px !important;
 }
-.boxes .portlet-title h4 {
-  font-size: 14px !important;
-}
 .boxes .portlet-body {
   padding: 15px !important;
+}
+.boxes .portlet-body.email-template-body{
+  padding: 0 !important;
 }
 .boxes ul {
   margin: 0 !important;
@@ -1562,3 +1562,15 @@ padding-left: 23px;
     }
 }
 #folder-margin-xamp{margin-top: 6px !important;margin-right: 5px !important;}
+.btn-default {
+ background-color: #f1f3fa;}
+.btn-default>i {
+ color: #626262;}
+ .justify-content-end{
+  justify-content: end;
+ }
+ .button-group-align{
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+ }

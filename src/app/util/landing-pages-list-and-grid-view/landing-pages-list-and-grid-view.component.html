@@ -390,8 +390,8 @@
                     <div class="ml_10" *ngIf = "!(vendorJourney || isMasterLandingPages || isLandingPages || welcomePages || isPartnerJourneyPages || isVendorPartnerJourneyPages || isVendorMarketplacePages)">
                         <div class="group-dropdown">
                             <button
-                                [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
-                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
+                                [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr0' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr0':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view mr0': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr0':'fa fa-th-list btn btn-xs l-g-view mr0'"
                                 style="padding:10px !important">
                             </button>
                             <div class="group-dd-content">
@@ -429,14 +429,14 @@
                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                     </span>
                     <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
-                        <div *ngIf="!isPartnerLandingPage">
+                        <div  class="ml7" *ngIf="!isPartnerLandingPage">
                             <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.formsSortOption"
                                 (ngModelChange)="sortBy($event)" id="select-dropdown">
                                 <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
                                     {{option.name}}</option>
                             </select>
                         </div>
-                        <div *ngIf="isPartnerLandingPage">
+                        <div class="ml7" *ngIf="isPartnerLandingPage">
                             <select class="form-control SeclectBoxPaddingsAbj"
                                 [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)"
                                 id="select-dropdown">
@@ -445,8 +445,8 @@
                             </select>
                         </div>
 
-                        <div class="portlet-input input-inline input-small ml5" style="width: 198px !important;">
-                            <div class="input-icon right" style="position: relative;right: -5px;">
+                        <div class="portlet-input input-inline input-small ml7" style="width: 198px !important;">
+                            <div class="input-icon right" style="position: relative;">
                                 <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                                     [ngModelOptions]="{standalone: true}" placeholder="Search for a page"
                                     (keypress)="eventHandler($event.keyCode)">

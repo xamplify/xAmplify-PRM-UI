@@ -17,7 +17,7 @@
                         <option *ngFor="let option of sortOption.trackDetailsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                       </select>
                     </div>
-                    <div class="input-icon right ml5" style="position: relative;">
+                    <div class="input-icon right ml7" style="position: relative;">
                       <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
                         [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
@@ -25,14 +25,14 @@
                       <button type="submit" class="search-box-item-click only_content" (click)="search()">
                         <i class="fa fa-search" aria-hidden="true"></i></button>
                     </div>
-                      <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view ml5" data-toggle="tooltip" title="Export to Excel"
+                      <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view ml7" data-toggle="tooltip" title="Export to Excel"
                         (click)="downloadTrackAndPlaybooksAnalytics()" [disabled]="pagination?.totalRecords === 0">
                         <i aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a class="close-circle" (click)="goBack()" aria-hidden="true">
+                      <a class="close-circle ml7" (click)="goBack()" aria-hidden="true">
                         <i class="fa fa-times" aria-hidden="true"></i>
                       </a>
-                      <a class="close-circle" (click)="refreshPage()" aria-hidden="true">
+                      <a class="close-circle ml7" (click)="refreshPage()" aria-hidden="true">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                       </a>
               </div>

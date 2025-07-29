@@ -2,7 +2,7 @@
    <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
 
    <ng-container *ngIf="!countsLoader && !contentCountsLoader">
-      <div class="new-width-row">
+      <div class="new-width-row mb10">
          <div class="front-count-col" style="padding-left: 12px;">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
