@@ -1096,7 +1096,7 @@ declare var $:any, Highcharts:any, swal: any;
             	this.isNavigatedThroughAnalytics = false;
                 this.isPartnerEnabledAnalyticsAccess = true;
                 this.isDataShare = true;
-            }else if (this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) {
+            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && this.loggedInUserCompanyId == this.campaign.createdForCompanyId)) {
               this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
