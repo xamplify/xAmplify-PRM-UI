@@ -106,10 +106,10 @@
                            *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                            Please enter a valid email address
                         </span>
-                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.ccEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.ccEmailIds' #ccTagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
                            [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
                            [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
-                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedCc" theme='bootstrap' [onTextChangeDebounce]="40" required>
                         </tag-input>
 
                      </div>
@@ -129,10 +129,10 @@
                            *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
                            Please enter a valid email address
                         </span>
-                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.bccEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.bccEmailIds' #bccTagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
                            [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
                            [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
-                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedBcc" theme='bootstrap' [onTextChangeDebounce]="40" required>
                         </tag-input>
 
                      </div>

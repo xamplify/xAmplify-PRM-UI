@@ -110,6 +110,11 @@ export class SendTestEmailComponent implements OnInit {
   showCCEmailInputField:boolean = false;
   showBCCEmailInputField:boolean = false;
 
+  @ViewChild('ccTagInput') ccTagInput: SourceTagInput;
+  @ViewChild('bccTagInput') bccTagInput: SourceTagInput;
+  onAddedCc = this.beforeAdd.bind(this);
+  onAddedBcc = this.beforeAdd.bind(this);
+
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
 
@@ -714,32 +719,51 @@ export class SendTestEmailComponent implements OnInit {
     return text ? EMAIL_REGEXP.test(text) : false;
   }
 
-  private beforeAdd(tag: any): Observable<any> {
-    let isPaste = false;
-    if (tag['value']) {
-      isPaste = true;
-      tag = tag.value;
-    }
-    if (!this.isValidEmail(tag)) {
-      if (!this.addFirstAttemptFailed) {
-        this.addFirstAttemptFailed = true;
-        if (!isPaste) {
-          this.tagInput.setInputValue(tag);
-        }
+  beforeAdd(tag: any, fieldType: 'to' | 'cc' | 'bcc'): Observable<any> {
+  let isPaste = false;
+   if (tag['value']) { isPaste = true; tag = tag.value; }
+
+  // Clean trailing symbols
+  tag = tag.trim().replace(/[\/&$]+$/, '');
+
+  if (!this.isValidEmail(tag)) {
+    if (!this.addFirstAttemptFailed) {
+      this.addFirstAttemptFailed = true;
+      const targetInput = this.getTagInputRef(fieldType);
+      if (!isPaste && targetInput) {
+        targetInput.setInputValue(tag);
       }
-      return isPaste
-        ? Observable.throw(this.errorMessages['must_be_email'])
-        : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
     }
-    if (this.isDeactivatedDomain(tag)) {
-      return Observable.throw(this.errorMessages['deactivated_domain']);
-    }
-    if (!this.isAllowedDomain(tag)) {
-      return Observable.throw(this.errorMessages['invalid_domain']);
-    }
-    this.addFirstAttemptFailed = false;
-    return Observable.of(tag);
+    return isPaste
+      ? Observable.throw(this.errorMessages['must_be_email'])
+      : Observable.of('').pipe(tap(() => {
+          const targetInput = this.getTagInputRef(fieldType);
+          if (targetInput) {
+            targetInput.setInputValue(tag);
+          }
+        }));
   }
+
+  if (this.isDeactivatedDomain(tag)) {
+    return Observable.throw(this.errorMessages['deactivated_domain']);
+  }
+
+  if (!this.isAllowedDomain(tag)) {
+    return Observable.throw(this.errorMessages['invalid_domain']);
+  }
+
+  this.addFirstAttemptFailed = false;
+  return Observable.of(tag);
+}
+
+private getTagInputRef(fieldType: 'to' | 'cc' | 'bcc') {
+  switch (fieldType) {
+    case 'to': return this.tagInput;
+    case 'cc': return this.ccTagInput;
+    case 'bcc': return this.bccTagInput;
+  }
+}
+
 
 
   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
