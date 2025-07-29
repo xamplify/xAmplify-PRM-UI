@@ -176,7 +176,7 @@
 
                                             <!--View In Browser && GDPR Enabled-->
                                             <ng-container
-                                                *ngIf="campaignType=='email' && !campaign?.channelCampaign && campaignAccess?.salesEnablement">
+                                                *ngIf="campaignType=='email' && !campaign?.channelCampaign && (campaignAccess?.salesEnablement)">
                                                 <!--View In Browser-->
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-4" translate>View In

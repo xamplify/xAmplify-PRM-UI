@@ -360,7 +360,7 @@ tr {
   .dropdown-menu-list
   > li
   > a
-  .time {
+  .time,.tgrid > tbody > tr.content-in-view {
   background-color: #22313a !important;
 }
 .page-bar .page-breadcrumb > li > i {
