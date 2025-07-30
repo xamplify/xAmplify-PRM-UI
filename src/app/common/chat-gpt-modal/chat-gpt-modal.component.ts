@@ -216,7 +216,7 @@ export class ChatGptModalComponent implements OnInit {
     });
     this.chatGptIntegrationSettingsDto.contents = messagesContent;
     this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
-    // this.messages = [];
+    this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
       response => {
         let statusCode = response.statusCode;
