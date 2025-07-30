@@ -1,3 +1,3 @@
 export enum LandingPageType {
-    PUBLIC,PRIVATE
+    PUBLIC,PRIVATE, PROTECTED,
 }

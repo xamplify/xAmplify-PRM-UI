@@ -955,9 +955,15 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                               if (pageType == "PRIVATE") {
                                   dropDown += '<option value="PRIVATE" selected>PRIVATE</option>';
                                   dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                  dropDown += '<option value="PROTECTED">PROTECTED</option>';
+                              }else if(pageType == "PROTECTED"){
+                                  dropDown += '<option value="PROTECTED" selected>PROTECTED</option>';
+                                  dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                  dropDown += '<option value="PRIVATE">PRIVATE</option>';
                               } else {
                                   dropDown += '<option value="PUBLIC" selected>PUBLIC</option>';
                                   dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                  dropDown += '<option value="PROTECTED">PROTECTED</option>';
                               }
                               dropDown += '</select>';
                               dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
@@ -1023,6 +1029,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   dropDown += '<select class="form-control" id="pageType">';
                                   dropDown += '<option value="PRIVATE">PRIVATE</option>';
                                   dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                  dropDown += '<option value="PROTECTED">PROTECTED</option>';
                                   dropDown += '</select>';
                                   dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
                                   dropDown += '</div><br>';
