@@ -509,7 +509,7 @@
     <ng-container *ngIf="!(isPartnerLandingPage && ((landingPage.type=='PRIVATE' || landingPage.type=='PROTECTED')))">
         <a class="Iconhover custom-grid-icon" [ngStyle]="{'pointer-events': 'auto'}"
             [ngClass]="{'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isGridView}"
-            data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
+            data-toggle="tooltip" data-placement="top"  [attr.title]="landingPage?.type == 'PROTECTED' ? 'Copy Link' : 'Copy / Embed Link'"
             (click)="(landingPage?.partnerStatus === 'deactivated') ? '' : showPageLinkPopup(landingPage)">
             <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView,
                 'disabled gray': landingPage?.partnerStatus === 'deactivated' &&  modulesDisplayType?.isListView}"
