@@ -889,7 +889,7 @@
                                                         class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu" data-toggle="dropdown"
                                                         (click)="showGearIconOptions(campaign)"></span>
                                                     <span *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner && showPartnerCreatedCampaigns">
-                                                        <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                                                        <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
                                                             <i class="fa fa-eye mr5 IconCustomization dropdown-listicon" style="width: 27px;"></i>
                                                         </a>
                                                     </span>
@@ -1370,7 +1370,8 @@
                                 <!--XNFR-832-->
                                 <a class="Iconhover custom-grid-icon" [class.disablednew]="!campaign.hasAccess"
                                     *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
-                                    || isOnlyPartner|| authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember)"
+                                    || isOnlyPartner|| authenticationService.module.isVendor || authenticationService.module.isVendorTier 
+                                    || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember) && !showPartnerCreatedCampaigns"
                                     (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top"
                                     title="Edit Campaign">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i><div class="clickicons"></div>
@@ -1416,7 +1417,8 @@
                                         title="{{actionsDescription.campaign_report}}">
                                         <i class="fa fa-line-chart"></i><div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover custom-grid-icon" *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0"
+                                    <a class="Iconhover custom-grid-icon" *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm 
+                                        || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && !showPartnerCreatedCampaigns"
                                         data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                         title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                         <i class="fa fa-files-o"></i><div class="clickicons"></div>
@@ -1485,7 +1487,8 @@
                                         data-placement="top" title="Preview">
                                         <i class="fa fa-eye" aria-hidden="true"></i><div class="clickicons"></div>
                                     </a>
-                                    <a class="delete custom-grid-icon" *ngIf="!campaign.showCancelButton && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted)"
+                                    <a class="delete custom-grid-icon" *ngIf="!campaign.showCancelButton && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor
+                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted) && !showPartnerCreatedCampaigns"
                                         (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                                         data-toggle="tooltip" data-placement="top" title="Delete Campaign">
                                         <i class="fa fa-trash-o"></i><div class="del-icon"></div>
