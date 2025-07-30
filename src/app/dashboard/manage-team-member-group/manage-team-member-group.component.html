@@ -102,7 +102,8 @@
               Default SSO Group <i aria-hidden="true" class="fa fa-info-circle" title="{{properties?.defaultSSOTeamMemberGroupToolTip}}"></i>
             </th>
             <td>
-              <app-custom-ui-switch [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="groupDto.defaultSsoGroup" [isSwitchOptionDisabled]="previewGroup"
+                (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -122,14 +123,14 @@
             </th>
             <td>
               <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"
-                [isSwitchOptionDisabled]="defaultModule.roleId === 6 ? isContactsModuleToggleDisabled : false"></app-custom-ui-switch>
+                [isSwitchOptionDisabled]="previewGroup || (defaultModule.roleId === 6 && isContactsModuleToggleDisabled)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
       </div>
       <ng-template *ngIf="vendorCompanyProfileName && groupDto?.marketingModulesAccessToPartner" [ngTemplateOutlet]="showMarketingModules"></ng-template>
       <div id="right">
-        <button type="button" [disabled]="!groupDto.isValidForm || previewGroup"
+        <button type="button" [disabled]="!groupDto.isValidForm" *ngIf="!previewGroup"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
             class="btn btn-primary transition txt_pd-top3">{{groupSubmitButtonText}}</span></button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManageOrPreview()"
@@ -150,7 +151,8 @@
         </td>
         <td>
           <app-custom-ui-switch [customSwitch]="groupDto?.marketingModulesAccessToTeamMemberGroup"
-            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)" [isSwitchOptionDisabled]="previewGroup">
+          </app-custom-ui-switch>
         </td>
       </tr>
       <ng-container *ngIf="groupDto?.marketingModulesAccessToTeamMemberGroup">
