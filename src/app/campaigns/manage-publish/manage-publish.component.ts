@@ -710,6 +710,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.isCampaignDeleted = false;
         this.refService.campaignSuccessMessage = "";
+        this.campaignService.partnerMarketingCampaign = false;
         swal.close();
         $('#saveAsModal').modal('hide');
         $('#campaignFilterModal').modal('hide');

@@ -7,7 +7,7 @@
             </div>
             <div class="page-toolbar col-xs-12 col-sm-9 col-lg-9" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
-                    <div class="group-dropdown mb_9" style="padding-right:5px">
+                    <div class="group-dropdown mb_9">
                         <button
                             [ngClass]="folderViewType=='List' ? 'fa fa-th-list' :folderViewType=='Grid' ?'fa fa-th-large':
                         folderViewType=='Folder-List' ? 'fa fa-th': folderViewType=='Folder-Grid' ?'fa fa-folder':'fa fa-th-list'"
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="inputs float-right custom-flex">
-                        <div id="left">
+                        <div id="left"  class="ml7">
                             <select class="form-control" [(ngModel)]="categorySortOption.selectedCategoryDropDownOption"
                                 (ngModelChange)="sortBy($event)" id="select-dropdown">
                                 <option *ngFor="let option of categorySortOption.categorySortDropDownOptions"
@@ -53,7 +53,7 @@
                                     {{option.name}}</option>
                             </select>
                         </div>
-                        <div class="portlet-input input-inline" id="search-div">
+                        <div class="portlet-input input-inline ml7" id="search-div">
                             <div class="input-icon right" id="icon">
                                 <input type="text" id="sort-text" class="form-control"
                                     [(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}"

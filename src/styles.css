@@ -3531,3 +3531,9 @@ h5.oliver-heading-color{
     transform: rotate(360deg);
   }
 }
+.mr7{
+  margin-right: 8px!important;
+}
+.ml7{
+  margin-left: 8px!important;
+}

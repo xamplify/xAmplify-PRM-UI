@@ -130,4 +130,6 @@ export class Campaign {
     notifyTeamMember = false;
     // XNFR-990
 
+    createdForCompanyId: number = 0;
+
 }

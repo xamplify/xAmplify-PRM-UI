@@ -95,11 +95,6 @@
 .min-h {
   min-height: 383px;
 }
-
-.ref-mar {
-  margin-left: -1px !important;
-}
-
 .mxv {
   object-fit: fill;
   border-top-left-radius: 5px;
@@ -365,4 +360,7 @@
       outline: none;
       cursor: inherit;
       display: block;
+    }
+    .mb_13{
+      margin-bottom: 13px;
     }

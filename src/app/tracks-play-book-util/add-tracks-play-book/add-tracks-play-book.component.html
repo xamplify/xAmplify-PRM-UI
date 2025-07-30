@@ -334,7 +334,7 @@
               </div>
               <div class="btn-group pull-right">
                 <div class="inputs float-right" style="display: inline-flex;padding-top: 12px;">
-                  <div id="left" style="padding-left: 5px;">
+                  <div id="left" class="ml7">
                     <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)">
                       <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
@@ -342,16 +342,16 @@
                     </select>
                   </div>
 
-                  <div id="left" *ngIf="fileTypesForFilter?.length>0">
+                  <div id="left" class="ml7" *ngIf="fileTypesForFilter?.length>0">
                     <select class="form-control mDamSort SeclectBoxPaddingsAbj" [(ngModel)]="selectedFileType"
-                      (ngModelChange)="filterAssetsByFileType($event)" style="position: relative; right: -3px;">
+                      (ngModelChange)="filterAssetsByFileType($event)" style="position: relative;">
                       <option value="">Select Asset Type</option>
                       <option *ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
                     </select>
                   </div>
 
-                  <div class="portlet-input input-inline" id="search-div">
-                    <div class="input-icon right" id="icon" style="padding-left: 5px;">
+                  <div class="portlet-input input-inline ml7" id="search-div">
+                    <div class="input-icon right" id="icon">
                       <input type="text" [(ngModel)]="assetSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                         class="form-control" placeholder="Search..." (keypress)="assetEventHandler($event.keyCode)">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="assetSortOption.searchKey"
