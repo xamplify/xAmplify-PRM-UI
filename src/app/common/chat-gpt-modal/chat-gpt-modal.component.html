@@ -916,7 +916,7 @@
           <button class="share-btn dropdown-toggle">Design</button>
           <div class="dropdown-menu">
             <button
-              *ngIf="!isPartnerLoggedIn && authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany"
+              *ngIf="authenticationService?.module?.design && !authenticationService?.module?.isPrmCompany"
               class="share-btn" (click)="openSelectionTemplate(markdownComponent)">Design Template</button>
             <button *ngIf="authenticationService.module.damAccess" class="share-btn"
               (click)="createAsset(markdownComponent)">Design Pdf</button>
