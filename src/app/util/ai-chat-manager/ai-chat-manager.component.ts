@@ -947,6 +947,9 @@ export class AiChatManagerComponent implements OnInit {
   fetchOliverActiveIntegration() {
     this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    if(this.asset != undefined && this.asset != null && this.asset.id > 0 && this.asset.videoId != undefined && this.asset.videoId != null && this.asset.videoId != '') {
+      this.chatGptIntegrationSettingsDto.videoId = this.asset.videoId;
+    }
     this.chatGptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
