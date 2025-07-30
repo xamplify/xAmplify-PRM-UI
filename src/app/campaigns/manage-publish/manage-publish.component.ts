@@ -369,6 +369,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
                 /**XNFR-832***/
                 self.isUnlockMdfFundsOptionEnabled =map['isUnlockMdfFundsOptionEnabled'];
+                self.marketingModulesEnabled = map['marketingModulesEnabled'];
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
@@ -1414,6 +1415,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.toDateFilterString = "";
         this.filterResponse.isVisible = false;
         this.filterMode = false;
+        this.campaignService.partnerMarketingCampaign = this.partnerMarketingCampaign;
+        this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign;
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
@@ -2037,6 +2040,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showPartnerCampaigns() {
         this.partnerMarketingCampaign = true;
         this.campaignService.partnerMarketingCampaign = true;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -2045,6 +2049,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showVendorCampaigns() {
         this.partnerMarketingCampaign = false;
         this.campaignService.partnerMarketingCampaign = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
