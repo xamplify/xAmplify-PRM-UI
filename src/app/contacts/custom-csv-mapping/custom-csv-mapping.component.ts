@@ -94,6 +94,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.contactStatusStages = [];
     this.resetCustomUploadCsvFields();
     this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
+    $('#invalid_Users_Model_Popup').modal('hide');
   }
 
   transform(value: string): string {

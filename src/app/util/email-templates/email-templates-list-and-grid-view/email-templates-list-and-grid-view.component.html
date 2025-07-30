@@ -71,6 +71,9 @@
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.vendorOrganizationName}}">
                                                 <span><b>From: </b>{{emailTemplate.vendorOrganizationName}}</span>
                                             </h6>
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.vendorCampaignName}}">
+                                                <span><b>Campaign Name: </b>{{emailTemplate.vendorCampaignName}}</span>
+                                            </h6>
                                         </ng-container>
                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.createdBy}}">
@@ -93,7 +96,7 @@
                                             data-toggle="tooltip" data-placement="top" title="Spam score">
                                             {{emailTemplate.spamScore}}
                                         </h5>
-                                        <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
+                                        <!-- <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5> -->
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <div class="text-center">

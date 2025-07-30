@@ -219,6 +219,15 @@
                                             (click)="$event.stopPropagation();viewContent(content, i)">
                                             <ng-container *ngIf="!content.typeQuizId">
                                                 <td style="width: 10%;">
+                                                    <div class="preview-wrapper">
+                                                                       <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                                'status-circle': true,
+                                                                'status-green': content.finished,
+                                                                'status-orange': content.opened && !content.finished,
+                                                                'status-default': !isCreatedUser && !content.finished && !(content.opened && !content.finished)
+                                                             }"
+                                [attr.title]="content.finished ? 'Viewed/Downloaded' : (content.opened && !content.finished ? 'Opened' : null)"
+                                data-toggle="tooltip" data-placement="right"><i class="fa fa-check fa-fa-custom"></i></span>
                                                     <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
                                                             <img class="custom-image-css" src="{{content?.dam?.thumbnailPath}}" alt="Image Not Found">
@@ -244,6 +253,7 @@
                                                             </button>
                                                         </div>
                                                     </div>
+                                                     </div>
                                                 </td>
                                                 <td>
                                                 <h4  class="asset-title" data-toggle="tooltip" data-placement="bottom" [title]="content?.dam?.assetName">
@@ -253,17 +263,26 @@
                                                         : content?.dam?.assetName }}
                                                     </strong>
                                                 </h4>
-                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                                    <!-- <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
                                                         <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081; width: 50%;" class="banner">In Progress</h6>
-                                                    </div>
+                                                    </div> -->
                                                     <div *ngIf="content?.dam?.categoryName"><i class="fa fa-folder-open mr3"></i>{{content?.dam?.categoryName}}</div>
                                                 </td>
                                                 <td class="text-center">{{content?.dam?.assetType}}</td>
                                             </ng-container>
                                             <ng-container *ngIf="content.typeQuizId">
                                                 <td style="width: 10%;">
+                                                    <div class="preview-wrapper">
+                            <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                                'status-circle': true,
+                                                                'status-green': content.finished,
+                                                                'status-orange': content.opened && !content.quiz.finished,
+                                                                'status-default': !isCreatedUser && !content.finished && !(content.opened && !content.quiz.finished)
+                                                             }"
+                                [attr.title]="content.finished ? 'Viewed/Downloaded' : (content.opened && !content.quiz.finished ? 'Opened' : null)"
+                                data-toggle="tooltip" data-placement="right"><i class="fa fa-check fa-fa-custom"></i></span>
                                                     <div class="thumbnail-wrapper">
                                                         <img class="custom-image-css"
                                                             [src]="tracksPlayBook.featuredImage"
@@ -274,20 +293,21 @@
                                                                 translate>Quiz</span>
                                                         </div>
                                                     </div>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <h4 class="mt5 mb5 f-w-600" data-toggle="tooltip"
                                                         data-placement="bottom" title="{{content.quiz.name}}">
                                                         <span><strong>{{content.quiz.name}}</strong></span>
                                                     </h4>
-                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                                    <!-- <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
                                                             class="banner" translate>
                                                             Finished</h6>
                                                         <h6 *ngIf="content.opened && !content.quiz.finished" class="banner" 
                                                             style="background-color: #819081; width: 50%" translate>In Progress</h6>
-                                                    </div>
+                                                    </div> -->
                                                 </td>
                                                 <td class="text-center">Form</td>
                                             </ng-container>
@@ -300,10 +320,10 @@
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                    <a class="custom-icon" *ngIf="i==contentIndexInView">
+                                                    <!-- <a class="custom-icon" *ngIf="i==contentIndexInView">
                                                         <i class="fa fa-check-circle-o display-inline track-selected selected-check-mark-circle disabled-div" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
-                                                    </a>
+                                                    </a> -->
                                                 </div>
                                             </td>
                                         </tr>
@@ -361,33 +381,37 @@
                                                                             [hidden]="content.isCollapsed">
                                                                             <ng-container>
                                                                                 <td style="width: 10%;">
-                                                                                    <div class="list-image-container">
-                                                                                        <div class="thumbnail-wrapper">
-                                                                                            <img class="custom-image-css"
-                                                                                                src="{{dam?.thumbnailPath}}"
-                                                                                                alt="Image Not Found">
-                                                                                        </div>
-                                                                                        <div *ngIf="dam?.assetType != undefined && (videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
-                                                                                            class="overlay-icon">
-                                                                                            <button
-                                                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !dam.previousContentFinished)  && !isCreatedUser}"
-                                                                                                class="list-play-icon-wrap"
-                                                                                                data-toggle="tooltip" data-placement="top"
-                                                                                                title="View"
-                                                                                                (click)="$event.stopPropagation();viewAssetDetails(dam)">
-                                                                                                <i class="fa fa-play list-play-icon"></i>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div *ngIf="dam?.assetType == undefined || !(videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
-                                                                                            class="overlay-icon">
-                                                                                            <button
-                                                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                                                class="list-play-icon-wrap"
-                                                                                                data-toggle="tooltip" data-placement="top"
-                                                                                                title="View"
-                                                                                                (click)="$event.stopPropagation();viewAssetDetails(dam)">
-                                                                                                <i class="fa fa-file list-file-icon"></i>
-                                                                                            </button>
+                                                                                    <div class="preview-wrapper">
+                                                                                        <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                                'status-circle': true,
+                                                                'status-green': dam.finished,
+                                                                'status-orange': dam.opened && !dam.finished,
+                                                                'status-default': !isCreatedUser && !dam.finished && !(dam.opened && !dam.finished)
+                                                             }"
+                                [attr.title]="dam.finished ? 'Viewed/Downloaded' : (dam.opened && !dam.finished ? 'Opened' : null)"
+                                data-toggle="tooltip" data-placement="right"><i class="fa fa-check fa-fa-custom"></i></span>
+                                                                                        <div class="list-image-container">
+                                                                                            <div class="thumbnail-wrapper">
+                                                                                                <img class="custom-image-css" src="{{dam?.thumbnailPath}}" alt="Image Not Found">
+                                                                                            </div>
+                                                                                            <div *ngIf="dam?.assetType != undefined && (videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
+                                                                                                class="overlay-icon">
+                                                                                                <button
+                                                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !dam.previousContentFinished)  && !isCreatedUser}"
+                                                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top" title="View"
+                                                                                                    (click)="$event.stopPropagation();viewAssetDetails(dam)">
+                                                                                                    <i class="fa fa-play list-play-icon"></i>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div *ngIf="dam?.assetType == undefined || !(videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
+                                                                                                class="overlay-icon">
+                                                                                                <button
+                                                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top" title="View"
+                                                                                                    (click)="$event.stopPropagation();viewAssetDetails(dam)">
+                                                                                                    <i class="fa fa-file list-file-icon"></i>
+                                                                                                </button>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
@@ -397,7 +421,7 @@
                                                                                             {{ dam?.assetName?.length > 70 ? (dam?.assetName | slice:0:70) + '...' : dam?.assetName }}
                                                                                         </strong>
                                                                                     </h4>
-                                                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                                                                    <!-- <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
                                                                                         style="padding-top: 5px;">
                                                                                         <h6 *ngIf="dam.finished"
                                                                                             style="background-color: #5cb85c;"
@@ -406,7 +430,7 @@
                                                                                         </h6>
                                                                                         <h6 *ngIf="dam.opened && !dam.finished" style="background-color: #819081; width: 50%" 
                                                                                             class="banner">In Progress</h6>
-                                                                                    </div>
+                                                                                    </div> -->
                                                                                 </td>
                                                                                 <td class="text-center">{{dam?.assetType}}</td>
                                                                             </ng-container>
@@ -422,11 +446,11 @@
                                                                                             aria-hidden="true"></i>
                                                                                         <div class="clickicons"></div>
                                                                                     </a>
-                                                                                    <a class="custom-icon" *ngIf="dam.id == contentIndexInView">
+                                                                                    <!-- <a class="custom-icon" *ngIf="dam.id == contentIndexInView">
                                                                                         <i class="fa fa-check-circle-o display-inline track-selected selected-check-mark-circle disabled-div"
                                                                                             aria-hidden="true"></i>
                                                                                         <div class="clickicons"></div>
-                                                                                    </a>
+                                                                                    </a> -->
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
