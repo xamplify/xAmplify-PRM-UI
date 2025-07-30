@@ -660,6 +660,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	refreshList() {
 		if (this.isPartnerView) {
+		    this.contentModuleStatusAnalyticsComponent.getSharedContentCounts();
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.listAssets(this.pagination);
