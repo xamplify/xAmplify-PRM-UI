@@ -164,6 +164,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     selectDomainDetails:any = null;
     selectedDomainName:string="";
     domains: any[] = [];
+    @Input() partnerMarketingCampaign: boolean = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,

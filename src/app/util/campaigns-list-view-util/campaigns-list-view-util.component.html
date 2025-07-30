@@ -885,10 +885,14 @@
                                             </ng-container>
                                             <ng-container class="pull-right">
                                                 <div class="btn-group pull-right setting-icon-cu">
-                                                    <span [class.disablednew]="!campaign.hasAccess"
-                                                        class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
-                                                        data-toggle="dropdown"
+                                                    <span [class.disablednew]="!campaign.hasAccess" *ngIf="!showPartnerCreatedCampaigns"
+                                                        class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu" data-toggle="dropdown"
                                                         (click)="showGearIconOptions(campaign)"></span>
+                                                    <span *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner && showPartnerCreatedCampaigns">
+                                                        <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                                                            <i class="fa fa-eye mr5 IconCustomization dropdown-listicon" style="width: 27px;"></i>
+                                                        </a>
+                                                    </span>
 
                                                     <ul class="dropdown-menu pull-right"
                                                         [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions">
@@ -1776,7 +1780,7 @@
     </div>
 </div>
 <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [viewType]="'folderList'" [previewCampaignType]="campaignType"
-    (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+    (closeNotifyParent)="closePreviewCampaign($event)" [partnerMarketingCampaign]="showPartnerCreatedCampaigns"></app-preview-campaign>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>

@@ -1025,9 +1025,15 @@
                                           </ng-container>
                                           <ng-container class="pull-right">
                                              <div class="btn-group pull-right setting-icon-cu dropdown" #dropdownContainer>
-                                                <span [class.disablednew]="!campaign.hasAccess"
+                                                <span [class.disablednew]="!campaign.hasAccess" *ngIf="!partnerMarketingCampaign"
                                                    class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu" data-toggle="dropdown" #gearBtn
                                                    (click)="showGearIconOptions(gearBtn,campaign)">
+                                                </span>
+                                                <span *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner && partnerMarketingCampaign">
+                                                   <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign"
+                                                      translate>
+                                                      <i class="fa fa-eye IconCustomization dropdown-listicon" style="width: 27px;" aria-hidden="true"></i>
+                                                   </a>
                                                 </span>
                                              <!-- <div class="btn-group pull-right setting-icon-cu">
                                                 <span [class.disablednew]="!campaign.hasAccess"
@@ -2035,7 +2041,8 @@
    </div>
 </div>
 <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [categoryId]="categoryId"
-   [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+   [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"
+   [partnerMarketingCampaign]="partnerMarketingCampaign"></app-preview-campaign>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
