@@ -42,5 +42,6 @@ export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     promptId: number;
     globalChatAssistantId: any;
     isContact:boolean = false;
+    videoId: any;
     isGlobalSearchDone: boolean = false;
 }
