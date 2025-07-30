@@ -230,8 +230,8 @@
                                                 class="green-banner inline-flex">Published</h6>
                                             <!---XNFR-327-->
                                         </td>
-                                        <td *ngIf="authenticationService?.companyProfileName !== 'versa-networks'">
-                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"  class="text-center">
+                                        <td>
+                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK') && authenticationService?.companyProfileName !== 'versa-networks'"  class="text-center">
                                                 <div class="progress">
                                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                                         title="{{learningTrack.progress}}%"
