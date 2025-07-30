@@ -141,7 +141,7 @@
                                             <span *ngIf="isPartnerView">Published On</span>
                                             <span *ngIf="!isPartnerView">Created On</span>
                                         </th>
-                                        <ng-container *ngIf="isPartnerView">
+                                        <ng-container *ngIf="isPartnerView && authenticationService?.companyProfileName !== 'versa-networks'">
                                             <th *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center"
                                                 style="width: 15%;" translate id="border-bottom">Progress</th>
                                             <!-- <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"
@@ -230,7 +230,7 @@
                                                 class="green-banner inline-flex">Published</h6>
                                             <!---XNFR-327-->
                                         </td>
-                                        <td>
+                                        <td *ngIf="authenticationService?.companyProfileName !== 'versa-networks'">
                                             <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"  class="text-center">
                                                 <div class="progress">
                                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
@@ -337,7 +337,7 @@
                                 <span *ngIf="learningTrack.title?.length>59">...</span>
                             </h4>
                             <div class="mt5">
-                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK')"
+                                <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK' || type == 'PLAYBOOK') && authenticationService?.companyProfileName !== 'versa-networks'"
                                     style="margin: 10px 15px 0px 15px;"  class="text-center">
                                     <div class="progress">
                                         <div class="progress-bar" data-toggle="tooltip" data-placement="top"

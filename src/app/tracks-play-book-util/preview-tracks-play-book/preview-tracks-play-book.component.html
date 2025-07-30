@@ -219,8 +219,8 @@
                                             (click)="$event.stopPropagation();viewContent(content, i)">
                                             <ng-container *ngIf="!content.typeQuizId">
                                                 <td style="width: 10%;">
-                                                    <div class="preview-wrapper">
-                                                                       <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                    <div  [ngClass]="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks' ? 'preview-wrapper' : ''">
+                                                                       <span *ngIf="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks'" [ngClass]="{
                                                                 'status-circle': true,
                                                                 'status-green': content.finished,
                                                                 'status-orange': content.opened && !content.finished,
@@ -274,8 +274,8 @@
                                             </ng-container>
                                             <ng-container *ngIf="content.typeQuizId">
                                                 <td style="width: 10%;">
-                                                    <div class="preview-wrapper">
-                            <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                    <div [ngClass]="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks' ? 'preview-wrapper' : ''">
+                            <span *ngIf="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks'" [ngClass]="{
                                                                 'status-circle': true,
                                                                 'status-green': content.finished,
                                                                 'status-orange': content.opened && !content.quiz.finished,
@@ -381,8 +381,8 @@
                                                                             [hidden]="content.isCollapsed">
                                                                             <ng-container>
                                                                                 <td style="width: 10%;">
-                                                                                    <div class="preview-wrapper">
-                                                                                        <span *ngIf="!isCreatedUser" [ngClass]="{
+                                                                                    <div [ngClass]="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks' ? 'preview-wrapper' : ''">
+                                                                                        <span *ngIf="!isCreatedUser && authenticationService?.companyProfileName !== 'versa-networks'" [ngClass]="{
                                                                 'status-circle': true,
                                                                 'status-green': dam.finished,
                                                                 'status-orange': dam.opened && !dam.finished,
