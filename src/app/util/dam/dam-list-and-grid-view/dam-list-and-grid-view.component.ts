@@ -171,7 +171,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.referenceService.categoryType = '';
 		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)
