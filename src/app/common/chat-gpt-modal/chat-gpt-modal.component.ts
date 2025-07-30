@@ -323,6 +323,7 @@ export class ChatGptModalComponent implements OnInit {
     this.checkDesignAccess();
     this.pptData = '';
     this.showPptDesignPicker = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = false;
   }
 
   private checkDamAccess() {
@@ -1030,6 +1031,7 @@ export class ChatGptModalComponent implements OnInit {
     this.chatHistoryId = history.chatHistoryId;
     this.showOpenHistory = true;
     this.isSaveHistoryPopUpVisible = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = history.isGlobalSearchDone;
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
       || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
