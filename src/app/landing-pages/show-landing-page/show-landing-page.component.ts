@@ -154,7 +154,6 @@ export class ShowLandingPageComponent implements OnInit {
             landingPageAnalytics.campaignId = campaignId;
             landingPageAnalytics.userId = userId;
             landingPageAnalytics.analyticsType = analyticsType;
-            landingPageAnalytics.partnerCompanyId = response.partnerCompanyId;
             if(analyticsTypeString=="CAMPAIGN_LANDING_PAGE_FORM" && formId>0){
                 landingPageAnalytics.formId = formId;
             }
@@ -297,21 +296,5 @@ handleProtectedPage(alias: string): void {
   this.isProtectedLandingPage = true;
   this.getHtmlBodyAlias(alias);
 }
-// logProtectedAccess(alias: string, enumType: any): void {
-//   const userId = this.authenticationService.getUserId();
-
-//   if (this.isProtectedUrlPage) {
-//     this.getLocationDetails(null, userId, alias, null, null, null, 0); 
-//   } else {
-//     // this.getLocationDetails(null, null, alias, null, enumType, null, 0); 
-//     this.getLocationDetails(null, userId, landingPageAlias, null, data.enumType, null, 0);
-
-//   }
-// }
-
-// logProtectedAccess(alias: string, enumType: any): void {
-//   const userId = this.authenticationService.getUserId(); // ✅ Get user ID here
-//   this.getLocationDetails(null, userId, alias, null, enumType, null, 0);
-// }
 
 }
