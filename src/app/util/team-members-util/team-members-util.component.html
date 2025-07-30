@@ -1096,7 +1096,7 @@
 
   <ng-template #inviteTeamMemberTemplate>
     <div class="hidden-xs pull-right downloadteam" style="margin-left: 7px;">
-      <button class="btn btn-primary button position-relative" (click)="openInviteTeamMemberModal()"
+      <button class="btn btn-primary button position-relative" (click)="!isLoggedInAsTeamMember && openInviteTeamMemberModal()"
         style="border-radius: 7px 0px 0px 7px!important;" translate>{{properties?.inviteATeamMember}}</button>
       <button class="btn btn-primary button border_btn" (click)="navigateToTeamMemberReports()"
         style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
