@@ -356,10 +356,9 @@ export class ChatGptModalComponent implements OnInit {
       this.saveChatHistoryTitle(this.chatHistoryId);
     } else if(this.messages.length == 0 && this.activeTab == 'askpdf') {
       this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
-    }else{
-      this.messages = [];
-      this.intentMessages = [];
     }
+    this.messages = [];
+    this.intentMessages = [];
     this.searchTerm = "";
     this.showPromptBoxBelow = false;
     this.showPromptBoxAbove = false;
