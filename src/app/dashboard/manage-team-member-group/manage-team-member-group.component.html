@@ -43,7 +43,7 @@
   </div>
   <br>
   <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
-  <div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading">
+  <div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading" style="overflow: visible;">
     <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
       <ng-container *ngTemplateOutlet="groupGridView;context:{groupInfo:group,showPreviewIcon:true}">
       </ng-container>
@@ -208,11 +208,11 @@
       <span class="ribbon1" *ngIf="group?.defaultGroup && authenticationService?.module?.isOnlyPartner"><span translate>Default Group</span></span>
       <!--XNFR-883-->
       <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
-      <div class="table-responsive">
+      <div class="table-responsive" style="border-bottom-left-radius: 15px;border-bottom-right-radius: 15px;">
         <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
           <strong>No Modules Found</strong>
         </div>
-        <table class="table table-striped" aria-describedby="" *ngIf="group?.teamMemberModuleDTOs?.length>0">
+        <table class="table table-striped mb0" aria-describedby="" *ngIf="group?.teamMemberModuleDTOs?.length>0">
           <tbody>
             <tr *ngFor="let module of group?.teamMemberModuleDTOs;let j=index;" class="text-center module-text-color">
               <th *ngIf="j<=4" scope="row">
