@@ -515,6 +515,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   refreshPage() {
+    this.contentModuleStatusAnalyticsComponent.getSharedContentCounts();
     this.listLearningTracks(this.pagination);
     if (this.contentModuleStatusAnalyticsComponent) {
       if (this.authenticationService.approvalRequiredForTracks

@@ -1128,10 +1128,10 @@
                                         <div class="row mrgt45">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="alert alert-success mbgrid" style="margin-bottom: 10px;" *ngIf="selectedContactListIds?.length > 0">
-                                                    <div *ngIf="!maxRecipientCountReached">
+                                                    <div *ngIf="!maxRecipientCountReached" [ngClass]="{'mb10': !campaign?.channelCampaign}">
                                                         <strong>
                                                             Selected Rows : {{selectedContactListIds?.length}} <br>
-                                                            Note: Deactivated partner(s) will be excluded from launching the campaign.
+                                                            <span *ngIf="campaign?.channelCampaign">Note: Deactivated partner(s) will be excluded from launching the campaign.</span>
                                                         </strong>
                                                         <ng-container *ngIf="emailReceiversCountError">
                                                             <span class="required float-right" translate>
