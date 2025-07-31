@@ -939,53 +939,65 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   validateCsvData() {
-    let email = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
-    let firstNames = this.csvRecords.map(function (a) { return a[0].split(',')[1].toLowerCase() });
-    let duplicateEmailIds = this.referenceService.returnDuplicates(email);
-    this.newlyAddedTeamMembers = [];
-    if ((email.length > 0) && (firstNames.length > 0)) {
-      let emailIds = [];
-      for (let r = 1; r < email.length; r++) {
-        let rows = this.csvRecords[r];
-        let row = rows[0].split(',');
-        let emailId = row[0];
-        let firstName = row[1];
-        let lastName = row[2];
-        firstName = $.trim(firstName);
-        if (firstName.length <= 0 && emailId.length > 0 && emailId !== '') {
-          emailIds.push(emailId);
-          this.customResponse = new CustomResponse('ERROR', 'First Name is not available for : ' + emailIds, true);
-          this.csvErrors = true;
+    let emails = this.csvRecords.map(a => a[0].split(',')[0].toLowerCase());
+    let duplicateEmails = this.referenceService.returnDuplicates(emails);
+
+    let invalidEmails = [];
+    let duplicateEmailIds = [];
+    let missingFirstNameEmails = [];
+    let missingEmailFirstNames = [];
+    let missingAll = [];
+
+    for (let r = 1; r < this.csvRecords.length; r++) {
+        let row = this.csvRecords[r][0].split(',');
+        let email = row[0] ? row[0].trim() : '';
+        let firstName = row[1] ? row[1].trim() : '';
+        let lastName = row[2] ? row[2].trim() : '';
+
+        if (!firstName && email) {
+            missingFirstNameEmails.push(email);
+            continue;
         }
-        if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
-          if (duplicateEmailIds.length == 0) {
-            if (!this.referenceService.validateEmailId($.trim(emailId))) {
-              emailIds.push(emailId);
-              this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
-              this.csvErrors = true;
-            }
-          } else {
-            for (let d = 0; d < duplicateEmailIds.length; d++) {
-              let duplicateEmailId = duplicateEmailIds[d];
-              if (duplicateEmailId != undefined && $.trim(duplicateEmailId).length > 0) {
-                emailIds.push(duplicateEmailId);
-                this.customResponse = new CustomResponse('ERROR', emailIds + ' is duplicate email address.', true);
-                this.csvErrors = true;
-                this.isUploadCsv = false;
-              }
-            }
-            duplicateEmailIds = [];
-          }
-        } else if (firstName.length > 0 && firstName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'Email is not available for : ' + firstName, true);
-          this.csvErrors = true;
-        } else if (lastName.length > 0 && lastName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'First Name & Email are mandatory for : ' + lastName, true);
-          this.csvErrors = true;
+        if (!email && firstName) {
+            missingEmailFirstNames.push(firstName);
+            continue;
         }
-      }
+        if (!email && !firstName && lastName) {
+            missingAll.push(lastName);
+            continue;
+        }
+
+        if (email && firstName) {
+            if (duplicateEmails.includes(email.toLowerCase())) {
+                duplicateEmailIds.push(email);
+                duplicateEmails = duplicateEmails.filter(e => e !== email.toLowerCase());
+                continue;
+            }
+            if (!this.referenceService.validateEmailId(email)) {
+                invalidEmails.push(email);
+                continue;
+            }
+        }
     }
-  }
+
+    let messages = [];
+    if (missingFirstNameEmails.length) messages.push(missingFirstNameEmails.join(', ') + " - First Name is missing.");
+    if (duplicateEmailIds.length) messages.push(duplicateEmailIds.join(', ') + " - Duplicate email address.");
+    if (invalidEmails.length) messages.push(invalidEmails.join(', ') + " - Invalid email address.");
+    if (missingEmailFirstNames.length) messages.push(missingEmailFirstNames.join(', ') + " - Email is missing.");
+    if (missingAll.length) messages.push(missingAll.join(', ') + " - Both First Name & Email are mandatory.");
+
+    if (messages.length) {
+        this.csvErrors = true;
+        this.customResponse = new CustomResponse('ERROR', messages.join('\n'), true);
+        this.isUploadCsv = false;
+    } else {
+        this.csvErrors = false;
+        this.isUploadCsv = true;
+        this.customResponse = null;
+    }
+}
+
 
   validateHeaders(headers: any) {
     return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name");
