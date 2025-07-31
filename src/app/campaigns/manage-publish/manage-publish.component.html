@@ -28,7 +28,6 @@
       <div class="pull-right" style="padding: 4px 4px 4px;">
          <button type="button" class="btn btn-primary breadcrumb-right-btn"
             [ngClass]="{ 'active-campaign-color': partnerMarketingCampaign }"
-            [ngStyle]="partnerMarketingCampaign ? {'background-color': '#5cb85c', 'border': 'none'} : {}"
             *ngIf="marketingModulesEnabled" (click)="partnerMarketingCampaign ? showVendorCampaigns() : showPartnerCampaigns()">
             {{ partnerMarketingCampaign ? 'My Campaigns' : 'Partner Campaigns' }}
          </button>
