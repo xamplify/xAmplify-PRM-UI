@@ -659,11 +659,11 @@ export class SortOption {
 		{ 'name': 'View Count (ASC)', 'value': 'count-Asc' },
 		{ 'name': 'View Count (DESC)', 'value': 'count-Desc' }
 	];
-	partnerTrackDetailsDropDownOptions = [
+	partnerTrackDetailsDropDownOptions = [	
+		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' },
+		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
 		{ 'name': 'Partner Name (A-Z)', 'value': 'partnerName-Asc' },
 		{ 'name': 'Partner Name (Z-A)', 'value': 'partnerName-Desc' },
-		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
-		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' },
 		{ 'name': 'Email ID(A-Z)', 'value': 'emailId-Asc' },
 		{ 'name': 'Email ID(Z-A)', 'value': 'emailId-Desc' }
 	];
