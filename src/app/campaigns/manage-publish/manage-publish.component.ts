@@ -145,7 +145,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     //XNFR-1073
     partnerMarketingCampaign = false;
     marketingModulesEnabled = false;
-    
+    hasRedistributionAccess = false;
+    marketingModulesAccessForPartner = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -309,6 +310,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         try {
             this.archived = this.campaignService.archived;
             this.partnerMarketingCampaign = this.campaignService.partnerMarketingCampaign;
+            this.hasRedistributionAccess = this.authenticationService.module.isReDistribution;
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }
@@ -369,6 +371,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
                 /**XNFR-832***/
                 self.isUnlockMdfFundsOptionEnabled =map['isUnlockMdfFundsOptionEnabled'];
+                self.marketingModulesEnabled = map['marketingModulesEnabled'];
+                self.marketingModulesAccessForPartner = map['marketingModulesAccessForPartner'];
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
@@ -399,6 +403,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     } else if (self.modulesDisplayType.isListView) {
                         self.campaignViewType = "list";
                     }
+                    this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign; 
                     if (showList || isTeamMemberFilter) {
                         if (!self.modulesDisplayType.isListView && !self.modulesDisplayType.isGridView) {
                             self.modulesDisplayType.isListView = true;
@@ -710,7 +715,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.isCampaignDeleted = false;
         this.refService.campaignSuccessMessage = "";
-        this.campaignService.partnerMarketingCampaign = false;
         swal.close();
         $('#saveAsModal').modal('hide');
         $('#campaignFilterModal').modal('hide');
@@ -1374,6 +1378,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showArchivedCampaigns() {
         this.archived = true;
         this.campaignService.archived = true;
+        this.partnerMarketingCampaign = false;
+        this.campaignService.partnerMarketingCampaign = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -1382,6 +1390,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showActiveCampaigns() {
         this.archived = false;
         this.campaignService.archived = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -1414,6 +1424,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.toDateFilterString = "";
         this.filterResponse.isVisible = false;
         this.filterMode = false;
+        this.campaignService.partnerMarketingCampaign = this.partnerMarketingCampaign;
+        this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign;
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
@@ -2037,6 +2049,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showPartnerCampaigns() {
         this.partnerMarketingCampaign = true;
         this.campaignService.partnerMarketingCampaign = true;
+        this.archived = false;
+        this.campaignService.archived = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -2045,6 +2061,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showVendorCampaigns() {
         this.partnerMarketingCampaign = false;
         this.campaignService.partnerMarketingCampaign = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);

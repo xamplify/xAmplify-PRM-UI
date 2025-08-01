@@ -83,12 +83,14 @@
 
                      </div>
                      
+                     <div *ngIf="isFromDomainWhiteListing && hasVanityAccess">
                      <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r" style="float:right;">
                         <span class="mr5" *ngIf="!showCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip"
                               data-placement="bottom" title="Add Cc recipients"
                               (click)="showCCEmailInputField = 'true'"><span>Cc</span></a></span>
                         <span *ngIf="!showBCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom"
                               title="Add Bcc recipients" (click)="showBCCEmailInputField = 'true'"><span>Bcc</span></a></span>
+                     </div>
                      </div>
 
                      <!-- cc -->

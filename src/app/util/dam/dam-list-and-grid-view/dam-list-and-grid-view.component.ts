@@ -171,7 +171,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.referenceService.categoryType = '';
 		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)
@@ -661,6 +660,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	refreshList() {
 		if (this.isPartnerView) {
+		    this.contentModuleStatusAnalyticsComponent.getSharedContentCounts();
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.listAssets(this.pagination);

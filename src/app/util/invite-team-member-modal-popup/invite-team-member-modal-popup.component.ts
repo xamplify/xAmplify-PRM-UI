@@ -49,7 +49,11 @@ export class InviteTeamMemberModalPopupComponent implements OnInit {
 
   ngOnInit() {
     this.openInviteTeamMemberModal();
-    this.findAllTeamMemberGroupIdsAndNames();
+    if (this.authenticationService.module.loggedInThroughOwnVanityUrl && this.authenticationService.module.ssoEnabled) {
+      this.findAllGroupIdsAndNamesWithDefaultSSOFirst();
+    } else {
+       this.findAllTeamMemberGroupIdsAndNames();
+    }
   }
 
   ngOnDestroy() {
@@ -182,6 +186,21 @@ export class InviteTeamMemberModalPopupComponent implements OnInit {
           this.teamMemberGroups = response.data;
         }, error => {
           this.addServerError(error);
+        });
+  }
+
+  findAllGroupIdsAndNamesWithDefaultSSOFirst() {
+    this.isPopupLoading = true;
+    this.teamMemberService.findAllGroupIdsAndNamesWithDefaultSSOFirst()
+      .subscribe(
+        response => {
+          this.teamMemberGroups = response.data;
+          this.teamMemberGroupId = this.teamMemberGroups[0].id;
+          this.isPopupLoading = false;
+        },
+        error => {
+          this.logger.errorPage(error);
+          this.isPopupLoading = false;
         });
   }
 

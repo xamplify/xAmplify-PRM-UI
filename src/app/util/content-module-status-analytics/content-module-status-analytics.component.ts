@@ -288,61 +288,68 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     }
 
  
+  
   filterAssets(tabName: string, isFolderView: boolean): void {
-    const isTracks = this.router.url.includes('/tracks/');
-    const isPlaybook = this.router.url.includes('/playbook/');
-    const isDAM = this.router.url.includes('/dam/');
-    const isFolderTab = tabName == 'folder' || tabName == 'folders';
+  const isTracks = this.router.url.includes('/tracks/');
+  const isPlaybook = this.router.url.includes('/playbook/');
+  const isDAM = this.router.url.includes('/dam/');
+  const isFolderTab = tabName === 'folder' || tabName === 'folders';
 
-    const sharedListUrl =
-      (isTracks && '/home/tracks/shared/l') ||
-      (isPlaybook && '/home/playbook/shared/l') ||
-      (isDAM && '/home/dam/shared/l');
+  const sharedGridUrl =
+    (isTracks && '/home/tracks/shared/g') ||
+    (isPlaybook && '/home/playbook/shared/g') ||
+    (isDAM && '/home/dam/shared/g');
 
-    const manageListUrl =
-      (isTracks && '/home/tracks/manage/l') ||
-      (isPlaybook && '/home/playbook/manage/l') ||
-      (isDAM && '/home/dam/manage/l');
+  const sharedListUrl =
+    (isTracks && '/home/tracks/shared/l') ||
+    (isPlaybook && '/home/playbook/shared/l') ||
+    (isDAM && '/home/dam/shared/l');
 
-    const sharedFolderUrl =
-      (isTracks && '/home/tracks/shared/fg') ||
-      (isPlaybook && '/home/playbook/shared/fg') ||
-      (isDAM && '/home/dam/shared/fg');
+  const manageGridUrl =
+    (isTracks && '/home/tracks/manage/g') ||
+    (isPlaybook && '/home/playbook/manage/g') ||
+    (isDAM && '/home/dam/manage/g');
 
-    const manageFolderGridUrl =
-      (isTracks && '/home/tracks/manage/fg') ||
-      (isPlaybook && '/home/playbook/manage/fg') ||
-      (isDAM && '/home/dam/manage/fg');
+  const manageListUrl =
+    (isTracks && '/home/tracks/manage/l') ||
+    (isPlaybook && '/home/playbook/manage/l') ||
+    (isDAM && '/home/dam/manage/l');
 
-    const manageFolderListUrl =
-      (isTracks && '/home/tracks/manage/fl') ||
-      (isPlaybook && '/home/playbook/manage/fl') ||
-      (isDAM && '/home/dam/manage/fl');
+  const sharedFolderUrl =
+    (isTracks && '/home/tracks/shared/fg') ||
+    (isPlaybook && '/home/playbook/shared/fg') ||
+    (isDAM && '/home/dam/shared/fg');
 
-    const viewType = localStorage.getItem('defaultDisplayType') || 'FOLDER_GRID';
+  const manageFolderGridUrl =
+    (isTracks && '/home/tracks/manage/fg') ||
+    (isPlaybook && '/home/playbook/manage/fg') ||
+    (isDAM && '/home/dam/manage/fg');
 
-    this.selectedFilter = tabName;
-    this.contentModuleStatusAnalyticsDTO.selectedCategory = tabName.toUpperCase();
-    this.referenceService.categoryType = tabName;
+  const viewType = localStorage.getItem('defaultDisplayType') || 'GRID';
 
-    if (isFolderTab) {
-      if (this.isPartnerView) {
-        this.referenceService.goToRouter(sharedFolderUrl);
-      } else {
-        this.referenceService.goToRouter(viewType === 'FOLDER_LIST' ? manageFolderListUrl : manageFolderGridUrl);
-      }
-      return;
+  this.selectedFilter = tabName;
+  this.contentModuleStatusAnalyticsDTO.selectedCategory = tabName.toUpperCase();
+  this.referenceService.categoryType = tabName;
+
+  if (isFolderTab) {
+    if (this.isPartnerView) {
+      this.referenceService.goToRouter(sharedFolderUrl);
+    } else {
+      this.referenceService.goToRouter(manageFolderGridUrl);
     }
-
-    if (isFolderView && !isFolderTab) {
-      if (this.isPartnerView) {
-        this.referenceService.goToRouter(sharedListUrl);
-      } else {
-        this.referenceService.goToRouter(manageListUrl);
-      }
-      return;
-    }
-
-    this.loadContentByType(tabName);
+    return;
   }
+
+  if (isFolderView && !isFolderTab) {
+    if (this.isPartnerView) {
+      this.referenceService.goToRouter(viewType === 'GRID' ? sharedGridUrl : sharedListUrl);
+    } else {
+      this.referenceService.goToRouter(viewType === 'GRID' ? manageGridUrl : manageListUrl);
+    }
+    return;
+  }
+
+  this.loadContentByType(tabName);
+}
+
 }
