@@ -2750,3 +2750,6 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
 .front-count-card.active{
 border: 1.8px solid var(--btn-primary-border-color) !important;
 }
+.asset-button svg {
+  fill: var(---text-color) !important;
+}
