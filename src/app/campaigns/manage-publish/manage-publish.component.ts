@@ -23,6 +23,7 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 declare var swal: any, $: any, flatpickr: any;
 
@@ -141,6 +142,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     unlockMdfFundingModuleName = XAMPLIFY_CONSTANTS.unlockMdfFunding;
     campaignName = "";
     campaignId: number;
+    campaign: any;
+    showAskOliverModalPopup: boolean =false;
+    chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
     /*XNFR-832*/
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -2001,6 +2005,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 });
         }
 
+    }
+
+    
+    askOliver(campaign: any) {
+        this.campaign = campaign;
+        this.campaignName = campaign.campaignName;
+        this.campaignId = campaign.campaignId;
+        this.showAskOliverModalPopup = true;
+    }
+
+    closeAskAI(event: any) {
+        this.chatGptSettingDTO = event;
+        this.showAskOliverModalPopup = false;
     }
 
 }

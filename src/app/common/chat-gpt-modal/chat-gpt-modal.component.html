@@ -156,7 +156,7 @@
                 <!-- Ask Oliver Agent with Submenu -->
                 <li *ngIf="((authenticationService.oliverInsightsEnabled && showOliverInsights) || (authenticationService.brainstormWithOliverEnabled && showBrainstormWithOliver) || (authenticationService.oliverSparkWriterEnabled && showOliverSparkWriter)
                   || (authenticationService.oliverParaphraserEnabled && showOliverParaphraser) || (authenticationService.oliverContactAgentEnabled && showOliverParaphraser) || 
-                      (authenticationService.oliverContactAgentEnabled && showOliverContactAgent) || (authenticationService.oliverPartnerAgentEnabled && showOliverPartnerAgent))" [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
+                      (authenticationService.oliverContactAgentEnabled && showOliverContactAgent) || (authenticationService.oliverPartnerAgentEnabled && showOliverPartnerAgent) || (authenticationService.oliverCampaignAgentEnabled && showOliverCampaignAgent))" [ngClass]="{'open': isAgentSubmenuOpen }" class="submenu-parent">
                   <a href="javascript:void(0);" class="submenu-toggle" (click)="toggleAgentSubmenu()">
                     <i class="fa fa-user"></i>Oliver Agents
                   </a>
@@ -194,6 +194,11 @@
                     <li *ngIf="authenticationService?.module?.isPartner && authenticationService.oliverPartnerAgentEnabled && showOliverPartnerAgent" [ngClass]="{'active': activeTab === 'partneragent'}">
                       <a href="#partneragent" role="tab" data-toggle="tab" (click)="setActiveTab('partneragent')">
                         <i class="fa fa-handshake-o"></i> Partner Agent
+                      </a>
+                    </li>
+                    <li *ngIf="authenticationService.oliverCampaignAgentEnabled && showOliverCampaignAgent" [ngClass]="{'active': activeTab === 'campaignagent'}">
+                      <a href="#campaignagent" role="tab" data-toggle="tab" (click)="setActiveTab('campaignagent')">
+                        <i class="fa fa-bullhorn"></i> Campaign Agent
                       </a>
                     </li>
                   </ul>
@@ -238,7 +243,7 @@
               <span *ngIf="isSidebarVisible">&#9776;</span>
             </button>
             <div
-              [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' || activeTab == 'contactagent' || activeTab == 'partneragent') ? 'd-flex align-templateui' : 
+              [ngClass]="(isCopyButtonDisplayed || showOpenHistory ) && (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' || activeTab == 'globalchat' || activeTab == 'contactagent' || activeTab == 'partneragent' || activeTab == 'campaignagent') ? 'd-flex align-templateui' : 
               ((activeTab === 'history' || activeTab === 'settings' || activeTab === 'paraphraser')  ?  'd-flex align-start'  : (  
 
               (isSidebarVisible && (showPromptBoxBelow && !showPromptBoxAbove || showGlobalPromptBoxAbove) && activeTab == 'globalchat') 
@@ -644,6 +649,8 @@
                                   class="fa fa-vcard-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == PARTNERAGENT"
                                   class="fa fa-handshake-o mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == CAMPAIGNAGENT"
+                                  class="fa fa-bullhorn mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
                                   *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
@@ -843,6 +850,59 @@
                         Executive Summary</button>
                       <button class="action-btn" (click)="setInputText('Generate a QBR of the partner')">Generate a QBR of the
                         partner</button>
+                    </div>
+                  </div>
+                </div>
+                  <!-- Campaign Agent Tab -->
+                <div role="tabpanel"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'campaignagent', 'tab-pane fade': activeTab !== 'campaignagent'}"
+                  id="campaignagent">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'campaignagent'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'campaignagent',
+                                      'container-ui': !(showOpenHistory && activeTab === 'campaignagent'),
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
+                                    }">
+                    <!-- Heading -->
+                    <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                      <span class="oliver_heading">Campaign Agent</span>
+                      <!-- Oliver Image Positioned Correctly -->
+                      <div class="oliver-container">
+                        <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                      </div>
+                    </div>
+                    <p *ngIf="!showOpenHistory" class="oliver-text-color">Effortlessly retrieve campaign details using just a name or identifier.
+                       Instantly generate summaries and detailed reports.</p>
+                    <!-- Input Section -->
+                    <div class="oliver_input mt10" [ngClass]="(inputText?.length || 0) > 74 ? 'multi-line' : 'single-line'">
+
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" id="askMeTextarea6"
+                        (input)="autoResizeTextArea($event); validateInputText()"
+                        (keydown)="searchDataOnKeyPress($event)"></textarea>
+
+                      <div class="btn-wrapper">
+                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                    <div *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'campaignagent'" class="action-buttons">
+                      <button class="action-btn" (click)="setInputText('Give me the details of the campaign')">Give me the details of the
+                        campaign</button>
+                      <button class="action-btn" (click)="setInputText('Generate an Executive Summary')">Generate an
+                        Executive Summary</button>
+                      <button class="action-btn" (click)="setInputText('Generate a QBR of the campaign')">Generate a QBR of the
+                        campaign</button>
                     </div>
                   </div>
                 </div>

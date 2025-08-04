@@ -379,4 +379,16 @@ listDefaultTemplates(userId:any){
     (window.URL).revokeObjectURL(url);
   }
 
+  uploadCampaignDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let campaignIdRequestParameter = chatGptIntegrationSettingsDto.campaignId != undefined ? '&campaignId=' + chatGptIntegrationSettingsDto.campaignId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadCampaignDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + campaignIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

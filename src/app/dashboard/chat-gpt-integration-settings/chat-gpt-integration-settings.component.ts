@@ -32,6 +32,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   showOliverParaphraser: boolean = false;
   showOliverContactAgent: boolean = false;
   showOliverPartnerAgent: boolean = false;
+  showOliverCampaignAgent: boolean = false;
   showAskOliver: boolean = true;
   updateButtonName: string = 'Update';
   disableUpdateButton: boolean;
@@ -43,6 +44,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     showOliverParaphraser: boolean;
     showOliverContactAgent: boolean;
     showOliverPartnerAgent: boolean;
+    showOliverCampaignAgent: boolean;
   }>();
 
   private readonly INSIGHTAGENT = "INSIGHTAGENT";
@@ -51,6 +53,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
+  private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
 
   contactAgentHelpText = "Effortlessly retrieve contact details using just a name or email address. Instantly generate summaries and detailed reports.";
 
@@ -78,7 +81,8 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
         this.showOliverSparkWriter = this.chatGptIntegrationSettingsDto.showOliverSparkWriter;
         this.showOliverParaphraser = this.chatGptIntegrationSettingsDto.showOliverParaphraser;
         this.showOliverContactAgent = this.chatGptIntegrationSettingsDto.showOliverContactAgent;
-         this.showOliverPartnerAgent = this.chatGptIntegrationSettingsDto.showOliverPartnerAgent;
+        this.showOliverPartnerAgent = this.chatGptIntegrationSettingsDto.showOliverPartnerAgent;
+        this.showOliverCampaignAgent = this.chatGptIntegrationSettingsDto.showOliverCampaignAgent;
         this.chatGptSettingsLoader = false;
       },error=>{
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -111,7 +115,8 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
             showOliverSparkWriter: this.chatGptIntegrationSettingsDto.showOliverSparkWriter,
             showOliverParaphraser: this.chatGptIntegrationSettingsDto.showOliverParaphraser,
             showOliverContactAgent: this.chatGptIntegrationSettingsDto.showOliverContactAgent,
-            showOliverPartnerAgent: this.chatGptIntegrationSettingsDto.showOliverPartnerAgent
+            showOliverPartnerAgent: this.chatGptIntegrationSettingsDto.showOliverPartnerAgent,
+            showOliverCampaignAgent: this.chatGptIntegrationSettingsDto.showOliverCampaignAgent
           });
         }else{
           this.customResponse = new CustomResponse('ERROR',response.message,true);
@@ -136,7 +141,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.updateOliverAgentSettings = this.authenticationService.module.adminOrSuperVisor
       && (this.authenticationService.oliverInsightsEnabled || this.authenticationService.brainstormWithOliverEnabled || this.authenticationService.oliverSparkWriterEnabled
         || this.authenticationService.oliverParaphraserEnabled || this.authenticationService.oliverContactAgentEnabled
-        || this.authenticationService.oliverPartnerAgentEnabled) && (this.authenticationService.vanityURLEnabled ? this.authenticationService.module.loggedInThroughOwnVanityUrl : true);
+        || this.authenticationService.oliverPartnerAgentEnabled || this.authenticationService.oliverCampaignAgentEnabled) && (this.authenticationService.vanityURLEnabled ? this.authenticationService.module.loggedInThroughOwnVanityUrl : true);
   }
 
   validateForm(){
@@ -166,6 +171,8 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.showOliverContactAgent = isChecked;
     } else if (agentType === this.PARTNERAGENT) {
       this.chatGptIntegrationSettingsDto.showOliverPartnerAgent = isChecked;
+    } else if (agentType === this.CAMPAIGNAGENT) {
+      this.chatGptIntegrationSettingsDto.showOliverCampaignAgent = isChecked;
     }
   }
 

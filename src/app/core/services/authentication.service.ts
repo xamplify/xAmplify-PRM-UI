@@ -189,6 +189,7 @@ export class AuthenticationService {
   oliverParaphraserEnabled: boolean = false;
   oliverContactAgentEnabled: boolean = false;
   oliverPartnerAgentEnabled: boolean = false;
+  oliverCampaignAgentEnabled: boolean = false;
 
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {

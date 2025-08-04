@@ -115,6 +115,20 @@
               </div>
             </div>
           </div>
+          <div class="col-sm-6 agent-card-align" *ngIf="authenticationService.oliverCampaignAgentEnabled">
+            <div class="agent-card" style="position: relative;"
+              [ngClass]="{ 'agent-card-border-shadow': !isFromOliverSettingsModalPopup }">
+              <div>
+                <input class="agent-checkbox checkBox_shadow" type="checkbox" [ngModel]="showOliverCampaignAgent"
+                  [ngModelOptions]="{standalone: true}" (change)="updateCheckBox($event, 'CAMPAIGNAGENT')">
+              </div>
+              <img src="assets/images/oliver-campaign-agent-icon.svg" class="agent-icon">
+              <div class="agent-info">
+                <h5>Campaign Agent</h5>
+                <p>Enabling this option allows you to access the Campaign Agent and generate summaries and detailed reports for campaigns..</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
