@@ -1364,13 +1364,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
-  setViewTypeForOliver(event: any){
-                this.categoryId = 0;
-                this.showUpArrowButton = false;
-                this.viewType = event;
-                this.setViewType(this.viewType);
-                this.getCompanyId();
-        }
+	setViewTypeForOliver(event: any) {
+		this.categoryId = 0;
+		this.showUpArrowButton = false;
+		this.viewType = event;
+		this.sortOption.searchKey = '';
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.setViewType(this.viewType);
+		this.getCompanyId();
+	}
 
   navigateToUploadAsset() {
     this.referenceService.goToRouterByNavigateUrl('/home/dam/upload?from=manage');
