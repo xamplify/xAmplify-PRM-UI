@@ -828,6 +828,7 @@ private beforeAdd(tag: any) {
           this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
           this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
           this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
+          this.authenticationService.marketingModulesAccessToPartner = data.marketingModulesAccessToPartner;
 					//XNFR-276
           this.menuItems = data.menuItems;
 

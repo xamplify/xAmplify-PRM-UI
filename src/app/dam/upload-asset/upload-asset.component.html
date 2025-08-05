@@ -682,7 +682,7 @@
                                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pr0">
                                                 <!-- Toggle Switches -->
                                                 <div class="toggle-section">
-                                                   <div class="toggle-item" *ngIf="hasShareWhiteLabeledContentAccess">
+                                                   <div class="toggle-item" *ngIf="hasShareWhiteLabeledContentAccess && !authenticationService?.marketingModulesAccessToPartner">
                                                       <div class="toggle-label">
                                                         {{ 'White Labeled' | translate }}
                                                       </div>
@@ -700,7 +700,7 @@
                                                          [title]="isAdd ? 'Share As White Labeled Content' : damUploadPostDto?.whiteLabeledToolTipMessage">
                                                       </i>
                                                     </div>
-                                                    <div class="toggle-item" *ngIf="!authenticationService?.module?.isMarketingCompany && (isPdfFileSelected || damUploadPostDto.assetType === 'pdf')">
+                                                    <div class="toggle-item" *ngIf="!authenticationService?.module?.isMarketingCompany && (isPdfFileSelected || damUploadPostDto.assetType === 'pdf') && !authenticationService?.marketingModulesAccessToPartner">
                                                       <div class="toggle-label">
                                                         Partner Signature
                                                       </div>
@@ -955,7 +955,7 @@
                                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                        <div class="table-responsive">
                                           <table class="table" *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
-                                             canShowPartnerSectionBasedOnApprovalConfiguration()">
+                                             canShowPartnerSectionBasedOnApprovalConfiguration() && !authenticationService?.marketingModulesAccessToPartner">
                                              <tbody>
                                                 <tr>
                                                    <td class="desc hidden-xs" style="width: 11%;">

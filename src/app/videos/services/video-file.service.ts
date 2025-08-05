@@ -83,8 +83,10 @@ export class VideoFileService {
         let userId = this.authenticationService.user.id;
 
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        pagination.userId = userId;
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 
-        if (this.authenticationService.isOnlyPartner()) {
+        if (this.authenticationService.isOnlyPartner() && !this.authenticationService.marketingModulesAccessToPartner) {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
            url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;

@@ -111,7 +111,7 @@
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
 												<!-- XNFR-781 -->
-												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner mr5"
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !authenticationService?.marketingModulesAccessToPartner" class="view-banner mr5"
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -192,7 +192,10 @@
 																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
 																<div class="clickicons"></div>
 															</a>
-															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !FromOliverPopUp">
+															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
+																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier 
+																|| (authenticationService?.marketingModulesAccessToPartner && (authenticationService?.module?.isAnyAdminOrSupervisor || loggedInUserId == asset.createdBy))) 
+																&& !FromOliverPopUp">
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
@@ -229,7 +232,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Analytics-->
-															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp"
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
 																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
@@ -247,7 +250,7 @@
 															</a>
 
 															<!-- comment/history -->
-															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
@@ -470,14 +473,14 @@
 																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				title="View Analytics"
-																				*ngIf="!authenticationService.module.isMarketingCompany"
+																				*ngIf="!authenticationService.module.isMarketingCompany && !authenticationService?.marketingModulesAccessToPartner"
 																				(click)="(asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''">
 																				<i class="fa fa-line-chart IconCustomization"
 																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
 																				<div class="clickicons"></div>
 																			</a>
 
-																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !authenticationService?.marketingModulesAccessToPartner" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																			data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"  aria-hidden="true"></i>
 																				<div class="clickicons"></div>

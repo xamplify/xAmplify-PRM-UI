@@ -1316,6 +1316,7 @@ export class CampaignService {
     /********XNFR-318********/
     findVideos(videosPagination: Pagination) {
         videosPagination.userId = this.authenticationService.getUserId();
+        videosPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         let url = this.URL + "videos/findVideos?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, videosPagination)
             .map(this.extractData)
