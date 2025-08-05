@@ -1,8 +1,8 @@
-<div *ngIf="showApprovalTiles" class="p0" style="padding-bottom:10px;padding-right: 12px;">
+<div *ngIf="showApprovalTiles && !isPartnerView" class="p0" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
 
    <ng-container *ngIf="!countsLoader && !contentCountsLoader">
-      <div class="new-width-row">
+      <div class="new-width-row mb10">
          <div class="front-count-col" style="padding-left: 12px;">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
@@ -162,7 +162,7 @@
    </ng-container>
 </div>
 
-<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles" class="front-count-row mb10">
+<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles && !isPartnerView" class="front-count-row mb10">
    <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
 
    <div class="front-count-col" style="padding-left: 12px;">
@@ -255,3 +255,199 @@
       </div>
    </div>
 </div>
+
+<div *ngIf="isPartnerView && !sharedcontentCountsLoader && !hideContentTiles" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="sharedcontentCountsLoader"></app-box-loader>
+   <div class="front-count-col">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'alll'"
+         (click)="filterAssets('alll')" style="cursor:pointer;"
+         [class.disabled]="manageContentCounts?.allSharedCount == 0">
+
+         <!-- Icon container -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'alll',
+           'front-count-blue': selectedFilter !== 'alll'
+         }">
+            <i *ngIf="selectedFilter == 'alll'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'alll'" class="fa fa-database"></i>
+         </div>
+
+         <!-- Count and Label -->
+         <div class="front-count-number">{{ manageContentCounts?.allSharedCount }}</div>
+         <div class="front-count-label">
+            All
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" [attr.title]="
+      moduleType == 'DAM' ? 'Total records of assets' :
+      moduleType == 'TRACK' ? 'Total records of tracks' :
+      moduleType == 'PLAYBOOK' ? 'Total records of playbooks' :
+      ''
+    "></i></span>
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'in-progress'"
+         (click)="filterAssets('in-progress')" style="cursor:pointer;"
+         [class.disabled]="manageContentCounts?.inProgressCount == 0">
+
+
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'in-progress',
+           'front-count-orange': selectedFilter !== 'in-progress'
+         }">
+
+            <!-- Icon changes based on selection -->
+            <i *ngIf="selectedFilter == 'in-progress'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'in-progress'" class="fa fa-clock-o"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.inProgressCount}}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">In Progress
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total in progress tracks' : 'Total in progress playbooks'"></i>
+            </span>
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'completed'"
+         [class.disabled]="manageContentCounts?.completedCount == 0" style="cursor:pointer;"
+         (click)="filterAssets('completed')">
+
+         <!-- Icon section -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'completed',
+           'front-count-blue': selectedFilter !== 'completed'
+         }">
+
+            <!-- Show correct icon -->
+            <i *ngIf="selectedFilter == 'completed'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'completed'" class="fa fa-check-circle"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.completedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">
+            Completed
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total completed tracks' : 'Total completed playbooks'"></i>
+            </span>
+         </div>
+      </div>
+   </div>
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'not-viewd'"
+         (click)="filterAssets('not-viewd')" style="cursor:pointer;"
+         [class.disabled]="manageContentCounts?.notViewedCount == 0">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'not-viewd',
+           'front-count-eye': selectedFilter !== 'not-viewd'
+         }">
+            <i *ngIf="selectedFilter == 'not-viewd'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'not-viewd'" class="fas fa-eye-slash"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.notViewedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Not Viewed
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total not viewed tracks' : 'Total not viewed playbooks'"></i>
+            </span>
+         </div>
+
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'interacted'"
+         (click)="filterAssets('interacted')" style="cursor:pointer;"
+         [class.disabled]="manageContentCounts?.interacted == 0">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'interacted',
+           'front-count-handshake': selectedFilter !== 'interacted'
+         }">
+            <i *ngIf="selectedFilter == 'interacted'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'interacted'" class="fas fa-handshake"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.interacted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Interacted <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total interacted assets "></i> </span></div>
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'notInteracted'"
+         (click)="filterAssets('notInteracted')" style="cursor:pointer;"
+         [class.disabled]="manageContentCounts?.nonInteracted == 0">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'notInteracted',
+           'front-count-slash': selectedFilter !== 'notInteracted'
+         }">
+            <i *ngIf="selectedFilter == 'notInteracted'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'notInteracted'" class="fas fa-user-slash "></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.nonInteracted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Non Interacted <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total non interacted assets "></i> </span>
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folders'"
+         (click)="filterAssets('folders')" style="cursor:pointer;" [class.disabled]="manageContentCounts?.managerSharedFoldersCount == 0">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'folders',
+           'front-count-purple': selectedFilter !== 'folders'
+         }">
+            <i *ngIf="selectedFilter == 'folders'" class="fa fa-check	"></i>
+            <i *ngIf="selectedFilter !== 'folders'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.managerSharedFoldersCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders "></i></div>
+      </div>
+   </div>
+</div>
+

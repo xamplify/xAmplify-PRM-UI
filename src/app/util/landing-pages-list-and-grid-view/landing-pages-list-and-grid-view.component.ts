@@ -25,6 +25,7 @@ import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPa
 import { PartnerCompanyAndGroupsComponent } from '../partner-company-and-groups/partner-company-and-groups.component';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Location } from '@angular/common';
+import { LandingPageType } from 'app/landing-pages/models/landing-page-type.enum';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -434,7 +435,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.landingPage = landingPage;
       this.copiedLinkCustomResponse = new CustomResponse();
       this.landingPageAliasUrl = landingPage.aliasUrl;
+      if(landingPage.type === LandingPageType.PROTECTED){
+         this.iframeEmbedUrl = '';
+      }else{
       this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.landingPageAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';
+      }
       $('#landing-page-url-modal').modal('show');
   }
 

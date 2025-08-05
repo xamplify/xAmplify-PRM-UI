@@ -266,7 +266,7 @@ span.gearicon-font-cu {
   top: -3px;
 }
 .active-campaign-color {
-  background-color: #5cb85c;
+  background-color: #5cb85c !important;
 }
 .loading{
   width: 48px;
@@ -359,3 +359,9 @@ span.gearicon-font-cu {
   height: 21px;
   object-fit: contain;
 }
+
+ .active-tab-campaign {
+  background-color: #5cb85c !important;
+  border: none !important;
+}
+

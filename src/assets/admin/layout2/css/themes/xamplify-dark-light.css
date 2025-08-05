@@ -360,7 +360,7 @@ tr {
   .dropdown-menu-list
   > li
   > a
-  .time {
+  .time,.tgrid > tbody > tr.content-in-view {
   background-color: #22313a !important;
 }
 .page-bar .page-breadcrumb > li > i {
@@ -2896,5 +2896,8 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
 }
 .front-count-card.active{
   border-color: #566581 !important;
-  background: #2c3e50 !important;
+  background: #1f2c3a !important;
+}
+.asset-button svg {
+  fill: #fff !important;
 }

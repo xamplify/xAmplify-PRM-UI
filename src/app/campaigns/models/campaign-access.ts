@@ -81,5 +81,5 @@ export class CampaignAccess {
 
     /** XNFR-987 **/
   nonVanityAccessEnabled: boolean = false;
-
+  marketingModulesEnabled: boolean = false;
 }

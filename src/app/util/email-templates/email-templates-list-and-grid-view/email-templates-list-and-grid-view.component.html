@@ -71,6 +71,9 @@
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.vendorOrganizationName}}">
                                                 <span><b>From: </b>{{emailTemplate.vendorOrganizationName}}</span>
                                             </h6>
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.vendorCampaignName}}">
+                                                <span><b>Campaign Name: </b>{{emailTemplate.vendorCampaignName}}</span>
+                                            </h6>
                                         </ng-container>
                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.createdBy}}">
@@ -93,7 +96,7 @@
                                             data-toggle="tooltip" data-placement="top" title="Spam score">
                                             {{emailTemplate.spamScore}}
                                         </h5>
-                                        <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
+                                        <!-- <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5> -->
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <div class="text-center">
@@ -241,7 +244,7 @@
     <div class="portlet-title mb10">
         <div class="row">
             <div class="colxs-12 col-sm-12 col-md-5 col-lg-6" style="padding-top: 5px;">
-                <div *ngIf="!isOnlyPartner">
+                <div>
                     <ul class="mix-filter"
                         *ngIf="!modulesDisplayType?.isFolderGridView &&!modulesDisplayType?.isFolderListView">
                         <li class="filter" (click)="filterTemplates('NONE',false,0)"
@@ -294,8 +297,8 @@
                 <div class="btn-group pull-right" style="display: flex;">
                     <div>
                         <div class="group-dropdown">
-                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4 view_type mobile_view_type' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4 view_type mobile_view_type':
-                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view  mr_4': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr_4':'fa fa-th-list btn btn-xs l-g-view mr_4 view_type mobile_view_type'"></button>
+                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4 mr0 view_type mobile_view_type' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4 view_type mobile_view_type mr0':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view  mr_4 mr0': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr_4 mr0':'fa fa-th-list btn btn-xs l-g-view mr_4 mr0 view_type mobile_view_type'"></button>
                                 <div class="group-dd-content">
                                     <ng-container class='m10'>
                                         <span class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="!modulesDisplayType.isListView && setViewType('l')">
@@ -324,23 +327,22 @@
 							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 						</span>
                         <div class="inputs mDamTop alignline-m-flex" style="float: right">
-                            <a class="close-circle ref-mar refresh-icon mr_4" id="alignline-m-ref-mar"
+                            <a class="close-circle ref-mar refresh-icon mr_4 ml7" id="alignline-m-ref-mar"
                                 (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
-                            <div class="pb3 float-left search_sort_shadows">
+                            <div class="pb3 float-left search_sort_shadows ml7">
                                 <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
                                     [(ngModel)]="sortOption.eventSelectedCampaignRecipientsDropDownOption"
                                     (ngModelChange)="sortEmailTemplates($event)"
-                                    style="position: relative; right: -3px;">
+                                    style="position: relative;">
                                     <option *ngFor="let option of sortOption.eventCampaignRecipientsDropDownOptions"
                                         [ngValue]="option">{{option.name}}</option>
                                 </select>
                             </div>
-                            <div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"
-                                style="margin-right: 10px;">
+                            <div class="portlet-input input-inline input-small tab_srch_w ml7" id="alignline-m-margin">
                                 <div class="input-icon right mDamSearch rSearch search_sort_shadows"
-                                    id="alignline-m-serch" style="position: relative; right: -6px;">
+                                    id="alignline-m-serch" style="position: relative;">
                                     <input type="text" style="height: 34px;" class="form-control"
                                         [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
                                         placeholder="search..." (keypress)="eventHandler($event.keyCode)">
@@ -419,24 +421,28 @@
 
 <!--Spam Check-->
 <ng-template #spamCheckIcon let-emailTemplate="emailTemplate">
-   <a class="Iconhover custom-grid-icon" (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
+   <a class="Iconhover custom-grid-icon" (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}"
+    *ngIf="emailTemplate.type!='PARTNER'">
       <i class="fa fa-inbox" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
       <div class="clickicons"></div>
     </a>
 </ng-template>
 <!--Edit-->
 <ng-template #editIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon mMobileDisable" (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.template_edit}}"
-         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-          authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
-        <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
+    <a class="Iconhover custom-grid-icon mMobileDisable" (click)="edit(emailTemplate.id)" data-toggle="tooltip"
+        data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor
+          || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing
+          || (hasMarketingModulesAccessToPartner && (emailTemplate.userId==loggedInUserId || authenticationService.module.isAnyAdminOrSupervisor))) 
+          && emailTemplate.type!='PARTNER'">
+        <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+            aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
 </ng-template>
 <!--Copy-->
 <ng-template #copyIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
-         *ngIf="emailTemplate.type!='PARTNER' && !emailTemplate.draft">
+         *ngIf="!emailTemplate.draft">
         <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -452,10 +458,12 @@
 
 <!--Delete---->
 <ng-template #deleteIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete"
-        (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
-         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
-           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
+    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+        title="{{actionsDescription.template_delete}}" id="template-delete"
+        (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" *ngIf="(hasAllAccess || (hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isVendor
+          || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing
+          || (hasMarketingModulesAccessToPartner && (emailTemplate.userId==loggedInUserId || authenticationService.module.isAnyAdminOrSupervisor)))
+          && emailTemplate.type!='PARTNER'">
         <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
@@ -465,7 +473,7 @@
 
 <!--Send Test Email (XNFR-317)-->
 <ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" 
+    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate?.draft && emailTemplate.type!='PARTNER'" (click)="openSendTestEmailModalPopup(emailTemplate)" 
             data-toggle="tooltip" data-placement="top" title="{{actionsDescription?.sendTestEmail}}">
         <i class="fa fa-envelope-o" aria-hidden="true"></i>
         <div class="clickicons"></div>

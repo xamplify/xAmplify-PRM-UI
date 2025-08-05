@@ -31,8 +31,7 @@
                 [ngModelOptions]="{standalone: true}">
                 <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                   {{teamMemberGroup.name}}
-                  <ng-template [ngTemplateOutlet]="defaultSSOGroupTextTemplate"
-                    [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
+                   <span *ngIf="teamMemberGroup?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled">({{properties?.defaultSSOGroup}})</span>
                 </option>
               </select>
               <button class="btn btn-info" [disabled]="teamMemberGroupId==0" data-toggle="tooltip"
@@ -41,7 +40,7 @@
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
             </div>
-            <span *ngIf="teamMemberGroupId!=0" class="info-text-color">
+            <span *ngIf="teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany" class="info-text-color">
               <strong>
                 <span [className]="teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">
                   {{teamMemberGroupPartnersCount}}</span>

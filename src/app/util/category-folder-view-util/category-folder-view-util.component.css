@@ -85,13 +85,8 @@
     margin-right: 90px;
 }
 
-#search-div {
-    margin-right: 6px;
-}
-
 #icon {
     position: relative;
-    right: -11px;
 }
 
 #sort-text {
@@ -104,7 +99,6 @@
 
 #select-dropdown {
     position: relative;
-    right: -9px;
 }
 
 #custom-view-banner {
@@ -125,7 +119,6 @@
 
 .custom-flex {
     display: inline-flex;
-    margin-left: -10px;
 }
 
 .margin-right-calendar{

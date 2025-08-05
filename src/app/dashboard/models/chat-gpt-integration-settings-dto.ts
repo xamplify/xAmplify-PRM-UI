@@ -44,4 +44,6 @@ export class ChatGptIntegrationSettingsDto extends OliverAgentAccessDTO {
     isContact: boolean = false;
     campaignAssistantId: any;
     campaignId: any;
+    videoId: any;
+    isGlobalSearchDone: boolean = false;
 }

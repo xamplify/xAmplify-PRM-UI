@@ -325,3 +325,7 @@ width: 53px;
   height: 21px;
   object-fit: contain;
 }
+.group_parnter_list{
+  display: flex;
+  justify-content: end;
+}

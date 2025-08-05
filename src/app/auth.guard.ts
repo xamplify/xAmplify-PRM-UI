@@ -75,7 +75,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     } else {
                         this.referenceService.goToRouter(this.addCompanyProfileUrl)
                     }
-                } else if (url.includes("/home/design/add") || url.includes("/pv/") || url.includes("welcome-page")) {
+                } else if (url.includes("/home/design/add") || url.includes("/pv/") || url.includes("welcome-page") || url.includes("prl/")) {
                     return true;
                 } else if (url.includes("/home/azuga/devices")) {
                     let condition = "bob@xtremand.com" == userName;
@@ -452,9 +452,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     checkPartnerAccessUrls(url: string, urlType: string): boolean {
         try {
             if (this.authenticationService.user.hasCompany && (url.includes('/home/deals') || url.includes('/home/campaigns/re-distribute-campaign')
-                || !(url.includes('/home/content') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
-                    || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
-                    || url.includes('/home/partners/manage')))) {
+                || url.includes('/home/emailtemplates') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') 
+                || !(url.includes('/home/content') || url.includes('/home/partners/add') || url.includes('/home/partners/manage')))) {
                 return true;
             } else {
                 return this.goToAccessDenied(url);

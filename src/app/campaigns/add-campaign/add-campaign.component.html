@@ -109,7 +109,7 @@
 
                                             <!--Through Partner / To Partner / To Recipients-->
                                             <div class="form-group"
-                                                *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                *ngIf="!authenticationService?.module?.isMarketingCompany && !isPartnerMarketingCompany ">
                                                 <!--Through Partner Label-->
                                                 <label class="control-label col-sm-4 cursor-pointer tab_p0"
                                                     data-toggle="tooltip" data-placement="top"
@@ -176,7 +176,7 @@
 
                                             <!--View In Browser && GDPR Enabled-->
                                             <ng-container
-                                                *ngIf="campaignType=='email' && !campaign?.channelCampaign && campaignAccess?.salesEnablement">
+                                                *ngIf="campaignType=='email' && !campaign?.channelCampaign && (campaignAccess?.salesEnablement)">
                                                 <!--View In Browser-->
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-4" translate>View In
@@ -355,7 +355,7 @@
                                                     <span class="required"> <strong>*</strong> </span>
                                                 </label>
                                                 <div class="col-sm-8 col-xs-12">
-                                                    <div class="input-group merge-tag-input-border">
+                                                    <div class="input-group">
                                                         <input type="text" id="subjectLineId"
                                                             placeholder="{merge tag} + Subject line"
                                                             class="form-control" [(ngModel)]="campaign.subjectLine"
@@ -365,7 +365,7 @@
                                                             <button class="btn btn-default button-color" type="button"
                                                                 data-toggle="tooltip" data-placement="right"
                                                                 title="Insert Merge Tags"
-                                                                (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                                                (click)="openMergeTagsPopup('campaignSubjectLine',0)"  style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 6.3px 14px;">
                                                                 <i class="fa fa-plus-circle npcfs plus-color"
                                                                     aria-hidden="true"></i>
                                                             </button>
@@ -574,7 +574,7 @@
                                                             [value]="campaign.endDate" />
                                                         <span class="input-group-btn flex" data-toggle="tooltip"
                                                             data-placement="top" title="Clear">
-                                                            <button class="btn btn-default margin-0px" type="button">
+                                                            <button class="btn btn-default margin-0px" type="button" style="border-radius: 0px 6px 6px 0px; margin-left: -2px !important;padding: 6.3px 14px;">
                                                                 <i class="fa fa-refresh npcfs" aria-hidden="true"
                                                                     (click)="clearEndDate()"></i>
                                                             </button>
@@ -614,7 +614,7 @@
                             <div *ngIf="!videosLoader">
                                 <div class="tab_flex" *ngIf="!isNavigatedFromManageContent">
                                     <!--Search Key Icon-->
-                                    <div class="input-icon right pull-right pr-epx mb_10">
+                                    <div class="input-icon right pull-right mb_10">
                                         <input type="text" [(ngModel)]="videosSortOption.searchKey"
                                             [ngModelOptions]="{standalone: true}" class="form-control"
                                             placeholder="Search here"
@@ -624,7 +624,7 @@
                                             *ngIf="videosSortOption.searchKey"
                                             (click)="videosSortOption.searchKey='';searchVideos()"></button>
                                         <button type="submit" class="search-box-item-click email-search"
-                                            (click)="searchVideos()" style="right: 9px !important;">
+                                            (click)="searchVideos()">
                                             <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                     </div>
                                     <!--Sort DropDown-->
@@ -649,7 +649,7 @@
                                 </div>
                                 <!--List Of Videos-->
                                 <div class="portlet-body pt_10 padding-top-45px">
-                                    <div class="row">
+                                    <div class="row m0">
                                         <div class="table-responsive">
                                             <table class="table tgrid table-hover table-sm"
                                                 *ngIf="videosPagination?.totalRecords==0" aria-describedby="">
@@ -748,13 +748,13 @@
                                 *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                             <div *ngIf="!emailTemplatesOrLandingPagesLoader">
                                 <!--Filter Icon-->
-                                <button type="submit" class="float-right fontsize-16px filter-button-color"
+                                <button type="submit" class="float-right btn l-g-view"
                                     [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv"
                                     (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
-                                    <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip"
+                                    <i class="fa fa-filter cesf-xamp requried p10" data-toggle="tooltip"
                                         data-placement="bottom" title="Apply Filter" *ngIf="selectedFolderIds?.length>0"
                                         aria-hidden="true"></i>
-                                    <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom"
+                                    <i class="fa fa-filter p10" data-toggle="tooltip" data-placement="bottom"
                                         title="Apply Filter" *ngIf="selectedFolderIds?.length==0"
                                         aria-hidden="true"></i>
                                 </button>
@@ -902,13 +902,13 @@
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
                                 <div class="mb-flex">
-                                    <button type="submit" class="float-right fontsize-16px filter-button-color mr_4"
+                                    <button type="submit" class="float-right btn l-g-view"
                                         [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv"
                                         (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
-                                        <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip"
+                                        <i class="fa fa-filter cesf-xamp requried p10" data-toggle="tooltip"
                                             data-placement="bottom" title="Apply Filter"
                                             *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
-                                        <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom"
+                                        <i class="fa fa-filter p10" data-toggle="tooltip" data-placement="bottom"
                                             title="Apply Filter" *ngIf="selectedFolderIds?.length==0"
                                             aria-hidden="true"></i>
                                     </button>
@@ -1080,7 +1080,7 @@
                                                 (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
                                             </li>
                                             <li class="filter"
-                                                *ngIf="!authenticationService?.module?.isMarketingCompany"
+                                                *ngIf="!authenticationService?.module?.isMarketingCompany && !isPartnerMarketingCompany"
                                                 [class.active]="'MY-PARTNERS' == campaignRecipientsPagination.filterBy"
                                                 (click)="filterContacts('MY-PARTNERS')" translate>My Partners
                                             </li>
@@ -1128,10 +1128,10 @@
                                         <div class="row mrgt45">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="alert alert-success mbgrid" style="margin-bottom: 10px;" *ngIf="selectedContactListIds?.length > 0">
-                                                    <div *ngIf="!maxRecipientCountReached">
+                                                    <div *ngIf="!maxRecipientCountReached" [ngClass]="{'mb10': !campaign?.channelCampaign}">
                                                         <strong>
                                                             Selected Rows : {{selectedContactListIds?.length}} <br>
-                                                            Note: Deactivated partner(s) will be excluded from launching the campaign.
+                                                            <span *ngIf="campaign?.channelCampaign">Note: Deactivated partner(s) will be excluded from launching the campaign.</span>
                                                         </strong>
                                                         <ng-container *ngIf="emailReceiversCountError">
                                                             <span class="required float-right" translate>
@@ -1568,7 +1568,7 @@
                                                                         translate>Subject
                                                                         <strong class="required">*</strong>
                                                                     </label>
-                                                                    <div class="input-group merge-tag-input-border">
+                                                                    <div class="input-group">
                                                                         <input type="text" autocomplete="off"
                                                                             class="form-control" name="subject"
                                                                             [(ngModel)]="reply.subject"
@@ -1579,7 +1579,7 @@
                                                                                 type="button" data-toggle="tooltip"
                                                                                 data-placement="bottom"
                                                                                 title="Insert Merge Tags"
-                                                                                (click)="openMergeTagsPopup('campaign-reply',reply)">
+                                                                                (click)="openMergeTagsPopup('campaign-reply',reply)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 6.3px 14px;">
                                                                                 <i class="fa fa-plus-circle npcfs"
                                                                                     aria-hidden="true"></i>
                                                                             </button>
@@ -1830,11 +1830,11 @@
                                                                 <!--Subject-->
                                                                 <div class="col-xs-12 col-sm-6">
                                                                     <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject <strong class="required">*</strong></label>
-                                                                    <div class="input-group merge-tag-input-border">
+                                                                    <div class="input-group">
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                         <span class="input-group-btn">
                                                                             <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags"
-                                                                                (click)="openMergeTagsPopup('campaign-website',url)">
+                                                                                (click)="openMergeTagsPopup('campaign-website',url)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 6.3px 14px;">
                                                                                 <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                             </button>
                                                                         </span>
@@ -2194,7 +2194,7 @@
             [ignoreAccent]='true' id='multiselectelement' [dataSource]='emailTemplateFolders' [fields]='folderFields'
             [placeholder]='folderFilterPlaceHolder'>
         </ejs-multiselect>
-        <div class="float-right">
+        <div class="float-right mt10">
             <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
             <button class="btn btn-info" (click)="applyFilter()">Apply</button>
         </div>

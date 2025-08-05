@@ -448,7 +448,7 @@
                   </div>
                </fieldset>
                <!---Selected Partners/Contacts-->
-               <ng-container *ngIf="!campaign?.oneClickLaunchCondition">
+               <ng-container *ngIf="!campaign?.oneClickLaunchCondition && !partnerMarketingCampaign">
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3"
@@ -976,7 +976,8 @@
                      <div class="clickicons"></div>
                   </a>
                   <a class="custom-icon"
-                     *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL'"
+                     *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) 
+                        && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL' && !partnerMarketingCampaign"
                      data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip"
                      data-placement="auto" title="Copy Campaign">
                      <i class="fa fa-files-o IconCustomization"></i>
@@ -1008,13 +1009,13 @@
                   </a>
                </ng-container>
                <a class="custom-icon"
-                  *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId  || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)"
+                  *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId  || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !partnerMarketingCampaign"
                   (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto" title="Edit">
                   <i class="fa fa-pencil-square-o IconCustomization"></i>
                   <div class="clickicons"></div>
                </a>
                <a class="custom-icon"
-                  *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) )"
+                  *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) ) && !partnerMarketingCampaign"
                   (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
                   data-placement="auto" title="Delete">
                   <i class="fa fa-trash-o trashIconCustomization"> </i>

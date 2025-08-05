@@ -49,6 +49,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.categoryType = '';
     this.folderViewType = this.route.snapshot.params['viewType'];
     this.setOliverViewType();
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);

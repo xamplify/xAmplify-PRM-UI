@@ -174,7 +174,7 @@
 								</label>
 								<div class="col-sm-9">
 									<div
-										[className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group merge-tag-input-border':''">
+										[className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group':''">
 										<input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
 											class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
@@ -186,7 +186,7 @@
 											class="input-group-btn">
 											<button class="btn btn-default" type="button" data-toggle="tooltip"
 												data-placement="bottom" title="Insert Merge Tags"
-												(click)="openMergeTagsPopup('campaignSubjectLine',0)">
+												(click)="openMergeTagsPopup('campaignSubjectLine',0)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 6.3px 14px;">
 												<i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
 											</button>
 										</span>
@@ -1243,34 +1243,26 @@
 						[hidden]="gridLoader">
 						<div class="portlet-title"
 							style="display:block;background: none !important;border-bottom:none !important">
-							<div>
-								<div class="input-icon right pull-right mr15" style="padding-top: 5px; right: 74px;">
-									<input type="text" [(ngModel)]="emailTemplateSearchInput"
-										[ngModelOptions]="{standalone: true}" class="form-control"
-										placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
-									<button class="glyphicon glyphicon-remove search-box-item-clear"
-										style="padding: 5px;" *ngIf="emailTemplateSearchInput"
-										(click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
-									<button type="submit" class="search-box-item-click email-search"
-										(click)="searchEmailTemplate()" style="padding-bottom: 6px;">
-										<i class="fa fa-search"
-											style="font-size: 16px !important; padding: 5px !important;"
-											aria-hidden="true"></i>
+							<h4 class="pull-left f-w-600" style="padding-left: 7px;padding-top: 3px;">Select<span
+									*ngIf="isPreviewEvent">ed</span> an Email Template</h4>
+							<div class="d-flex justify-content-end align-items-center pr10">
+								<button type="submit" class="btn btn-xs l-g-view mr7" (click)="showFolderFilterPopup()">
+									<i class="fa fa-filter p10 requried" *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+									<i class="fa fa-filter p10" *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
+								</button>
+								<div class="input-icon right pull-right mr15">
+									<input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+										class="form-control" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
+									<button class="glyphicon glyphicon-remove search-box-item-clear" style="padding: 5px;"
+										*ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
+									<button type="submit" class="search-box-item-click" (click)="searchEmailTemplate()"
+										style="padding-bottom: 6px;">
+										<i class="fa fa-search" style="font-size: 16px !important; padding: 5px !important;" aria-hidden="true"></i>
 									</button>
 								</div>
-								<button type="submit"
-									class="campaign-email-template-filter-icon mr21 evnt_filter_icon_shadow"
-									(click)="showFolderFilterPopup()" style="padding-bottom: 8px !important;">
-									<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"
-										aria-hidden="true"></i>
-									<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"
-										aria-hidden="true"></i>
-								</button>
 							</div>
-							<h4 class="pull-left f-w-600" style="padding-left: 21px;padding-top: 3px;">Select<span
-									*ngIf="isPreviewEvent">ed</span> an Email Template</h4>
 						</div>
-						<div class="portlet-body clearfix">
+						<div class="portlet-body clearfix email-template-body">
 							<section style="min-height: 200px;">
 								<!-- !hideCoBrandedEmailTemplate edit in event camapign-->
 								<ng-container
@@ -1457,18 +1449,20 @@
 							</section>
 						</div>
 					</div>
-					<div style="text-align:left;padding-left: 31px;padding-right: 28px; "
+					<div style="text-align:left;padding-left:15px;padding-right: 15px; "
 						[hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
 						<app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination"
 							[type]="'emailTemplates'" (notifyParent)="setPage($event)"
 							(notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
 					</div>
-					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-						style="float:left;" class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
-					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-						style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
-						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
-							class="btn Btn-Green transition txt_pd-top3">Next</span></button>
+					<div class="button-group-align">
+						<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;"
+							class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
+						<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
+							style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
+							[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
+								class="btn Btn-Green transition txt_pd-top3">Next</span></button>
+					</div>
 				</div>
 				<!--    End Step three templates -->
 				<!-- 	Step four launch campaigns    -->
@@ -1770,7 +1764,7 @@
 															id="reply-subject-{{reply.divId}}">Subject<strong
 																class="required">*</strong></label>
 														<div
-															[className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
+															[className]="!isPreviewEvent ? 'input-group':''">
 															<input [attr.disabled]="isPreviewEvent? '' : null"
 																type="text" class="form-control" name="subject"
 																[(ngModel)]="reply.subject"
@@ -1780,7 +1774,7 @@
 																<button class="btn btn-default" type="button"
 																	data-toggle="tooltip" data-placement="bottom"
 																	title="Insert Merge Tags"
-																	(click)="openMergeTagsPopup('event-auto-response',reply)">
+																	(click)="openMergeTagsPopup('event-auto-response',reply)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 6.3px 14px;">
 																	<i class="fa fa-plus-circle npcfs"
 																		aria-hidden="true"></i>
 																</button>
@@ -2183,25 +2177,24 @@
 						<div class="col-xs-12 center-block" [class.disabled]="eventError.eventExpiredError">
 							<button
 								*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
-								type="button" style="font-weight: 600;width: 10em;" class="btn Btn-Gray mBtnAlign"
+								type="button" style="font-weight: 600;" class="btn Btn-Gray mBtnAlign"
 								(click)="resetTabs('templates')">Previous</button>
 							<button type="submit" *ngIf="checkLaunchOption=='NOW'" class="btn btn-primary button-border"
-								style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'NOW')"
+								 (click)="createEventCampaign(eventCampaign, 'NOW')"
 								[disabled]="maxRecipientCountReached"
 								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">Launch</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'"
-								class="btn btn-warning button-border Sch-class" style="width: 10em;"
+								class="btn btn-warning button-border Sch-class"
 								(click)="scheduleCampaign()"
 								[disabled]="maxRecipientCountReached"
 								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">Schedule</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SAVE'"
-								class="button bgcolor-unset button-border save_border" style="width: 10em;"
+								class="button bgcolor-unset button-border save_border"
 								(click)="createEventCampaign(eventCampaign, 'SAVE')"
 								[disabled]="maxRecipientCountReached"
 								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"><span
 									class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"
-								style="width: 10em;"><span class="btn Btn-Green transition txt_pd-top3">Spam
+							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"><span class="btn Btn-Green transition txt_pd-top3">Spam
 									check</span></button>
 						</div>
 					</div>

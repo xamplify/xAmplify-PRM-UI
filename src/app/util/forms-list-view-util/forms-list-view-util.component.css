@@ -184,4 +184,6 @@ cursor: default;
 .gridCardBoxHeight{
   height: 385px !important;
 }
-
+.xamp-margin-left-icon{
+      margin: 0px 0px 5px 8px!important;
+}

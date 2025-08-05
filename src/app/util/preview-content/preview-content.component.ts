@@ -83,7 +83,11 @@ export class PreviewContentComponent implements OnInit {
       const page = await pdf.getPage(pageNum);
       const viewport = page.getViewport({ scale });
   
-      const pageDiv = $("<div>").addClass("pdf-page").attr("data-page", pageNum);
+      // const pageDiv = $("<div>").addClass("pdf-page").attr("data-page", pageNum);
+        const pageDiv = $("<div>")
+        .addClass("pdf-page")
+        .attr("data-page", pageNum)
+        .css("position", "relative");
       const canvas = $("<canvas>").addClass("pdfCanvas")[0];
   
       canvas.width = viewport.width;
@@ -94,6 +98,30 @@ export class PreviewContentComponent implements OnInit {
       const ctx = canvas.getContext("2d");
       const renderContext = { canvasContext: ctx, viewport: viewport };
       await page.render(renderContext).promise;
+
+         const annotations = await page.getAnnotations();
+      annotations.forEach((annotation: any) => {
+        if (annotation.subtype === 'Link' && annotation.url) {
+          const rect = annotation.rect;
+          const view = viewport.convertToViewportRectangle(rect);
+          const left = Math.min(view[0], view[2]);
+          const top = Math.min(view[1], view[3]);
+          const width = Math.abs(view[0] - view[2]);
+          const height = Math.abs(view[1] - view[3]);
+          const link = $('<a>')
+            .attr('href', annotation.url)
+            .attr('target', '_blank')
+            .addClass('pdf-link')
+            .css({
+              position: 'absolute',
+              left: `${left}px`,
+              top: `${top}px`,
+              width: `${width}px`,
+              height: `${height}px`,
+            });
+          pageDiv.append(link);
+        }
+      });
     }
   }
 

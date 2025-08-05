@@ -48,4 +48,5 @@ export class TeamMember{
 
     newPartnersAdded = false;
 
+    newAndSinglePartner = false;
 }

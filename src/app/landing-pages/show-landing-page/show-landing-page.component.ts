@@ -11,6 +11,7 @@ import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 
 declare var $:any;
@@ -38,9 +39,15 @@ export class ShowLandingPageComponent implements OnInit {
     isPartnerJourneyPage: boolean = false;
     isVendorMarketplacePage: boolean = false;
     isFromVendorMarketplacePage:boolean = false;
+    isProtectedLandingPage: boolean = false;
+    userId = 0;
+
+
   constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService,
-          public referenceService:ReferenceService) {
+          public referenceService:ReferenceService,public authenticationService:AuthenticationService) {
+                    this.userId = this.authenticationService.getUserId();
+
           }
 
   ngOnInit() {   
@@ -51,6 +58,7 @@ export class ShowLandingPageComponent implements OnInit {
     if(this.vanityURLService.isVanityURLEnabled()){
       this.vanityURLService.checkVanityURLDetails();
     }
+    this.userId = this.authenticationService.getUserId();
       this.alias = this.route.snapshot.params['alias'];
       this.referenceService.clearHeadScriptFiles();
       if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
@@ -84,7 +92,11 @@ export class ShowLandingPageComponent implements OnInit {
       }else if(this.router.url.includes("/vmpl/")){
         this.isVendorMarketplacePage = true;
         this.getHtmlBodyAlias(this.alias);
-      }else {
+      } else if(this.router.url.includes("/prl/")) {
+        this.isProtectedLandingPage = true;
+      this.handleProtectedPage(this.alias); 
+  }
+      else {
           this.getHtmlBodyAlias(this.alias);
       }
   }
@@ -197,6 +209,8 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyAlias(alias:string){
+    const userId = this.authenticationService.getUserId(); 
+  
       let landingPageHtmlDto = {
         "alias":alias,
         "vendorJourney":this.isVendorJourney,
@@ -204,7 +218,8 @@ export class ShowLandingPageComponent implements OnInit {
         "fromMasterLandingPage":this.isFromMasterLandingPage,
         "partnerJourneyPage":this.isPartnerJourneyPage,
         "vendorMarketplacePage":this.isVendorMarketplacePage,
-        "fromVendorMarketplacePage":this.isFromVendorMarketplacePage
+        "fromVendorMarketplacePage":this.isFromVendorMarketplacePage,
+        "protectedUrlPage":this.isProtectedLandingPage
       }
       this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage, (this.isMasterLandingPage ||this.isVendorMarketplacePage))
       .subscribe(
@@ -217,17 +232,20 @@ export class ShowLandingPageComponent implements OnInit {
                let htmlBody = data.htmlBody;
                document.getElementById('landing-page-html-body').innerHTML = htmlBody;
                this.getLocationDetails(null,null,landingPageAlias,null,data.enumType,null,0);
-           }else{
-              
-               document.getElementById('landing-page-html-body').innerHTML = response.message;
-               this.getLocationDetails(null,null,this.alias,null,response.data,null,0);
-           }
+           }else {
+          document.getElementById('landing-page-html-body').innerHTML = response.message;
+          if (this.isProtectedLandingPage) {
+            this.getLocationDetails(null, userId, this.alias, null, null, null, 0);
           } else {
-            this.hasLandingPage = false;
-            this.addHeaderMessage("Oops! This page does not exists.",this.errorAlertClass);
+            this.getLocationDetails(null, null, this.alias, null, response.data, null, 0);
           }
-          this.processor.remove(this.processor);
-        },
+        }
+      } else {
+        this.hasLandingPage = false;
+        this.addHeaderMessage("Oops! This page does not exist.", this.errorAlertClass);
+      }
+      this.processor.remove(this.processor);
+    },
         (error: string) => {
           this.processor.remove(this.processor);
           this.hasLandingPage = false;
@@ -273,5 +291,10 @@ export class ShowLandingPageComponent implements OnInit {
   removeErrorMessage(){
     this.show = false;
   }
+
+handleProtectedPage(alias: string): void {
+  this.isProtectedLandingPage = true;
+  this.getHtmlBodyAlias(alias);
+}
 
 }

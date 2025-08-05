@@ -65,7 +65,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.getSettings();
     if (this.authenticationService.module.isVendor && !this.authenticationService.module.isPartner ) {
       this.contactAgentHelpText = 'Enabling this option allows your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
-    } else if (this.authenticationService.module.isOrgAdmin) {
+    } else if (this.authenticationService.module.isOrgAdmin || (this.authenticationService.module.isVendor && this.authenticationService.module.isPartner)) {
       this.contactAgentHelpText = 'Enabling this option allows you and your partners to access the Contact Agent and generate summaries and detailed reports for contacts.';
     }
   }
