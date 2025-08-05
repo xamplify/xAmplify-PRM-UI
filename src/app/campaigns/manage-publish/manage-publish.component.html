@@ -1,4 +1,4 @@
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+<div *ngIf="!showAskOliverModalPopup" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
    <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
       <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
       <strong translate>Editing this scheduled campaign is not permitted because the campaign launching is in progress,
@@ -1021,6 +1021,12 @@
                                                 </span>
                                              </a>
                                           </ng-container>
+                                          <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                                             title="Ask Oliver" (click)="askOliver(campaign)">
+                                             <div class="oliveBackground">
+                                                <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                             </div>
+                                          </a>
                                           <ng-container class="pull-right">
                                              <div class="btn-group pull-right setting-icon-cu dropdown" #dropdownContainer>
                                                 <span [class.disablednew]="!campaign.hasAccess" *ngIf="!(partnerMarketingCampaign || (campaign.nurtureCampaign && !hasRedistributionAccess) || ( campaign.createdForCompanyId != null && campaign.createdForCompanyId >0 && !marketingModulesAccessForPartner ))"
@@ -2150,3 +2156,5 @@
 
 <app-send-test-email *ngIf="sendMdfRequestButtonClicked" [moduleName]="unlockMdfFundingModuleName" [campaignId]="campaignId" [campaignName]="campaignName" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 <!--XNFR-832-->
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+[isFromManageCampaign]="true" [selectedCampaign]="campaign" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
