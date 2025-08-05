@@ -366,6 +366,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     saveAsCampaign() {
       const campaignData = this.setSaveCampaignData();
       campaignData.userId = this.loggedInUserId;
+      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            campaignData.vanityUrlDomainName = this.authenticationService.companyProfileName;
+      }
       this.campaignService.saveAsCampaign(campaignData)
         .subscribe(data => {
         	if(data.access){
