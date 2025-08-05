@@ -129,6 +129,8 @@ export class ManageLeadsComponent implements OnInit {
   isLoggedAsPartner: boolean = false;
   isLeadOptionClicked: boolean = false;
   partnerEmailAddress: string = "";
+  showAskOliverModalPopup: boolean =false;
+  oliverLead: any;
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1688,6 +1690,15 @@ triggerUniversalSearch(){
     this.leadId = 0;
     this.partnerEmailAddress = "";
     this.isLeadOptionClicked = false;
+  }
+
+  askOliver(lead: any) {
+    this.oliverLead = lead;
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI() {
+    this.showAskOliverModalPopup = false;
   }
 
 }

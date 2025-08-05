@@ -35,7 +35,9 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromOnboardSection: boolean = false;
   @Input() isFromGroupOfPartners: boolean = false;
   @Input() isFromManageCampaign: boolean = false;
+  @Input() isFromManageLead: boolean = false;
   @Input() selectedCampaign: any;
+  @Input() selectedLead: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -169,6 +171,8 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
     } else if (this.isFromManageCampaign) {
       this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
+    }else if (this.isFromManageLead) {
+      this.chatGptIntegrationSettingsDto.leadId = this.selectedLead.id;
     }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -375,6 +379,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromManageCampaign) {
         this.selectedCampaign = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
+      }else if (this.isFromManageLead) {
+        this.selectedLead = undefined;
+        this.notifyParent.emit();
       } else {
         if (this.router.url.includes('/shared/view/g')) {
           this.referenceService.goToRouter('/home/dam/shared/g');

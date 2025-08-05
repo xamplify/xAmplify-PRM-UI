@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!showLeadForm && !showDealForm">
+<div class="page-content" *ngIf="!showLeadForm && !showDealForm && !showAskOliverModalPopup">
   <div id="deals-page-content-div">
     <div>
       <div class="page-bar mb-height_auto">
@@ -514,6 +514,12 @@
                                     [ngClass]="lead?.associatedDealId > 0 ? 'disabled gray' : ''"></i>
                                   <div class="clickicons"></div>
                                 </a>
+                                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                                  title="Ask Oliver" (click)="askOliver(lead)">
+                                  <div class="oliveBackground">
+                                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                  </div>
+                                </a>
                               </div>
                             </td>
                           </tr>
@@ -823,5 +829,10 @@
 
 <!--- XNFR-970 --->
 <app-send-test-email *ngIf="isLeadOptionClicked" [id]="leadId" [toEmailId]="partnerEmailAddress" [isLeadOptionClicked]="isLeadOptionClicked" (sendTestEmailComponentEventEmitter)="closeSendReminiderPopup()">
+</app-send-test-email>
+
+  <!--- XNFR-1091 --->
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageLead]="showAskOliverModalPopup" [selectedLead]="oliverLead"
+  (notifyParent)="closeAskAI()"></app-ai-chat-manager>
 
 <!-- END CONTENT -->
