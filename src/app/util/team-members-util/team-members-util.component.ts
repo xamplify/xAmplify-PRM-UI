@@ -147,6 +147,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   deletedPartnershipIds: any[] = [];
   selectedPartnershipIdsLoading: boolean = false;
   selectedGlobalGroupId: number | null = null;
+  public searchKey: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -298,7 +299,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   refreshList() {
     this.pagination.pageIndex = 1;
-    this.pagination.searchKey = "";
+    this.searchKey = "";
     this.findAll(this.pagination);
   }
 
@@ -351,6 +352,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /**************Search TeamMembers***************/
   searchTeamMembers() {
+    this.pagination.searchKey = this.searchKey;
     this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
     this.findAll(this.pagination);
   }
