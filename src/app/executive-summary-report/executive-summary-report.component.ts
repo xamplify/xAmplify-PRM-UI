@@ -20,6 +20,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   @Input() reportData: ExecutiveReport;
   @Input() reportType: any;
   @Input() activeTab: string;
+  @Input() isFromGroupOfPartners: boolean = false;
 
   public currentYear: number = new Date().getFullYear();
 
@@ -4871,6 +4872,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 </html>`;
 
 
+
     constructor(private sanitizer: DomSanitizer, public chatGptSettingsService: ChatGptSettingsService) { }
 
     ngOnInit(): void {
@@ -4915,11 +4917,15 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
 
     buildIframe(): void {
         if (!this.reportData || !this.theme.lightHeaderColor) { return; }
-        let iframeContentData = this.iframeContent;
-        if (this.activeTab === 'partneragent') {
+        let iframeContentData = '';
+        if (this.activeTab === 'partneragent' && !this.isFromGroupOfPartners) {
             iframeContentData = this.iframePartnerContent;
-        }else  if (this.activeTab === 'campaignagent') {
+        } else if (this.activeTab === 'partneragent' && this.isFromGroupOfPartners) {
+            // iframeContentData = this.iframePartnerGroupContent;
+        } else  if (this.activeTab === 'campaignagent') {
             iframeContentData = this.iframeCampaignContent;
+        } else {
+            iframeContentData = this.iframeContent;
         }
         const merged = Mustache.render(iframeContentData, {
             report: this.reportData,
@@ -5011,6 +5017,12 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
             Highest: '#10b981'
         };
 
+      if (this.isFromGroupOfPartners) {
+        this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.categoriesString =
+          JSON.stringify(this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.categories);
+        this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.seriesString =
+          JSON.stringify(this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.series);
+      } else {
         const engagementClasses = {
             Low: 'type-badge low',       // red
             High: 'type-badge high',
@@ -5018,27 +5030,29 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
         };
 
         this.reportData.performance_indicators.items = this.reportData.performance_indicators.items.map(item => {
-            return {
-                ...item,
-                color: ratingColors[item.rating] || '#6b7280',
-                symbol: ratingSymbols[item.rating] || '•'
-            };
+          return {
+            ...item,
+            color: ratingColors[item.rating] || '#6b7280',
+            symbol: ratingSymbols[item.rating] || '•'
+          };
         });
 
         this.reportData.trackEngagementAnalysis.items = this.reportData.trackEngagementAnalysis.items.map(item => {
-            return {
-                ...item,
-                engagementColor: engagementColors[item.engagement_level] || '#6b7280'
-            };
+          return {
+            ...item,
+            engagementColor: engagementColors[item.engagement_level] || '#6b7280'
+          };
         });
+
         this.reportData.detailedRecipientAnalysis.items = this.reportData.detailedRecipientAnalysis.items.map(item => {
             return {
                 ...item,
                 engagementClass: engagementClasses[item.engagement_level] || ''
             };
         });
+
         this.reportData.playbookContentEngagementOverview.categoriesString =
-            JSON.stringify(this.reportData.playbookContentEngagementOverview.categories);
+          JSON.stringify(this.reportData.playbookContentEngagementOverview.categories);
         this.reportData.playbookContentEngagementOverview.seriesString =
             JSON.stringify(this.reportData.playbookContentEngagementOverview.series);
         this.reportData.dealPipelinePrograssion.categoriesString =
@@ -5063,6 +5077,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
             JSON.stringify(this.reportData.topPerformingRecipients.categories);
         this.reportData.topPerformingRecipients.seriesString =
             JSON.stringify(this.reportData.topPerformingRecipients.series);
+        }
         this.buildIframe();
     }
 
