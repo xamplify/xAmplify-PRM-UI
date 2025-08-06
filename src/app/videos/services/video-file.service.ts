@@ -117,7 +117,7 @@ export class VideoFileService {
     }
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
-        const url = this.URL + 'video-by-alias/' + alias +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy;
+        const url = this.URL + 'video-by-alias/' + alias +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy + '&companyProfileName=' + this.authenticationService.companyProfileName;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);

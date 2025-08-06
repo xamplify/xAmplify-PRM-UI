@@ -1700,12 +1700,12 @@ zoomOut() {
         const isRejected = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
         const isApproved = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED];
         if (isAdd) {
-            const requiresApproval = !assetApprover && this.approvalRequired;
+            const requiresApproval = !assetApprover && this.approvalRequired && !this.authenticationService.marketingModulesAccessToPartner;
             this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Save';
             this.damUploadPostDto.sendForApproval = requiresApproval;
         } else {
             if (isDraft || isRejected) {
-                const requiresApproval = !assetApprover && this.approvalRequired;
+                const requiresApproval = !assetApprover && this.approvalRequired && !this.authenticationService.marketingModulesAccessToPartner;
                 this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Update';
                 this.damUploadPostDto.sendForApproval = requiresApproval;
             } else if (isApproved && isAssetReplaced) {

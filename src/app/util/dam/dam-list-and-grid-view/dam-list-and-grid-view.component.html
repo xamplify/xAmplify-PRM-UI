@@ -250,7 +250,7 @@
 															</a>
 
 															<!-- comment/history -->
-															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
@@ -480,7 +480,7 @@
 																				<div class="clickicons"></div>
 																			</a>
 
-																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !authenticationService?.marketingModulesAccessToPartner" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																			data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"  aria-hidden="true"></i>
 																				<div class="clickicons"></div>
