@@ -571,8 +571,9 @@
               <div class="input-group">
                 <select id="globalGroupSelect" class="form-control" [(ngModel)]="selectedGlobalGroupId"
                   (ngModelChange)="applyGroupToAllTeamMembers()" style="border-radius: 4px 0px 0px 4px !important;" >
-                  <option *ngFor="let g of teamMemberGroups" [ngValue]="g.id">
-                    {{ g.name }}
+                  <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                    {{ teamMemberGroup.name }}
+                    <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                   </option>
                 </select>
                 <span class="input-group-btn">

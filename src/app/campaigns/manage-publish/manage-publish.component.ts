@@ -23,6 +23,7 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 declare var swal: any, $: any, flatpickr: any;
 
@@ -141,11 +142,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     unlockMdfFundingModuleName = XAMPLIFY_CONSTANTS.unlockMdfFunding;
     campaignName = "";
     campaignId: number;
+    campaign: any;
+    showAskOliverModalPopup: boolean =false;
+    chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
     /*XNFR-832*/
     //XNFR-1073
     partnerMarketingCampaign = false;
     marketingModulesEnabled = false;
-    
+    hasRedistributionAccess = false;
+    marketingModulesAccessForPartner = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -309,6 +314,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         try {
             this.archived = this.campaignService.archived;
             this.partnerMarketingCampaign = this.campaignService.partnerMarketingCampaign;
+            this.hasRedistributionAccess = this.authenticationService.module.isReDistribution;
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }
@@ -370,6 +376,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 /**XNFR-832***/
                 self.isUnlockMdfFundsOptionEnabled =map['isUnlockMdfFundsOptionEnabled'];
                 self.marketingModulesEnabled = map['marketingModulesEnabled'];
+                self.marketingModulesAccessForPartner = map['marketingModulesAccessForPartner'];
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
@@ -2040,6 +2047,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 });
         }
 
+    }
+
+    
+    askOliver(campaign: any) {
+        this.campaign = campaign;
+        this.campaignName = campaign.campaignName;
+        this.campaignId = campaign.campaignId;
+        this.showAskOliverModalPopup = true;
+    }
+
+    closeAskAI(event: any) {
+        this.chatGptSettingDTO = event;
+        this.showAskOliverModalPopup = false;
     }
 
     //XNFR-1073

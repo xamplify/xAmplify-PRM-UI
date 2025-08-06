@@ -4738,3 +4738,6 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
   border: 1.6px solid #007bff !important;
   background-color: rgba(39, 41, 50, 0.85) !important;
 }
+.asset-button svg {
+  fill: #fff !important;
+}

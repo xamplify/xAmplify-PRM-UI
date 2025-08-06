@@ -6,6 +6,7 @@ export class OliverAgentAccessDTO {
     showOliverParaphraser: boolean = false;
     showOliverContactAgent: boolean = false;
     showOliverPartnerAgent: boolean = false;
+    showOliverCampaignAgent: boolean = false;
     updateOliverAgentSettings: boolean = false;
     
 }

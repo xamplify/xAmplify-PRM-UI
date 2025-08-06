@@ -295,14 +295,16 @@
     </div>
 </div>
 <!-- ----------------------Copy Link Modal------------------- -->
-<div class="modal fade right " id="landing-page-url-modal" tabindex="-1"  data-backdrop="static" data-keyboard="false">
+<div class="modal fade right " id="landing-page-url-modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg" style="width: 75% !important;right:0 !important">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
+                <h4 class="modal-title text-center"
+                    [innerText]="landingPage?.type == 'PROTECTED' ? 'COPY LINK' : 'COPY LINK / EMBED LINK'" translate>
+                </h4>
             </div>
             <div class="modal-body">
                 <app-response-message [customResponse]="copiedLinkCustomResponse"

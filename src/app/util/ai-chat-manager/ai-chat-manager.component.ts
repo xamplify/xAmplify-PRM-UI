@@ -18,6 +18,8 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverPromptSuggestionDTO } from 'app/common/models/oliver-prompt-suggestion-dto';
 import { ExecutiveReport } from 'app/common/models/oliver-report-dto';
 import { Observable, Subscription } from 'rxjs';
+import { GroupOliverReportDTO } from 'app/common/models/group-oliver-report-dto';
+// import { CampaignEngagementAndAssetUtilization,Conclusion, CampaignEngagementSubSection, CSuiteRecommendationItem, DealInteractionsAndRevenueImpact, DealIRISubSection, FooterMetadata, GroupOliverReportDTO, KPIItem, LeadFunnelSubSection, LeadLifecycleAndQualificationFunnel, OverviewSection, PartnerPerformanceItem, PartnerRevenueItem, PlaybookAssetUsageItem, PlaybookRankedAssetItem } from 'app/common/models/group-oliver-report-dto';
 declare var $: any;
 
 @Component({
@@ -34,6 +36,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromManagePartner: boolean;
   @Input() isFromOnboardSection: boolean = false;
   @Input() isFromGroupOfPartners: boolean = false;
+  @Input() isFromManageCampaign: boolean = false;
+  @Input() selectedCampaign: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -165,6 +169,8 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromManagePartner) {
       this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
+    } else if (this.isFromManageCampaign) {
+      this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
     }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -318,6 +324,7 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    this.chatGptIntegrationSettingsDto.fromGroupOfPartners = this.isFromGroupOfPartners;
     self.startStatusRotation();
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
@@ -334,7 +341,11 @@ export class AiChatManagerComponent implements OnInit {
           if (isReport == 'true') {
             try {
               const cleanJsonStr = self.extractJsonString(message);
-              message = self.parseOliverReport(cleanJsonStr);
+              if (self.isFromGroupOfPartners) {
+                message = self.parseGroupOliverReport(cleanJsonStr);
+              } else {
+                message = self.parseOliverReport(cleanJsonStr);
+              }
             } catch (error) {
               isReport = 'false';
               message = self.chatGptGeneratedText;
@@ -367,6 +378,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromContactJourney || this.isFromManageContact || this.isFromManagePartner) {
         this.selectedContact = undefined;
         this.callActivity = undefined;
+        this.notifyParent.emit(this.chatGptSettingDTO);
+      } else if (this.isFromManageCampaign) {
+        this.selectedCampaign = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
         if (this.router.url.includes('/shared/view/g')) {
@@ -580,18 +594,19 @@ export class AiChatManagerComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
   }
+  
   ngOnDestroy() {
-    this.openHistory=false;
+    this.openHistory = false;
     this.openShareOption = false;
     this.loading = false;
-    this.ngxLoading  = false;
+    this.ngxLoading = false;
     this.UploadedFile = false;
-    this.activeTab = ''; 
+    this.activeTab = '';
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -961,6 +976,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
+            this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
           }
         }
       }, error => {
@@ -978,14 +994,40 @@ export class AiChatManagerComponent implements OnInit {
        if (this.isFromManagePartner) {
         this.uploadPartnerDetails();
       }
+       if (this.isFromManageCampaign) {
+        this.uploadCampaignDetails();
+      }
     });
   }
+
   uploadPartnerDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
     this.activeTab = 'partneragent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  uploadCampaignDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "CAMPAIGNAGENT";
+    this.activeTab = 'campaignagent';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadCampaignDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           let data = response.data;
@@ -1152,9 +1194,9 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   parseOliverReport(jsonStr: string): ExecutiveReport {
-    const j = JSON.parse(jsonStr);
+     const j = JSON.parse(jsonStr);
 
-    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+    const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
     const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
 
@@ -1164,8 +1206,14 @@ export class AiChatManagerComponent implements OnInit {
 
     const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
+    const deliveryStatusOverviewItems = j.delivery_status_overview && j.delivery_status_overview.items ? j.delivery_status_overview.items : [];
+
+     const topPerformingRecipientsItems = j.top_performing_recipients && j.top_performing_recipients.chart_data ? j.top_performing_recipients.chart_data : [];
+
+    const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
+
     const dealPipelinePrograssion = {
-      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
@@ -1180,14 +1228,14 @@ export class AiChatManagerComponent implements OnInit {
       }),
       categoriesString: '',
       seriesString: '',
-      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
-      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+      average_deal_value: j.pipeline_progression && j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression && j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
     };
 
-    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+    const campaignItems = j.campaign_performance_analysis && j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
 
     const campaignPerformanceAnalysis = {
-      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      title: j.campaign_performance_analysis && j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
       series: [{
         name: 'Count',
         colorByPoint: true,
@@ -1295,6 +1343,51 @@ export class AiChatManagerComponent implements OnInit {
         : 0,
     };
 
+    const deliveryStatusOverview = {
+      title: j.delivery_status_overview && j.delivery_status_overview.title
+        ? j.delivery_status_overview.title
+        : '',
+      categories: deliveryStatusOverviewItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: deliveryStatusOverviewItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      totalSent: j.delivery_status_overview && j.delivery_status_overview.total_sent
+        ? j.delivery_status_overview.total_sent
+        : '',
+      deliveryRate: j.delivery_status_overview && j.delivery_status_overview.delivery_rate
+        ? j.delivery_status_overview.delivery_rate
+        : 0,
+    };
+
+    const topPerformingRecipients = {
+      title: j.top_performing_recipients && j.top_performing_recipients.title
+        ? j.top_performing_recipients.title
+        : '',
+      categories: topPerformingRecipientsItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: topPerformingRecipientsItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+       items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1303,6 +1396,14 @@ export class AiChatManagerComponent implements OnInit {
       date_range: j && j.date_range ? j.date_range : '',
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
+      campaign_name : j && j.campaign_name ? j.campaign_name : '',
+      campaign_organized : j && j.campaign_organized ? j.campaign_organized : '',
+      campaign_launch_date : j && j.campaign_launch_date ? j.campaign_launch_date : '',
+      campaign_type : j && j.campaign_type ? j.campaign_type : '',
+      total_recipients : j && j.total_recipients ? j.total_recipients : 0,
+      email_sent : j && j.email_sent ? j.email_sent : 0,
+      click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
+      deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -1474,10 +1575,281 @@ export class AiChatManagerComponent implements OnInit {
       },
       playbookContentEngagementOverview : playbookContentEngagementOverview,
       assetEngagementOverview :assetEngagementOverview,
+
+      deal_interactions_and_revenue_impact: undefined,
+
+      campaign_funnel_analysis : campaignFunnelData,
+      deliveryStatusOverview : deliveryStatusOverview,
+      detailedRecipientAnalysis: {
+        title: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.title ? j.detailed_recipient_analysis.title : '',
+        description: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.description ? j.detailed_recipient_analysis.description : '',
+        items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
+      },
+      topPerformingRecipients : topPerformingRecipients,
     };
 
     return dto;
   }
+
+
+
+
+
+
+
+parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
+  const j: any = JSON.parse(jsonStr);
+
+ const dealIRIRaw = j && j.deal_interactions_and_revenue_impact
+  ? j.deal_interactions_and_revenue_impact
+  : {};
+
+  
+  
+
+  const topPartnersRaw = dealIRIRaw.top_partners_by_deal_value || {};
+  const keyInsightsRaw  = dealIRIRaw.key_insights || {};
+
+  const pipelineItems = topPartnersRaw.items ? topPartnersRaw.items : [];
+
+
+  const dealPipelinePrograssion = {
+      title: topPartnersRaw.title ? topPartnersRaw.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''),
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+    };
+
+  const deal_interactions_and_revenue_impact = {
+    title:       dealIRIRaw.title       ? dealIRIRaw.title       : '',
+    description: dealIRIRaw.description ? dealIRIRaw.description : '',
+
+    top_partners_by_deal_value: dealPipelinePrograssion,
+
+    key_insights: {
+      title:       keyInsightsRaw.title       ? keyInsightsRaw.title       : '',
+      description: keyInsightsRaw.description ? keyInsightsRaw.description : '',
+      items:       keyInsightsRaw.items       ? keyInsightsRaw.items       : []
+    },
+
+  };
+
+  /* ---------- Lead Lifecycle & Qualification Funnel ---------- */
+  const leadLFRaw = j && j.lead_lifecycle_and_qualification_funnel
+    ? j.lead_lifecycle_and_qualification_funnel
+    : {};
+
+  const leadProgressRaw  = leadLFRaw.lead_progression_funnel || {};
+  const funnelAnalysisRaw = leadLFRaw.funnel_analysis || {};
+
+  const lead_lifecycle_and_qualification_funnel = {
+    title:       leadLFRaw.title       ? leadLFRaw.title       : '',
+    description: leadLFRaw.description ? leadLFRaw.description : '',
+
+    lead_progression_funnel: {
+      title:       leadProgressRaw.title       ? leadProgressRaw.title       : '',
+      description: leadProgressRaw.description ? leadProgressRaw.description : '',
+      items:       leadProgressRaw.items       ? leadProgressRaw.items       : []
+    },
+
+    funnel_analysis: {
+      title:       funnelAnalysisRaw.title       ? funnelAnalysisRaw.title       : '',
+      description: funnelAnalysisRaw.description ? funnelAnalysisRaw.description : '',
+      items:       funnelAnalysisRaw.items       ? funnelAnalysisRaw.items       : []
+    }
+  };
+
+  /* ---------- Campaign Engagement & Asset Utilization ---------- */
+  const campEAItems = j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.items
+    ? j.campaign_engagement_and_asset_utilization.items
+    : [];
+
+  const campaign_engagement_and_asset_utilization = {
+    title: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.title
+      ? j.campaign_engagement_and_asset_utilization.title
+      : '',
+    description: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.description
+      ? j.campaign_engagement_and_asset_utilization.description
+      : '',
+    items: campEAItems
+  };
+
+  /* ---------- Playbook blocks ---------- */
+  const playbook_engagement_and_asset_utilization = {
+    title: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.title
+      ? j.playbook_engagement_and_asset_utilization.title
+      : '',
+    description: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.description
+      ? j.playbook_engagement_and_asset_utilization.description
+      : '',
+    items: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.items
+      ? j.playbook_engagement_and_asset_utilization.items
+      : []
+  };
+
+  const playbook_engagement_kpis = {
+    title: j.playbook_engagement_kpis && j.playbook_engagement_kpis.title
+      ? j.playbook_engagement_kpis.title
+      : '',
+    description: j.playbook_engagement_kpis && j.playbook_engagement_kpis.description
+      ? j.playbook_engagement_kpis.description
+      : '',
+    items: j.playbook_engagement_kpis && j.playbook_engagement_kpis.items
+      ? j.playbook_engagement_kpis.items
+      : []
+  };
+
+  const top_performing_playbook_assets = {
+    title: j.top_performing_playbook_assets && j.top_performing_playbook_assets.title
+      ? j.top_performing_playbook_assets.title
+      : '',
+    description: j.top_performing_playbook_assets && j.top_performing_playbook_assets.description
+      ? j.top_performing_playbook_assets.description
+      : '',
+    items: j.top_performing_playbook_assets && j.top_performing_playbook_assets.items
+      ? j.top_performing_playbook_assets.items
+      : []
+  };
+
+  /* ---------- Partner analytics & performance ---------- */
+  const partner_analytics_strategic_revenue_drivers = {
+    title: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.title
+      ? j.partner_analytics_strategic_revenue_drivers.title
+      : '',
+    description: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.description
+      ? j.partner_analytics_strategic_revenue_drivers.description
+      : '',
+    items: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.items
+      ? j.partner_analytics_strategic_revenue_drivers.items
+      : []
+  };
+
+  const partnership_performance_review = {
+    title: j.partnership_performance_review && j.partnership_performance_review.title
+      ? j.partnership_performance_review.title
+      : '',
+    description: j.partnership_performance_review && j.partnership_performance_review.description
+      ? j.partnership_performance_review.description
+      : '',
+    items: j.partnership_performance_review && j.partnership_performance_review.items
+      ? j.partnership_performance_review.items
+      : []
+  };
+
+  const partnership_performance_summary_kpis = {
+    title: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.title
+      ? j.partnership_performance_summary_kpis.title
+      : '',
+    description: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.description
+      ? j.partnership_performance_summary_kpis.description
+      : '',
+    items: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.items
+      ? j.partnership_performance_summary_kpis.items
+      : []
+  };
+
+  /* ---------- C-Suite ---------- */
+  const c_suite_strategic_recommendations = {
+    title: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.title
+      ? j.c_suite_strategic_recommendations.title
+      : '',
+    description: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.description
+      ? j.c_suite_strategic_recommendations.description
+      : '',
+    items: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.items
+      ? j.c_suite_strategic_recommendations.items
+      : []
+  };
+
+  /* ---------- Footer & Conclusion ---------- */
+  const footer_metadata = {
+    strategic_contact: j.footer_metadata && j.footer_metadata.strategic_contact ? j.footer_metadata.strategic_contact : [],
+    report_details:    j.footer_metadata && j.footer_metadata.report_details    ? j.footer_metadata.report_details    : [],
+    data_sources:      j.footer_metadata && j.footer_metadata.data_sources      ? j.footer_metadata.data_sources      : []
+  };
+
+  const conclusion = {
+    title:       j.conclusion && j.conclusion.title       ? j.conclusion.title       : '',
+    description: j.conclusion && j.conclusion.description ? j.conclusion.description : '',
+    items:       j.conclusion && j.conclusion.items       ? j.conclusion.items       : []
+  };
+
+  /* ---------- KPI & Summary ---------- */
+  const kpi_overview = {
+    title:       j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+    description: j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+    items:       j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+  };
+
+  const summary_overview = {
+    title:       j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+    description: j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+    items:       j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+  };
+
+
+
+
+
+
+
+
+
+
+  /* ---------- Build DTO ---------- */
+  const dto: GroupOliverReportDTO = {
+    report_title: j && j.report_title ? j.report_title : '',
+    subtitle: j && j.subtitle ? j.subtitle : '',
+    date_range: j && j.date_range ? j.date_range : '',
+    report_owner: j && j.report_owner ? j.report_owner : '',
+    report_recipient: j && j.report_recipient ? j.report_recipient : '',
+    report_main_title: j && j.report_main_title ? j.report_main_title : '',
+    report_sub_heading: j && j.report_sub_heading ? j.report_sub_heading : '',
+
+    kpi_overview: kpi_overview,
+    summary_overview: summary_overview,
+
+    // description:                   string;
+    //   top_partners_by_deal_value:    OverviewSection<DealPartnerItem>;
+    //   key_insights:                  OverviewSection<KPIItem>;
+    //   title: string;
+    //   categories: string[];
+    //   revenue: string;
+    //   series: { name: string; data: string[] }[];
+    //   categoriesString: string;
+    //   seriesString: string;
+    lead_lifecycle_and_qualification_funnel: lead_lifecycle_and_qualification_funnel,
+    campaign_engagement_and_asset_utilization: campaign_engagement_and_asset_utilization,
+
+    playbook_engagement_and_asset_utilization: playbook_engagement_and_asset_utilization,
+    playbook_engagement_kpis: playbook_engagement_kpis,
+    top_performing_playbook_assets: top_performing_playbook_assets,
+
+    partner_analytics_strategic_revenue_drivers: partner_analytics_strategic_revenue_drivers,
+    partnership_performance_review: partnership_performance_review,
+    partnership_performance_summary_kpis: partnership_performance_summary_kpis,
+
+    c_suite_strategic_recommendations: c_suite_strategic_recommendations,
+
+    footer_metadata: footer_metadata,
+    conclusion: conclusion,
+    deal_interactions_and_revenue_impact: deal_interactions_and_revenue_impact // <-- Add this property to the GroupOliverReportDTO interface/type
+  };
+
+  return dto;
+}
+
+
   
   startStatusRotation() {
     this.statusMessage = this.loaderMessages[0];

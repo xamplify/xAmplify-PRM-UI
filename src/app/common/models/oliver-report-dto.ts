@@ -5,6 +5,14 @@ export interface ExecutiveReport {
   date_range:        string;
   report_owner:      string;
   report_recipient:  string;
+  campaign_name : string;
+  campaign_organized: string;
+  campaign_launch_date: string;
+  campaign_type: string;
+  total_recipients: string;
+  email_sent : string;
+  click_through_rate: string;
+  deliverability_rate: string;
 
   owner_details: OwnerDetails;
 
@@ -16,6 +24,7 @@ export interface ExecutiveReport {
   campaign_performance_analysis: CampaignPerformanceAnalysis;
 
   lead_progression_funnel: OverviewSection<KPIItem>;
+  campaign_funnel_analysis : OverviewSection<KPIItem>;
   pipeline_progression:    PipelineProgression;
 
   contact_journey_timeline: OverviewSection<ContactJourney>;
@@ -31,6 +40,29 @@ export interface ExecutiveReport {
   trackEngagementAnalysis : TrackEngagementAnalysis<TrackEngagementAnalysisItem>;
   playbookContentEngagementOverview : PlayBookContentEngagementOverview;
   assetEngagementOverview : AssetEnagementOverview;
+  deliveryStatusOverview : DeliveryStatusOverview;
+  detailedRecipientAnalysis : DetailedRecipientAnalysis<DetailedRecipientAnalysisItem>;
+  topPerformingRecipients : TopPerformingRecipients<TopPerformingRecipientsItems>;
+  deal_interactions_and_revenue_impact :  DealInteractionsAndRevenueImpact;
+}
+
+
+export interface DealInteractionsAndRevenueImpact {
+    title: any;
+    description: any;
+    top_partners_by_deal_value: {
+        title: any;
+        categories: any;
+        revenue: string;
+        series: any;
+        categoriesString: string;
+        seriesString: string;
+    };
+    key_insights: {
+        title: any;
+        description: any;
+        items: any;
+    };
 }
 
 /* ----------  Re-usable building blocks ---------- */
@@ -224,5 +256,44 @@ export interface TrackEngagementAnalysisItem {
   progress_rate: string | number;
   engagement_level: string;
   notes: string;
+}
+
+export interface DeliveryStatusOverview {
+  title : string;
+  totalSent: string;
+  deliveryRate: string;
+  categories: string[];
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+}
+
+export interface DetailedRecipientAnalysis<TItem> {
+  title: string;
+  description: string;
+  items: TItem[];
+}
+
+export interface DetailedRecipientAnalysisItem {
+  recipient: string;
+  opens: string | number;
+  clicks: string | number;
+  engagement_level: string;
+}
+
+export interface TopPerformingRecipients<TItem>{
+  title: string;
+  categories: string[];
+  series: { name: string; data: string[] }[];
+  categoriesString: string;
+  seriesString: string;
+  items: TItem[];
+}
+
+export interface TopPerformingRecipientsItems {
+  recipient: string;
+  leadsCount: string | number;
+  dealsCount: string | number;
+  rank: string;
 }
 

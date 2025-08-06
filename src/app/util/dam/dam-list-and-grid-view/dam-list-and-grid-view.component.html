@@ -54,7 +54,7 @@
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView" class="text-center"><input
 													class="chk checkBox_shadow" type="checkbox" [checked]="isSelected(asset)"
 													(change)="onCheckboxChange(asset, $event)"
-													[disabled]="asset.disableAccessForOliver || (oliverIntegrationType != 'openai' ? 
+													[disabled]="asset.disableAccessForOliver || asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList || (oliverIntegrationType != 'openai' ? 
 													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1)">
 											</td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
@@ -286,7 +286,7 @@
 										<tr [ngClass]="{'hidden': !asset?.expand}">
 											<td [attr.colspan]="colspanValue">
 												<div class="table-responsive">
-													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp" class="alert alert-info">
+													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp	" class="alert alert-info">
 														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
 													</div>
 													<table class="table tgrid table-condensed"
