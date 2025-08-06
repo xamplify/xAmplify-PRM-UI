@@ -1954,6 +1954,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       },
       playbookContentEngagementOverview : playbookContentEngagementOverview,
       assetEngagementOverview :assetEngagementOverview,
+      deal_interactions_and_revenue_impact: undefined
     };
 
     return dto;
