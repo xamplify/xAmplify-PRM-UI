@@ -161,7 +161,7 @@
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
               <i _ngcontent-c17="" aria-hidden="true" data-toggle="tooltip" title="Filter" class="fa fa-filter p10"></i>
             </button>
-            <button data-placement="bottom" class="btn btn-xs l-g-view" style="margin: -1px 3px 0px 3px;"
+            <button data-placement="bottom" class="btn btn-xs l-g-view" 
               [disabled]="pagination.totalRecords==0" (click)="downlaodDomainListCsv()">
               <i aria-hidden="true" class="fas fa-file-export p10" data-toggle="tooltip"
                 title="Export Domain List to Excel"></i>
@@ -184,7 +184,7 @@
               <div class="portlet-title">
                 <div class="caption" translate>{{applyFilterText}}</div>
                 <button type="button" class="close-circle" style="margin-left: 10px;" (click)="clearFilter()">
-                  <i class="fa fa-times" aria-hidden="true"></i>
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
                 </button>
               </div>
               <!--Filter Options-->

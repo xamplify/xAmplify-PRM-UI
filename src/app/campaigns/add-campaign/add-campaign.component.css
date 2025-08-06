@@ -757,7 +757,7 @@ span.text-algn {
 }
 
 .ht125 {
-  height: 125px !important;
+  height: 140px !important;
 }
 
 .page-imgage-paddings {
@@ -834,3 +834,7 @@ button.btn.mBtnAlign.f-w-600.w-10em.prev-btn:hover {
       left: 17px;
     }
   }
+.btn-default {
+ background-color: #f1f3fa;}
+.btn-default>i {
+ color: #626262;}

@@ -266,7 +266,7 @@ p {
 }
 
 .library-icon-share{
-  background-color: #e8f5e8;
+  background-color:#e0f0e0;
 }
 .library-icon-share>.fa-list,.library-icon-share>.fa-users{
   color: #4caf50;
@@ -385,3 +385,21 @@ p {
   .asset-card .asset-button:last-child {
   margin-bottom: 0;
 }
+.asset-button span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.asset-button svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  fill:#2397d3;
+  flex-shrink: 0;
+  position: relative;
+  top: -2px;
+  left: -2px;
+}
+.unlock-icon svg {
+  vertical-align: middle;
+ }

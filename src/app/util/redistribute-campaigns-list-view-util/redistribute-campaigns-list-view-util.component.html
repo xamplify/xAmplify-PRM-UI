@@ -34,7 +34,7 @@
               <div class="col-xs-4 col-sm-4 col-md-3 hidden-xs">
                 <div>
                   <ng-container class='m10'>
-                    <button class="btn btn-xs hidden-xs l-g-view zero-margin-xamp-campaign"
+                    <button class="btn btn-xs hidden-xs l-g-view zero-margin-xamp-campaign mr5"
                       [disabled]="this.modulesDisplayType.isListView" (click)="setViewType('List')" title="List View">
                       <i class="fa fa-th-list p10" aria-hidden="true"></i>
                     </button>
@@ -48,15 +48,15 @@
               <div class="col-xs-6 col-sm-4 col-md-4 p0">
                 <div style="float: left;">
                   <select class="form-control" [(ngModel)]="selectedSortedOption"
-                    (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                    (ngModelChange)="getSortedResult($event)" style="position: relative;">
                     <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
                       {{sortOption.name}}</option>
                   </select>
                 </div>
               </div>
-              <div class="col-xs-6 col-sm-4 col-md-4 p0">
-                <div class="portlet-input input-inline input-small">
-                  <div class="input-icon mbsearch" style="position: relative;right: -11px;">
+              <div class="col-xs-6 col-sm-4 col-md-5 p0">
+                <div class="portlet-input input-inline ml7">
+                  <div class="input-icon mbsearch" style="position: relative;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                       class="form-control" placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"

@@ -62,9 +62,11 @@
 }
 
 .new-width-row {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-     margin: 0px -8px 7px -8px;
 }
 
 .new-width-col {
@@ -137,7 +139,7 @@
 .front-count-label {
     font-size: 15px;
     font-weight: 500;
-    color: #545c62;
+    color: #6c757d;
 }
 
 .front-count-icon {
@@ -233,11 +235,30 @@
 }
 
 .front-count-card.active {
-     background-color: #eaf4ff;
+      background-color: #eaf4ff;
     border: 1.6px solid #007bff;
 }
 
 .front-count-ait {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
 
+}
+
+.front-count-eye{
+background: linear-gradient(135deg, #f43f5e, #be123c);
+
+}
+.front-count-handshake i , .front-count-eye i , .front-count-slash i{
+color: #fff;
+}
+.front-count-handshake{
+background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+.front-count-slash{
+    background: linear-gradient(135deg, #f43f5e, #fb7185);
+}
+
+
+.tooltip-icon i {
+  pointer-events: auto; /* Ensure icon receives hover */
 }

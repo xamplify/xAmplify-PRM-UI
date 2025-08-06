@@ -76,9 +76,10 @@ export class CampaignAccess {
   oliverParaphraserEnabled: boolean = false;
   oliverContactAgentEnabled: boolean = false;
   oliverPartnerAgentEnabled: boolean = false;
+  oliverCampaignAgentEnabled: boolean = false;
   oliverIntegrationType: string = '';
 
     /** XNFR-987 **/
   nonVanityAccessEnabled: boolean = false;
-
+  marketingModulesEnabled: boolean = false;
 }

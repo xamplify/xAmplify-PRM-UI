@@ -203,19 +203,33 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
  
   listLearningTracks(pagination: Pagination) {
-    if(!this.folderListView){
-			this.referenceService.goToTop();
-		}
-    if (this.referenceService.categoryTrackPlaybookType) {
-      if (this.referenceService.categoryType.trim().length > 0) {
-        this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
-        this.referenceService.categoryTrackPlaybookType = false;
+    if (!this.folderListView) {
+      this.referenceService.goToTop();
+    }
+    if (this.isPartnerView) {
+      if (this.referenceService.categoryTrackPlaybookType) {
+        if (this.referenceService.categoryType.trim().length > 0) {
+          this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+          this.referenceService.categoryTrackPlaybookType = false;
+        }
+      } else {
+        if (this.referenceService.categoryType.trim().length > 0) {
+          this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+          this.referenceService.categoryType = '';
+        } 
       }
     } else {
-      if (this.referenceService.categoryType.trim().length > 0) {
-        this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
-        this.referenceService.categoryType = '';
-      } 
+      if (this.referenceService.categoryTrackPlaybookType) {
+        if (this.referenceService.categoryType.trim().length > 0) {
+          this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+          this.referenceService.categoryTrackPlaybookType = false;
+        }
+      } else {
+        if (this.referenceService.categoryType.trim().length > 0) {
+          this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+          this.referenceService.categoryType = '';
+        }
+      }
     }
     if (this.pagination.selectedApprovalStatusCategory === this.approvalStatus.APPROVED) {
 		this.pagination.publishedFilter = true;
@@ -238,26 +252,26 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           let publishingTracks = [];
-          $.each(data.data, function (_index:number, learningTrack:any) {
+          $.each(data.data, function (_index: number, learningTrack: any) {
             learningTrack.createdDateString = new Date(learningTrack.createdTime);
             learningTrack.featuredImage = learningTrack.featuredImage + "?" + Date.now();
             let toolTipTagNames: string = "";
             learningTrack.tagNames.sort();
-            $.each(learningTrack.tagNames, function (index:any, tagName:string) {
+            $.each(learningTrack.tagNames, function (index: any, tagName: string) {
               if (index > 1) {
-                if(toolTipTagNames.length > 0){
-                  toolTipTagNames = toolTipTagNames + ", " + tagName ;
+                if (toolTipTagNames.length > 0) {
+                  toolTipTagNames = toolTipTagNames + ", " + tagName;
                 } else {
                   toolTipTagNames = tagName;
                 }
               }
             });
             learningTrack.toolTipTagNames = toolTipTagNames;
-            if(learningTrack.publishingOrWhiteLabelingInProgress){
+            if (learningTrack.publishingOrWhiteLabelingInProgress) {
               publishingTracks.push(learningTrack);
             }
           });
-          this.showRefreshNotification = publishingTracks.length>0;
+          this.showRefreshNotification = publishingTracks.length > 0;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
         } else if (response.statusCode == 403) {
           this.referenceService.goToAccessDeniedPage();
@@ -266,7 +280,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         this.logger.errorPage(error);
-      },()=>{
+      }, () => {
         this.callFolderListViewEmitter();
       });
   }
@@ -501,6 +515,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   refreshPage() {
+    this.contentModuleStatusAnalyticsComponent.getSharedContentCounts();
     this.listLearningTracks(this.pagination);
     if (this.contentModuleStatusAnalyticsComponent) {
       if (this.authenticationService.approvalRequiredForTracks
@@ -556,8 +571,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   filterContentByType(event: any) {
     this.customResponse = new CustomResponse();
-		this.pagination.searchKey = '';
-		this.sortOption.searchKey = '';
+    this.pagination.searchKey = '';
+    this.sortOption.searchKey = '';
     this.pagination.pageIndex = 1;
     if (event == this.approvalStatus.APPROVED) {
       this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
@@ -571,12 +586,17 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
       this.pagination.publishedFilter = false;
       this.listLearningTracks(this.pagination);
-    }else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL') {
+    } else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL') {
       this.pagination.publishedFilter = false;
       this.pagination.selectedApprovalStatusCategory = event;
       this.pagination.selectedApprovalStatusCategory = event;
       this.listLearningTracks(this.pagination);
-    } else {
+    }
+    else if (this.isPartnerView && (event == 'interacted' || event == 'notInteracted' || event == 'folders' || event == 'alll' || event == 'in-progress' || event == 'not-viewd' || event == 'completed')) {
+      this.pagination.selectedApprovalStatusCategory = event;
+      this.listLearningTracks(this.pagination);
+    }
+    else {
       this.pagination.publishedFilter = false;
       this.pagination.selectedApprovalStatusCategory = '';
       this.refreshPage();

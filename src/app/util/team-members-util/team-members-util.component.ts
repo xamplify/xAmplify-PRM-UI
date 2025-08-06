@@ -146,6 +146,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   deletedPartnershipIds: any[] = [];
   selectedPartnershipIdsLoading: boolean = false;
+  selectedGlobalGroupId: number | null = null;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -308,6 +309,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
@@ -644,12 +646,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           let teamMemberGroup = this.teamMemberGroups[0];
           let teamMemberGroupId = teamMemberGroup.id;
           this.team.teamMemberGroupId = teamMemberGroupId;
           $.each(this.newlyAddedTeamMembers,function(_index:number,teamMember:any){
             teamMember['teamMemberGroupId'] = teamMemberGroupId;
           });
+          this.validateAddTeamMemberForm("teamMemberGroup");
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
@@ -770,7 +774,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin, 'newAndSinglePartner': true };
+    if (this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+      teamMemberDto['selectedPartnershipIds'] = this.selectedPartnershipIds;
+    }
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
@@ -884,7 +891,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.isUploadCsv = false;
     } else {
       this.showUploadedTeamMembers = true;
-      this.appendCsvDataToTable();
+      this.newlyAddedTeamMembers = []; 
+      this.appendCsvDataToTable();      
       this.fileReset();
     }
   }
@@ -930,55 +938,66 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.getPartnersCount(teamMemberGroupId, team);
     }
   }
-
   validateCsvData() {
-    let email = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
-    let firstNames = this.csvRecords.map(function (a) { return a[0].split(',')[1].toLowerCase() });
-    let duplicateEmailIds = this.referenceService.returnDuplicates(email);
-    this.newlyAddedTeamMembers = [];
-    if ((email.length > 0) && (firstNames.length > 0)) {
-      let emailIds = [];
-      for (let r = 1; r < email.length; r++) {
-        let rows = this.csvRecords[r];
-        let row = rows[0].split(',');
-        let emailId = row[0];
-        let firstName = row[1];
-        let lastName = row[2];
-        firstName = $.trim(firstName);
-        if (firstName.length <= 0 && emailId.length > 0 && emailId !== '') {
-          emailIds.push(emailId);
-          this.customResponse = new CustomResponse('ERROR', 'First Name is not available for : ' + emailIds, true);
-          this.csvErrors = true;
-        }
-        if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
-          if (duplicateEmailIds.length == 0) {
-            if (!this.referenceService.validateEmailId($.trim(emailId))) {
-              emailIds.push(emailId);
-              this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
-              this.csvErrors = true;
-            }
-          } else {
-            for (let d = 0; d < duplicateEmailIds.length; d++) {
-              let duplicateEmailId = duplicateEmailIds[d];
-              if (duplicateEmailId != undefined && $.trim(duplicateEmailId).length > 0) {
-                emailIds.push(duplicateEmailId);
-                this.customResponse = new CustomResponse('ERROR', emailIds + ' is duplicate email address.', true);
-                this.csvErrors = true;
-                this.isUploadCsv = false;
-              }
-            }
-            duplicateEmailIds = [];
-          }
-        } else if (firstName.length > 0 && firstName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'Email is not available for : ' + firstName, true);
-          this.csvErrors = true;
-        } else if (lastName.length > 0 && lastName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'First Name & Email are mandatory for : ' + lastName, true);
-          this.csvErrors = true;
-        }
+  let emails = this.csvRecords.map(a => a[0].split(',')[0].toLowerCase());
+  let duplicateEmails = this.referenceService.returnDuplicates(emails);
+
+  let invalidEmails = [];
+  let duplicateEmailIds = [];
+  let missingFirstNameEmails = [];
+  let missingEmailFirstNames = [];
+  let missingAll = [];
+
+  for (let r = 1; r < this.csvRecords.length; r++) {
+    let row = this.csvRecords[r][0].split(',');
+    let email = row[0] ? row[0].trim() : '';
+    let firstName = row[1] ? row[1].trim() : '';
+    let lastName = row[2] ? row[2].trim() : '';
+
+    if (!firstName && email) {
+      missingFirstNameEmails.push(email);
+      continue;
+    }
+    if (!email && firstName) {
+      missingEmailFirstNames.push(firstName);
+      continue;
+    }
+    if (!email && !firstName && lastName) {
+      missingAll.push(lastName);
+      continue;
+    }
+
+    if (email && firstName) {
+      if (duplicateEmails.includes(email.toLowerCase())) {
+        duplicateEmailIds.push(email);
+        duplicateEmails = duplicateEmails.filter(e => e !== email.toLowerCase());
+        continue;
+      }
+      if (!this.referenceService.validateEmailId(email)) {
+        invalidEmails.push(email);
+        continue;
       }
     }
   }
+  let messages = [];
+  if (missingFirstNameEmails.length) messages.push(missingFirstNameEmails.join(', ') + " - First Name is missing.");
+  if (duplicateEmailIds.length) messages.push(duplicateEmailIds.join(', ') + " - Duplicate email address.");
+  if (invalidEmails.length) messages.push(invalidEmails.join(', ') + " - Invalid email address.");
+  if (missingEmailFirstNames.length) messages.push(missingEmailFirstNames.join(', ') + " - Email is missing.");
+  if (missingAll.length) messages.push(missingAll.join(', ') + " - Both First Name & Email are mandatory.");
+
+  if (messages.length) {
+    this.csvErrors = true;
+    this.customResponse = new CustomResponse('ERROR', messages.join('\n'), true);
+    this.isUploadCsv = false;
+  } else {
+    this.csvErrors = false;
+    this.isUploadCsv = true;
+    this.customResponse = null;
+    // Do NOT modify this.newlyAddedTeamMembers here!
+  }
+}
+
 
   validateHeaders(headers: any) {
     return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name");
@@ -1543,5 +1562,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       console.log('you clicked on option' + dismiss);
     });
   }
-
+   private setGlobalGroupAndApply() {
+    if (!this.showUploadedTeamMembers) {
+    return;
+  }
+    if (this.teamMemberGroups.length > 0) {
+      this.selectedGlobalGroupId = this.teamMemberGroups[0].id;
+      this.applyGroupToAllTeamMembers();
+    }
+  }
+    applyGroupToAllTeamMembers() {
+    if (this.selectedGlobalGroupId == null) return;
+    for (let member of this.newlyAddedTeamMembers) {
+      member.teamMemberGroupId = this.selectedGlobalGroupId;
+      this.validateSecondAdminOptionForCsvUsers(this.selectedGlobalGroupId, member);
+    }
+  }
 }

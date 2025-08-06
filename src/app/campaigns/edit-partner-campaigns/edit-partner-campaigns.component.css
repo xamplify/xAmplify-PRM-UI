@@ -258,3 +258,8 @@ margin-left:25px;
   margin-top: 6px !important;
   margin-right: 5px !important;
 }
+.btn-default {
+    background-color: #f1f3fa;}
+.btn-default > i {
+    color: #626262;
+}

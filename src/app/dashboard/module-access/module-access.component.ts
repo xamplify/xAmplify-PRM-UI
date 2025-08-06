@@ -91,6 +91,7 @@ export class ModuleAccessComponent implements OnInit {
   oliverContactAgentEnabledFlag: boolean = false;
   oliverIntegrationTypeSelected: boolean = false;
   oliverPartnerAgentEnabledFlag: boolean = false;
+  oliverCampaignAgentEnabledFlag: boolean = false;
   oliverIntegrationType: string = "";
 
 
@@ -659,6 +660,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
     this.oliverContactAgentEnabledFlag = campaignAccess.oliverContactAgentEnabled;
     this.oliverPartnerAgentEnabledFlag = campaignAccess.oliverPartnerAgentEnabled;
+    this.oliverCampaignAgentEnabledFlag = campaignAccess.oliverCampaignAgentEnabled;
   }
   /** XNFR-952 end **/
 
@@ -672,7 +674,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
       this.campaignAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
-      this.campaignAccess.oliverPartnerAgentEnabled = this.oliverPartnerAgentEnabledFlag;
+      this.campaignAccess.oliverCampaignAgentEnabled = this.oliverCampaignAgentEnabledFlag;
     }
   }
 
@@ -695,6 +697,13 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       }, error => {
         console.log('Error in fetchOliverActiveIntegrationType() ', error);
       });
+  }
+
+  /*** XNFR-1066 ***/
+  onVanityUrlChange() {
+    if (!this.campaignAccess.vanityUrlDomain) {
+      this.campaignAccess.marketingModulesEnabled = false;
+    }
   }
 
 }

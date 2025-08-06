@@ -31,6 +31,7 @@ export class SelectContentModulesComponent implements OnInit {
      }
 
   ngOnInit() {
+    this.referenceService.categoryType = '';
     this.searchWithModuleName = 4;
     this.loadModules = true;
     setTimeout(() => {

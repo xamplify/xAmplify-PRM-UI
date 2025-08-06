@@ -109,6 +109,16 @@
     height: 160px;
     width: 217px;
   }
+  .edit_asset_row{
+    margin-right: 0px!important;
+    margin-left: 0px!important;
+  }
+  .edit_asset_text{
+   padding-left: 15px;
+  }
+  .portlet > .portlet-title {
+        min-height: 33px!important;
+  }
 }
 @media only screen and (min-width: 992px) {
   #my-video {

@@ -298,11 +298,14 @@
 												</tr>
 												<tr>
 													<th scope="col">Vanity URL</th>
-													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.vanityUrlDomain"
-															[ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain" 
+														[ngModelOptions]="{standalone: true}" (change)="onVanityUrlChange()"></td>
 												</tr>
-
+												<tr *ngIf="vendor || orgAdmin">
+													<th scope="col">Enable Marketing Modules</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.marketingModulesEnabled"
+															[ngModelOptions]="{standalone: true}" [disabled]="!campaignAccess.vanityUrlDomain"></td>
+												</tr>
 												<tr>
 													<th scope="col">MDF</th>
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.mdf"
@@ -484,6 +487,14 @@
 																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverPartnerAgentEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Partner Agent</span>
+																	</strong>
+																</div>
+
+																<div>
+																	<strong>
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverCampaignAgentEnabled"
+																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
+																		<span class="ml10">Enable Oliver Campaign Agent</span>
 																	</strong>
 																</div>
 																

@@ -36,6 +36,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromManagePartner: boolean;
   @Input() isFromOnboardSection: boolean = false;
   @Input() isFromGroupOfPartners: boolean = false;
+  @Input() isFromManageCampaign: boolean = false;
+  @Input() selectedCampaign: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -118,8 +120,9 @@ export class AiChatManagerComponent implements OnInit {
   activeTab: string = '';
   pptData: string;
   showPptDesignPicker: boolean = false;
+  designAccess: boolean;
 
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, public referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
 
@@ -166,6 +169,8 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromManagePartner) {
       this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
+    } else if (this.isFromManageCampaign) {
+      this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
     }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -196,6 +201,7 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
+    this.checkDesignAccess();
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -372,6 +378,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromContactJourney || this.isFromManageContact || this.isFromManagePartner) {
         this.selectedContact = undefined;
         this.callActivity = undefined;
+        this.notifyParent.emit(this.chatGptSettingDTO);
+      } else if (this.isFromManageCampaign) {
+        this.selectedCampaign = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
         if (this.router.url.includes('/shared/view/g')) {
@@ -585,18 +594,19 @@ export class AiChatManagerComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
   }
+  
   ngOnDestroy() {
-    this.openHistory=false;
+    this.openHistory = false;
     this.openShareOption = false;
     this.loading = false;
-    this.ngxLoading  = false;
+    this.ngxLoading = false;
     this.UploadedFile = false;
-    this.activeTab = ''; 
+    this.activeTab = '';
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -952,6 +962,9 @@ export class AiChatManagerComponent implements OnInit {
   fetchOliverActiveIntegration() {
     this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    if(this.asset != undefined && this.asset != null && this.asset.id > 0 && this.asset.videoId != undefined && this.asset.videoId != null && this.asset.videoId != '') {
+      this.chatGptIntegrationSettingsDto.videoId = this.asset.videoId;
+    }
     this.chatGptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
@@ -963,6 +976,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
+            this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
           }
         }
       }, error => {
@@ -980,14 +994,40 @@ export class AiChatManagerComponent implements OnInit {
        if (this.isFromManagePartner) {
         this.uploadPartnerDetails();
       }
+       if (this.isFromManageCampaign) {
+        this.uploadCampaignDetails();
+      }
     });
   }
+
   uploadPartnerDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
     this.activeTab = 'partneragent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  uploadCampaignDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "CAMPAIGNAGENT";
+    this.activeTab = 'campaignagent';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadCampaignDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           let data = response.data;
@@ -1154,9 +1194,9 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   parseOliverReport(jsonStr: string): ExecutiveReport {
-    const j = JSON.parse(jsonStr);
+     const j = JSON.parse(jsonStr);
 
-    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+    const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
     const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
 
@@ -1166,8 +1206,14 @@ export class AiChatManagerComponent implements OnInit {
 
     const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
+    const deliveryStatusOverviewItems = j.delivery_status_overview && j.delivery_status_overview.items ? j.delivery_status_overview.items : [];
+
+     const topPerformingRecipientsItems = j.top_performing_recipients && j.top_performing_recipients.chart_data ? j.top_performing_recipients.chart_data : [];
+
+    const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
+
     const dealPipelinePrograssion = {
-      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
@@ -1182,14 +1228,14 @@ export class AiChatManagerComponent implements OnInit {
       }),
       categoriesString: '',
       seriesString: '',
-      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
-      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+      average_deal_value: j.pipeline_progression && j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression && j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
     };
 
-    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+    const campaignItems = j.campaign_performance_analysis && j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
 
     const campaignPerformanceAnalysis = {
-      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      title: j.campaign_performance_analysis && j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
       series: [{
         name: 'Count',
         colorByPoint: true,
@@ -1297,6 +1343,51 @@ export class AiChatManagerComponent implements OnInit {
         : 0,
     };
 
+    const deliveryStatusOverview = {
+      title: j.delivery_status_overview && j.delivery_status_overview.title
+        ? j.delivery_status_overview.title
+        : '',
+      categories: deliveryStatusOverviewItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: deliveryStatusOverviewItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      totalSent: j.delivery_status_overview && j.delivery_status_overview.total_sent
+        ? j.delivery_status_overview.total_sent
+        : '',
+      deliveryRate: j.delivery_status_overview && j.delivery_status_overview.delivery_rate
+        ? j.delivery_status_overview.delivery_rate
+        : 0,
+    };
+
+    const topPerformingRecipients = {
+      title: j.top_performing_recipients && j.top_performing_recipients.title
+        ? j.top_performing_recipients.title
+        : '',
+      categories: topPerformingRecipientsItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: topPerformingRecipientsItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+       items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1305,6 +1396,14 @@ export class AiChatManagerComponent implements OnInit {
       date_range: j && j.date_range ? j.date_range : '',
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
+      campaign_name : j && j.campaign_name ? j.campaign_name : '',
+      campaign_organized : j && j.campaign_organized ? j.campaign_organized : '',
+      campaign_launch_date : j && j.campaign_launch_date ? j.campaign_launch_date : '',
+      campaign_type : j && j.campaign_type ? j.campaign_type : '',
+      total_recipients : j && j.total_recipients ? j.total_recipients : 0,
+      email_sent : j && j.email_sent ? j.email_sent : 0,
+      click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
+      deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -1476,7 +1575,17 @@ export class AiChatManagerComponent implements OnInit {
       },
       playbookContentEngagementOverview : playbookContentEngagementOverview,
       assetEngagementOverview :assetEngagementOverview,
-      deal_interactions_and_revenue_impact: undefined
+
+      deal_interactions_and_revenue_impact: undefined,
+
+      campaign_funnel_analysis : campaignFunnelData,
+      deliveryStatusOverview : deliveryStatusOverview,
+      detailedRecipientAnalysis: {
+        title: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.title ? j.detailed_recipient_analysis.title : '',
+        description: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.description ? j.detailed_recipient_analysis.description : '',
+        items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
+      },
+      topPerformingRecipients : topPerformingRecipients,
     };
 
     return dto;
@@ -1825,5 +1934,18 @@ parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
     this.showPptDesignPicker = false;
   }
 
-  
+  /** XNFR-1079  **/
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+  private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
 }

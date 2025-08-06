@@ -516,7 +516,7 @@
 			<div class="modal-body clearfix" style="overflow-x: hidden;">
 				<div class="row">
 					<div style="text-align: center;font-size: 13px;" translate>VIDEO PLAYED DURATION
-						<div class="btn-group pull-right gear-icon" style="margin-top: 4px; cursor:pointer;">
+						<div class="btn-group pull-right gear-icon" style="margin-top: 4px; cursor:pointer;" [class.disabled]="videoPlayedPagination?.totalRecords == 0">
 							<span class="dropdown-toggle" data-toggle="dropdown"
 								style="box-shadow:none; margin-top: -7px;margin-right: 21px; float:right;">
 								<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i
@@ -568,20 +568,22 @@
 						<app-pagination class="pg8" *ngIf="videoPlayedPagination.pagedItems?.length > 0"
 							[pagination]="videoPlayedPagination" [type]="'videoPlayed'" (notifyParent)="setPage($event)"
 							(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<div *ngIf="videoPlayedPagination?.totalRecords == 0" class="alert alert-info text-center">
+							<strong translate>No results found</strong>
+						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div style="text-align: center;font-size: 13px;" translate>VIDEO SKIPPED DURATION
-						<div class="btn-group pull-right gear-icon" style="margin-top: 4px; cursor:pointer;">
+						<div class="btn-group pull-right gear-icon" style="margin-top: 4px; cursor:pointer;" [class.disabled]="pagination?.totalRecords == 0">
 							<span class="dropdown-toggle" data-toggle="dropdown"
 								style="box-shadow:none; margin-top: -7px;margin-right: 21px; float:right;">
 								<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
 								<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 							</span>
 							<ul class="dropdown-menu pull-right">
-								<li><a id="delete_button"
-										(click)="downloadTypeName = 'skippedDuration'; downloadFunctionality()"
-										translate> Export To Excel </a></li>
+								<li><a id="delete_button" (click)="downloadTypeName = 'skippedDuration'; downloadFunctionality()" translate> 
+									Export To Excel </a></li>
 							</ul>
 						</div>
 					</div>
@@ -624,6 +626,9 @@
 						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination"
 							[type]="'videoSkipped'" (notifyParent)="setPage($event)"
 							(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<div *ngIf="pagination?.totalRecords == 0" class="alert alert-info text-center">
+							<strong translate>No results found</strong>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -85,6 +85,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly GLOBALCHAT = "GLOBALCHAT";
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
+  private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -163,6 +164,8 @@ export class ChatGptModalComponent implements OnInit {
   showPptDesignPicker: boolean = false;
   pptData: string;
   isResponseInProgress: boolean;
+  showOliverCampaignAgent: any;
+  intentMessages: any[] = [];
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -289,6 +292,7 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];
+    this.intentMessages = [];
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
@@ -321,6 +325,7 @@ export class ChatGptModalComponent implements OnInit {
     this.checkDesignAccess();
     this.pptData = '';
     this.showPptDesignPicker = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = false;
   }
 
   private checkDamAccess() {
@@ -353,9 +358,9 @@ export class ChatGptModalComponent implements OnInit {
       this.saveChatHistoryTitle(this.chatHistoryId);
     } else if(this.messages.length == 0 && this.activeTab == 'askpdf') {
       this.deleteChatHistory(this.threadId, this.vectorStoreId, this.chatHistoryId, false);
-    }else{
-      this.messages = [];
     }
+    this.messages = [];
+    this.intentMessages = [];
     this.searchTerm = "";
     this.showPromptBoxBelow = false;
     this.showPromptBoxAbove = false;
@@ -407,6 +412,8 @@ export class ChatGptModalComponent implements OnInit {
     this.pptData = '';
     this.showPptDesignPicker = false;
     this.isTextLoading = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = false;
+    // this.isTextLoading = false;
   }
 
   showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
@@ -801,6 +808,7 @@ export class ChatGptModalComponent implements OnInit {
     var self = this;
     self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
+    self.intentMessages.push({ role: 'user', content: self.inputText });
     this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     if (this.activeTab == 'askpdf') {
@@ -817,6 +825,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.CONTACTAGENT;
     }else if (this.activeTab == 'partneragent') {
       this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
+    } else if (this.activeTab == 'campaignagent') {
+      this.chatGptIntegrationSettingsDto.agentType = this.CAMPAIGNAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -824,6 +834,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     self.chatGptIntegrationSettingsDto.isContact = this.authenticationService.module.isContact;
+    self.chatGptIntegrationSettingsDto.contents = self.intentMessages;
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
       this.removeStyleForTextArea();
@@ -837,10 +848,12 @@ export class ChatGptModalComponent implements OnInit {
         if (statusCode === 200) {
           self.isTextLoading = false;
           let isReport = response.data.isReport;
+          self.chatGptIntegrationSettingsDto.isGlobalSearchDone = response.data.isGlobalSearchDone;
           console.log('API Response:', response);
           var content = response.data;
           if (content) {
             let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport });
             if (isReport == 'true') {
               try {
                 const cleanJsonStr = self.extractJsonString(message);
@@ -859,6 +872,7 @@ export class ChatGptModalComponent implements OnInit {
 
           } else {
             self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
           }
           this.trimmedText = '';
           if (!(self.inputText != undefined && self.inputText.length > 0)) {
@@ -872,12 +886,15 @@ export class ChatGptModalComponent implements OnInit {
           self.vectorStoreId = content.vectorStoreId;
           self.chatHistoryId = content.chatHistoryId;
           self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+          self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
         }
         self.stopStatusRotation();
         if (self.isResponseInProgress) {
           self.showOpenHistory = false;
           self.isCopyButtonDisplayed = false;
           self.messages = [];
+          self.intentMessages = [];
+          self.intentMessages = [];
           self.chatGptGeneratedText = '';
           self.isTextLoading = false;
           self.isValidInputText = false;
@@ -890,6 +907,7 @@ export class ChatGptModalComponent implements OnInit {
         console.log('API Error:', error);
         self.isTextLoading = false;
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
+        self.intentMessages.push({ role: 'assistant', content: self.properties.serverErrorMessage, isReport: 'false' });
         self.selectedPromptId = null;
         self.stopStatusRotation();
       }
@@ -903,6 +921,7 @@ export class ChatGptModalComponent implements OnInit {
     const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
     const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
      const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
+     const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
     if (textarea) {
       textarea.removeAttribute('style');
     }
@@ -921,7 +940,10 @@ export class ChatGptModalComponent implements OnInit {
     if (textarea5) {
       textarea5.removeAttribute('style');
     }
-    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5;
+    if (textarea6) {
+      textarea6.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5 || textarea6;
     if (textArea) {
         const chat = document.querySelector('.newChatlabel') as HTMLElement;
         const box = textArea.closest('.oliver_input') as HTMLElement;
@@ -1016,10 +1038,11 @@ export class ChatGptModalComponent implements OnInit {
     this.chatHistoryId = history.chatHistoryId;
     this.showOpenHistory = true;
     this.isSaveHistoryPopUpVisible = false;
+    this.chatGptIntegrationSettingsDto.isGlobalSearchDone = history.isGlobalSearchDone;
     if ((history.oliverChatHistoryType == this.INSIGHTAGENT && this.authenticationService.oliverInsightsEnabled && this.showOliverInsights)
       || (history.oliverChatHistoryType == this.BRAINSTORMAGENT && this.authenticationService.brainstormWithOliverEnabled && this.showBrainstormWithOliver)
       || (history.oliverChatHistoryType == this.SPARKWRITERAGENT && this.authenticationService.oliverSparkWriterEnabled && this.showOliverSparkWriter)
-      || (history.oliverChatHistoryType == this.CONTACTAGENT) || (history.oliverChatHistoryType == this.PARTNERAGENT)) {
+      || (history.oliverChatHistoryType == this.CONTACTAGENT) || (history.oliverChatHistoryType == this.PARTNERAGENT) || (history.oliverChatHistoryType == this.CAMPAIGNAGENT)) {
       this.isAgentSubmenuOpen = true;
     }
     this.getChatHistory(history.oliverChatHistoryType);
@@ -1041,6 +1064,8 @@ export class ChatGptModalComponent implements OnInit {
         return "contactagent";
       case this.PARTNERAGENT:
         return "partneragent";
+      case this.CAMPAIGNAGENT:
+        return "campaignagent";
     }
   }
 
@@ -1057,6 +1082,7 @@ export class ChatGptModalComponent implements OnInit {
           messages.forEach((message: any) => {
 
             if (message.role === 'assistant') {
+              this.intentMessages.push({ role: 'assistant', content: message.content, isReport: isReport });
               if (isReport == 'true') {
                 let reponseJson = this.extractJsonString(message.content);
                 message.content = this.parseOliverReport(reponseJson);
@@ -1065,7 +1091,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent') && this.checkKeywords(message.content)) {
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1270,6 +1296,8 @@ closeDesignTemplate(event: any) {
       this.oliverAgentAccessDTO.showOliverContactAgent = isChecked;
     } else if (agentType === this.PARTNERAGENT) {
       this.oliverAgentAccessDTO.showOliverPartnerAgent = isChecked;
+    } else if (agentType === this.CAMPAIGNAGENT) {
+      this.oliverAgentAccessDTO.showOliverCampaignAgent = isChecked;
     }
   }
 
@@ -1305,6 +1333,7 @@ closeDesignTemplate(event: any) {
           this.showOliverParaphraser = data.showOliverParaphraser;
           this.showOliverContactAgent = data.showOliverContactAgent;
           this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+           this.showOliverCampaignAgent = data.showOliverCampaignAgent;
           
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
@@ -1312,6 +1341,7 @@ closeDesignTemplate(event: any) {
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
           this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
           this.oliverAgentAccessDTO.showOliverPartnerAgent = this.showOliverPartnerAgent;
+           this.oliverAgentAccessDTO.showOliverCampaignAgent = this.showOliverCampaignAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentAccessSettings() ', error);
@@ -1329,12 +1359,14 @@ closeDesignTemplate(event: any) {
           this.showOliverParaphraser = data.showOliverParaphraser;
           this.showOliverContactAgent = data.showOliverContactAgent;
           this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+          this.showOliverCampaignAgent = data.showOliverCampaignAgent;
           this.oliverAgentAccessDTO.showOliverInsights = this.showOliverInsights;
           this.oliverAgentAccessDTO.showBrainstormWithOliver = this.showBrainstormWithOliver;
           this.oliverAgentAccessDTO.showOliverSparkWriter = this.showOliverSparkWriter;
           this.oliverAgentAccessDTO.showOliverParaphraser = this.showOliverParaphraser;
           this.oliverAgentAccessDTO.showOliverContactAgent = this.showOliverContactAgent;
           this.oliverAgentAccessDTO.showOliverPartnerAgent = this.showOliverPartnerAgent;
+          this.oliverAgentAccessDTO.showOliverCampaignAgent = this.showOliverCampaignAgent;
         }
       }, error => {
         console.log('Error in getOliverAgentConfigurationSettingsForVanityLogin() ', error);
@@ -1348,6 +1380,7 @@ closeDesignTemplate(event: any) {
     this.showOliverParaphraser = this.oliverAgentAccessDTO.showOliverParaphraser;
     this.showOliverContactAgent = this.oliverAgentAccessDTO.showOliverContactAgent;
     this.showOliverPartnerAgent = this.oliverAgentAccessDTO.showOliverPartnerAgent;
+    this.showOliverCampaignAgent = this.oliverAgentAccessDTO.showOliverCampaignAgent;
   }
     /** XNFR-982 end **/
 
@@ -1387,7 +1420,7 @@ closeDesignTemplate(event: any) {
 
   onOliverFlagsUpdate(flags: {
     showOliverInsights: boolean; showBrainstormWithOliver: boolean; showOliverSparkWriter: boolean;
-    showOliverParaphraser: boolean, showOliverContactAgent: boolean, showOliverPartnerAgent: boolean;
+    showOliverParaphraser: boolean, showOliverContactAgent: boolean, showOliverPartnerAgent: boolean, showOliverCampaignAgent: boolean;
   }) {
     this.showOliverInsights = flags.showOliverInsights;
     this.showBrainstormWithOliver = flags.showBrainstormWithOliver;
@@ -1395,6 +1428,7 @@ closeDesignTemplate(event: any) {
     this.showOliverParaphraser = flags.showOliverParaphraser;
     this.showOliverContactAgent = flags.showOliverContactAgent;
     this.showOliverPartnerAgent = flags.showOliverPartnerAgent;
+    this.showOliverCampaignAgent = flags.showOliverCampaignAgent;
   }
 
   createAsset(markdown: any) {
@@ -1421,6 +1455,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
+            this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
           }
         }
       }, error => {
@@ -1634,7 +1669,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
   parseOliverReport(jsonStr: string): ExecutiveReport {
     const j = JSON.parse(jsonStr);
 
-    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+    const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
     const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
 
@@ -1644,8 +1679,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
 
+    const deliveryStatusOverviewItems = j.delivery_status_overview && j.delivery_status_overview.items ? j.delivery_status_overview.items : [];
+
+     const topPerformingRecipientsItems = j.top_performing_recipients && j.top_performing_recipients.chart_data ? j.top_performing_recipients.chart_data : [];
+
+    const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
+
     const dealPipelinePrograssion = {
-      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
@@ -1660,14 +1701,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       }),
       categoriesString: '',
       seriesString: '',
-      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
-      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+      average_deal_value: j.pipeline_progression && j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression && j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
     };
 
-    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+    const campaignItems = j.campaign_performance_analysis && j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
 
     const campaignPerformanceAnalysis = {
-      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      title: j.campaign_performance_analysis && j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
       series: [{
         name: 'Count',
         colorByPoint: true,
@@ -1775,6 +1816,51 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         : 0,
     };
 
+    const deliveryStatusOverview = {
+      title: j.delivery_status_overview && j.delivery_status_overview.title
+        ? j.delivery_status_overview.title
+        : '',
+      categories: deliveryStatusOverviewItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: deliveryStatusOverviewItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      totalSent: j.delivery_status_overview && j.delivery_status_overview.total_sent
+        ? j.delivery_status_overview.total_sent
+        : '',
+      deliveryRate: j.delivery_status_overview && j.delivery_status_overview.delivery_rate
+        ? j.delivery_status_overview.delivery_rate
+        : 0,
+    };
+
+    const topPerformingRecipients = {
+      title: j.top_performing_recipients && j.top_performing_recipients.title
+        ? j.top_performing_recipients.title
+        : '',
+      categories: topPerformingRecipientsItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: topPerformingRecipientsItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+       items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1783,6 +1869,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       date_range: j && j.date_range ? j.date_range : '',
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
+      campaign_name : j && j.campaign_name ? j.campaign_name : '',
+      campaign_organized : j && j.campaign_organized ? j.campaign_organized : '',
+      campaign_launch_date : j && j.campaign_launch_date ? j.campaign_launch_date : '',
+      campaign_type : j && j.campaign_type ? j.campaign_type : '',
+      total_recipients : j && j.total_recipients ? j.total_recipients : 0,
+      email_sent : j && j.email_sent ? j.email_sent : 0,
+      click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
+      deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -1954,7 +2048,17 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       },
       playbookContentEngagementOverview : playbookContentEngagementOverview,
       assetEngagementOverview :assetEngagementOverview,
-      deal_interactions_and_revenue_impact: undefined
+
+      deal_interactions_and_revenue_impact: undefined,
+
+      campaign_funnel_analysis : campaignFunnelData,
+      deliveryStatusOverview : deliveryStatusOverview,
+      detailedRecipientAnalysis: {
+        title: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.title ? j.detailed_recipient_analysis.title : '',
+        description: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.description ? j.detailed_recipient_analysis.description : '',
+        items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
+      },
+      topPerformingRecipients : topPerformingRecipients,
     };
 
     return dto;
@@ -2064,5 +2168,14 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       this.resetValues();
     }
   }
+
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
 
 }

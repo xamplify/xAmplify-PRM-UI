@@ -521,15 +521,13 @@
                         </button>
                       </span>
                       </div>
-                      <span
-                        *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"
-                        class="info-text-color">
+                      <span  class="info-text-color" *ngIf=" team?.teamMemberGroupPartnersCount === 0  && team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
                         <strong>
                           <span
-                            [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span>
-                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
-                        </strong>
-                      </span>
+                            class="inactive-status">0</span>
+                        {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+                          </strong>
+                        </span>
                       <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
@@ -537,7 +535,7 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf=" editTeamMember && !loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <app-select-partners-and-share-leads *ngIf="!loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
                 <div class="col-lg-11 p0 mt10">
                   <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
                     (click)="addOrUpdateTeamMember()"><span
@@ -565,7 +563,29 @@
       </div>
       <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-
+        <div class="row">
+          <div class="col-lg-5 col-sm-6 col-xs-12 pull-right">
+            <div class="form-group">
+              <strong for="globalGroupSelect" style="font-weight: 500;">Select Team Member Group<span class="ml5"><i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+               title="Selected group will be assigned to all team members."></i></span></strong>
+              <div class="input-group">
+                <select id="globalGroupSelect" class="form-control" [(ngModel)]="selectedGlobalGroupId"
+                  (ngModelChange)="applyGroupToAllTeamMembers()" style="border-radius: 4px 0px 0px 4px !important;" >
+                  <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                    {{ teamMemberGroup.name }}
+                    <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
+                  </option>
+                </select>
+                <span class="input-group-btn">
+                  <button class="btn btn-info" [disabled]="!selectedGlobalGroupId" type="button" tabindex="-1"
+                    (click)="previewModules(selectedGlobalGroupId!)" style="padding: 8px 14px;">
+                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped silvertm tgrid" id="add-team-member-table" aria-describedby="TeamMemberList">
             <thead>
@@ -610,38 +630,42 @@
                     [disabled]="!teamMember.enableOption">
                   </switch>
                 </td>
-                <td>
-                  <div class="input-group spxni-width">
+                <td style="width: 25%;">
+                  <div class="input-group">
                     <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId"
-                      (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);">
+                      (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" style="border-radius: 4px 0px 0px 4px !important;">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                         {{teamMemberGroup?.name}}
                         <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                       </option>
                     </select>
+                    <span class="input-group-btn">
+                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button"
+                        tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)" style="padding: 8px 14px;">
+                        <i class="fa fa-eye white" aria-hidden="true"></i>
+                      </button>
+                    </span>
+                  </div>
                     <span class="info-text-color float-left"
-                      *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
+                      *ngIf="teamMember?.teamMemberGroupPartnersCount >= 0 && teamMember.teamMemberGroupId !== 0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
                       <strong>
                         <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span>
                         {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                       </strong>
                     </span>
-                    <span class="input-group-btn">
-                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button"
-                        tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
-                        <i class="fa fa-eye white" aria-hidden="true"></i>
-                      </button>
-                    </span>
-                  </div>
                 </td>
                 <!---Delete-->
                 <td>
-                  <a (click)="deleteRow(i,teamMember)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                  <div class="actions-block override-actions ActionAlign" style="float: none !important;" >
+                  <a class="custom-icon" (click)="deleteRow(i,teamMember)"><i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                  <div class="del-icon"></div>
+                  </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <button id="right" type="submit" class="button_blue bgcolor-unset" (click)="addTeamMembers()"><span
+          <button id="right" type="submit" class="button_blue bgcolor-unset mt10" (click)="addTeamMembers()"><span
               class="btn btn-primary transition txt_pd-top3">Save</span></button>
         </div>
       </div>
@@ -1073,7 +1097,7 @@
 
   <ng-template #inviteTeamMemberTemplate>
     <div class="hidden-xs pull-right downloadteam" style="margin-left: 7px;">
-      <button class="btn btn-primary button position-relative" (click)="openInviteTeamMemberModal()"
+      <button class="btn btn-primary button position-relative" (click)="!isLoggedInAsTeamMember && openInviteTeamMemberModal()"
         style="border-radius: 7px 0px 0px 7px!important;" translate>{{properties?.inviteATeamMember}}</button>
       <button class="btn btn-primary button border_btn" (click)="navigateToTeamMemberReports()"
         style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"

@@ -379,4 +379,36 @@ listDefaultTemplates(userId:any){
     (window.URL).revokeObjectURL(url);
   }
 
+  uploadCampaignDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let campaignIdRequestParameter = chatGptIntegrationSettingsDto.campaignId != undefined ? '&campaignId=' + chatGptIntegrationSettingsDto.campaignId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadCampaignDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + campaignIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  /** XNFR-1079  **/
+  downloadDocx(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + 'generate-docx/?access_token=' + this.authenticationService.access_token;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(url, chatGptSettings, {
+      headers,
+      responseType: 'blob' as 'json'
+    });
+  }
+
+  /** XNFR-1079  **/
+  downloadWordFile(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    this.downloadDocx(chatGptSettings).subscribe((blob: Blob) => {
+      this.downloadBlob(blob, 'document.docx');
+      this.referenceService.docxLoader = false;
+    }, error => {
+      console.error('Download failed', error);
+    });
+  }
+
 }

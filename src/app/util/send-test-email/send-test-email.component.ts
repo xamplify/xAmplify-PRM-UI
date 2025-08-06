@@ -107,6 +107,14 @@ export class SendTestEmailComponent implements OnInit {
   @Input() sendTestEmailDtoAttachments: any[] = [];
   hasVanityAccess: boolean = false;
 
+  showCCEmailInputField:boolean = false;
+  showBCCEmailInputField:boolean = false;
+
+  @ViewChild('ccTagInput') ccTagInput: SourceTagInput;
+  @ViewChild('bccTagInput') bccTagInput: SourceTagInput;
+  onAddedCc = this.beforeAdd.bind(this);
+  onAddedBcc = this.beforeAdd.bind(this);
+
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, 
     private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService, private sanitizer: DomSanitizer) { }
 
@@ -682,6 +690,8 @@ export class SendTestEmailComponent implements OnInit {
   sendWelcomeMailRemainder() {
     this.processing = true;
     this.sendTestEmailDto.toEmailIds = (this.sendTestEmailDto.toEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.ccEmailIds = (this.sendTestEmailDto.ccEmailIds || []).map(tag => tag.value);
+    this.sendTestEmailDto.bccEmailIds = (this.sendTestEmailDto.bccEmailIds || []).map(tag => tag.value);
     this.sendTestEmailDto.loggedInUserId = this.authenticationService.getUserId();
     this.sendTestEmailDto.companyProfileName = this.authenticationService.companyProfileName;
     this.prepareFormData();
@@ -709,35 +719,52 @@ export class SendTestEmailComponent implements OnInit {
     return text ? EMAIL_REGEXP.test(text) : false;
   }
 
-  beforeAdd(tag: any): Observable<any> {
-    const isPaste = !!tag['value'];
-    const email = isPaste ? tag.value : tag;
-    if (!this.isValidEmail(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['must_be_email']);
-    }
+  beforeAdd(tag: any, fieldType: 'to' | 'cc' | 'bcc'): Observable<any> {
+  let isPaste = false;
+   if (tag['value']) { isPaste = true; tag = tag.value; }
 
-    if (this.isDeactivatedDomain(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['deactivated_domain']);
-    }
+  // Clean trailing symbols
+  tag = tag.trim().replace(/[\/&$]+$/, '');
 
-    if (!this.isAllowedDomain(email)) {
-      return this.handleInvalidEmail(email, isPaste, this.errorMessages['invalid_domain']);
-    }
-
-    this.addFirstAttemptFailed = false;
-    return Observable.of(email);
-  }
-
-  private handleInvalidEmail(tag: string, isPaste: boolean, message: string): Observable<any> {
+  if (!this.isValidEmail(tag)) {
     if (!this.addFirstAttemptFailed) {
       this.addFirstAttemptFailed = true;
-      if (!isPaste) {
-        this.tagInput.setInputValue(tag);
+      const targetInput = this.getTagInputRef(fieldType);
+      if (!isPaste && targetInput) {
+        targetInput.setInputValue(tag);
       }
     }
-    return isPaste ? Observable.throw(message)
-      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+    return isPaste
+      ? Observable.throw(this.errorMessages['must_be_email'])
+      : Observable.of('').pipe(tap(() => {
+          const targetInput = this.getTagInputRef(fieldType);
+          if (targetInput) {
+            targetInput.setInputValue(tag);
+          }
+        }));
   }
+
+  if (this.isDeactivatedDomain(tag)) {
+    return Observable.throw(this.errorMessages['deactivated_domain']);
+  }
+
+  if (!this.isAllowedDomain(tag)) {
+    return Observable.throw(this.errorMessages['invalid_domain']);
+  }
+
+  this.addFirstAttemptFailed = false;
+  return Observable.of(tag);
+}
+
+private getTagInputRef(fieldType: 'to' | 'cc' | 'bcc') {
+  switch (fieldType) {
+    case 'to': return this.tagInput;
+    case 'cc': return this.ccTagInput;
+    case 'bcc': return this.bccTagInput;
+  }
+}
+
+
 
   mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
     const email = control.value;

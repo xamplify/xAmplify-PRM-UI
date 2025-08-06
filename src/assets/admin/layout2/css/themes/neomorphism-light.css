@@ -2227,7 +2227,7 @@ left-menu-color ul li a,
 .vanity_cards_blue {
   color:#000 !important
 }
-.table tbody tr:hover {
+.table tbody tr:hover, .tgrid > tbody > tr.content-in-view {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
   box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
 }
@@ -4724,5 +4724,5 @@ button.btn.btn-primary.dropdown-toggle.border_btn{
   box-shadow: unset !important;
 }
 .library-icon-share {
-    background-color: #d7e3d7!important;
+    background-color: #ddecdd!important;
 }

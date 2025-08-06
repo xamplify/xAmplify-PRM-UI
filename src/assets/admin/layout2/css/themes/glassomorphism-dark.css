@@ -3490,9 +3490,9 @@ i.download_file:hover {
   margin-left: 0px!important; 
   }
 /* manage-publish card */
-.border-b-unset:hover{
+/* .border-b-unset:hover{
 border-bottom: unset!important;
-}
+} */
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;
@@ -4229,7 +4229,7 @@ color: #fff !important;
   padding: 10px!important;
 }
 .border_btn{
-  border-left: 1px solid #026deb !important;
+  border-left: 1px solid #2b569d !important;
 }
 /* vendor landscape view css */
 .box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
@@ -4514,7 +4514,7 @@ markdown pre,.aligin-para{
   transform: scale(1.01);
 }
 button.btn.btn-primary.dropdown-toggle.border_btn{
-  border-left: 1px solid #1ca6f3 !important;
+  border-left: 1px solid #2b569d !important;
 }
 .oliveIcon {
   background: rgb(146 151 179 / 8%) !important;
@@ -4546,4 +4546,7 @@ table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1
 .front-count-card.active {
     border: 1.6px solid #007bff !important;
     backdrop-filter: blur(4px);
+}
+.asset-button svg {
+  fill: #fff !important;
 }

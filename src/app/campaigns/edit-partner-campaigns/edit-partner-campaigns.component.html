@@ -82,14 +82,14 @@
                               <div class="form-group" [attr.class]="subjectLineDivClass">
                                  <label for="exampleInputPassword1">Subject line</label>
                                  <span class="required"><strong> * </strong></span>
-                                 <div class="input-group merge-tag-input-border">
+                                 <div class="input-group">
                                     <input type="text"  autocomplete="off"  id="subjectLine" placeholder="{merge tag} + Subject line"
                                        class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine"
                                        (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                                     <span class="input-group-btn">
                                        <button class="btn btn-default" type="button" data-toggle="tooltip"
                                           data-placement="right" title="Insert Merge Tags"
-                                          (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                          (click)="openMergeTagsPopup('campaignSubjectLine',0)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 7.4px 14px;">
                                           <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                        </button>
                                     </span>
@@ -618,7 +618,7 @@
                                                                class="lableTitleDec">Subject
                                                                <strong class="required">*</strong>
                                                             </label>
-                                                            <div class="input-group merge-tag-input-border">
+                                                            <div class="input-group">
                                                                <input type="text" class="form-control" name="subject"
                                                                   [(ngModel)]="reply.subject"
                                                                   placeholder="{merge tag} + Subject line"
@@ -627,7 +627,7 @@
                                                                   <button class="btn btn-default" type="button"
                                                                      data-toggle="tooltip" data-placement="bottom"
                                                                      title="Insert Merge Tags"
-                                                                     (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
+                                                                     (click)="openMergeTagsPopup('nurture-campaign-reply',reply)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 7.4px 14px;">
                                                                      <i class="fa fa-plus-circle npcfs"
                                                                         aria-hidden="true"></i>
                                                                   </button>
@@ -787,7 +787,7 @@
                                                          id="click-subject-{{url.divId}}">Subject
                                                          <strong class="required" aria-hidden="true">*</strong>
                                                       </label>
-                                                      <div class="input-group merge-tag-input-border">
+                                                      <div class="input-group">
                                                          <input type="text" class="form-control" name="subject"
                                                             [(ngModel)]="url.subject"
                                                             placeholder="{merge tag} + Subject line" maxlength="1000">
@@ -795,7 +795,7 @@
                                                             <button class="btn btn-default" type="button"
                                                                data-toggle="tooltip" data-placement="bottom"
                                                                title="Insert Merge Tags"
-                                                               (click)="openMergeTagsPopup('nurture-web-site',url)">
+                                                               (click)="openMergeTagsPopup('nurture-web-site',url)" style="border-radius: 0px 6px 6px 0px;margin-left: -2px;padding: 7.4px 14px;">
                                                                <i class="fa fa-plus-circle npcfs"
                                                                   aria-hidden="true"></i>
                                                             </button>

@@ -355,7 +355,7 @@
                                  <div class="btn-group pull-right">
                                     <ng-container class='m10'>
                                        <span class="btn btn-xs l-g-view" data-toggle="tooltip" ng
-                                          data-placement="bottom" style="margin-right: 10px;" title="List View"
+                                          data-placement="bottom" style="margin-right: 8px;" title="List View"
                                           [class.disabled]="isListView" (click)="isListView = true"><i
                                              class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                        <span class="btn btn-xs l-g-view mr_4" data-toggle="tooltip"
@@ -1175,9 +1175,9 @@
                            <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                         </div>
                         <ng-template #filterButton>
-                           <div class="btn-group" style="margin-right: 10px;">
+                           <div class="btn-group" style="margin-right: 8px;">
                               <div class="inputs" style="float: right;display: flex;">
-                                 <div class="btn btn-xs l-g-view margin-space mt3 pull-right mr5" (click)="toggleFilterOption()">
+                                 <div class="btn btn-xs l-g-view margin-space mt3 pull-right mr7" (click)="toggleFilterOption()">
 												<span data-placement="left" data-toggle="tooltip" title="Filter">
 													<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 												</span>
@@ -1198,7 +1198,7 @@
                                        style="color: red; margin-left: -8px;margin-top: 15px;"></i>
                                  </div> -->
                                  <div
-                                    [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
+                                    [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts mr7':!referenceService.isMobileScreenSize()}">
                                     <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                                        (ngModelChange)="sortByOption($event, 'contacts')">
                                        <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -1291,12 +1291,12 @@
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs l-g-view"
                                        data-toggle="tooltip" *ngIf="!isPartner" title="Click here to email the list"
-                                       (click)="downloadUserListCsv()" style="margin-right: 10px;">
+                                       (click)="downloadUserListCsv()" style="margin-right: 8px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs l-g-view"
                                        data-toggle="tooltip" *ngIf=isPartner title="Click here to email the group"
-                                       (click)="downloadUserListCsv()" style="margin-right: 10px;">
+                                       (click)="downloadUserListCsv()" style="margin-right: 8px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <ul class="dropdown-menu pull-right">

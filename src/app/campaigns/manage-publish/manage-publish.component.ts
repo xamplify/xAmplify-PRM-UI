@@ -23,6 +23,7 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 declare var swal: any, $: any, flatpickr: any;
 
@@ -141,7 +142,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     unlockMdfFundingModuleName = XAMPLIFY_CONSTANTS.unlockMdfFunding;
     campaignName = "";
     campaignId: number;
+    campaign: any;
+    showAskOliverModalPopup: boolean =false;
+    chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
     /*XNFR-832*/
+    //XNFR-1073
+    partnerMarketingCampaign = false;
+    marketingModulesEnabled = false;
+    hasRedistributionAccess = false;
+    marketingModulesAccessForPartner = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -172,6 +181,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
+
     }
 
 
@@ -201,6 +211,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vanityUrlFilter = true;
         }
         this.pagination.archived = this.archived;
+        this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign;
+        
         this.pagination.campaignViewType = this.campaignViewType;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -224,6 +236,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
                         pagination.pagedItems.forEach(item => item['isExpand'] = false);
                         this.refService.loading(this.httpRequestLoader, false);
+                        this.marketingModulesEnabled = data.marketingModulesEnabled;
                     } else {
                         this.authenticationService.forceToLogout();
                     }
@@ -300,6 +313,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.archived = this.campaignService.archived;
+            this.partnerMarketingCampaign = this.campaignService.partnerMarketingCampaign;
+            this.hasRedistributionAccess = this.authenticationService.module.isReDistribution;
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }
@@ -360,6 +375,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
                 /**XNFR-832***/
                 self.isUnlockMdfFundsOptionEnabled =map['isUnlockMdfFundsOptionEnabled'];
+                self.marketingModulesEnabled = map['marketingModulesEnabled'];
+                self.marketingModulesAccessForPartner = map['marketingModulesAccessForPartner'];
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
@@ -390,6 +407,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     } else if (self.modulesDisplayType.isListView) {
                         self.campaignViewType = "list";
                     }
+                    this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign; 
                     if (showList || isTeamMemberFilter) {
                         if (!self.modulesDisplayType.isListView && !self.modulesDisplayType.isGridView) {
                             self.modulesDisplayType.isListView = true;
@@ -743,6 +761,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
         campaignData.userId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            campaignData.vanityUrlDomainName = this.authenticationService.companyProfileName;
+        }
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
                 this.clicked = false;
@@ -1158,6 +1179,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+
             if (this.categoryId > 0) {
                 this.navigatingToRelatedComponent = true;
                 if (this.teamMemberId != undefined && this.teamMemberId > 0) {
@@ -1177,6 +1200,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
             this.exportObject['campaignAnalyticsSettingsOptionEnabled']= this.campaignAnalyticsSettingsOptionEnabled;
             this.closeFilterOption();
         }
@@ -1358,6 +1382,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showArchivedCampaigns() {
         this.archived = true;
         this.campaignService.archived = true;
+        this.partnerMarketingCampaign = false;
+        this.campaignService.partnerMarketingCampaign = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -1366,6 +1394,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showActiveCampaigns() {
         this.archived = false;
         this.campaignService.archived = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
         this.resetPagination();
         this.refService.setDefaultDisplayType(this.modulesDisplayType);
         this.listCampaign(this.pagination);
@@ -1398,6 +1428,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.toDateFilterString = "";
         this.filterResponse.isVisible = false;
         this.filterMode = false;
+        this.campaignService.partnerMarketingCampaign = this.partnerMarketingCampaign;
+        this.pagination.showPartnerCreatedCampaigns = this.partnerMarketingCampaign;
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
@@ -1684,18 +1716,32 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
 
-    showGearIconOptions(button: HTMLElement,campaign: any, index: number) {
+    showGearIconOptions(button: HTMLElement, campaign: any, index: number) {
         /* dropdown menu for gear icon start start*/
         campaign.showGearIconOptions = true;
+
         setTimeout(() => {
             const menu = button.nextElementSibling as HTMLElement;
             if (!menu) return;
+
             const menuHeight = menu.offsetHeight;
             const buttonRect = button.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - buttonRect.bottom;
-            const spaceAbove = buttonRect.top;
-            campaign.dropUp = spaceBelow < menuHeight && spaceAbove > menuHeight;
+
+            const topSafeMargin = 50;       
+            const bottomSafeMargin = 16;     
+            const fixedHeaderHeight = 45;
+
+            const spaceBelow = window.innerHeight - buttonRect.bottom - bottomSafeMargin;
+            const spaceAbove = buttonRect.top - fixedHeaderHeight - topSafeMargin;
+            if (spaceBelow >= menuHeight) {
+                campaign.dropUp = false; 
+            } else if (spaceAbove >= menuHeight) {
+                campaign.dropUp = true;  
+            } else {
+                campaign.dropUp = spaceAbove > spaceBelow; 
+            }
         }, 0);
+
         /* End*/
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
             .subscribe(
@@ -2001,6 +2047,42 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 });
         }
 
+    }
+
+    
+    askOliver(campaign: any) {
+        this.campaign = campaign;
+        this.campaignName = campaign.campaignName;
+        this.campaignId = campaign.campaignId;
+        this.showAskOliverModalPopup = true;
+    }
+
+    closeAskAI(event: any) {
+        this.chatGptSettingDTO = event;
+        this.showAskOliverModalPopup = false;
+    }
+
+    //XNFR-1073
+    showPartnerCampaigns() {
+        this.partnerMarketingCampaign = true;
+        this.campaignService.partnerMarketingCampaign = true;
+        this.archived = false;
+        this.campaignService.archived = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        this.listCampaign(this.pagination);
+    }
+
+    showVendorCampaigns() {
+        this.partnerMarketingCampaign = false;
+        this.campaignService.partnerMarketingCampaign = false;
+        this.exportObject['showPartnerCreatedCampaigns'] = this.partnerMarketingCampaign;
+        this.exportObject['archived'] = this.archived;
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        this.listCampaign(this.pagination);
     }
 
 }

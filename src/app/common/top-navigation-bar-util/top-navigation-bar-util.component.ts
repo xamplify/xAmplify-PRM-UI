@@ -639,9 +639,9 @@ private beforeAdd(tag: any) {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
     //this.refService.goToRouter("/home/leads/manage");
     let isWelcomePage = this.router.url.includes('/welcome-page')
-        this.router.navigate(["/home/leads/manage"]).then(() => {
+        this.router.navigate(["/home/leads/add"]).then(() => {
           if(isWelcomePage){
-            this.location.replaceState("/home/leads/manage");
+            this.location.replaceState("/home/leads/add");
             window.location.reload();
           }
         });
@@ -651,9 +651,9 @@ private beforeAdd(tag: any) {
   navigateAndOpenAddDealsModalPopUp() {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
     let isWelcomePage = this.router.url.includes('/welcome-page')
-        this.router.navigate(["/home/deal/manage"]).then(() => {
+        this.router.navigate(["/home/deal/add"]).then(() => {
           if(isWelcomePage){
-            this.location.replaceState("/home/leads/manage");
+            this.location.replaceState("/home/leads/add");
             window.location.reload();
           }
         });
@@ -828,6 +828,7 @@ private beforeAdd(tag: any) {
           this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
           this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
           this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
+          this.authenticationService.oliverCampaignAgentEnabled = data.oliverCampaignEnabled;
 					//XNFR-276
           this.menuItems = data.menuItems;
 

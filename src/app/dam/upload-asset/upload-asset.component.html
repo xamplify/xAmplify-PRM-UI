@@ -70,7 +70,7 @@
                <ng-container *ngIf="!previewItems">
                   <div [hidden]="formLoader" class="row">
                      <div class="form-horizontal form-bordered form-label-stripped">
-                        <div class="portlet box">
+                        <div class="portlet box mb5">
                            <div class="">
                               <div class="col-md-12 col-lg-12">
                                  <div class="form-group">
@@ -144,7 +144,7 @@
                                        <!-- end here -->
                                        <!---Upload Asset-->
                                        <div *ngIf="!isBeeTemplatePdf">
-                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>
+                                          <span class ="edit_asset_text" [style.color]="invalidAssetName ? 'red':''"><strong>
                                              {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
                                           </span>
                                           <!-- <div class="row">
@@ -242,7 +242,7 @@
                                                 </div>
                                              </div>
                                           </div> -->
-                                          <div class="row mt5">
+                                          <div class="row mt5 edit_asset_row">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div">
                                                    <div [ngClass]="uploadedAssetName?.length > 0 ? 'files_asset' : 'files-div'">
