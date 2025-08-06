@@ -43,7 +43,26 @@ export interface ExecutiveReport {
   deliveryStatusOverview : DeliveryStatusOverview;
   detailedRecipientAnalysis : DetailedRecipientAnalysis<DetailedRecipientAnalysisItem>;
   topPerformingRecipients : TopPerformingRecipients<TopPerformingRecipientsItems>;
+  deal_interactions_and_revenue_impact :  DealInteractionsAndRevenueImpact;
+}
 
+
+export interface DealInteractionsAndRevenueImpact {
+    title: any;
+    description: any;
+    top_partners_by_deal_value: {
+        title: any;
+        categories: any;
+        revenue: string;
+        series: any;
+        categoriesString: string;
+        seriesString: string;
+    };
+    key_insights: {
+        title: any;
+        description: any;
+        items: any;
+    };
 }
 
 /* ----------  Re-usable building blocks ---------- */
