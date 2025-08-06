@@ -5352,6 +5352,12 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
       color: #e5e7eb;
     }
 
+    .note-text {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+    }
+
     @media (max-width: 1024px) {
       .kpi-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5410,19 +5416,19 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
           <h3>{{ report.report_recipient }}</h3>
           <span>{{ report.report_owner }}</span>
       </div>
-      <p>Reporting Period: {{ report.date_range }}</p>
+      
     </div>
   </div>
   
-  <section class="qbr-banner" *ngIf="report.kpi_overview">
+  <section class="qbr-banner" *ngIf="report.kpi_overview.items.length > 0">
     <h2>{{report.report_main_title}}</h2>
     <p class="banner-para">{{report.report_sub_heading}}</p>
     <div class="kpi-container">
         {{#report.kpi_overview.items}}
           <div class="kpi-card">
             <h3 class="green">{{ value }}</h3>
-            <p>{{name}}</p>
-            <span>{{notes}}</span>
+            <span>{{name}}</span>
+            <p>{{notes}}</p>
           </div>
         {{/report.kpi_overview.items}}
     </div>
@@ -5454,64 +5460,68 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
         
       </div>
 
-      <div class="content-card" *ngIf="report.deal_interactions_and_revenue_impact.key_insights">
+
+
+    <div class="content-card" *ngIf="report.deal_interactions_and_revenue_impact.key_insights.items.length > 0">
         <h4>{{ report.deal_interactions_and_revenue_impact.key_insights.title }}</h4>
         <p>{{ report.deal_interactions_and_revenue_impact.key_insights.description }}</p>
-        
         <div>
           {{#report.deal_interactions_and_revenue_impact.key_insights.items}}
-            <span class="dot blue-dot"></span>
-            <span>{{value }}</span>
-            <span>{{name}}</span>
-            <span>{{notes}}</span>
+            <div>
+                <span class="dot blue-dot"></span>
+                <span class="note-text">{{name}}</span> - <span class="note-text">{{notes}}</span>
+            </div>
+            </br>
           {{/report.deal_interactions_and_revenue_impact.key_insights.items}}
         </div>
-
       </div>
     </div>
   </section>
 
-  <section class="section-padding" *ngIf="report.lead_lifecycle_and_qualification_funnel">
+  <section class="section-padding" *ngIf="report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.lead_progression_funnel.items.length > 0">
     <div class="section-header">
       <h3>{{ report.lead_lifecycle_and_qualification_funnel.title }}</h3>
       <p>{{ report.lead_lifecycle_and_qualification_funnel.description }}</p>
     </div>
    
     <div class="grid-2-cols">
-
       <div class="content-card" *ngIf="report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel">
         <h4>{{ report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.title }}</h4>
         <p>{{ report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.description }}</p>
        
         <div class="progress-group">
           {{#report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.items}}
-            <div class="progress-header"><span>{{name}}</span><span>{{value}}<span
-                  class="percentage-text">({{percentage}}%)</span></span></div>
-            <div class="progress-bar">
-              <div class="progress-fill bar-contacted" style="width: {{percentage}}%"></div>
+            <div class="progress-header"><span>{{name}}</span> 
+                <span> total of {{count}} leads
+                <span class="percentage-text">({{conversion_rate}}%)</span></span>
             </div>
+            <div class="progress-bar">
+              <div class="progress-fill bar-contacted" style="width: {{conversion_rate}}"></div>
+            </div>
+            <span class="note-text"> {{notes}} </span>
           {{/report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.items}}
         </div>
       </div>
 
-      <div class="content-card" *ngIf="report.lead_lifecycle_and_qualification_funnel.funnel_analysis">
+      <div class="content-card" *ngIf="report.lead_lifecycle_and_qualification_funnel.funnel_analysis.items.length > 0">
         <div class="analysis-title">{{ report.lead_lifecycle_and_qualification_funnel.funnel_analysis.title }}</div>
         <p>{{ report.lead_lifecycle_and_qualification_funnel.funnel_analysis.description }}</p>
             
-        <div class="insight-block blue-border" *ngIf="report.lead_lifecycle_and_qualification_funnel.funnel_analysis.items">
+        <div>
           {{#report.lead_lifecycle_and_qualification_funnel.funnel_analysis.items}}
-            <div class="insight-title">{{name}}</div>
-            <div class="insight-text">{{description}}</div>
+            <div class="insight-block blue-border">
+                <div class="insight-title">{{name}}</div>
+                <div class="insight-text">{{notes}}</div>
+            </div>
+            </br>
           {{/report.lead_lifecycle_and_qualification_funnel.funnel_analysis.items}}
         </div>
       </div>
     </div>
   </section>
-
-
  
 
-  <div class="main-container" *ngIf="report.partner_analytics_strategic_revenue_drivers">
+  <div class="main-container" *ngIf="report.partner_analytics_strategic_revenue_drivers.items.length > 0">
     <div class="page-title">{{ report.partner_analytics_strategic_revenue_drivers.title }}</div>
     <div class="page-subtitle">{{ report.partner_analytics_strategic_revenue_drivers.description }}</div>
     <div class="table-card" *ngIf="report.partner_analytics_strategic_revenue_drivers.items"> 
@@ -5523,16 +5533,16 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
             <th>Partner Company</th>
             <th>Total Deals</th>
             <th>Deal Value</th>
-            <th>Avg Deal Size</th>
+            <th>Avg Deal Value</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-          {{#report.partner_analytics_strategic_revenue_drivers.items}}
-            <td>{{partner_company}}</td>
-            <td>{{total_deals}}</td>
-            <td>{{deal_value}}</td>
-            <td>{{avg_deal_size}}</td>
+            {{#report.partner_analytics_strategic_revenue_drivers.items}}
+                <td>{{partner_company}}</td>
+                <td>{{total_deals}}</td>
+                <td>{{deal_value}}</td>
+                <td>{{avg_deal_size}}</td>
             {{/report.partner_analytics_strategic_revenue_drivers.items}}
           </tr>
         </tbody>
@@ -5540,13 +5550,13 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
     </div>
   </div>
 
-  <div class="main-container" *ngIf="report.csuite_strategic_recommendations">
-    <div class="page-title">{{ report.csuite_strategic_recommendations.title }}</div>
-    <div class="page-subtitle">{{ report.csuite_strategic_recommendations.description }}</div>
+  <div class="main-container" *ngIf="report.c_suite_strategic_recommendations.items.length > 0">
+    <div class="page-title">{{ report.c_suite_strategic_recommendations.title }}</div>
+    <div class="page-subtitle">{{ report.c_suite_strategic_recommendations.description }}</div>
 
-    <div class="card-grid" *ngIf="report.csuite_strategic_recommendations.items">
+    <div class="card-grid" *ngIf="report.c_suite_strategic_recommendations.items">
       <div class="recommendation-card">
-        {{#report.csuite_strategic_recommendations.items}}
+        {{#report.c_suite_strategic_recommendations.items}}
         <div class="card-header">
           <div class="card-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -5575,7 +5585,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
             <p>{{action_required}}</p>
           </div>
         </div>
-        {{/report.csuite_strategic_recommendations.items}}
+        {{/report.c_suite_strategic_recommendations.items}}
       </div>
 
       
