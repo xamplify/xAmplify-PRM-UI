@@ -835,6 +835,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     self.chatGptIntegrationSettingsDto.isContact = this.authenticationService.module.isContact;
     self.chatGptIntegrationSettingsDto.contents = self.intentMessages;
+    self.chatGptIntegrationSettingsDto.isCampaignAgentEnabled = this.authenticationService.oliverCampaignAgentEnabled && this.showOliverCampaignAgent
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
       this.removeStyleForTextArea();
@@ -848,12 +849,13 @@ export class ChatGptModalComponent implements OnInit {
         if (statusCode === 200) {
           self.isTextLoading = false;
           let isReport = response.data.isReport;
+          let intent = response.data.intent;
           self.chatGptIntegrationSettingsDto.isGlobalSearchDone = response.data.isGlobalSearchDone;
           console.log('API Response:', response);
           var content = response.data;
           if (content) {
             let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport, intent: intent });
             if (isReport == 'true') {
               try {
                 const cleanJsonStr = self.extractJsonString(message);
@@ -864,15 +866,15 @@ export class ChatGptModalComponent implements OnInit {
               }
             }
 
-            self.messages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.messages.push({ role: 'assistant', content: message, isReport: isReport, intent: intent });
             self.threadId = content.threadId;
             self.vectorStoreId = content.vectorStoreId;
             self.chatHistoryId = content.chatHistoryId;
             self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
 
           } else {
-            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
-            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false', intent: '' });
+            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false', intent: '' });
           }
           this.trimmedText = '';
           if (!(self.inputText != undefined && self.inputText.length > 0)) {
@@ -1079,6 +1081,7 @@ export class ChatGptModalComponent implements OnInit {
         if (response.statusCode == 200) {
           let messages = response.data;
           let isReport = 'false';
+          let intent = "";
           messages.forEach((message: any) => {
 
             if (message.role === 'assistant') {
@@ -1087,10 +1090,11 @@ export class ChatGptModalComponent implements OnInit {
                 let reponseJson = this.extractJsonString(message.content);
                 message.content = this.parseOliverReport(reponseJson);
               }
-              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport, intent: intent });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
+              intent = message.intent
               if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {

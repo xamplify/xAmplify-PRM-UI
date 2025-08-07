@@ -20,6 +20,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   @Input() reportData: ExecutiveReport;
   @Input() reportType: any;
   @Input() activeTab: string;
+  @Input() intent: string;
 
   public currentYear: number = new Date().getFullYear();
 
@@ -4916,9 +4917,9 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
     buildIframe(): void {
         if (!this.reportData || !this.theme.lightHeaderColor) { return; }
         let iframeContentData = this.iframeContent;
-        if (this.activeTab === 'partneragent') {
+        if (this.activeTab === 'partneragent' || this.intent == 'partner') {
             iframeContentData = this.iframePartnerContent;
-        }else  if (this.activeTab === 'campaignagent') {
+        }else  if (this.activeTab === 'campaignagent' || this.intent == 'campaign') {
             iframeContentData = this.iframeCampaignContent;
         }
         const merged = Mustache.render(iframeContentData, {
