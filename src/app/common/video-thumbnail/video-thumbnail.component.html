@@ -12,7 +12,7 @@
          <span *ngIf="videoFile?.title?.length>20">...</span>
       </h4>
       <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25"
-         *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:25}}
+         *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:20}}
          <span *ngIf="videoFile.companyName?.length>25">...</span>
       </span>
       <h6 class='f-w-600 views-draft topand-bottom-padding' (click)="showPlayVideo(videoFile)"

@@ -190,6 +190,7 @@ export class AuthenticationService {
   oliverContactAgentEnabled: boolean = false;
   oliverPartnerAgentEnabled: boolean = false;
   oliverCampaignAgentEnabled: boolean = false;
+  marketingModulesAccessToPartner: boolean = false;
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;

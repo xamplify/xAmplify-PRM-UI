@@ -140,10 +140,11 @@ export class LmsService {
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
-   //XNFR-1032
-   getManageContentCounts(moduleContentType: any){
+  //XNFR-1032
+  getManageContentCounts(moduleContentType: any) {
     let userId = this.authenticationService.getUserId();
-    let findContentCounts = this.URL+'/manage/content/counts/'+userId+'/'+moduleContentType+'/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let findContentCounts = this.URL + '/manage/content/counts/' + userId + '/' + moduleContentType + '/' + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName;
     return this.authenticationService.callGetMethod(findContentCounts);
   }
 
