@@ -72,6 +72,9 @@ export const routes: Routes = [
 	{ path: 'home/dashboard/zoho-callback', component: VanitySocialContactsCallbackComponent },
 	{ path: 'home/dashboard/calendly-callback', component: VanitySocialContactsCallbackComponent },
 	{ path: 'home/dashboard/aircall-callback', component: VanitySocialContactsCallbackComponent },
+	/*** XNFR-1062 ***/
+    { path: 'home/dashboard/gmail-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/outlook-callback', component: VanitySocialContactsCallbackComponent },
 
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
@@ -118,8 +121,9 @@ export const routes: Routes = [
 
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
 			{ path: 'approval-hub', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
-                        { path: 'insights', loadChildren: 'app/insights/insights.module#InsightsModule', data: { preload: true } },
-                        { path: 'outlook', loadChildren: 'app/outlook-email/outlook-email.module#OutlookEmailModule', data: { preload: true } },
+            { path: 'insights', loadChildren: 'app/insights/insights.module#InsightsModule', data: { preload: true } },
+             /*** XNFR-1062 ***/
+            { path: 'mails', loadChildren: 'app/outlook-email/outlook-email.module#OutlookEmailModule', data: { preload: true } },
 
 		]
 	},

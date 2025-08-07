@@ -1,15 +1,54 @@
-<div class="row" *ngIf="!loading">
-  <div class="col-md-4">
+<div class="page-content" *ngIf="!loading">
+  <div class="col-md-12">
     <div class="portlet light inbox-list">
       <div class="portlet-title">
         <div class="caption">Inbox</div>
       </div>
       <div class="mail-threads">
-        <div *ngFor="let thread of threads" class="mail-thread" (click)="selectThread(thread)" [class.active]="selectedThread===thread">
-          <div class="subject">{{thread.subject}}</div>
-          <div class="meta">
-            <span class="from">{{thread.messages[0]?.from}}</span>
-            <span class="date pull-right">{{thread.messages[0]?.receivedDate | date:'short'}}</span>
+        <div class="email-list">
+          <div class="container-fluid">
+            <div class="email-item" *ngFor="let thread of threads; let i = index" (click)="selectThread(thread)" [class.active]="selectedThread===thread">
+              <div class="row email-row">
+                <div class="col-md-12">
+                  <div class="email-content">
+                    <!-- Checkbox -->
+                    <div class="email-checkbox">
+                      <label class="checkbox-label">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                    <!-- Star -->
+                    <div class="email-star">
+                      <button class="btn-star">
+                        <span class="glyphicon"></span>
+                      </button>
+                    </div>
+
+                    <!-- Email Details -->
+                    <div class="email-details">
+                      <div class="email-sender">
+                        {{getNameOnly(thread.messages[0]?.from)}} <span *ngIf="thread?.replyCount > 0">{{thread.replyCount}}</span>
+                      </div>
+
+                      <div class="email-subject-preview">
+                        <span class="email-subject">
+                          {{thread.subject}}
+                        </span>
+                        <span class="email-preview">
+                            <div class="body" [innerHTML]="getShortBody(thread.messages[0].body)"></div>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="email-meta">
+                      <div class="email-timestamp">
+                        {{thread.messages[0]?.timestamp}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -24,7 +63,7 @@
         <div *ngFor="let msg of selectedThread.messages" class="mail-message">
           <div class="header">
             <strong>{{msg.from}}</strong>
-            <span class="pull-right">{{msg.receivedDate | date:'medium'}}</span>
+            <span class="pull-right">{{msg.timestamp}}</span>
           </div>
           <div class="body" [innerHTML]="msg.body"></div>
         </div>

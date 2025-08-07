@@ -402,6 +402,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isContactStatusOptionClicked: boolean = false;
 
 	contactUploadManagementSettings: boolean = false;
+    /*** XNFR-1062 ***/
+	showMailIntegration: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2324,6 +2326,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
 			// XNFR-967 Contact Status
 			this.activateContactStatusMenuHeader();
+		} else if(this.activeTabName == 'mailIntegration') {
+			this.showMailIntegration = true;
+			this.activeTabHeader = this.properties.mailIntegration;
 		}
 		if (this.integrationTabIndex == 5) {
 			this.integrationTabIndex = 0;
