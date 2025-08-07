@@ -946,8 +946,12 @@ declare var $:any, Highcharts:any, swal: any;
   /****************Deal Registration***************************/
   getDealState(campaignViews: any) {
     this.registerLeadButtonError = false;
+    let vanityUrlDomainName = "";
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+        }
     if (campaignViews.userId != null && campaignViews.campaignId != null) {
-      this.campaignService.showRegisterLeadButton(campaignViews.campaignId).
+      this.campaignService.showRegisterLeadButton(campaignViews.campaignId, vanityUrlDomainName).
         subscribe(data => {
           if(data.statusCode==200){
             let map = data.map;
@@ -1096,8 +1100,8 @@ declare var $:any, Highcharts:any, swal: any;
             	this.isNavigatedThroughAnalytics = false;
                 this.isPartnerEnabledAnalyticsAccess = true;
                 this.isDataShare = true;
-            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && this.loggedInUserCompanyId == this.campaign.createdForCompanyId)) {
-              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && (this.loggedInUserCompanyId == this.campaign.createdForCompanyId || this.loggedInUserCompanyId == this.campaign.createdForCompanyId))) {
+              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared || this.loggedInUserCompanyId == this.campaign.createdForCompanyId;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
               if (data.campaignType === 'EVENT') {
