@@ -191,3 +191,7 @@ legend.scheduler-border {
   padding: 5px;
   border-radius: 3px;
 }
+.modal-copy-close{
+    width: 28px;
+    height: 28px;
+}

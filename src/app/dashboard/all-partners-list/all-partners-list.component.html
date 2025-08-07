@@ -1,8 +1,8 @@
-<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m pl5">
+<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 ml15m pl5 mb_pl5">
   <div class="panel panel-info mh480 panel-bgMain panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
-      <span class="pull-right mt25m  mobilesearchdisplay">
+      <span class="header-controls">
         <!-- XNFR-1015-->
         <button [disabled]="selectedPartnersMap.size === 0" class="pull-right  btn btn-xs l-g-view" data-placement="bottom" (click)="emitSelectedPartners()">
           <i aria-hidden=" true" class="fa fa-envelope p10" data-toggle="tooltip" title="Send reminder email"
@@ -28,8 +28,7 @@
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
       </button>
-        <div></div>
-        <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
+        <div class="input-icon right" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
