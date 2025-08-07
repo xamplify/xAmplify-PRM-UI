@@ -5601,13 +5601,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
           {{report.report_owner}}
         </div>
       </div>
-      <div class="footer-section">
-        <div class="footer-title">Report Details</div>
-        <div class="footer-text">
-          Updated: Monthly<br>
-          Next Review: Q3 2025
-        </div>
-      </div>
+      
       <div class="footer-section">
         <div class="footer-title">Data Sources</div>
         <div class="footer-text">
