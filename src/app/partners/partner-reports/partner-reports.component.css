@@ -151,6 +151,9 @@ img.brand-logo-custom {
   .mt_13 {
     margin-top: 13px;
   }
+  .rowPaddingCustomization {
+  margin-right:-15px !important;
+}
 }
 
 /* Partner Analytics Ui adjustments */
@@ -158,10 +161,10 @@ img.brand-logo-custom {
   padding: 0px !important;
 }
 .rowPaddingCustomization {
-  margin-right: -25px !important;
+  margin-right: -25px;
 }
 .rowPaddingCustomization1 {
-  margin-right: -55px !important;
+  margin-right: -55px;
 }
 .rowPaddingCustomization2 {
   margin-right: -25px !important;
@@ -222,7 +225,7 @@ img.brand-logo-custom {
 .pjCardTitlebg{    
   background-color: #d9edf7b0;
   border-bottom: 1px solid #ddd;
-  padding: 13px 16px 0px 16px !important;
+  padding: 13px 10px 0px 10px !important;
   margin: -7px -7px 0px -7px;
 }
 .row.rowPaddingCustomization4 {
@@ -278,4 +281,15 @@ img.brand-logo-custom {
 }
 .margin_top7{
   margin-top: 9px;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+.rowPaddingCustomization1{
+margin-right: -15px !important;
+}
+.row.rowPaddingCustomization4 {
+  margin-right: -14px;
+  margin-left: -14px;
+}
+.col-sm-5ths {
+    width: 33.3% !important;}
 }

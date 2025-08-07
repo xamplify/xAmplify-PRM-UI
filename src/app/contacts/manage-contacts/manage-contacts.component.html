@@ -1096,6 +1096,15 @@
                                        <!--XNFR-342-->
 
 
+                                       <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && module == 'partners'" data-toggle="tooltip"
+                                          data-placement="top" title="Ask Oliver" (click)="askOliver(contactList.id,contactList.name)">
+                                          <div class="oliveBackground">
+                                             <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                          </div>
+                                       </a>
+
+
+
                                        <a class="Iconhover custom-grid-icon"
                                           *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"
                                           data-toggle="tooltip" data-placement="top" title="Preview"

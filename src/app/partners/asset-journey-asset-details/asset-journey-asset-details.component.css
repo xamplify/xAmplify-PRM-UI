@@ -45,11 +45,6 @@
     width: 7px;
     height: 7px;
 }
-.search_download_align{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 span.btn-aligmntCu{
     display: flex;
     justify-content: flex-end;
@@ -103,4 +98,31 @@ span.filterActiveBg i {
 
 .defaultFilterACtiveBg {
     background-color: #f1f3fa;
+}
+.panel-heading-custom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.Responsivetitle{
+white-space: nowrap;
+ font-size: 16px;
+}
+.header-controls{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: flex-end;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .panel-heading-custom {
+    padding: 10px;
+  }
+  .header-controls {
+   justify-content: start;
+  }
+  .Responsivetitle{
+    margin-bottom: 10px;
+  }
 }

@@ -162,13 +162,35 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 if (!self.authenticationService.module.isMarketingCompany) {
                                     /**********Public/Private************** */
                                     dropDown += '<div class="form-group">';
-                                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                    dropDown += '<select class="form-control" id="pageType">';
-                                    if (pageType == "PRIVATE") {
+                                    dropDown += '<label style="color: #575757; font-size: 17px; font-weight: 500;">Select Page Type</label>';
+
+                                    dropDown += '<span id="pageTypeTooltipIcon" style="margin-left: 10px; cursor: pointer;" data-toggle="tooltip" data-placement="top" data-original-title="';
+                                    if (pageType === 'PUBLIC') {
+                                        dropDown += 'The Public page can be used to launch a public page campaign and can be accessed by anyone.';
+                                    } else if (pageType === 'PRIVATE') {
+                                        dropDown += 'The Private page can be used to launch a private page campaign and can be accessed by your partners only.';
+                                    } else {
+                                        dropDown += 'The Protected page requires xAmplify login credentials to view the page.';
+                                    }
+                                    dropDown += '"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+
+                                    dropDown += '<select class="form-control" id="pageType" onchange="';
+                                    dropDown += 'var icon = document.getElementById(\'pageTypeTooltipIcon\');';
+                                    dropDown += 'if (icon) {';
+                                    dropDown += 'var t = this.value === \'PUBLIC\' ? ';
+                                    dropDown += '\'The Public page can be used to launch a public page campaign and can be accessed by anyone.\' : ';
+                                    dropDown += 'this.value === \'PRIVATE\' ? ';
+                                    dropDown += '\'The Private page can be used to launch a private page campaign and can be accessed by your partners only.\' : ';
+                                    dropDown += '\'The Protected page requires xAmplify login credentials to view the page.\';';
+                                    dropDown += 'icon.setAttribute(\'data-original-title\', t);';
+                                    dropDown += 'if (window.jQuery && $(icon).tooltip) { $(icon).tooltip(\'dispose\').tooltip(); }';
+                                    dropDown += '}">';
+
+                                    if (pageType === 'PRIVATE') {
                                         dropDown += '<option value="PRIVATE" selected>PRIVATE</option>';
                                         dropDown += '<option value="PUBLIC">PUBLIC</option>';
                                         dropDown += '<option value="PROTECTED">PROTECTED</option>';
-                                    } else if (pageType == "PROTECTED") {
+                                    } else if (pageType === 'PROTECTED') {
                                         dropDown += '<option value="PRIVATE">PRIVATE</option>';
                                         dropDown += '<option value="PUBLIC">PUBLIC</option>';
                                         dropDown += '<option value="PROTECTED" selected>PROTECTED</option>';
@@ -238,14 +260,30 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                     let dropDown = '';
                                     if (!self.authenticationService.module.isMarketingCompany) {
                                         dropDown += '<div class="form-group">';
-                                        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                        dropDown += '<select class="form-control" id="pageType">';
+                                        dropDown += '<label style="color: #575757; font-size: 17px; font-weight: 500;">Select Page Type</label>';
+
+                                        dropDown += '<span id="pageTypeTooltipIcon" style="margin-left: 10px; cursor: pointer;" data-toggle="tooltip" data-placement="top" data-original-title="The Private page can be used to launch a private page campaign and can be accessed by your partners only.">';
+                                        dropDown += '<i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+
+                                        dropDown += '<select class="form-control" id="pageType" onchange="';
+                                        dropDown += 'var icon = document.getElementById(\'pageTypeTooltipIcon\');';
+                                        dropDown += 'if (icon) {';
+                                        dropDown += 'var t = this.value === \'PUBLIC\' ? ';
+                                        dropDown += '\'The Public page can be used to launch a public page campaign and can be accessed by anyone.\' : ';
+                                        dropDown += 'this.value === \'PRIVATE\' ? ';
+                                        dropDown += '\'The Private page can be used to launch a private page campaign and can be accessed by your partners only.\' : ';
+                                        dropDown += '\'The Protected page requires xAmplify login credentials to view the page.\';';
+                                        dropDown += 'icon.setAttribute(\'data-original-title\', t);';
+                                        dropDown += 'if (window.jQuery && $(icon).tooltip) { $(icon).tooltip(\'dispose\').tooltip(); }';
+                                        dropDown += '}">';
                                         dropDown += '<option value="PRIVATE">PRIVATE</option>';
                                         dropDown += '<option value="PUBLIC">PUBLIC</option>';
                                         dropDown += '<option value="PROTECTED">PROTECTED</option>';
                                         dropDown += '</select>';
+
                                         dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
                                         dropDown += '</div><br>';
+
                                     }
                                     /**********Folder List************** */
                                     dropDown += '<div class="form-group">';
