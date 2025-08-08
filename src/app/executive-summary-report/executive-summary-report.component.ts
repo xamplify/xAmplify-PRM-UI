@@ -20,6 +20,7 @@ export class ExecutiveSummaryReportComponent implements OnInit, AfterViewInit {
   @Input() reportData: ExecutiveReport;
   @Input() reportType: any;
   @Input() activeTab: string;
+  @Input() intent: string;
   @Input() isFromGroupOfPartners: boolean = false;
 
   public currentYear: number = new Date().getFullYear();
@@ -5699,12 +5700,12 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
 
     buildIframe(): void {
         if (!this.reportData || !this.theme.lightHeaderColor) { return; }
-        let iframeContentData = '';
-        if (this.activeTab === 'partneragent' && !this.isFromGroupOfPartners) {
+        let iframeContentData =  this.iframeContent;
+        if (this.activeTab === 'partneragent' && !this.isFromGroupOfPartners || this.intent == 'partner') {
             iframeContentData = this.iframePartnerContent;
         } else if (this.activeTab === 'partneragent' && this.isFromGroupOfPartners) {
             iframeContentData = this.iframePartnerGroupContent;
-        } else  if (this.activeTab === 'campaignagent') {
+        } else  if (this.activeTab === 'campaignagent' || this.intent == 'campaign') {
             iframeContentData = this.iframeCampaignContent;
         } else {
             iframeContentData = this.iframeContent;

@@ -1160,8 +1160,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    showRegisterLeadButton(campaignId: number) {
-        return this.http.get(this.URL + "/campaign/showRegisterLeadButton/" + campaignId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+    showRegisterLeadButton(campaignId: number, vanityUrlDomainName: string) {
+        let vanityUrl = vanityUrlDomainName ? 'vanityUrlCompany=' + vanityUrlDomainName + '&' : '';
+        return this.http.get(this.URL + "/campaign/showRegisterLeadButton/" + campaignId + "/" + this.authenticationService.getUserId() + "?" + vanityUrl + "access_token=" + this.authenticationService.access_token)
             .map(this.extractData).catch(this.handleError);
     }
 
