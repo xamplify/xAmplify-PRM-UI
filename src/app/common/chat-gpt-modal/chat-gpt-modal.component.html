@@ -950,7 +950,7 @@
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
             <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-             <app-executive-summary-report [activeTab]="activeTab"  *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             <app-executive-summary-report [activeTab]="activeTab" [intent]="message.intent" *ngIf="message?.isReport == 'true'" [reportData]="message.content">
              </app-executive-summary-report>
           </div>
         </div>
