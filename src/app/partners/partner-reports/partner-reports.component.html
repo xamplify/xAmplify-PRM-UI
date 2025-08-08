@@ -364,7 +364,7 @@
         <!---XNFR-220----->
 
 
-        <div class="col-xs-12 col-sm-5" style="padding-right: 5px;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
           <div class="portlet light" style="margin-bottom: 20px;">
             <div class="portlet-title pjCardTitlebg">
@@ -449,7 +449,7 @@
                     </th>
                     <th class="center-aligned" style="width:50%" scope="col">
                       {{authenticationService?.partnerModule?.customName}}</th>
-                    <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
+                    <th class="text-center" scope="col">LAST REMINDER SENT</th>
                     <th class="mAlign text-center" scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -462,7 +462,7 @@
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>
                     </td>
-                    <td class="hidden-xs text-center">
+                    <td class="text-center">
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>

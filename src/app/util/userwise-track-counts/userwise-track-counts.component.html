@@ -1,9 +1,22 @@
-<div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 ml15m">
+<div class="col-sm-12 col-md-12 col-lg-6 col-xs-12 ml15m">
   <div class="panel panel-info mh530 panel-bgMain panel-card br-10">
     <div class="panel-heading panel-heading-custom panel-bg" id="pj-track-playbook-details-div">
-      <h3 class="panel-title mt7">{{type | titlecase }} Counts</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
+      <h3 class="panel-title mt7 Responsivetitle">{{type | titlecase }} Counts
+         <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="tooltipText" *ngIf="authenticationService.module.isOrgAdmin ||
+    authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
+    authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || !authenticationService.module.isVendorTierTeamMember || authenticationService.module.isVendorTierAndPartner ||
+    authenticationService.module.isVendorTierAndPartnerTeamMember || authenticationService.module.isMarketingTeamMember || authenticationService.module.isMarektingAndPartner ||
+    authenticationService.module.isMarketingAndPartnerTeamMember"></i>
+    <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="partnerTeamMemberText" *ngIf="isVendorVersion"></i>
+    <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="vendorTeamMemberText" *ngIf="authenticationService.module.isOnlyPartner"></i>
+      </h3>
+      <span class="header-controls">
+        <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadUserWiseTrackCountsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+        <div class="input-icon right" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
@@ -12,19 +25,7 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
-      <button class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadUserWiseTrackCountsReport()">
-        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
-          data-original-title="Export to Excel"></i>
-      </button>
     </div>
-    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="tooltipText" *ngIf="authenticationService.module.isOrgAdmin ||
-    authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
-    authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || !authenticationService.module.isVendorTierTeamMember || authenticationService.module.isVendorTierAndPartner ||
-    authenticationService.module.isVendorTierAndPartnerTeamMember || authenticationService.module.isMarketingTeamMember || authenticationService.module.isMarektingAndPartner ||
-    authenticationService.module.isMarketingAndPartnerTeamMember" [ngStyle]="getIconStyle()"></i>
-    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="partnerTeamMemberText" *ngIf="isVendorVersion" [ngStyle]="getIconStyle()"></i>
-    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="vendorTeamMemberText" *ngIf="authenticationService.module.isOnlyPartner" [ngStyle]="getIconStyle()"></i>
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
     <div class="panel-body">
       <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">

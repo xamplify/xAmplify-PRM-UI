@@ -2052,6 +2052,9 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       },
       playbookContentEngagementOverview : playbookContentEngagementOverview,
       assetEngagementOverview :assetEngagementOverview,
+
+      deal_interactions_and_revenue_impact: undefined,
+
       campaign_funnel_analysis : campaignFunnelData,
       deliveryStatusOverview : deliveryStatusOverview,
       detailedRecipientAnalysis: {

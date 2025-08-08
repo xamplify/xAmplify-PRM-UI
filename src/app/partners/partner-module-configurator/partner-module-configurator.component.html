@@ -41,7 +41,7 @@
           <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
             [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
             aria-hidden="true"></i>
-            {{ (defaultModule.moduleId === 2 ? 'Redistribute ' : '') + defaultModule.moduleName }}<sup
+            {{ (defaultModule.moduleId === 2 ? 'Redistribute ' : defaultModule.moduleId === 5 ? 'Shared ' : '') + defaultModule.moduleName }}<sup
             *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
           <br>
         </td>
@@ -76,7 +76,7 @@
       <ng-container *ngIf="hasMarketingModulesAccessToPartner">
         <tr *ngFor="let marketingModule of marketingModules">
           <td scope="row" class="fstcw-tm" style="font-weight: 500;">
-            <i class="{{marketingModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
+            <i [class]="marketingModule?.moduleId === 5 ? 'fa fa-file-pdf-o mrfpx' : (marketingModule?.angularIcon + ' mrfpx')" aria-hidden="true"></i>
             {{ (marketingModule.moduleId === 6 ? 'Design Template' : marketingModule.moduleId === 2 ? 'Create Campaign' : marketingModule.moduleName) }}
           </td>
           <td class="override-actions">

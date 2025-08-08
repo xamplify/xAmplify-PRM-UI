@@ -33,6 +33,7 @@ export class DamService {
     private logger: XtremandLogger,private utilService:UtilService,private referenceService:ReferenceService) { }
 
   list(pagination: Pagination) {
+    pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     return this.utilPostListMethod("list", pagination);
   }
   listPublishedAssets(pagination: Pagination) {
@@ -161,49 +162,46 @@ export class DamService {
       .map(this.extractData)
       .catch(this.handleError);
   }
-  uploadOrUpdate(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
-      let url: string = "";
-      if (!damUploadPostDto.cloudContent) {
-          url = isAdd ? 'upload-content' : 'update';
-      } else {
-          url = isAdd ? 'upload-cloud-content' : 'update';
-      }
-      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-          {
-              type: "application/json"
-          }));
-      return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
-          .map(this.extractData)
-          .catch(this.handleError);
+
+ uploadOrUpdate(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
+    let url: string = "";
+    if (!damUploadPostDto.cloudContent) {
+      url = isAdd ? 'upload-content' : 'update';
+    } else {
+      url = isAdd ? 'upload-cloud-content' : 'update';
+    }
+    damUploadPostDto.companyProfileName = this.authenticationService.companyProfileName;
+    formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+      { type: "application/json" }));
+    return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
+      .map(this.extractData).catch(this.handleError);
   }
 
   uploadVideo(formData: FormData, damUploadPostDto: DamUploadPostDto) {
-      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-          {
-              type: "application/json"
-          }));
-      if (!damUploadPostDto.cloudContent && damUploadPostDto.source!= 'webcam') {
-          let requestURL = this.URL + "upload-content?access_token=" + this.authenticationService.access_token;
-          const req = new HttpRequest('POST', requestURL, formData, {
-              reportProgress: true,
-              responseType: 'json'
-          });
-          return this.http.request(req);
-      } else {
-    	  let url = damUploadPostDto.source!= 'webcam'?'upload-cloud-content' : 'upload-content';
-          let requestURL = this.URL + url +"?access_token=" + this.authenticationService.access_token;
-          return this.http.post(requestURL, formData)
-              .map(this.extractData)
-              .catch(this.handleError);
-      }
+    damUploadPostDto.companyProfileName = this.authenticationService.companyProfileName;
+    formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+      { type: "application/json" }));
+    if (!damUploadPostDto.cloudContent && damUploadPostDto.source != 'webcam') {
+      let requestURL = this.URL + "upload-content?access_token=" + this.authenticationService.access_token;
+      const req = new HttpRequest('POST', requestURL, formData, {
+        reportProgress: true,
+        responseType: 'json'
+      });
+      return this.http.request(req);
+    } else {
+      let url = damUploadPostDto.source != 'webcam' ? 'upload-cloud-content' : 'upload-content';
+      let requestURL = this.URL + url + "?access_token=" + this.authenticationService.access_token;
+      return this.http.post(requestURL, formData)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
   }
   
-  processVideo(formData: FormData, damUploadPostDto: DamUploadPostDto, path : string) {
-      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-          {
-              type: "application/json"
-          }));
-      return this.http.post(this.URL + "process-video?path="+path+"&access_token=" + this.authenticationService.access_token, formData)
+  processVideo(formData: FormData, damUploadPostDto: DamUploadPostDto, path: string) {
+    damUploadPostDto.companyProfileName = this.authenticationService.companyProfileName;
+    formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+      { type: "application/json" }));
+    return this.http.post(this.URL + "process-video?path=" + path + "&access_token=" + this.authenticationService.access_token, formData)
       .map(this.extractData)
       .catch(this.handleError);
   }
