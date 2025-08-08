@@ -208,7 +208,7 @@
                      ">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
                         (click)="openEmailTemplateInNewTab(campaign.emailTemplate)"
-                        [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
+                        [class.disabled]="!isPartnerEnabledAnalyticsAccess || campaign.createdForCompanyId == loggedInUserCompanyId ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -773,7 +773,7 @@
                            <div class="portlet-body text-center">
                               <i class="fa fa-user-circle"></i>
                               <h1>
-                                 <b>{{ campaignReport.leadCount }}</b>
+                                 <b>{{ campaignReport.leadCount }} ddd</b>
                               </h1>
                               <h5>Leads</h5>
                            </div>
