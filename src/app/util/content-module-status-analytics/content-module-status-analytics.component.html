@@ -1,4 +1,4 @@
-<div *ngIf="showApprovalTiles && !isPartnerView" class="p0" style="padding-bottom:10px;padding-right: 12px;">
+<div *ngIf="showApprovalTiles && !isPartnerView && !authenticationService.marketingModulesAccessToPartner" class="p0" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
 
    <ng-container *ngIf="!countsLoader && !contentCountsLoader">
@@ -154,7 +154,7 @@
    </ng-container>
 </div>
 
-<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles && !isPartnerView" class="front-count-row mb10">
+<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles && !isPartnerView && !authenticationService.marketingModulesAccessToPartner" class="front-count-row mb10">
    <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
 
    <div class="front-count-col" style="padding-left: 12px;">

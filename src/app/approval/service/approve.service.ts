@@ -60,8 +60,7 @@ export class ApproveService {
   /** XNFR-813 **/
   getStatusTileCountsByModuleType(moduleType: string) {
     let loggedInUserId = this.authenticationService.getUserId();
-    let companyProfileName = this.authenticationService.companyProfileName;
-    let url = this.approveUrl +'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+ this.QUERY_PARAMETERS + "&companyProfileName=" + companyProfileName;
+    let url = this.approveUrl +'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+ this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
 
