@@ -9,9 +9,15 @@ import { EmailThread } from './models/email-thread';
 export class OutlookEmailService {
   private URL = this.authenticationService.REST_URL + '/email/threads';
   private ACCESS_TOKEN_URL = 'access_token=' + this.authenticationService.access_token;
-
+  private _content: any;
   constructor(private http: Http, private authenticationService: AuthenticationService) {}
+  setContent(content: any) {
+    this._content = content;
+  }
 
+  getContent() {
+    return this._content;
+  }
   getGmailThreads(accessToken:string): Observable<EmailThread[]> {
     const url = this.URL + '/gmail?token='+ accessToken + '&'+this.ACCESS_TOKEN_URL;
     return this.authenticationService.callGetMethod(url)
@@ -24,9 +30,10 @@ export class OutlookEmailService {
      .map(res => res.data as EmailThread[]);
   }
 
-   getOutlookThreads(accessToken:string) {
+   getOutlookThreads(accessToken:string): Observable<EmailThread[]>  {
     const url = this.URL + '/outlook?token='+ accessToken + '&'+this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callGetMethod(url);
+    return this.authenticationService.callGetMethod(url)
+    .map(res => res.data as EmailThread[]);
   }
 
   authorizeGmail(){

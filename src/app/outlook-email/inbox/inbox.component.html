@@ -1,6 +1,8 @@
-<div class="page-content" *ngIf="!loading">
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"
+  style="padding-bottom:20px"></ngx-loading>
+<div class="page-content">
   <div class="col-md-12">
-    <div class="portlet light inbox-list">
+    <div class="portlet light">
       <div class="portlet-title">
         <div class="caption">Inbox</div>
       </div>
@@ -36,7 +38,7 @@
                           {{thread.subject}}
                         </span>
                         <span class="email-preview">
-                            <div class="body" [innerHTML]="getShortBody(thread.messages[0].body)"></div>
+                            <div class="body" [innerHTML]="getShortBody(thread.messages[0].bodyPreview)"></div>
                         </span>
                       </div>
                     </div>
@@ -54,7 +56,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-8" *ngIf="selectedThread">
+  <!-- <div class="col-md-8" *ngIf="selectedThread">
     <div class="portlet light thread-view">
       <div class="portlet-title">
         <div class="caption">{{selectedThread.subject}}</div>
@@ -69,8 +71,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+  <app-previewemail *ngIf="selectedThread"></app-previewemail>
+
 </div>
-<div *ngIf="loading" class="text-center">
+<!-- <div *ngIf="loading" class="text-center">
   <img src="assets/images/loader.gif" alt="Loading..." />
-</div>
+</div> -->

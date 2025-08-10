@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OutlookEmailService } from '../outlook-email.service';
 import { EmailThread } from '../models/email-thread';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-outlook-inbox',
@@ -14,7 +15,7 @@ export class InboxComponent implements OnInit {
   accessToken: string;
   statusCode: any;
   type:any;
-  constructor(private outlookEmailService: OutlookEmailService) { }
+  constructor(private outlookEmailService: OutlookEmailService,private router: Router) { }
 
   ngOnInit() {
     this.getAccessToken();
@@ -73,6 +74,8 @@ export class InboxComponent implements OnInit {
 
   selectThread(thread: EmailThread) {
     this.selectedThread = thread;
+    this.outlookEmailService.setContent(this.selectedThread);
+    this.router.navigateByUrl('/home/mails/preview');
   }
 
 

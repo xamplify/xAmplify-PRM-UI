@@ -27,7 +27,7 @@
 
             <a (click)="configureGmail()" class="btn btn-block btn-primary text-uppercase"
               *ngIf="gmailRibbonText == 'configure'" translate>configure</a>
-            <a  class="btn btn-block btn-primary text-uppercase"
+            <a (click)="reConfigMail('GMAIL')" class="btn btn-block btn-primary text-uppercase"
               *ngIf="gmailRibbonText == 'configured'" translate>re
               configure</a>
           </div>
@@ -60,7 +60,7 @@
 
             <a  (click)="configureOutlook()" class="btn btn-block btn-primary text-uppercase"
               *ngIf="outlookRibbonText == 'configure'" translate>configure</a>
-            <a  class="btn btn-block btn-primary text-uppercase"
+            <a (click)="reConfigMail('OUTLOOK')" class="btn btn-block btn-primary text-uppercase"
               *ngIf="outlookRibbonText == 'configured'" translate>re
               configure</a>
           </div>

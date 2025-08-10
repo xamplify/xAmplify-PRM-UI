@@ -1,0 +1,325 @@
+<div class="page-content">
+  <div>
+    <button class="action-btn star-btn" (click)="backToList()" title="Back to List">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="portlet light thread-view">
+    <div class="portlet-title">
+      <div class="caption">{{selectedThread?.subject}}</div>
+    </div>
+    <div class="thread-messages">
+      <div *ngFor="let msg of selectedThread?.messages" class="mail-message">
+        <div class="header">
+          <strong>{{msg?.from}}</strong>
+          <span class="pull-right">{{msg?.timestamp}}</span>
+        </div>
+        <div class="body" [innerHTML]="msg?.body?.content"></div>
+      </div>
+    </div>
+  </div>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Gmail Thread UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+      body {
+        background: #f6f8fc;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+
+      .email-thread {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .email-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px 10px 20px;
+        border-bottom: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+      }
+
+      .email-subject {
+        font-size: 22px;
+        font-weight: 400;
+        color: #202124;
+      }
+
+      .email-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      /* Top action icons and expand-all button */
+      .email-actions span,
+      .email-actions i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        border-radius: 50%;
+        margin-left: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .email-actions span:hover,
+      .email-actions i:hover {
+        background-color: #f1f3f4;
+      }
+
+      /* Expand all icon styles */
+      .expand-all-icon {
+        flex-direction: column;
+        line-height: 1;
+        font-size: 14px;
+      }
+
+      .expand-all-icon i {
+        margin: -3px 0;
+        /* Changed from -1px 0 to -6px 0 */
+        font-size: 11px;
+        width: 15px;
+        height: 15px;
+      }
+
+      /* Email items */
+      .email-item {
+        border-top: 1px solid #eee;
+        cursor: pointer;
+        padding: 15px 20px;
+        transition: background 0.3s ease;
+      }
+
+      .email-item:hover {
+        background-color: #f1f3f4;
+      }
+
+      .email-header {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .sender-block {
+        display: flex;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        background-color: #d93025;
+        color: #fff;
+        text-align: center;
+        line-height: 36px;
+        font-weight: bold;
+        border-radius: 50%;
+        margin-right: 10px;
+        font-size: 16px;
+      }
+
+      .sender-details {
+        line-height: 1.3;
+      }
+
+      .sender-name {
+        font-weight: bold;
+      }
+
+      .to-line {
+        font-size: 12px;
+        color: #666;
+      }
+
+      /* Email meta icons */
+      .email-meta {
+        font-size: 12px;
+        color: #555;
+        text-align: right;
+        display: flex;
+        align-items: center;
+      }
+
+      .email-meta i {
+        margin-left: 6px;
+        padding: 6px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .email-meta i:hover {
+        background-color: #dadada;
+      }
+
+      .email-body {
+        display: none;
+        margin-top: 15px;
+        white-space: pre-wrap;
+      }
+
+      .email-item.open .email-body {
+        display: block;
+      }
+
+      .email-item.open {
+        background-color: #fff;
+      }
+
+      @media (max-width: 600px) {
+
+        .email-header-top,
+        .email-header {
+          flex-direction: column;
+        }
+
+        .email-meta,
+        .email-actions {
+          text-align: left;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="email-thread">
+
+      <!-- TOP HEADER -->
+      <div class="email-header-top">
+        <div class="email-subject">{{selectedThread?.subject}}</div>
+        <div class="email-actions">
+          <span class="expand-all-icon" id="toggleAllBtn">
+            <i class="fa fa-chevron-up"></i>
+            <i class="fa fa-chevron-down"></i>
+          </span>
+          <i class="fa fa-print"></i>
+          <i class="fa fa-external-link"></i>
+        </div>
+      </div>
+
+      <!-- Email 1 -->
+      <div class="email-item">
+        <div class="email-header">
+          <div class="sender-block">
+            <div class="avatar">M</div>
+            <div class="sender-details">
+              <div class="sender-name">{{msg?.from}}</div>
+              <div class="to-line">to me <i class="fa fa-caret-down"></i></div>
+            </div>
+          </div>
+          <div class="email-meta">
+            {{msg?.timestamp}}
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-reply"></i>
+            <i class="fa fa-ellipsis-v"></i>
+          </div>
+        </div>
+        <div class="email-body">
+          My work status was on 01-08-2025.
+
+          Today I am working on:
+          1. Resolved document-related UI issues as reported by the QA team.
+          2. Updated a few images in the content module.
+          3. Fixed pagination alignment issues in the team member group.
+
+          Thanks & Regards,
+          Manikanta K.
+          Designation: UI/UX Developer,
+          Company Name: StratApps Solutions
+          Contact No: 9182284455
+        </div>
+      </div>
+
+      <!-- Email 2 -->
+      <!-- <div class="email-item">
+        <div class="email-header">
+          <div class="sender-block">
+            <div class="avatar">M</div>
+            <div class="sender-details">
+              <div class="sender-name">Manikanta Karri <small>&lt;manikanta@stratapps.com&gt;</small></div>
+              <div class="to-line">to Siva, Vamshi <i class="fa fa-caret-down"></i></div>
+            </div>
+          </div>
+          <div class="email-meta">
+            Aug 4, 2025, 7:13 PM (4 days ago)
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-reply"></i>
+            <i class="fa fa-ellipsis-v"></i>
+          </div>
+        </div>
+        <div class="email-body">
+          My work status was on 04-08-2025.
+
+          1. Addressed comments for the settings layout.
+          2. Reviewed QA bug fixes.
+        </div>
+      </div> -->
+
+      <!-- Email 3 -->
+      <!-- <div class="email-item">
+        <div class="email-header">
+          <div class="sender-block">
+            <div class="avatar">M</div>
+            <div class="sender-details">
+              <div class="sender-name">Manikanta Karri <small>&lt;manikanta@stratapps.com&gt;</small></div>
+              <div class="to-line">to Siva, Vamshi <i class="fa fa-caret-down"></i></div>
+            </div>
+          </div>
+          <div class="email-meta">
+            Aug 6, 2025, 7:18 PM (2 days ago)
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-reply"></i>
+            <i class="fa fa-ellipsis-v"></i>
+          </div>
+        </div> 
+        <div class="email-body">
+          My work status was on 06-08-2025.
+
+          1. Coordinated with Sudheer on a few UI enhancement changes in the Ask Oliver section.
+          2. XNFR-2057: Bug analysis ongoing.
+        </div>
+      </div> -->
+
+    </div>
+
+    <!-- jQuery & Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+      // Toggle single email
+      $('.email-item').click(function () {
+        $(this).toggleClass('open');
+      });
+
+      // Toggle all emails expand/collapse
+      var allOpen = false;
+      $('#toggleAllBtn').click(function (e) {
+        e.stopPropagation(); // Prevent triggering individual open/close
+        allOpen = !allOpen;
+        if (allOpen) {
+          $('.email-item').addClass('open');
+        } else {
+          $('.email-item').removeClass('open');
+        }
+      });
+    </script>
+
+  </body>
+</div>

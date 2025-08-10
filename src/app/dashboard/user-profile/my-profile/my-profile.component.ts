@@ -404,7 +404,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	contactUploadManagementSettings: boolean = false;
     /*** XNFR-1062 ***/
 	showMailIntegration: boolean = false;
-
+    mailsEnabled: boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -743,6 +743,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.welcomePagesAccess = result.welcomePages;
 			this.vendorMarketplace = result.vendorMarketplace;
 			this.partnerJourneyPageEnabled = result.partnerJourneyPageEnabled;
+			this.mailsEnabled = result.mailsEnabled; //XNFR-1062
 			this.ngxloading = false;
 			this.getForLandscapeAccessforVendorandPartner();
 		}, _error => {

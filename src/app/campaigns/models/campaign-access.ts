@@ -78,5 +78,8 @@ export class CampaignAccess {
 
     /** XNFR-987 **/
   nonVanityAccessEnabled: boolean = false;
+  
+  /*** XNFR-1062 ***/
+  mailsEnabled:boolean = false;
 
 }

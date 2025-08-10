@@ -512,7 +512,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('insights')){
 			this.mergeTag = "insights";
-		} else if(this.router.url.includes('mails')){
+		} else if(this.router.url.includes('mails')){ //XNFR-1062
 			this.mergeTag = "mails";
 		}	
 	}

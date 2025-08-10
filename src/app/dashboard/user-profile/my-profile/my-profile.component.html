@@ -367,7 +367,7 @@
                                         </li>
 
                                          <!-- Mail Integration-->
-                                          <li [ngClass]="{'active-tab': activeTabName == 'mailIntegration'}">
+                                          <li [ngClass]="{'active-tab': activeTabName == 'mailIntegration'}" *ngIf="mailsEnabled">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'mailIntegration'}"
                                                 (click)="activateTab('mailIntegration');clearCustomResponse()">{{properties.mailIntegration | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
