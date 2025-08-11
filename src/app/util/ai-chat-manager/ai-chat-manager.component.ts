@@ -977,6 +977,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerGroupAssistantId = data.partnerGroupAssistantId;
           }
         }
       }, error => {
@@ -1002,8 +1003,13 @@ export class AiChatManagerComponent implements OnInit {
 
   uploadPartnerDetails() {
     this.ngxLoading = true;
-    this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
-    this.activeTab = 'partneragent';
+    if (this.isFromGroupOfPartners) {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERGROUPAGENT";
+      this.activeTab = 'partnergroupagent';
+    } else {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+      this.activeTab = 'partneragent';
+    }
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
