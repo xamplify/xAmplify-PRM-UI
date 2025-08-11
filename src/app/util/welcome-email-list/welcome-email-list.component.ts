@@ -25,24 +25,37 @@ export class WelcomeEmailListComponent implements OnInit {
   sortOption: SortOption = new SortOption();
   pagination: Pagination = new Pagination();
   showEmailModalPopup: boolean = false;
+  scrollClass: string;
 
   constructor(private pagerService: PagerService, public referenceService: ReferenceService,private utilService: UtilService,public contactService: ContactService, public authenticationService: AuthenticationService) {
   this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    this.pagination.pageIndex = 1;
     this.getWelcomeEmailsList(this.pagination);
   }
   getWelcomeEmailsList(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.contactService.getWelcomeEmailsList(pagination).subscribe(
-      response => {
-        if (response.statusCode === 200) {
-          this.emailActivity = response.data;
-          this.pagination.totalRecords = response.data.length;
-          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
-        } else {
-          console.error("Error fetching welcome emails:", response);
+    this.pagination.searchKey = this.searchKey || '';
+    let pageIndex = pagination.pageIndex;
+    this.pagination = this.utilService.sortOptionValues(
+      this.sortOption.sendWelcomeMailSortOptions,
+      pagination
+    );
+    this.pagination.pageIndex = pageIndex;
+    this.contactService.getWelcomeEmailsList(this.pagination).subscribe(
+       (response: any) => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {
+          this.emailActivity= response.data;
+          this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }
       },
       error => {
@@ -59,10 +72,9 @@ export class WelcomeEmailListComponent implements OnInit {
     this.showEmailModalPopup = false;
   }
   search() {
-     this.getAllFilteredResults(this.pagination);
+    this.getAllFilteredResults(this.pagination);
   }
     getAllFilteredResults(pagination: Pagination) {
-    pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.sendWelcomeMailSortOptions, pagination);
     this.getWelcomeEmailsList(pagination);
@@ -81,6 +93,10 @@ export class WelcomeEmailListComponent implements OnInit {
   }
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
+    this.getWelcomeEmailsList(this.pagination);
+  }
+  getWelcomePageDetails(event: any) {
+    this.pagination = event;
     this.getWelcomeEmailsList(this.pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }

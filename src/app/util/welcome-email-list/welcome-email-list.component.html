@@ -88,11 +88,12 @@
       </table>
      
     </div>
-     <div class="pg8">
-          <app-pagination *ngIf="pagination.pagedItems.length > 0 " [pagination]="pagination" (notifyParent)="setPage($event)">
+     <div *ngIf="pagination.pagedItems.length > 0 " class="pg8" [hidden]="httpRequestLoader.isLoading">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getWelcomePageDetails($event)">
           </app-pagination>
         </div>
-        <div *ngIf="pagination.totalRecords==0" class="alert alert-info">
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"  class="alert alert-info">
           <strong translate>No Data Found.</strong>
         </div>
   </div>
