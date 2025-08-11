@@ -817,7 +817,7 @@
                                                    </a>
                                                    <!--XNFR-342---->
                                                    <!-- Ask OLiver -->
-                                                   <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && module == 'partners'"
+                                                   <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && module == 'partners' && authenticationService?.oliverPartnerAgentEnabled && showOliverPartnerAgent"
                                                       data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contactList.id,contactList.name)">
                                                       <div class="oliveBackground">
                                                          <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">

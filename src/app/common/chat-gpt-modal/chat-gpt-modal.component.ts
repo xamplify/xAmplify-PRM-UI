@@ -1087,8 +1087,12 @@ export class ChatGptModalComponent implements OnInit {
             if (message.role === 'assistant') {
               this.intentMessages.push({ role: 'assistant', content: message.content, isReport: isReport });
               if (isReport == 'true') {
-                let reponseJson = this.extractJsonString(message.content);
-                message.content = this.parseOliverReport(reponseJson);
+                try {
+                  let reponseJson = this.extractJsonString(message.content);
+                  message.content = this.parseOliverReport(reponseJson);
+                } catch (error) {
+                  isReport = 'false';
+                }
               }
               this.messages.push({ role: 'assistant', content: message.content, isReport: isReport, intent: intent });
             }
