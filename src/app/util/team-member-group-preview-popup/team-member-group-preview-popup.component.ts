@@ -16,8 +16,14 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   @Output() previewGroupPopupEventEmitter = new EventEmitter();
   @Input() agencyId:number;
   @Input() modulesFromUpgradeAccountModal:any
+  marketingModulesEnabled: boolean = false;
+  vendorCompanyProfileName: string = '';
+  marketingModules: Array<any> = [];
+  
   constructor(public authenticationService:AuthenticationService,public logger:XtremandLogger,public referenceService:ReferenceService,
-    public authencticationService:AuthenticationService) { }
+    public authencticationService:AuthenticationService) { 
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    }
 
   ngOnInit() {
     this.previewModules();
@@ -58,6 +64,8 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   private findTeamMemberGroupModules() {
     this.authenticationService.previewTeamMemberGroup(this.teamMemberGroupId).subscribe(
       response => {
+        this.marketingModulesEnabled = response.data.marketingModulesAccessToTeamMemberGroup;
+        this.marketingModules = response.data.marketingModuleDTOs;
         this.defaultModules = response.data.teamMemberModuleDTOs;
         this.emptyModules = this.defaultModules.length == 0;
         this.modulesLoader = false;
