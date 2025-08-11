@@ -158,6 +158,10 @@
             data-placement="bottom" data-toggle="tooltip" title="Send a welcome email to whitelisted domain users." [disabled]="pagination.totalRecords==0">
               Send Welcome Mail
              </button>
+             <button class="btn btn-primary button border_btn" (click)="navigateToWelcomeEmailList()"
+        style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
+        title="Welcome email list analytics" translate><i aria-hidden="true" class="fa fa-line-chart"></i>
+      </button>
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
               <i _ngcontent-c17="" aria-hidden="true" data-toggle="tooltip" title="Filter" class="fa fa-filter p10"></i>
             </button>

@@ -575,5 +575,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-1051 *****/
   searchTeamMemberGroupOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchTeamMemberGroup(); } }
-
+  navigateToWelcomeEmailList() {
+    this.referenceService.goToRouter("/home/partners/welcome-email-list");
+  }
 }

@@ -14,22 +14,28 @@
               <div class="view_emailcard">
                 <!-- Cards -->
                 <div class="profile_header">
-                  <div class="avatar2">
+                  <div  *ngIf="!isWelcomeEmail" class="avatar2">
                     <span class="avatar-initial">{{highlightLetter}}</span>
                   </div>
                   <div class="profile_info">
-                    <div *ngIf="contactName != ''">
+                    <div *ngIf="contactName != '' && !isWelcomeEmail">
                       <i aria-hidden="true" class="fas fa-user mr_6 icons_colors"></i>
                       <span data-placement="bottom" data-toggle="tooltip" title=""
                         class="view_name">{{contactName}}</span>
                     </div>
-                    <span class="email-id">
+                    <span *ngIf="!isWelcomeEmail" class="email-id">
                       <p data-placement="bottom" data-toggle="tooltip" title="">
                         <i class="fa fa-envelope mr_6 icons_colors" aria-hidden="true"></i>{{contactEmailId}}
                       </p>
                     </span>
                     <div class="text_email">
-                      <h5 class="m0 fs-10" *ngIf="emailActivity.ccEmailIdsString != undefined">
+                        <h5 class="m0 fs-10" *ngIf="emailActivity.toEmailIdsString">
+                          <span class="d-flex">
+                            <label class="mr2 activity-titles">TO:</label>
+                            {{ emailActivity.toEmailIdsString }}
+                          </span>
+                        </h5>
+                        <h5 class="m0 fs-10" *ngIf="emailActivity.ccEmailIdsString != undefined">
                         <span class="d-flex">
                           <label class="mr2 activity-titles">CC:</label>
                           {{emailActivity.ccEmailIdsString}}
@@ -41,7 +47,7 @@
                           {{emailActivity.bccEmailIdsString}}
                         </span>
                       </h5>
-                      <h5 class="m0 fs-10">
+                      <h5 *ngIf="!isWelcomeEmail" class="m0 fs-10">
                         <span class="d-flex">
                           <label class="mr2 activity-titles">From:</label>
                           {{emailActivity.senderEmailId}}
@@ -82,13 +88,43 @@
                   </h6>
                 </div>
               </h5>
-            </div>
-          </div>
+              <h5 *ngIf="isWelcomeEmail && welcomeAttachments.length">
+                <label class="mr5 activity-title">Attachments:</label>
+              
+                <div class="portlet light">
+                  <h6 class="m0">
+                    <span *ngFor="let att of welcomeAttachments">
+                      <a *ngIf="att.path; else missingFile" class="bg-soft-info" target="_blank" [href]="att.path">
+                        {{ att.name }}
+                      </a>
+                      <ng-template #missingFile>
+                        <a class="bg-soft-info" (click)="att.uploadedFile = true">
+                          {{ att.name }}
+                        </a>
+                      </ng-template>
+                      <span *ngIf="att.uploadedFile" class="text-danger" id="filePathError">
+                        Unable to load the file.
+                        <p (click)="att.uploadedFile = false">
+                          <i class="fa fa-times"></i>
+                        </p>
+                      </span>
+                    </span>
+                  </h6>
+                </div>
+              </h5>
+              </div>
+              </div>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Close</button>
       </div>
     </div>
+    <button 
+    class="btn Btn-Primary" 
+    [disabled]="hasRestrictedLinks" 
+    title="Contains restricted links">
+    Send Email
+  </button>
   </div>
 </div>

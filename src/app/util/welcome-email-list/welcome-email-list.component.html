@@ -1,0 +1,101 @@
+<div class="page-content">
+  <div class="page-bar filteralign mb-height_auto" style="height:48px;">
+     <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a (click)="navigateToRouter('home')">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li> 
+     <li>
+        <i aria-hidden="true"></i>
+        <a (click)="navigateToRouter('partner')">Onboarding Partner</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a>Welcome Email Analytics</a>
+      </li> 
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+    <div class="welcome-email-header">
+      <h4 class=" pull-left">List of Companies</h4>
+      <div class="welcome-email-controls">
+        <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view mr5" data-toggle="tooltip" title="Export to Excel"
+        (click)="downloadWelcomeEmailsList()" [disabled]="pagination?.totalRecords === 0">
+          <i aria-hidden="true" class="fas fa-file-export p10"></i>
+        </button>
+        <div class="mr5">
+          <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows" style="width: 150px;"
+           [(ngModel)]="sortOption.sendWelcomeMailSortOptions"
+                        (ngModelChange)="sortWelcomeEmails($event)">
+            <option *ngFor="let option of sortOption.sendWelcomeMailOptions"
+                          [ngValue]="option">{{option.name}}</option>
+          </select>
+        </div>
+        <div class="portlet-input input-inline">
+          <div class="input-icon right search_sort_shadows">
+            <input type="text" style="height: 34px;" class="form-control PartnerSearchBox" placeholder="Search"
+              [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+              (keypress)="eventHandler($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+              (click)="searchKey='';search()"></button>
+            <button type="submit" class="search-box-item-click only_partner" (click)="search()">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt10">
+    <div class="table-responsive">
+      <table class='table tgrid'>
+        <thead>
+          <tr>
+            <th>Email Subject</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Welcome Mail Sent On</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let email of pagination.pagedItems">
+            <td>{{ email.subject }}</td>
+            <td class="text-center">
+              <span class="view-banner" [ngClass]="{
+              'bgc-green': email.status === 'Sent',
+              'bg-failed': email.status === 'Failed',
+              'digital-sign-banner': email.status === 'Delivered',
+              'bg-bounced': email.status === 'Bounced'
+            }">
+                {{ email.status }}
+              </span>
+            </td>
+            <td class="text-center">
+              <h6>
+                <app-display-date-and-time [dateAndTimeUTCString]="email.sentOn"></app-display-date-and-time>
+              </h6>
+            </td>
+            <td class="text-center">
+              <div class="actions-block override-actions mb_whitespace" style="float:none;">
+                <a (click)="previewMailData(email.userId)" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Show Preview">
+                  <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                  <div class="clickicons"></div>
+                </a>
+              </div>
+            </td>
+        </tbody>
+      </table>
+     
+    </div>
+     <div class="pg8">
+          <app-pagination *ngIf="pagination.pagedItems.length > 0 " [pagination]="pagination" (notifyParent)="setPage($event)">
+          </app-pagination>
+        </div>
+        <div *ngIf="pagination.totalRecords==0" class="alert alert-info">
+          <strong translate>No Data Found.</strong>
+        </div>
+  </div>
+  <app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
+  (notifyClose)="closeModalPopup()" [isWelcomeEmail]="true"></app-preview-email-activity>
+</div>
