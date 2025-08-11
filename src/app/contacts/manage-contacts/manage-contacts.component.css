@@ -479,3 +479,8 @@ h6 {
   height: 21px;
   object-fit: contain;
 }
+.oliverImgIcon {
+    width: 19px;
+    height: 19px;
+    filter: brightness(0) invert(1);
+}
