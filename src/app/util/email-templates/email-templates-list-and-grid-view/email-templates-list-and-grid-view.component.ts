@@ -371,7 +371,8 @@ deleteEmailTemplate(id: number, name: string) {
             $.each(result, function(index, value) {
               campaignNames += (index + 1) + ". " + value + "\n"+"\n";
             });
-            let updatedMessage = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)\n\n" + campaignNames;
+            let partnerMessage = this.authenticationService.marketingModulesAccessToPartner ? ".\n\n" : " / Redistributed Campaign(s).\n\n";
+            let updatedMessage = "This template is being used in Campaign(s) / Auto Response(s)" + partnerMessage + campaignNames;
             this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
             this.referenceService.loading(this.httpRequestLoader, false);
           }
