@@ -18,12 +18,15 @@ export class MailIntegrationComponent implements OnInit {
   type: string;
   statusCode: any;
   accessToken: string;
+  activeGamil:boolean = false;
+  activeOutlook:boolean = false;
   constructor(private outlookEmailService: OutlookEmailService, private authenticationService: AuthenticationService, public logger: XtremandLogger,public referenceService: ReferenceService) { }
 
 
   ngOnInit() {
     this.getAccessToken();
   }
+
   getAccessToken() {
     this.loading = true;
     this.outlookEmailService.getAccessToken().subscribe(
@@ -31,10 +34,13 @@ export class MailIntegrationComponent implements OnInit {
         this.statusCode = result.statusCode;
         if (result.data && result.data.length > 0) {
           result.data.forEach(record => {
+           this.activeGamil= record.active;
             if (record.type === 'OUTLOOK') {
               this.outlookRibbonText = 'configured';
+              this.activeOutlook= record.active;
             } else if (record.type === 'GMAIL') {
               this.gmailRibbonText = 'configured';
+              this.activeGamil= record.active;
             }
           });
         } else {

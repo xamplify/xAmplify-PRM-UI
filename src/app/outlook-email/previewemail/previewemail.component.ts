@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OutlookEmailService } from '../outlook-email.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-previewemail',
@@ -9,7 +11,7 @@ import { OutlookEmailService } from '../outlook-email.service';
 })
 export class PreviewemailComponent implements OnInit {
   selectedThread: any;
-  constructor(private router: Router, private outlookEmailService: OutlookEmailService) { }
+  constructor(private router: Router, private outlookEmailService: OutlookEmailService,private vanityURLService: VanityURLService,public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.selectedThread = this.outlookEmailService.getContent();
@@ -28,6 +30,13 @@ export class PreviewemailComponent implements OnInit {
 
     const emailMatch = cleanInput.match(/<([^>]+)>/);
     return emailMatch ? emailMatch[1].trim() : '';
+  }
+htmlString: string;
+htmlContent: any;
+  getBodyContent(bodyContent: string): string {
+    let htmlString = this.vanityURLService.sanitizeHtmlWithImportant(bodyContent)
+    this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(htmlString);
+    return this.htmlContent;
   }
 
 }

@@ -14,7 +14,7 @@
 
             <div class="ribbon draft config integration-ribbon" style="left:10px"
               *ngIf="gmailRibbonText == 'configured'">
-              <span [style.background-color]="'green'">{{gmailRibbonText}}</span>
+              <span [style.background-color]="'green'">{{activeGamil ? 'Active':gmailRibbonText}}</span>
             </div>
             <div class="ribbon draft integration-ribbon" style="left:10px" *ngIf="gmailRibbonText != 'configured'">
               <span [style.background-color]="'yello'">{{gmailRibbonText}}</span>
@@ -47,7 +47,7 @@
 
             <div class="ribbon draft config integration-ribbon" style="left:10px"
               *ngIf="outlookRibbonText == 'configured'">
-              <span [style.background-color]="'green'">{{outlookRibbonText}}</span>
+              <span [style.background-color]="'green'">{{activeOutlook? 'Active':outlookRibbonText}}</span>
             </div>
             <div class="ribbon draft integration-ribbon" style="left:10px" *ngIf="outlookRibbonText != 'configured'">
               <span [style.background-color]="'yello'">{{outlookRibbonText}}</span>

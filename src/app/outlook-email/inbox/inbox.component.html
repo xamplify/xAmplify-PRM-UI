@@ -3,8 +3,11 @@
 <div class="page-content">
   <div class="col-md-12">
     <div class="portlet light">
+       <ng-container *ngIf="!loading && threads && threads.length > 0">
+        <div class="alert alert-danger"><strong>Configure Your Mail Settings.</strong></div>
+      </ng-container>
       <div class="portlet-title">
-        <div class="caption">Inbox</div>
+        <!-- <div class="caption">All</div> -->
       </div>
       <div class="mail-threads">
         <div class="email-list">
@@ -38,7 +41,7 @@
                           {{thread.subject}}
                         </span>
                         <span class="email-preview">
-                            <div class="body" [innerHTML]="getShortBody(thread.messages[0].bodyPreview)"></div>
+                            <div class="body" [innerHTML]="getShortBody(thread.messages[0].body)"></div>
                         </span>
                       </div>
                     </div>

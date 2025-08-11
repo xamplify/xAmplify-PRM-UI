@@ -82,7 +82,7 @@ export class InboxComponent implements OnInit {
   getShortBody(body: string): string {
     if (!body) return '';
     const plainText = body.replace(/<[^>]+>/g, '');
-    const short = plainText.length > 45 ? plainText.substr(0, 49) + '...' : plainText;
+    const short = plainText.length > 20 ? plainText.substr(0, 20) + '...' : plainText;
     return '-' + short;
   }
 
