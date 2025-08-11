@@ -157,13 +157,27 @@
                                     <h6 class="xamplify-ellipsis GridViewCotent" title="{{emailTemplate?.category}}" data-toggle="tooltip" data-placement="top">
                                         <span><b>Folder: </b>{{emailTemplate?.category}}</span>
                                     </h6>
-                                    <h6 class="GridViewCotent" *ngIf="emailTemplate.type=='PARTNER'">
-                                        <b>Shared On:</b>
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"></app-timestamp>
-                                        <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
-                                            [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                            data-toggle="tooltip" data-placement="top" title="Spam score">{{emailTemplate.spamScore}}</span>
-                                    </h6>
+                                    <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                                        <h6 class="xamplify-ellipsis GridViewCotent">
+                                            <b>Shared On:</b>
+                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"></app-timestamp>
+                                            <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
+                                                [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+                                                data-toggle="tooltip" data-placement="top" title="Spam score">{{emailTemplate.spamScore}}</span>
+                                        </h6>
+                                        <h6 class="xamplify-ellipsis GridViewCotent" title="{{emailTemplate?.vendorName}}" data-toggle="tooltip"
+                                            data-placement="top">
+                                            <b>Shared By: </b><span>{{emailTemplate.vendorName}}</span>
+                                        </h6>
+                                        <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
+                                            title="{{emailTemplate.vendorOrganizationName}}">
+                                            <b>From: </b><span>{{emailTemplate.vendorOrganizationName}}</span>
+                                        </h6>
+                                        <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
+                                            title="{{emailTemplate.vendorCampaignName}}">
+                                            <b>Campaign Name: </b><span>{{emailTemplate.vendorCampaignName}}</span>
+                                        </h6>
+                                    </ng-container>
                                     <h6 class="GridViewCotent" *ngIf="emailTemplate.type!='PARTNER'">
                                         <b translate>Created On: </b>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"></app-timestamp>

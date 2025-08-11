@@ -143,8 +143,7 @@ export class LmsService {
   //XNFR-1032
   getManageContentCounts(moduleContentType: any) {
     let userId = this.authenticationService.getUserId();
-    let companyProfileName = this.authenticationService.companyProfileName;
-    let findContentCounts = this.URL + '/manage/content/counts/' + userId + '/' + moduleContentType + '/' + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName;
+    let findContentCounts = this.URL + '/manage/content/counts/' + userId + '/' + moduleContentType + '/' + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(findContentCounts);
   }
 

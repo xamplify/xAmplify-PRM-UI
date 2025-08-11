@@ -70,7 +70,7 @@
 											<td *ngIf="(!isPartnerView && asset.videoId)" class="hidden-xs text-center" style="width: 10%;">
 												<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO"
 													[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName"
-													[processing]="asset?.publishingOrWhiteLabelingInProgress" [hideDetails]="true"></app-video-thumbnail>
+													[processing]="asset?.publishingOrWhiteLabelingInProgress" [hideDetails]="true" [fromOliver]="FromOliverPopUp"></app-video-thumbnail>
 											</td>
 											<td>
 												<h6 class="moreipsis" data-toggle="tooltip" data-placement="top"

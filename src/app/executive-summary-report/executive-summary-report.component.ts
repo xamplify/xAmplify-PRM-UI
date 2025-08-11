@@ -5411,7 +5411,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
         <p>{{ report.subtitle }}</p>
       </div>
     </div>
-    <div class="report-info">
+    <div class="report-info" *ngIf="report.report_recipient">
       <div class="report-info">
           <span>Prepared for</span>
           <h3>{{ report.report_recipient }}</h3>
@@ -5442,7 +5442,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
     </div>
     <div class="flex-container">
 
-      <div class="content-card" *ngIf="report.deal_interactions_and_revenue_impact.top_partners_by_deal_value">
+      <!-- <div class="content-card" *ngIf="report.deal_interactions_and_revenue_impact.top_partners_by_deal_value">
         <h4>{{ report.deal_interactions_and_revenue_impact.top_partners_by_deal_value.title }}</h4>
         <p>{{ report.deal_interactions_and_revenue_impact.top_partners_by_deal_value.description }}</p>
          
@@ -5459,7 +5459,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
           
         </div>
         
-      </div>
+      </div> -->
 
 
 
@@ -5500,6 +5500,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
               <div class="progress-fill bar-contacted" style="width: {{conversion_rate}}"></div>
             </div>
             <span class="note-text"> {{notes}} </span>
+            </br>
           {{/report.lead_lifecycle_and_qualification_funnel.lead_progression_funnel.items}}
         </div>
       </div>
@@ -5586,6 +5587,8 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
             <p>{{action_required}}</p>
           </div>
         </div>
+        </br>
+        </br>
         {{/report.c_suite_strategic_recommendations.items}}
       </div>
 
