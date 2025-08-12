@@ -606,7 +606,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }

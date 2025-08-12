@@ -6562,7 +6562,7 @@ iframeLeadContent: any = `<!DOCTYPE html>
             iframeContentData = this.iframePartnerContent;
         }else  if (this.activeTab === 'campaignagent') {
             iframeContentData = this.iframeCampaignContent;
-        }else  if (this.activeTab === 'leadagent') {
+        }else  if (this.activeTab === 'leadagent' || this.activeTab === 'chatHistoryTab') {
             iframeContentData = this.iframeLeadContent;
         }
         const merged = Mustache.render(iframeContentData, {

@@ -86,6 +86,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
   private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
+  private readonly LEADAGENT = "LEADAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -920,8 +921,9 @@ export class ChatGptModalComponent implements OnInit {
     const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
     const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
     const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
-     const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
-     const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
+    const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea7 = document.getElementById('askMeTextarea7') as HTMLTextAreaElement | null;
     if (textarea) {
       textarea.removeAttribute('style');
     }
@@ -943,13 +945,16 @@ export class ChatGptModalComponent implements OnInit {
     if (textarea6) {
       textarea6.removeAttribute('style');
     }
-    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5 || textarea6;
+    if (textarea7) {
+      textarea7.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 || textarea5 || textarea6 || textarea7;
     if (textArea) {
-        const chat = document.querySelector('.newChatlabel') as HTMLElement;
-        const box = textArea.closest('.oliver_input') as HTMLElement;
-        if (chat && box) {
-          chat.removeAttribute('style');
-          
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textArea.closest('.oliver_input') as HTMLElement;
+      if (chat && box) {
+        chat.removeAttribute('style');
+
       }
     }
   }
@@ -1032,6 +1037,9 @@ export class ChatGptModalComponent implements OnInit {
 
   showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
+    if (tab === 'leadagent') {
+      tab = 'chatHistoryTab';
+    }
     this.setActiveTab(tab);
     this.threadId = history.threadId;
     this.vectorStoreId = history.vectorStoreId;
@@ -1066,6 +1074,8 @@ export class ChatGptModalComponent implements OnInit {
         return "partneragent";
       case this.CAMPAIGNAGENT:
         return "campaignagent";
+      case this.LEADAGENT:
+        return "leadagent";
     }
   }
 
@@ -1091,7 +1101,7 @@ export class ChatGptModalComponent implements OnInit {
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat') && this.checkKeywords(message.content)) {
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat' || this.activeTab == 'chatHistoryTab') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
