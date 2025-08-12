@@ -284,7 +284,8 @@
                     <div class="chat-container">
                       <div #markdownComponent class="chat-history">
                         <markdown *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content">
+                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content"
+                         [isFromGroupOfPartners]="isFromGroupOfPartners">
                         </app-executive-summary-report>
                       </div>
                     </div>

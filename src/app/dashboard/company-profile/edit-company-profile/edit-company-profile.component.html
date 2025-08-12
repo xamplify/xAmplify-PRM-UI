@@ -415,6 +415,12 @@
 													<th scope="row">Insights</th>
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.insights" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
+
+												<!--XNFR-1062-->
+												<tr>
+													<th scope="row">Mail Enable</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.mailsEnabled" [ngModelOptions]="{standalone: true}"></td>
+												</tr>
 												<!--XNFR-832-->
 												<tr *ngIf="marketing || orgAdmin">
 													<th scope="row">Unlock MDF Funding</th>

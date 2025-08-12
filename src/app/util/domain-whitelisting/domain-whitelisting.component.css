@@ -73,3 +73,10 @@ i.eyeCu {
   font-size: 12px;
   padding: 5px 10px;
 }
+.border_btn{
+  border-left: 1px solid #2b569d;
+}
+.downloadteam{
+    display: flex;
+    align-items: center;
+}

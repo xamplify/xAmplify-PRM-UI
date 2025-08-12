@@ -1,9 +1,14 @@
-<div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 ml15m">
+<div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 ml15m">
   <div class="panel panel-info mh480 panel-bgMain panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
-      <span class="pull-right mt25m mobilesearchdisplay">
-        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
+      <span class="header-controls">
+      <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadInteractedAndNonInteractedTracksReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+        <div class="input-icon right" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
@@ -12,11 +17,6 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
-      <button class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadInteractedAndNonInteractedTracksReport()">
-        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
-          data-original-title="Export to Excel"></i>
-      </button>
     </div>
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>

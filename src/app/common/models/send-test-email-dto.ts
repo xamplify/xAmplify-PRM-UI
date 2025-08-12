@@ -17,5 +17,6 @@ export class SendTestEmailDto {
   toEmailIds = [];
   companyProfileName: string = "";
   emailAttachmentDTOs = [];
-
+  sentOn: Date = new Date();
+  status: string = "";
 }

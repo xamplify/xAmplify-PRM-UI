@@ -216,8 +216,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
 					this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
 					this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
-					 this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
-					this.authenticationService.oliverCampaignAgentEnabled = data.oliverCampaignAgentEnabled;
+					this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
+          this.authenticationService.oliverCampaignAgentEnabled = data.oliverCampaignAgentEnabled;
+					this.authenticationService.marketingModulesAccessToPartner = data.marketingModulesAccessToPartner;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -515,6 +516,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('insights')){
 			this.mergeTag = "insights";
+		} else if(this.router.url.includes('mails')){ //XNFR-1062
+			this.mergeTag = "mails";
 		}	
 	}
 	

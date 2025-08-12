@@ -17,4 +17,10 @@ export class EmailActivity {
     fullName:any;
     addedForEmailId:any;
     templateId:number = 0;
+    sentOn: Date = new Date();
+    status: string = "";
+    toEmailIdsString:any;
+    attachmentPaths:any;
+    fileNames:any;
+    emailActivityId: number = 0;
 }

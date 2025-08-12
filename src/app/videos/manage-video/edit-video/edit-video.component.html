@@ -448,7 +448,7 @@
 										</div>
 									</div>
 									<!---XNFR-255-->
-									<div class="form-group" *ngIf="hasShareWhiteLabeledContentAccess">
+									<div class="form-group" *ngIf="hasShareWhiteLabeledContentAccess && !authenticationService?.marketingModulesAccessToPartner">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px"
 											translate>White Labeled:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
@@ -491,8 +491,9 @@
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
 										<app-partner-company-and-groups
 											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany
-											&& ((!authenticationService?.approvalRequiredForAssets && saveVideoFile?.approvalStatus !== 'REJECTED')
-                                             || (authenticationService?.approvalRequiredForAssets && ((isApprover && saveVideoFile?.createdByAnyApprover)) || saveVideoFile?.approvalStatus === 'APPROVED'))"
+												&& ((!authenticationService?.approvalRequiredForAssets && saveVideoFile?.approvalStatus !== 'REJECTED')
+                                             	|| (authenticationService?.approvalRequiredForAssets && ((isApprover && saveVideoFile?.createdByAnyApprover)) 
+												|| saveVideoFile?.approvalStatus === 'APPROVED')) && !authenticationService?.marketingModulesAccessToPartner"
 											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
 											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
 											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"

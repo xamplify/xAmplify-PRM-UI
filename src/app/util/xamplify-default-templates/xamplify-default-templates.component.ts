@@ -751,10 +751,14 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
 
       var bee = null;
       request(
-          'POST',
-          'https://auth.getbee.io/apiauth',
-          'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
-          'application/x-www-form-urlencoded',
+        'POST',
+        'https://auth.getbee.io/loginV2',
+        JSON.stringify({
+          client_id: this.authenticationService.beePageClientId,
+          client_secret: this.authenticationService.beePageClientSecret,
+          uid: 'bee-1305'
+        }),
+        'application/json',
           function( token: any ) {
               BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
                   bee = beePluginInstance;
@@ -1136,12 +1140,16 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           }
                       };
 
-                      var bee = null;
-                      request(
-                          'POST',
-                          'https://auth.getbee.io/apiauth',
-                          'grant_type=password&client_id=' + authenticationService.beePageClientId + '&client_secret=' + authenticationService.beePageClientSecret + '',
-                          'application/x-www-form-urlencoded',
+                    var bee = null;
+                    request(
+                      'POST',
+                      'https://auth.getbee.io/loginV2',
+                      JSON.stringify({
+                        client_id: this.authenticationService.beePageClientId,
+                        client_secret: this.authenticationService.beePageClientSecret,
+                        uid: 'bee-1305'
+                      }),
+                      'application/json',
                           function (token: any) {
                               BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
                                   bee = beePluginInstance;

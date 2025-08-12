@@ -365,6 +365,15 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'callIntegrations'}"></ng-template>
                                             </a>
                                         </li>
+
+                                         <!-- Mail Integration-->
+                                          <li [ngClass]="{'active-tab': activeTabName == 'mailIntegration'}" *ngIf="mailsEnabled">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'mailIntegration'}"
+                                                (click)="activateTab('mailIntegration');clearCustomResponse()">{{properties.mailIntegration | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'mailIntegration'}"></ng-template>
+                                            </a>
+                                        </li>
                                         
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
@@ -516,7 +525,7 @@
                                             </a>
                                         </div>
                                         <ul id="approvalSettingsTabIcon" class="nav collapse in">
-                                            <ng-container>
+                                            <ng-container *ngIf="!authenticationService?.marketingModulesAccessToPartner">
                                                 <!-- XNFR-781 -->
                                                 <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"
@@ -2346,6 +2355,12 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'callIntegrations'}"
                                          *ngIf="showCallIntegrations">
                                             <app-call-integrations></app-call-integrations>
+                                        </div>
+
+                                         <!-- Mail integration -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'mailIntegration'}"
+                                         *ngIf="showMailIntegration">
+                                            <app-mail-integration></app-mail-integration>
                                         </div>
 
                                         <!-- Your Templates TAB -->

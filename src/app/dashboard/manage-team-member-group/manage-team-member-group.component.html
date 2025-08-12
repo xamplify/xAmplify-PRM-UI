@@ -73,8 +73,8 @@
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required">*</span>
-        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name" [ngModelOptions]="{standalone: true}" 
+          class="form-control" (input)="validateForm()" maxlength="255" [disabled]="previewGroup" />
         <!-- <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" /> -->
         <span class="required"

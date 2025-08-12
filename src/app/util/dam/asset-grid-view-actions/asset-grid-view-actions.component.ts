@@ -6,13 +6,14 @@ import { ActionsDescription } from '../../../common/models/actions-description';
 import { ActivatedRoute } from '@angular/router';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+import { Properties } from 'app/common/models/properties';
 
 declare var $:any,swal:any;
 @Component({
   selector: 'app-asset-grid-view-actions',
   templateUrl: './asset-grid-view-actions.component.html',
   styleUrls: ['./asset-grid-view-actions.component.css'],
-  providers: [ActionsDescription]
+  providers: [ActionsDescription,Properties]
 })
 export class AssetGridViewActionsComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
@@ -43,7 +44,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   isOliverCalled: boolean;
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute) {
+    public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute,public properties: Properties) {
 	  this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-169****/
     this.viewType = this.route.snapshot.params['viewType'];

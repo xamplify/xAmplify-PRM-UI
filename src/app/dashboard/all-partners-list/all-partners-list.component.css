@@ -72,3 +72,45 @@ input[type="checkbox"] {
   display: block;
 }
 /*** XNFR-1015 ***/
+@media screen and (min-width: 768px) and (max-width:1024px) {
+.pl5{
+  padding-left: 15px!important;
+}
+}
+.panel-heading{
+  padding: 6px 10px;
+}
+.panel-info > .panel-heading { background-color: #d9edf7b3;}
+.panel-heading-custom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.Responsivetitle{
+white-space: nowrap;
+}
+.header-controls{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: flex-end;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .panel-heading-custom {
+    padding: 10px;
+  }
+  .header-controls {
+   justify-content: start;
+   gap: 5px;
+  }
+  .Responsivetitle{
+    margin-bottom: 10px;
+  }
+  .mh480{
+    height: auto;
+  }
+  .mb_pl5{
+  padding-left: 15px!important;
+  }
+}
