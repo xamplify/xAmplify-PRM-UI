@@ -180,7 +180,8 @@ export class Properties {
 	calendarIntegrations = "Calendar Integrations";
 	/**XNFR-908**/
 	callIntegrations = "Call Integrations";
-
+    /*** XNFR-1062 ***/
+	mailIntegration = "Mail Integration";
 
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";

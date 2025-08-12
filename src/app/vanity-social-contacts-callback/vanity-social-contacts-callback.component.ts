@@ -239,7 +239,15 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 				this.calendarIntegrationCallback(code, "calendly");
 			} else if (this.router.url.includes("dashboard/aircall-callback")) {
 				this.callIntegrationCallback(code, "aircall");
-			} else {
+			} 
+			/*** XNFR-1062 ***/
+			else if(this.router.url.includes("dashboard/gmail-callback")){
+				this.callIntegrationCallback(code, "gmail");
+			}else if(this.router.url.includes("dashboard/outlook-callback")){
+				this.callIntegrationCallback(code, "outlook");
+			} 
+			/*** XNFR-1062 ***/
+			else {
 				this.socialContactsCallback(queryParam, domain);
 			}
 		}
@@ -291,7 +299,14 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						if (vanityUrlFilter == 'true') {
 							if (type == 'aircall') {
 								this.postingMessage = "isAircallAuth";
+							} 
+							/*** XNFR-1062 ***/
+							else if (type == 'gmail') {  
+								this.postingMessage = "isGmailAuth";
+							} else if (type == 'outlook') {
+								this.postingMessage = "isOutlookAuth";	
 							}
+							/*** XNFR-1062 ***/
 							this.postingMessageToParentWindow(this.postingMessage);
 						}
 						else {
@@ -307,6 +322,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "callIntegrationCallback()");
 		}
 	}
+
+	
 
 
 

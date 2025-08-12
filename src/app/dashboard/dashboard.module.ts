@@ -132,6 +132,8 @@ import { CallIntegrationsComponent } from './call-integrations/call-integrations
 import { CallIntegrationSettingsComponent } from './call-integration-settings/call-integration-settings.component';
 import { PartnerContactUploadManagementSettingsComponent } from './partner-contact-upload-management-settings/partner-contact-upload-management-settings.component';
 import { ContactStatusDropDownComponent } from './contact-status-drop-down/contact-status-drop-down.component';
+/*** XNFR-1062 ***/
+import { MailIntegrationComponent } from './mail-integration/mail-integration.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
@@ -230,6 +232,7 @@ import { ContactStatusDropDownComponent } from './contact-status-drop-down/conta
         CallIntegrationSettingsComponent,
         PartnerContactUploadManagementSettingsComponent,
         ContactStatusDropDownComponent,
+        MailIntegrationComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
