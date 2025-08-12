@@ -203,9 +203,9 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of campaign')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
 
-            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the campaign')">Give me the details of the lead</button>
-            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of campaign')">Generate an Executive Summary...</button>
-            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the lead</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -564,7 +564,7 @@
                               <span *ngIf="selectedLead?.lastName?.length > 25">...</span>
                             </a>
                           </div>
-                          <div *ngIf="selectedLead?.email" class="published-on">Email Id:{{ selectedCampaign?.email}}
+                          <div *ngIf="selectedLead?.email" class="published-on">Email Id:{{ selectedLead?.email}}
                           </div>
                         </div>
                         <div class="Ai-file-details">
@@ -589,9 +589,9 @@
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
             </button> -->
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
@@ -606,6 +606,9 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Give me the details of the campaign')">Give me the details of the campaign</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of campaign')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
               
               </div>
               <div *ngIf="isFromFolderView">

@@ -769,7 +769,7 @@
                   [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
                   (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
                   (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
-                  (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
+                  (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)" (showOliver)="askOliver($event)">
                 </app-manage-campaign-leads>
               </div>
             </div>
@@ -833,6 +833,6 @@
 
   <!--- XNFR-1091 --->
 <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageLead]="showAskOliverModalPopup" [selectedLead]="oliverLead"
-  (notifyParent)="closeAskAI()"></app-ai-chat-manager>
+  (notifyParent)="closeAskAI($event)" [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>
 
 <!-- END CONTENT -->

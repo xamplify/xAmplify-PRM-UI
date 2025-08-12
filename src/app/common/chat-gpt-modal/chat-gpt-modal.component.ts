@@ -1685,6 +1685,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
+     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
@@ -1861,6 +1863,19 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
        items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
     };
 
+    const leadProgressionTimeline = {
+      title: j.lead_progression_timeline && j.lead_progression_timeline.title
+        ? j.lead_progression_timeline.title
+        : '',
+      categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
+      categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
+      series: leadProgressionTimelineItems.map((item: any) => item.order ? item.order : 0),
+      categoriesXaxisString: '',
+      categoriesYAxisString: '',
+      seriesString: '',
+    };
+
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1877,6 +1892,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       email_sent : j && j.email_sent ? j.email_sent : 0,
       click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
       deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+
+      lead_full_name : j && j.lead_full_name ? j.lead_full_name : '',
+      lead_email_id : j && j.lead_email_id ? j.lead_email_id : '',
+      lead_company : j && j.lead_company ? j.lead_company : '',
+      lead_created_on : j && j.lead_created_on ? j.lead_created_on : '',
+      stage : j && j.stage ? j.stage : '',
+      pipeline : j && j.pipeline ? j.pipeline : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -2056,6 +2078,11 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
       },
       topPerformingRecipients : topPerformingRecipients,
+      leadProgressionTimeline: leadProgressionTimeline,
+      statusChangeTimeline: {
+        title: j && j.status_change_timeline && j.status_change_timeline.title ? j.status_change_timeline.title : '',
+        items: j && j.status_change_timeline && j.status_change_timeline.items ? j.status_change_timeline.items : []
+      },
     };
 
     return dto;

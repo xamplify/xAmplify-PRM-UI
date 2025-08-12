@@ -24,6 +24,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { UserService } from 'app/core/services/user.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -131,6 +132,7 @@ export class ManageLeadsComponent implements OnInit {
   partnerEmailAddress: string = "";
   showAskOliverModalPopup: boolean =false;
   oliverLead: any;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1697,7 +1699,8 @@ triggerUniversalSearch(){
     this.showAskOliverModalPopup = true;
   }
 
-  closeAskAI() {
+  closeAskAI(event: any) {
+    this.chatGptSettingDTO = event;
     this.showAskOliverModalPopup = false;
   }
 
