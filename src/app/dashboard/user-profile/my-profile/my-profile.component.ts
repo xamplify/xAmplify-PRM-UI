@@ -716,6 +716,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 				else if (e.data == 'isAircallAuth') {
 					localStorage.setItem('isAircallAuth', 'yes');
+				} else if(e.data == 'gmail'){
+					localStorage.setItem('gmail', 'yes');
+				} else if(e.data == 'outlook'){
+					localStorage.setItem('outlook', 'yes');
 				}
 			}, false);
 			this.getModuleAccessByUser();

@@ -137,7 +137,7 @@
       .email-body {
         /* display: none; */
         margin-top: 15px;
-        white-space: pre-wrap;
+        /* white-space: pre-wrap; */
       }
 
       .email-item.open .email-body {

@@ -49,4 +49,9 @@ export class OutlookEmailService {
      const url = this.URL + '/mail/accessToken/'+this.authenticationService.getUserId()+ '?'+this.ACCESS_TOKEN_URL;
     return this.authenticationService.callGetMethod(url)
   }
+
+   checkConfigurationByType(type: string) {
+    let url = this.URL + "/authorize/" + type + "/" + this.authenticationService.getUserId() + '?'+this.ACCESS_TOKEN_URL;
+    return this.authenticationService.callGetMethod(url);
+  }
 }
