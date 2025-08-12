@@ -5704,9 +5704,9 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
     buildIframe(): void {
         if (!this.reportData || !this.theme.lightHeaderColor) { return; }
         let iframeContentData =  this.iframeContent;
-        if (this.activeTab === 'partneragent' && !this.isFromGroupOfPartners || this.intent == 'partner') {
+        if (this.activeTab === 'partneragent' && !this.isFromGroupOfPartners || (this.intent == 'partner' && this.activeTab !== 'partnergroupagent')) {
             iframeContentData = this.iframePartnerContent;
-        } else if (this.activeTab === 'partneragent' && this.isFromGroupOfPartners) {
+        } else if (this.activeTab === 'partnergroupagent') {
             iframeContentData = this.iframePartnerGroupContent;
         } else  if (this.activeTab === 'campaignagent' || this.intent == 'campaign') {
             iframeContentData = this.iframeCampaignContent;
@@ -5803,7 +5803,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
             Highest: '#10b981'
         };
 
-      if (this.isFromGroupOfPartners) {
+      if (this.isFromGroupOfPartners || this.activeTab == 'partnergroupagent') {
         this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.categoriesString =
           JSON.stringify(this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.categories);
         this.reportData.deal_interactions_and_revenue_impact.top_partners_by_deal_value.seriesString =

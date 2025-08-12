@@ -653,7 +653,7 @@
                                   class="fa fa-file-text mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == CONTACTAGENT"
                                   class="fa fa-vcard-o mr5"></i>
-                                <i *ngIf="history.oliverChatHistoryType == PARTNERAGENT"
+                                <i *ngIf="history.oliverChatHistoryType == PARTNERAGENT || history.oliverChatHistoryType == PARTNERGROUPAGENT"
                                   class="fa fa-handshake-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == CAMPAIGNAGENT"
                                   class="fa fa-bullhorn mr5"></i>
@@ -808,9 +808,9 @@
                 </div>
                 <!-- Partner Agent Tab -->
                 <div role="tabpanel"
-                  [ngClass]="{'tab-pane fade in active': activeTab === 'partneragent', 'tab-pane fade': activeTab !== 'partneragent'}"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'partneragent' || activeTab == 'partnergroupagent', 'tab-pane fade': (activeTab !== 'partneragent' && activeTab !== 'partnergroupagent')}"
                   id="partneragent">
-                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'partneragent'">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && (activeTab === 'partneragent' || activeTab == 'partnergroupagent')">
                     <div class="main-container newChatlabel">
                       <ng-container *ngFor="let msg of messages; let i = index">
                         <ng-template [ngTemplateOutlet]="messageTemplate"
@@ -820,8 +820,8 @@
                     </div>
                   </ng-container>
                   <div [ngClass]="{
-                                      'templateui col-lg-9': showOpenHistory && activeTab === 'partneragent',
-                                      'container-ui': !(showOpenHistory && activeTab === 'partneragent'),
+                                      'templateui col-lg-9': showOpenHistory && (activeTab === 'partneragent' || activeTab == 'partnergroupagent'),
+                                      'container-ui': !(showOpenHistory && (activeTab === 'partneragent' || activeTab == 'partnergroupagent')),
                                       'fixed_oliver_input': !isSidebarVisible && showOpenHistory
                                     }">
                     <!-- Heading -->

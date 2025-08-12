@@ -6,8 +6,8 @@
          <div class="front-count-col" style="padding-left: 12px;">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
-               (click)="loadContentByType('ALL')" style="cursor:pointer;"
-               [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
+               (click)="contentModuleStatusAnalyticsDTO.totalCount > 0 && loadContentByType('ALL')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.totalCount > 0 ? 'pointer' : 'not-allowed'}">
 
                <div class="front-count-icon" [ngClass]="{
            'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
@@ -33,8 +33,8 @@
          <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
-               (click)="filterAssets('published')" style="cursor:pointer;"
-               [class.disabled]="manageContentCounts?.publishedCount == 0">
+               (click)="manageContentCounts?.publishedCount > 0 && filterAssets('published')"
+               [ngStyle]="{'cursor': manageContentCounts?.publishedCount > 0 ? 'pointer' : 'not-allowed'}">
                <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'published',
                     'front-count-purple': selectedFilter != 'published'}">
                   <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
@@ -51,8 +51,8 @@
          <div class="front-count-col">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'"
-               (click)="loadContentByType('APPROVED')" style="cursor:pointer;"
-               [class.disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
+               (click)="contentModuleStatusAnalyticsDTO.approvedCount > 0 && loadContentByType('APPROVED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.approvedCount > 0 ? 'pointer' : 'not-allowed'}">
                <div class="front-count-icon" [ngClass]="{
            'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED',
            'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'APPROVED'
@@ -71,8 +71,8 @@
          <div class="front-count-col">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory &&  contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'"
-               (click)="loadContentByType('CREATED')"
-               [class.disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0" style="cursor:pointer;">
+               (click)="contentModuleStatusAnalyticsDTO.pendingCount > 0 && loadContentByType('CREATED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.pendingCount > 0 ? 'pointer' : 'not-allowed'}">
 
                <div class="front-count-icon" [ngClass]="{
        'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED',
@@ -96,8 +96,8 @@
          <div class="front-count-col">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'"
-               (click)="loadContentByType('REJECTED')" style="cursor:pointer;"
-               [class.disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
+               (click)="contentModuleStatusAnalyticsDTO.rejectedCount > 0 && loadContentByType('REJECTED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.rejectedCount > 0 ? 'pointer' : 'not-allowed'}">
 
                <div class="front-count-icon" [ngClass]="{
            'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED',
@@ -118,8 +118,8 @@
             *ngIf="(moduleType === 'DAM' || (moduleType === 'APPROVE' && (filterType === 'ALL' || filterType === 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'"
-               (click)="loadContentByType('DRAFT')" style="cursor:pointer;"
-               [class.disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
+               (click)="contentModuleStatusAnalyticsDTO.draftCount > 0 && loadContentByType('DRAFT')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.draftCount > 0 ? 'pointer' : 'not-allowed'}">
 
                <div class="front-count-icon" [ngClass]="{
            'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT',
@@ -137,8 +137,8 @@
 
          <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
-               (click)="filterAssets('folder')" style="cursor:pointer;"
-               [class.disabled]="manageContentCounts?.manageFolderCount == 0">
+               (click)="manageContentCounts?.manageFolderCount > 0 && filterAssets('folder')"
+               [ngStyle]="{'cursor': manageContentCounts?.manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
                <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'folder',
                              'front-count-purple': selectedFilter !== 'folder'}">
                   <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
@@ -160,8 +160,8 @@
    <div class="front-count-col" style="padding-left: 12px;">
       <div class="front-count-card tiles_hover_effect"
          [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
-         (click)="loadContentByType('ALL')" style="cursor:pointer;"
-         [class.disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
+         (click)="contentModuleStatusAnalyticsDTO.totalCount > 0 && loadContentByType('ALL')"
+         [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.totalCount > 0 ? 'pointer' : 'not-allowed'}">
 
          <div class="front-count-icon" [ngClass]="{
            'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
@@ -186,23 +186,23 @@
    <div class="front-count-col">
       <div class="front-count-card tiles_hover_effect"
          [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
-         (click)="filterAssets('published')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.publishedCount == 0">
+         [ngStyle]="{'cursor': manageContentCounts?.publishedCount > 0 ? 'pointer' : 'not-allowed'}"
+         (click)="manageContentCounts.publishedCount > 0 && filterAssets('published')">
          <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'published',
-                 'front-count-purple': selectedFilter != 'published'}">
+              'front-count-purple': selectedFilter != 'published'}">
             <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
             <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
          </div>
-         <div class="front-count-number">{{ manageContentCounts?.publishedCount}} </div>
-         <div class="front-count-label">Published <i class="fa fa-info-circle ml5" aria-hidden="true"
-               title="Total published assets "></i></div>
+         <div class="front-count-number">{{ manageContentCounts?.publishedCount }} </div>
+         <div class="front-count-label">Published
+            <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total published assets "></i>
+         </div>
       </div>
    </div>
 
-
-
-   <div class="front-count-col" [class.active]="selectedFilter == 'unpublished'" (click)="filterAssets('unpublished')"
-      style="cursor:pointer;" [class.disabled]="manageContentCounts?.unPublishedCount == 0">
+   <div class="front-count-col" [class.active]="selectedFilter == 'unpublished'" 
+      (click)="manageContentCounts?.unPublishedCount > 0 && filterAssets('unpublished')"
+      [ngStyle]="{'cursor': manageContentCounts?.unPublishedCount > 0 ? 'pointer' : 'not-allowed'}">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'unpublished'">
          <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'unpublished',
                  'front-count-orange': selectedFilter !== 'unpublished'}">
@@ -219,8 +219,8 @@
 
    <div class="front-count-col">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
-         (click)="filterAssets('folder')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.manageFolderCount == 0">
+         (click)="manageContentCounts?.manageFolderCount > 0 && filterAssets('folder')"
+         [ngStyle]="{'cursor': manageContentCounts?.manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
          <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'folder',
                  'front-count-purple': selectedFilter !== 'folder'}">
             <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
@@ -238,8 +238,8 @@
    <div class="front-count-col">
 
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'alll'"
-         (click)="filterAssets('alll')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.allSharedCount == 0">
+         (click)="manageContentCounts?.allSharedCount > 0 && filterAssets('alll')"
+         [ngStyle]="{'cursor': manageContentCounts?.allSharedCount > 0 ? 'pointer' : 'not-allowed'}">
 
          <!-- Icon container -->
          <div class="front-count-icon" [ngClass]="{
@@ -269,8 +269,8 @@
 
    <div class="front-count-col" *ngIf="moduleType != 'DAM'">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'in-progress'"
-         (click)="filterAssets('in-progress')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.inProgressCount == 0">
+         (click)="manageContentCounts?.inProgressCount > 0 && filterAssets('in-progress')" 
+         [ngStyle]="{'cursor': manageContentCounts?.inProgressCount > 0 ? 'pointer' : 'not-allowed'}">
 
 
          <div class="front-count-icon" [ngClass]="{
@@ -301,8 +301,8 @@
    <div class="front-count-col" *ngIf="moduleType != 'DAM'">
 
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'completed'"
-         [class.disabled]="manageContentCounts?.completedCount == 0" style="cursor:pointer;"
-         (click)="filterAssets('completed')">
+         [ngStyle]="{'cursor': manageContentCounts?.completedCount > 0 ? 'pointer' : 'not-allowed'}"
+         (click)="manageContentCounts?.completedCount > 0 && filterAssets('completed')">
 
          <!-- Icon section -->
          <div class="front-count-icon" [ngClass]="{
@@ -332,8 +332,8 @@
 
    <div class="front-count-col" *ngIf="moduleType != 'DAM'">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'not-viewd'"
-         (click)="filterAssets('not-viewd')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.notViewedCount == 0">
+         (click)="manageContentCounts?.notViewedCount > 0 && filterAssets('not-viewd')"
+         [ngStyle]="{'cursor': manageContentCounts?.notViewedCount > 0 ? 'pointer' : 'not-allowed'}">
 
          <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{
@@ -360,8 +360,8 @@
 
    <div class="front-count-col" *ngIf="moduleType == 'DAM'">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'interacted'"
-         (click)="filterAssets('interacted')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.interacted == 0">
+         (click)="manageContentCounts?.interacted > 0 && filterAssets('interacted')"
+         [ngStyle]="{'cursor': manageContentCounts?.interacted > 0 ? 'pointer' : 'not-allowed'}">
 
          <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{
@@ -383,8 +383,8 @@
 
    <div class="front-count-col" *ngIf="moduleType == 'DAM'">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'notInteracted'"
-         (click)="filterAssets('notInteracted')" style="cursor:pointer;"
-         [class.disabled]="manageContentCounts?.nonInteracted == 0">
+         (click)="manageContentCounts?.nonInteracted > 0 && filterAssets('notInteracted')"
+         [ngStyle]="{'cursor': manageContentCounts?.nonInteracted > 0 ? 'pointer' : 'not-allowed'}">
 
          <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{
@@ -407,7 +407,8 @@
 
    <div class="front-count-col">
       <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folders'"
-         (click)="filterAssets('folders')" style="cursor:pointer;" [class.disabled]="manageContentCounts?.managerSharedFoldersCount == 0">
+         (click)="manageContentCounts?.managerSharedFoldersCount > 0 && filterAssets('folders')"
+         [ngStyle]="{'cursor': manageContentCounts?.managerSharedFoldersCount > 0 ? 'pointer' : 'not-allowed'}">
 
          <!-- Icon background and icon switch -->
          <div class="front-count-icon" [ngClass]="{

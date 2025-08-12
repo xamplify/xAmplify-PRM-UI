@@ -29,11 +29,6 @@
               (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"></angular4-multiselect>
             </div>
           </div>
-          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
-            <label for="exampleInputEmail1" class="display_flex pr25">From <span class="text-danger">*</span></label>
-            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.senderEmailId" [ngModelOptions]="{standalone: true}"
-             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
-          </div>
           <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r">
             <span class="mr5" *ngIf="!showCCEmailInputField" data-toggle="tooltip" data-placement="bottom" title="Add Cc recipients"><a class="underline-on-hover" (click)="showCCEmailInputField = 'true'"><span>Cc</span></a></span>
             <span *ngIf="!showBCCEmailInputField" data-toggle="tooltip" data-placement="bottom" title="Add Bcc recipients"><a class="underline-on-hover" (click)="showBCCEmailInputField = 'true'"><span>Bcc</span></a></span>
@@ -58,6 +53,11 @@
                [onTextChangeDebounce]="40">
             </tag-input>
             <input *ngIf="isPreview" type="text" id="toEmailId" [(ngModel)]="emailActivity.bccEmailIds" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+          </div>
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
+            <label for="exampleInputEmail1" class="display_flex pr25">From <span class="text-danger">*</span></label>
+            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.senderEmailId" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
           <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">

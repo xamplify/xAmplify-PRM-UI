@@ -117,6 +117,7 @@ export class DamService {
 
 
   delete(damUploadPostDTO: DamUploadPostDto) {
+    damUploadPostDTO.companyProfileName = this.authenticationService.companyProfileName;
     return this.http.post(this.URL + "delete?access_token=" + this.authenticationService.access_token, damUploadPostDTO)
       .map(this.extractData)
       .catch(this.handleError);

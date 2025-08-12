@@ -39,7 +39,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   isFolderViewTile: any;
   vendorCompanyProfileName: string = null;
   sharedcontentCountsLoader: boolean = false;
-  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService, private lmsService: LmsService, private referenceService: ReferenceService,
+  constructor(private approveService: ApproveService, public authenticationService: AuthenticationService, private lmsService: LmsService, private referenceService: ReferenceService,
     private router: Router) {
  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;

@@ -193,8 +193,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
-																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier 
-																|| (authenticationService?.marketingModulesAccessToPartner && (authenticationService?.module?.isAnyAdminOrSupervisor || loggedInUserId == asset.createdBy))) 
+																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService?.marketingModulesAccessToPartner) 
 																&& !FromOliverPopUp">
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
