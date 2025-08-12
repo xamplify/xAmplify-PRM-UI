@@ -657,6 +657,8 @@
                                   class="fa fa-handshake-o mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == CAMPAIGNAGENT"
                                   class="fa fa-bullhorn mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == LEADAGENT"
+                                  class="fa fa-user-circle mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
                                   *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
@@ -909,6 +911,41 @@
                         Executive Summary</button>
                       <button class="action-btn" (click)="setInputText('Generate a QBR of the campaign')">Generate a QBR of the
                         campaign</button>
+                    </div>
+                  </div>
+                </div>
+                  <!-- Show Chat History Tab -->
+                <div role="tabpanel"
+                  [ngClass]="{'tab-pane fade in active': activeTab === 'chatHistoryTab', 'tab-pane fade': activeTab !== 'chatHistoryTab'}"
+                  id="chatHistoryTab">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'chatHistoryTab'">
+                    <div class="main-container newChatlabel">
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate"
+                          [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container>
+                  <div [ngClass]="{
+                                      'templateui col-lg-9': showOpenHistory && activeTab === 'chatHistoryTab',
+                                      'container-ui': !(showOpenHistory && activeTab === 'chatHistoryTab'),
+                                      'fixed_oliver_input': !isSidebarVisible && showOpenHistory
+                                    }">
+                    <!-- Input Section -->
+                    <div class="oliver_input mt10" [ngClass]="(inputText?.length || 0) > 74 ? 'multi-line' : 'single-line'">
+
+                      <textarea rows="1" placeholder="Ask Me!" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" id="askMeTextarea7"
+                        (input)="autoResizeTextArea($event); validateInputText()"
+                        (keydown)="searchDataOnKeyPress($event)"></textarea>
+
+                      <div class="btn-wrapper">
+                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
+                          [disabled]="isTextLoading || !isValidInputText">
+                          Submit
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

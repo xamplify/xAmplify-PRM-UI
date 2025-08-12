@@ -288,6 +288,12 @@
                     [ngClass]="lead?.associatedDealId > 0 ? 'disabled gray' : ''"></i>
                   <div class="clickicons"></div>
                 </a>
+                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                  title="Ask Oliver" (click)="askOliver(lead)">
+                  <div class="oliveBackground">
+                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                  </div>
+                </a>
               </div>
             </td>
           </tr>
