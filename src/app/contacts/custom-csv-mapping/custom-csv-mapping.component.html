@@ -50,7 +50,7 @@
             </td>
             <td class="text-center">
               <div class="actions-block override-actions">
-                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="removeContact(i)">
+                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="removeContact(user)">
                   <i class="fa fa-trash-o trashIconCustomization"></i></a>
               </div>
             </td>
@@ -114,7 +114,7 @@
                   </tr>
                   <tr>
                     <td class='bold'>Mobile Number</td>
-                    <td [ngClass]="user.isValidMobileNumber ? '' : 'red'">
+                    <td [class.red]="!user.isValidMobileNumber">
                       <app-country-phone-input [mobileNumber]="user.mobileNumber" [countryCode]="user.countryCode"
                         [placeholder]="'Mobile Number (optional)'" [maxlength]="15" [isUploadCsv]="true"
                         (mobileNumberEventEmitter)="mobileNumberEventEmitter($event, user)">
@@ -293,7 +293,7 @@
 
 <!-- Custom-Csv-Modal-popup -->
 <div class="modal fade" id="Custom_Csv_Modal_Popup" tabindex="-1" data-backdrop="static" data-keyboard="false"
-  role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+  role="dialog" aria-labelledby="tcModalLabel">
   <div class="modal-dialog modal-copy" role="document">
     <div class="modal-content" style="width: 80%; top: 100px; left: 60px">
       <div class="modal-header">
@@ -357,7 +357,7 @@
                 </td>
                 <td class="text-center">
                   <a class="custom-icon actions-block override-actions" data-toggle="tooltip" data-placement="top" title="Delete"
-                    (click)="removeInvalidUser(i, user)"><i class="fa fa-trash-o trashIconCustomization"></i></a>
+                    (click)="removeInvalidUser(user)"><i class="fa fa-trash-o trashIconCustomization"></i></a>
                 </td>
               </tr>
             </ng-container>

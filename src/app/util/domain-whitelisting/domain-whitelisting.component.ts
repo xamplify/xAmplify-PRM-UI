@@ -68,6 +68,12 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   openEditTemplateModalPopup: boolean = false;
   attachments: File[] = [];
   isEditTemplateClicked: boolean;
+  teamMemberGroups: any;
+  copiedIndex: number = -1;
+  showModulesPopup: boolean = false;
+  teamMemberGroupId: number = 0;
+  teamMemberGroupPagination: Pagination = new Pagination();
+
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -126,7 +132,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.descriptionText = "Added domain users will be allowed to sign up as team members.";
     this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}", "team members");
     this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}", "team members");
-    this.findTeamMemberOrPartnerSignUpUrl();
+    this.findTeamMemberGroupSignUpUrls(this.teamMemberGroupPagination);
     this.findTeamMemberOrPartnerDomains(this.pagination);
   }
 
@@ -512,8 +518,64 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.openEditTemplateModalPopup = true
   }
 
-    closeEditTemplateModalPopup() {
-      this.openEditTemplateModalPopup = false;
-      this.addWelcomeMailModalOpen();
+  closeEditTemplateModalPopup() {
+    this.openEditTemplateModalPopup = false;
+    this.addWelcomeMailModalOpen();
+  }
+
+  /***** XNFR-1051 *****/
+  copyGroupSignUpUrl(url: string, idx: number) {
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    this.copiedIndex = idx;
+    setTimeout(() => this.copiedIndex = -1, 5000);
+  }
+
+  /***** XNFR-1051 *****/
+  previewModules(teamMemberGroupId: number) {
+    this.showModulesPopup = true;
+    this.teamMemberGroupId = teamMemberGroupId;
+  }
+
+  /***** XNFR-1051 *****/
+  hideModulesPreviewPopUp() {
+    this.showModulesPopup = false;
+  }
+
+  /***** XNFR-1051 *****/
+  findTeamMemberGroupSignUpUrls(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dashboardService.findTeamMemberGroupSignUpUrls(pagination).subscribe(
+      response => {
+        pagination = this.utilService.setPaginatedRows(response, pagination);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.xtremandLogger.error(error);
+      });
+  }
+
+  /***** XNFR-1051 *****/
+  paginateTeamMemberGroup(event: any) {
+    this.teamMemberGroupPagination.pageIndex = event.page;
+    this.findTeamMemberGroupSignUpUrls(this.teamMemberGroupPagination);
+  }
+
+  /***** XNFR-1051 *****/
+  searchTeamMemberGroup() {
+    let event = { page: 1 };
+    this.paginateTeamMemberGroup(event);
+  }
+
+  /***** XNFR-1051 *****/
+  searchTeamMemberGroupOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchTeamMemberGroup(); } }
+  navigateToWelcomeEmailList() {
+    this.referenceService.goToRouter("/home/partners/welcome-email-list");
   }
 }

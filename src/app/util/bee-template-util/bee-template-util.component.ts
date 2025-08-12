@@ -199,9 +199,13 @@ export class BeeTemplateUtilComponent implements OnInit {
 			var bee = null;
 			request(
 				'POST',
-				'https://auth.getbee.io/apiauth',
-				'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
-				'application/x-www-form-urlencoded',
+				'https://auth.getbee.io/loginV2',
+				JSON.stringify({
+					client_id: this.authenticationService.clientId,
+					client_secret: this.authenticationService.clientSecret,
+					uid: 'bee-1305'
+				}),
+				'application/json',
 				function (token: any) {
 					BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
 						bee = beePluginInstance;
@@ -295,8 +299,10 @@ export class BeeTemplateUtilComponent implements OnInit {
 
 	mydownloadPdf(htmlContent: string,input:any) {
 		this.formLoader = true;
+		const sanitizedHtml = htmlContent.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                                 .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 		
-		  this.damService.downloadPdf(htmlContent).subscribe(
+		  this.damService.downloadPdf(sanitizedHtml).subscribe(
 			(blob: Blob) => {
 			  if (!blob || blob.size === 0) {
 				console.error("Received an empty or invalid PDF file.");

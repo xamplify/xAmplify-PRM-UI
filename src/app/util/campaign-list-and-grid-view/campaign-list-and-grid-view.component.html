@@ -7,6 +7,11 @@
   </div>
   <div class="page-bar">
      <div class="pull-right" style="padding: 1px 1px 1px;">
+        <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!partnerMarketingCampaign"
+        (click)="showPartnerCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Self Campaigns</button>
+        <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="partnerMarketingCampaign"
+        style="background-color: #5cb85c !important;" (click)="showVendorCampaigns()"><i class="fa fa-bullhorn"></i>
+        Vendor Campaigns</button>
         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
         (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Archived Campaigns</button>
         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"

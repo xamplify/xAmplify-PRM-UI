@@ -44,6 +44,7 @@ import { Partnership } from 'app/partners/models/partnership.model';
 import { ParterService } from 'app/partners/services/parter.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -54,7 +55,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Pa
 		'../../../assets/css/numbered-textarea.css',
 		'./edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
 	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService, CallActionSwitch,
-		ManageContactsComponent	]
+		ManageContactsComponent,DamService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() contacts: User[];
@@ -130,7 +131,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	public clipboardTextareaText: string;
 	pagedItems: any[];
 	checkedUserList = [];
-	selectedInvalidContactIds = [];
+	selectedInvalidContactIds: number[] = [];
 	selectedContactListIds = [];
 	selectedCampaignIds = [];
 	fileTypeError: boolean;
@@ -207,6 +208,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isCheckTC = true;
 	contactOption = "";
 	showGDPR: boolean;
+	isFromManageContact: boolean = false;
+	isFromManagePartner: boolean = false;
 
 	// XNFR-994
 	@Input() selectedType: string;
@@ -319,6 +322,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 	contact: any;
+
+	showOliverContactAgent: boolean = false;
+  	showOliverPartnerAgent: boolean = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, 
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
@@ -1396,7 +1402,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.users = data.data;
 				/********XNFR-85********/
 				let teamMemberGroups = data.map['teamMemberGroups'];
-				this.teamMemberGroups = teamMemberGroups;
+				this.teamMemberGroups = this.contactService.filterValidTeamMemberGroups(teamMemberGroups);
 				this.loading = false;
 				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
@@ -1743,24 +1749,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	invalidContactsSelectedUserIds(contactId: number, event: any) {
 		try {
-			let isChecked = $('#' + contactId).is(':checked');
+			const isChecked = $('#' + contactId).is(':checked');
+
 			if (isChecked) {
 				$('#row_' + contactId).addClass('invalid-contacts-selected');
-				this.selectedInvalidContactIds.push(contactId);
+				if (!this.selectedInvalidContactIds.includes(contactId)) {
+					this.selectedInvalidContactIds.push(contactId);
+				}
 			} else {
 				$('#row_' + contactId).removeClass('invalid-contacts-selected');
-				this.selectedInvalidContactIds.splice($.inArray(contactId, this.selectedInvalidContactIds), 1);
+				const index = this.selectedInvalidContactIds.indexOf(contactId);
+				if (index !== -1) {
+					this.selectedInvalidContactIds.splice(index, 1);
+				}
 			}
-			if (this.selectedInvalidContactIds.length == this.contactsByType.pagination.pagedItems.length) {
-				this.isInvalidHeaderCheckBoxChecked = true;
-			} else {
-				this.isInvalidHeaderCheckBoxChecked = false;
-			}
+
+			const visibleIds = this.contactsByType.pagination.pagedItems.map(c => c.id);
+			const isAllVisibleChecked = visibleIds.every(id =>
+				this.selectedInvalidContactIds.includes(id)
+			);
+			this.isInvalidHeaderCheckBoxChecked = isAllVisibleChecked;
+
 			event.stopPropagation();
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "checkingSelectedInvalidUsers()");
 		}
 	}
+
 
 	validateUndeliverableContacts(contactId: any) {
 		try {
@@ -2051,6 +2066,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.moduleName = this.module;
 			this.contactListObject.editList = true;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.userListPaginationWrapper.pagination.exportToExcel = false;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2935,6 +2951,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.isDownload = true;
 			this.userListPaginationWrapper.pagination = pagination;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.userListPaginationWrapper.pagination.exportToExcel = true;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -3122,6 +3139,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();
 		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -3709,7 +3727,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.userList.editList = true;
 			this.contactListObj.id = this.selectedContactListId;
-			this.contactListObj.moduleName = this.checkingContactTypeName + 's';
+			this.contactListObj.moduleName = this.module;
 			this.contactListObj.name = this.contactListName;
 			this.contactListObj.sharedLeads = this.sharedLeads;
 			this.contactListObj.isPartnerUserList = this.isPartner;
@@ -3983,6 +4001,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	askOliver(contact: any) {
+		if (this.module == 'contacts') {
+			this.isFromManageContact = true;
+		} else {
+			this.isFromManagePartner = true;
+		}
 		this.contact = contact;
 		this.contact.contactName = this.setContactNameToDisplay(contact);;
 		this.showAskOliverModalPopup = true;
@@ -4061,6 +4084,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}, error => {
 				this.loading = false;
 				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverContactAgent = data.showOliverContactAgent;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
 			});
 	}
 

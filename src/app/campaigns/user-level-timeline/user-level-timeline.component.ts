@@ -224,8 +224,12 @@ export class UserLevelTimelineComponent implements OnInit {
  
   getDealState() {
     this.registerLeadButtonError = false;
+        let vanityUrlDomainName = "";
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+        }
     if (this.campaignId != null) {
-      this.campaignService.showRegisterLeadButton(this.campaignId).
+      this.campaignService.showRegisterLeadButton(this.campaignId, vanityUrlDomainName).
         subscribe(data => {
           if(data.statusCode==200){
             let map = data.map;

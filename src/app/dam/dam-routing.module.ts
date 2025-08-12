@@ -11,6 +11,8 @@ import { ViewDamComponent } from './view-dam/view-dam.component';
 import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
+import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-landing-page.component';
+import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 
 const damPartnerCompanyAnalyticsRouterUrl = RouterUrlConstants['damPartnerCompanyAnalytics'];
 const damPartnerAnalyticsRouterUrl = RouterUrlConstants['damPartnerAnalytics'];
@@ -71,6 +73,7 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
 	{ path: "vapv/view/:damCompanyId/:slug", component: ViewDamComponent },
+
 	
 	/************XNFR-543*********/
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },

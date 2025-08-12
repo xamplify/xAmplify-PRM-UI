@@ -2349,7 +2349,7 @@ left-menu-color ul li a,
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   box-shadow: inset 1px 2px 11px #000, inset -3px -1px 7px #3b4451 !important;
 }
-.table tbody tr:hover {
+.table tbody tr:hover, .tgrid > tbody > tr.content-in-view {
   background-color: #23272c !important;
   border-radius: 10px;
 }
@@ -3853,9 +3853,9 @@ button#save\&delete_button {
   margin-left: 0px!important; 
   }
 /* manage-publish card */
-.border-b-unset:hover{
+/* .border-b-unset:hover{
 border-bottom: unset!important;
-}
+} */
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;
@@ -4680,23 +4680,29 @@ border-top: 1px solid #191b1e !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
-.pad div {
+/* .pad div {
   color: #ffffff !important;
-}
+} */
 /* content count css */
-.section-column,.front-count-card,.stat-card {
+.section-column,.front-count-card,.stat-card,.asset-card,.asset-button,.asset-button:hover {
     background: #2c2f33 !important;
     box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
     border: 0px solid #2f4857 !important;
 }
-.stat-label,.stat-unit,.front-count-number,.front-count-label{
+
+
+.stat-label,.stat-unit,.front-count-number,.front-count-label,.label.text-align-left,.asset-info i,.asset-description,.asset-button,.asset-button i.fa,.asset-button:hover{
   color:#fff !important;
+}
+
+.asset-button:hover{
+  transform: scale(1.01);
 }
 .section-column:hover{
  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 button.btn.btn-primary.dropdown-toggle.border_btn{
-  border-left: 1px solid #1ca6f3 !important;
+  border-left: 1px solid #2b569d !important;
 }
 .oliveIcon {
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
@@ -4718,4 +4724,20 @@ button.btn.btn-primary.dropdown-toggle.border_btn{
 .oliver_input textarea:focus {
   border-color: none !important;
   outline: none !important;
+}
+  /* bee template send test email view */
+  table.heading_block.block-1 h1,table.heading_block.block-1 h2,table.heading_block.block-1 h3,
+  table.heading_block.block-1 h4,table.heading_block.block-1 h5,table.heading_block.block-1 h6 {
+    color: inherit !important;
+}
+table.text_block.block-1 h1,table.text_block.block-1 h2,table.text_block.block-1 h3,
+table.text_block.block-1 h4,table.text_block.block-1 h5,table.text_block.block-1 h6 {
+    color: inherit !important;
+}
+.front-count-card.active{
+  border: 1.6px solid #007bff !important;
+  background-color: rgba(39, 41, 50, 0.85) !important;
+}
+.asset-button svg {
+  fill: #fff !important;
 }

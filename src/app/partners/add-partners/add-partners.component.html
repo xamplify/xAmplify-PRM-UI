@@ -33,7 +33,7 @@
     }
 </style>
 
-<div class="page-content" style="overflow: hidden !important;">
+<div class="page-content" style="overflow: hidden !important;" *ngIf="!showAskOliverModalPopup">
     <ngx-loading [show]="pageLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="my-container">
         <ngx-loading [show]="loading || contactService.isLoadingList"
@@ -371,7 +371,7 @@
             </span>
             <ng-template #actionsButton>
                 <button class="btn dropdown-toggle mb-btn" id="save&delete_button"
-                    style="color: white; float: right; margin-left: 10px;box-shadow:none !important;"
+                    style="color: white; float: right; margin-left: 8px;box-shadow:none !important; padding:6px 14px;"
                     [ngClass]="{'Btn-Green': !referenceService.isMobileScreenSize()}" data-toggle="dropdown">
                     <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
                         <i class="fa fa-angle-down"></i>
@@ -478,7 +478,7 @@
                     translate>Cancel</button>
             </div>
         </ng-template>
-        <div class="row" id="Gfile_preview">
+        <div *ngIf="filePreview" class="row" id="Gfile_preview">
             <div class="col-md-12 col-sm-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet light remove_cardBgcolor adjust_cloud_table">
@@ -857,7 +857,7 @@
                                     <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                 </span>
                             </div>
-                            <div style="float: left; margin: 3px 10px;">
+                            <div style="float: left; margin: 3px 5px;">
                                 <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows"
                                     [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
                                     <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -865,7 +865,7 @@
                                     </ng-container>
                                 </select>
                             </div>
-                            <div class="portlet-input input-inline" style="margin:3px;">
+                            <div class="portlet-input input-inline" style="margin:3px 0px;">
                                 <div class="input-icon right search_sort_shadows">
                                     <input type="text" style="height: 34px;" [(ngModel)]="searchKey"
                                         [ngModelOptions]="{standalone: true}" class="form-control PartnerSearchBox"
@@ -879,7 +879,7 @@
                             </div>
                             <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
                                 [disabled]="pagination.totalRecords == 0" title="Click here to email the group"
-                                (click)="downloadPartnerListCsv()" style="margin: 3px -5px 0px 3px;">
+                                (click)="downloadPartnerListCsv()" style="margin: 3px -5px 0px 6px;">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
                             <div class="btn-group pull-right" style="margin:3px;">
@@ -1089,6 +1089,13 @@
                                                                 (click)="confirmDeactivatePartner(contact)"> 
                                                                 <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
+                                                            </a>
+
+                                                            <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive && showOliverPartnerAgent && authenticationService.oliverPartnerAgentEnabled"
+                                                                data-toggle="tooltip" data-placement="bottom" title="Ask Oliver" (click)="askOliver(contact)">
+                                                                <div class="oliveBackground">
+                                                                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                                                </div>
                                                             </a>
                                                             
                                                             <!---XNFR-224--->
@@ -2002,3 +2009,6 @@
 <!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
     (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+[isFromManagePartner]="true" [isFromOnboardSection]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

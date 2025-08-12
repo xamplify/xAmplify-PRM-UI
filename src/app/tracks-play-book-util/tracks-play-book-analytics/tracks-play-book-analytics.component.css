@@ -44,3 +44,6 @@
 .analytics-tooltip{
 display:inline-block;
 }
+.justify-content-end{
+    justify-content: end;
+}

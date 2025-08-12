@@ -32,7 +32,7 @@
 
                <div class="row mt5" *ngIf="!httpRequestLoader.isLoading">
                   <!-- Digital Asset Library -->
-                  <div class="col-lg-4 col-md-4 col-sm-12"
+                  <div class="asset-cols col-lg-4 col-md-4 col-sm-12"
                      *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">
                      <div class="section-column">
                         <div class="count_header">
@@ -65,14 +65,14 @@
                                                 </div>
                                              </div>
                                              <div class="stat-icon library-icon">
-                                                <i class="fa fa-share-alt"></i>
+                                                 <img  width="17px" height="17px" src="assets/admin/pages/media/works/Grid_View_Icons/shared-asset.svg" alt="Shared Assets">
                                              </div>
                                           </div>
                                        </div>
                      </div>
                   </div>
                   <!-- Track Builder (with playbook-icon style) -->
-                  <div class="col-lg-4 col-md-4 col-sm-12"
+                  <div class="asset-cols col-lg-4 col-md-4 col-sm-12"
                      *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
                      <div class="section-column">
                         <div class="count_header">
@@ -105,14 +105,14 @@
                                </div>
                              </div>
                              <div class="stat-icon library-icon-share">
-                               <i class="fa fa-users"></i>
+                               <img  width="17px" height="17px" src="assets/admin/pages/media/works/Grid_View_Icons/Shared-Tracks.svg" alt="Shared Tracks">
                              </div>
                            </div>
                          </div>
                      </div>
                   </div>
                   <!-- Playbooks -->
-                  <div class="col-lg-4 col-md-4 col-sm-12"
+                  <div class="asset-cols col-lg-4 col-md-4 col-sm-12"
                      *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
                      <div class="section-column">
                         <div class="count_header">
@@ -145,7 +145,7 @@
                                                 </div>
                                              </div>
                                              <div class="stat-icon playbook-icon">
-                                                <i class="fa fa-share"></i>
+                                                <img class="mr5" width="17px" height="17px" src="assets/admin/pages/media/works/Grid_View_Icons/Shared-Playbooks.svg" alt="Shared Playbooks">
                                              </div>
                                           </div>
                                        </div>
@@ -153,165 +153,173 @@
                   </div>
                </div>
 
-
-
-               <div class="row mtop mrg_top15" *ngIf="authenticationService?.user?.hasCompany">
-                  <!--------Videos------------->
-                  <!--------DAM------------->
-                  <div
-                     *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"
-                     [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-4 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-4':
-                 (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-                     <div class="portlet light cpad  hover-effect pointer card-radius">
-                        <div class="portlet-body">
-                           <div class="img1 card-template">
-                              <img alt="Videos" class="pricing-head-img img-responsive mauto img-templates"
-                                 src="assets/admin/pages/media/works/Grid_View_Icons/Digital_Asset_Library.png">
-                           </div>
-                           <div class="text text-border">
-                              <h4 class="header-text-css" translate>Digital Asset Library</h4>
-                              <p class="header-description-css" translate>
-                                 <ng-container *ngIf="authenticationService?.module?.damAccess">
-                                    <span> Create Manuals,Instructions Sales/Marketing content to your
-                                       {{authenticationService?.partnerModule?.customName}} can access any
-                                       time.</span><br>
-                                 </ng-container>
-                                 <span
-                                    *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess">A
-                                    library of vendor-given manuals, instructions, sales decks, one-pagers, and other
-                                    sales and marketing content that you can access at any time.</span>
-                              </p>
-                           </div>
-                           <ng-container *ngIf="authenticationService?.module?.damAccess">
-                              <div class="text text-border">
-                                 <h5>
-                                    <a class="prspx" (click)="navigate('dam/select')">
-                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Design / Upload</span></a>
-                                 </h5>
-                              </div>
-                              <div class="text text-border"
-                                 [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
-                                 <h5>
-                                    <a class="prfpx" (click)="navigate('dam/manage')" style="padding-right: 62px;">
-                                       <i class="fa fa-list" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Manage Assets</span></a>
-                                 </h5>
-                              </div>
-                           </ng-container>
-                           <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
-                              <h5>
-                                 <a class="prtfpx" (click)="navigate('dam/shared')">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="design-name" translate>Access Shared Assets</span></a>
-                              </h5>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!--------Learning Track------------->
-                  <div
-                     *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"
-                     [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-4 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-4':
-              (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-                     <div class="portlet light cpad  hover-effect pointer card-radius">
-                        <div class="portlet-body">
-                           <div class="img1 card-template">
-                              <img alt="Videos" class="pricing-head-img img-responsive mauto img-templates"
-                                 src="assets/admin/pages/media/works/Grid_View_Icons/Track_Builder.png">
-                           </div>
-                           <div class="text text-border">
-                              <h4 class="header-text-css" translate>Track Builder</h4>
-                              <p class="header-description-css" translate>
-                                 <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                                    <span>Create training and certification programs to help {{authenticationService?.partnerModule?.customName}}  understand your product(s).</span><br>
-                                 </ng-container>
-                                 <span
-                                    *ngIf="authenticationService?.module?.lmsAccessAsPartner && !authenticationService?.module?.lmsAccess">Vendor-created
-                                    training and certification programs to help you better understand the products you market and sell.</span>
-                              </p>
-                           </div>
-                           <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                              <div class="text text-border">
-                                 <h5>
-                                    <a class="prspx" (click)="navigate('tracks/add')">
-                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Add Tracks</span></a>
-                                 </h5>
-                              </div>
-                              <div class="text text-border"
-                                 [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
-                                 <h5>
-                                    <a class="prfpx" (click)="navigate('tracks/manage')">
-                                       <i class="fa fa-list" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Manage Tracks</span></a>
-                                 </h5>
-                              </div>
-                           </ng-container>
-                           <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
-                              <h5>
-                                 <a (click)="navigate('tracks/shared')">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="design-name" translate>Access Shared Tracks</span></a>
-                              </h5>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!--------Play Books------------->
-                  <div
-                     *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
-                     [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-4 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-4':
-                     (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-                     <div class="portlet light cpad  hover-effect pointer card-radius">
-                        <div class="portlet-body">
-                           <div class="img1 card-template">
-                              <img alt="Videos" class="pricing-head-img img-responsive mauto img-templates"
-                                 src="assets/admin/pages/media/works/Grid_View_Icons/Play_Book.png">
-                           </div>
-                           <div class="text text-border">
-                              <h4 class="header-text-css" translate>Playbook</h4>
-                              <p class="header-description-css" translate>
-                                 <ng-container *ngIf="authenticationService?.module?.playbookAccess">
-                                    <span>Create guides to help your
-                                       {{authenticationService?.partnerModule?.customName}} understand how to sell,
-                                       negotiate, and close deals.</span><br>
-                                 </ng-container>
-                                 <span
-                                    *ngIf="authenticationService?.module?.playbookAccessAsPartner && !authenticationService?.module?.playbookAccess">Vendor-created
-                                    guides on how to sell, negotiate, and close deals.</span>
-                              </p>
-                           </div>
-                           <ng-container *ngIf="authenticationService?.module?.playbookAccess">
-                              <div class="text text-border">
-                                 <h5>
-                                    <a class="prspx" (click)="navigate('playbook/add')">
-                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Add Playbooks</span></a>
-                                 </h5>
-                              </div>
-                              <div class="text text-border"
-                                 [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
-                                 <h5>
-                                    <a class="prfpx" (click)="navigate('playbook/manage')">
-                                       <i class="fa fa-list" aria-hidden="true"></i>
-                                       <span class="design-name" translate>Manage Playbooks</span></a>
-                                 </h5>
-                              </div>
-                           </ng-container>
-                           <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
-                              <h5>
-                                 <a (click)="navigate('playbook/shared')">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="design-name" translate>Access Shared Playbooks</span></a>
-                              </h5>
-                           </div>
-                        </div>
+   <div class="row mt10 mrg_top15" *ngIf="authenticationService?.user?.hasCompany">
+      <div class="asset-row">
+   
+         <!-- Digital Asset Library -->
+         <div
+            [className]="(authenticationService?.module?.contentDivsCount==1) ? 'asset-col col-md-4 col-centered' :
+                            (authenticationService?.module?.contentDivsCount==2) ? 'asset-col col-md-4' :
+                            (authenticationService?.module?.contentDivsCount==3) ? 'asset-col col-md-4' :
+                            (authenticationService?.module?.contentDivsCount==4) ? 'asset-col col-md-3' : 'asset-col col-md-3'"
+            *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">
+            <div class="asset-card">
+               <div class="asset-header">
+                  <img src="assets/admin/pages/media/works/Grid_View_Icons/assets_image.svg" alt="Library Icon">
+                  <div>
+                     <h4>Digital Asset Library</h4>
+                     <div class="asset-description">
+                        <ng-container
+                           *ngIf="authenticationService?.module?.damAccess && !authenticationService?.marketingModulesAccessToPartner">
+                           Create Manuals, Instructions, Sales / Marketing content your {{
+                           authenticationService?.partnerModule?.customName }} can access any time.
+                        </ng-container>
+                        <ng-container
+                           *ngIf="authenticationService?.module?.damAccess && authenticationService?.marketingModulesAccessToPartner">
+                           Create Manuals, Instructions, Sales / Marketing content your Team Members can access any time.
+                        </ng-container>
+                        <ng-container
+                           *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess && !authenticationService?.marketingModulesAccessToPartner">
+                           A library of vendor-given manuals, instructions, sales decks, one-pagers, and other sales and
+                           marketing content that you can access at any time.
+                        </ng-container>
                      </div>
                   </div>
                </div>
+   
+   
+               <ng-container *ngIf="authenticationService?.module?.damAccess">
+                  <a class="asset-button" (click)="navigate('dam/select')">
+                     <span><i class="fa fa-pencil label-icon"></i> Design / Upload</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+   
+                  <a class="asset-button" (click)="navigate('dam/manage')">
+                     <span><i class="fa fa-folder-open label-icon"></i> Manage Assets</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+               </ng-container>
+   
+               <a *ngIf="authenticationService?.module?.damAccessAsPartner" class="asset-button mb0"
+                  (click)="navigate('dam/shared')">
+                  <span>
+                     <svg class="unlock-icon" viewBox="-7.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                           d="M14.625 15.156h2.094c0.281 0 0.5 0.25 0.5 0.531v11c0 0.281-0.219 0.5-0.5 0.5h-16.219c-0.281 0-0.5-0.219-0.5-0.5v-11c0-0.281 0.219-0.531 0.5-0.531h11.5v-4.875c0-1.594-1.313-2.938-2.938-2.938h-0.969c-1.594 0-2.906 1.344-2.906 2.938v1.844h-2.656v-2.094c0-2.875 1.844-5.25 4.688-5.25h2.688c2.875 0 4.719 2.375 4.719 5.25v5.125zM7.125 24h2.938l-0.719-3.156c0.5-0.25 0.844-0.781 0.844-1.375 0-0.906-0.719-1.594-1.594-1.594s-1.563 0.688-1.563 1.594c0 0.594 0.344 1.125 0.844 1.375z">
+                        </path>
+                     </svg>
+                     Access Shared Assets</span>
+                  <i class="fa fa-arrow-right"></i>
+               </a>
             </div>
          </div>
+   
+         <!-- Track Builder -->
+         <div
+            [className]="(authenticationService?.module?.contentDivsCount==1) ? 'asset-col col-md-4 col-centered' :
+                            (authenticationService?.module?.contentDivsCount==2) ? 'asset-col col-md-4' :
+                            (authenticationService?.module?.contentDivsCount==3) ? 'asset-col col-md-4' :
+                            (authenticationService?.module?.contentDivsCount==4) ? 'asset-col col-md-3' : 'asset-col col-md-3'"
+            *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
+            <div class="asset-card">
+               <div class="asset-header">
+                  <img src="assets/admin/pages/media/works/Grid_View_Icons/tracks_image.svg" alt="Track Icon">
+                  <div>
+                     <h4>Track Builder</h4>
+                     <div class="asset-description">
+                        <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                           Create training and certification programs to help {{
+                           authenticationService?.partnerModule?.customName }} understand your product(s).
+                        </ng-container>
+                        <ng-container
+                           *ngIf="!authenticationService?.module?.lmsAccess && authenticationService?.module?.lmsAccessAsPartner">
+                           Vendor-created training and certification programs to help you better understand the products
+                           you market and sell.
+                        </ng-container>
+                     </div>
+                  </div>
+               </div>
+   
+   
+               <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                  <a class="asset-button" (click)="navigate('tracks/add')">
+                     <span><i class="fa fa-pencil label-icon"></i> Add Tracks</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+   
+                  <a class="asset-button" (click)="navigate('tracks/manage')">
+                     <span><i class="fa fa-folder-open label-icon"></i> Manage Tracks</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+               </ng-container>
+               <a *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="asset-button mb0"
+                  (click)="navigate('tracks/shared')">
+                  <span>
+                    <svg class="unlock-icon" viewBox="-7.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                           d="M14.625 15.156h2.094c0.281 0 0.5 0.25 0.5 0.531v11c0 0.281-0.219 0.5-0.5 0.5h-16.219c-0.281 0-0.5-0.219-0.5-0.5v-11c0-0.281 0.219-0.531 0.5-0.531h11.5v-4.875c0-1.594-1.313-2.938-2.938-2.938h-0.969c-1.594 0-2.906 1.344-2.906 2.938v1.844h-2.656v-2.094c0-2.875 1.844-5.25 4.688-5.25h2.688c2.875 0 4.719 2.375 4.719 5.25v5.125zM7.125 24h2.938l-0.719-3.156c0.5-0.25 0.844-0.781 0.844-1.375 0-0.906-0.719-1.594-1.594-1.594s-1.563 0.688-1.563 1.594c0 0.594 0.344 1.125 0.844 1.375z">
+                        </path>
+                     </svg>
+                      Access Shared Tracks</span>
+                  <i class="fa fa-arrow-right"></i>
+               </a>
+            </div>
+         </div>
+   
+         <!-- Playbooks -->
+         <div
+            [className]="(authenticationService?.module?.contentDivsCount==1) ? 'asset-col col-md-4 col-centered' :
+                                     (authenticationService?.module?.contentDivsCount==2) ? 'asset-col col-md-4' :
+                                     (authenticationService?.module?.contentDivsCount==3) ? 'asset-col col-md-4' :
+                                     (authenticationService?.module?.contentDivsCount==4) ? 'asset-col col-md-3' : 'asset-col col-md-3'"
+            *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+            <div class="asset-card">
+               <div class="asset-header">
+                  <img src="assets/admin/pages/media/works/Grid_View_Icons/playbooks_image.svg" alt="Playbooks Icon">
+                  <div>
+                     <h4>Playbooks</h4>
+                     <div class="asset-description">
+                        <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                           Create guides to help your {{ authenticationService?.partnerModule?.customName }} understand how
+                           to sell, negotiate, and close deals.
+                        </ng-container>
+                        <ng-container
+                           *ngIf="!authenticationService?.module?.playbookAccess && authenticationService?.module?.playbookAccessAsPartner">
+                           Vendor-created guides on how to sell, negotiate, and close deals.
+                        </ng-container>
+                     </div>
+                  </div>
+               </div>
+   
+               <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                  <a class="asset-button" (click)="navigate('playbook/add')">
+                     <span><i class="fa fa-pencil label-icon"></i> Add Playbooks</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+   
+                  <a class="asset-button" (click)="navigate('playbook/manage')">
+                     <span><i class="fa fa-folder-open label-icon"></i> Manage Playbooks</span>
+                     <i class="fa fa-arrow-right"></i>
+                  </a>
+               </ng-container>
+               <a *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="asset-button mb0"
+                  (click)="navigate('playbook/shared')">
+                  <span>
+                    <svg class="unlock-icon" viewBox="-7.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                           d="M14.625 15.156h2.094c0.281 0 0.5 0.25 0.5 0.531v11c0 0.281-0.219 0.5-0.5 0.5h-16.219c-0.281 0-0.5-0.219-0.5-0.5v-11c0-0.281 0.219-0.531 0.5-0.531h11.5v-4.875c0-1.594-1.313-2.938-2.938-2.938h-0.969c-1.594 0-2.906 1.344-2.906 2.938v1.844h-2.656v-2.094c0-2.875 1.844-5.25 4.688-5.25h2.688c2.875 0 4.719 2.375 4.719 5.25v5.125zM7.125 24h2.938l-0.719-3.156c0.5-0.25 0.844-0.781 0.844-1.375 0-0.906-0.719-1.594-1.594-1.594s-1.563 0.688-1.563 1.594c0 0.594 0.344 1.125 0.844 1.375z">
+                        </path>
+                     </svg>
+                     Access Shared Playbooks</span>
+                  <i class="fa fa-arrow-right"></i>
+               </a>
+            </div>
+         </div>
+   
+      </div>
+   </div>
+   </div>   
+</div>
       </div>
    </div>
 </div>

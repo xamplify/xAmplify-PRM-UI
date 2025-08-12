@@ -56,6 +56,15 @@
 .agent-card-section::-webkit-scrollbar {
   width: 6px;
 }
+
+.agent-card-section-no-scroll .col-sm-6 {
+  margin-bottom: 20px;
+}
+.agent-card-section-no-scroll {
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
 .agent-card {
   background-color: #fff;
   border-radius: 16px;
@@ -80,6 +89,7 @@
   margin: 0px;
   transform: scale(1.2);
   transform-origin: top left;
+  cursor: pointer;
 }
 .agent-icon {
   width: 68px;
@@ -87,7 +97,7 @@
   margin-right: 16px;
   border-radius: 50%;
   object-fit: contain;
-  background: #f1f1f1;
+  background: #dce9fe;
 }
 .agent-info {
   background-color: #e2eeff;

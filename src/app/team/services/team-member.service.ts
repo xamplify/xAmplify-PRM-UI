@@ -204,7 +204,7 @@ export class TeamMemberService{
 		let input = {};
 		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
 		input['vanityUrlFilter'] = vanityUrlFilter;
-		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
 		input['userId'] = this.authenticationService.getUserId();
 		var url = this.URL + "teamMemberGroup/findDefaultModules?access_token=" + this.authenticationService.access_token;
 		return this.http.post(url, input)
@@ -213,7 +213,10 @@ export class TeamMemberService{
 	}
 
 	findTeamMemberGroups(pagination: Pagination) {
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        pagination.vanityUrlFilter = vanityUrlFilter;
 		pagination.userId = this.authenticationService.getUserId();
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 		const url = this.URL + "teamMemberGroup/findAll" + '?access_token=' + this.authenticationService.access_token;
 		return this.http.post(url, pagination)
 			.map(this.extractData)
@@ -234,7 +237,7 @@ export class TeamMemberService{
 		let input = {};
 		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
 		input['vanityUrlFilter'] = vanityUrlFilter;
-		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
 		input['userId'] = this.authenticationService.getUserId();
 		let map = { "teamMemberGroupId": id };
 		input['map'] = map;

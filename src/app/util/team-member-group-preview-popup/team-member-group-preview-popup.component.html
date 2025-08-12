@@ -24,6 +24,7 @@
                         </tr>
                       </ng-container>
                     </table>
+                    <ng-template *ngIf="vendorCompanyProfileName && marketingModulesEnabled" [ngTemplateOutlet]="showMarketingModules"></ng-template>
                   </div>
               </div>
           </div>
@@ -33,3 +34,20 @@
       </div>
   </div>
 </div>
+
+<!--- Marketing Modules --->
+<ng-template #showMarketingModules>
+  <div class="table-responsive">
+    <table style="width:100%" class="table table-bordered table-hover" aria-describedby="Marketing-Module-Table">
+      <tr><th scope="row">Marketing Modules</th></tr>
+      <ng-container>
+        <tr *ngFor="let marketingModule of marketingModules">
+          <td scope="row">
+            <i aria-hidden="true" class="{{marketingModule?.moduleIcon}} mrfpx"></i>
+            <span>{{marketingModule?.moduleName}}</span>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</ng-template>

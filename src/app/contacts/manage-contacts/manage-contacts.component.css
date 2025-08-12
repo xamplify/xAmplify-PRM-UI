@@ -141,7 +141,7 @@ h3 {
   opacity: 0.6;
 }
 .search-css {
-  margin: 0 10px;
+  margin: 0 8px;
   float: left;
 }
 .mobile-css {
@@ -452,4 +452,35 @@ h6 {
   height: 32px !important;
   line-height: 30px !important;
   font-size: 12px !important;
+}
+
+.oliveIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #5bb2f5;
+  border-radius: 50%;
+  cursor: pointer
+}
+
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oliveImg{
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+.oliverImgIcon {
+    width: 19px;
+    height: 19px;
+    filter: brightness(0) invert(1);
 }

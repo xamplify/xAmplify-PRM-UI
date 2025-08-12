@@ -153,7 +153,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() selectedFoldersForOliver: any[] = [];
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
-	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx'];
+	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx','mp4','jpg','png','jpeg','gif','jfif','html','htm','json'];
 	ragItFiles: any[] = ['mp4','mp3','avi','mov','flv','wmv','mkv','webm','ogg','ogv','3gp','3g2','mpeg','mpg','m4v'];
 	@Input() fromListView: boolean = false;
 	@Input() oliverIntegrationType: any;
@@ -415,6 +415,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
+		if (this.referenceService.categoryType.trim().length) {
+			this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+			this.referenceService.categoryType = '';
+		}
+		if (this.pagination.selectedApprovalStatusCategory === this.approvalStatus.APPROVED) {
+			this.pagination.publishedFilter = true;
+		} else {
+			this.pagination.publishedFilter = false;
+		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
 		this.damService.list(pagination).subscribe((result: any) => {
@@ -461,6 +470,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listPublishedAssets(pagination: Pagination) {
 		if (!this.folderListView) {
 			this.referenceService.goToTop();
+		}
+		if(this.referenceService.categoryType.trim().length){
+		this.pagination.selectedApprovalStatusCategory = this.referenceService.categoryType;
+		this.referenceService.categoryType = '';
 		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
@@ -647,6 +660,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	refreshList() {
 		if (this.isPartnerView) {
+		    this.contentModuleStatusAnalyticsComponent.getSharedContentCounts();
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.listAssets(this.pagination);
@@ -706,8 +720,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/*****Preview Asset******* */
 	preview(asset: any) {
 		if (this.referenceService.isVideo(asset.assetType)) {
-			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
-			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+			if (this.FromOliverPopUp) {
+				let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
+				window.open(url, "_blank");
+			} else {
+				let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
+				this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+			}
 		} 
 		else if (asset.beeTemplate && (asset.assetPath == null || asset.assetPath == '' || asset.assetPath.length == 0)) {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
@@ -1127,22 +1146,36 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.pageIndex = 1;
 		if (event == this.approvalStatus.APPROVED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
+	        this.pagination.publishedFilter = true;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.REJECTED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
+		     this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.CREATED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+			      this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.DRAFT) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
+		    this.pagination.publishedFilter = false;
 			this.listAssets(this.pagination);
-		} else {
+		} else if (event == 'published' || event == 'unpublished' || event == 'all' || event == 'APPROVED' || event == 'REJECTED' || event == 'DRAFT' || event == 'CREATED' || event == 'ALL') {
+			this.pagination.selectedApprovalStatusCategory = event;
+			      this.pagination.publishedFilter = false;
+			this.listAssets(this.pagination);
+		}
+		else if (this.isPartnerView && (event == 'interacted' || event == 'notInteracted' || event == 'folders' || event == 'alll' || event == 'in-progress' || event == 'not-viewd' || event == 'completed')) {
+			this.pagination.selectedApprovalStatusCategory = event;
+			this.listPublishedAssets(this.pagination);
+		}
+		else {
+      			this.pagination.publishedFilter = false;
 			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}
 	}
-	
+
 	cancelSegmentationRowEmitter(event:any){
 		if(event.property === 'Tags') {
 			if( this.pagination.criterias !=undefined && this.pagination.criterias != null && this.pagination.criterias.length > 0 ){
@@ -1336,13 +1369,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
-  setViewTypeForOliver(event: any){
-                this.categoryId = 0;
-                this.showUpArrowButton = false;
-                this.viewType = event;
-                this.setViewType(this.viewType);
-                this.getCompanyId();
-        }
+	setViewTypeForOliver(event: any) {
+		this.categoryId = 0;
+		this.showUpArrowButton = false;
+		this.viewType = event;
+		this.sortOption.searchKey = '';
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.setViewType(this.viewType);
+		this.getCompanyId();
+	}
 
   navigateToUploadAsset() {
     this.referenceService.goToRouterByNavigateUrl('/home/dam/upload?from=manage');

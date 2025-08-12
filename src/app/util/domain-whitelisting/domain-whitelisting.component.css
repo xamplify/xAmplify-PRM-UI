@@ -58,3 +58,25 @@
     bottom: 1px;
     width: 100%;
   }
+.groupUrl {
+  cursor: not-allowed;
+}
+button.primaryBtnCu {
+  padding: 0px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+i.eyeCu {
+  font-size: 11px;
+}
+.copyUrlBtn {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.border_btn{
+  border-left: 1px solid #2b569d;
+}
+.downloadteam{
+    display: flex;
+    align-items: center;
+}

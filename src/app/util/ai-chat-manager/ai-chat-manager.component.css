@@ -1254,12 +1254,15 @@ span.icon-alignments {
   vertical-align: middle;
   margin-left: 4px;
 }
-
+.dropdown-container:hover .dropdown-toggle::after {
+  transform: rotate(180deg);
+  margin-top: -3px;
+}
 .dropdown-menu {
   display: none;
   position: absolute;
-  /* bottom: 100%; */
-  top: -129px;
+  bottom: 100%;
+  top: auto;
   left: 0;
   background-color: white;
   border: 1px solid #007bff;

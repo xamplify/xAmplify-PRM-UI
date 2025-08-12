@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatGptIntegrationSettingsDto } from './models/chat-gpt-integration-settings-dto';
 import { Injectable } from '@angular/core';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
@@ -312,6 +312,103 @@ listDefaultTemplates(userId:any){
     let urlPrefix = 'getSuggestedPromptsForFolderView/';
     const url = this.chatGptSettingsUrl + urlPrefix + categoryId + '/' + this.authenticationService.getUserId() + '/' + isPartnerFolderView + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
+  }
+
+  uploadPartnerDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+   let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = chatGptIntegrationSettingsDto.contactId != undefined ? '&contactId=' + chatGptIntegrationSettingsDto.contactId : '';
+    let userListIdRequestParameter = chatGptIntegrationSettingsDto.userListId != undefined ? '&userListId=' + chatGptIntegrationSettingsDto.userListId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadPartnerDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+  
+   getOpenAiResponse(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + 'getOpenAiResponse/' + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);
+  }
+
+  generateAndDownloadPpt(blocks: any[], selectedTemplate: string): void {
+    let slideBlocks: any[];
+    if (typeof blocks === 'string') {
+      try {
+        slideBlocks = JSON.parse(blocks);
+      } catch (e) {
+        console.error('[pptx] could not parse blocks JSON', e);
+        return;
+      }
+    } else {
+      slideBlocks = blocks;
+    }
+
+    if (!Array.isArray(slideBlocks) || slideBlocks.length === 0) {
+      console.warn('[pptx] no slide data to send');
+      return;
+    }
+
+    const payload = { ppt_id: selectedTemplate, blocks: slideBlocks };
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http.post(
+      'https://imageconverter.xamplify.co/generate_ppt',
+      payload,
+      { headers, responseType: 'blob' as 'blob' }
+    ).subscribe(
+      (blob: Blob) => {
+        this.downloadBlob(blob, 'Generated-Presentation.pptx');
+      },
+      err => {
+        console.error('[pptx] generation failed', err.status, err.error);
+      }
+    );
+  }
+
+
+  private downloadBlob(blob: Blob, filename: string) {
+    const url = (window.URL).createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href      = url;
+    a.download  = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    (window.URL).revokeObjectURL(url);
+  }
+
+  uploadCampaignDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let campaignIdRequestParameter = chatGptIntegrationSettingsDto.campaignId != undefined ? '&campaignId=' + chatGptIntegrationSettingsDto.campaignId : '';
+    let oliverIntegrationTypeRequestParam = chatGptIntegrationSettingsDto.oliverIntegrationType != undefined ? '&oliverIntegrationType=' + chatGptIntegrationSettingsDto.oliverIntegrationType : '';
+    let oliverAgentTypeParam = chatGptIntegrationSettingsDto.agentType != undefined ? '&agentType=' + chatGptIntegrationSettingsDto.agentType : '';
+    let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
+    let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
+    const url = this.authenticationService.REST_URL + 'oliver/uploadCampaignDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + campaignIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  /** XNFR-1079  **/
+  downloadDocx(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + 'generate-docx/?access_token=' + this.authenticationService.access_token;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(url, chatGptSettings, {
+      headers,
+      responseType: 'blob' as 'json'
+    });
+  }
+
+  /** XNFR-1079  **/
+  downloadWordFile(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    this.downloadDocx(chatGptSettings).subscribe((blob: Blob) => {
+      this.downloadBlob(blob, 'document.docx');
+      this.referenceService.docxLoader = false;
+    }, error => {
+      console.error('Download failed', error);
+    });
   }
 
 }

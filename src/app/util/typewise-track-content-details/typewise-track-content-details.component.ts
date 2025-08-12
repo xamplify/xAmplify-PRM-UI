@@ -34,6 +34,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -54,12 +55,14 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     
   }
 
-  ngOnChanges() { 
+  ngOnChanges() {
      if(this.fromActivePartnersDiv){
       this.partnershipStatus = 'approved';
     } else if(this.fromDeactivatedPartnersDiv){
       this.partnershipStatus = 'deactivated';
-    }  
+    } else if(this.fromAllPartnersDiv){
+      this.partnershipStatus = 'approved,deactivated';
+    }
     this.pagination.pageIndex = 1; 
     this.getTypeWiseTrackContentDetails(this.pagination);
   }

@@ -182,11 +182,11 @@
 																class="fa fa-upload IconCustomization"
 																aria-hidden="true"></i>
 															<div class="clickicons"></div>
-														</a> <a class="custom-icon" data-toggle="tooltip"
-															data-placement="top" title="Publish the feed on your social accounts"
-                                                                              (click)="shareFeed(feed)"> <i
-                                                                              class="fa fa-share IconCustomization"
-                                                                              aria-hidden="true"></i>
+														</a> <a class="custom-icon" data-toggle="tooltip" [ngClass]="{'disabled-div': !(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))}"
+															data-placement="top" [attr.title]=" !(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))? 'Publishing is disabled as no social accounts are connected.':'Publish the feed on your social accounts'"
+                                                                              (click)="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))? '': shareFeed(feed)"> <i
+                                                                              class="fa fa-share IconCustomization" [class.disabled]="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))"
+                                                                              aria-hidden="true" ></i>
                                                                               <div class="clickicons"></div>
                                                                               </a>
                                                                               <a class="custom-icon" data-toggle="tooltip"

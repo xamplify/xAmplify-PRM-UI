@@ -371,9 +371,9 @@
 												Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
 											</button>
 										</div>
-										<div class="btn-group pull-right pt">
+										<div class="btn-group pull-right pt mr5">
 											<button class="btn Btn-Green mb_btn"
-												style="border-radius: 3px !important;box-shadow: none !important;"
+												style="border-radius: 7px !important;box-shadow: none !important;"
 												id="save&delete_button" data-toggle="dropdown" translate>
 												Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
 											</button>
@@ -438,9 +438,9 @@
 												Group</span>
 										</button>
 									</div>
-									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
+									<div class="col-xs-12 col-md-5 col-sm-6 p0 pull-right mr-pt mt_9 group_parnter_list"
 										style="margin-right: 5px;" [ngClass]="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner ? 'media-btn' : 'no-media-btn'">
-										<div *ngIf="!clickBoard && !filePrevew" class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
+										<div *ngIf="!clickBoard && !filePrevew" class="mr7">
 											 <div class="btn btn-xs l-g-view margin-space mt3 pull-right" (click)="toggleFilterOption()">
 												<span data-placement="left" data-toggle="tooltip" title="Filter">
 													<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
@@ -462,15 +462,14 @@
 													style="color: red; margin-left: -8px;"></i>
 											</div> -->
 										</div>
-										<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort"
-											style="width: 52.33333333%;">
+										<div class="mWidthSort">
 											<div class="btn-group pull-right"
 												*ngIf="(showEditContactData && !clickBoard && !filePrevew) 
 												&& (selectedAddContactsOption === 8 || selectedAddContactsOption === 9)">
 												<div class="inputs" align="right" style="float: right">
 													<div class="inputs" align="right"
 														style="float: right;display: inline-flex;">
-														<div style="float: left; margin-right: 10px;">
+														<div style="float: left; margin-right: 8px;">
 															<select class="form-control SeclectBoxPaddingsAbj"
 																[(ngModel)]="sortOption"
 																(ngModelChange)="sortByOption($event)">
@@ -500,14 +499,14 @@
 															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
 															[disabled]="pagination.totalRecords == 0" *ngIf="!isPartner"
 															title="Click here to email the list"
-															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															(click)="downloadUserListCsv()" style="margin-left: 8px;margin-right: 5px;">
 															<i aria-hidden="true" class="fas fa-file-export p10"></i>
 														</button>
 														<button data-placement="bottom"
 															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
 															[disabled]="pagination.totalRecords == 0" *ngIf="isPartner"
 															title="Click here to email the group"
-															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															(click)="downloadUserListCsv()" style="margin-left: 8px;margin-right: 5px;">
 															<i aria-hidden="true" class="fas fa-file-export p10"></i>
 														</button>
 													</div>
@@ -924,8 +923,8 @@
 															<th scope="col" class="text-center hidden-xs" translate>ADDRESS</th>
 															<th scope="col" class="text-center hidden-xs" translate *ngIf="isContactModule">CONTACT STATUS</th>
 															<th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
-															<th scope="col" *ngIf="isPartner" translate>SIGNUP STATUS</th>
-															<th scope="col" *ngIf="isPartner" translate>COMPANY PROFILE</th>
+															<th scope="col"  class="text-center " *ngIf="isPartner" translate>SIGNUP STATUS</th>
+															<th scope="col"  class="text-center " *ngIf="isPartner" translate>COMPANY PROFILE</th>
 															<th scope="col" class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
 							  authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner
 							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId))
@@ -1194,7 +1193,8 @@
 
 																		<!--Ask Oliver-->
 																		<a class="oliveIcon"
-																			*ngIf="authenticationService?.isOliverActive && isContactModule"
+																			*ngIf="authenticationService?.isOliverActive && ((isContactModule && authenticationService.oliverContactAgentEnabled && showOliverContactAgent) 
+																				|| (isPartner && authenticationService.oliverPartnerAgentEnabled && showOliverPartnerAgent))"
 																			data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(contact)">
 																			<div class="oliveBackground">
 																				<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
@@ -1383,7 +1383,7 @@
 							</div>
 								<div class="col-xs-12 col-md-7 col-sm-7 col-lg-7 pr0">
 								<div class="d-flex justify-content-end">
-									<div class="btn btn-xs l-g-view margin-space mt3 pull-right mr5" (click)="toggleFilterOption()">
+									<div class="btn btn-xs l-g-view margin-space mt3 pull-right mr7" (click)="toggleFilterOption()">
 										<span data-placement="left" data-toggle="tooltip" title="Filter">
 											<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 										</span>
@@ -1407,7 +1407,7 @@
 									</div> -->
 									<div class="">
 										<div class="inputs" align="right" style="float: right; display: inline-flex;">
-											<div style="float: left; margin-right: 10px;">
+											<div style="float: left; margin-right: 8px;">
 												<select class="form-control SeclectBoxPaddingsAbj"
 													[(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
 													<ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -1435,11 +1435,11 @@
 												(click)="downloadUserListCsv()">
 												<i aria-hidden="true" class="fas fa-file-export p10"></i>
 											</button>
-											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view ml7"
 												data-toggle="tooltip"
 												[disabled]="contactsByType.pagination.totalRecords == 0"
 												*ngIf="isPartner" title="Click here to email the group"
-												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+												(click)="downloadUserListCsv()">
 												<i aria-hidden="true" class="fas fa-file-export p10"></i>
 											</button>
 										</div>
@@ -1511,15 +1511,15 @@
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !== 'excluded' && (gdprStatus || isPartner)"
 													scope="col"></th>
-												<th *ngIf="isPartner" translate scope="col">SIGNUP STATUS</th>
-												<th *ngIf="isPartner" translate scope="col">COMPANY PROFILE</th>
+												<th class="text-center" *ngIf="isPartner" translate scope="col">SIGNUP STATUS</th>
+												<th class="text-center" *ngIf="isPartner" translate scope="col">COMPANY PROFILE</th>
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate
 													scope="col">Reason</th>
 					  							<th scope="col"
 													*ngIf="(contactsByType.selectedCategory === 'deactivated')">
 													Deactivated On</th>
-												<th scope="col"
+												<th scope="col"  class="text-center"
 													*ngIf="((contactsByType.selectedCategory === 'invalid' && !sharedLeads) || contactsByType.selectedCategory =='excluded' || contactsByType.selectedCategory =='unsubscribed' || isPartner)">
 													Actions</th>
 												<th scope="col"
@@ -1723,7 +1723,7 @@
 															(click)="resubscribeUser(allcontacts)" translate>
 															Subscribe
 														</button>
-														<div class="actions-block no-float"
+														<div class="actions-block override-actions"
 															*ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
 															<ng-container *ngIf="allcontacts?.validEmail">
 																<a class="custom-icon" aria-hidden="true"
@@ -2245,4 +2245,4 @@
 </ng-template>
 
 <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-	[isFromManageContact]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
+	[isFromManageContact]="isFromManageContact" [isFromManagePartner]="isFromManagePartner" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

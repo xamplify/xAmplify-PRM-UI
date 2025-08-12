@@ -33,6 +33,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() toDateFilter: string = '';
   @Input() fromActivePartnersDiv: boolean = false;
   @Input() fromDeactivatedPartnersDiv: boolean = false;
+  @Input() fromAllPartnersDiv: boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -58,6 +59,8 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.partnershipStatus = 'approved';
     } else if (this.fromDeactivatedPartnersDiv) {
     this.partnershipStatus = 'deactivated';
+    } else if (this.fromAllPartnersDiv) {
+    this.partnershipStatus = 'approved,deactivated';
     }
 
     this.pagination.pageIndex = 1;
@@ -65,7 +68,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
       this.colClass = "col-sm-12 col-md-12 col-lg-12 ml15m";
       this.scrollClass = "";
     } else {
-      this.colClass = "col-xs-12 col-sm-6 col-md-8 col-lg-8 ml15m responsiveMargins"
+      this.colClass = "col-xs-12 col-sm-12 col-md-12 col-lg-8 ml15m responsiveMargins"
       this.scrollClass = "tableHeightScroll";
     }
     if (this.isVendorVersion) {

@@ -141,6 +141,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     /*XNFR-832*/
     
     @Input()campaignAnalyticsSettingsOptionEnabled :boolean = false;
+    @Input()showPartnerCreatedCampaigns: boolean = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
@@ -184,6 +185,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
 
         this.pagination.archived = this.archived;
         this.pagination.campaignViewType = this.campaignViewType;
+        this.pagination.showPartnerCreatedCampaigns = this.showPartnerCreatedCampaigns;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
                 data => {
@@ -1100,6 +1102,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 'fromDate': this.pagination.fromDateFilterString,
                 'toDate': this.pagination.toDateFilterString,
                 'archived': this.pagination.archived,
+                'showPartnerCreatedCampaigns': this.pagination.showPartnerCreatedCampaigns,
                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             };
         } else {
@@ -1116,6 +1119,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 'fromDate': this.pagination.fromDateFilterString,
                 'toDate': this.pagination.toDateFilterString,
                 'archived': this.pagination.archived,
+                'showPartnerCreatedCampaigns': this.pagination.showPartnerCreatedCampaigns,
                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             };
         }

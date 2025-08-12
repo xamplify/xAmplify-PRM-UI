@@ -265,6 +265,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+     getAllPartnersDetails(pagination: Pagination) {
+        const url = this.URL + 'partner/all-partners/detail/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
     getPartnerJourneyCompanyInfo(partnerCompanyId: any, loggedInUserId: number) {
         const url = this.URL + 'partner/journey/company/info/' + partnerCompanyId + '/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
         return this.httpClient.get(url)
@@ -848,5 +854,15 @@ export class ParterService {
         return this.callApiForDashBoard("findTotalDeactivatePartnersCount", loggedInUserId, applyFilter);
     }
 
+    findTeamMemberPartnerCompany(pagination: Pagination, teamMemberGroupId: number) {
+        const apiUrl = this.URL + 'partnership/findTeamMemberPartnerCompany/' + teamMemberGroupId + '?access_token=' + this.authenticationService.access_token
+        return this.findPartnerCompainesOrGroups(apiUrl, pagination);
+    }
+
+    findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(teamMemberId: number, teamMemberGroupId: number) {
+        const apiUrl = this.URL + 'partnership/findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId/' + teamMemberId + '/' + teamMemberGroupId + '?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get(apiUrl)
+            .catch(this.handleError);
+    }
 }
 

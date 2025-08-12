@@ -2970,7 +2970,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.router.navigate(['/home/dam/manage/l/' + categoryId + '/fg']);
 			} else if ("Track Builder" == type) {
 				this.router.navigate(['/home/tracks/manage/l/' + categoryId + '/fg']);
-			} else if ("Play Book" == type) {
+			} else if ("Playbook" == type) {
 				this.router.navigate(['/home/playbook/manage/l/' + categoryId + '/fg']);
 			}
 		}

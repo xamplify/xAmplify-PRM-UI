@@ -3,4 +3,5 @@ emailIds = [];
 subject: string = "";
 message: string = "";
 vanityURL:string;
+teamMemberGroupId: number;
 }

@@ -41,6 +41,9 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
 import { ParterService } from 'app/partners/services/parter.service';
 import { Partnership } from '../models/partnership.model';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var $: any, Papa: any, swal: any;
 
@@ -51,7 +54,7 @@ declare var $: any, Papa: any, swal: any;
 		'../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
 		'../../../assets/css/phone-number-plugin.css'],
 	providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch]
+		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch,DamService]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
 	isPartnerPopupShow: boolean = false;
@@ -337,6 +340,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	partnership: Partnership = new Partnership();
 	deactivatedPartnerDomains: any;
 	isDeleteOptionClicked: boolean = false;
+	contact: any;
+	chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+	showAskOliverModalPopup: boolean = false;
+	showOliverPartnerAgent: boolean = false;
+
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -346,7 +355,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public campaignService: CampaignService, public integrationService: IntegrationService,
 		private utilService: UtilService,
-		public parterService: ParterService) {
+		public parterService: ParterService,private chatgptSettingsService: ChatGptSettingsService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
@@ -778,7 +787,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.iteratePartnersAndAssignContactsCount(response.data);
 				/********XNFR-85********/
 				let teamMemberGroups = response.map['teamMemberGroups'];
-				this.teamMemberGroups = teamMemberGroups;
+				this.teamMemberGroups = this.contactService.filterValidTeamMemberGroups(teamMemberGroups);
 			}, error => {
 				this.iteratePartnersAndAssignContactsCount(false);
 			});
@@ -2740,6 +2749,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
+		this.fetchOliverActiveIntegration();
+		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -5047,6 +5058,61 @@ triggerUniversalSearch(){
 		this.sweetAlertParameterDto = new SweetAlertParameterDto();
 		this.isDeleteOptionClicked = false;
 		this.user = new User();
+	}
+
+	askOliver(contact: any) {
+		this.contact = contact;
+		this.contact.contactName = this.setContactNameToDisplay(contact);;
+		this.showAskOliverModalPopup = true;
+	}
+
+	closeAskAI(event: any) {
+		this.chatGptSettingDTO = event;
+		this.showAskOliverModalPopup = false;
+	}
+
+	setContactNameToDisplay(contact: any): string {
+		let firstName = contact.firstName;
+		let lastName = contact.lastName;
+		let isValidFirstName = this.referenceService.checkIsValidString(firstName);
+		let isValidLastName = this.referenceService.checkIsValidString(lastName);
+		let contactName = '';
+		if (isValidFirstName) {
+			contactName = firstName;
+		}
+		if (isValidLastName) {
+			contactName += isValidFirstName ? ` ${lastName}` : lastName;
+		}
+		return contactName;
+	}
+
+	fetchOliverActiveIntegration() {
+		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
+		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
+			(response: any) => {
+				if (response.statusCode == 200 && response.data) {
+					let data = response.data;
+					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
+					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
+					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
+					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
+				}
+			}, error => {
+				console.log('Error in fetchOliverActiveIntegration() ', error);
+			});
+	}
+
+	getOliverAgentAccessSettings() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
+			});
 	}
 
 }

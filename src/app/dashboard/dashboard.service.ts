@@ -36,7 +36,8 @@ export class DashboardService {
     domainUrl = this.authenticationService.REST_URL + "domain";
     dashboardAnalyticsUrl = this.authenticationService.REST_URL + "/dashboard/views/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
-    
+    teamMemberGroupUrl = this.authenticationService.REST_URL + "teamMemberGroup/";
+
     /****XNFR-326****/
     companyUrl = this.authenticationService.REST_URL + "company/";
     emailNotificationSettingsUrl = this.companyUrl+"/emailNotificationSettings";
@@ -274,7 +275,7 @@ export class DashboardService {
     }
 
     getModulesAccessByUserId() {
-        return this.http.get(this.authenticationService.REST_URL + `admin/getModulesAccessByLoggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+        return this.http.get(this.authenticationService.REST_URL + `admin/getModulesAccessByLoggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1598,5 +1599,25 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         let url = this.moduleUrl + 'loadTotalContactSubscriptionUsedByCompanyAndPartners/'+companyId+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
-    
+
+    findTeamMemberGroupSignUpUrls(pagination: Pagination) {
+        let vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
+        let domainName = this.authenticationService.companyProfileName;
+        let userId = this.authenticationService.getUserId();
+        let domainNameQueryParameter = "";
+        let vanityUrlFilterQueryParameter = "";
+        if (domainName != undefined && domainName.length > 0 && domainName != "") {
+            domainNameQueryParameter = "&domainName=" + domainName;
+        }
+        if (vanityUrlFilter != undefined) {
+            vanityUrlFilterQueryParameter = "&isVanityLogin=" + vanityUrlFilter;
+        } else {
+            vanityUrlFilterQueryParameter = "&isVanityLogin=false";
+        }
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let signUpUrl = this.teamMemberGroupUrl + 'paginated/signUpUrls' + '?access_token=' + this.authenticationService.access_token
+            + "&loggedInUserId=" + userId + vanityUrlFilterQueryParameter + domainNameQueryParameter + pageableUrl;
+        return this.authenticationService.callGetMethod(signUpUrl);
+    }
+
 }

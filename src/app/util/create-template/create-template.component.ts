@@ -159,11 +159,15 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         language: string; mergeTags: any[]; roleHash: string; onSave: (jsonFile: any, htmlFile: any) => void; onSaveAsTemplate: (jsonFile: any) => void; onAutoSave: (jsonFile: any) => void; onSend: (htmlFile: any) => void; onError: (errorMessage: string) => void;
         }, emailTemplateService: EmailTemplateService, self: this) {
         var bee = null;
-        request(
+         request(
             'POST',
-            'https://auth.getbee.io/apiauth',
-            'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
-            'application/x-www-form-urlencoded',
+            'https://auth.getbee.io/loginV2',
+            JSON.stringify({
+                client_id: authenticationService.clientId,
+                client_secret: authenticationService.clientSecret,
+                uid: 'bee-1305'
+            }),
+            'application/json',
             function (token: any) {
                 BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
                     bee = beePluginInstance;

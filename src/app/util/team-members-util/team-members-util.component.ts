@@ -25,13 +25,7 @@ import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
-import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import { FormControl } from '@angular/forms';
-import { tap} from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActiveThreadsInfoComponent } from 'app/dashboard/active-threads-info/active-threads-info.component';
 
 declare var $: any, swal: any;
 @Component({
@@ -142,28 +136,23 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   fromDateFilterInString: string;
   toDateFilterInString: string;
-  /***** XNFR-805 *****/
-  vendorInvitation: VendorInvitation = new VendorInvitation();
-  isEditorDisabled: boolean = true;
-  @ViewChild('tagInput') tagInput: SourceTagInput;
-  validators = [this.mustBeEmail.bind(this)];
-  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
-  onAddedFunc = this.beforeAdd.bind(this);
-  isValidationMessage = false;
-  addFirstAttemptFailed = false;
-  inviteTeamMemberLoading = false;
-  inviteTeamMemberHtmlBody: any;
-  inviteTeamMemberResponse: CustomResponse = new CustomResponse();
-  tableHeader: string = "";
   showTeamMemberName: any;
-  /***** XNFR-805 *****/
+  showInviteTeamMemberModal: boolean = false;
 
+  previousTeamMemberGroupId: number = 0;
+  selectedPartnershipIds = [];
+  teamMemberPartnerCompanys: any[] = [];
+  existingPartnershipIds: any[] = [];
+
+  deletedPartnershipIds: any[] = [];
+  selectedPartnershipIdsLoading: boolean = false;
+  selectedGlobalGroupId: number | null = null;
+  public searchKey: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
     public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties,
-    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService, 
-    private sanitizer: DomSanitizer) {
+    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService) {
 
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.isSuperAdminAccessing = this.authenticationService.isSuperAdmin();
@@ -276,9 +265,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     $('#delete-team-member-popup').modal('hide');
     $('#preview-team-member-popup').modal('hide');
     swal.close();
-    this.isValidationMessage = false;
-    this.inviteTeamMemberLoading = false;
-    $('#invite_team_member_modal').modal('hide');
     this.csvErrors = false;
   }
 
@@ -313,7 +299,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   refreshList() {
     this.pagination.pageIndex = 1;
-    this.pagination.searchKey = "";
+    this.searchKey = "";
     this.findAll(this.pagination);
   }
 
@@ -324,6 +310,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
@@ -365,6 +352,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /**************Search TeamMembers***************/
   searchTeamMembers() {
+    this.pagination.searchKey = this.searchKey;
     this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
     this.findAll(this.pagination);
   }
@@ -392,6 +380,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
+      this.updateSelectedPartnerMappings();
+      if(this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+        this.team.selectedPartnershipIds = this.selectedPartnershipIds;
+        this.team.newPartnersAdded = true;
+      }
+      if( this.deletedPartnershipIds && this.deletedPartnershipIds.length > 0) {
+        this.team.deletedPartnershipIds = this.deletedPartnershipIds;
+      }
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
@@ -399,6 +395,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
             this.loading = false;
             if (data.statusCode == 200) {
               this.editTeamMember = false;
+              this.existingPartnershipIds = [];
+              this.deletedPartnershipIds = [];
+              this.selectedPartnershipIds = [];
               this.customResponse = new CustomResponse('SUCCESS', data.message, true);
               this.pagination = new Pagination();
               this.findAll(this.pagination);
@@ -441,7 +440,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           self.selectedTeamMemberEmailId = teamMember.emailId;
           self.delete();
         }, function (dismiss: any) {
-
         });
       } else {
         this.selectedId = 0;
@@ -650,12 +648,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
+          this.setGlobalGroupAndApply();
           let teamMemberGroup = this.teamMemberGroups[0];
           let teamMemberGroupId = teamMemberGroup.id;
           this.team.teamMemberGroupId = teamMemberGroupId;
           $.each(this.newlyAddedTeamMembers,function(_index:number,teamMember:any){
             teamMember['teamMemberGroupId'] = teamMemberGroupId;
           });
+          this.validateAddTeamMemberForm("teamMemberGroup");
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
         },
@@ -739,6 +739,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.showUploadedTeamMembers = false;
     this.editTeamMember = false;
     this.saveOrUpdateButtonText = "Save";
+    this.existingPartnershipIds = [];
+    this.deletedPartnershipIds = [];
+    this.selectedPartnershipIds = [];
     this.refreshList();
   }
 
@@ -751,11 +754,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addOrUpdateTeamMember() {
     this.customResponse = new CustomResponse();
     if (this.team.validForm) {
-      this.referenceService.loading(this.addTeamMemberLoader, true);
       this.team.userId = this.loggedInUserId;
       if (this.editTeamMember) {
-        this.updateTeamMember();
+        if (this.previousTeamMemberGroupId != this.team.teamMemberGroupId
+          && this.teamMemberPartnerCompanys && this.teamMemberPartnerCompanys.length > 0) {
+          this.confirmUpdateAlert(this.teamMemberPartnerCompanys);
+        } else {
+          this.referenceService.loading(this.addTeamMemberLoader, true);
+          this.updateTeamMember();
+        }
       } else {
+        this.referenceService.loading(this.addTeamMemberLoader, true);
         this.addTeamMember();
       }
     } else {
@@ -767,10 +776,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin, 'newAndSinglePartner': true };
+    if (this.selectedPartnershipIds && this.selectedPartnershipIds.length > 0) {
+      teamMemberDto['selectedPartnershipIds'] = this.selectedPartnershipIds;
+    }
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
+
     this.teamMemberService.saveTeamMembersXNFR2(teamInput).
       subscribe(
         data => {
@@ -880,7 +893,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.isUploadCsv = false;
     } else {
       this.showUploadedTeamMembers = true;
-      this.appendCsvDataToTable();
+      this.newlyAddedTeamMembers = []; 
+      this.appendCsvDataToTable();      
       this.fileReset();
     }
   }
@@ -926,55 +940,66 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.getPartnersCount(teamMemberGroupId, team);
     }
   }
-
   validateCsvData() {
-    let email = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
-    let firstNames = this.csvRecords.map(function (a) { return a[0].split(',')[1].toLowerCase() });
-    let duplicateEmailIds = this.referenceService.returnDuplicates(email);
-    this.newlyAddedTeamMembers = [];
-    if ((email.length > 0) && (firstNames.length > 0)) {
-      let emailIds = [];
-      for (let r = 1; r < email.length; r++) {
-        let rows = this.csvRecords[r];
-        let row = rows[0].split(',');
-        let emailId = row[0];
-        let firstName = row[1];
-        let lastName = row[2];
-        firstName = $.trim(firstName);
-        if (firstName.length <= 0 && emailId.length > 0 && emailId !== '') {
-          emailIds.push(emailId);
-          this.customResponse = new CustomResponse('ERROR', 'First Name is not available for : ' + emailIds, true);
-          this.csvErrors = true;
-        }
-        if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
-          if (duplicateEmailIds.length == 0) {
-            if (!this.referenceService.validateEmailId($.trim(emailId))) {
-              emailIds.push(emailId);
-              this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
-              this.csvErrors = true;
-            }
-          } else {
-            for (let d = 0; d < duplicateEmailIds.length; d++) {
-              let duplicateEmailId = duplicateEmailIds[d];
-              if (duplicateEmailId != undefined && $.trim(duplicateEmailId).length > 0) {
-                emailIds.push(duplicateEmailId);
-                this.customResponse = new CustomResponse('ERROR', emailIds + ' is duplicate email address.', true);
-                this.csvErrors = true;
-                this.isUploadCsv = false;
-              }
-            }
-            duplicateEmailIds = [];
-          }
-        } else if (firstName.length > 0 && firstName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'Email is not available for : ' + firstName, true);
-          this.csvErrors = true;
-        } else if (lastName.length > 0 && lastName !== '') {
-          this.customResponse = new CustomResponse('ERROR', 'First Name & Email are mandatory for : ' + lastName, true);
-          this.csvErrors = true;
-        }
+  let emails = this.csvRecords.map(a => a[0].split(',')[0].toLowerCase());
+  let duplicateEmails = this.referenceService.returnDuplicates(emails);
+
+  let invalidEmails = [];
+  let duplicateEmailIds = [];
+  let missingFirstNameEmails = [];
+  let missingEmailFirstNames = [];
+  let missingAll = [];
+
+  for (let r = 1; r < this.csvRecords.length; r++) {
+    let row = this.csvRecords[r][0].split(',');
+    let email = row[0] ? row[0].trim() : '';
+    let firstName = row[1] ? row[1].trim() : '';
+    let lastName = row[2] ? row[2].trim() : '';
+
+    if (!firstName && email) {
+      missingFirstNameEmails.push(email);
+      continue;
+    }
+    if (!email && firstName) {
+      missingEmailFirstNames.push(firstName);
+      continue;
+    }
+    if (!email && !firstName && lastName) {
+      missingAll.push(lastName);
+      continue;
+    }
+
+    if (email && firstName) {
+      if (duplicateEmails.includes(email.toLowerCase())) {
+        duplicateEmailIds.push(email);
+        duplicateEmails = duplicateEmails.filter(e => e !== email.toLowerCase());
+        continue;
+      }
+      if (!this.referenceService.validateEmailId(email)) {
+        invalidEmails.push(email);
+        continue;
       }
     }
   }
+  let messages = [];
+  if (missingFirstNameEmails.length) messages.push(missingFirstNameEmails.join(', ') + " - First Name is missing.");
+  if (duplicateEmailIds.length) messages.push(duplicateEmailIds.join(', ') + " - Duplicate email address.");
+  if (invalidEmails.length) messages.push(invalidEmails.join(', ') + " - Invalid email address.");
+  if (missingEmailFirstNames.length) messages.push(missingEmailFirstNames.join(', ') + " - Email is missing.");
+  if (missingAll.length) messages.push(missingAll.join(', ') + " - Both First Name & Email are mandatory.");
+
+  if (messages.length) {
+    this.csvErrors = true;
+    this.customResponse = new CustomResponse('ERROR', messages.join('\n'), true);
+    this.isUploadCsv = false;
+  } else {
+    this.csvErrors = false;
+    this.isUploadCsv = true;
+    this.customResponse = null;
+    // Do NOT modify this.newlyAddedTeamMembers here!
+  }
+}
+
 
   validateHeaders(headers: any) {
     return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name");
@@ -1064,9 +1089,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
+        this.previousTeamMemberGroupId = this.team.teamMemberGroupId;
         if (this.team.teamMemberGroupId == null) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
+          this.previousTeamMemberGroupId = 0;
         } else if (this.team.firstName.length === 0) {
           this.team.validForm = false;
         } else {
@@ -1075,10 +1102,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       }, error => {
         this.referenceService.loading(this.httpRequestLoader, false);
         this.referenceService.showSweetAlertServerErrorMessage();
-      }, () => {
-        this.findAllTeamMemberGroupIdsAndNames();
+    }, () => {
+      this.findAllTeamMemberGroupIdsAndNames();
+      if (this.team.teamMemberGroupId > 0) {
+        this.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(this.team);
       }
-    );
+    });
   }
 
 
@@ -1425,171 +1454,130 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-805 *****/
-  closeInviteTeamMemberModal() {
-    $('#invite_team_member_modal').modal('hide');
-    this.inviteTeamMemberResponse = new CustomResponse();
-    if (this.isValidationMessage) {
-      this.findAll(this.pagination);
-    }
-    this.emailIds = [];
-    this.vendorInvitation.emailIds = [];
-    this.inviteTeamMemberLoading = false;
-    this.addFirstAttemptFailed = false;
-    this.isValidationMessage = false;
-  }
-
-  /***** XNFR-805 *****/
   openInviteTeamMemberModal() {
-    this.emailIds = [];
-    this.vendorInvitation.emailIds = [];
-    this.inviteTeamMemberLoading = true;
-    $('#invite_team_member_modal').modal('show');
-    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
-    let templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
-    this.teamMemberService.getHtmlBody(templateId).subscribe(
-      response => {
-        if (response.statusCode === 200) {
-          let data = response.data;
-          this.inviteTeamMemberHtmlBody = this.sanitizer.bypassSecurityTrustHtml(data.body);
-          this.vendorInvitation.subject = data.subject;
-          setTimeout(() => {
-            const button = document.querySelector('div.button');
-            if (button) {
-              button.className = '';
-            }
-          });
-        } else {
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-        }
-        this.inviteTeamMemberLoading = false;
-      },
-      error => {
-        this.logger.errorPage(error);
-        this.inviteTeamMemberLoading = false;
-        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-      });
+    this.showInviteTeamMemberModal = true;
   }
 
   /***** XNFR-805 *****/
-  extractStylesFromHtml(html: string): string {
-    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-    const matches = styleRegex.exec(html);
-    return matches ? matches[1] : '';
-  }
-
-  /***** XNFR-805 *****/
-  mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
-    if (this.addFirstAttemptFailed && !this.isValidEmail(control.value)) {
-      return { "must_be_email": true };
+  hideInviteTeamMemberModal(event: any) {
+    this.showInviteTeamMemberModal = false;
+    if (event) {
+      this.refreshList();
     }
-    return null;
-  }
-
-  /***** XNFR-805 *****/
-  beforeAdd(tag: any): Observable<any> {
-    const isPaste = !!tag['value'];
-    const emailTag = isPaste ? tag.value : tag;
-    if (!this.isValidEmail(emailTag)) {
-      return this.handleInvalidEmail(emailTag, isPaste);
-    }
-    this.addFirstAttemptFailed = false;
-    return Observable.of(emailTag);
-  }
-
-  /***** XNFR-805 *****/
-  private handleInvalidEmail(tag: string, isPaste: boolean): Observable<any> {
-    if (!this.addFirstAttemptFailed) {
-      this.addFirstAttemptFailed = true;
-      if (!isPaste) {
-        this.tagInput.setInputValue(tag);
-      }
-    }
-    return isPaste ? Observable.throw(this.errorMessages['must_be_email'])
-      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
-  }
-
-  /***** XNFR-805 *****/
-  private isValidEmail(text: string): boolean {
-    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
-    return text ? EMAIL_REGEXP.test(text) : false;
-  }
-
-  /***** XNFR-805 *****/
-  sendTeamMemberInviteEmail() {
-    this.isValidationMessage = true;
-    this.inviteTeamMemberLoading = true;
-    this.inviteTeamMemberResponse = new CustomResponse();
-    this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
-    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
-    this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
-      .subscribe(data => {
-        if (data.statusCode == 200) {
-          this.isValidationMessage = true;
-          this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
-        } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
-          this.isValidationMessage = false;
-          this.vendorInvitation.emailIds = [];
-          let duplicateEmailIds = data.data.map((value: string, index: number) => `${index + 1}. ${value}`).join(" ");
-          let message = `${data.message} ${duplicateEmailIds}`;
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
-        } else {
-          this.isValidationMessage = false;
-          this.vendorInvitation.emailIds = [];
-          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-        }
-        this.inviteTeamMemberLoading = false;
-      }, error => {
-        this.logger.errorPage(error);
-        this.isValidationMessage = false;
-        this.vendorInvitation.emailIds = [];
-        this.inviteTeamMemberLoading = false;
-        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-      });
   }
 
   /***** XNFR-805 *****/
   navigateToTeamMemberReports() {
+    this.showInviteTeamMemberModal = false;
     this.referenceService.goToRouter("/home/team/team-member-request");
   }
+
   /**** XNFR-914  ****/
-    getModulesAccessGivenByVendorForPartners(){
-      this.partnerService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName,undefined, this.loggedInUserId).subscribe(
-        (response: any) => {
-          if (response.statusCode == 200) {
-             this.moduleAccessGivenByVendorForPartner(response.data);
-          }
-        },
-        (_error: any) => {
-          this.httpRequestLoader.isServerError = true;
-          //this.xtremandLogger.error(_error);
+  getModulesAccessGivenByVendorForPartners() {
+    this.partnerService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName, undefined, this.loggedInUserId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.moduleAccessGivenByVendorForPartner(response.data);
         }
-      );
-    }
-    moduleAccessGivenByVendorForPartner(partnerModules: any) {
-      for (let module of partnerModules) {
-        if (module.moduleId === 2) {
-          this.referenceService.campaignAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 3) {
-          this.referenceService.contactsAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 5) {
-          this.referenceService.assetAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 8) {
-          this.referenceService.mdfAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 9) {
-          this.referenceService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 12) {
-          this.referenceService.playBookAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 14) {
-          this.referenceService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
-        } else if (module.moduleId === 18) {
-          this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
-        } 
+      },
+      (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        //this.xtremandLogger.error(_error);
       }
-      if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
-        this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
-        this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
-        this.referenceService.showAnalytics = false;
+    );
+  }
+
+  moduleAccessGivenByVendorForPartner(partnerModules: any) {
+    for (let module of partnerModules) {
+      if (module.moduleId === 2) {
+        this.referenceService.campaignAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 3) {
+        this.referenceService.contactsAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 5) {
+        this.referenceService.assetAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 8) {
+        this.referenceService.mdfAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 9) {
+        this.referenceService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 12) {
+        this.referenceService.playBookAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 14) {
+        this.referenceService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 18) {
+        this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
       }
     }
     /** XNFR-914 ***/
+    if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
+      this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
+      this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
+      this.referenceService.showAnalytics = false;
+    }
+  }
+  /** XNFR-914 ***/
+
+  updateSelectedPartnershipIds(changes: { added: number[], removed: number[] }) {
+    this.selectedPartnershipIds = changes.added;
+    this.deletedPartnershipIds = changes.removed;
+  }
+
+  private updateSelectedPartnerMappings() {
+    if (this.previousTeamMemberGroupId === this.team.teamMemberGroupId) {
+      //this.deletedPartnershipIds = this.existingPartnershipIds.filter((id: any) => !this.selectedPartnershipIds.includes(id));
+      this.selectedPartnershipIds = this.selectedPartnershipIds.filter((id: any) => !this.existingPartnershipIds.includes(id));
+    }
+  }
+
+  findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team: any) {
+    this.selectedPartnershipIdsLoading = true
+    this.partnerService.findTeamMemberPartnerCompanyByTeamMemberGroupIdAndTeamMemberId(team.id, team.teamMemberGroupId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.teamMemberPartnerCompanys = response.map.partnerCompanyDTOs;
+          this.existingPartnershipIds = response.map.partnershipIds;
+        }
+        this.selectedPartnershipIdsLoading = false;
+      },
+      (_error: any) => {
+        this.selectedPartnershipIdsLoading = false;
+        this.httpRequestLoader.isServerError = true;
+      }
+    );
+  }
+
+  confirmUpdateAlert(teamMemberPartnerCompanys: any[]) {
+    let companyNames = teamMemberPartnerCompanys.map((partner: any) => partner.companyName).join('<br> ');
+    let groupName = this.teamMemberGroups.find((group: any) => group.id === this.team.teamMemberGroupId).name || this.team.teamMemberGroupName;
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "'" + this.team.emailId + "' will be moved to '" + groupName + "' and The existing association with the below partners will be removed. <br>" + companyNames,
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Move it!'
+    }).then(function () {
+      self.referenceService.loading(self.addTeamMemberLoader, true);
+      self.updateTeamMember();
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  }
+   private setGlobalGroupAndApply() {
+    if (!this.showUploadedTeamMembers) {
+    return;
+  }
+    if (this.teamMemberGroups.length > 0) {
+      this.selectedGlobalGroupId = this.teamMemberGroups[0].id;
+      this.applyGroupToAllTeamMembers();
+    }
+  }
+    applyGroupToAllTeamMembers() {
+    if (this.selectedGlobalGroupId == null) return;
+    for (let member of this.newlyAddedTeamMembers) {
+      member.teamMemberGroupId = this.selectedGlobalGroupId;
+      this.validateSecondAdminOptionForCsvUsers(this.selectedGlobalGroupId, member);
+    }
+  }
 }

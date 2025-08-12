@@ -33,7 +33,7 @@
 }
 /* table header bgcolor end */
 .panel-heading {
-    padding: 11px 15px !important;
+    padding: 6px 11px !important;
 }
 .table>tbody>tr>td {
 	vertical-align: middle !important;
@@ -44,13 +44,6 @@
     background-color: #008fd5;
     border: 1px solid #3575b5;
 }
-.search_download_align{
-	display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 10px !important;
-}
-
 .tableHeightScroll{   
     height: 383px !important;
    overflow-y: auto;
@@ -65,3 +58,31 @@
 	width: 7px;
   height:7px;
   }
+  .panel-heading-custom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.Responsivetitle{
+white-space: nowrap;
+}
+.header-controls{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: flex-end;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .panel-heading-custom {
+    padding: 10px;
+  }
+  .header-controls {
+   justify-content: start;
+   gap: 8px;
+  }
+  .Responsivetitle{
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+}

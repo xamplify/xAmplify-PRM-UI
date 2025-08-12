@@ -225,6 +225,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     isSuperAdmin: boolean = false;
 
     orgAdmin = false;
+    vendor = true;
 
     autoSaveLoader: boolean = false;
 
@@ -1941,6 +1942,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.vendorTier = roleId==19;
           this.marketing = roleId==18;
           this.orgAdmin = roleId==2;
+          this.vendor = roleId==13;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -2217,4 +2219,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.disableOliverAgentModuleOptions = !event;
         this.campaignAccess.oliverActive = event;
     }
+
+    /*** XNFR-1066 ***/
+    onVanityUrlChange() {
+        if (!this.campaignAccess.vanityUrlDomain) {
+            this.campaignAccess.marketingModulesEnabled = false;
+        }
+    }
+
 }

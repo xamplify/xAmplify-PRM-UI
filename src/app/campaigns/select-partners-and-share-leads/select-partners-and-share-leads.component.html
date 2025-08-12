@@ -1,9 +1,13 @@
 <!--Partner Companies-->
-<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
+<div [ngClass]="IsTeamMemberGroup ? 'row card_margin' : ''">
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid" [ngClass]="IsTeamMemberGroup ? 'BgForCard' : ''">
    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-   <div class="dataTables_wrapper form-inline no-footer pt10" *ngIf="!httpRequestLoader.isLoading">
-      <div class="note-vid pull-left" *ngIf="!hideHeaderText">
+   <div class="dataTables_wrapper form-inline no-footer" *ngIf="!httpRequestLoader.isLoading">
+      <div class="note-vid pull-left" *ngIf="!hideHeaderText && !IsTeamMemberGroup">
          Select One {{authenticationService?.partnerModule?.customName}} Company
+      </div>
+      <div class="note-vid2 pull-left" *ngIf="!hideHeaderText && IsTeamMemberGroup">
+         Select {{authenticationService?.partnerModule?.customName}} Companies
       </div>
       <!---Search & Sort-->
       <div class="inputs pull-right">
@@ -24,17 +28,20 @@
                aria-describedby="" *ngIf="pagination.totalRecords > 0">
                <thead>
                   <tr>
-                     <th scope="col"></th>
+                     <th scope="col">
+                        <input type="checkbox" *ngIf="IsTeamMemberGroup" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                     </th>
                      <th scope="col">Company Logo</th>
+                     <th scope="col" *ngIf="IsTeamMemberGroup" class="text-center">Partner Info</th>
                      <th scope="col" class="text-center">Company Name</th>
                      <th scope="col">Created Time</th>
-                     <th scope="col" class="text-center">Share Leads</th>
+                     <th scope="col"  *ngIf="!IsTeamMemberGroup" class="text-center">Share Leads</th>
                   </tr>
                </thead>
                <tbody>
                   <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                      <tr [class.xamp-tr-selected]="selectedPartnershipId==partner?.partnershipId">
-                        <td class="cw">
+                        <td class="cw" *ngIf="!IsTeamMemberGroup">
                            <input *ngIf="selectedPartnershipId!=partner?.partnershipId" class="form-control remove_checkbox_shadow pointer radioButton_shadow"
                               value="{{partner?.partnershipId}}" id="one-launch-campaign-radio-{{partner?.partnershipId}}"
                               type="radio" name="one-launch-campaign-partner-company"
@@ -43,30 +50,38 @@
                               (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                          <i *ngIf="selectedPartnershipId==partner?.partnershipId" class="fa fa-check-circle-o success"></i>
                         </td>
+                        <td class="cw" *ngIf="IsTeamMemberGroup">
+                           <input type="checkbox" class="checkBox_shadow" [checked]="selectedPartnershipIds.indexOf(partner?.partnershipId)>-1" value="{{partner?.partnershipId}}" id="partnerListTable_{{partner?.partnershipId}}" (click)="selectOrUnSelectAllModules($event,partner?.partnershipId)" >
+                        </td>
                         <td class="wtpc" title="{{partner?.companyName}}">
                            <div class="thumbnail-wrapper">
                               <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
                                  [src]="authenticationService.MEDIA_URL+partner?.companyLogo">
                            </div>
                         </td>
+                        <td class="text-center" *ngIf="IsTeamMemberGroup">
+                           <ng-container>
+                              <p class="mb0" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{partner?.firstName || ''}} {{partner?.lastName || ''}} ">
+                                 <b>Name:</b> {{partner?.partnerName | slice:0:15}} <span *ngIf="partner?.partnerName?.length>15">...</span>
+                              </p>
+                              <p class="mb0" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{partner?.partnerEmail}}">
+                                 <b>Email Id:</b> {{partner?.partnerEmail | slice:0:30}}<span *ngIf="partner?.partnerEmail?.length>30">...</span>
+                              </p>
+                           </ng-container>
+                        
+                        </td>
                         <td class="text-center">
                            <span title="{{partner?.companyName}}">{{partner?.companyName | slice:0:50}}</span>
                            <span *ngIf="partner?.companyName.length>50">...</span>
-                           <h5>
-                              <strong>
-                                 Company Name By Vendor :
-                                 <span title="{{partner?.companyNameAddedByVendor}}">{{partner?.companyNameAddedByVendor
-                                    | slice:0:50}}</span>
-                                 <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
-                              </strong>
-                           </h5>
                            <h6 *ngIf="partner?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
                               data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                         </td>
                         <td>
                            <app-display-date-and-time [dateAndTimeUTCString]="partner?.createdTimeInString"></app-display-date-and-time>
                         </td>
-                        <td class="text-center">
+                        <td  *ngIf="!IsTeamMemberGroup" class="text-center">
                            <div
                               [ngClass]="{'actions-block float-none': selectedPartnershipId!=partner.partnershipId, 'actions-block-selected': selectedPartnershipId==partner.partnershipId}">
                               <a (click)="viewShareLeads(partner)" title="Select Share Leads" class="custom-icon">
@@ -272,7 +287,7 @@
             <!--Pagination-->
             <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
-                  (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="hideHeaderText">
+                  (notifyParentDropDown)="notifyParentDropDown($event)" [customDropDown]="hideHeaderText">
                </app-pagination>
             </div>
             <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
@@ -282,6 +297,7 @@
          </div>
       </div>
    </div>
+</div>
 </div>
 <ng-container *ngIf="showLeadsPreview">
    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"

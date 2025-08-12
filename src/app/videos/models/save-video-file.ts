@@ -72,4 +72,5 @@ export class SaveVideoFile {
     createdByAnyApprover: boolean = false;
     sendForApproval: boolean = false;
     slug = "";
+    companyProfileName: string = "";
  }

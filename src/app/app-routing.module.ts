@@ -170,6 +170,7 @@ export const routes: Routes = [
 	{ path: 'requestdemo', component: RequestDemoComponent },
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
 	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
+	{ path: 'tSignUp/:companyProfileName/:alias', component: AccessAccountComponent },
 	{ path: 'pSignUp/:companyProfileName', component: AccessAccountComponent },
 	{ path: 'download/:type', component: DownloadTemplateComponent },
 	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
@@ -215,6 +216,7 @@ export const routes: Routes = [
 
 	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
+    { path: 'prl/:alias', component: ShowLandingPageComponent , canActivate: [AuthGuard], data: { preload: true }},
 
 	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
 	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },

@@ -1,184 +1,431 @@
+<div *ngIf="showApprovalTiles && !isPartnerView && !authenticationService.marketingModulesAccessToPartner" class="p0" style="padding-bottom:10px;padding-right: 12px;">
+   <app-box-loader [countLoader]="5" *ngIf="countsLoader || contentCountsLoader"></app-box-loader>
 
-<div *ngIf="showApprovalTiles" class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
-      <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
-   <ng-container *ngIf="!countsLoader">
-      <div class="new-width-row">
-         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect" style="padding-left: 12px;">
-            <button class="btn-block dashboard-stat blue"
-               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'ALL'"
-               (click)="loadContentByType('ALL')" [disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
-               <div class="visual">
-                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL' ? '#white' : '#ccc' }"
-                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" aria-hidden="true"></i>
+   <ng-container *ngIf="!countsLoader && !contentCountsLoader">
+      <div class="new-width-row mb10">
+         <div class="front-count-col" style="padding-left: 12px;">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
+               (click)="contentModuleStatusAnalyticsDTO.totalCount > 0 && loadContentByType('ALL')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.totalCount > 0 ? 'pointer' : 'not-allowed'}">
+
+               <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
+           'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'
+         }">
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" class="fa fa-check"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'" class="fa fa-database"></i>
                </div>
-               <div class="details">
-                  <div class="number NumberFontDecrease">
-                     {{contentModuleStatusAnalyticsDTO.totalCount}}
-                  </div>
-                  <div class="desc fz-16 TextFontDecrease" translate>
-                     All
-                  </div>
+
+               <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.totalCount }}</div>
+
+               <div class="front-count-label">
+                  All
+                  <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="{{ 'Total records of ' + moduleLabel }}"></i>
+                  <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="Total records of approval hub"></i>
                </div>
-               <span class="morePadding">
-                  <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
-                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                     <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"
-                        title="{{'Total records of ' + moduleLabel }}"></i>
-                     <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle" aria-hidden="true"
-                        title="Total records of approval hub"></i></a>
-               </span>
-            </button>
+            </div>
          </div>
-         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
-            <button class="btn-block dashboard-stat green"
-               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'APPROVED'"
-               (click)="loadContentByType('APPROVED')" [disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
-               <div class="visual">
-                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED' ? '#white' : '#ccc' }"
-                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'" aria-hidden="true"></i>
+
+         <!-- published -->
+         <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
+               (click)="manageContentCounts?.publishedCount > 0 && filterAssets('published')"
+               [ngStyle]="{'cursor': manageContentCounts?.publishedCount > 0 ? 'pointer' : 'not-allowed'}">
+               <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'published',
+                    'front-count-purple': selectedFilter != 'published'}">
+                  <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
+                  <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
                </div>
-               <div class="details">
-                  <div class="number numberCss NumberFontDecrease" style="font-weight: 300; color: #FFFFFF;">
-                     {{contentModuleStatusAnalyticsDTO.approvedCount}}
-                  </div>
-                  <div class="desc fz-16 TextFontDecrease" translate>
-                     Approved
-                  </div>
-               </div>
-               <span class="morePadding">
-                  <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
-                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                     <i class="fa fa-info-circle" aria-hidden="true"
-                        title="{{'Total approved ' + moduleLabel}}"></i></a>
-               </span>
-            </button>
+               <div class="front-count-number">{{ manageContentCounts?.publishedCount}} </div>
+               <div class="front-count-label">Published <i class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="Total published assets "></i></div>
+            </div>
          </div>
-         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
-            <button class="btn-block dashboard-stat purple"
-               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'CREATED'"
-               (click)="loadContentByType('CREATED')" [disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0">
-               <div class="visual">
-                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED' ? '#white' : '#ccc' }"
-                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'" aria-hidden="true"></i>
+
+
+         <!-- Approved -->
+         <div class="front-count-col">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'"
+               (click)="contentModuleStatusAnalyticsDTO.approvedCount > 0 && loadContentByType('APPROVED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.approvedCount > 0 ? 'pointer' : 'not-allowed'}">
+               <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED',
+           'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'APPROVED'
+         }">
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory === 'APPROVED'" class="fa fa-check"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'APPROVED'"
+                     class="fa fa-check-circle"></i>
                </div>
-               <div class="details">
-                  <div class="number NumberFontDecrease">
-                     {{contentModuleStatusAnalyticsDTO.pendingCount}}
-                  </div>
-                  <div class="desc fz-16 TextFontDecrease" translate>
-                     Pending Approval
-                  </div>
-               </div>
-               <span class="morePadding">
-                  <a class="more" style="text-align: left;" translate> Detailed view
-                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                     <i class="fa fa-info-circle" aria-hidden="true"
-                        title="{{'Total pending for approval ' + moduleLabel }}"></i></a>
-               </span>
-            </button>
+
+               <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.approvedCount }}</div>
+               <div class="front-count-label">Approved <i class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="{{'Total approved ' + moduleLabel}}"></i></div>
+            </div>
          </div>
-         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
-            <button class="btn-block dashboard-stat red"
-               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'REJECTED'"
-               (click)="loadContentByType('REJECTED')" [disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
-               <div class="visual">
-                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED' ? '#white' : '#ccc' }"
-                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" aria-hidden="true"></i>
+
+         <div class="front-count-col">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory &&  contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'"
+               (click)="contentModuleStatusAnalyticsDTO.pendingCount > 0 && loadContentByType('CREATED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.pendingCount > 0 ? 'pointer' : 'not-allowed'}">
+
+               <div class="front-count-icon" [ngClass]="{
+       'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED',
+       'front-count-ait': contentModuleStatusAnalyticsDTO.selectedCategory !== 'CREATED'
+     }">
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'" class="fa fa-check"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'CREATED'" class="fa fa-hourglass"></i>
                </div>
-               <div class="details">
-                  <div class="number NumberFontDecrease">
-                     {{contentModuleStatusAnalyticsDTO.rejectedCount}}
-                  </div>
-                  <div class="desc fz-16 TextFontDecrease" translate>
-                     <ng-container>Rejected</ng-container>
-                  </div>
+               <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.pendingCount }}</div>
+               <div class="front-count-label">
+                  Pending Approval
+                  <span style="pointer-events: auto;">
+                     <i class="fa fa-info-circle ml5" aria-hidden="true"
+                        title="{{ 'Total pending for approval ' + moduleLabel }}"></i>
+                  </span>
                </div>
-               <span class="morePadding">
-                  <a class="more" style="text-align: left;" translate> Detailed view
-                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                     <i class="fa fa-info-circle" aria-hidden="true"
-                        title="{{'Total rejected ' + moduleLabel }}"></i></a>
-               </span>
-            </button>
+            </div>
          </div>
-         <!-- XNFR-884 -->
-         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect"
-            *ngIf="(moduleType == 'DAM' || (moduleType == 'APPROVE' && (filterType == 'ALL' || filterType == 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
-            <button class="btn-block dashboard-stat yellow-gold"
-               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'DRAFT'"
-               (click)="loadContentByType('DRAFT')" [disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
-               <div class="visual">
-                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT' ? '#white' : '#ccc' }"
-                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" aria-hidden="true"></i>
+
+         <!-- Rejected -->
+         <div class="front-count-col">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'"
+               (click)="contentModuleStatusAnalyticsDTO.rejectedCount > 0 && loadContentByType('REJECTED')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.rejectedCount > 0 ? 'pointer' : 'not-allowed'}">
+
+               <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED',
+           'front-count-red': contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'
+         }">
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" class="fa fa-check"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'REJECTED'" class="fa fa-times-circle"></i>
                </div>
-               <div class="details">
-                  <div class="number NumberFontDecrease">
-                     {{contentModuleStatusAnalyticsDTO.draftCount}}
-                  </div>
-                  <div class="desc fz-16 TextFontDecrease" translate>
-                     <ng-container>Drafts</ng-container>
-                  </div>
-               </div>
-               <span class="morePadding">
-                  <a class="more" style="text-align: left;" translate> Detailed view
-                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                     <i class="fa fa-info-circle" aria-hidden="true" title="{{'Total draft ' + moduleLabel }}"></i></a>
-               </span>
-            </button>
+               <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.rejectedCount }}</div>
+               <div class="front-count-label">Rejected <i class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="{{'Total rejected ' + moduleLabel }}"></i></div>
+            </div>
          </div>
+
+
+         <!-- Drafts -->
+         <div class="front-count-col" 
+            *ngIf="(moduleType === 'DAM' || (moduleType === 'APPROVE' && (filterType === 'ALL' || filterType === 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
+            <div class="front-count-card tiles_hover_effect"
+               [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'"
+               (click)="contentModuleStatusAnalyticsDTO.draftCount > 0 && loadContentByType('DRAFT')"
+               [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.draftCount > 0 ? 'pointer' : 'not-allowed'}">
+
+               <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT',
+           'front-count-yellow': contentModuleStatusAnalyticsDTO.selectedCategory !== 'DRAFT'
+         }">
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" class="fa fa-check"></i>
+                  <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'DRAFT'" class="fa fa-edit"></i>
+               </div>
+               <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.draftCount }}</div>
+               <div class="front-count-label">Drafts <i class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="{{'Total draft ' + moduleLabel }}"></i></div>
+            </div>
+         </div>
+
+
+         <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
+            <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+               (click)="manageContentCounts?.manageFolderCount > 0 && filterAssets('folder')"
+               [ngStyle]="{'cursor': manageContentCounts?.manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
+               <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'folder',
+                             'front-count-purple': selectedFilter !== 'folder'}">
+                  <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
+                  <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+               </div>
+               <div class="front-count-number">{{ manageContentCounts?.manageFolderCount }}</div>
+               <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
+                     title="Total folders"></i></div>
+            </div>
+         </div>
+
       </div>
    </ng-container>
 </div>
 
-   
-<div *ngIf="!hideContentTiles && !contentCountsLoader" class="front-count-row mb10">
-         <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
-    <!-- Card 1: Total Assets -->
-    <div class="front-count-col">
-      <div class="front-count-card">
-        <div class="front-count-icon front-count-blue">
-          <i class="fa fa-database"></i>
-        </div>
-        <div class="front-count-number">{{manageContentCounts.allCount}}</div>
-        <div class="front-count-label">All</div>
-      </div>
-    </div>
+<div *ngIf="!hideContentTiles && !contentCountsLoader && !showApprovalTiles && !isPartnerView && !authenticationService.marketingModulesAccessToPartner" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="contentCountsLoader"></app-box-loader>
 
-    <!-- Card 2: Published Assets -->
-    <div class="front-count-col">
-      <div class="front-count-card">
-        <div class="front-count-icon front-count-green">
-          <i class="fa fa-check-circle"></i>
-        </div>
-        <div class="front-count-number">{{manageContentCounts.publishedCount}}</div>
-        <div class="front-count-label">Published</div>
-      </div>
-    </div>
+   <div class="front-count-col" style="padding-left: 12px;">
+      <div class="front-count-card tiles_hover_effect"
+         [class.active]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'"
+         (click)="contentModuleStatusAnalyticsDTO.totalCount > 0 && loadContentByType('ALL')"
+         [ngStyle]="{'cursor': contentModuleStatusAnalyticsDTO.totalCount > 0 ? 'pointer' : 'not-allowed'}">
 
-    <!-- Card 3: UnPublished Assets -->
-    <div class="front-count-col">
-      <div class="front-count-card">
-        <div class="front-count-icon front-count-orange">
-          <i class="fa fa-clock-o"></i>
-        </div>
-        <div class="front-count-number">{{manageContentCounts.unPublishedCount}}</div>
-        <div class="front-count-label">UnPublished</div>
-      </div>
-    </div>
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL',
+           'front-count-blue': contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'
+         }">
+            <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" class="fa fa-check"></i>
+            <i *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory !== 'ALL'" class="fa fa-database"></i>
+         </div>
 
-    <!-- Card 4: Asset Folders -->
-    <div class="front-count-col">
-      <div class="front-count-card">
-        <div class="front-count-icon front-count-purple">
-          <i class="fa fa-folder-open"></i>
-        </div>
-        <div class="front-count-number">{{manageContentCounts.manageFolderCount}}</div>
-        <div class="front-count-label">Folders</div>
+         <div class="front-count-number">{{ contentModuleStatusAnalyticsDTO.totalCount }}</div>
+
+         <div class="front-count-label">
+            All
+            <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+               title="{{ 'Total records of ' + moduleLabel }}"></i>
+            <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total records of approval hub"></i>
+         </div>
       </div>
-  </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect"
+         [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
+         [ngStyle]="{'cursor': manageContentCounts?.publishedCount > 0 ? 'pointer' : 'not-allowed'}"
+         (click)="manageContentCounts.publishedCount > 0 && filterAssets('published')">
+         <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'published',
+              'front-count-purple': selectedFilter != 'published'}">
+            <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
+         </div>
+         <div class="front-count-number">{{ manageContentCounts?.publishedCount }} </div>
+         <div class="front-count-label">Published
+            <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total published assets "></i>
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col" [class.active]="selectedFilter == 'unpublished'" 
+      (click)="manageContentCounts?.unPublishedCount > 0 && filterAssets('unpublished')"
+      [ngStyle]="{'cursor': manageContentCounts?.unPublishedCount > 0 ? 'pointer' : 'not-allowed'}">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'unpublished'">
+         <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'unpublished',
+                 'front-count-orange': selectedFilter !== 'unpublished'}">
+            <i *ngIf="selectedFilter == 'unpublished'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'unpublished'" class="fa fa-clock-o"></i>
+         </div>
+         <div class="front-count-number">{{ manageContentCounts?.unPublishedCount }}</div>
+         <div class="front-count-label">
+            UnPublished
+            <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total unpublished assets"></i>
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
+         (click)="manageContentCounts?.manageFolderCount > 0 && filterAssets('folder')"
+         [ngStyle]="{'cursor': manageContentCounts?.manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
+         <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'folder',
+                 'front-count-purple': selectedFilter !== 'folder'}">
+            <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
+            <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
+         </div>
+         <div class="front-count-number">{{ manageContentCounts?.manageFolderCount }}</div>
+         <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders"></i></div>
+      </div>
+   </div>
 </div>
+
+<div *ngIf="isPartnerView && !sharedcontentCountsLoader && !hideContentTiles" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="sharedcontentCountsLoader"></app-box-loader>
+   <div class="front-count-col">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'alll'"
+         (click)="manageContentCounts?.allSharedCount > 0 && filterAssets('alll')"
+         [ngStyle]="{'cursor': manageContentCounts?.allSharedCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon container -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'alll',
+           'front-count-blue': selectedFilter !== 'alll'
+         }">
+            <i *ngIf="selectedFilter == 'alll'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'alll'" class="fa fa-database"></i>
+         </div>
+
+         <!-- Count and Label -->
+         <div class="front-count-number">{{ manageContentCounts?.allSharedCount }}</div>
+         <div class="front-count-label">
+            All
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" [attr.title]="
+      moduleType == 'DAM' ? 'Total records of assets' :
+      moduleType == 'TRACK' ? 'Total records of tracks' :
+      moduleType == 'PLAYBOOK' ? 'Total records of playbooks' :
+      ''
+    "></i></span>
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'in-progress'"
+         (click)="manageContentCounts?.inProgressCount > 0 && filterAssets('in-progress')" 
+         [ngStyle]="{'cursor': manageContentCounts?.inProgressCount > 0 ? 'pointer' : 'not-allowed'}">
+
+
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'in-progress',
+           'front-count-orange': selectedFilter !== 'in-progress'
+         }">
+
+            <!-- Icon changes based on selection -->
+            <i *ngIf="selectedFilter == 'in-progress'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'in-progress'" class="fa fa-clock-o"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.inProgressCount}}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">In Progress
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total in progress tracks' : 'Total in progress playbooks'"></i>
+            </span>
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'completed'"
+         [ngStyle]="{'cursor': manageContentCounts?.completedCount > 0 ? 'pointer' : 'not-allowed'}"
+         (click)="manageContentCounts?.completedCount > 0 && filterAssets('completed')">
+
+         <!-- Icon section -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'completed',
+           'front-count-blue': selectedFilter !== 'completed'
+         }">
+
+            <!-- Show correct icon -->
+            <i *ngIf="selectedFilter == 'completed'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'completed'" class="fa fa-check-circle"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.completedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">
+            Completed
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total completed tracks' : 'Total completed playbooks'"></i>
+            </span>
+         </div>
+      </div>
+   </div>
+
+
+   <div class="front-count-col" *ngIf="moduleType != 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'not-viewd'"
+         (click)="manageContentCounts?.notViewedCount > 0 && filterAssets('not-viewd')"
+         [ngStyle]="{'cursor': manageContentCounts?.notViewedCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'not-viewd',
+           'front-count-eye': selectedFilter !== 'not-viewd'
+         }">
+            <i *ngIf="selectedFilter == 'not-viewd'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'not-viewd'" class="fas fa-eye-slash"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.notViewedCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Not Viewed
+            <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total not viewed tracks' : 'Total not viewed playbooks'"></i>
+            </span>
+         </div>
+
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'interacted'"
+         (click)="manageContentCounts?.interacted > 0 && filterAssets('interacted')"
+         [ngStyle]="{'cursor': manageContentCounts?.interacted > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'interacted',
+           'front-count-handshake': selectedFilter !== 'interacted'
+         }">
+            <i *ngIf="selectedFilter == 'interacted'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'interacted'" class="fas fa-handshake"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.interacted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Interacted <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total interacted assets "></i> </span></div>
+      </div>
+   </div>
+
+   <div class="front-count-col" *ngIf="moduleType == 'DAM'">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'notInteracted'"
+         (click)="manageContentCounts?.nonInteracted > 0 && filterAssets('notInteracted')"
+         [ngStyle]="{'cursor': manageContentCounts?.nonInteracted > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'notInteracted',
+           'front-count-slash': selectedFilter !== 'notInteracted'
+         }">
+            <i *ngIf="selectedFilter == 'notInteracted'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'notInteracted'" class="fas fa-user-slash "></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.nonInteracted }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Non Interacted <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total non interacted assets "></i> </span>
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folders'"
+         (click)="manageContentCounts?.managerSharedFoldersCount > 0 && filterAssets('folders')"
+         [ngStyle]="{'cursor': manageContentCounts?.managerSharedFoldersCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'folders',
+           'front-count-purple': selectedFilter !== 'folders'
+         }">
+            <i *ngIf="selectedFilter == 'folders'" class="fa fa-check	"></i>
+            <i *ngIf="selectedFilter !== 'folders'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageContentCounts?.managerSharedFoldersCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders "></i></div>
+      </div>
+   </div>
+</div>
+

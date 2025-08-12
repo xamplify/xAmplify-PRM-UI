@@ -18,6 +18,8 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { OliverPromptSuggestionDTO } from 'app/common/models/oliver-prompt-suggestion-dto';
 import { ExecutiveReport } from 'app/common/models/oliver-report-dto';
 import { Observable, Subscription } from 'rxjs';
+import { GroupOliverReportDTO } from 'app/common/models/group-oliver-report-dto';
+// import { CampaignEngagementAndAssetUtilization,Conclusion, CampaignEngagementSubSection, CSuiteRecommendationItem, DealInteractionsAndRevenueImpact, DealIRISubSection, FooterMetadata, GroupOliverReportDTO, KPIItem, LeadFunnelSubSection, LeadLifecycleAndQualificationFunnel, OverviewSection, PartnerPerformanceItem, PartnerRevenueItem, PlaybookAssetUsageItem, PlaybookRankedAssetItem } from 'app/common/models/group-oliver-report-dto';
 declare var $: any;
 
 @Component({
@@ -31,6 +33,11 @@ export class AiChatManagerComponent implements OnInit {
   @Input() selectedContact: any;
   @Input() callActivity: any;
   @Input() isFromManageContact: boolean;
+  @Input() isFromManagePartner: boolean;
+  @Input() isFromOnboardSection: boolean = false;
+  @Input() isFromGroupOfPartners: boolean = false;
+  @Input() isFromManageCampaign: boolean = false;
+  @Input() selectedCampaign: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -109,8 +116,13 @@ export class AiChatManagerComponent implements OnInit {
   private loaderMessages: string[] = ['Analyzing', 'Thinking', 'Processing', 'Finalizing', 'Almost there'];
   private messageIndex: number = 0;
   private intervalSub: Subscription;
+  pptLoader: boolean = false;
+  activeTab: string = '';
+  pptData: string;
+  showPptDesignPicker: boolean = false;
+  designAccess: boolean;
 
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, public referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
   private landingPageService: LandingPageService,public pagerService:PagerService) { }
 
@@ -134,7 +146,7 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.id = this.assetId;
       // this.getThreadId(this.chatGptIntegrationSettingsDto);
-    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact) {
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined && this.callActivity == undefined && !this.isFromManageContact && !this.isFromManagePartner) {
       this.isFromContactJourney = true;
       if (this.chatGptSettingDTO.threadId != undefined) {
         this.threadId = this.chatGptSettingDTO.threadId;
@@ -154,7 +166,12 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.isFromManageContact) {
       this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
-    } else {
+    } else if (this.isFromManagePartner) {
+      this.chatGptIntegrationSettingsDto.contactId = this.selectedContact.id;
+      this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
+    } else if (this.isFromManageCampaign) {
+      this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
+    }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
@@ -184,6 +201,7 @@ export class AiChatManagerComponent implements OnInit {
     } else if (this.asset != null && this.asset != undefined && this.asset.id) {
       this.getRandomOliverSuggestedPromptsByDamId(this.asset.id);
     }
+    this.checkDesignAccess();
   }
 
   getThreadId(chatGptIntegrationSettingsDto: any) {
@@ -254,6 +272,9 @@ export class AiChatManagerComponent implements OnInit {
 
   setInputText(text: string) {
     this.inputText = text;
+    if (this.isFromGroupOfPartners) {
+      this.inputText += 's';
+    }
     this.validateInputText();
   }
 
@@ -303,6 +324,7 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    this.chatGptIntegrationSettingsDto.fromGroupOfPartners = this.isFromGroupOfPartners;
     self.startStatusRotation();
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
@@ -319,7 +341,11 @@ export class AiChatManagerComponent implements OnInit {
           if (isReport == 'true') {
             try {
               const cleanJsonStr = self.extractJsonString(message);
-              message = self.parseOliverReport(cleanJsonStr);
+              if (self.isFromGroupOfPartners) {
+                message = self.parseGroupOliverReport(cleanJsonStr);
+              } else {
+                message = self.parseOliverReport(cleanJsonStr);
+              }
             } catch (error) {
               isReport = 'false';
               message = self.chatGptGeneratedText;
@@ -349,9 +375,12 @@ export class AiChatManagerComponent implements OnInit {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
-      } else if (this.isFromContactJourney || this.isFromManageContact) {
+      } else if (this.isFromContactJourney || this.isFromManageContact || this.isFromManagePartner) {
         this.selectedContact = undefined;
         this.callActivity = undefined;
+        this.notifyParent.emit(this.chatGptSettingDTO);
+      } else if (this.isFromManageCampaign) {
+        this.selectedCampaign = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
         if (this.router.url.includes('/shared/view/g')) {
@@ -565,17 +594,19 @@ export class AiChatManagerComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
   }
+  
   ngOnDestroy() {
-    this.openHistory=false;
+    this.openHistory = false;
     this.openShareOption = false;
     this.loading = false;
-    this.ngxLoading  = false;
+    this.ngxLoading = false;
     this.UploadedFile = false;
+    this.activeTab = '';
     this.showEmailModalPopup = false;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -931,6 +962,9 @@ export class AiChatManagerComponent implements OnInit {
   fetchOliverActiveIntegration() {
     this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    if(this.asset != undefined && this.asset != null && this.asset.id > 0 && this.asset.videoId != undefined && this.asset.videoId != null && this.asset.videoId != '') {
+      this.chatGptIntegrationSettingsDto.videoId = this.asset.videoId;
+    }
     this.chatGptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
@@ -941,6 +975,9 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
             this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
+            this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerGroupAssistantId = data.partnerGroupAssistantId;
           }
         }
       }, error => {
@@ -949,13 +986,68 @@ export class AiChatManagerComponent implements OnInit {
       if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
         this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
-      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact) {
+      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact && !this.isFromManagePartner) {
         this.getChatHistory();
       }
       if (this.isFromManageContact) {
         this.uploadContactDetails();
       }
+       if (this.isFromManagePartner) {
+        this.uploadPartnerDetails();
+      }
+       if (this.isFromManageCampaign) {
+        this.uploadCampaignDetails();
+      }
     });
+  }
+
+  uploadPartnerDetails() {
+    this.ngxLoading = true;
+    if (this.isFromGroupOfPartners) {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERGROUPAGENT";
+      this.activeTab = 'partnergroupagent';
+    } else {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+      this.activeTab = 'partneragent';
+    }
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  uploadCampaignDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "CAMPAIGNAGENT";
+    this.activeTab = 'campaignagent';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadCampaignDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   getFileIcon(): string {
@@ -1079,6 +1171,7 @@ export class AiChatManagerComponent implements OnInit {
   uploadContactDetails() {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "CONTACTAGENT";
+    this.activeTab = 'contactagent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadContactDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1107,14 +1200,26 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   parseOliverReport(jsonStr: string): ExecutiveReport {
-    const j = JSON.parse(jsonStr);
+     const j = JSON.parse(jsonStr);
 
-    const pipelineItems = j.pipeline_progression.items ? j.pipeline_progression.items : [];
+    const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
+
+    const playBookEngagementItems = j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.items ? j.playbook_content_engagement_overview.items : [];
+
+    const trackEngagementItems = j.track_content_engagement_by_team && j.track_content_engagement_by_team.items ? j.track_content_engagement_by_team.items : [];
 
     const leadProgressionFunnelData = j.lead_progression_funnel ? j.lead_progression_funnel : {};
 
+    const assetsEngagementItems = j.asset_engagement_overview && j.asset_engagement_overview.items ? j.asset_engagement_overview.items : [];
+
+    const deliveryStatusOverviewItems = j.delivery_status_overview && j.delivery_status_overview.items ? j.delivery_status_overview.items : [];
+
+     const topPerformingRecipientsItems = j.top_performing_recipients && j.top_performing_recipients.chart_data ? j.top_performing_recipients.chart_data : [];
+
+    const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
+
     const dealPipelinePrograssion = {
-      title: j.pipeline_progression.title ? j.pipeline_progression.title : '',
+      title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
       revenue: 'Revenue (in $1000)',
       series: pipelineItems.map((item: any) => {
@@ -1129,14 +1234,14 @@ export class AiChatManagerComponent implements OnInit {
       }),
       categoriesString: '',
       seriesString: '',
-      average_deal_value: j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
-      highest_deal_value: j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
+      average_deal_value: j.pipeline_progression && j.pipeline_progression.average_deal_value ? j.pipeline_progression.average_deal_value : '0',
+      highest_deal_value: j.pipeline_progression && j.pipeline_progression.highest_deal_value ? j.pipeline_progression.highest_deal_value : '0'
     };
 
-    const campaignItems = j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
+    const campaignItems = j.campaign_performance_analysis && j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
 
     const campaignPerformanceAnalysis = {
-      title: j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
+      title: j.campaign_performance_analysis && j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
       series: [{
         name: 'Count',
         colorByPoint: true,
@@ -1150,6 +1255,146 @@ export class AiChatManagerComponent implements OnInit {
       seriesString: '',
     };
 
+    const trackContentEngagement = {
+      title: j.track_content_engagement_by_team && j.track_content_engagement_by_team.title
+        ? j.track_content_engagement_by_team.title
+        : '',
+      categories: trackEngagementItems.map((item: any) => item.email ? item.email : ''),
+      series: [
+        {
+          name: 'Views',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_viewed !== undefined ? item.tracks_viewed : 0
+          ),
+        },
+        {
+          name: 'Downloads',
+          data: trackEngagementItems.map((item: any) =>
+            item && item.tracks_downloaded !== undefined ? item.tracks_downloaded : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.track_content_engagement_by_team && j.track_content_engagement_by_team.description
+        ? j.track_content_engagement_by_team.description
+        : '',
+    };
+
+    const playbookContentEngagementOverview = {
+      title: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.title
+        ? j.playbook_content_engagement_overview.title
+        : '',
+      categories: playBookEngagementItems.map((item: any) =>
+        item && item.name ? item.name : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.view_count !== undefined ? item.view_count : 0
+          ),
+        },
+        {
+          name: 'Completed',
+          data: playBookEngagementItems.map((item: any) =>
+            item && item.completion_count !== undefined ? item.completion_count : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.playbook_content_engagement_overview && j.playbook_content_engagement_overview.description
+        ? j.playbook_content_engagement_overview.description
+        : '',
+    };
+
+    const assetEngagementOverview = {
+      title: j.asset_engagement_overview && j.asset_engagement_overview.title
+        ? j.asset_engagement_overview.title
+        : '',
+      categories: assetsEngagementItems.map((item: any) =>
+        item && item.email ? item.email : ''
+      ),
+      series: [
+        {
+          name: 'Views',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_views !== undefined ? item.asset_views : 0
+          ),
+        },
+        {
+          name: 'Downloaded',
+          data: assetsEngagementItems.map((item: any) =>
+            item && item.asset_downloads !== undefined ? item.asset_downloads : 0
+          ),
+        }
+      ],
+      categoriesString: '',
+      seriesString: '',
+      description: j.asset_engagement_overview && j.asset_engagement_overview.description
+        ? j.asset_engagement_overview.description
+        : '',
+      mostOpenedAsset: j.asset_engagement_overview && j.asset_engagement_overview.most_opened_asset
+        ? j.asset_engagement_overview.most_opened_asset
+        : 0,
+      openCountForMostViewedAsset: j.asset_engagement_overview && j.asset_engagement_overview.total_opens_for_most_opened_asset
+        ? j.asset_engagement_overview.total_opens_for_most_opened_asset
+        : 0,
+      totalAssetsOpenCount: j.asset_engagement_overview && j.asset_engagement_overview.assets_opened_count
+        ? j.asset_engagement_overview.assets_opened_count
+        : 0,
+      avgEngagementRate: j.asset_engagement_overview && j.asset_engagement_overview.avg_engagement_rate
+        ? j.asset_engagement_overview.avg_engagement_rate
+        : 0,
+    };
+
+    const deliveryStatusOverview = {
+      title: j.delivery_status_overview && j.delivery_status_overview.title
+        ? j.delivery_status_overview.title
+        : '',
+      categories: deliveryStatusOverviewItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: deliveryStatusOverviewItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+      totalSent: j.delivery_status_overview && j.delivery_status_overview.total_sent
+        ? j.delivery_status_overview.total_sent
+        : '',
+      deliveryRate: j.delivery_status_overview && j.delivery_status_overview.delivery_rate
+        ? j.delivery_status_overview.delivery_rate
+        : 0,
+    };
+
+    const topPerformingRecipients = {
+      title: j.top_performing_recipients && j.top_performing_recipients.title
+        ? j.top_performing_recipients.title
+        : '',
+      categories: topPerformingRecipientsItems.map((item: any) => item.name ? item.name : ''), // dynamic months
+      series: topPerformingRecipientsItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+       items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
+    };
+
+
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
       report_title: j && j.report_title ? j.report_title : '',
@@ -1157,6 +1402,32 @@ export class AiChatManagerComponent implements OnInit {
       date_range: j && j.date_range ? j.date_range : '',
       report_owner: j && j.report_owner ? j.report_owner : '',
       report_recipient: j && j.report_recipient ? j.report_recipient : '',
+      campaign_name : j && j.campaign_name ? j.campaign_name : '',
+      campaign_organized : j && j.campaign_organized ? j.campaign_organized : '',
+      campaign_launch_date : j && j.campaign_launch_date ? j.campaign_launch_date : '',
+      campaign_type : j && j.campaign_type ? j.campaign_type : '',
+      total_recipients : j && j.total_recipients ? j.total_recipients : 0,
+      email_sent : j && j.email_sent ? j.email_sent : 0,
+      click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
+      deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+
+      owner_details: {
+        owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
+        owner_country: j && j.owner_country ? j.owner_country : '',
+        owner_city: j && j.owner_city ? j.owner_city : '',
+        owner_address: j && j.owner_address ? j.owner_address : '',
+        owner_contact_company: j && j.owner_contact_company ? j.owner_contact_company : '',
+        owner_job_title: j && j.owner_job_title ? j.owner_job_title : '',
+        owner_email_id: j && j.owner_email_id ? j.owner_email_id : '',
+        owner_mobile_number: j && j.owner_mobile_number ? j.owner_mobile_number : '',
+        owner_state: j && j.owner_state ? j.owner_state : '',
+        owner_zip: j && j.owner_zip ? j.owner_zip : '',
+        owner_vertical: j && j.owner_vertical ? j.owner_vertical : '',
+        owner_region: j && j.owner_region ? j.owner_region : '',
+        owner_company_domain: j && j.owner_company_domain ? j.owner_company_domain : '',
+        owner_website: j && j.owner_website ? j.owner_website : '',
+        owner_country_code: j && j.owner_country_code ? j.owner_country_code : ''
+      },
 
       /* ---------- KPI overview ---------- */
       kpi_overview: {
@@ -1234,7 +1505,7 @@ export class AiChatManagerComponent implements OnInit {
             : ''
       },
 
-
+      
       /* ---------- contact-journey timeline ---------- */
       contact_journey_timeline: {
         title:
@@ -1292,12 +1563,300 @@ export class AiChatManagerComponent implements OnInit {
 
       dealPipelinePrograssion: dealPipelinePrograssion,
 
-      campaignPerformanceAnalysis: campaignPerformanceAnalysis
+      campaignPerformanceAnalysis: campaignPerformanceAnalysis,
+      trackContentEngagement : trackContentEngagement,
+      trackEngagementAnalysis: {
+        title:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.title
+            ? j.track_engagement_analysis.title
+            : '',
+        description:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.description
+            ? j.track_engagement_analysis.description
+            : '',
+        items:
+          j && j.track_engagement_analysis && j.track_engagement_analysis.items
+            ? j.track_engagement_analysis.items
+            : []
+      },
+      playbookContentEngagementOverview : playbookContentEngagementOverview,
+      assetEngagementOverview :assetEngagementOverview,
+
+      deal_interactions_and_revenue_impact: undefined,
+
+      campaign_funnel_analysis : campaignFunnelData,
+      deliveryStatusOverview : deliveryStatusOverview,
+      detailedRecipientAnalysis: {
+        title: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.title ? j.detailed_recipient_analysis.title : '',
+        description: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.description ? j.detailed_recipient_analysis.description : '',
+        items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
+      },
+      topPerformingRecipients : topPerformingRecipients,
     };
 
     return dto;
   }
 
+
+
+
+
+
+
+parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
+  const j: any = JSON.parse(jsonStr);
+
+ const dealIRIRaw = j && j.deal_interactions_and_revenue_impact
+  ? j.deal_interactions_and_revenue_impact
+  : {};
+
+  
+  
+
+  const topPartnersRaw = dealIRIRaw.top_partners_by_deal_value || {};
+  const keyInsightsRaw  = dealIRIRaw.key_insights || {};
+
+  const pipelineItems = topPartnersRaw.items ? topPartnersRaw.items : [];
+
+
+  const dealPipelinePrograssion = {
+      title: topPartnersRaw.title ? topPartnersRaw.title : '',
+      categories: pipelineItems.map((item: any) => item.name ? item.name : ''),
+      revenue: 'Revenue (in $1000)',
+      series: pipelineItems.map((item: any) => {
+        const numericValue = item.value
+          ? item.value
+          : 0;
+        return {
+          name: item.name ? item.name : '',
+          data: [numericValue]
+        };
+      }),
+      categoriesString: '',
+      seriesString: '',
+    };
+
+  const deal_interactions_and_revenue_impact = {
+    title:       dealIRIRaw.title       ? dealIRIRaw.title       : '',
+    description: dealIRIRaw.description ? dealIRIRaw.description : '',
+
+    top_partners_by_deal_value: dealPipelinePrograssion,
+
+    key_insights: {
+      title:       keyInsightsRaw.title       ? keyInsightsRaw.title       : '',
+      description: keyInsightsRaw.description ? keyInsightsRaw.description : '',
+      items:       keyInsightsRaw.items       ? keyInsightsRaw.items       : []
+    },
+
+  };
+
+  /* ---------- Lead Lifecycle & Qualification Funnel ---------- */
+  const leadLFRaw = j && j.lead_lifecycle_and_qualification_funnel
+    ? j.lead_lifecycle_and_qualification_funnel
+    : {};
+
+  const leadProgressRaw  = leadLFRaw.lead_progression_funnel || {};
+  const funnelAnalysisRaw = leadLFRaw.funnel_analysis || {};
+
+  const lead_lifecycle_and_qualification_funnel = {
+    title:       leadLFRaw.title       ? leadLFRaw.title       : '',
+    description: leadLFRaw.description ? leadLFRaw.description : '',
+
+    lead_progression_funnel: {
+      title:       leadProgressRaw.title       ? leadProgressRaw.title       : '',
+      description: leadProgressRaw.description ? leadProgressRaw.description : '',
+      items:       leadProgressRaw.items       ? leadProgressRaw.items       : []
+    },
+
+    funnel_analysis: {
+      title:       funnelAnalysisRaw.title       ? funnelAnalysisRaw.title       : '',
+      description: funnelAnalysisRaw.description ? funnelAnalysisRaw.description : '',
+      items:       funnelAnalysisRaw.items       ? funnelAnalysisRaw.items       : []
+    }
+  };
+
+  /* ---------- Campaign Engagement & Asset Utilization ---------- */
+  const campEAItems = j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.items
+    ? j.campaign_engagement_and_asset_utilization.items
+    : [];
+
+  const campaign_engagement_and_asset_utilization = {
+    title: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.title
+      ? j.campaign_engagement_and_asset_utilization.title
+      : '',
+    description: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.description
+      ? j.campaign_engagement_and_asset_utilization.description
+      : '',
+    items: campEAItems
+  };
+
+  /* ---------- Playbook blocks ---------- */
+  const playbook_engagement_and_asset_utilization = {
+    title: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.title
+      ? j.playbook_engagement_and_asset_utilization.title
+      : '',
+    description: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.description
+      ? j.playbook_engagement_and_asset_utilization.description
+      : '',
+    items: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.items
+      ? j.playbook_engagement_and_asset_utilization.items
+      : []
+  };
+
+  const playbook_engagement_kpis = {
+    title: j.playbook_engagement_kpis && j.playbook_engagement_kpis.title
+      ? j.playbook_engagement_kpis.title
+      : '',
+    description: j.playbook_engagement_kpis && j.playbook_engagement_kpis.description
+      ? j.playbook_engagement_kpis.description
+      : '',
+    items: j.playbook_engagement_kpis && j.playbook_engagement_kpis.items
+      ? j.playbook_engagement_kpis.items
+      : []
+  };
+
+  const top_performing_playbook_assets = {
+    title: j.top_performing_playbook_assets && j.top_performing_playbook_assets.title
+      ? j.top_performing_playbook_assets.title
+      : '',
+    description: j.top_performing_playbook_assets && j.top_performing_playbook_assets.description
+      ? j.top_performing_playbook_assets.description
+      : '',
+    items: j.top_performing_playbook_assets && j.top_performing_playbook_assets.items
+      ? j.top_performing_playbook_assets.items
+      : []
+  };
+
+  /* ---------- Partner analytics & performance ---------- */
+  const partner_analytics_strategic_revenue_drivers = {
+    title: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.title
+      ? j.partner_analytics_strategic_revenue_drivers.title
+      : '',
+    description: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.description
+      ? j.partner_analytics_strategic_revenue_drivers.description
+      : '',
+    items: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.items
+      ? j.partner_analytics_strategic_revenue_drivers.items
+      : []
+  };
+
+  const partnership_performance_review = {
+    title: j.partnership_performance_review && j.partnership_performance_review.title
+      ? j.partnership_performance_review.title
+      : '',
+    description: j.partnership_performance_review && j.partnership_performance_review.description
+      ? j.partnership_performance_review.description
+      : '',
+    items: j.partnership_performance_review && j.partnership_performance_review.items
+      ? j.partnership_performance_review.items
+      : []
+  };
+
+  const partnership_performance_summary_kpis = {
+    title: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.title
+      ? j.partnership_performance_summary_kpis.title
+      : '',
+    description: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.description
+      ? j.partnership_performance_summary_kpis.description
+      : '',
+    items: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.items
+      ? j.partnership_performance_summary_kpis.items
+      : []
+  };
+
+  /* ---------- C-Suite ---------- */
+  const c_suite_strategic_recommendations = {
+    title: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.title
+      ? j.c_suite_strategic_recommendations.title
+      : '',
+    description: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.description
+      ? j.c_suite_strategic_recommendations.description
+      : '',
+    items: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.items
+      ? j.c_suite_strategic_recommendations.items
+      : []
+  };
+
+  /* ---------- Footer & Conclusion ---------- */
+  const footer_metadata = {
+    strategic_contact: j.footer_metadata && j.footer_metadata.strategic_contact ? j.footer_metadata.strategic_contact : [],
+    report_details:    j.footer_metadata && j.footer_metadata.report_details    ? j.footer_metadata.report_details    : [],
+    data_sources:      j.footer_metadata && j.footer_metadata.data_sources      ? j.footer_metadata.data_sources      : []
+  };
+
+  const conclusion = {
+    title:       j.conclusion && j.conclusion.title       ? j.conclusion.title       : '',
+    description: j.conclusion && j.conclusion.description ? j.conclusion.description : '',
+    items:       j.conclusion && j.conclusion.items       ? j.conclusion.items       : []
+  };
+
+  /* ---------- KPI & Summary ---------- */
+  const kpi_overview = {
+    title:       j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+    description: j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+    items:       j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+  };
+
+  const summary_overview = {
+    title:       j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+    description: j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+    items:       j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+  };
+
+
+
+
+
+
+
+
+
+
+  /* ---------- Build DTO ---------- */
+  const dto: GroupOliverReportDTO = {
+    report_title: j && j.report_title ? j.report_title : '',
+    subtitle: j && j.subtitle ? j.subtitle : '',
+    date_range: j && j.date_range ? j.date_range : '',
+    report_owner: j && j.report_owner ? j.report_owner : '',
+    report_recipient: j && j.report_recipient ? j.report_recipient : '',
+    report_main_title: j && j.report_main_title ? j.report_main_title : '',
+    report_sub_heading: j && j.report_sub_heading ? j.report_sub_heading : '',
+
+    kpi_overview: kpi_overview,
+    summary_overview: summary_overview,
+
+    // description:                   string;
+    //   top_partners_by_deal_value:    OverviewSection<DealPartnerItem>;
+    //   key_insights:                  OverviewSection<KPIItem>;
+    //   title: string;
+    //   categories: string[];
+    //   revenue: string;
+    //   series: { name: string; data: string[] }[];
+    //   categoriesString: string;
+    //   seriesString: string;
+    lead_lifecycle_and_qualification_funnel: lead_lifecycle_and_qualification_funnel,
+    campaign_engagement_and_asset_utilization: campaign_engagement_and_asset_utilization,
+
+    playbook_engagement_and_asset_utilization: playbook_engagement_and_asset_utilization,
+    playbook_engagement_kpis: playbook_engagement_kpis,
+    top_performing_playbook_assets: top_performing_playbook_assets,
+
+    partner_analytics_strategic_revenue_drivers: partner_analytics_strategic_revenue_drivers,
+    partnership_performance_review: partnership_performance_review,
+    partnership_performance_summary_kpis: partnership_performance_summary_kpis,
+
+    c_suite_strategic_recommendations: c_suite_strategic_recommendations,
+
+    footer_metadata: footer_metadata,
+    conclusion: conclusion,
+    deal_interactions_and_revenue_impact: deal_interactions_and_revenue_impact // <-- Add this property to the GroupOliverReportDTO interface/type
+  };
+
+  return dto;
+}
+
+
+  
   startStatusRotation() {
     this.statusMessage = this.loaderMessages[0];
     this.messageIndex = 1;
@@ -1358,8 +1917,41 @@ export class AiChatManagerComponent implements OnInit {
       }, error => {
         this.isPdfUploading = false;
       }, () => {
-        
+
       });
   }
-  
+
+  openPptDesignPicker(el: HTMLElement): void {
+    this.pptData = (el.textContent || '').trim();
+    if (this.pptData.trim().length > 0) {
+      this.showPptDesignPicker = true;
+    }
+  }
+
+  emitSelectedTemplate(event: any) {
+    if (event) {
+      this.resetValues();
+    } else {
+      this.resetValues();
+    }
+  }
+  resetValues() {
+    this.pptData = '';
+    this.showPptDesignPicker = false;
+  }
+
+  /** XNFR-1079  **/
+  downloadDocxFile(el: HTMLElement) {
+    this.referenceService.docxLoader = true;
+    let text = el && el.innerHTML ? el.innerHTML : '';
+    const dto = new ChatGptIntegrationSettingsDto();
+    dto.prompt = text;
+    this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+  private checkDesignAccess() {
+    this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
+      (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
 }

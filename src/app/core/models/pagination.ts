@@ -207,4 +207,13 @@ export class Pagination {
    partnershipStatus: any;
 
 	exportToExcel: boolean = false;
+
+	selectedTab: string;
+
+	partnerMarketingCompany: boolean = false; 
+
+	showPartnerCreatedCampaigns: boolean = false;
+  
+   publishedFilter : boolean = false;
+
 }

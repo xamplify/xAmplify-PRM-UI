@@ -96,11 +96,11 @@
                 <div class="inputs zero-padding-display-inline" *ngIf="!isCollapsed">
                   <div class="portlet-input input-inline input-small tmutttpx">
                     <div class="input-icon right" style="margin-right: 10px;">
-                      <input type="text" class="form-control" [(ngModel)]="pagination.searchKey"
+                      <input type="text" class="form-control" [(ngModel)]="searchKey"
                         [ngModelOptions]="{standalone: true}" placeholder="Search"
                         (keypress)="eventHandler($event.keyCode)">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-                        (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                        (click)="searchKey='';searchTeamMembers()"></button>
                       <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
                         <i class="fa fa-search" aria-hidden="true"></i>
                       </button>
@@ -442,25 +442,70 @@
                     </div>
                   </div>
                 </div>
-
+                  <!---Enable As An Admin--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group row">
+                    <div class="col-sm-6" *ngIf="showSecondAdmin">
+                      <div class="form-group">
+                        <label class="control-label col-sm-6">Enable As An Admin</label>
+                        <div class="col-sm-4">
+                          <div>
+                            <switch class="switchbtns" *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
+                              data-toggle="tooltip" data-placement="bottom"
+                              [title]="!team?.enableOption? 'This option is not available for the selected group':''"
+                              [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
+                            </switch>
+                            <switch class="switchbtns" *ngIf="team.enableOption" [status]="team.secondAdmin"
+                              [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                              [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                              [size]="callActionSwitch.defaultSize" (statusChange)="changeOrgAdminStatus(team,$event)"
+                              [disabled]="!team.enableOption">
+                            </switch>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!---Status--->
+                    <div class="col-sm-6 p0" *ngIf="editTeamMember">
+                      <div class="form-group row">
+                        <label class="control-label col-sm-1 text-center pl0">Status</label>
+                        <div class="col-sm-4">
+                          <div
+                            [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
+                            <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              [disabled]="callActionSwitch.disabled">
+                            </switch>
+                            <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue"
+                              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                              (statusChange)="changeTeamMemberStatus(team,$event)">
+                            </switch>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <!---Team Member Group--->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Team Member Group<span class="required">*</span></label>
-                    <button class="btn btn-info margin-left-negative-fifteen-px mb_10"
-                      [disabled]="team?.teamMemberGroupId==0" data-toggle="tooltip" data-placement="bottom"
-                      title="click to view available modules " (click)="previewModules(team.teamMemberGroupId)">
-                      <i class="fa fa-eye white" aria-hidden="true"></i>
-                    </button>
                     <div class="col-sm-8">
+                      <div class="input-group">
                       <select
                         title="Team Member Group cannot be changed.One or more {{authenticationService?.partnerModule?.customName}} part of the group"
-                        disabled class="form-control" *ngIf="team?.partnersCount>0">
+                        disabled class="form-control" *ngIf=" false && team?.partnersCount>0">
                         <option>
                           {{team?.teamMemberGroupName}} 
                         </option>
                       </select>
-                      <select *ngIf="team?.partnersCount==0" class="form-control"
+                      <!-- *ngIf="team?.partnersCount==0" -->
+                      <select  class="form-control"
                         (ngModelChange)="selectTeamMemberGroupId($event);" [(ngModel)]="team.teamMemberGroupId"
                         [ngModelOptions]="{standalone: true}">
                         <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
@@ -468,74 +513,34 @@
                           <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                         </option>
                       </select>
-                      <span
-                        *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"
-                        class="info-text-color">
+                      <span class="input-group-btn">
+                        <button class="btn btn-info btn-pad8" [disabled]="team?.teamMemberGroupId==0"
+                          data-toggle="tooltip" data-placement="bottom" title="click to view available modules "
+                          (click)="previewModules(team.teamMemberGroupId)">
+                          <i class="fa fa-eye white" aria-hidden="true"></i>
+                        </button>
+                      </span>
+                      </div>
+                      <span  class="info-text-color" *ngIf=" team?.teamMemberGroupPartnersCount === 0  && team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
                         <strong>
                           <span
-                            [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span>
-                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
-                        </strong>
-                      </span>
-                      <span *ngIf="team?.partnersCount>0" class="info-text-color">
+                            class="inactive-status">0</span>
+                        {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+                          </strong>
+                        </span>
+                      <span *ngIf=" false && team?.partnersCount>0" class="info-text-color">
                         <span class="inactive-status">Team Member Group cannot be changed.One or more
                           {{authenticationService?.partnerModule?.customName}} part of the group</span>
                       </span>
                     </div>
                   </div>
                 </div>
-
-                <!---Enable As An Admin--->
-                <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3">Enable As An Admin</label>
-                    <div class="col-sm-8">
-                      <div>
-                        <switch class="switchbtns" *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
-                          data-toggle="tooltip" data-placement="bottom"
-                          [title]="!team?.enableOption? 'This option is not available for the selected group':''"
-                          [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
-                          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                        </switch>
-                        <switch class="switchbtns" *ngIf="team.enableOption" [status]="team.secondAdmin"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                        </switch>
-                      </div>
-                    </div>
-                  </div>
+                <app-select-partners-and-share-leads *ngIf="!loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
+                <div class="col-lg-11 p0 mt10">
+                  <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
+                    (click)="addOrUpdateTeamMember()"><span
+                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
                 </div>
-
-                <!---Status--->
-                <div class="col-md-12 col-lg-12" *ngIf="editTeamMember">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3">Status</label>
-                    <div class="col-sm-8">
-                      <div
-                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
-                        <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          [disabled]="callActionSwitch.disabled">
-                        </switch>
-                        <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled"
-                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                          [onColor]="callActionSwitch.onGreenColorSwitch"
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                          (statusChange)="changeTeamMemberStatus(team,$event)">
-                        </switch>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
-                  (click)="addOrUpdateTeamMember()"><span
-                    class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
               </div>
             </div>
           </form>
@@ -558,7 +563,29 @@
       </div>
       <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-
+        <div class="row">
+          <div class="col-lg-5 col-sm-6 col-xs-12 pull-right">
+            <div class="form-group">
+              <strong for="globalGroupSelect" style="font-weight: 500;">Select Team Member Group<span class="ml5"><i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+               title="Selected group will be assigned to all team members."></i></span></strong>
+              <div class="input-group">
+                <select id="globalGroupSelect" class="form-control" [(ngModel)]="selectedGlobalGroupId"
+                  (ngModelChange)="applyGroupToAllTeamMembers()" style="border-radius: 4px 0px 0px 4px !important;" >
+                  <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                    {{ teamMemberGroup.name }}
+                    <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
+                  </option>
+                </select>
+                <span class="input-group-btn">
+                  <button class="btn btn-info" [disabled]="!selectedGlobalGroupId" type="button" tabindex="-1"
+                    (click)="previewModules(selectedGlobalGroupId!)" style="padding: 8px 14px;">
+                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped silvertm tgrid" id="add-team-member-table" aria-describedby="TeamMemberList">
             <thead>
@@ -603,38 +630,42 @@
                     [disabled]="!teamMember.enableOption">
                   </switch>
                 </td>
-                <td>
-                  <div class="input-group spxni-width">
+                <td style="width: 25%;">
+                  <div class="input-group">
                     <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId"
-                      (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);">
+                      (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" style="border-radius: 4px 0px 0px 4px !important;">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                         {{teamMemberGroup?.name}}
                         <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                       </option>
                     </select>
+                    <span class="input-group-btn">
+                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button"
+                        tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)" style="padding: 8px 14px;">
+                        <i class="fa fa-eye white" aria-hidden="true"></i>
+                      </button>
+                    </span>
+                  </div>
                     <span class="info-text-color float-left"
-                      *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
+                      *ngIf="teamMember?.teamMemberGroupPartnersCount >= 0 && teamMember.teamMemberGroupId !== 0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
                       <strong>
                         <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span>
                         {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                       </strong>
                     </span>
-                    <span class="input-group-btn">
-                      <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button"
-                        tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
-                        <i class="fa fa-eye white" aria-hidden="true"></i>
-                      </button>
-                    </span>
-                  </div>
                 </td>
                 <!---Delete-->
                 <td>
-                  <a (click)="deleteRow(i,teamMember)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                  <div class="actions-block override-actions ActionAlign" style="float: none !important;" >
+                  <a class="custom-icon" (click)="deleteRow(i,teamMember)"><i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                  <div class="del-icon"></div>
+                  </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <button id="right" type="submit" class="button_blue bgcolor-unset" (click)="addTeamMembers()"><span
+          <button id="right" type="submit" class="button_blue bgcolor-unset mt10" (click)="addTeamMembers()"><span
               class="btn btn-primary transition txt_pd-top3">Save</span></button>
         </div>
       </div>
@@ -1066,7 +1097,7 @@
 
   <ng-template #inviteTeamMemberTemplate>
     <div class="hidden-xs pull-right downloadteam" style="margin-left: 7px;">
-      <button class="btn btn-primary button position-relative" (click)="openInviteTeamMemberModal()"
+      <button class="btn btn-primary button position-relative" (click)="!isLoggedInAsTeamMember && openInviteTeamMemberModal()"
         style="border-radius: 7px 0px 0px 7px!important;" translate>{{properties?.inviteATeamMember}}</button>
       <button class="btn btn-primary button border_btn" (click)="navigateToTeamMemberReports()"
         style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
@@ -1074,54 +1105,10 @@
       </button>
     </div>
   </ng-template>
-  
-  <div class="modal fade right" id="invite_team_member_modal" role="dialog" aria-labelledby="myModalLabel"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <a class="close-circle" (click)="closeInviteTeamMemberModal()" data-dismiss="modal">
-            <i class="fa fa-times"></i></a>
-          <h4 class="modal-title left" id="myModalLabel"> {{ tableHeader }} </h4>
-        </div>
-        <div class="modal-body">
-          <app-modal-popup-loader *ngIf="inviteTeamMemberLoading"></app-modal-popup-loader>
-          <app-response-message [customResponse]="inviteTeamMemberResponse" *ngIf="inviteTeamMemberResponse?.isVisible"
-            [showCloseIcon]="!isValidationMessage"></app-response-message>
-          <div *ngIf="!isValidationMessage && !inviteTeamMemberLoading">
-            <div class="form-group">
-              <label for="emailInput">To <span class="required">*</span></label>
-              <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
-                [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
-                [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
-                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
-                [onTextChangeDebounce]="40" required>
-              </tag-input>
-            </div>
-            <div class="form-group">
-              <label>Email subject <span class="required">*</span></label>
-              <input type="text" [(ngModel)]="vendorInvitation.subject" [ngModelOptions]="{standalone: true}"
-                placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" disabled />
-            </div>
-            <div class="form-group">
-              <label>Message <span class="required">*</span></label>
-            </div>
-            <div class="form-group" style="cursor: not-allowed;">
-              <span [innerHTML]="inviteTeamMemberHtmlBody" class="plspx" style="pointer-events: none;"></span>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer" style="border: none">
-          <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInviteTeamMemberModal()"
-            data-dismiss="modal">Cancel</button>
-          <button type="submit" class="button bgcolor-unset"
-            [disabled]="emailIds.length == 0 || !vendorInvitation.subject || isValidationMessage" (click)="sendTeamMemberInviteEmail()">
-            <span class="btn Btn-Green transition txt_pd-top3">Send
-              <i aria-hidden="true" class="fa fa-send"></i></span></button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <!----- XNFR-805 ----->
+  <app-invite-team-member-modal-popup *ngIf="showInviteTeamMemberModal"
+    (notifyInviteTeamMember)="hideInviteTeamMemberModal($event)"></app-invite-team-member-modal-popup> 
 
   <ng-template #defaultSSOGroupTextTemplate let-teamMemberGroup="teamMemberGroup">
     <span *ngIf="teamMemberGroup?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled">({{properties?.defaultSSOGroup}})</span>

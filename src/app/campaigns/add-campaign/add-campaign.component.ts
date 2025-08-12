@@ -264,7 +264,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   notifyPartnersTeamMembersLabelText = "";
   notifyPartnerTeamMemberToolTipMessage = "";
   teamMemberCustomName = "Team Member";
-
+  isPartnerMarketingCompany = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -591,9 +591,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.isOrgAdminCompany  = data['isOrgAdminCompany'];
                 let isMarketingCompany  = data['isMarketingCompany'];
                 let isVendorCompany = data['isVendorCompany'];
+                let isPartnerMarketingCompany = data['isPartnerMarketingCompany'];
                 this.isVendorCompany = isVendorCompany;
                 this.isMarketingCompany = isMarketingCompany;
-                this.showMarketingAutomationOption = this.isOrgAdminCompany || this.isMarketingCompany;
+                this.isPartnerMarketingCompany = isPartnerMarketingCompany
+                this.showMarketingAutomationOption = this.isOrgAdminCompany || this.isMarketingCompany|| this.isPartnerMarketingCompany;
                 this.setRecipientsHeaderText();
                 this.setFromEmailAndFromName(data);
                 let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
@@ -658,7 +660,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             }
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
-            if (this.isMarketingCompany || (this.isOrgAdminCompany && !this.campaign.channelCampaign)) {
+            if (this.isMarketingCompany || this.isPartnerMarketingCompany || (this.isOrgAdminCompany && !this.campaign.channelCampaign)) {
                 this.restrictRecipientCount = true;
                 this.getMaximumContactCountForCampaignLaunch();
             }
@@ -951,7 +953,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" / Recipients & Launch";
                     this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " / List of Recipients  to be used in this campaign";
                 }
-            } else if (this.isMarketingCompany) {
+            } else if (this.isMarketingCompany || this.isPartnerMarketingCompany) {
                 this.launchTabText = "Select Recipients & Launch";
                 this.contactsOrPartnersSelectionText = "Select Group of Recipients to be used in this campaign";
             } else if (this.isVendorCompany) {
@@ -1782,6 +1784,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         if (!this.isAdd) {
             campaignRecipientsPagination.campaignId = this.campaign.campaignId;
         }
+        campaignRecipientsPagination.partnerMarketingCompany = this.isPartnerMarketingCompany;
         this.contactService.findContactsAndPartnersForCampaign(campaignRecipientsPagination)
             .subscribe(
                 (response: any) => {

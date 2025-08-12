@@ -652,6 +652,25 @@ export class SortOption {
 		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
 		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' }
 	];
+
+	trackDetailsDropDownOptions = [
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-Asc' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-Desc' },
+		{ 'name': 'View Count (ASC)', 'value': 'count-Asc' },
+		{ 'name': 'View Count (DESC)', 'value': 'count-Desc' }
+	];
+	partnerTrackDetailsDropDownOptions = [	
+		{ 'name': 'Progress(DESC)', 'value': 'progress-Desc' },
+		{ 'name': 'Progress(ASC)', 'value': 'progress-Asc' },
+		{ 'name': 'Partner Name (A-Z)', 'value': 'partnerName-Asc' },
+		{ 'name': 'Partner Name (Z-A)', 'value': 'partnerName-Desc' },
+		{ 'name': 'Email ID(A-Z)', 'value': 'emailId-Asc' },
+		{ 'name': 'Email ID(Z-A)', 'value': 'emailId-Desc' }
+	];
+	sendWelcomeMailOptions = [	
+		{ 'name': 'Sent On (DESC)', 'value': 'sentOn-Desc' },
+		{ 'name': 'Sent On (ASC)', 'value': 'sentOn-Asc' }
+	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -774,5 +793,11 @@ export class SortOption {
 	selectedOptionForPlaybookInteraction = this.playbookInteractionDropDownOptions[0];
 
 	selectedOptionForPlaybookDetails = this.playbookDetailsInteractionDropDownOptions[0];
+
+	selectedSortOptionForTracks = this.trackDetailsDropDownOptions[0];
+
+	selectedSortOptionForPartnerTrackDetails = this.partnerTrackDetailsDropDownOptions[0];
+
+	sendWelcomeMailSortOptions = this.sendWelcomeMailOptions[0];
 
 }

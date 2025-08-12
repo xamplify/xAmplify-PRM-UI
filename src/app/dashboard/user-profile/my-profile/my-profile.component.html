@@ -525,7 +525,7 @@
                                             </a>
                                         </div>
                                         <ul id="approvalSettingsTabIcon" class="nav collapse in">
-                                            <ng-container>
+                                            <ng-container *ngIf="!authenticationService?.marketingModulesAccessToPartner">
                                                 <!-- XNFR-781 -->
                                                 <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"

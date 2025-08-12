@@ -88,7 +88,10 @@ export class ModuleAccessComponent implements OnInit {
   brainstormWithOliverEnabledFlag: boolean = false;
   oliverSparkWriterEnabledFlag: boolean = false;
   oliverParaphraserEnabledFlag: boolean = false;
+  oliverContactAgentEnabledFlag: boolean = false;
   oliverIntegrationTypeSelected: boolean = false;
+  oliverPartnerAgentEnabledFlag: boolean = false;
+  oliverCampaignAgentEnabledFlag: boolean = false;
   oliverIntegrationType: string = "";
 
 
@@ -655,6 +658,9 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     this.brainstormWithOliverEnabledFlag = campaignAccess.brainstormWithOliverEnabled;
     this.oliverSparkWriterEnabledFlag = campaignAccess.oliverSparkWriterEnabled;
     this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
+    this.oliverContactAgentEnabledFlag = campaignAccess.oliverContactAgentEnabled;
+    this.oliverPartnerAgentEnabledFlag = campaignAccess.oliverPartnerAgentEnabled;
+    this.oliverCampaignAgentEnabledFlag = campaignAccess.oliverCampaignAgentEnabled;
   }
   /** XNFR-952 end **/
 
@@ -667,6 +673,8 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
       this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
       this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
+      this.campaignAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
+      this.campaignAccess.oliverCampaignAgentEnabled = this.oliverCampaignAgentEnabledFlag;
     }
   }
 
@@ -689,6 +697,13 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
       }, error => {
         console.log('Error in fetchOliverActiveIntegrationType() ', error);
       });
+  }
+
+  /*** XNFR-1066 ***/
+  onVanityUrlChange() {
+    if (!this.campaignAccess.vanityUrlDomain) {
+      this.campaignAccess.marketingModulesEnabled = false;
+    }
   }
 
 }

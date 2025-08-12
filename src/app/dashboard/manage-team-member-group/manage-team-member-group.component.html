@@ -43,13 +43,13 @@
   </div>
   <br>
   <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
-  <div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading">
+  <div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading" style="overflow: visible;">
     <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
       <ng-container *ngTemplateOutlet="groupGridView;context:{groupInfo:group,showPreviewIcon:true}">
       </ng-container>
     </ng-container>
   </div>
-  <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8 pd-align">
+  <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8 pd-align col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
       (notifyParentDropDown)="findGroups($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
   </div>
@@ -69,17 +69,31 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
+      <span *ngIf="groupDto?.previewGroup && authenticationService?.module?.isOnlyPartner" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
-        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
-        <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" />
+        <span class="required">*</span>
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name" [ngModelOptions]="{standalone: true}" 
+          class="form-control" (input)="validateForm()" maxlength="255" [disabled]="previewGroup" />
+        <!-- <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+          [ngModelOptions]="{standalone: true}" class="form-control" /> -->
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
+      <!------ XNFR-1051 ----->
+      <div class="form-group" *ngIf="groupDto?.signUpUrl && !isAdd">
+        <label class="control-label" translate>SignUp URL
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Only whitelisted domain users can register using this link."></i></label>
+        <div class="d-flex">
+          <input type="text" [value]="groupDto?.signUpUrl" class="form-control" readonly #signUpUrlInput />
+          <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)" data-toggle="tooltip"
+            data-placement="top" title="Copy Url">Copy Url</a>
+        </div>
+        <span class="success" id="copied-signup-url" style="display: none;">
+          <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+        </span>
+        </div>
       <!--XNFR-883-->
       <div class="table-responsive" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -88,7 +102,8 @@
               Default SSO Group <i aria-hidden="true" class="fa fa-info-circle" title="{{properties?.defaultSSOTeamMemberGroupToolTip}}"></i>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="groupDto.defaultSsoGroup" [isSwitchOptionDisabled]="previewGroup"
+                (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -96,7 +111,7 @@
 
       <div class="form-group">
         <label class="control-label" translate>Select Modules</label>
-        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+        <span class="required">*</span>
       </div>
       <div class="table-responsive">
         <table class='table tgrid table-hover full-width' aria-describedby="">
@@ -107,13 +122,15 @@
               <br>
             </th>
             <td>
-              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"
+                [isSwitchOptionDisabled]="previewGroup || (defaultModule.roleId === 6 && isContactsModuleToggleDisabled)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
       </div>
+      <ng-template *ngIf="vendorCompanyProfileName && groupDto?.marketingModulesAccessToPartner" [ngTemplateOutlet]="showMarketingModules"></ng-template>
       <div id="right">
-        <button *ngIf="!groupDto?.previewGroup" type="button" [disabled]="!groupDto.isValidForm"
+        <button type="button" [disabled]="!groupDto.isValidForm" *ngIf="!previewGroup"
           class="button_blue bgcolor-unset" translate (click)="saveOrUpdate()"><span
             class="btn btn-primary transition txt_pd-top3">{{groupSubmitButtonText}}</span></button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManageOrPreview()"
@@ -124,6 +141,34 @@
 </div>
 
 
+<ng-template #showMarketingModules>
+  <div class="table-responsive">
+    <table class="table tgrid table-hover full-width" aria-describedby="">
+      <tr>
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Enable Marketing Modules
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Enable this toggle to allow your team member to access marketing modules."></i>
+        </td>
+        <td>
+          <app-custom-ui-switch [customSwitch]="groupDto?.marketingModulesAccessToTeamMemberGroup"
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)" [isSwitchOptionDisabled]="previewGroup">
+          </app-custom-ui-switch>
+        </td>
+      </tr>
+      <ng-container *ngIf="groupDto?.marketingModulesAccessToTeamMemberGroup">
+        <tr *ngFor="let marketingModule of marketingModules">
+          <td scope="row" class="fstcw-tm">
+            <i class="{{marketingModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+            {{ marketingModule?.moduleName }}
+          </td>
+          <td>
+            <i class="fa fa-check success" aria-hidden="true" style="margin-left: 20px;"></i>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</ng-template>
 
 
 <!--Preview Team Member Group-->
@@ -160,14 +205,14 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
-      <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
+      <span class="ribbon1" *ngIf="group?.defaultGroup && authenticationService?.module?.isOnlyPartner"><span translate>Default Group</span></span>
       <!--XNFR-883-->
       <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
-      <div class="table-responsive">
+      <div class="table-responsive" style="border-bottom-left-radius: 15px;border-bottom-right-radius: 15px;">
         <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
           <strong>No Modules Found</strong>
         </div>
-        <table class="table table-striped" aria-describedby="" *ngIf="group?.teamMemberModuleDTOs?.length>0">
+        <table class="table table-striped mb0" aria-describedby="" *ngIf="group?.teamMemberModuleDTOs?.length>0">
           <tbody>
             <tr *ngFor="let module of group?.teamMemberModuleDTOs;let j=index;" class="text-center module-text-color">
               <th *ngIf="j<=4" scope="row">
@@ -184,6 +229,11 @@
         </table>
       </div>
       <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
+        <a class="Iconhover custom-icon" (click)="copyGroupSignUpUrl(group.signUpUrl)" data-toggle="tooltip"
+          data-placement="top" title="Copy the sign-up URL. Only whitelisted domain users can register using this link.">
+          <i class="fa fa-link" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
         <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Save As"
           (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
@@ -194,9 +244,7 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-        <a data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'"
-          [className]="group?.defaultGroup ? 'inactive custom-icon':'Iconhover custom-icon'"
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
           (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>
@@ -206,11 +254,11 @@
          (click)="confirmAlertForDefaultSSOGroup(group)">
          <i class="fa fa-users" aria-hidden="true"></i>
          <div class="clickicons"></div>
-       </a>
-        <a class="delete" data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'"
-          [className]="group?.defaultGroup ? 'delete inactive custom-icon':'delete custom-icon'"
-          (click)="confirmAlert(group)">
+        </a>
+        <a class="delete custom-icon" data-toggle="tooltip" data-placement="top"
+          [title]="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? 'Default group cannot be deleted':'Delete'"
+          [className]="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? 'delete inactive custom-icon':'delete custom-icon'"
+          (click)="(group?.defaultGroup && authenticationService?.module?.isOnlyPartner || group?.defaultSsoGroup) ? '' : confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           <div class="del-icon"></div>
         </a>

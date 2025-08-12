@@ -20,6 +20,7 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { User } from 'app/core/models/user';
 import { ParterService } from 'app/partners/services/parter.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { DamPostDto } from '../models/dam-post-dto';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 
 @Component({
@@ -29,7 +30,7 @@ import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature
   providers:[Properties,HttpRequestLoader,SortOption]
 })
 export class DamPartnerCompanyAnalyticsComponent implements OnInit {
-
+  damPostDto: DamPostDto = new DamPostDto();
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
   pagination:Pagination = new Pagination();
@@ -67,7 +68,6 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   vanityTemplates : boolean = false;
   selectedPartners:any[]=[];
   isAllPartnerSignesCompleted:boolean =false;
-
   @ViewChild('assetSignatureStatusAnalyticsComponent') assetSignatureStatusAnalyticsComponent: AssetSignatureStatusAnalyticsComponent;
   assetPreviewProxyPath: any;
   previewContent: boolean = false;
@@ -143,12 +143,18 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     }
 		this.damService.findPartnerCompanies(pagination,this.damId).
     	subscribe((result: any) => {
-			let data = result.data;
-			pagination.totalRecords = data.totalRecords;
-			pagination = this.pagerService.getPagedItems(pagination, data.list);
-      let map = result.map;
-      this.isPublished = map['isPublished'];
-      this.isAllPartnerSignesCompleted = pagination.pagedItems.every(item => item.partnerSignatureCompleted);
+        let data = result.data;
+        if (!data || !Array.isArray(data.list) || data.list.length === 0) {
+          pagination.totalRecords = 0;
+          pagination.pagedItems = [];
+          this.isAllPartnerSignesCompleted = false;
+        } else {
+          pagination.totalRecords = data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, data.list);
+          this.isAllPartnerSignesCompleted = pagination.pagedItems.every(item => item.partnerSignatureCompleted);
+        }
+        let map = result.map;
+        this.isPublished = map['isPublished'];
 
       if(!this.isPublished){
         this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the analytics.',true);
@@ -506,6 +512,12 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       objElement.remove();
     }
   }
-
+  downloadDamAnalytics() {
+    let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
+    let userId = this.authenticationService.getUserId();
+    let url = this.authenticationService.REST_URL + "dam" + "/downloadDamAnalytics/damId/" + this.damId + "/userId/" + userId
+      + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+    this.referenceService.openWindowInNewTab(url);
+  }
 }
 

@@ -87,6 +87,7 @@ export class ReferenceService {
   nurtureCampaignId = 0;
   homeRouter = "/home/dashboard/default";
   selectModuleRouter = "/home/select-modules";
+  onboardingPartnerRouter = "/home/partners/add";
   sharedDamRouter = "/home/dam/shared";
   manageCampaignsRouter = "/home/campaigns/manage";
   loginUrl = "/login";
@@ -183,6 +184,10 @@ export class ReferenceService {
   OliverViewType = "";
   OliverCategoryId = 0;
   isCloudFront = true; //XNFR-1001
+  categoryType : string = '';
+  selectedTab: string;
+  categoryTrackPlaybookType:boolean = false;
+  docxLoader: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -2346,7 +2351,7 @@ export class ReferenceService {
     return this.http
       .get(
         this.authenticationService.REST_URL +
-          `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`
+          `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`
       )
       .map(this.extractData)
       .catch(this.handleError);

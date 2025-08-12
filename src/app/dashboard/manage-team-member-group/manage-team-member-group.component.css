@@ -40,7 +40,7 @@
   padding-bottom: 1em;
   border-radius: 15px;
   border: 1px solid #e0e0e0;
-  overflow: hidden;
+  z-index: 1;
 }
 .grid-box-team:hover > .bar {
   visibility: visible;
@@ -172,4 +172,7 @@
 .custom-label{
   font-weight: 600 !important;
   color: #999 !important;
+}
+.bar{
+    height: auto;
 }

@@ -1,4 +1,4 @@
-<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" *ngIf="(!isPartnerView && !folderListViewExpanded 
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" [isPartnerView]="isPartnerView" *ngIf="(!folderListViewExpanded 
 		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled) && !FromOliverPopUp">
 </app-content-module-status-analytics>
 
@@ -54,7 +54,7 @@
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView" class="text-center"><input
 													class="chk checkBox_shadow" type="checkbox" [checked]="isSelected(asset)"
 													(change)="onCheckboxChange(asset, $event)"
-													[disabled]="asset.disableAccessForOliver || (oliverIntegrationType != 'openai' ? 
+													[disabled]="asset.disableAccessForOliver || asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList || (oliverIntegrationType != 'openai' ? 
 													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1)">
 											</td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
@@ -70,7 +70,7 @@
 											<td *ngIf="(!isPartnerView && asset.videoId)" class="hidden-xs text-center" style="width: 10%;">
 												<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO"
 													[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName"
-													[processing]="asset?.publishingOrWhiteLabelingInProgress" [hideDetails]="true"></app-video-thumbnail>
+													[processing]="asset?.publishingOrWhiteLabelingInProgress" [hideDetails]="true" [fromOliver]="FromOliverPopUp"></app-video-thumbnail>
 											</td>
 											<td>
 												<h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
@@ -111,7 +111,7 @@
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
 												<!-- XNFR-781 -->
-												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner mr5"
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !authenticationService?.marketingModulesAccessToPartner" class="view-banner mr5"
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -192,7 +192,9 @@
 																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
 																<div class="clickicons"></div>
 															</a>
-															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !FromOliverPopUp">
+															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
+																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService?.marketingModulesAccessToPartner) 
+																&& !FromOliverPopUp">
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
@@ -229,7 +231,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Analytics-->
-															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp"
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
 																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
@@ -283,7 +285,7 @@
 										<tr [ngClass]="{'hidden': !asset?.expand}">
 											<td [attr.colspan]="colspanValue">
 												<div class="table-responsive">
-													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp" class="alert alert-info">
+													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp	" class="alert alert-info">
 														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
 													</div>
 													<table class="table tgrid table-condensed"
@@ -470,7 +472,7 @@
 																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				title="View Analytics"
-																				*ngIf="!authenticationService.module.isMarketingCompany"
+																				*ngIf="!authenticationService.module.isMarketingCompany && !authenticationService?.marketingModulesAccessToPartner"
 																				(click)="(asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''">
 																				<i class="fa fa-line-chart IconCustomization"
 																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
@@ -680,7 +682,7 @@
 
 <!--Page Bar Option-->
 <ng-template #damHeaderOptions>
-	<div class="portlet-title mb10">
+	<div class="portlet-title mb_13">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="padding-left: 5px;">
 				<h4 class="pull-left m10 text-primary">{{SuffixHeading}}
@@ -713,7 +715,7 @@
 							Upload New Asset
 						</button>
 						<!-- Start XNFR-409 -->
-						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()"
+						<div class="btn btn-xs l-g-view margin-space mr7" (click)="toggleFilterOption()"
 							[ngClass]="showFilterOption?'disabled':''">
 							<span data-placement="left" data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
@@ -723,10 +725,10 @@
 							style="opacity: 0; position: absolute; pointer-events: none;" #fileInput>
 						
 						<!-- End XNFR-409 -->
-						<div class="group-dropdown">
+						<div class="group-dropdown mr7">
 							<button
-								[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4':
-								modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view mr_4': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view mr_4'"
+								[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr0' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr0':
+								modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view mr0': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view mr0'"
 								style="padding:10px !important"></button>
 							<div class="group-dd-content">
 								<ng-container class='m10'>
@@ -756,7 +758,7 @@
 								</ng-container>
 							</div>
 						</div>
-						<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+						<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space mr7" data-toggle="tooltip"
 							data-placement="bottom" title="Go back" (click)="setViewType('fg')">
 							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 						</span>
@@ -765,19 +767,19 @@
 								data-toggle="tooltip" data-placement="bottom" title="Refresh">
 								<i class="fa fa-refresh" aria-hidden="true"></i>
 							</a>
-							<div class="pb3 float-left">
+							<div class="pb3 float-left mr7">
 								<ng-container *ngIf="isPartnerView">
-									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj mr7" id="alignline-m-width"
 										[(ngModel)]="sortOption.publishedDamSortOption"
-										(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+										(ngModelChange)="sortAssets($event)" style="position: relative;">
 										<option *ngFor="let option of sortOption.publishedDamSortDropDownOptions"
 											[ngValue]="option">{{option.name}}</option>
 									</select>
 								</ng-container>
 								<ng-container *ngIf="!isPartnerView">
-									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj mr7" id="alignline-m-width"
 										[(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortAssets($event)"
-										style="position: relative; right: -3px;">
+										style="position: relative;">
 										<option *ngFor="let option of sortOption.damSortDropDownOptions"
 											[ngValue]="option">{{option.name}}</option>
 									</select>
@@ -785,7 +787,7 @@
 							</div>
 							<!--Filter Type---->
 							<!--XNFR-409 {Added false-}-->
-							<div class="pb3 float-left ml5" id="alignline-m-mleftright" *ngIf="false">
+							<div class="pb3 float-left mr7" id="alignline-m-mleftright" *ngIf="false">
 								<ng-container *ngIf="fileTypes?.length>0">
 									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
 										[(ngModel)]="selectedFileType" (ngModelChange)="filterAssetsByFileType($event)"
@@ -796,10 +798,9 @@
 									</select>
 								</ng-container>
 							</div>
-							<div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"
-								style="margin-right: 10px;">
+							<div class="portlet-input input-inline input-small tab_srch_w mr7" id="alignline-m-margin">
 								<div class="input-icon right mDamSearch rSearch" id="alignline-m-serch"
-									style="position: relative; right: -6px;">
+									style="position: relative;">
 									<input type="text" style="height: 34px;" class="form-control"
 										[(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
 										placeholder="search..." (keypress)="eventHandler($event.keyCode)">

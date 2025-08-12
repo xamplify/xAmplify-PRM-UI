@@ -244,6 +244,11 @@ p {
 }
 
 /* Responsive layout */
+@media (max-width: 992px) {
+ .section-column {
+    margin-bottom: 18px;
+  }
+}
 @media (max-width: 768px) {
   .dashboard-wrapper {
     padding: 16px;
@@ -261,16 +266,13 @@ p {
 }
 
 .library-icon-share{
-  background-color: #e8f5e8;
+  background-color:#e0f0e0;
 }
 .library-icon-share>.fa-list,.library-icon-share>.fa-users{
   color: #4caf50;
 }
 .track-icon-list{
   background-color: #fff3e0;
-}
-.track-icon-list>.fa-list{
-
 }
 .playbook-icon>.fa-users{
   color: #ff9800;
@@ -285,3 +287,119 @@ p {
 .playbook-icon-share>.fa-share{
   color: #9c27b0;
 }
+  .asset-row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .asset-col {
+      padding: 13px;
+      width: 100%;
+    }
+
+   @media (min-width: 768px) and (max-width: 1199px){
+      .asset-col {
+        width: 50%;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .asset-col {
+        width: 33.3333%;
+      }
+    }
+
+    .asset-card {
+      background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0e6ed;
+      }
+      .asset-card:hover {
+        transform: translateY(-2px);
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+      }
+
+    .asset-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .asset-header img {
+      width: 48px;
+      height: 48px;
+      margin-right: 15px;
+    }
+
+    .asset-header h4 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold !important;
+      color: #1e1e1e;
+    }
+
+    .asset-description {
+      font-size: 14px;
+      color: #444;
+      margin-top: 5px;
+    }
+
+    .asset-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #edf2ff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      color: #1e1e1e;
+      font-weight: 600;
+      font-size: 15px;
+      transition: background 0.2s ease;
+      text-decoration: none;
+    }
+
+    .asset-button:hover {
+      background: #dbe5ff;
+      color: #1e1e1e;
+      text-decoration: none;
+    }
+
+    .asset-button i.fa {
+      font-size: 16px;
+      color: #2397d3;
+    }
+
+    .label-icon {
+      margin-right: 10px;
+    }
+      .asset-cols{
+        padding: 0px 13px;
+      }
+  .asset-card .asset-button:last-child {
+  margin-bottom: 0;
+}
+.asset-button span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.asset-button svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  fill:#2397d3;
+  flex-shrink: 0;
+  position: relative;
+  top: -2px;
+  left: -2px;
+}
+.unlock-icon svg {
+  vertical-align: middle;
+ }

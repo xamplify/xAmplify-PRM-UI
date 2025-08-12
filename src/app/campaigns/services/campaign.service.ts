@@ -29,7 +29,7 @@ export class CampaignService {
     archived: boolean = false;
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     campaignSchedulerUrl = this.authenticationService.SCHEDULER_URL;
-
+    partnerMarketingCampaign: boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -859,7 +859,7 @@ export class CampaignService {
 
 
     getOrgCampaignTypes(companyId: any) {
-        return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`)
+        return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}&companyProfileName=${this.authenticationService.companyProfileName}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1011,7 +1011,7 @@ export class CampaignService {
     }
 
     hasCampaignCreateAccess() {
-        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
+        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + this.authenticationService.companyProfileName, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1160,8 +1160,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    showRegisterLeadButton(campaignId: number) {
-        return this.http.get(this.URL + "/campaign/showRegisterLeadButton/" + campaignId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+    showRegisterLeadButton(campaignId: number, vanityUrlDomainName: string) {
+        let vanityUrl = vanityUrlDomainName ? 'vanityUrlCompany=' + vanityUrlDomainName + '&' : '';
+        return this.http.get(this.URL + "/campaign/showRegisterLeadButton/" + campaignId + "/" + this.authenticationService.getUserId() + "?" + vanityUrl + "access_token=" + this.authenticationService.access_token)
             .map(this.extractData).catch(this.handleError);
     }
 
@@ -1295,7 +1296,9 @@ export class CampaignService {
 
     /*******XNFR-318******/
     findCampaignDetailsData() {
-        return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+        let vanityCompanyName = this.authenticationService.getSubDomain();
+        let vanityCompanyUrl = vanityCompanyName ? "companyProfileName="+vanityCompanyName +"&": "";
+        return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?"+vanityCompanyUrl+"access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1303,6 +1306,7 @@ export class CampaignService {
     /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination: Pagination) {
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
+        emailTemplatesPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         let encodedUrl = this.referenceService.getEncodedUri(emailTemplatesPagination.searchKey);
         let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey=" + encodedUrl + "&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)
@@ -1313,6 +1317,7 @@ export class CampaignService {
     /********XNFR-318********/
     findVideos(videosPagination: Pagination) {
         videosPagination.userId = this.authenticationService.getUserId();
+        videosPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         let url = this.URL + "videos/findVideos?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, videosPagination)
             .map(this.extractData)
