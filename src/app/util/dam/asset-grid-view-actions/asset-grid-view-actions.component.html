@@ -66,8 +66,7 @@
 	</a>
 	<ng-container
 		*ngIf="(!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
-		|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (authenticationService?.marketingModulesAccessToPartner 
-		&& (authenticationService?.module?.isAnyAdminOrSupervisor || loggedInUserId == asset.createdBy)))) && !FromOliverPopUp">
+		|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService?.marketingModulesAccessToPartner)) && !FromOliverPopUp">
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
