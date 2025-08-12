@@ -39,6 +39,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() registerDealForm = new EventEmitter<any>();  
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
+  @Output() showOliver = new EventEmitter<any>();
 
    activeCRMDetailsByCompany:any; //XNFR-887
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
@@ -644,6 +645,10 @@ showRegisterDealButton(lead):boolean {
     this.leadId = 0;
     this.partnerEmailAddress = "";
     this.isLeadOptionClicked = false;
+  }
+
+  askOliver(lead: any) {
+    this.showOliver.emit(lead);
   }
 
 }

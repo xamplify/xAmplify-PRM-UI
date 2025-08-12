@@ -87,6 +87,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
   private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
+  private readonly LEADAGENT = "LEADAGENT";
   private readonly PARTNERGROUPAGENT = "PARTNERGROUPAGENT";
   previousTitle: any;
   index: any;
@@ -924,8 +925,9 @@ export class ChatGptModalComponent implements OnInit {
     const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
     const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
     const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
-     const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
-     const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
+    const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea7 = document.getElementById('askMeTextarea7') as HTMLTextAreaElement | null;
     if (textarea) {
       textarea.removeAttribute('style');
     }
@@ -947,13 +949,16 @@ export class ChatGptModalComponent implements OnInit {
     if (textarea6) {
       textarea6.removeAttribute('style');
     }
-    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5 || textarea6;
+    if (textarea7) {
+      textarea7.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 || textarea5 || textarea6 || textarea7;
     if (textArea) {
-        const chat = document.querySelector('.newChatlabel') as HTMLElement;
-        const box = textArea.closest('.oliver_input') as HTMLElement;
-        if (chat && box) {
-          chat.removeAttribute('style');
-          
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textArea.closest('.oliver_input') as HTMLElement;
+      if (chat && box) {
+        chat.removeAttribute('style');
+
       }
     }
   }
@@ -1036,6 +1041,9 @@ export class ChatGptModalComponent implements OnInit {
 
   showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
+    if (tab === 'leadagent') {
+      tab = 'chatHistoryTab';
+    }
     this.setActiveTab(tab);
     this.threadId = history.threadId;
     this.vectorStoreId = history.vectorStoreId;
@@ -1070,6 +1078,8 @@ export class ChatGptModalComponent implements OnInit {
         return "partneragent";
       case this.CAMPAIGNAGENT:
         return "campaignagent";
+      case this.LEADAGENT:
+        return "leadagent";
       case this.PARTNERGROUPAGENT:
         return "partnergroupagent";
     }
@@ -1107,7 +1117,7 @@ export class ChatGptModalComponent implements OnInit {
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
               intent = message.intent
-              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat' || this.activeTab == 'partnergroupagent') && this.checkKeywords(message.content)) {
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat' || this.activeTab == 'partnergroupagent' || this.activeTab == 'chatHistoryTab') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1701,6 +1711,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
+     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
@@ -1877,6 +1889,19 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
        items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
     };
 
+    const leadProgressionTimeline = {
+      title: j.lead_progression_timeline && j.lead_progression_timeline.title
+        ? j.lead_progression_timeline.title
+        : '',
+      categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
+      categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
+      series: leadProgressionTimelineItems.map((item: any) => item.order ? item.order : 0),
+      categoriesXaxisString: '',
+      categoriesYAxisString: '',
+      seriesString: '',
+    };
+
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1893,6 +1918,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       email_sent : j && j.email_sent ? j.email_sent : 0,
       click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
       deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+
+      lead_full_name : j && j.lead_full_name ? j.lead_full_name : '',
+      lead_email_id : j && j.lead_email_id ? j.lead_email_id : '',
+      lead_company : j && j.lead_company ? j.lead_company : '',
+      lead_created_on : j && j.lead_created_on ? j.lead_created_on : '',
+      stage : j && j.stage ? j.stage : '',
+      pipeline : j && j.pipeline ? j.pipeline : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -2075,6 +2107,11 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
       },
       topPerformingRecipients : topPerformingRecipients,
+      leadProgressionTimeline: leadProgressionTimeline,
+      statusChangeTimeline: {
+        title: j && j.status_change_timeline && j.status_change_timeline.title ? j.status_change_timeline.title : '',
+        items: j && j.status_change_timeline && j.status_change_timeline.items ? j.status_change_timeline.items : []
+      },
     };
 
     return dto;
