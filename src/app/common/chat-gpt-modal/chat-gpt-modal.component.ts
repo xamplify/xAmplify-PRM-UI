@@ -1484,6 +1484,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
           }
         }
       }, error => {
