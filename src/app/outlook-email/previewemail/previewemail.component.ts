@@ -34,8 +34,8 @@ export class PreviewemailComponent implements OnInit {
 htmlString: string;
 htmlContent: any;
   getBodyContent(bodyContent: string): string {
-    let htmlString = this.vanityURLService.sanitizeHtmlWithImportant(bodyContent)
-    this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(htmlString);
+    //let htmlString = this.vanityURLService.sanitizeHtmlWithImportant(bodyContent)
+    this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(bodyContent);
     return this.htmlContent;
   }
 
