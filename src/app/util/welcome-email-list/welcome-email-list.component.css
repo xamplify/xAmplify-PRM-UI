@@ -1,0 +1,19 @@
+ .welcome-email-header{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    }
+    .welcome-email-controls{
+    display: flex;
+    flex-wrap: wrap;
+    }
+      .bg-failed{
+    background: #F44336!important;
+    }
+    .bg-delivered {
+    background: #2196F3!important;
+    }
+    .bg-bounced {
+    background: #FF9800!important;
+    }

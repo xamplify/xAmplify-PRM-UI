@@ -40,6 +40,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     userGuideUrl = 'help';
     /*******XNFR-83*******/
     agencyUrl = 'agency';
+
+    mailsUrl = 'mails' //XNFR-1062
     constructor(private authenticationService: AuthenticationService,
         private router: Router, private referenceService: ReferenceService, public utilService: UtilService, private vanityUrlService: VanityURLService,
         private urlAuthGuardService: UrlAuthGuardService) { }
@@ -248,6 +250,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             /*********** user guide****** */
             if (url.indexOf(this.userGuideUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.userGuideUrl);
+            }
+            /*** XNFR-1062 ***/
+            if(this.mailsUrl.indexOf(url) > -1) {
+                return this.authorizeUrl(roles, url, this.mailsUrl);
             }
         } catch (error) { console.log('error' + error); }
     }

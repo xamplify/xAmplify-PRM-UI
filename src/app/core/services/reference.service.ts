@@ -87,6 +87,7 @@ export class ReferenceService {
   nurtureCampaignId = 0;
   homeRouter = "/home/dashboard/default";
   selectModuleRouter = "/home/select-modules";
+  onboardingPartnerRouter = "/home/partners/add";
   sharedDamRouter = "/home/dam/shared";
   manageCampaignsRouter = "/home/campaigns/manage";
   loginUrl = "/login";
