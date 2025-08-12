@@ -2922,7 +2922,7 @@ export class ReferenceService {
         this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(
           mergeTags
         );
-      if (!this.authenticationService.module.isMarketingCompany) {
+      if (!this.authenticationService.module.isMarketingCompany && !this.authenticationService.marketingModulesAccessToPartner) {
         mergeTags.push({
           name: "Partner About Us",
           value: this.senderMergeTag.aboutUs,
