@@ -830,6 +830,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
     } else if (this.activeTab == 'campaignagent') {
       this.chatGptIntegrationSettingsDto.agentType = this.CAMPAIGNAGENT;
+    } else if (this.activeTab == 'chatHistoryTab') {
+      this.chatGptIntegrationSettingsDto.agentType = this.LEADAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
