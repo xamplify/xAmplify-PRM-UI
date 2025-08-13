@@ -302,9 +302,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 							} 
 							/*** XNFR-1062 ***/
 							else if (type == 'gmail') {  
-								this.postingMessage = "isGmailAuth";
+								this.postingMessage = "gmail";
 							} else if (type == 'outlook') {
-								this.postingMessage = "isOutlookAuth";	
+								this.postingMessage = "outlook";	
 							}
 							/*** XNFR-1062 ***/
 							this.postingMessageToParentWindow(this.postingMessage);
