@@ -48,9 +48,11 @@ export class MailIntegrationComponent implements OnInit {
             if (record.type === 'OUTLOOK') {
               // this.outlookRibbonText = 'configured';
               this.activeOutlook = record.active;
+              this.activeGamil = false;
             } else if (record.type === 'GMAIL') {
               // this.gmailRibbonText = 'configured';
               this.activeGamil = record.active;
+              this.activeOutlook = false;
             }
           });
         } else {
