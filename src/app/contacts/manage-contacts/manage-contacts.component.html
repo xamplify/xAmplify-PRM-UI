@@ -1096,7 +1096,7 @@
                                        <!--XNFR-342-->
 
 
-                                       <a class="Iconhover custom-grid-icon oliverhover" *ngIf="authenticationService?.isOliverActive && module == 'partners'" data-toggle="tooltip"
+                                       <a class="Iconhover custom-grid-icon oliverhover" *ngIf="authenticationService?.isOliverActive && module == 'partners' && authenticationService?.oliverPartnerAgentEnabled && showOliverPartnerAgent" data-toggle="tooltip"
                                           data-placement="top" title="Ask Oliver" (click)="askOliver(contactList.id,contactList.name)">
                                              <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 oliverImgIcon">
                                        </a>
