@@ -831,6 +831,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
     } else if (this.activeTab == 'campaignagent') {
       this.chatGptIntegrationSettingsDto.agentType = this.CAMPAIGNAGENT;
+    } else if (this.activeTab == 'chatHistoryTab') {
+      this.chatGptIntegrationSettingsDto.agentType = this.LEADAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -1485,6 +1487,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
           }
         }
       }, error => {

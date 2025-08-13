@@ -7352,7 +7352,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
             iframeContentData = this.iframePartnerGroupContent;
         } else  if (this.activeTab === 'campaignagent' || this.intent == 'campaign') {
             iframeContentData = this.iframeCampaignContent;
-        }else  if (this.activeTab === 'leadagent' || this.activeTab === 'chatHistoryTab') {
+        }else  if (this.activeTab === 'leadagent' || this.activeTab === 'chatHistoryTab' || this.intent == 'lead') {
             iframeContentData = this.iframeLeadContent;
         } else {
             iframeContentData = this.iframeContent;
