@@ -23,6 +23,7 @@ import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-inte
 import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dto';
 import { ExecutiveReport } from '../models/oliver-report-dto';
 import { Observable, Subscription } from 'rxjs';
+import { GroupOliverReportDTO } from '../models/group-oliver-report-dto';
 
 declare var $: any, swal:any;
 @Component({
@@ -87,6 +88,8 @@ export class ChatGptModalComponent implements OnInit {
   private readonly PARTNERAGENT = "PARTNERAGENT";
   private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
   private readonly PLAYBOOKAGENT = "PLAYBOOKAGENT";
+  private readonly LEADAGENT = "LEADAGENT";
+  private readonly PARTNERGROUPAGENT = "PARTNERGROUPAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -836,6 +839,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     self.chatGptIntegrationSettingsDto.isContact = this.authenticationService.module.isContact;
     self.chatGptIntegrationSettingsDto.contents = self.intentMessages;
+    self.chatGptIntegrationSettingsDto.isCampaignAgentEnabled = this.authenticationService.oliverCampaignAgentEnabled && this.showOliverCampaignAgent
     if (this.activeTab != 'paraphraser') {
       self.inputText = '';
       this.removeStyleForTextArea();
@@ -849,12 +853,13 @@ export class ChatGptModalComponent implements OnInit {
         if (statusCode === 200) {
           self.isTextLoading = false;
           let isReport = response.data.isReport;
+          let intent = response.data.intent;
           self.chatGptIntegrationSettingsDto.isGlobalSearchDone = response.data.isGlobalSearchDone;
           console.log('API Response:', response);
           var content = response.data;
           if (content) {
             let message = self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
-            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.intentMessages.push({ role: 'assistant', content: message, isReport: isReport, intent: intent });
             if (isReport == 'true') {
               try {
                 const cleanJsonStr = self.extractJsonString(message);
@@ -865,15 +870,15 @@ export class ChatGptModalComponent implements OnInit {
               }
             }
 
-            self.messages.push({ role: 'assistant', content: message, isReport: isReport });
+            self.messages.push({ role: 'assistant', content: message, isReport: isReport, intent: intent });
             self.threadId = content.threadId;
             self.vectorStoreId = content.vectorStoreId;
             self.chatHistoryId = content.chatHistoryId;
             self.isCopyButtonDisplayed = self.chatGptGeneratedText.length > 0;
 
           } else {
-            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
-            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false' });
+            self.messages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false', intent: '' });
+            self.intentMessages.push({ role: 'assistant', content: 'An unexpected issue occurred. Please try again shortly', isReport: 'false', intent: '' });
           }
           this.trimmedText = '';
           if (!(self.inputText != undefined && self.inputText.length > 0)) {
@@ -921,8 +926,9 @@ export class ChatGptModalComponent implements OnInit {
     const textarea2 = document.getElementById('askMeTextarea2') as HTMLTextAreaElement | null;
     const textarea3 = document.getElementById('askMeTextarea3') as HTMLTextAreaElement | null;
     const textarea4 = document.getElementById('askMeTextarea4') as HTMLTextAreaElement | null;
-     const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
-     const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea5 = document.getElementById('askMeTextarea5') as HTMLTextAreaElement | null;
+    const textarea6 = document.getElementById('askMeTextarea6') as HTMLTextAreaElement | null;
+    const textarea7 = document.getElementById('askMeTextarea7') as HTMLTextAreaElement | null;
     if (textarea) {
       textarea.removeAttribute('style');
     }
@@ -944,13 +950,16 @@ export class ChatGptModalComponent implements OnInit {
     if (textarea6) {
       textarea6.removeAttribute('style');
     }
-    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 ||textarea5 || textarea6;
+    if (textarea7) {
+      textarea7.removeAttribute('style');
+    }
+    let textArea = textarea || textarea1 || textarea2 || textarea3 || textarea4 || textarea5 || textarea6 || textarea7;
     if (textArea) {
-        const chat = document.querySelector('.newChatlabel') as HTMLElement;
-        const box = textArea.closest('.oliver_input') as HTMLElement;
-        if (chat && box) {
-          chat.removeAttribute('style');
-          
+      const chat = document.querySelector('.newChatlabel') as HTMLElement;
+      const box = textArea.closest('.oliver_input') as HTMLElement;
+      if (chat && box) {
+        chat.removeAttribute('style');
+
       }
     }
   }
@@ -1072,6 +1081,10 @@ export class ChatGptModalComponent implements OnInit {
         return "campaignagent";
       case this.PLAYBOOKAGENT:
         return "playbookagent";
+      case this.LEADAGENT:
+        return "leadagent";
+      case this.PARTNERGROUPAGENT:
+        return "partnergroupagent";
     }
   }
 
@@ -1085,19 +1098,29 @@ export class ChatGptModalComponent implements OnInit {
         if (response.statusCode == 200) {
           let messages = response.data;
           let isReport = 'false';
+          let intent = "";
           messages.forEach((message: any) => {
 
             if (message.role === 'assistant') {
               this.intentMessages.push({ role: 'assistant', content: message.content, isReport: isReport });
               if (isReport == 'true') {
-                let reponseJson = this.extractJsonString(message.content);
-                message.content = this.parseOliverReport(reponseJson);
+                try {
+                  let reponseJson = this.extractJsonString(message.content);
+                  if (this.activeTab == 'partnergroupagent') {
+                    message.content = this.parseGroupOliverReport(reponseJson);
+                  } else {
+                    message.content = this.parseOliverReport(reponseJson);
+                  }
+                } catch (error) {
+                  isReport = 'false';
+                }
               }
-              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport });
+              this.messages.push({ role: 'assistant', content: message.content, isReport: isReport, intent: intent });
             }
             if (message.role === 'user') {
               this.messages.push({ role: 'user', content: message.content });
-              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat') && this.checkKeywords(message.content)) {
+              intent = message.intent
+              if ((this.activeTab == 'contactagent' || this.activeTab == 'partneragent' || this.activeTab == 'campaignagent' || this.activeTab == 'globalchat' || this.activeTab == 'partnergroupagent' || this.activeTab == 'chatHistoryTab') && this.checkKeywords(message.content)) {
                 isReport = 'true';
               } else {
                 isReport = 'false';
@@ -1691,6 +1714,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
+     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
@@ -1867,6 +1892,19 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
        items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
     };
 
+    const leadProgressionTimeline = {
+      title: j.lead_progression_timeline && j.lead_progression_timeline.title
+        ? j.lead_progression_timeline.title
+        : '',
+      categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
+      categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
+      series: leadProgressionTimelineItems.map((item: any) => item.order ? item.order : 0),
+      categoriesXaxisString: '',
+      categoriesYAxisString: '',
+      seriesString: '',
+    };
+
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1883,6 +1921,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       email_sent : j && j.email_sent ? j.email_sent : 0,
       click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
       deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+
+      lead_full_name : j && j.lead_full_name ? j.lead_full_name : '',
+      lead_email_id : j && j.lead_email_id ? j.lead_email_id : '',
+      lead_company : j && j.lead_company ? j.lead_company : '',
+      lead_created_on : j && j.lead_created_on ? j.lead_created_on : '',
+      stage : j && j.stage ? j.stage : '',
+      pipeline : j && j.pipeline ? j.pipeline : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -2065,6 +2110,11 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
       },
       topPerformingRecipients : topPerformingRecipients,
+      leadProgressionTimeline: leadProgressionTimeline,
+      statusChangeTimeline: {
+        title: j && j.status_change_timeline && j.status_change_timeline.title ? j.status_change_timeline.title : '',
+        items: j && j.status_change_timeline && j.status_change_timeline.items ? j.status_change_timeline.items : []
+      },
     };
 
     return dto;
@@ -2181,6 +2231,258 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     const dto = new ChatGptIntegrationSettingsDto();
     dto.prompt = text;
     this.chatGptSettingsService.downloadWordFile(dto);
+  }
+
+  parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
+    const j: any = JSON.parse(jsonStr);
+  
+   const dealIRIRaw = j && j.deal_interactions_and_revenue_impact
+    ? j.deal_interactions_and_revenue_impact
+    : {};
+  
+    
+    
+  
+    const topPartnersRaw = dealIRIRaw.top_partners_by_deal_value || {};
+    const keyInsightsRaw  = dealIRIRaw.key_insights || {};
+  
+    const pipelineItems = topPartnersRaw.items ? topPartnersRaw.items : [];
+  
+  
+    const dealPipelinePrograssion = {
+        title: topPartnersRaw.title ? topPartnersRaw.title : '',
+        categories: pipelineItems.map((item: any) => item.name ? item.name : ''),
+        revenue: 'Revenue (in $1000)',
+        series: pipelineItems.map((item: any) => {
+          const numericValue = item.value
+            ? item.value
+            : 0;
+          return {
+            name: item.name ? item.name : '',
+            data: [numericValue]
+          };
+        }),
+        categoriesString: '',
+        seriesString: '',
+      };
+  
+    const deal_interactions_and_revenue_impact = {
+      title:       dealIRIRaw.title       ? dealIRIRaw.title       : '',
+      description: dealIRIRaw.description ? dealIRIRaw.description : '',
+  
+      top_partners_by_deal_value: dealPipelinePrograssion,
+  
+      key_insights: {
+        title:       keyInsightsRaw.title       ? keyInsightsRaw.title       : '',
+        description: keyInsightsRaw.description ? keyInsightsRaw.description : '',
+        items:       keyInsightsRaw.items       ? keyInsightsRaw.items       : []
+      },
+  
+    };
+  
+    /* ---------- Lead Lifecycle & Qualification Funnel ---------- */
+    const leadLFRaw = j && j.lead_lifecycle_and_qualification_funnel
+      ? j.lead_lifecycle_and_qualification_funnel
+      : {};
+  
+    const leadProgressRaw  = leadLFRaw.lead_progression_funnel || {};
+    const funnelAnalysisRaw = leadLFRaw.funnel_analysis || {};
+  
+    const lead_lifecycle_and_qualification_funnel = {
+      title:       leadLFRaw.title       ? leadLFRaw.title       : '',
+      description: leadLFRaw.description ? leadLFRaw.description : '',
+  
+      lead_progression_funnel: {
+        title:       leadProgressRaw.title       ? leadProgressRaw.title       : '',
+        description: leadProgressRaw.description ? leadProgressRaw.description : '',
+        items:       leadProgressRaw.items       ? leadProgressRaw.items       : []
+      },
+  
+      funnel_analysis: {
+        title:       funnelAnalysisRaw.title       ? funnelAnalysisRaw.title       : '',
+        description: funnelAnalysisRaw.description ? funnelAnalysisRaw.description : '',
+        items:       funnelAnalysisRaw.items       ? funnelAnalysisRaw.items       : []
+      }
+    };
+  
+    /* ---------- Campaign Engagement & Asset Utilization ---------- */
+    const campEAItems = j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.items
+      ? j.campaign_engagement_and_asset_utilization.items
+      : [];
+  
+    const campaign_engagement_and_asset_utilization = {
+      title: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.title
+        ? j.campaign_engagement_and_asset_utilization.title
+        : '',
+      description: j.campaign_engagement_and_asset_utilization && j.campaign_engagement_and_asset_utilization.description
+        ? j.campaign_engagement_and_asset_utilization.description
+        : '',
+      items: campEAItems
+    };
+  
+    /* ---------- Playbook blocks ---------- */
+    const playbook_engagement_and_asset_utilization = {
+      title: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.title
+        ? j.playbook_engagement_and_asset_utilization.title
+        : '',
+      description: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.description
+        ? j.playbook_engagement_and_asset_utilization.description
+        : '',
+      items: j.playbook_engagement_and_asset_utilization && j.playbook_engagement_and_asset_utilization.items
+        ? j.playbook_engagement_and_asset_utilization.items
+        : []
+    };
+  
+    const playbook_engagement_kpis = {
+      title: j.playbook_engagement_kpis && j.playbook_engagement_kpis.title
+        ? j.playbook_engagement_kpis.title
+        : '',
+      description: j.playbook_engagement_kpis && j.playbook_engagement_kpis.description
+        ? j.playbook_engagement_kpis.description
+        : '',
+      items: j.playbook_engagement_kpis && j.playbook_engagement_kpis.items
+        ? j.playbook_engagement_kpis.items
+        : []
+    };
+  
+    const top_performing_playbook_assets = {
+      title: j.top_performing_playbook_assets && j.top_performing_playbook_assets.title
+        ? j.top_performing_playbook_assets.title
+        : '',
+      description: j.top_performing_playbook_assets && j.top_performing_playbook_assets.description
+        ? j.top_performing_playbook_assets.description
+        : '',
+      items: j.top_performing_playbook_assets && j.top_performing_playbook_assets.items
+        ? j.top_performing_playbook_assets.items
+        : []
+    };
+  
+    /* ---------- Partner analytics & performance ---------- */
+    const partner_analytics_strategic_revenue_drivers = {
+      title: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.title
+        ? j.partner_analytics_strategic_revenue_drivers.title
+        : '',
+      description: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.description
+        ? j.partner_analytics_strategic_revenue_drivers.description
+        : '',
+      items: j.partner_analytics_strategic_revenue_drivers && j.partner_analytics_strategic_revenue_drivers.items
+        ? j.partner_analytics_strategic_revenue_drivers.items
+        : []
+    };
+  
+    const partnership_performance_review = {
+      title: j.partnership_performance_review && j.partnership_performance_review.title
+        ? j.partnership_performance_review.title
+        : '',
+      description: j.partnership_performance_review && j.partnership_performance_review.description
+        ? j.partnership_performance_review.description
+        : '',
+      items: j.partnership_performance_review && j.partnership_performance_review.items
+        ? j.partnership_performance_review.items
+        : []
+    };
+  
+    const partnership_performance_summary_kpis = {
+      title: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.title
+        ? j.partnership_performance_summary_kpis.title
+        : '',
+      description: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.description
+        ? j.partnership_performance_summary_kpis.description
+        : '',
+      items: j.partnership_performance_summary_kpis && j.partnership_performance_summary_kpis.items
+        ? j.partnership_performance_summary_kpis.items
+        : []
+    };
+  
+    /* ---------- C-Suite ---------- */
+    const c_suite_strategic_recommendations = {
+      title: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.title
+        ? j.c_suite_strategic_recommendations.title
+        : '',
+      description: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.description
+        ? j.c_suite_strategic_recommendations.description
+        : '',
+      items: j.c_suite_strategic_recommendations && j.c_suite_strategic_recommendations.items
+        ? j.c_suite_strategic_recommendations.items
+        : []
+    };
+  
+    /* ---------- Footer & Conclusion ---------- */
+    const footer_metadata = {
+      strategic_contact: j.footer_metadata && j.footer_metadata.strategic_contact ? j.footer_metadata.strategic_contact : [],
+      report_details:    j.footer_metadata && j.footer_metadata.report_details    ? j.footer_metadata.report_details    : [],
+      data_sources:      j.footer_metadata && j.footer_metadata.data_sources      ? j.footer_metadata.data_sources      : []
+    };
+  
+    const conclusion = {
+      title:       j.conclusion && j.conclusion.title       ? j.conclusion.title       : '',
+      description: j.conclusion && j.conclusion.description ? j.conclusion.description : '',
+      items:       j.conclusion && j.conclusion.items       ? j.conclusion.items       : []
+    };
+  
+    /* ---------- KPI & Summary ---------- */
+    const kpi_overview = {
+      title:       j.kpi_overview && j.kpi_overview.title ? j.kpi_overview.title : '',
+      description: j.kpi_overview && j.kpi_overview.description ? j.kpi_overview.description : '',
+      items:       j.kpi_overview && j.kpi_overview.items ? j.kpi_overview.items : []
+    };
+  
+    const summary_overview = {
+      title:       j.summary_overview && j.summary_overview.title ? j.summary_overview.title : '',
+      description: j.summary_overview && j.summary_overview.description ? j.summary_overview.description : '',
+      items:       j.summary_overview && j.summary_overview.items ? j.summary_overview.items : []
+    };
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    /* ---------- Build DTO ---------- */
+    const dto: GroupOliverReportDTO = {
+      report_title: j && j.report_title ? j.report_title : '',
+      subtitle: j && j.subtitle ? j.subtitle : '',
+      date_range: j && j.date_range ? j.date_range : '',
+      report_owner: j && j.report_owner ? j.report_owner : '',
+      report_recipient: j && j.report_recipient ? j.report_recipient : '',
+      report_main_title: j && j.report_main_title ? j.report_main_title : '',
+      report_sub_heading: j && j.report_sub_heading ? j.report_sub_heading : '',
+  
+      kpi_overview: kpi_overview,
+      summary_overview: summary_overview,
+  
+      // description:                   string;
+      //   top_partners_by_deal_value:    OverviewSection<DealPartnerItem>;
+      //   key_insights:                  OverviewSection<KPIItem>;
+      //   title: string;
+      //   categories: string[];
+      //   revenue: string;
+      //   series: { name: string; data: string[] }[];
+      //   categoriesString: string;
+      //   seriesString: string;
+      lead_lifecycle_and_qualification_funnel: lead_lifecycle_and_qualification_funnel,
+      campaign_engagement_and_asset_utilization: campaign_engagement_and_asset_utilization,
+  
+      playbook_engagement_and_asset_utilization: playbook_engagement_and_asset_utilization,
+      playbook_engagement_kpis: playbook_engagement_kpis,
+      top_performing_playbook_assets: top_performing_playbook_assets,
+  
+      partner_analytics_strategic_revenue_drivers: partner_analytics_strategic_revenue_drivers,
+      partnership_performance_review: partnership_performance_review,
+      partnership_performance_summary_kpis: partnership_performance_summary_kpis,
+  
+      c_suite_strategic_recommendations: c_suite_strategic_recommendations,
+  
+      footer_metadata: footer_metadata,
+      conclusion: conclusion,
+      deal_interactions_and_revenue_impact: deal_interactions_and_revenue_impact // <-- Add this property to the GroupOliverReportDTO interface/type
+    };
+  
+    return dto;
   }
 
 

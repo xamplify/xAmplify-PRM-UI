@@ -1099,4 +1099,10 @@ export class ContactService {
             group => group.teamMembersCount > 0 || group.name === '--Please Select--'
         );
     }
+    getWelcomeEmailsList(pagination: Pagination){
+        let loggedInUserId = this.authenticationService.getUserId();
+        return this._http.post(this.contactsUrl + "welcomeEmails/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

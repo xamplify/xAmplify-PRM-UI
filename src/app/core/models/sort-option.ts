@@ -667,6 +667,10 @@ export class SortOption {
 		{ 'name': 'Email ID(A-Z)', 'value': 'emailId-Asc' },
 		{ 'name': 'Email ID(Z-A)', 'value': 'emailId-Desc' }
 	];
+	sendWelcomeMailOptions = [	
+		{ 'name': 'Sent On (DESC)', 'value': 'sentOn-Desc' },
+		{ 'name': 'Sent On (ASC)', 'value': 'sentOn-Asc' }
+	];
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -793,5 +797,7 @@ export class SortOption {
 	selectedSortOptionForTracks = this.trackDetailsDropDownOptions[0];
 
 	selectedSortOptionForPartnerTrackDetails = this.partnerTrackDetailsDropDownOptions[0];
+
+	sendWelcomeMailSortOptions = this.sendWelcomeMailOptions[0];
 
 }

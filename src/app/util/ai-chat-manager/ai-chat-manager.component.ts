@@ -37,9 +37,12 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromOnboardSection: boolean = false;
   @Input() isFromGroupOfPartners: boolean = false;
   @Input() isFromManageCampaign: boolean = false;
+  @Input() isFromManageLead: boolean = false;
   @Input() selectedCampaign: any;
   @Input() selectedLearningTrack: any;
   @Input() isFromManagePlaybooks: boolean = false;
+  @Input() selectedLead: any;
+  
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -173,12 +176,11 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
     } else if (this.isFromManageCampaign) {
       this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
-    } 
-    
-    
-    else if (this.isFromManagePlaybooks) {
+    } else if (this.isFromManagePlaybooks) {
       this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
-    } else {
+    } else if (this.isFromManageLead) {
+      this.chatGptIntegrationSettingsDto.leadId = this.selectedLead.id;
+    }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
@@ -392,6 +394,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromManagePlaybooks) {
         this.selectedLearningTrack = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
+      }else if (this.isFromManageLead) {
+        this.selectedLead = undefined;
+        this.notifyParent.emit();
       } else {
         if (this.router.url.includes('/shared/view/g')) {
           this.referenceService.goToRouter('/home/dam/shared/g');
@@ -616,7 +621,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManagePlaybooks) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead || this.isFromManagePlaybooks) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -988,6 +993,8 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
             this.chatGptIntegrationSettingsDto.playbookAssistantId = data.playbookAssistantId;
+            this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
+            this.chatGptIntegrationSettingsDto.partnerGroupAssistantId = data.partnerGroupAssistantId;
           }
         }
       }, error => {
@@ -1011,6 +1018,9 @@ export class AiChatManagerComponent implements OnInit {
 
       if (this.isFromManagePlaybooks) {
         this.uploadPlaybookDetails();
+      }
+       if (this.isFromManageLead) {
+        this.uploadLeadDetails();
       }
     });
   }
@@ -1041,8 +1051,13 @@ export class AiChatManagerComponent implements OnInit {
 
   uploadPartnerDetails() {
     this.ngxLoading = true;
-    this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
-    this.activeTab = 'partneragent';
+    if (this.isFromGroupOfPartners) {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERGROUPAGENT";
+      this.activeTab = 'partnergroupagent';
+    } else {
+      this.chatGptIntegrationSettingsDto.agentType = "PARTNERAGENT";
+      this.activeTab = 'partneragent';
+    }
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadPartnerDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
@@ -1251,6 +1266,8 @@ export class AiChatManagerComponent implements OnInit {
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
+     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
       categories: pipelineItems.map((item: any) => item.name ? item.name : ''), // dynamic months
@@ -1427,6 +1444,18 @@ export class AiChatManagerComponent implements OnInit {
        items: j && j.top_performing_recipients && j.top_performing_recipients.items ? j.top_performing_recipients.items : [],
     };
 
+    const leadProgressionTimeline = {
+      title: j.lead_progression_timeline && j.lead_progression_timeline.title
+        ? j.lead_progression_timeline.title
+        : '',
+      categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
+      categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
+      series: leadProgressionTimelineItems.map((item: any) => item.order ? item.order : 0),
+      categoriesXaxisString: '',
+      categoriesYAxisString: '',
+      seriesString: '',
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1443,6 +1472,13 @@ export class AiChatManagerComponent implements OnInit {
       email_sent : j && j.email_sent ? j.email_sent : 0,
       click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
       deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+
+      lead_full_name : j && j.lead_full_name ? j.lead_full_name : '',
+      lead_email_id : j && j.lead_email_id ? j.lead_email_id : '',
+      lead_company : j && j.lead_company ? j.lead_company : '',
+      lead_created_on : j && j.lead_created_on ? j.lead_created_on : '',
+      stage : j && j.stage ? j.stage : '',
+      pipeline : j && j.pipeline ? j.pipeline : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -1625,6 +1661,11 @@ export class AiChatManagerComponent implements OnInit {
         items: j && j.detailed_recipient_analysis && j.detailed_recipient_analysis.items ? j.detailed_recipient_analysis.items : []
       },
       topPerformingRecipients : topPerformingRecipients,
+      leadProgressionTimeline: leadProgressionTimeline,
+      statusChangeTimeline: {
+        title: j && j.status_change_timeline && j.status_change_timeline.title ? j.status_change_timeline.title : '',
+        items: j && j.status_change_timeline && j.status_change_timeline.items ? j.status_change_timeline.items : []
+      },
     };
 
     return dto;
@@ -1985,6 +2026,28 @@ parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
   private checkDesignAccess() {
     this.designAccess = (!this.isPartnerLoggedIn && this.authenticationService.module.design && !this.authenticationService.module.isPrmCompany) ||
       (this.authenticationService.module.damAccess) || (this.authenticationService.module.hasLandingPageAccess && !this.authenticationService.module.isPrmCompany);
+  }
+
+  uploadLeadDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "LEADAGENT";
+    this.activeTab = 'leadagent';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadLeadDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
 }

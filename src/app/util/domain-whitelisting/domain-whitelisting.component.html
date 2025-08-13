@@ -143,7 +143,7 @@
           <ng-template *ngIf="isTeamMemberDomainsTabSelected || isTeamMemberDomains" [ngTemplateOutlet]="teamMemberDomianNgTemplate"></ng-template>
           <ng-template *ngIf="isPartnerDomainsTabSelected || isPartnerDomains" [ngTemplateOutlet]="partnerDomianNgTemplate"></ng-template>
           <app-response-message *ngIf="isTeamMemberDomains || isPartnerDomains" [customResponse]="customResponse"></app-response-message>
-          <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
+          <div class="col-sm-4 col-lg-4 col-md-4 btn-group p0 btn-align mt10">
             <!--Add a Domain-->
             <button id="add_domain" class="btn Btn-Green" (click)="addDomainModalOpen()">
              Add Domain
@@ -152,12 +152,20 @@
           </div>
           <!--Search Option-->
           <div
-            class="portlet-input search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right pr0 d-flex"
+            class="portlet-input search-class col-sm-68 col-lg-8 col-md-8 TotalSearchBoxWidth mt10 float-right pr0 d-flex"
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-            <button id="welcome_mail" class="btn Btn-Green" (click)="addWelcomeMailModalOpen()" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected"
-            data-placement="bottom" data-toggle="tooltip" title="Send a welcome email to whitelisted domain users." [disabled]="pagination.totalRecords==0">
-              Send Welcome Mail
-             </button>
+            <div class="hidden-xs pull-right downloadteam mr5">
+              <button id="welcome_mail" class="btn btn-primary mr0" (click)="addWelcomeMailModalOpen()"
+                *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected" data-placement="bottom"
+                data-toggle="tooltip" title="Send a welcome email to whitelisted domain users."
+                [disabled]="pagination.totalRecords==0" style="border-radius: 7px 0px 0px 7px!important;">
+                Send Welcome Mail
+              </button>
+              <button class="btn btn-primary button border_btn" (click)="navigateToWelcomeEmailList()"
+                style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
+                title="Welcome email list analytics" translate><i aria-hidden="true" class="fa fa-line-chart"></i>
+              </button>
+            </div>
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
               <i _ngcontent-c17="" aria-hidden="true" data-toggle="tooltip" title="Filter" class="fa fa-filter p10"></i>
             </button>
