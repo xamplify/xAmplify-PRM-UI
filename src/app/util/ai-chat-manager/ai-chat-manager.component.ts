@@ -39,7 +39,11 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromManageCampaign: boolean = false;
   @Input() isFromManageLead: boolean = false;
   @Input() selectedCampaign: any;
+  @Input() selectedLearningTrack: any;
+  @Input() isFromManagePlaybooks: boolean = false;
   @Input() selectedLead: any;
+  @Input() isPlaybookPartnerView: boolean = false;
+  
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -173,7 +177,9 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.userListId = this.selectedContact.userListId;
     } else if (this.isFromManageCampaign) {
       this.chatGptIntegrationSettingsDto.campaignId = this.selectedCampaign.campaignId;
-    }else if (this.isFromManageLead) {
+    } else if (this.isFromManagePlaybooks) {
+      this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
+    } else if (this.isFromManageLead) {
       this.chatGptIntegrationSettingsDto.leadId = this.selectedLead.id;
     }else {
       if (this.asset != undefined && this.asset != null) {
@@ -385,6 +391,9 @@ export class AiChatManagerComponent implements OnInit {
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else if (this.isFromManageCampaign) {
         this.selectedCampaign = undefined;
+        this.notifyParent.emit(this.chatGptSettingDTO);
+      } else if (this.isFromManagePlaybooks) {
+        this.selectedLearningTrack = undefined;
         this.notifyParent.emit(this.chatGptSettingDTO);
       }else if (this.isFromManageLead) {
         this.selectedLead = undefined;
@@ -613,7 +622,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead || this.isFromManagePlaybooks) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -984,6 +993,7 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.contactAssistantId = data.contactAssistantId;
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.playbookAssistantId = data.playbookAssistantId;
             this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
             this.chatGptIntegrationSettingsDto.partnerGroupAssistantId = data.partnerGroupAssistantId;
           }
@@ -1005,11 +1015,39 @@ export class AiChatManagerComponent implements OnInit {
       }
        if (this.isFromManageCampaign) {
         this.uploadCampaignDetails();
+      } 
+
+      if (this.isFromManagePlaybooks) {
+        this.uploadPlaybookDetails();
       }
        if (this.isFromManageLead) {
         this.uploadLeadDetails();
       }
     });
+  }
+
+  uploadPlaybookDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "PLAYBOOKAGENT";
+    this.activeTab = 'playbookagent';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
+    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPlaybookPartnerView;
+    this.chatGptSettingsService.uploadPlaybookDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   uploadPartnerDetails() {

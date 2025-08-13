@@ -87,6 +87,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
   private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
+  private readonly PLAYBOOKAGENT = "PLAYBOOKAGENT";
   private readonly LEADAGENT = "LEADAGENT";
   private readonly PARTNERGROUPAGENT = "PARTNERGROUPAGENT";
   previousTitle: any;
@@ -830,6 +831,8 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
     } else if (this.activeTab == 'campaignagent') {
       this.chatGptIntegrationSettingsDto.agentType = this.CAMPAIGNAGENT;
+    } else if (this.activeTab == 'chatHistoryTab') {
+      this.chatGptIntegrationSettingsDto.agentType = this.LEADAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -1041,7 +1044,7 @@ export class ChatGptModalComponent implements OnInit {
 
   showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
-    if (tab === 'leadagent') {
+    if (tab === 'leadagent' || tab === 'playbookagent') {
       tab = 'chatHistoryTab';
     }
     this.setActiveTab(tab);
@@ -1078,6 +1081,8 @@ export class ChatGptModalComponent implements OnInit {
         return "partneragent";
       case this.CAMPAIGNAGENT:
         return "campaignagent";
+      case this.PLAYBOOKAGENT:
+        return "playbookagent";
       case this.LEADAGENT:
         return "leadagent";
       case this.PARTNERGROUPAGENT:
@@ -1482,6 +1487,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.partnerAssistantId = data.partnerAssistantId;
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
+            this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
           }
         }
       }, error => {
