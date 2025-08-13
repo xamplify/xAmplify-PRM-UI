@@ -86,6 +86,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly CONTACTAGENT = "CONTACTAGENT";
   private readonly PARTNERAGENT = "PARTNERAGENT";
   private readonly CAMPAIGNAGENT = "CAMPAIGNAGENT";
+  private readonly PLAYBOOKAGENT = "PLAYBOOKAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -1032,6 +1033,9 @@ export class ChatGptModalComponent implements OnInit {
 
   showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
+    if (tab === 'leadagent' || tab === 'playbookagent') {
+      tab = 'chatHistoryTab';
+    }
     this.setActiveTab(tab);
     this.threadId = history.threadId;
     this.vectorStoreId = history.vectorStoreId;
@@ -1066,6 +1070,8 @@ export class ChatGptModalComponent implements OnInit {
         return "partneragent";
       case this.CAMPAIGNAGENT:
         return "campaignagent";
+      case this.PLAYBOOKAGENT:
+        return "playbookagent";
     }
   }
 
