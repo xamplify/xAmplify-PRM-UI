@@ -159,11 +159,12 @@
                 *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected" data-placement="bottom"
                 data-toggle="tooltip" title="Send a welcome email to whitelisted domain users."
                 [disabled]="pagination.totalRecords==0" style="border-radius: 7px 0px 0px 7px!important;">
-                Send Welcome Mail
+                Send Welcome Mail123
               </button>
               <button class="btn btn-primary button border_btn" (click)="navigateToWelcomeEmailList()"
+              *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected"
                 style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
-                title="Welcome email list analytics" translate><i aria-hidden="true" class="fa fa-line-chart"></i>
+                title="Click here to see welcome email analytics" translate><i aria-hidden="true" class="fa fa-line-chart"></i>
               </button>
             </div>
             <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
