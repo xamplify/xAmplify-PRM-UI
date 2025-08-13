@@ -158,7 +158,7 @@
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
                 <div *ngIf="ngxLoading" class="fileloader mr10"></div>
-                <ng-container *ngIf="!ngxLoading"><img class=" mr10" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="PDF"
+                <ng-container *ngIf="!ngxLoading"><img class=" mr10" src="assets/images/content/image.png" alt="PDF"
                     width="28px" height="28px">
                 </ng-container>
                 <a title="{{ selectedLearningTrack.title }}" data-toggle="tooltip" data-placement="top">
@@ -166,13 +166,14 @@
                   <span *ngIf="selectedLearningTrack.title?.length > 20">...</span>
                 </a>
               </div>
-              <div class="published-on">Created On:{{ selectedLearningTrack?.createdDate | date:'MMM d, yyyy, h:mm a' }}
+              <div class="published-on">Created On:{{ selectedLearningTrack?.createdTime | date:'MMM d, yyyy, h:mm a' }}
                  </div>
             </div>
             <div class="file-details">
             </div>
           </div> 
-                
+         
+          
           <div *ngIf="isFromManageLead" class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
@@ -226,7 +227,7 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
             <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Analyze Playbook')">Analyze Playbook</button>
             <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize with Key')">Summarize with Key</button>
+            <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key Quotes</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
@@ -567,6 +568,7 @@
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                   </h4>
+
                   <h4 class="panel-title" *ngIf="isFromManageLead">
                     <a *ngIf="!isCollapsed && selectedLead != undefined" (click)="toggleAction()">
                       <div>
@@ -598,6 +600,39 @@
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                   </h4>
+                <h4 class="panel-title" *ngIf="isFromManagePlaybooks">
+                  <a *ngIf="!isCollapsed && selectedLearningTrack != undefined" (click)="toggleAction()">
+                    <div>
+                      <span *ngIf="selectedLearningTrack?.title">
+                        Title: {{selectedLearningTrack.title}} | </span><span *ngIf="selectedLearningTrack?.createdTime">
+                        Created On: {{selectedLearningTrack.createdTime | date:'MMM d, yyyy, h:mm a'}} </span>
+                    </div>
+                    <i class="fa fa-chevron-up toggle-icon"></i>
+                  </a>
+                  <a *ngIf="isCollapsed && selectedLearningTrack != undefined" (click)="toggleAction()">
+                    <div class="Ai_file">
+                      <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                        <div class="d-flex document_flex">
+                          <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                          <ng-container *ngIf="!ngxLoading">
+                            <img class="mr10" src="assets/images/content/image.png" alt="CONTACT" width="28px" height="28px">
+                          </ng-container>
+                          <a *ngIf="selectedLearningTrack?.title" title="{{ selectedLearningTrack?.title }}">
+                            {{ selectedLearningTrack?.title | slice:0:25 }}
+                            <span *ngIf="selectedLearningTrack?.title?.length > 25">...</span>
+                          </a>
+                        </div>
+                        <div *ngIf="selectedLearningTrack?.createdTime" class="published-on">Created On:{{
+                          selectedLearningTrack?.createdTime | date:'MMM d, yyyy, h:mm a'}}
+                        </div>
+                      </div>
+                      <div class="Ai-file-details">
+                      </div>
+                    </div>
+                    <i class="fa fa-chevron-down toggle-icon"></i>
+                  </a>
+                </h4>
+                
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in">
                   <div class="panel-body">
@@ -633,7 +668,7 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
             <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Analyze Playbook')">Analyze Playbook</button>  
             <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>  
-            <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize with Key')">Summarize with Key</button>  
+            <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key Quotes</button>  
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>

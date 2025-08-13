@@ -42,6 +42,7 @@ export class AiChatManagerComponent implements OnInit {
   @Input() selectedLearningTrack: any;
   @Input() isFromManagePlaybooks: boolean = false;
   @Input() selectedLead: any;
+  @Input() isPlaybookPartnerView: boolean = false;
   
   openHistory: boolean;
   messages: any[] = [];
@@ -1031,7 +1032,7 @@ export class AiChatManagerComponent implements OnInit {
     this.activeTab = 'playbookagent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
-    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerView;
+    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPlaybookPartnerView;
     this.chatGptSettingsService.uploadPlaybookDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {

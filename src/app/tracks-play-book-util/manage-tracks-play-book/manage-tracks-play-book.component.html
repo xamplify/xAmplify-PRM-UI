@@ -572,5 +572,5 @@
 </app-content-status-history-modal-popup>
 
 <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
- [isFromManagePlaybooks]="isFromManagePlaybooks"
+ [isFromManagePlaybooks]="isFromManagePlaybooks" [isPlaybookPartnerView]="isPartnerView"
      [selectedLearningTrack]="learningTrack" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
