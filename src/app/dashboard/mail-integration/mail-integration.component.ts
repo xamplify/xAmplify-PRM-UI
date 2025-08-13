@@ -25,7 +25,7 @@ export class MailIntegrationComponent implements OnInit {
   loggedInThroughVanityUrl: boolean = false;
   gmailRedirectURL: any;
   outlookRedirectURL: any;
-  constructor(private outlookEmailService: OutlookEmailService, private authenticationService: AuthenticationService, public logger: XtremandLogger, public referenceService: ReferenceService, private vanityUrlService: VanityURLService,public router: Router) {
+  constructor(private outlookEmailService: OutlookEmailService, private authenticationService: AuthenticationService, public logger: XtremandLogger, public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public router: Router) {
     this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 
   }
@@ -114,14 +114,13 @@ export class MailIntegrationComponent implements OnInit {
     try {
       const self = this;
       swal({
-        title: type === 'GMAIL' ? 'Gmail' : 'Outlook' + ' Re-configuration?',
-        text: 'Are you sure? All data related to existing ' + type === 'GMAIL' ? 'Gmail' : 'Outlook' + ' account will be deleted by clicking Yes.',
+        title: `${type === 'GMAIL' ? 'Gmail' : 'Outlook'} Re-configuration?`,
+        text: `Are you sure? All data related to existing ${type === 'GMAIL' ? 'Gmail' : 'Outlook'} account will be deleted by clicking Yes.`,
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#54a7e9',
         cancelButtonColor: '#999',
         confirmButtonText: 'Yes'
-
       }).then(function () {
         if (type === 'GMAIL') {
           self.configureGmail();
@@ -129,10 +128,10 @@ export class MailIntegrationComponent implements OnInit {
           self.configureOutlook();
         }
       }, function (dismiss: any) {
-        console.log('you clicked on option' + dismiss);
+        console.log('You clicked on option: ' + dismiss);
       });
     } catch (error) {
-      this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+      this.logger.error(this.referenceService.errorPrepender + ' confirmDelete():' + error);
       this.loading = false;
     }
   }
@@ -180,18 +179,18 @@ export class MailIntegrationComponent implements OnInit {
     }, () => this.logger.log("Integration Configuration Checking done"));
   }
 
-   ngAfterViewChecked() {
-    	let gmailCheck = localStorage.getItem('gmail');
-      let outlookChek = localStorage.getItem('outlook');
-		  localStorage.removeItem('gmail');
-      localStorage.removeItem('outlook');
+  ngAfterViewChecked() {
+    let gmailCheck = localStorage.getItem('gmail');
+    let outlookChek = localStorage.getItem('outlook');
+    localStorage.removeItem('gmail');
+    localStorage.removeItem('outlook');
 
-		if (gmailCheck == 'yes' || outlookChek == 'yes') {
-			this.referenceService.integrationCallBackStatus = true;
-			localStorage.removeItem("userAlias");
-			localStorage.removeItem("currentModule");
-			this.router.navigate(['/home/dashboard/myprofile']);
-		}
-	}
+    if (gmailCheck == 'yes' || outlookChek == 'yes') {
+      this.referenceService.integrationCallBackStatus = true;
+      localStorage.removeItem("userAlias");
+      localStorage.removeItem("currentModule");
+      this.router.navigate(['/home/dashboard/myprofile']);
+    }
+  }
 
 }
