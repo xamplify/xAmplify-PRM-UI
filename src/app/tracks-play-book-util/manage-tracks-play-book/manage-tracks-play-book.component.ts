@@ -20,6 +20,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { DatePipe } from '@angular/common';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 
 declare var swal:any, $: any;
@@ -80,6 +81,10 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   videoId: number;
   @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
   
+  learningTrack: any;
+  showAskOliverModalPopup: boolean = false;
+  isFromManagePlaybooks: boolean = false;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
@@ -630,4 +635,22 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     const element = $(event.target).closest('a');
     element.attr('data-original-title', tooltipMessage).tooltip('fixTitle').tooltip('show');
   }
+
+  askOliver(learningTrack: any) {
+		if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      this.learningTrack = learningTrack;
+      this.isFromManagePlaybooks = true;
+      this.showAskOliverModalPopup = true;
+    } else {
+      this.showAskOliverModalPopup = false;
+      this.isFromManagePlaybooks = false;
+    }
+	}
+
+	closeAskAI(event: any) {
+		this.chatGptSettingDTO = event;
+		this.showAskOliverModalPopup = false;
+    this.isFromManagePlaybooks = false;
+	}
+
 }
