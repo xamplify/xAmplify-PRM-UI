@@ -42,30 +42,19 @@ export class MailIntegrationComponent implements OnInit {
     this.outlookEmailService.getAccessToken().subscribe(
       result => {
         this.statusCode = result.statusCode;
-        if (result.data && result.data.length > 0) {
-          result.data.forEach(record => {
-            this.activeGamil = record.active;
-            if (record.type === 'OUTLOOK') {
-              // this.outlookRibbonText = 'configured';
-              this.activeOutlook = record.active;
-              this.activeGamil = false;
-            } else if (record.type === 'GMAIL') {
-              // this.gmailRibbonText = 'configured';
-              this.activeGamil = record.active;
-              this.activeOutlook = false;
-            }
-          });
-        } else {
-          this.accessToken = null;
-          console.warn('No active record found.');
+        this.activeGamil = false;
+        this.activeOutlook = false;
+        const active = result.data.find(r => r.active);
+        if (active) {
+          this.activeOutlook = active.type === 'OUTLOOK';
+          this.activeGamil = active.type === 'GMAIL';
         }
         this.loading = false;
       },
       error => {
         console.error('Failed to get access token:', error);
         this.loading = false;
-      },
-      () => { this.loading = false; }
+      }
     );
   }
 
