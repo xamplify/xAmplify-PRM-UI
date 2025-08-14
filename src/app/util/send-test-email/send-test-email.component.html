@@ -205,7 +205,7 @@
             <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked || teamMemberReminder ||sendSignatureRemainder) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
                   aria-hidden="true"></i></span>
          </button>
-         <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0 || !isValidFile"
+         <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0 || !isValidFile || showFileTypeError"
             (click)="sendWelcomeMailRemainder()">
             <span class="btn btn-primary transition txt_pd-top3">Send<i aria-hidden="true"
                   class="fa fa-send"></i></span>
