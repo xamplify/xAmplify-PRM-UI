@@ -78,65 +78,73 @@ export class PreviewEmailActivityComponent implements OnInit {
     this.referenceService.closeModalPopup('previewEmailModalPopup');
     this.notifyClose.emit();
   }
-  getWelcomeEmailList(): void {
-    this.ngxLoading = true;
-    this.emailActivityService
-      .getWelcomeEmailDetailsById(this.emailActivityId)
-      .subscribe(
-        res => {
-          if (res.statusCode === 200) {
-            this.emailActivity = res.data;
-            if (this.emailActivity.attachmentPaths && this.emailActivity.fileNames) {
-              const paths = this.emailActivity.attachmentPaths.split(' ,');
-              const names = this.emailActivity.fileNames.split(' ,');
-              this.welcomeAttachments = paths.map((p, idx) => ({
-                path: p.trim(),
-                name: names[idx] ? names[idx].trim() : `Attachment ${idx + 1}`,
-                uploadedFile: false
-              }));
-            } else {
-              this.welcomeAttachments = [];
-            }
-            const bodyEl = document.getElementById('sendTestEmailHtmlBody');
-            if (bodyEl) {
-              bodyEl.innerHTML = this.emailActivity.body || '';
-              const links = bodyEl.querySelectorAll('a');
-              Array.prototype.forEach.call(links, (link: HTMLAnchorElement) => {
-                if (link.textContent && link.textContent.trim().toLowerCase() === 'login') {
-                  link.style.pointerEvents = 'none';
-                  link.style.cursor = 'not-allowed';
-                  link.title = 'Login is restricted';
-                  ['click', 'dblclick', 'contextmenu'].forEach(evt =>
-                    link.addEventListener(evt, e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      return false;
-                    })
-                  );
-                }
-              });
-              const buttons = bodyEl.querySelectorAll('button');
-              Array.prototype.forEach.call(buttons, (btn: HTMLButtonElement) => {
-                if (btn.textContent && btn.textContent.trim().toLowerCase() === 'login') {
-                  btn.disabled = true;
-                  btn.style.cursor = 'not-allowed';
-                  btn.title = 'Login is restricted';
-                  ['click', 'dblclick', 'contextmenu'].forEach(evt =>
-                    btn.addEventListener(evt, e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      return false;
-                    })
-                  );
-                }
-              });
-            }
-            this.setHighlightLetter();
-          }
-        },
-        () => { },
-        () => { this.ngxLoading = false; }
-      );
+getWelcomeEmailList(): void {
+  this.ngxLoading = true;
+  this.emailActivityService
+    .getWelcomeEmailDetailsById(this.emailActivityId)
+    .subscribe(
+      res => {
+        if (res.statusCode === 200) {
+          this.emailActivity = res.data;
 
-  }
+          // Handle attachments
+          if (this.emailActivity.attachmentPaths && this.emailActivity.fileNames) {
+            const paths = this.emailActivity.attachmentPaths.split(' ,');
+            const names = this.emailActivity.fileNames.split(' ,');
+            this.welcomeAttachments = paths.map((p, idx) => ({
+              path: p.trim(),
+              name: names[idx] ? names[idx].trim() : `Attachment ${idx + 1}`,
+              uploadedFile: false
+            }));
+          } else {
+            this.welcomeAttachments = [];
+          }
+
+          const bodyEl = document.getElementById('sendTestEmailHtmlBody');
+          if (bodyEl) {
+            bodyEl.innerHTML = this.emailActivity.body || '';
+
+            const links = bodyEl.querySelectorAll('a');
+            Array.prototype.forEach.call(links, (link: HTMLAnchorElement) => {
+              // Disable all <a> tags from being clickable
+              link.style.pointerEvents = 'none';
+              link.style.cursor = 'not-allowed';
+              link.title = 'Links are disabled in preview';
+              ['click', 'dblclick', 'contextmenu'].forEach(evt =>
+                link.addEventListener(evt, e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                })
+              );
+
+              // Additional logic for login links (preserve existing)
+              if (link.textContent && link.textContent.trim().toLowerCase() === 'login') {
+                link.title = 'Login is restricted';
+              }
+            });
+
+            const buttons = bodyEl.querySelectorAll('button');
+            Array.prototype.forEach.call(buttons, (btn: HTMLButtonElement) => {
+              if (btn.textContent && btn.textContent.trim().toLowerCase() === 'login') {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+                btn.title = 'Login is restricted';
+                ['click', 'dblclick', 'contextmenu'].forEach(evt =>
+                  btn.addEventListener(evt, e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                  })
+                );
+              }
+            });
+          }
+          this.setHighlightLetter();
+        }
+      },
+      () => { },
+      () => { this.ngxLoading = false; }
+    );
+}
 }
