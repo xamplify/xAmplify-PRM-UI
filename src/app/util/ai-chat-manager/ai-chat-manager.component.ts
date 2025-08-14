@@ -343,7 +343,7 @@ export class AiChatManagerComponent implements OnInit {
         self.stopStatusRotation();
         var content = response.data;
         var reply = 'No response received from Oliver.';
-        let isReport = response.data.isReport;
+        let isReport = response.data && response.data.isReport;
         if (content) {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
 

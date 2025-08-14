@@ -7181,14 +7181,14 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            {{#report.partner_analytics_strategic_revenue_drivers.items}}
-                <td>{{partner_company}}</td>
-                <td>{{total_deals}}</td>
-                <td>{{deal_value}}</td>
-                <td>{{avg_deal_size}}</td>
-            {{/report.partner_analytics_strategic_revenue_drivers.items}}
-          </tr>
+          {{#report.partner_analytics_strategic_revenue_drivers.items}}
+            <tr>
+              <td>{{partner_company}}</td>
+              <td>{{total_deals}}</td>
+              <td>{{value}}</td>
+              <td>{{avg_deal_size}}</td>
+            </tr>
+          {{/report.partner_analytics_strategic_revenue_drivers.items}}
         </tbody>
       </table>
     </div>
@@ -7248,13 +7248,13 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
         </div>
       </div>
       
-      <div class="footer-section">
+      <!-- <div class="footer-section">
         <div class="footer-title">Data Sources</div>
         <div class="footer-text">
           <br>
           Partner Portal Analytics
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
