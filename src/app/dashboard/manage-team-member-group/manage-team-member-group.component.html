@@ -220,8 +220,8 @@
                 <span>{{module?.moduleName}}<sup *ngIf="module?.roleId == 10 || module?.roleId == 26">(Beta)</sup></span>
               </th>
             </tr>
-            <tr class="text-center module-text-color"
-              *ngIf="group?.marketingModulesAccessToTeamMemberGroup && previewGroup && group?.teamMemberModuleDTOs?.length<5">
+            <tr class="text-center module-text-color" *ngIf="vendorCompanyProfileName && previewGroup 
+              && group?.marketingModulesAccessToTeamMemberGroup && group?.teamMemberModuleDTOs?.length<5">
               <th scope="row">
                 <i class="fa fa-cogs wtfpx" aria-hidden="true"></i>
                 <span>Marketing Modules</span>
