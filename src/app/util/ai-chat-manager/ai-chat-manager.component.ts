@@ -42,6 +42,7 @@ export class AiChatManagerComponent implements OnInit {
   @Input() selectedLearningTrack: any;
   @Input() isFromManagePlaybooks: boolean = false;
   @Input() selectedLead: any;
+  @Input() isPlaybookPartnerView: boolean = false;
   
   openHistory: boolean;
   messages: any[] = [];
@@ -342,7 +343,7 @@ export class AiChatManagerComponent implements OnInit {
         self.stopStatusRotation();
         var content = response.data;
         var reply = 'No response received from Oliver.';
-        let isReport = response.data.isReport;
+        let isReport = response.data && response.data.isReport;
         if (content) {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
 
@@ -1031,7 +1032,7 @@ export class AiChatManagerComponent implements OnInit {
     this.activeTab = 'playbookagent';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
-    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerView;
+    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPlaybookPartnerView;
     this.chatGptSettingsService.uploadPlaybookDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {

@@ -193,3 +193,35 @@ p.warning-red-textcolor {
   float: left;
   margin-left: 12px;
 }
+
+.oliveImg {
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+.oliverImgIcon {
+    width: 19px;
+    height: 19px;
+    filter: brightness(0) invert(1);
+}
+
+.oliveIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #5bb2f5;
+  border-radius: 50%;
+  cursor: pointer
+}
+
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

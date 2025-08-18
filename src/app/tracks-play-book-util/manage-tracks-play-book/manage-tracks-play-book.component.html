@@ -406,7 +406,7 @@
                             <!---XNFR-327--->
                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
                                 [ngClass]="{actionAlignment_sp_even : !isPartnerView}" class="bar gridIconCustomization"
-                                style="padding: 0px 10px;">
+                                style="padding: 0px 10px;flex-wrap: wrap;height: auto">
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip"
@@ -472,11 +472,9 @@
                                 </div>
                                 
                                 
-                                <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && type == 'PLAYBOOK' " data-toggle="tooltip" data-placement="top"
+                                <a class="Iconhover custom-grid-icon oliverhover" *ngIf="authenticationService?.isOliverActive && type == 'PLAYBOOK' " data-toggle="tooltip" data-placement="top"
                                     title="Ask Oliver" (click)="askOliver(learningTrack)">
-                                    <div class="oliveBackground">
-                                        <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
-                                    </div>
+                                        <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 oliverImgIcon">
                                 </a>
 
 
@@ -572,5 +570,5 @@
 </app-content-status-history-modal-popup>
 
 <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
- [isFromManagePlaybooks]="isFromManagePlaybooks"
+ [isFromManagePlaybooks]="isFromManagePlaybooks" [isPlaybookPartnerView]="isPartnerView"
      [selectedLearningTrack]="learningTrack" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

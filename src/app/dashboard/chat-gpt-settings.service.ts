@@ -433,8 +433,9 @@ listDefaultTemplates(userId:any){
     let isFromChatGptModalRequestParam = '&isFromChatGptModal=true';
     let vendorCompanyProfileNameRequestParam = chatGptIntegrationSettingsDto.vendorCompanyProfileName != undefined ? '&vendorCompanyProfileName=' + chatGptIntegrationSettingsDto.vendorCompanyProfileName : '';
     let learningTrackIdRequestParam = chatGptIntegrationSettingsDto.learningTrackId != undefined ? '&learningTrackId=' + chatGptIntegrationSettingsDto.learningTrackId : '';
+    let partnerLoggedInRequestParam = '&partnerLoggedIn=' + chatGptIntegrationSettingsDto.partnerLoggedIn;
     const url = this.authenticationService.REST_URL + 'oliver/uploadPlaybookDetails?access_token=' + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter +
-    userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam + learningTrackIdRequestParam;
+    userListIdRequestParameter + oliverIntegrationTypeRequestParam + oliverAgentTypeParam + vendorCompanyProfileNameRequestParam + isFromChatGptModalRequestParam + learningTrackIdRequestParam + partnerLoggedInRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
 

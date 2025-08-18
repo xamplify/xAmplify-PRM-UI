@@ -1150,7 +1150,7 @@
                                                     <div *ngIf="maxRecipientCountReached">
                                                         <strong>
                                                             Selected Rows: {{selectedContactListIds.length}}, Recipients Count: {{validUsersCount}}<br>
-                                                            Note: Deactivated partner(s) will be excluded from launching the campaign.
+                                                            <span *ngIf="campaign?.channelCampaign">Note: Deactivated partner(s) will be excluded from launching the campaign.</span>
                                                         </strong>
                                                     </div>
                                                 </div>
