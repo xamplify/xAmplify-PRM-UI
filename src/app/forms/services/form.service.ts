@@ -25,6 +25,7 @@ export class FormService {
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
     saveForm(form: Form, formData: FormData) {
+        form.companyProfileName = this.authenticationService.companyProfileName;
         formData.append('formDto', new Blob([JSON.stringify(form)],
           {
             type: "application/json"
@@ -166,6 +167,7 @@ export class FormService {
     }
 
     list( pagination: Pagination ): Observable<any> {
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
@@ -179,6 +181,7 @@ export class FormService {
 
     findDefaultFormsOrUserDefinedForms(pagination:Pagination,defaultForm:boolean){
         let url = defaultForm ? 'default/list' : 'list';
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         return this.http.post( this.URL + url+ "?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
