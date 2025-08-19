@@ -3139,7 +3139,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.getActiveCrmType();
 		this.fetchOliverActiveIntegration();
-		this.getOliverAgentAccessSettings();
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+			this.getOliverAgentConfigurationSettingsForVanityLogin();
+		} else {
+			this.getOliverAgentAccessSettings();
+		}
 	}
 
 
@@ -4089,6 +4093,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	getOliverAgentAccessSettings() {
 		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
+			result => {
+				if (result.data && result.statusCode == 200) {
+					let data = result.data;
+					this.showOliverContactAgent = data.showOliverContactAgent;
+					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
+				}
+			}, error => {
+				console.log('Error in getOliverAgentAccessSettings() ', error);
+			});
+	}
+
+	getOliverAgentConfigurationSettingsForVanityLogin() {
+		this.chatgptSettingsService.getOliverAgentConfigurationSettingsForVanityLogin().subscribe(
 			result => {
 				if (result.data && result.statusCode == 200) {
 					let data = result.data;
