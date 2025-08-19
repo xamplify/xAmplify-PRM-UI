@@ -6018,6 +6018,7 @@ iframeLeadContent: any = `<!DOCTYPE html>
       grid-template-columns: 1fr 1fr;
       gap: 20px;
       margin-bottom: 16px;
+      margin-top: 10px;
     }
 
     .stat-box {
@@ -6165,14 +6166,14 @@ iframeLeadContent: any = `<!DOCTYPE html>
       margin: 0;
       font-size: 26px;
       font-weight: bold;
-      color: #facc15;
+      color: {{theme.headerSubHeadingTextColor}};
     }
 
     .kpi-card p {
       margin-top: 8px;
       margin-bottom: 0px;
       font-size: 14px;
-      color: #e0e0e0;
+      color: {{theme.headertextColor}};
     }
 
      @media (max-width: 1024px) {
@@ -6376,7 +6377,12 @@ iframeLeadContent: any = `<!DOCTYPE html>
                 {{#report.lead_full_name}}      <li><span class="label">Name</span>            <span class="value">{{report.lead_full_name}}</span></li>{{/report.lead_full_name}}
                 {{#report.lead_email_id}}      <li><span class="label">Email</span>   <span class="value">{{report.lead_email_id}}</span></li>{{/report.lead_email_id}}
                 {{#report.lead_company}}<li><span class="label">Company</span>          <span class="value">{{report.lead_company}}</span></li>{{/report.lead_company}}
-                {{#report.lead_created_on}}       <li><span class="label">Created On</span>            <span class="value">{{report.lead_created_on}}</span></li>{{/report.lead_created_on}}
+                {{#report.campaign_name}}       <li><span class="label">Campaign Name</span>            <span class="value">{{report.campaign_name}}</span></li>{{/report.campaign_name}}
+                {{^report.campaign_name}} <li>
+             <span class="label">Created For</span>
+             <span class="value">{{report.created_for_company}}</span>
+                </li>
+         {{/report.campaign_name}}
                 </ul>
             </div>
 		<section class="qbr-banner">
@@ -6388,6 +6394,14 @@ iframeLeadContent: any = `<!DOCTYPE html>
             <div class="kpi-card">
               <h3>Current Pipeline</h3>
               <p>{{report.pipeline}}</p>
+            </div>
+            <div class="kpi-card">
+              <h3>Created By</h3>
+              <p>{{report.created_by_name}}</p>
+            </div>
+            <div class="kpi-card">
+              <h3>Created On</h3>
+              <p>{{report.lead_created_on}}</p>
             </div>
           </div>
         </section>
@@ -6421,6 +6435,40 @@ iframeLeadContent: any = `<!DOCTYPE html>
   </div>
     </div>
     {{/report.statusChangeTimeline}}
+    
+    {{#report.customFieldsData}}
+    <div class="analysis-section">
+      <h2>{{report.customFieldsData.title}}</h2>
+      <div class="stat-grid">
+        <div class="stat-box opens">
+          <div class="stat-number">{{report.customFieldsData.custom_fields_count}}</div>
+          <div class="stat-label">Custom Fields</div>
+        </div>
+        <div class="stat-box views">
+          <div class="stat-number">{{report.customFieldsData.data_complete_rate}}</div>
+          <div class="stat-label">Data Complete</div>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th class="text_center">Value</th>
+            <th class="text_center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+         {{#report.customFieldsData.items}}
+      <tr>
+        <td>{{field_name}}</td>
+        <td class="text_center">{{value}}</td>
+        <td class="text_center"><span class="type-badge" style="background-color: {{color_hex}}; color: white;">{{status}}</span></td>
+      </tr>
+      {{/report.customFieldsData.items}}
+        </tbody>
+      </table>
+     </div>
+     {{/report.customFieldsData}}
 
 
     <!-- Strategic Insights & Analysis -->
