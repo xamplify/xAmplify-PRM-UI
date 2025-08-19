@@ -153,7 +153,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() selectedFoldersForOliver: any[] = [];
 	isFromOliverFolderView: boolean = false;
 	@Input() isPartnerViewFromOliver: boolean = false;
-	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx','mp4','jpg','png','jpeg','gif','jfif','html','htm','json'];
+	files: any[] = ['csv','pdf','doc','docx','ppt','pptx','xls','xlsx','mp4','jpg','png','jpeg','gif','jfif','html','htm','json','mp3'];
 	ragItFiles: any[] = ['mp4','mp3','avi','mov','flv','wmv','mkv','webm','ogg','ogv','3gp','3g2','mpeg','mpg','m4v'];
 	@Input() fromListView: boolean = false;
 	@Input() oliverIntegrationType: any;
