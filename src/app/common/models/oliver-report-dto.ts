@@ -19,6 +19,8 @@ export interface ExecutiveReport {
   lead_created_on: string;
   stage: string;
   pipeline: string;
+  created_for_company : string;
+  created_by_name : string;
 
 
   owner_details: OwnerDetails;
@@ -53,6 +55,8 @@ export interface ExecutiveReport {
   leadProgressionTimeline : LeadProgressionTimeline;
   statusChangeTimeline : StatusChangeTimeline<StatusChangeTimelineItem>;
   deal_interactions_and_revenue_impact :  DealInteractionsAndRevenueImpact;
+  customFieldsData : CustomFieldsData<CustomFieldsDataItem>;
+
 }
 
 export interface DealInteractionsAndRevenueImpact {
@@ -325,4 +329,18 @@ export interface StatusChangeTimelineItem {
   stage_changed_to: string;
   changed_by: string;
 }
+
+export interface CustomFieldsData<TItem> {
+  title: string;
+  custom_fields_count: string;
+  data_complete_rate: string;
+  items: TItem[];
+}
+
+export interface CustomFieldsDataItem {
+  field_name: string;
+  value: string;
+  status: string;
+}
+
 

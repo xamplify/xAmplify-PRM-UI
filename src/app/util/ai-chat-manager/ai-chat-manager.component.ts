@@ -1248,7 +1248,7 @@ export class AiChatManagerComponent implements OnInit {
     return raw.substring(firstBrace, lastBrace + 1);
   }
 
-  parseOliverReport(jsonStr: string): ExecutiveReport {
+ parseOliverReport(jsonStr: string): ExecutiveReport {
      const j = JSON.parse(jsonStr);
 
     const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
@@ -1473,6 +1473,7 @@ export class AiChatManagerComponent implements OnInit {
       email_sent : j && j.email_sent ? j.email_sent : 0,
       click_through_rate : j && j.click_through_rate ? j.click_through_rate : 0,
       deliverability_rate : j && j.deliverability_rate ? j.deliverability_rate : 0,
+      created_by_name : j && j.created_by_name ? j.created_by_name : '',
 
       lead_full_name : j && j.lead_full_name ? j.lead_full_name : '',
       lead_email_id : j && j.lead_email_id ? j.lead_email_id : '',
@@ -1480,6 +1481,7 @@ export class AiChatManagerComponent implements OnInit {
       lead_created_on : j && j.lead_created_on ? j.lead_created_on : '',
       stage : j && j.stage ? j.stage : '',
       pipeline : j && j.pipeline ? j.pipeline : '',
+      created_for_company : j && j.created_for_company ? j.created_for_company : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -1667,13 +1669,16 @@ export class AiChatManagerComponent implements OnInit {
         title: j && j.status_change_timeline && j.status_change_timeline.title ? j.status_change_timeline.title : '',
         items: j && j.status_change_timeline && j.status_change_timeline.items ? j.status_change_timeline.items : []
       },
+      customFieldsData: {
+        title: j && j.custom_fields_data && j.custom_fields_data.title ? j.custom_fields_data.title : '',
+        items: j && j.custom_fields_data && j.custom_fields_data.items ? j.custom_fields_data.items : [],
+        custom_fields_count : j && j.custom_fields_data && j.custom_fields_data.custom_fields_count ? j.custom_fields_data.custom_fields_count : 0,
+        data_complete_rate: j && j.custom_fields_data && j.custom_fields_data.data_complete_rate ? j.custom_fields_data.data_complete_rate : 0
+      },
     };
 
     return dto;
   }
-
-
-
 
 
 
