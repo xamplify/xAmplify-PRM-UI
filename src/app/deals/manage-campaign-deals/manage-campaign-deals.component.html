@@ -199,6 +199,12 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
+                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                  title="Ask Oliver" (click)="askOliver(deal)">
+                  <div class="oliveBackground">
+                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                  </div>
+                </a>
                 <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip"
                   data-placement="bottom" title="View Deal" id="deal">
                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>

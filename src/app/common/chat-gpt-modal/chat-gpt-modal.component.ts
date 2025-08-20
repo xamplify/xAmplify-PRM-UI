@@ -90,6 +90,7 @@ export class ChatGptModalComponent implements OnInit {
   private readonly PLAYBOOKAGENT = "PLAYBOOKAGENT";
   private readonly LEADAGENT = "LEADAGENT";
   private readonly PARTNERGROUPAGENT = "PARTNERGROUPAGENT";
+  private readonly DEALAGENT = "DEALAGENT";
   previousTitle: any;
   index: any;
   searchKey:string;
@@ -170,6 +171,7 @@ export class ChatGptModalComponent implements OnInit {
   isResponseInProgress: boolean;
   showOliverCampaignAgent: any;
   intentMessages: any[] = [];
+  agentType: any;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient,
@@ -285,6 +287,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
+    this.agentType = '';
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
@@ -831,8 +834,6 @@ export class ChatGptModalComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.agentType = this.PARTNERAGENT;
     } else if (this.activeTab == 'campaignagent') {
       this.chatGptIntegrationSettingsDto.agentType = this.CAMPAIGNAGENT;
-    } else if (this.activeTab == 'chatHistoryTab') {
-      this.chatGptIntegrationSettingsDto.agentType = this.LEADAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -1044,7 +1045,9 @@ export class ChatGptModalComponent implements OnInit {
 
   showHistory(history: any) {
     let tab = this.getTabName(history.oliverChatHistoryType);
-    if (tab === 'leadagent' || tab === 'playbookagent') {
+    this.chatGptIntegrationSettingsDto.agentType = history.oliverChatHistoryType;
+    this.agentType = history.oliverChatHistoryType;
+    if (tab === 'leadagent' || tab === 'playbookagent' || tab === 'dealagent') {
       tab = 'chatHistoryTab';
     }
     this.setActiveTab(tab);
@@ -1087,6 +1090,8 @@ export class ChatGptModalComponent implements OnInit {
         return "leadagent";
       case this.PARTNERGROUPAGENT:
         return "partnergroupagent";
+      case this.DEALAGENT:
+        return "dealagent";
     }
   }
 
@@ -1488,6 +1493,7 @@ closeDesignTemplate(event: any) {
             this.chatGptIntegrationSettingsDto.globalChatAssistantId = data.globalChatAssistantId;
             this.chatGptIntegrationSettingsDto.campaignAssistantId = data.campaignAssistantId;
             this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
+            this.chatGptIntegrationSettingsDto.dealAssistantId = data.dealAssistantId;
           }
         }
       }, error => {
@@ -1717,7 +1723,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
-     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+     const leadProgressionTimelineItems = j.progression_timeline && j.progression_timeline.items ? j.progression_timeline.items : [];
 
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
@@ -1896,8 +1902,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
     };
 
     const leadProgressionTimeline = {
-      title: j.lead_progression_timeline && j.lead_progression_timeline.title
-        ? j.lead_progression_timeline.title
+      title: j.progression_timeline && j.progression_timeline.title
+        ? j.progression_timeline.title
         : '',
       categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
       categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
@@ -1932,6 +1938,10 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       stage : j && j.stage ? j.stage : '',
       pipeline : j && j.pipeline ? j.pipeline : '',
       created_for_company : j && j.created_for_company ? j.created_for_company : '',
+      deal_title : j && j.deal_title ? j.deal_title : '',
+      deal_amount : j && j.deal_amount ? j.deal_amount : '',
+      deal_close_date : j && j.deal_close_date ? j.deal_close_date : '',
+      deal_created_on: j && j.deal_created_on ? j.deal_created_on : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',

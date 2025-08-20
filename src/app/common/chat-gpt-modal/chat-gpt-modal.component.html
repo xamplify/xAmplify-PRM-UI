@@ -659,6 +659,8 @@
                                   class="fa fa-bullhorn mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == LEADAGENT"
                                   class="fa fa-user-circle mr5"></i>
+                                <i *ngIf="history.oliverChatHistoryType == DEALAGENT"
+                                  class="fa fa-tags mr5"></i>
                                 <i *ngIf="history.oliverChatHistoryType == SPARKWRITERAGENT"
                                   class="fa fa-pencil mr5"></i>{{history.title | slice:0:90}}<span
                                   *ngIf="history?.title != undefined && history?.title?.length>90">..</span></span>
@@ -987,7 +989,7 @@
         <div class="chat-container">
           <div #markdownComponent class="chat-history">
             <markdown  *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-             <app-executive-summary-report [activeTab]="activeTab" [intent]="message.intent" *ngIf="message?.isReport == 'true'" [reportData]="message.content">
+             <app-executive-summary-report [activeTab]="activeTab" [agentType]="agentType" [intent]="message.intent" *ngIf="message?.isReport == 'true'" [reportData]="message.content">
              </app-executive-summary-report>
           </div>
         </div>
