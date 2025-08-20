@@ -190,9 +190,17 @@
               <h5 style="font-weight: 600; color: #676767;">
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                 </app-timestamp>
-              </h5>
-              <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'" data-toggle="tooltip"
-                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
+                </h5>
+                <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'" data-toggle="tooltip"
+                  data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
+                <h5 *ngIf="!isPartnerVersion" class='ellipsis m_t_view' title="{{lead.accountSubType}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                  {{lead.accountSubType | slice:0:20}}
+                  <span *ngIf="lead.accountSubType?.length > 20">...</span>
+                </h5>                
+                <h5 *ngIf="!isPartnerVersion" class='ellipsis m_t_view' title="{{lead.partnerType}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                  {{lead.partnerType | slice:0:20}}
+                  <span *ngIf="lead.partnerType?.length > 20">...</span>
+                </h5>
             </td>
             <td style="width: 23%; text-align: center;">
               {{ (isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa  ? (lead.sfcfDealRegStatusForVersa | slice:0:30) : (lead.currentStageName | slice:0:30) }}

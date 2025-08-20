@@ -405,6 +405,17 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                                 </app-timestamp>
                               </h5>
+                              <h5 *ngIf="!isPartnerVersion" class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.accountSubType}}"
+                                style="margin: 7px 0 2px 0;font-weight: 400;">
+                                {{deal.accountSubType | slice:0:20}}
+                                <span *ngIf="deal.accountSubType?.length > 20">...</span>
+                              </h5>
+                              
+                              <h5 *ngIf="!isPartnerVersion" class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.partnerType}}"
+                                style="margin: 7px 0 2px 0;font-weight: 400;">
+                                {{deal.partnerType | slice:0:20}}
+                                <span *ngIf="deal.partnerType?.length > 20">...</span>
+                              </h5>
                               <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
                                 data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                             </td>
