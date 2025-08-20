@@ -36,6 +36,7 @@ export class FormService {
     }
 
     updateForm(form: Form, formData: FormData) {
+        form.companyProfileName = this.authenticationService.companyProfileName;
         formData.append('formDto', new Blob([JSON.stringify(form)],
           {
             type: "application/json"
@@ -49,7 +50,9 @@ export class FormService {
    
 
     listFormNames( userId: number ) {
-        return this.http.get( this.URL + "listFormNames/" + userId + "?access_token=" + this.authenticationService.access_token )
+        let companyProfileName = this.authenticationService.companyProfileName;
+        return this.http.get( this.URL + "listFormNames/" + userId 
+            + "?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName )
             .map( this.extractData )
             .catch( this.handleError );
 
