@@ -402,7 +402,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isContactStatusOptionClicked: boolean = false;
 
 	contactUploadManagementSettings: boolean = false;
-
+    /*** XNFR-1062 ***/
+	showMailIntegration: boolean = false;
+    mailsEnabled: boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -714,6 +716,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 				else if (e.data == 'isAircallAuth') {
 					localStorage.setItem('isAircallAuth', 'yes');
+				} else if(e.data == 'gmail'){
+					localStorage.setItem('gmail', 'yes');
+				} else if(e.data == 'outlook'){
+					localStorage.setItem('outlook', 'yes');
 				}
 			}, false);
 			this.getModuleAccessByUser();
@@ -741,6 +747,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.welcomePagesAccess = result.welcomePages;
 			this.vendorMarketplace = result.vendorMarketplace;
 			this.partnerJourneyPageEnabled = result.partnerJourneyPageEnabled;
+			this.mailsEnabled = result.mailsEnabled; //XNFR-1062
 			this.ngxloading = false;
 			this.getForLandscapeAccessforVendorandPartner();
 		}, _error => {
@@ -2324,6 +2331,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
 			// XNFR-967 Contact Status
 			this.activateContactStatusMenuHeader();
+		} else if(this.activeTabName == 'mailIntegration') {
+			this.showMailIntegration = true;
+			this.activeTabHeader = this.properties.mailIntegration;
 		}
 		if (this.integrationTabIndex == 5) {
 			this.integrationTabIndex = 0;

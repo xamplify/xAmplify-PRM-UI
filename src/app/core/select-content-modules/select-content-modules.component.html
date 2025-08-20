@@ -169,12 +169,17 @@
                   <div>
                      <h4>Digital Asset Library</h4>
                      <div class="asset-description">
-                        <ng-container *ngIf="authenticationService?.module?.damAccess">
+                        <ng-container
+                           *ngIf="authenticationService?.module?.damAccess && !authenticationService?.marketingModulesAccessToPartner">
                            Create Manuals, Instructions, Sales / Marketing content your {{
                            authenticationService?.partnerModule?.customName }} can access any time.
                         </ng-container>
                         <ng-container
-                           *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess">
+                           *ngIf="authenticationService?.module?.damAccess && authenticationService?.marketingModulesAccessToPartner">
+                           Create Manuals, Instructions, Sales / Marketing content your Team Members can access any time.
+                        </ng-container>
+                        <ng-container
+                           *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess && !authenticationService?.marketingModulesAccessToPartner">
                            A library of vendor-given manuals, instructions, sales decks, one-pagers, and other sales and
                            marketing content that you can access at any time.
                         </ng-container>

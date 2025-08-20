@@ -29,3 +29,8 @@
      border-right: 1px solid #ddd;
      border-bottom: 1px solid #ddd;
 }
+@media (min-width: 200px) and (max-width: 1199px) {
+   .pie-chart-container{
+    margin-bottom: 22px;
+   }
+}

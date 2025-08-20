@@ -94,7 +94,7 @@ export class DonutPieChartComponent implements OnInit {
       this.headerText = 'Interacted & Not Interacted Tracks';
       this.chartColors = ['#5C9BD1', '#E87E04', '#2bc2b5', '#90ed7d'];
       // this.colClass = "col-sm-5 col-lg-5";
-      this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-5";
+      this.colClass = "col-sm-12 col-md-12 col-xs-12 col-lg-5";
       this.portletLightClass = "portlet light active-donut-pie-chart";
       if (!this.isTeamMemberAnalytics) {
         this.loadDonutChartForInteractedAndNotInteractedTracks();
@@ -104,7 +104,7 @@ export class DonutPieChartComponent implements OnInit {
     } else if (this.chartId == "typewiseTrackContentDonut") {
       this.headerText = 'Status Wise Track';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
-      this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4";
+      this.colClass = "col-sm-12 col-md-12 col-xs-12 col-lg-4";
       this.portletLightClass = "portlet light active-donut-pie-chart";
       if (!this.isTeamMemberAnalytics) {
         this.loadDonutChartForTypewiseTrackContents();;
@@ -115,7 +115,7 @@ export class DonutPieChartComponent implements OnInit {
     else if (this.chartId == "regionAndNonRegionDonut") {
       this.headerText = 'REGION WISE PARTNERS';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a', '#8a8282c4','#5C9BD1', '#2bc2b5', '#90ed7d'];
-     this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4 pl0";
+     this.colClass = "col-sm-12 col-md-12 col-xs-12 col-lg-4 pl0";
      this.portletLightClass = "portlet light active-donut-pie-chart";
       this.findAllPartnerRegionDetaiils();
      }

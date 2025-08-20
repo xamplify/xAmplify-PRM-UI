@@ -1,3 +1,5 @@
+<div *ngIf="!showAskOliverModalPopup">
+
 <app-content-module-status-analytics [moduleType]="type" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="isApprovalRequiredForType()" [isPartnerView]="isPartnerView"
     *ngIf="!folderListViewExpanded">
 </app-content-module-status-analytics>
@@ -297,6 +299,16 @@
                                                         aria-hidden="true"></i>
                                                     <div class="del-icon"></div>
                                                 </a>
+
+
+                                            <a class="oliveIcon" *ngIf="authenticationService?.isOliverActive && type == 'PLAYBOOK'"
+                                                data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver(learningTrack)">
+                                                <div class="oliveBackground">
+                                                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                                </div>
+                                            </a>
+
+
                                             </div>
                                             <!--XNFR-327-->
                                             <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
@@ -394,7 +406,7 @@
                             <!---XNFR-327--->
                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
                                 [ngClass]="{actionAlignment_sp_even : !isPartnerView}" class="bar gridIconCustomization"
-                                style="padding: 0px 10px;">
+                                style="padding: 0px 10px;flex-wrap: wrap;height: auto">
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip"
@@ -458,6 +470,14 @@
                                         <div class="del-icon"></div>
                                     </a>
                                 </div>
+                                
+                                
+                                <a class="Iconhover custom-grid-icon oliverhover" *ngIf="authenticationService?.isOliverActive && type == 'PLAYBOOK' " data-toggle="tooltip" data-placement="top"
+                                    title="Ask Oliver" (click)="askOliver(learningTrack)">
+                                        <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 oliverImgIcon">
+                                </a>
+
+
                             </div>
                             <!--Refresh Icon-->
                             <!--XNFR-327-->
@@ -538,12 +558,17 @@
         </div>
     </div>
 </div>
+</div>
 
 <!-- XNFR-824 -->
 <app-content-status-history-modal-popup
-    *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
+    *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView && !showAskOliverModalPopup"
     [entityId]="selectedDamId" [moduleType]="type" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
     [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
     (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
     (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
+ [isFromManagePlaybooks]="isFromManagePlaybooks" [isPlaybookPartnerView]="isPartnerView"
+     [selectedLearningTrack]="learningTrack" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

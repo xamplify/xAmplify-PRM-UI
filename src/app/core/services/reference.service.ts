@@ -87,6 +87,7 @@ export class ReferenceService {
   nurtureCampaignId = 0;
   homeRouter = "/home/dashboard/default";
   selectModuleRouter = "/home/select-modules";
+  onboardingPartnerRouter = "/home/partners/add";
   sharedDamRouter = "/home/dam/shared";
   manageCampaignsRouter = "/home/campaigns/manage";
   loginUrl = "/login";
@@ -2921,7 +2922,7 @@ export class ReferenceService {
         this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(
           mergeTags
         );
-      if (!this.authenticationService.module.isMarketingCompany) {
+      if (!this.authenticationService.module.isMarketingCompany && !this.authenticationService.marketingModulesAccessToPartner) {
         mergeTags.push({
           name: "Partner About Us",
           value: this.senderMergeTag.aboutUs,

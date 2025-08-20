@@ -71,7 +71,11 @@ const routes: Routes = [
   { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
   {path:RouterUrlConstants.quickLinks,component:QuickLinksComponent},
   {path:RouterUrlConstants.universalSearch,component:UniversalSearchComponent},
-  {path:RouterUrlConstants.mergePartnerCompanies,component:MergePartnerCompaniesComponent,canDeactivate: [PendingChangesGuard]}
+  {path:RouterUrlConstants.mergePartnerCompanies,component:MergePartnerCompaniesComponent,canDeactivate: [PendingChangesGuard]},
+  /*** XNFR-1062 ***/
+  { path: 'gmail-callback',component:SocialContactsCallbackComponent},
+  { path: 'outlook-callback',component:SocialContactsCallbackComponent},
+
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -73,8 +73,8 @@
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required">*</span>
-        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"
-          [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name" [ngModelOptions]="{standalone: true}" 
+          class="form-control" (input)="validateForm()" maxlength="255" [disabled]="previewGroup" />
         <!-- <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" /> -->
         <span class="required"
@@ -218,6 +218,13 @@
               <th *ngIf="j<=4" scope="row">
                 <i aria-hidden="true" class="{{module?.moduleIcon}} wtfpx"></i>
                 <span>{{module?.moduleName}}<sup *ngIf="module?.roleId == 10 || module?.roleId == 26">(Beta)</sup></span>
+              </th>
+            </tr>
+            <tr class="text-center module-text-color"
+              *ngIf="group?.marketingModulesAccessToTeamMemberGroup && previewGroup && group?.teamMemberModuleDTOs?.length<5">
+              <th scope="row">
+                <i class="fa fa-cogs wtfpx" aria-hidden="true"></i>
+                <span>Marketing Modules</span>
               </th>
             </tr>
             <tr *ngIf="group?.teamMemberModuleDTOs?.length>5" class="text-center module-text-color">

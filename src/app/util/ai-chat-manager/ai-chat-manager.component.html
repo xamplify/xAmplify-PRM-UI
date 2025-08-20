@@ -3,7 +3,7 @@
   [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
   [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
-<div [ngClass]="isOliverAiFromdam || (isFromManagePartner && !isFromOnboardSection) ? '' : 'page-content'">
+<div [ngClass]="isOliverAiFromdam || (isFromManagePartner && !isFromOnboardSection) || isFromManagePlaybooks ? '' : 'page-content'">
   <button *ngIf="isBeeTemplateComponentCalled" class="btn close_btn" (click)="closeBee()">×</button>
   <app-bee-template-util *ngIf="isBeeTemplateComponentCalled"[beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
   <app-add-dam *ngIf="openAssetPage" [isFromOliverPopup]="true" [assetData]="emittdata" (notifyEmit)="closeDesignTemplate($event)"></app-add-dam>
@@ -28,7 +28,7 @@
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign"  class="file-info">
+          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks"  class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -153,6 +153,48 @@
             </div>
           </div>
 
+          <div *ngIf="isFromManagePlaybooks" class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <!-- <div class="pdf-text">PDF</div> -->
+                <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!ngxLoading"><img class=" mr10" src="assets/images/content/image.png" alt="PDF"
+                    width="28px" height="28px">
+                </ng-container>
+                <a title="{{ selectedLearningTrack.title }}" data-toggle="tooltip" data-placement="top">
+                  {{ selectedLearningTrack.title | slice:0:20 }}
+                  <span *ngIf="selectedLearningTrack.title?.length > 20">...</span>
+                </a>
+              </div>
+              <div class="published-on">Created On:{{ selectedLearningTrack?.createdTime | date:'MMM d, yyyy, h:mm a' }}
+                 </div>
+            </div>
+            <div class="file-details">
+            </div>
+          </div> 
+         
+          
+          <div *ngIf="isFromManageLead" class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!ngxLoading"><img class=" mr10" src="assets/images/leadIcon.png" alt="PDF"
+                    width="28px" height="28px">
+                </ng-container>
+                <a title="{{ selectedLead.lastName }}" data-toggle="tooltip" data-placement="top">
+                  {{ selectedLead.lastName | slice:0:20 }}
+                  <span *ngIf="selectedLead?.lastName?.length > 20">...</span>
+                </a>
+              </div>
+              <div class="published-on">Email Id:{{selectedLead?.email}}
+
+              
+            </div>
+            </div>
+            <div class="file-details">
+            </div>
+          </div>
+
           <div class="input-section">
             <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" class="form-control"
               [(ngModel)]="inputText" (input)="validateInputText()" placeholder="Ask me!">
@@ -164,13 +206,13 @@
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput style="display: none;" />
             </button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Analyze the files.')">Analyze the files</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="btn btn-pdf" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the files.')">Analyze the files</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageLead" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageLead" class="btn btn-pdf" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
               Insights</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Give me the details of the contact')">Give me the details of the contact</button>
             <button *ngIf="isFromManageContact" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of the contact')">Generate an Executive Summary...</button>
@@ -183,6 +225,12 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Give me the details of the campaign')">Give me the details of the campaign</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of campaign')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
+            <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Analyze Playbook')">Analyze Playbook</button>
+            <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key Quotes</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -261,7 +309,8 @@
                     <div class="chat-container">
                       <div #markdownComponent class="chat-history">
                         <markdown *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content">
+                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content"
+                         [isFromGroupOfPartners]="isFromGroupOfPartners">
                         </app-executive-summary-report>
                       </div>
                     </div>
@@ -331,7 +380,7 @@
             <div class="panel-group" id="accordion">
               <div class="panel panel-default accordion_card">
                 <div class="panel-heading accordion_card">
-                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign">
+                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks">
                     <a *ngIf="!isCollapsed && !isFromFolderView" (click)="toggleAction()"><span>
                         Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
@@ -514,19 +563,76 @@
                           </div>
                         </div>
                         <div class="Ai-file-details">
-                          <!-- <span class="aligin-para">
-                            <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
-                          </span>
-                          <span class="Track-countbg" *ngIf="!isFromManageContact && !isFromManagePartner">
-                            <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
-                            </p>
-                            <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
-                          </span> -->
                         </div>
                       </div>
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                   </h4>
+
+                  <h4 class="panel-title" *ngIf="isFromManageLead">
+                    <a *ngIf="!isCollapsed && selectedLead != undefined" (click)="toggleAction()">
+                      <div>
+                        <span *ngIf="selectedLead?.lastName">
+                          Name: {{selectedLead.lastName}} | </span><span *ngIf="selectedLead?.email">
+                          Email: {{selectedLead.email}} </span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && selectedLead != undefined" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img class="mr10" src="assets/images/leadIcon.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="selectedLead?.lastName" title="{{ selectedLead?.lastName }}">
+                              {{ selectedLead?.lastName | slice:0:25 }}
+                              <span *ngIf="selectedLead?.lastName?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div *ngIf="selectedLead?.email" class="published-on">Email Id:{{ selectedLead?.email}}
+                          </div>
+                        </div>
+                        <div class="Ai-file-details">
+                        </div>
+                      </div>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                  </h4>
+                <h4 class="panel-title" *ngIf="isFromManagePlaybooks">
+                  <a *ngIf="!isCollapsed && selectedLearningTrack != undefined" (click)="toggleAction()">
+                    <div>
+                      <span *ngIf="selectedLearningTrack?.title">
+                        Title: {{selectedLearningTrack.title}} | </span><span *ngIf="selectedLearningTrack?.createdTime">
+                        Created On: {{selectedLearningTrack.createdTime | date:'MMM d, yyyy, h:mm a'}} </span>
+                    </div>
+                    <i class="fa fa-chevron-up toggle-icon"></i>
+                  </a>
+                  <a *ngIf="isCollapsed && selectedLearningTrack != undefined" (click)="toggleAction()">
+                    <div class="Ai_file">
+                      <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                        <div class="d-flex document_flex">
+                          <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                          <ng-container *ngIf="!ngxLoading">
+                            <img class="mr10" src="assets/images/content/image.png" alt="CONTACT" width="28px" height="28px">
+                          </ng-container>
+                          <a *ngIf="selectedLearningTrack?.title" title="{{ selectedLearningTrack?.title }}">
+                            {{ selectedLearningTrack?.title | slice:0:25 }}
+                            <span *ngIf="selectedLearningTrack?.title?.length > 25">...</span>
+                          </a>
+                        </div>
+                        <div *ngIf="selectedLearningTrack?.createdTime" class="published-on">Created On:{{
+                          selectedLearningTrack?.createdTime | date:'MMM d, yyyy, h:mm a'}}
+                        </div>
+                      </div>
+                      <div class="Ai-file-details">
+                      </div>
+                    </div>
+                    <i class="fa fa-chevron-down toggle-icon"></i>
+                  </a>
+                </h4>
+                
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in">
                   <div class="panel-body">
@@ -543,9 +649,9 @@
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
             </button> -->
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
@@ -560,6 +666,12 @@
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Give me the details of the campaign')">Give me the details of the campaign</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of campaign')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageCampaign" class="btn btn-pdf" (click)="setInputText('Analyze the campaign')">Analyze the campaign</button>
+            <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Analyze Playbook')">Analyze Playbook</button>  
+            <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>  
+            <button *ngIf="isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key Quotes</button>  
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
               
               </div>
               <div *ngIf="isFromFolderView">

@@ -22,7 +22,7 @@
     <div
       *ngIf="authenticationService?.module?.adminOrSuperVisor
                   && (authenticationService.oliverInsightsEnabled || authenticationService.brainstormWithOliverEnabled || authenticationService.oliverSparkWriterEnabled
-                  || authenticationService.oliverParaphraserEnabled || authenticationService.oliverContactAgentEnabled) 
+                  || authenticationService.oliverParaphraserEnabled || authenticationService.oliverContactAgentEnabled || authenticationService.oliverPartnerAgentEnabled || authenticationService.oliverCampaignAgentEnabled) 
                    && (authenticationService.vanityURLEnabled ? authenticationService.module.loggedInThroughOwnVanityUrl : true)"
       role="tabpanel" class="tab-pane fade in active" id="settings">
       <div class="agent-content">

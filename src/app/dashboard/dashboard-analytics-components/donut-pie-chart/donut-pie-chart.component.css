@@ -13,7 +13,7 @@
 .pjCardTitlebg{    
     background-color: #d9edf7b0;
     border-bottom: 1px solid #ddd;
-    padding: 6px 16px 0px 16px !important;
+    padding: 6px 10px 4px 10px !important;
     margin: -10px -10px 0px -10px;
   }
   .portlet.light > .portlet-title > .pjCardTitleCenterAlignment{padding: 8px 0px !important;}

@@ -44,4 +44,9 @@ export class EmailActivityService {
         let url = this.URL + "/sendTestMail" + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callPostMethod(url, formData);
     }
+
+    getWelcomeEmailDetailsById(emailActivityId:any) {
+        let url = this.URL + "/fetch-welcome-email-activity/" + emailActivityId + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callGetMethod(url);
+    }
 }

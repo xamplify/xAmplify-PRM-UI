@@ -13,6 +13,15 @@ export interface ExecutiveReport {
   email_sent : string;
   click_through_rate: string;
   deliverability_rate: string;
+  lead_full_name: string;
+  lead_email_id: string;
+  lead_company: string;
+  lead_created_on: string;
+  stage: string;
+  pipeline: string;
+  created_for_company : string;
+  created_by_name : string;
+
 
   owner_details: OwnerDetails;
 
@@ -43,7 +52,29 @@ export interface ExecutiveReport {
   deliveryStatusOverview : DeliveryStatusOverview;
   detailedRecipientAnalysis : DetailedRecipientAnalysis<DetailedRecipientAnalysisItem>;
   topPerformingRecipients : TopPerformingRecipients<TopPerformingRecipientsItems>;
+  leadProgressionTimeline : LeadProgressionTimeline;
+  statusChangeTimeline : StatusChangeTimeline<StatusChangeTimelineItem>;
+  deal_interactions_and_revenue_impact :  DealInteractionsAndRevenueImpact;
+  customFieldsData : CustomFieldsData<CustomFieldsDataItem>;
 
+}
+
+export interface DealInteractionsAndRevenueImpact {
+    title: any;
+    description: any;
+    top_partners_by_deal_value: {
+        title: any;
+        categories: any;
+        revenue: string;
+        series: any;
+        categoriesString: string;
+        seriesString: string;
+    };
+    key_insights: {
+        title: any;
+        description: any;
+        items: any;
+    };
 }
 
 /* ----------  Re-usable building blocks ---------- */
@@ -277,4 +308,39 @@ export interface TopPerformingRecipientsItems {
   dealsCount: string | number;
   rank: string;
 }
+
+export interface LeadProgressionTimeline {
+  title: string;
+  categoriesXaxis: string[];
+  categoriesYAxis: string[];
+  series: { name: string; data: string[] }[];
+  categoriesXaxisString: string;
+  categoriesYAxisString: string;
+  seriesString: string;
+}
+
+export interface StatusChangeTimeline<TItem> {
+  title: string;
+  items: TItem[];
+}
+
+export interface StatusChangeTimelineItem {
+  date: string;
+  stage_changed_to: string;
+  changed_by: string;
+}
+
+export interface CustomFieldsData<TItem> {
+  title: string;
+  custom_fields_count: string;
+  data_complete_rate: string;
+  items: TItem[];
+}
+
+export interface CustomFieldsDataItem {
+  field_name: string;
+  value: string;
+  status: string;
+}
+
 

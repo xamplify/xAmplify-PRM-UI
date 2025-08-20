@@ -170,7 +170,7 @@
                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <!-- Toggle Switches -->
                         <div class="toggle-section">
-                           <div class="toggle-item ml0" *ngIf="hasShareWhiteLabeledContentAccess">
+                           <div class="toggle-item ml0" *ngIf="hasShareWhiteLabeledContentAccess && !authenticationService?.marketingModulesAccessToPartner">
                               <div class="toggle-label">White Labeled</div>
                               <label class="toggle-switch">
                                 <input
@@ -187,7 +187,7 @@
                                 title="Share As White Labeled Content">
                               </i>
                             </div>
-                            <div class="toggle-item mr0" *ngIf="!authenticationService?.module?.isMarketingCompany">
+                            <div class="toggle-item mr0" *ngIf="!authenticationService?.module?.isMarketingCompany && !authenticationService?.marketingModulesAccessToPartner">
                               <div class="toggle-label">
                                 Partner Signature
                               </div>
@@ -222,7 +222,7 @@
                                 [title]="properties?.ADD_TO_QUICK_LINKS">
                               </i>
                             </div>
-                           <div class="toggle-items mr0">
+                           <div class="toggle-items mr0" *ngIf="!authenticationService?.marketingModulesAccessToPartner">
                               <div class="d-flex align-items-center">
                                  <div class="toggle-label">My Signature</div>
                                  <label class="toggle-switch">
@@ -407,8 +407,8 @@
                      <!---Select Partner Lists/Partners-->
                      <div class="form-group col-lg-12 col-md-12">
                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader &&
-                        ((!authenticationService?.approvalRequiredForAssets && damPostDto?.approvalStatus !== 'REJECTED')
+                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !authenticationService?.marketingModulesAccessToPartner
+                           && ((!authenticationService?.approvalRequiredForAssets && damPostDto?.approvalStatus !== 'REJECTED')
                            || (authenticationService?.approvalRequiredForAssets && isApprover))"
                            [moduleName]="'dam'" [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
                            [inputId]="assetId"

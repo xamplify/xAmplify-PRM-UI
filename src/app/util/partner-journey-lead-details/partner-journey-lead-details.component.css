@@ -21,7 +21,7 @@
 }
 /* table header bgcolor end */
 .panel-heading {
-    padding: 11px 15px !important;
+    padding: 6px 11px !important;
 }
 .table>tbody>tr>td {
 	vertical-align: middle !important;
@@ -45,3 +45,31 @@
 	width: 7px;
   height:7px;
   }
+  .panel-heading-custom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.Responsivetitle{
+white-space: nowrap;
+ font-size: 16px;
+}
+.header-controls{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: flex-end;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .panel-heading-custom {
+    padding: 10px;
+  }
+  .header-controls {
+   justify-content: start;
+   gap: 5px;
+  }
+  .Responsivetitle{
+    margin-bottom: 10px;
+  }
+}

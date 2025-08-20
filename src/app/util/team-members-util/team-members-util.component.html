@@ -96,11 +96,11 @@
                 <div class="inputs zero-padding-display-inline" *ngIf="!isCollapsed">
                   <div class="portlet-input input-inline input-small tmutttpx">
                     <div class="input-icon right" style="margin-right: 10px;">
-                      <input type="text" class="form-control" [(ngModel)]="pagination.searchKey"
+                      <input type="text" class="form-control" [(ngModel)]="searchKey"
                         [ngModelOptions]="{standalone: true}" placeholder="Search"
                         (keypress)="eventHandler($event.keyCode)">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-                        (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                        (click)="searchKey='';searchTeamMembers()"></button>
                       <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
                         <i class="fa fa-search" aria-hidden="true"></i>
                       </button>
