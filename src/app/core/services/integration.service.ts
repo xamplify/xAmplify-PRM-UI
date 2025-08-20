@@ -283,4 +283,11 @@ export class IntegrationService {
         .catch(this.handleError);
     }
     /**** XNFR-887  ****/
+
+        checkSfCustomFieldsByCompanyProfileName(companyProfileName: string) {
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/campaign/checkCustomFields?access_token=" + this.authenticationService.access_token+"&companyProfileName=" + companyProfileName)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }
