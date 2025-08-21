@@ -17,10 +17,6 @@
 		*ngIf="(asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT') && !FromOliverPopUp" data-toggle="tooltip" data-placement="top"
 		title="Design" (click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a class="Iconhover custom-grid-icon" *ngIf="asset?.beeTemplate && isPartnerView"
-		data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)"> <i
-			class="fa fa-edit" aria-hidden="true"></i>
-		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="(!isPartnerView && asset?.edit) && !FromOliverPopUp"
 		data-toggle="tooltip" data-placement="top" title="Edit" (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset)"
 		[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i
@@ -35,16 +31,9 @@
 		title="Download" (click)="openDownloadPopup(asset)"> <i class="fa fa-download" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> 
-	<a class="Iconhover custom-grid-icon"
-		*ngIf="!authenticationService.module.isMarketingCompany && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
-		data-toggle="tooltip" data-placement="top" title="View Analytics"
-		(click)="(asset.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''"
-		[ngClass]="(asset?.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? '' : 'disabled gray'">
-		<i class="fa fa-line-chart" aria-hidden="true"></i>
-		<div class="clickicons"></div>
-	</a>
-	<a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.marketingModulesAccessToPartner && isPartnerView"
-		data-toggle="tooltip" data-placement="top" title="View Analytics"
+	<a class="Iconhover custom-grid-icon" *ngIf="(!authenticationService.module.isMarketingCompany && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner)
+		|| (authenticationService?.marketingModulesAccessToPartner && isPartnerView)" data-toggle="tooltip"
+		data-placement="top" title="View Analytics"
 		(click)="(asset.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''"
 		[ngClass]="(asset?.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? '' : 'disabled gray'">
 		<i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -59,7 +48,7 @@
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
 	</a>
-	<a class="Iconhover custom-grid-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
+	<a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
 		(click)="asset.approvalStatus !== 'DRAFT' ? showCommentsAndHistoryModalPopup(asset) : ''" 
 		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'" data-toggle="tooltip" data-placement="top"
 		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
@@ -77,7 +66,7 @@
 	</a>
 	<ng-container
 		*ngIf="(!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
-		|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService?.marketingModulesAccessToPartner)) && !FromOliverPopUp">
+		|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier)) && !FromOliverPopUp">
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
