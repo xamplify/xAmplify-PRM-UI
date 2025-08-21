@@ -75,5 +75,5 @@ export class Form {
     formLabelDTORows = [];
    /** XNFR-424 ENDS ***/
    cdnThumbnailImage: string = ""; //XNFR-1001
-
+   companyProfileName: string = "";
 }

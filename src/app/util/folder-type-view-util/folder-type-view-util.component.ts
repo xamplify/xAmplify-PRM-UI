@@ -41,6 +41,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Input() FromOliverPopUp: boolean = false;
   @Input() selectedFoldersForOliver: any[] = [];
   @Input() isPartnerViewFromOliver: boolean = false;
+  @Input() pageSource: string = "";
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -57,6 +58,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
     this.utilService.searchKey = "";
+    this.pagination.source = this.pageSource;
   }
 
   private setOliverViewType() {

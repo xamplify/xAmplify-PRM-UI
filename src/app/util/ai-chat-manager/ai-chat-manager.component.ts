@@ -43,6 +43,8 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isFromManagePlaybooks: boolean = false;
   @Input() selectedLead: any;
   @Input() isPlaybookPartnerView: boolean = false;
+   @Input() selectedDeal: any;
+  @Input() isFromManageDeal: boolean = false;
   
   openHistory: boolean;
   messages: any[] = [];
@@ -127,6 +129,7 @@ export class AiChatManagerComponent implements OnInit {
   pptData: string;
   showPptDesignPicker: boolean = false;
   designAccess: boolean;
+  agentType: string;
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, public referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService,
@@ -181,6 +184,8 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.learningTrackId = this.selectedLearningTrack.id;
     } else if (this.isFromManageLead) {
       this.chatGptIntegrationSettingsDto.leadId = this.selectedLead.id;
+    } else if (this.isFromManageDeal) {
+      this.chatGptIntegrationSettingsDto.dealId = this.selectedDeal.id;
     }else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -397,6 +402,9 @@ export class AiChatManagerComponent implements OnInit {
         this.notifyParent.emit(this.chatGptSettingDTO);
       }else if (this.isFromManageLead) {
         this.selectedLead = undefined;
+        this.notifyParent.emit();
+      }else if (this.isFromManageDeal) {
+        this.selectedDeal = undefined;
         this.notifyParent.emit();
       } else {
         if (this.router.url.includes('/shared/view/g')) {
@@ -622,7 +630,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead || this.isFromManagePlaybooks) {
+    if (this.isFromManageContact || this.isFromManagePartner || this.isFromManageCampaign || this.isFromManageLead || this.isFromManagePlaybooks || this.isFromManageDeal) {
       this.saveChatHistoryTitle(this.chatHistoryId);
     }
   }
@@ -978,7 +986,7 @@ export class AiChatManagerComponent implements OnInit {
   fetchOliverActiveIntegration() {
     this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.isPartnerLoggedIn;
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
-    if(this.asset != undefined && this.asset != null && this.asset.id > 0 && this.asset.videoId != undefined && this.asset.videoId != null && this.asset.videoId != '') {
+    if (this.asset != undefined && this.asset != null && this.asset.id > 0 && this.asset.videoId != undefined && this.asset.videoId != null && this.asset.videoId != '') {
       this.chatGptIntegrationSettingsDto.videoId = this.asset.videoId;
     }
     this.chatGptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
@@ -996,34 +1004,38 @@ export class AiChatManagerComponent implements OnInit {
             this.chatGptIntegrationSettingsDto.playbookAssistantId = data.playbookAssistantId;
             this.chatGptIntegrationSettingsDto.leadAssistantId = data.leadAssistantId;
             this.chatGptIntegrationSettingsDto.partnerGroupAssistantId = data.partnerGroupAssistantId;
+            this.chatGptIntegrationSettingsDto.dealAssistantId = data.dealAssistantId;
           }
         }
       }, error => {
         console.log('Error in fetchOliverActiveIntegration() ', error);
-    }, () => {
-      if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
-        this.getThreadId(this.chatGptIntegrationSettingsDto);
-      }
-      if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact && !this.isFromManagePartner) {
-        this.getChatHistory();
-      }
-      if (this.isFromManageContact) {
-        this.uploadContactDetails();
-      }
-       if (this.isFromManagePartner) {
-        this.uploadPartnerDetails();
-      }
-       if (this.isFromManageCampaign) {
-        this.uploadCampaignDetails();
-      } 
+      }, () => {
+        if ((this.assetId > 0) || (this.callActivity != undefined) || (this.asset != undefined && this.asset != null) || (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0)) {
+          this.getThreadId(this.chatGptIntegrationSettingsDto);
+        }
+        if ((this.chatGptSettingDTO != undefined && this.chatGptSettingDTO.threadId != undefined && this.selectedContact != undefined && this.callActivity == undefined) && !this.isFromManageContact && !this.isFromManagePartner) {
+          this.getChatHistory();
+        }
+        if (this.isFromManageContact) {
+          this.uploadContactDetails();
+        }
+        if (this.isFromManagePartner) {
+          this.uploadPartnerDetails();
+        }
+        if (this.isFromManageCampaign) {
+          this.uploadCampaignDetails();
+        }
 
-      if (this.isFromManagePlaybooks) {
-        this.uploadPlaybookDetails();
-      }
-       if (this.isFromManageLead) {
-        this.uploadLeadDetails();
-      }
-    });
+        if (this.isFromManagePlaybooks) {
+          this.uploadPlaybookDetails();
+        }
+        if (this.isFromManageLead) {
+          this.uploadLeadDetails();
+        }
+        if (this.isFromManageDeal) {
+          this.uploadDealDetails();
+        }
+      });
   }
 
   uploadPlaybookDetails() {
@@ -1249,7 +1261,7 @@ export class AiChatManagerComponent implements OnInit {
   }
 
  parseOliverReport(jsonStr: string): ExecutiveReport {
-     const j = JSON.parse(jsonStr);
+      const j = JSON.parse(jsonStr);
 
     const pipelineItems = j.pipeline_progression && j.pipeline_progression.items ? j.pipeline_progression.items : [];
 
@@ -1267,7 +1279,7 @@ export class AiChatManagerComponent implements OnInit {
 
     const campaignFunnelData = j.campaign_funnel_analysis ? j.campaign_funnel_analysis : {};
 
-     const leadProgressionTimelineItems = j.lead_progression_timeline && j.lead_progression_timeline.items ? j.lead_progression_timeline.items : [];
+     const leadProgressionTimelineItems = j.progression_timeline && j.progression_timeline.items ? j.progression_timeline.items : [];
 
     const dealPipelinePrograssion = {
       title: j.pipeline_progression && j.pipeline_progression.title ? j.pipeline_progression.title : '',
@@ -1446,8 +1458,8 @@ export class AiChatManagerComponent implements OnInit {
     };
 
     const leadProgressionTimeline = {
-      title: j.lead_progression_timeline && j.lead_progression_timeline.title
-        ? j.lead_progression_timeline.title
+      title: j.progression_timeline && j.progression_timeline.title
+        ? j.progression_timeline.title
         : '',
       categoriesXaxis: leadProgressionTimelineItems.map((item: any) => item.stage ? item.stage : ''),
       categoriesYAxis: leadProgressionTimelineItems.map((item: any) => item.start_date ? item.start_date : ''),
@@ -1482,6 +1494,10 @@ export class AiChatManagerComponent implements OnInit {
       stage : j && j.stage ? j.stage : '',
       pipeline : j && j.pipeline ? j.pipeline : '',
       created_for_company : j && j.created_for_company ? j.created_for_company : '',
+      deal_title : j && j.deal_title ? j.deal_title : '',
+      deal_amount : j && j.deal_amount ? j.deal_amount : '',
+      deal_close_date : j && j.deal_close_date ? j.deal_close_date : '',
+      deal_created_on: j && j.deal_created_on ? j.deal_created_on : '',
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -2038,8 +2054,32 @@ parseGroupOliverReport(jsonStr: string): GroupOliverReportDTO {
     this.ngxLoading = true;
     this.chatGptIntegrationSettingsDto.agentType = "LEADAGENT";
     this.activeTab = 'leadagent';
+    this.agentType = 'LEADAGENT';
     this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
     this.chatGptSettingsService.uploadLeadDetails(this.chatGptIntegrationSettingsDto).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptIntegrationSettingsDto.threadId = data.threadId;
+          this.chatGptIntegrationSettingsDto.vectorStoreId = data.vectorStoreId;
+          this.chatGptIntegrationSettingsDto.chatHistoryId = data.chatHistoryId;
+          this.threadId = data.threadId;
+          this.chatHistoryId = data.chatHistoryId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  uploadDealDetails() {
+    this.ngxLoading = true;
+    this.chatGptIntegrationSettingsDto.agentType = "DEALAGENT";
+    this.activeTab = 'dealagent';
+    this.agentType = 'DEALAGENT';
+    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    this.chatGptSettingsService.uploadDealDetails(this.chatGptIntegrationSettingsDto).subscribe(
       (response) => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           let data = response.data;

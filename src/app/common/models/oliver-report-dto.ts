@@ -21,6 +21,10 @@ export interface ExecutiveReport {
   pipeline: string;
   created_for_company : string;
   created_by_name : string;
+  deal_title: string;
+  deal_amount: string;
+  deal_close_date: string;
+  deal_created_on: string; 
 
 
   owner_details: OwnerDetails;

@@ -28,7 +28,7 @@
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks"  class="file-info">
+          <div *ngIf="!isFromFolderView && !isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks && !isFromManageDeal"  class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -195,6 +195,25 @@
             </div>
           </div>
 
+          <div *ngIf="isFromManageDeal" class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!ngxLoading"><img class=" mr10" src="assets/images/leadIcon.png" alt="PDF" width="28px"
+                    height="28px">
+                </ng-container>
+                <a title="{{ selectedDeal.title }}" data-toggle="tooltip" data-placement="top">
+                  {{ selectedDeal.title | slice:0:20 }}
+                  <span *ngIf="selectedDeal?.title?.length > 20">...</span>
+                </a>
+              </div>
+              <div class="published-on">Created On:{{selectedDeal?.createdDateString}}
+              </div>
+            </div>
+            <div class="file-details">
+            </div>
+          </div>
+
           <div class="input-section">
             <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" class="form-control"
               [(ngModel)]="inputText" (input)="validateInputText()" placeholder="Ask me!">
@@ -206,9 +225,9 @@
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput style="display: none;" />
             </button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks && !isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks && !isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks && !isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the files.')">Analyze the files</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageLead" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
@@ -231,6 +250,11 @@
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
+            
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Give me the details of the deal')">Give me the details of the deal</button>
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of deal')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Analyze the deal')">Analyze the deal</button>
+          
           </div>
           <div *ngIf="isFromFolderView" class="btn-group">
             <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
@@ -309,7 +333,7 @@
                     <div class="chat-container">
                       <div #markdownComponent class="chat-history">
                         <markdown *ngIf="message?.isReport == 'false'" [data]="message.content"></markdown>
-                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [activeTab]="activeTab" [reportData]="message.content"
+                        <app-executive-summary-report *ngIf="message?.isReport == 'true'" [agentType]="agentType" [activeTab]="activeTab" [reportData]="message.content"
                          [isFromGroupOfPartners]="isFromGroupOfPartners">
                         </app-executive-summary-report>
                       </div>
@@ -380,7 +404,7 @@
             <div class="panel-group" id="accordion">
               <div class="panel panel-default accordion_card">
                 <div class="panel-heading accordion_card">
-                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks">
+                  <h4 class="panel-title" *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead  && !isFromManagePlaybooks && !isFromManageDeal">
                     <a *ngIf="!isCollapsed && !isFromFolderView" (click)="toggleAction()"><span>
                         Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
@@ -632,6 +656,37 @@
                     <i class="fa fa-chevron-down toggle-icon"></i>
                   </a>
                 </h4>
+                <h4 class="panel-title" *ngIf="isFromManageDeal">
+                    <a *ngIf="!isCollapsed && selectedDeal != undefined" (click)="toggleAction()">
+                      <div>
+                        <span *ngIf="selectedDeal?.title">
+                          Title: {{selectedDeal.title}} | </span><span *ngIf="selectedDeal?.createdDateString">
+                          Created On: {{selectedDeal.createdDateString}} </span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed && selectedDeal != undefined" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img class="mr10" src="assets/images/leadIcon.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="selectedDeal?.title" title="{{selectedDeal?.title }}">
+                              {{ selectedDeal?.title | slice:0:25 }}
+                              <span *ngIf="selectedDeal?.title?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div *ngIf="selectedDeal?.createdDateString" class="published-on">Created On:{{ selectedDeal?.createdDateString}}
+                          </div>
+                        </div>
+                        <div class="Ai-file-details">
+                        </div>
+                      </div>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                  </h4>
                 
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in">
@@ -649,9 +704,9 @@
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
             </button> -->
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks && !isFromManageDeal" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks && !isFromManageDeal" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney && !isFromManageContact && !isFromManagePartner && !isFromManageCampaign && !isFromManageLead && !isFromManagePlaybooks && !isFromManageDeal" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
             <button *ngIf="isFromContactJourney && !isFromManageContact && !isFromManagePartner" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
@@ -672,7 +727,9 @@
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Give me the details of the lead')">Give me the details of the lead</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of lead')">Generate an Executive Summary...</button>
             <button *ngIf="isFromManageLead" class="btn btn-pdf" (click)="setInputText('Analyze the lead')">Analyze the lead</button>
-              
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Give me the details of the deal')">Give me the details of the deal</button>
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Generate an Executive Summary of deal')">Generate an Executive Summary...</button>
+            <button *ngIf="isFromManageDeal" class="btn btn-pdf" (click)="setInputText('Analyze the deal')">Analyze the deal</button>
               </div>
               <div *ngIf="isFromFolderView">
                 <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>

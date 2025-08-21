@@ -185,7 +185,19 @@
               </h5>
               <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
                 data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
-            </td>
+                <h5 *ngIf="!isPartnerVersion"  class='ellipsis m_t_view' style="margin: 7px 0 2px 0;font-weight: 400;">
+                  <span data-toggle="tooltip" data-placement="bottom" title="{{deal.accountSubType}}">
+                    {{deal.accountSubType | slice:0:20}}
+                  </span>
+                  <span *ngIf="deal.accountSubType?.length > 20">...</span>
+                </h5>                
+                <h5 *ngIf="!isPartnerVersion" class='ellipsis m_t_view' style="margin: 7px 0 2px 0;font-weight: 400;">
+                  <span data-toggle="tooltip" data-placement="bottom" title="{{deal.partnerType}}">
+                    {{deal.partnerType | slice:0:20}}
+                  </span>
+                  <span *ngIf="deal.partnerType?.length > 20">...</span>
+                </h5>
+                </td>
             <td style="width: 10%;">
               <!-- xnfr-426-->
               <span class="comment-color" translate>
@@ -199,6 +211,12 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
+                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                  title="Ask Oliver" (click)="askOliver(deal)">
+                  <div class="oliveBackground">
+                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                  </div>
+                </a>
                 <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip"
                   data-placement="bottom" title="View Deal" id="deal">
                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>

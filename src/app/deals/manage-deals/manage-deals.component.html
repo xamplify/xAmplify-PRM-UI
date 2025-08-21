@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!showDealForm">
+<div class="page-content" *ngIf="!showDealForm && !showAskOliverModalPopup">
   <div id="deals-page-content-div">
     <div>
       <div class="page-bar mb-height_auto">
@@ -405,6 +405,17 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                                 </app-timestamp>
                               </h5>
+                              <h5 *ngIf="!isPartnerVersion" class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.accountSubType}}"
+                                style="margin: 7px 0 2px 0;font-weight: 400;">
+                                {{deal.accountSubType | slice:0:20}}
+                                <span *ngIf="deal.accountSubType?.length > 20">...</span>
+                              </h5>
+                              
+                              <h5 *ngIf="!isPartnerVersion" class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.partnerType}}"
+                                style="margin: 7px 0 2px 0;font-weight: 400;">
+                                {{deal.partnerType | slice:0:20}}
+                                <span *ngIf="deal.partnerType?.length > 20">...</span>
+                              </h5>
                               <h6 *ngIf="deal?.partnerStatus === 'deactivated'" class="green-banner inline-flex" data-toggle="tooltip"
                                 data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
                             </td>
@@ -422,6 +433,12 @@
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">
+                                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                                  title="Ask Oliver" (click)="askOliver(deal)">
+                                  <div class="oliveBackground">
+                                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                                  </div>
+                                </a>
                                 <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)"
                                   data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
                                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
@@ -752,7 +769,7 @@
                 <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId"
                   [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
                   [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-                  (viewCampaignDealForm)="viewCampaignDealForm($event)"
+                  (viewCampaignDealForm)="viewCampaignDealForm($event)" (showOliver)="askOliver($event)"
                   (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
                   (showCommentsPopUp)="showComments($event)">
                 </app-manage-campaign-deals>
@@ -804,3 +821,7 @@
 <app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" [opportunityType]="'DEAL'"
   (closeEmitter)="closeEmitter($event)"></app-selectfield>
 <!-- XNFR-840 -->
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageDeal]="showAskOliverModalPopup"
+  [selectedDeal]="oliverDeal" (notifyParent)="closeAskAI($event)"
+  [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>

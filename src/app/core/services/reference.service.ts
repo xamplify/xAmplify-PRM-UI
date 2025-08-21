@@ -2553,7 +2553,8 @@ export class ReferenceService {
     return (
       this.hasAllAccess() ||
       this.authenticationService.isVendor() ||
-      this.authenticationService.isVendorPartner()
+      this.authenticationService.isVendorPartner() ||
+      (this.authenticationService.module.isAnyAdminOrSupervisor && this.authenticationService.marketingModulesAccessToPartner)
     );
   }
 
