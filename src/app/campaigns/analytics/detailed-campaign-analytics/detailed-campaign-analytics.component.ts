@@ -30,6 +30,7 @@ import { Subject } from 'rxjs';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Lead } from 'app/leads/models/lead';
 import { Deal } from 'app/deals/models/deal';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 declare var $:any, Highcharts:any, swal: any;
 @Component({
   selector: 'app-detailed-campaign-analytics',
@@ -199,12 +200,16 @@ declare var $:any, Highcharts:any, swal: any;
   selectedDeal: Deal;
   isCommentSection: boolean = false;
   loggedInUserCompanyId : number;
-  selectedDealForComments : Deal; // XNFR-426
+  selectedDealForComments: Deal; // XNFR-426
+  showAskOliverModalPopup: boolean = false;
+  oliverDeal: any;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
   @Input() campaignTitle:any;
   canPartnerEditLead: boolean = true;
+  oliverLead: any;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -3194,6 +3199,20 @@ viewCampaignLeadForm(leadId: any) {
       let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
       this.referenceService.goToRouter("/home/campaigns/"+encodedCampaignId+"/"+this.campaignTitle+"/checkin");
     }
+
+  askOliver(data: any) {
+    if (this.showLeads) {
+      this.oliverLead = data;
+    } else if (this.showDeals) {
+      this.oliverDeal = data;
+    }
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI(event: any) {
+    this.chatGptSettingDTO = event;
+    this.showAskOliverModalPopup = false;
+  }
 
 
 }
