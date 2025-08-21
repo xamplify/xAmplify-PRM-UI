@@ -325,19 +325,6 @@ export class SendTestEmailComponent implements OnInit {
         });
       }
     });
-     $('a').each(function () {
-    $(this).removeAttr('href').removeAttr('target');
-    $(this).css({
-      'cursor': 'not-allowed',
-      'pointer-events': 'none'
-    });
-  });
-  $('a img').each(function () {
-    $(this).css({
-      'pointer-events': 'none',
-      'cursor': 'not-allowed'
-    });
-  });
     this.processing = false;
   }
 
