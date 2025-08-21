@@ -593,7 +593,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 let isMarketingCompany  = data['isMarketingCompany'];
                 let isVendorCompany = data['isVendorCompany'];
                 let isPartnerMarketingCompany = data['isPartnerMarketingCompany'];
-                let enableLeadsByVendorCompany = data['enableLeadsByVendorCompany'];
+                let enableLeadsByVendorCompany = data['enableLeadsForVendorCompany'];
                 this.enableLeadsByVendorCompany = enableLeadsByVendorCompany;
                 this.isVendorCompany = isVendorCompany;
                 this.isMarketingCompany = isMarketingCompany;
