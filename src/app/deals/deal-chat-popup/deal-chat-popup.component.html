@@ -53,7 +53,15 @@
                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="createdTime"></app-timestamp>
                     </span>
                   </h5>
-                <!--Lead Created Details-->
+                  <h5 *ngIf="isVendorVersion" class="mt10">
+                    <span><strong>Account Subtype </strong></span>
+                    <span title="Account Subtype">: {{ accountSubType || '-' }}</span>
+                  </h5>                  
+                  <h5 *ngIf="isVendorVersion" class="mt10">
+                    <span><strong>Type </strong></span>
+                    <span title="Partner Type">: {{ partnerType || '-' }}</span>
+                  </h5>
+                  <!--Lead Created Details-->
                 <div *ngIf="lead || showLeadInfo" class="lead-details-border mt5">
                   <h5 class="mt10">
                     <span class="ml5 underline"><strong>{{detailsTitle}}</strong></span>

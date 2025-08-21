@@ -32,6 +32,8 @@ export class DealChatPopupComponent implements OnInit {
   showLeadInfo = false;
   detailsTitle = 'Lead Details';
   partnerStatus: string;
+  accountSubType: string;
+  partnerType: string;
   constructor() { }
 
   ngOnInit() {     
@@ -45,6 +47,8 @@ export class DealChatPopupComponent implements OnInit {
       this.createdTime = this.deal.createdTime;
       this.referenceId = this.deal.referenceId;
       this.partnerStatus = this.deal.partnerStatus;
+      this.accountSubType = this.deal.accountSubType;
+      this.partnerType = this.deal.partnerType;
       let leadDetails = this.deal['associatedContact'];
       if (this.deal.associatedContactId != undefined) {
         this.detailsTitle = 'Contact Details';
@@ -62,6 +66,8 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByName = this.lead.createdByName;
       this.createdTime = this.lead.createdTime;
       this.partnerStatus = this.lead.partnerStatus;
+      this.accountSubType = this.lead.accountSubType;
+      this.partnerType = this.lead.partnerType;
     }
     $('#chatModelPopup').modal('show');
   }
