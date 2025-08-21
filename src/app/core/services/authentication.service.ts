@@ -191,6 +191,8 @@ export class AuthenticationService {
   oliverPartnerAgentEnabled: boolean = false;
   oliverCampaignAgentEnabled: boolean = false;
   marketingModulesAccessToPartner: boolean = false;
+  speakToken = 0;
+
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -1600,33 +1602,83 @@ vanityWelcomePageRequired(userId) {
   }
 
   readText(text: string, onEndCallback: () => void) {
-    if (this.synth.speaking) {
-      this.stopSpeech();
-    }
-    this.startSpeaking(text, onEndCallback);
-  }
-  
-  startSpeaking(text: string, onEndCallback: () => void) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1;
-    utterance.pitch = 2.0;
-    utterance.volume = 1;
-    utterance.lang = 'en-US';
-
-    utterance.onend = () => {
-      console.log('Speech finished');
-      setTimeout(() => {
-        onEndCallback();
-      });
+    this.stopSpeech();
+    const myToken = ++this.speakToken;
+    const trySpeak = () => {
+      if (myToken !== this.speakToken) return;
+      const voice = this.pickVoice('en-US');
+      if (!voice) {
+        setTimeout(trySpeak, 150);
+        return;
+      }
+      this.startSpeaking(text, onEndCallback, voice, myToken);
     };
-    this.synth.speak(utterance);
+    trySpeak();
   }
-  
+
+  startSpeaking(text: string, onEndCallback: () => void, voice?: SpeechSynthesisVoice, token?: number) {
+    const myToken = (typeof token === 'number') ? token : ++this.speakToken;
+    const parts = this.chunk(text);
+    let i = 0;
+    const speakNext = () => {
+      if (myToken !== this.speakToken) return;
+      if (i >= parts.length) {
+        if (onEndCallback) onEndCallback();
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(parts[i++]);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang || 'en-US';
+      } else {
+        utterance.lang = 'en-US';
+      }
+      utterance.onend = () => { if (myToken === this.speakToken) speakNext(); };
+      utterance.onerror = () => { if (myToken === this.speakToken) speakNext(); };
+      this.synth.speak(utterance);
+    };
+    speakNext();
+  }
+
   stopSpeech() {
-    if (this.synth.speaking) {
-      this.synth.cancel();
-    }
+    this.speakToken++;
+    try {
+      if (this.synth.speaking || this.synth.pending) this.synth.cancel();
+      if (this.synth.paused) this.synth.resume();
+    } catch (_) { }
   }
+
+  pickVoice(lang: string = 'en-US'): SpeechSynthesisVoice | null {
+    const voices = (this.synth && this.synth.getVoices) ? this.synth.getVoices() : [];
+    if (!voices || voices.length === 0) return null;
+    const byName = ['Samantha', 'Alex', 'Victoria', 'Google US English', 'Google UK English Female'];
+    for (const n of byName) {
+      const v = voices.find(v => v.name === n);
+      if (v) return v;
+    }
+    return (
+      voices.find(v => (v.lang || '').toLowerCase() === lang.toLowerCase()) ||
+      voices.find(v => (v.lang || '').toLowerCase().startsWith('en')) ||
+      voices[0] || null
+    );
+  }
+
+  chunk(text: string, maxLen: number = 180): string[] {
+    text = (text || '').replace(/\s+/g, ' ').trim();
+    if (!text) return [];
+    const out: string[] = [];
+    let buf = '';
+    for (const w of text.split(' ')) {
+      const next = (buf ? buf + ' ' : '') + w;
+      if (next.length > maxLen) { out.push(buf); buf = w; } else { buf = next; }
+    }
+    if (buf) out.push(buf);
+    return out;
+  }
+
   sendEmailToUser (sendTestEmailDto: SendTestEmailDto, formData: FormData) {
     sendTestEmailDto.fromEmail = this.user.emailId;
     formData.append('sendTestEmailDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
