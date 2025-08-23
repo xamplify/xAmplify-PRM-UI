@@ -14,8 +14,11 @@ export class InboxComponent implements OnInit {
   loading = false;
   accessToken: string;
   statusCode: any;
-  type:any;
-  constructor(private outlookEmailService: OutlookEmailService,private router: Router) { }
+  type: any;
+  actionType: string = 'NewMail';
+  showEmailModalPopup: boolean = false;
+  authenticateEmailId: string;
+  constructor(private outlookEmailService: OutlookEmailService, private router: Router) { }
 
   ngOnInit() {
     this.getAccessToken();
@@ -29,6 +32,7 @@ export class InboxComponent implements OnInit {
         if (activeRecord) {
           this.type = activeRecord.type;
           this.accessToken = activeRecord.accessToken;
+          this.authenticateEmailId = activeRecord.externalEmailId;
         } else {
           this.accessToken = null;
           console.warn('No active record found.');
@@ -41,10 +45,10 @@ export class InboxComponent implements OnInit {
       }, () => {
         if (this.statusCode === 200 && this.accessToken) {
           console.log('Access Token:', this.accessToken);
-          if(this.type === 'OUTLOOK') {
+          if (this.type === 'OUTLOOK') {
             this.getOutlookThreads(this.accessToken);
           } else if (this.type === 'GMAIL') {
-          this.getGmailThreads(this.accessToken);
+            this.getGmailThreads(this.accessToken);
           }
         }
       }
@@ -56,12 +60,13 @@ export class InboxComponent implements OnInit {
     this.outlookEmailService.getGmailThreads(accessToken).subscribe(
       result => {
         this.threads = result;
+        //this.statusCode = result.statusCode;
         this.loading = false;
       },
       () => this.loading = false
     );
   }
-    getOutlookThreads(accessToken: string) {
+  getOutlookThreads(accessToken: string) {
     this.loading = true;
     this.outlookEmailService.getOutlookThreads(accessToken).subscribe(
       result => {
@@ -73,8 +78,11 @@ export class InboxComponent implements OnInit {
   }
 
   selectThread(thread: EmailThread) {
-    this.selectedThread = thread;
-    this.outlookEmailService.setContent(this.selectedThread);
+    let selectedThread: any = {};
+    selectedThread.subject = thread.subject;
+    selectedThread.threadId = thread.threadId;
+    selectedThread.accessToken = this.accessToken;
+    this.outlookEmailService.setContent(selectedThread);
     this.router.navigateByUrl('/home/mails/preview');
   }
 
@@ -87,9 +95,19 @@ export class InboxComponent implements OnInit {
   }
 
   getNameOnly(input: string): string {
-  const cleanInput = input.replace(/"/g, '').trim();
+    if (input === this.authenticateEmailId) {
+      return 'me';
+    }
+    const cleanInput = input.replace(/"/g, '').trim();
+    const index = cleanInput.indexOf('<');
+    return index !== -1 ? cleanInput.substring(0, index).trim() : cleanInput;
+  }
 
-  const index = cleanInput.indexOf('<');
-  return index !== -1 ? cleanInput.substring(0, index).trim() : cleanInput;
-}
+  openEmailModalPopup() {
+    this.actionType = 'NewMail';
+    this.showEmailModalPopup = true;
+  }
+  closeEmailModalPopup() {
+    this.showEmailModalPopup = false;
+  }
 }

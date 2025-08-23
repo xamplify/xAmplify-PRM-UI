@@ -8,7 +8,7 @@ import { Properties } from 'app/common/models/properties';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import { tap } from 'rxjs/operators';
+import { combineAll, tap } from 'rxjs/operators';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ContactService } from 'app/contacts/services/contact.service';
@@ -18,6 +18,8 @@ import { Pagination } from 'app/core/models/pagination';
 import { EmailTemplateType } from 'app/email-template/models/email-template-type';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { EmailRequestDto } from 'app/outlook-email/models/email-request-dto';
+import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -40,6 +42,13 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Output() notifySubmitFailed = new EventEmitter();
   @Input() emailBody :string;
   @Input() subjectText : string;
+  /*****XNFR-1105  ****/
+  @Input() accessToken: string;
+  @Input() authenticateEmailId: string;
+  @Input() type: string;
+  composeMail:boolean;
+  composeMailDto: EmailRequestDto = new EmailRequestDto();
+  /*** XNFR-1105 */
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
   isPreview:boolean = false;
@@ -83,9 +92,9 @@ export class AddEmailModalPopupComponent implements OnInit {
   selectedEmailTemplateRow = 0;
   activationLoaderEnabled: boolean = false;
   isValidToShowChooseTemplate: boolean = false;
-
+  
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService) {}
+    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService,private outlookEmailService: OutlookEmailService) {}
 
   ngOnInit() {
     this.emailActivity.userId = this.userId;
@@ -105,6 +114,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.referenceService.openModalPopup('addEmailModalPopup');
     } else if (this.actionType == 'oliveAi') {
       this.isPreview = false;
+      this.composeMail = false;//XNFR-1105
       this.referenceService.openModalPopup('addEmailModalPopup');
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
       this.emailActivity.userId = this.authenticationService.getUserId();
@@ -116,6 +126,12 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.isValidToEmailId = false;
       }
       this.OliveAi = true;
+    } else if(this.actionType === 'NewMail'){ //XNFR-1105
+      this.isPreview = false;
+      this.OliveAi = false;
+      this.referenceService.openModalPopup('addEmailModalPopup');
+      this.emailActivity.senderEmailId = this.authenticateEmailId;
+      this.composeMail = true;
     }
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
@@ -155,6 +171,30 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
       this.prepareFormData();
       this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
+        response => {
+          this.ngxLoading = false;
+          this.notifyClose.emit("Email sent sucessfully");
+          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+        }, error => {
+          this.ngxLoading = false;
+        });
+      }else{
+        this.isValidToEmailId = false;
+        this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
+      }
+    } else if (this.composeMail){ //XNFR-1105
+       if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+        this.isValidToEmailId = true;
+      this.ngxLoading = true;
+      this.composeMailDto.bodyHtml = this.emailActivity.body;
+      this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      this.composeMailDto.subject = this.emailActivity.subject;
+      this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
+      this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
+      this.composeMailDto.type = this.type.toLowerCase();
+      this.composeMailDto.accessToken = this.accessToken;
+      this.prepareFormData();
+      this.outlookEmailService.sendOrReply(this.composeMailDto,this.formData).subscribe(
         response => {
           this.ngxLoading = false;
           this.notifyClose.emit("Email sent sucessfully");

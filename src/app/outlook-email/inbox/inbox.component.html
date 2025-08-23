@@ -8,6 +8,7 @@
       </ng-container>
       <div class="portlet-title">
         <!-- <div class="caption">All</div> -->
+         <button class="btn btn-primary" (click)="openEmailModalPopup()">📧 Compose Mail</button>
       </div>
       <div class="mail-threads">
         <div class="email-list">
@@ -47,7 +48,7 @@
                     </div>
                     <div class="email-meta">
                       <div class="email-timestamp">
-                        {{thread.messages[0]?.timestamp}}
+                        {{thread?.lastReceivedDate}}
                       </div>
                     </div>
                   </div>
@@ -59,25 +60,7 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-8" *ngIf="selectedThread">
-    <div class="portlet light thread-view">
-      <div class="portlet-title">
-        <div class="caption">{{selectedThread.subject}}</div>
-      </div>
-      <div class="thread-messages">
-        <div *ngFor="let msg of selectedThread.messages" class="mail-message">
-          <div class="header">
-            <strong>{{msg.from}}</strong>
-            <span class="pull-right">{{msg.timestamp}}</span>
-          </div>
-          <div class="body" [innerHTML]="msg.body"></div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <app-previewemail *ngIf="selectedThread"></app-previewemail>
 
 </div>
-<!-- <div *ngIf="loading" class="text-center">
-  <img src="assets/images/loader.gif" alt="Loading..." />
-</div> -->
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [accessToken]="accessToken" [authenticateEmailId]="authenticateEmailId" [type]="type"  (notifyClose)="closeEmailModalPopup()"></app-add-email-modal-popup>
