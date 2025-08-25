@@ -13,6 +13,7 @@ import { EventEmitter } from '@angular/core';
 import { LEAD_CONSTANTS } from './../../constants/lead.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 declare var swal, $, videojs: any;
 
@@ -36,6 +37,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Output() editCampaignDealForm = new EventEmitter<any>();
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
+  @Output() showOliver = new EventEmitter<any>();
 
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
@@ -688,4 +690,9 @@ getSelectedStatus(event:any){
        });
  }
  /** XNFR-840 */
+
+  askOliver(deal: any) {
+    this.showOliver.emit(deal);
+  }
+
 }

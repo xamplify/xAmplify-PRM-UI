@@ -24,7 +24,7 @@
                         </tr>
                       </ng-container>
                     </table>
-                    <ng-template *ngIf="vendorCompanyProfileName && marketingModulesEnabled" [ngTemplateOutlet]="showMarketingModules"></ng-template>
+                    <ng-template *ngIf="authenticationService?.marketingModulesAccessToPartner && marketingModulesEnabled" [ngTemplateOutlet]="showMarketingModules"></ng-template>
                   </div>
               </div>
           </div>

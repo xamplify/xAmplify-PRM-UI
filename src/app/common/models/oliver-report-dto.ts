@@ -25,6 +25,10 @@ export interface ExecutiveReport {
   description: string;
   profile_avatar_letter: string
   created_on: string;
+  deal_title: string;
+  deal_amount: string;
+  deal_close_date: string;
+  deal_created_on: string; 
 
 
   owner_details: OwnerDetails;

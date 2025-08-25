@@ -114,12 +114,15 @@ export class LandingPageService {
 
     deletebById( id: number, isVendorJourney:boolean): Observable<any> {
         let url
+        let isVanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let companyProfileName = "";
         if(isVendorJourney){
             url = this.URL +"vendorJourneyLandingpagedeleteById/"
         }else{
            url =  this.URL + "delete/"
+        companyProfileName = isVanityUrlFilter?"vanityCompanyProfileName="+this.authenticationService.companyProfileName+"&":"";
         }
-        return this.http.get( url + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
+        return this.http.get( url + id + "/"+this.authenticationService.getUserId()+"?"+companyProfileName+"access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -265,6 +265,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   notifyPartnerTeamMemberToolTipMessage = "";
   teamMemberCustomName = "Team Member";
   isPartnerMarketingCompany = false;
+  enableLeadsByVendorCompany = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -592,6 +593,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 let isMarketingCompany  = data['isMarketingCompany'];
                 let isVendorCompany = data['isVendorCompany'];
                 let isPartnerMarketingCompany = data['isPartnerMarketingCompany'];
+                let enableLeadsByVendorCompany = data['enableLeadsByVendorCompany'];
+                this.enableLeadsByVendorCompany = enableLeadsByVendorCompany;
                 this.isVendorCompany = isVendorCompany;
                 this.isMarketingCompany = isMarketingCompany;
                 this.isPartnerMarketingCompany = isPartnerMarketingCompany
@@ -647,7 +650,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.navigateToErrorPage(error);
                 }
         },()=>{
-            this.findCampaignPipeLines();
+            if(this.isPartnerMarketingCompany){
+                this.findCampaignPipeLinesByVendorCompany();
+            }else{
+                this.findCampaignPipeLines();
+            }
             /***Load Email Templates/Videos/ Partners /Contacts***/
             this.campaignDetailsLoader = false;
             this.loadVideos();
@@ -1045,84 +1052,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.campaignService.listCampaignPipelines(this.loggedInUserId)
                 .subscribe(
                     response => {
-                        if (response.statusCode == 200) {
-                            let data = response.data;
-                            this.leadPipelines = data.leadPipelines;
-                            this.dealPipelines = data.dealPipelines;
-                            if ("HALOPSA" === this.activeCRMDetails.type) {
-                                this.leadTicketTypes = data.leadTicketTypes;
-                                this.dealTicketTypes = data.dealTicketTypes;
-                                this.leadPipelines = data.dealPipelines;
-                                this.getHalopsaTicketTypes();
-                            }
-                            if ("ZOHO" === this.activeCRMDetails.type) {
-                                this.getZohoLeadLayouts();
-                            }
-                            if (!this.activeCRMDetails.activeCRM) {
-                                this.leadTicketTypes.forEach(leadTicketType => {
-                                    if (leadTicketType.defaultLeadTicketType) {
-                                        this.defaultLeadTicketTypeId = leadTicketType.id;
-                                        if (this.campaign.leadTicketTypeId == undefined || this.campaign.leadTicketTypeId == null || this.campaign.leadTicketTypeId === 0) {
-                                            this.campaign.leadTicketTypeId = leadTicketType.id;
-                                        }                                     }
-                                });
-
-                                this.dealTicketTypes.forEach(dealTicketType => {
-                                    if (dealTicketType.defaultDealTicketType) {
-                                        this.defaultDealTicketTypeId = dealTicketType.id;
-                                        if (this.campaign.dealTicketTypeId == undefined || this.campaign.dealTicketTypeId == null || this.campaign.dealTicketTypeId === 0) {
-                                            this.campaign.dealTicketTypeId = dealTicketType.id;
-                                        }                                     }
-                                });
-
-                                this.leadPipelines.forEach(pipeline => {
-                                    if (pipeline.default) {
-                                        this.defaultLeadPipelineId = pipeline.id;
-                                        if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
-                                            this.campaign.leadPipelineId = pipeline.id;
-                                        }                                     }
-                                });
-
-                                this.dealPipelines.forEach(pipeline => {
-                                    if (pipeline.default) {
-                                        this.defaultDealPipelineId = pipeline.id;
-                                        if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
-                                            this.campaign.dealPipelineId = pipeline.id;
-                                        }                                     }
-                                });
-                            } else {
-                                if(this.leadPipelines!=undefined && this.leadPipelines.length>0){
-                                    this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                    this.campaign.leadPipelineId = this.leadPipelines[0].id;
-                                }else{
-                                    this.defaultLeadPipelineId = 0;
-                                }
-                                if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
-                                    this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                    this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                                }else{
-                                    this.defaultDealPipelineId = 0;
-                                    this.campaign.dealPipelineId = 0;
-                                }
-                                                           
-                                if ("HALOPSA" === this.activeCRMDetails.type) {
-                                    if(this.leadTicketTypes!=undefined && this.leadTicketTypes.length>0){
-                                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
-                                    }else{
-                                        this.defaultLeadTicketTypeId = 0;
-                                        this.defaultDealTicketTypeId = 0;
-                                    }
-                                   
-                                }
-                                
-                            }
-                            if(this.hideConfigurePipelineCrms.includes(this.activeCRMDetails.type)){
-                                this.showConfigurePipelines = false;
-                            }
-
-                        }
-                        this.ngxLoading = false;
+                        this.populateCampaignPipelineDetails(response);
                     },
                     error => {
                         this.ngxLoading = false;
@@ -1132,6 +1062,91 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     }
 
+
+    private populateCampaignPipelineDetails(response: any) {
+        if (response.statusCode == 200) {
+            let data = response.data;
+            this.leadPipelines = data.leadPipelines;
+            this.dealPipelines = data.dealPipelines;
+            if ("HALOPSA" === this.activeCRMDetails.type) {
+                this.leadTicketTypes = data.leadTicketTypes;
+                this.dealTicketTypes = data.dealTicketTypes;
+                this.leadPipelines = data.dealPipelines;
+                this.getHalopsaTicketTypes();
+            }
+            if ("ZOHO" === this.activeCRMDetails.type) {
+                this.getZohoLeadLayouts();
+            }
+            if (!this.activeCRMDetails.activeCRM) {
+                this.leadTicketTypes.forEach(leadTicketType => {
+                    if (leadTicketType.defaultLeadTicketType) {
+                        this.defaultLeadTicketTypeId = leadTicketType.id;
+                        if (this.campaign.leadTicketTypeId == undefined || this.campaign.leadTicketTypeId == null || this.campaign.leadTicketTypeId === 0) {
+                            this.campaign.leadTicketTypeId = leadTicketType.id;
+                        }
+                    }
+                });
+
+                this.dealTicketTypes.forEach(dealTicketType => {
+                    if (dealTicketType.defaultDealTicketType) {
+                        this.defaultDealTicketTypeId = dealTicketType.id;
+                        if (this.campaign.dealTicketTypeId == undefined || this.campaign.dealTicketTypeId == null || this.campaign.dealTicketTypeId === 0) {
+                            this.campaign.dealTicketTypeId = dealTicketType.id;
+                        }
+                    }
+                });
+
+                this.leadPipelines.forEach(pipeline => {
+                    if (pipeline.default) {
+                        this.defaultLeadPipelineId = pipeline.id;
+                        if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                            this.campaign.leadPipelineId = pipeline.id;
+                        }
+                    }
+                });
+
+                this.dealPipelines.forEach(pipeline => {
+                    if (pipeline.default) {
+                        this.defaultDealPipelineId = pipeline.id;
+                        if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                            this.campaign.dealPipelineId = pipeline.id;
+                        }
+                    }
+                });
+            } else {
+                if (this.leadPipelines != undefined && this.leadPipelines.length > 0) {
+                    this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                    this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                } else {
+                    this.defaultLeadPipelineId = 0;
+                }
+                if (this.dealPipelines != undefined && this.dealPipelines.length > 0) {
+                    this.defaultDealPipelineId = this.dealPipelines[0].id;
+                    this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                } else {
+                    this.defaultDealPipelineId = 0;
+                    this.campaign.dealPipelineId = 0;
+                }
+
+                if ("HALOPSA" === this.activeCRMDetails.type) {
+                    if (this.leadTicketTypes != undefined && this.leadTicketTypes.length > 0) {
+                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    } else {
+                        this.defaultLeadTicketTypeId = 0;
+                        this.defaultDealTicketTypeId = 0;
+                    }
+
+                }
+
+            }
+            if (this.hideConfigurePipelineCrms.includes(this.activeCRMDetails.type)) {
+                this.showConfigurePipelines = false;
+            }
+
+        }
+        this.ngxLoading = false;
+    }
 
   /****************Campaign Details***********/
     validateCampaignName(campaignName:string){
@@ -2762,4 +2777,46 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         }
     }
      //  XNFR-990
+
+    private findCampaignPipeLinesByVendorCompany() {
+        this.crmErrorMessage = new CustomResponse();
+        this.listCampaignPipelinesByVendorCompany();
+        if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type && !this.isPageCampaign) {
+            this.integrationService.checkSfCustomFieldsByCompanyProfileName(this.authenticationService.companyProfileName)
+                .subscribe(
+                    (data) => {
+                        let cfResponse = data;
+                        if (cfResponse.statusCode === 400) {
+                            this.crmErrorMessage = new CustomResponse('ERROR', this.authenticationService.getCustomFieldsMissingErrorMessage(), true);
+                        } else if (cfResponse.statusCode === 401 &&
+                            cfResponse.message === "Expired Refresh Token") {
+                            this.crmErrorMessage = new CustomResponse('ERROR', this.properties.salesforceIntegrationExpiredMessage, true);
+                        }
+                    },
+                    (error) => {
+                        this.crmErrorMessage = new CustomResponse();
+                        this.xtremandLogger.error(
+                            error,
+                            "Error in salesforce checkIntegrations()"
+                        );
+                    }
+                );
+        }
+    }
+
+    listCampaignPipelinesByVendorCompany() {
+        if (this.enableLeadsByVendorCompany) {
+            this.showConfigurePipelines = true;
+            this.ngxLoading = true;
+            this.campaignService.listCampaignPipelinesByCompanyProfile(this.authenticationService.companyProfileName)
+                .subscribe(
+                    response => {
+                        this.populateCampaignPipelineDetails(response);
+                    },
+                    error => {
+                        this.ngxLoading = false;
+                        this.xtremandLogger.error(error);
+                    });
+        }
+    }
 }

@@ -2872,9 +2872,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
 					"Address": this.contactsByType.listOfAllContacts[i].address,
 					"City": this.contactsByType.listOfAllContacts[i].city,
+					"State": this.contactsByType.listOfAllContacts[i].state,
+					"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 					"Country": this.contactsByType.listOfAllContacts[i].country,
 					"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 				}
+			}
+
+			if (this.isContactModule) {
+				object["Contact Status"] = this.contactsByType.listOfAllContacts[i].contactStatus;
 			}
 
 			if (this.contactsByType.selectedCategory === 'excluded') {
@@ -2911,6 +2917,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Email Id": null,
 				"Address": null,
 				"City": null,
+				"State": null,
+				"Zip Code": null,
 				"Country": null,
 				"Mobile Number": null
 			}

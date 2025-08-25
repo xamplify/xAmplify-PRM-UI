@@ -24,6 +24,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 declare var swal, $, videojs: any;
 
 
@@ -124,6 +125,9 @@ export class ManageDealsComponent implements OnInit {
   isRegisterDealEnabled:boolean = true;
   vendorSelfDealsWithCountList:any = [];
   vendorSelfDealsRequestLoader: boolean = false;
+  showAskOliverModalPopup: boolean = false;
+  oliverDeal: any;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1651,4 +1655,15 @@ export class ManageDealsComponent implements OnInit {
         });
   }
   /** XNFR-840 */
+
+   askOliver(deal: any) {
+    this.oliverDeal = deal;
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI(event: any) {
+    this.chatGptSettingDTO = event;
+    this.showAskOliverModalPopup = false;
+  }
+
 }
