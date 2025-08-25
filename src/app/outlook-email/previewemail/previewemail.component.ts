@@ -157,7 +157,7 @@ export class PreviewemailComponent implements OnInit {
     msg.type = type;
     msg.subject = this.threads.subject,
       msg.threadId = this.selectedThread.threadId;
-    msg.to = this.extractEmail(msg.from);
+    msg.to = this.convertStringToArray(msg.from);
     msg.from = this.selectedThread.authenticateEmailId;
     msg.toEmailIds = this.convertStringToArray(msg.toEmailIds);
     msg.ccEmailIds = this.convertStringToArray(msg.ccEmailIds);
@@ -201,21 +201,18 @@ export class PreviewemailComponent implements OnInit {
     if (!mailArray) {
       return '';
     }
-
-    // if it's already a string, just return it
     if (typeof mailArray === 'string') {
       return mailArray;
     }
-
-    // if it's an array of objects with value
     if (Array.isArray(mailArray)) {
       return mailArray
-        .map((item: any) => (item.value? item.value.trim() : ''))
+        .map((item: any) => (item?.value ? item.value.trim() : ''))
         .filter((val: string) => val.length > 0)
         .join(',');
     }
 
     return '';
   }
+
 
 }

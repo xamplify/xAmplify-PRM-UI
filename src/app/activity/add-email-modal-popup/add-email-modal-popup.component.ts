@@ -129,20 +129,22 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.isValidToEmailId = false;
       }
       this.OliveAi = true;
-    } else if(this.actionType === 'NewMail'){ //XNFR-1105
+    } 
+    /*** XNFR-1105 */
+    else if (this.actionType === 'NewMail') { //XNFR-1105
       this.isPreview = false;
       this.OliveAi = false;
       this.referenceService.openModalPopup('addEmailModalPopup');
       this.emailActivity.senderEmailId = this.authenticateEmailId;
       this.composeMail = true;
       this.replyMail = false;
-    } else if(this.actionType === 'replytoall' || this.actionType === 'reply') {
+    } else if (this.actionType === 'replytoall' || this.actionType === 'reply') {
       this.isPreview = false;
       this.OliveAi = false;
       this.referenceService.openModalPopup('addEmailModalPopup');
       if (this.messages && Array.isArray(this.messages.labelIds) &&
         this.messages.labelIds.some((label: string) => label.toLowerCase() === 'inbox')) {
-        this.toEmailIds = this.messages.from ? [this.messages.to] : [];
+        this.toEmailIds = this.extractEmailIds(this.messages.to);
       } else {
         this.toEmailIds = this.extractEmailIds(this.messages.toEmailIds);
       }
@@ -160,8 +162,8 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.emailActivity.senderEmailId = this.messages.from;
       this.composeMail = false;
       this.replyMail = true;
-    } else if(this.actionType === 'forward'){
-       this.isPreview = false;
+    } else if (this.actionType === 'forward') {
+      this.isPreview = false;
       this.OliveAi = false;
       this.composeMail = false;
       this.referenceService.openModalPopup('addEmailModalPopup');
@@ -169,6 +171,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.emailActivity.senderEmailId = this.messages.from;
       this.replyMail = true;
     }
+    /*** XNFR-1105 */
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
       this.dropdownSettings = {
@@ -218,75 +221,79 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.isValidToEmailId = false;
         this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
       }
-    } else if (this.composeMail){ //XNFR-1105
-       if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+    } 
+    /*** XNFR-1105 */
+    else if (this.composeMail) { //XNFR-1105
+      if (this.toEmailIds != undefined && this.toEmailIds.length > 0) {
         this.isValidToEmailId = true;
-      this.ngxLoading = true;
-      this.composeMailDto.bodyHtml = this.emailActivity.body;
-      this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
-      this.composeMailDto.subject = this.emailActivity.subject;
-      this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
-      this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
-      this.composeMailDto.type = this.type.toLowerCase();
-      this.composeMailDto.accessToken = this.accessToken;
-      this.prepareFormData();
-      this.outlookEmailService.sendOrReply(this.composeMailDto,this.formData).subscribe(
-        response => {
-          this.ngxLoading = false;
-          if(response.statusCode === 202 || response.statusCode === 200) {
-          this.notifyClose.emit("Email sent sucessfully");
-          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
-          } else {
-            this.notifyClose.emit("The email delivery failed. Please try again later.");
-          this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
-          }
-        }, error => {
-          this.ngxLoading = false;
-        });
-      }else{
+        this.ngxLoading = true;
+        this.composeMailDto.bodyHtml = this.emailActivity.body;
+        this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+        this.composeMailDto.subject = this.emailActivity.subject;
+        this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
+        this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
+        this.composeMailDto.type = this.type.toLowerCase();
+        this.composeMailDto.accessToken = this.accessToken;
+        this.prepareFormData();
+        this.outlookEmailService.sendOrReply(this.composeMailDto, this.formData).subscribe(
+          response => {
+            this.ngxLoading = false;
+            if (response.statusCode === 202 || response.statusCode === 200) {
+              this.notifyClose.emit("Email sent sucessfully");
+              this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+            } else {
+              this.notifyClose.emit("The email delivery failed. Please try again later.");
+              this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
+            }
+          }, error => {
+            this.ngxLoading = false;
+          });
+      } else {
         this.isValidToEmailId = false;
         this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
       }
-    } else if(this.replyMail){
-       if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+    } else if (this.replyMail) {
+      if (this.toEmailIds != undefined && this.toEmailIds.length > 0) {
         this.isValidToEmailId = true;
-      this.ngxLoading = true;
-      const isForward  = this.actionType === 'forward' ? true :false;
-      if(isForward) {
-       this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
-       this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
-       this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
-      }else {
-        this.composeMailDto.toEmailIds = this.extractEmailIds(this.messages.toEmailIds);
-        this.composeMailDto.cc = this.ccEmailIds;
-        this.composeMailDto.bcc = this.bccEmailIds;
-      }
-      this.composeMailDto.bodyHtml = this.emailActivity.body;
-      this.composeMailDto.subject = this.emailActivity.subject;
-      this.composeMailDto.threadId = this.messages.threadId;
-      this.composeMailDto.messageId = this.type === "OUTLOOK" ? this.messages.id:this.messages.messageId;
-      this.composeMailDto.from = this.messages.from;
-      this.composeMailDto.type = this.type.toLowerCase();
-      this.composeMailDto.accessToken = this.accessToken;
-      this.prepareFormData();
-      this.outlookEmailService.replyMail(this.composeMailDto,this.formData,isForward).subscribe(
-        response => {
-          this.ngxLoading = false;
-          if(response.statusCode === 202 || response.statusCode === 200) {
-          this.notifyClose.emit("Email sent sucessfully");
-          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
-          } else {
-            this.notifyClose.emit("The email delivery failed. Please try again later.");
-          this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
-          }
-        }, error => {
-          this.ngxLoading = false;
-        });
-      }else{
+        this.ngxLoading = true;
+        const isForward = this.actionType === 'forward' ? true : false;
+        if (isForward) {
+          this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+          this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
+          this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
+        } else {
+          this.composeMailDto.toEmailIds = this.toEmailIds;
+          this.composeMailDto.cc = this.ccEmailIds;
+          this.composeMailDto.bcc = this.bccEmailIds;
+        }
+        this.composeMailDto.bodyHtml = this.emailActivity.body;
+        this.composeMailDto.subject = this.emailActivity.subject;
+        this.composeMailDto.threadId = this.messages.threadId;
+        this.composeMailDto.messageId = this.type === "OUTLOOK" ? this.messages.id : this.messages.messageId;
+        this.composeMailDto.from = this.messages.from;
+        this.composeMailDto.type = this.type.toLowerCase();
+        this.composeMailDto.accessToken = this.accessToken;
+        this.prepareFormData();
+        this.outlookEmailService.replyMail(this.composeMailDto, this.formData, isForward).subscribe(
+          response => {
+            this.ngxLoading = false;
+            if (response.statusCode === 202 || response.statusCode === 200) {
+              this.notifyClose.emit("Email sent sucessfully");
+              this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+            } else {
+              this.notifyClose.emit("The email delivery failed. Please try again later.");
+              this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
+            }
+          }, error => {
+            this.ngxLoading = false;
+          });
+      } else {
         this.isValidToEmailId = false;
         this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
       }
-    } else {
+    } 
+    /*** XNFR-1105 */
+    else {
       this.ngxLoading = true;
       this.prepareFormData();
       this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
