@@ -1303,6 +1303,8 @@ export class AiChatManagerComponent implements OnInit {
 
     const campaignItems = j.campaign_performance_analysis && j.campaign_performance_analysis.items ? j.campaign_performance_analysis.items : [];
 
+    const assetTypeDistributionItems = j.asset_type_distribution && j.asset_type_distribution.items ? j.asset_type_distribution.items : [];
+
     const campaignPerformanceAnalysis = {
       title: j.campaign_performance_analysis && j.campaign_performance_analysis.title ? j.campaign_performance_analysis.title : '',
       series: [{
@@ -1371,6 +1373,29 @@ export class AiChatManagerComponent implements OnInit {
         ? j.playbook_content_engagement_overview.description
         : '',
     };
+
+  const assetTypeDistribution = {
+    title: j && j.asset_type_distribution && j.asset_type_distribution.title ? j.asset_type_distribution.title : '',
+    description: j && j.asset_type_distribution && j.asset_type_distribution.description ? j.asset_type_distribution.description : '',
+    items: j && j.asset_type_distribution && j.asset_type_distribution.items ? j.asset_type_distribution.items : []
+  };
+
+
+  const asset_type_distribution = {
+      title: j.asset_type_distribution && j.asset_type_distribution.title ? j.asset_type_distribution.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: assetTypeDistributionItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
+        }))
+      }],
+      seriesString: '',
+    };
+
 
     const assetEngagementOverview = {
       title: j.asset_engagement_overview && j.asset_engagement_overview.title
@@ -1494,6 +1519,10 @@ export class AiChatManagerComponent implements OnInit {
       stage : j && j.stage ? j.stage : '',
       pipeline : j && j.pipeline ? j.pipeline : '',
       created_for_company : j && j.created_for_company ? j.created_for_company : '',
+      published_status : j && j.published_status ? j.published_status : '',
+      created_on : j && j.created_on ? j.created_on : '',
+      profile_avatar_letter : j && j.profile_avatar_letter ? j.profile_avatar_letter : '',
+      description : j && j.description ? j.description : '',
       deal_title : j && j.deal_title ? j.deal_title : '',
       deal_amount : j && j.deal_amount ? j.deal_amount : '',
       deal_close_date : j && j.deal_close_date ? j.deal_close_date : '',
@@ -1652,6 +1681,7 @@ export class AiChatManagerComponent implements OnInit {
       dealPipelinePrograssion: dealPipelinePrograssion,
 
       campaignPerformanceAnalysis: campaignPerformanceAnalysis,
+
       trackContentEngagement : trackContentEngagement,
       trackEngagementAnalysis: {
         title:
@@ -1691,6 +1721,7 @@ export class AiChatManagerComponent implements OnInit {
         custom_fields_count : j && j.custom_fields_data && j.custom_fields_data.custom_fields_count ? j.custom_fields_data.custom_fields_count : 0,
         data_complete_rate: j && j.custom_fields_data && j.custom_fields_data.data_complete_rate ? j.custom_fields_data.data_complete_rate : 0
       },
+      asset_type_distribution: asset_type_distribution,
     };
 
     return dto;

@@ -1761,6 +1761,13 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       }],
       seriesString: '',
     };
+    
+
+    const assetTypeDistribution = {
+      title: j && j.asset_type_distribution && j.asset_type_distribution.title ? j.asset_type_distribution.title : '',
+      description: j && j.asset_type_distribution && j.asset_type_distribution.description ? j.asset_type_distribution.description : '',
+      items: j && j.asset_type_distribution && j.asset_type_distribution.items ? j.asset_type_distribution.items : []
+    };
 
     const trackContentEngagement = {
       title: j.track_content_engagement_by_team && j.track_content_engagement_by_team.title
@@ -1795,6 +1802,7 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       categories: playBookEngagementItems.map((item: any) =>
         item && item.name ? item.name : ''
       ),
+      
       series: [
         {
           name: 'Views',
@@ -1913,6 +1921,23 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       seriesString: '',
     };
 
+    const assetTypeDistributionItems = j.asset_type_distribution && j.asset_type_distribution.items ? j.asset_type_distribution.items : [];
+
+     const asset_type_distribution = {
+      title: j.asset_type_distribution && j.asset_type_distribution.title ? j.asset_type_distribution.title : '',
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: assetTypeDistributionItems.map((item: any) => ({
+          name: item.name ? item.name : '',
+          y: typeof item.value == 'string'
+            ? Number(item.value.replace(/[^0-9.-]+/g, ''))
+            : item.value ? item.value : 0
+        }))
+      }],
+      seriesString: '',
+    };
+
 
     const dto: ExecutiveReport = {
       /* ---------- top-level meta ---------- */
@@ -1942,6 +1967,12 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
       deal_amount : j && j.deal_amount ? j.deal_amount : '',
       deal_close_date : j && j.deal_close_date ? j.deal_close_date : '',
       deal_created_on: j && j.deal_created_on ? j.deal_created_on : '',
+
+      published_status : j && j.published_status ? j.published_status : '',
+      created_on : j && j.created_on ? j.created_on : '',
+      profile_avatar_letter : j && j.profile_avatar_letter ? j.profile_avatar_letter : '',
+      description : j && j.description ? j.description : '',
+
 
       owner_details: {
         owner_full_name: j && j.owner_full_name ? j.owner_full_name : '',
@@ -2135,6 +2166,8 @@ showSweetAlertForBrandColors(tab:string,threadId:any,vectorStoreId:any,chatHisto
         custom_fields_count : j && j.custom_fields_data && j.custom_fields_data.custom_fields_count ? j.custom_fields_data.custom_fields_count : 0,
         data_complete_rate: j && j.custom_fields_data && j.custom_fields_data.data_complete_rate ? j.custom_fields_data.data_complete_rate : 0
       },
+
+      asset_type_distribution: assetTypeDistributionItems,
     };
 
     return dto;
