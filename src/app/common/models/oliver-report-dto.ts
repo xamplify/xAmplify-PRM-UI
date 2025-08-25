@@ -21,6 +21,10 @@ export interface ExecutiveReport {
   pipeline: string;
   created_for_company : string;
   created_by_name : string;
+  published_status : string;
+  description: string;
+  profile_avatar_letter: string
+  created_on: string;
   deal_title: string;
   deal_amount: string;
   deal_close_date: string;
@@ -32,6 +36,7 @@ export interface ExecutiveReport {
   /* -------- sections -------- */
   kpi_overview:            OverviewSection<KPIItem>;
   summary_overview:        OverviewSection<KPIItem>;
+  asset_type_distribution: asset_type_distribution;
   performance_indicators:  OverviewSection<PerformanceIndicatorItem>;
 
   campaign_performance_analysis: CampaignPerformanceAnalysis;
@@ -345,6 +350,18 @@ export interface CustomFieldsDataItem {
   field_name: string;
   value: string;
   status: string;
+}
+export interface asset_type_distribution {
+  title: string;
+  series: {
+    name: string;
+    colorByPoint: boolean,
+    data: {
+      name: string;
+      y: string;
+    }[];
+  }[];
+  seriesString: string;
 }
 
 
