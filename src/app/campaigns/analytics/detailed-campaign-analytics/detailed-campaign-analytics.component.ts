@@ -210,6 +210,7 @@ declare var $:any, Highcharts:any, swal: any;
   @Input() campaignTitle:any;
   canPartnerEditLead: boolean = true;
   oliverLead: any;
+  isPartnerMarketingCampaignCreatedForVendor: boolean = false;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -1101,12 +1102,13 @@ declare var $:any, Highcharts:any, swal: any;
             this.campaign = data;
             this.campaign.displayTime = new Date(this.campaign.utcTimeInString);
             this.isChannelCampaign = data.channelCampaign;
+            this.isPartnerMarketingCampaignCreatedForVendor = this.loggedInUserCompanyId == this.campaign.createdForCompanyId;
             if((this.campaign.nurtureCampaign || (this.campaign.createdForCompanyId != null && this.campaign.createdForCompanyId > 0)) && this.campaign.companyId == this.loggedInUserCompanyId){
             	this.isNavigatedThroughAnalytics = false;
                 this.isPartnerEnabledAnalyticsAccess = true;
                 this.isDataShare = true;
-            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && (this.loggedInUserCompanyId == this.campaign.createdForCompanyId))) {
-              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared || this.loggedInUserCompanyId == this.campaign.createdForCompanyId;
+            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && (this.isPartnerMarketingCampaignCreatedForVendor))) {
+              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared ;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
               if (data.campaignType === 'EVENT') {

@@ -228,7 +228,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		localStorage.removeItem('assetName');
 		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
 		this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-		this.hasAllAccess = this.referenceService.hasAllAccess();
+		this.hasAllAccess = this.referenceService.hasAllAccess() || this.authenticationService.marketingModulesAccessToPartner;
 		if (this.FromOliverPopUp) {
 			this.isPartnerView = this.isPartnerViewFromOliver;
 		} else {

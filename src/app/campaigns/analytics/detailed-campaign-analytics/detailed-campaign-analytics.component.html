@@ -208,7 +208,7 @@
                      ">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
                         (click)="openEmailTemplateInNewTab(campaign.emailTemplate)"
-                        [class.disabled]="!isPartnerEnabledAnalyticsAccess  ? true : null">
+                        [class.disabled]="!(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -768,8 +768,8 @@
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb vlt-b-c detail_card"
                            (click)="showCampaignLeads()"
-                           [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-                           [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
+                           [ngClass]="{'forbidden' :!(isDataShare|| isPartnerMarketingCampaignCreatedForVendor) || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ?true:null}"
+                           [disabled]="campaignReport.leadCount < 1 || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor)">
                            <div class="portlet-body text-center">
                               <i class="fa fa-user-circle"></i>
                               <h1>
@@ -783,8 +783,8 @@
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb lt-g-b-c detail_card"
                            (click)="showCampaignDeals()"
-                           [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-                           [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
+                           [ngClass]="{'forbidden' :!(isDataShare|| isPartnerMarketingCampaignCreatedForVendor) || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ?true:null}"
+                           [disabled]="campaignReport.dealCount < 1 || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor)">
                            <div class="portlet-body text-center">
                               <i class="fa fa-tags"></i>
                               <h1>
