@@ -73,4 +73,5 @@ export class SaveVideoFile {
     sendForApproval: boolean = false;
     slug = "";
     companyProfileName: string = "";
+    disableAccessForOliver = false;
  }
