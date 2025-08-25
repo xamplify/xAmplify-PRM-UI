@@ -103,7 +103,7 @@
             <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0 btn-group" *ngIf="isTeamMemberRequest">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0 btn-group">
             <div class="d-flex justify-content-end mb_flex-wrap">
               <!--- Sort --->
               <div class="mr5">
@@ -124,17 +124,23 @@
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
                 <!--- Refresh --->
-                <span class="btn btn-xs l-g-view mr5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+                <span class="btn btn-xs l-g-view mr5"  *ngIf="isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Refresh"
                   (click)="listOfRequestReports(statusType)">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
                 </span>
                 <!--- Export to Excel --->
-                <button class="btn btn-xs hidden-xs l-g-view mr5" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                <button class="btn btn-xs hidden-xs l-g-view mr5" *ngIf="isTeamMemberRequest"  data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
                   (click)="downloadTeamMembersCsv()" [disabled]="pagination.totalRecords == 0">
                   <i aria-hidden="true" class="fas fa-file-export p10"></i>
                 </button>
+
+                <button class="btn btn-xs hidden-xs l-g-view mr5" *ngIf="!isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                  (click)="downloadInviteVendorCsv()" [disabled]="pagination.totalRecords == 0">
+                  <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                </button>
+
                 <!--- Filter --->
-                <span class="btn btn-xs l-g-view {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip" title="Filter">
+                <span class="btn btn-xs l-g-view {{filterActiveBg}}"  *ngIf="isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Filter">
                   <div class="btn-group">
                     <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
                       (click)="clickFilterOption()">
@@ -156,7 +162,7 @@
                   <th class="table-header-alignment">Name</th>
                   <th style="text-align: center;" *ngIf="isTeamMemberRequest">invited by</th>
                   <th style="text-align: center;">status</th>
-                  <th style="text-align: center;"><span *ngIf="isTeamMemberRequest">invited </span>date and time</th>
+                  <th style="text-align: center;"><span>invited </span>{{isTeamMemberRequest ? 'date and time' : 'on'}}</th>
                 </tr>
               </thead>
               <tbody>

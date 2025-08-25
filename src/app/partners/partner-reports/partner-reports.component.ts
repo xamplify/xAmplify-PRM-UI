@@ -123,7 +123,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isdeactivatePartnersDiv: boolean = false;
     totalDeactivatePartnersCountLoader: boolean = false;
     totalDeactivatePartnersCount: any;
-  constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
+    searchKey: string = "";
+  constructor(public referenceService: ReferenceService,public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
         public utilService: UtilService,private route: ActivatedRoute,public properties: Properties, private vanityURLService: VanityURLService) {
@@ -306,7 +307,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     inActivePartnersSearch(keyCode: any) { if (keyCode === 13) { this.searchInActivePartnerAnalytics(); } }
     searchPartnerCampaignKeyPress(keyCode: any, value: string) { if (keyCode === 13) { this.searchPartnerCampaigns(value); } }
     inCompleteCompanyProfileSignupPendingPartnersSearch(keyCode: any) { if (keyCode === 13) { this.searchCompanyProfileIncompleteAndSignupPendingPartnerAnalytics(); } }
-
+    approvePartnerSearchKeyPress(keyCode: any, value: string) { if (keyCode === 13) { this.goToApprovePartnersDiv(); } }
 
 
     goToActivePartnersDiv() {
@@ -563,6 +564,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     getApprovePartnerReports(pagination: Pagination) {
         this.referenseService.loading(this.httpRequestLoader, true);
+        pagination.searchKey = this.searchKey;
         pagination.userId = this.loggedInUserId;
         pagination.partnerTeamMemberGroupFilter = this.applyFilter;
         if (this.authenticationService.isSuperAdmin()) {
@@ -578,7 +580,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.approvePartnerList);
-                this.referenseService.loading(this.httpRequestLoader, false);
+                 this.approvePartnersPagination.pagedItems = response.approvePartnerList;
+            this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -614,7 +617,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
                 this.isHeaderCheckBoxChecked = response.inactivePartnerList.every((partner: any) => partner.isSelected);
 
-
+                this.inActivePartnersPagination.pagedItems = response.inactivePartnerList;
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
@@ -1305,7 +1308,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
                 this.isHeaderCheckBoxChecked = response.list.every((partner: any) => partner.isSelected);
 
-
+this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = response.list;
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
@@ -1816,4 +1819,89 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.findTotalDeactivatePartnersCount();
             this.goToDeactivatePartnersDiv();
     }
+
+    // XNFR-1108
+    sortOptionDropdown(text: any) {
+        this.sortOption.partnerAnalyticsSortOption = text;
+        this.getAllFilteredResultsData(this.pagination);
+    }
+
+    getAllFilteredResultsData(pagination: Pagination) {
+        this.pagination.pageIndex = 1;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.pagination = this.utilService.sortOptionValues(this.sortOption.partnerAnalyticsSortOption, this.pagination);
+        this.getInActivePartnerReports(pagination);
+    }
+
+    companyProfileSortOption(text: any) {
+        this.sortOption.incompleteCompanyProfileSortOption = text;
+        this.getAllFilteredCompanyProfileResultsData(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+
+    getAllFilteredCompanyProfileResultsData(incompleteCompanyProfileAndPendingSingupPagination: Pagination) {
+        this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
+        this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = this.sortOption.searchKey;
+        this.incompleteCompanyProfileAndPendingSingupPagination = this.utilService.sortOptionValues(this.sortOption.incompleteCompanyProfileSortOption, this.incompleteCompanyProfileAndPendingSingupPagination);
+        this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+
+    
+    approvePartnerSortOption(text: any){
+         this.sortOption.approvePartnerSortOption= text;
+        this.getAllFilteredApprovePartnerSortOption(this.pagination);
+        console.log("approvePartnerSortOption",this.sortOption.approvePartnerSortOption);
+    }
+
+    getAllFilteredApprovePartnerSortOption(pagination: Pagination) {
+        this.pagination.pageIndex = 1;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.pagination = this.utilService.sortOptionValues(this.sortOption.approvePartnerSortOption, this.pagination);
+        this.getApprovePartnerReports(pagination);
+    }
+
+
+    // downloadThroughPartnerCampaignReport() {
+    //     let pageIndex = this.throughPartnerCampaignPagination.pageIndex;
+    //     let maxResults = this.throughPartnerCampaignPagination.maxResults;
+    //     this.throughPartnerCampaignPagination.loginAsUserId = this.authenticationService.getUserId();
+    //     this.throughPartnerCampaignPagination.maxResults = this.throughPartnerCampaignPagination.totalRecords;
+    //     let pageableUrl = this.referenseService.getPagebleUrl(this.throughPartnerCampaignPagination);
+    //     let url = this.authenticationService.REST_URL + "campaign"
+    //         + "/listCampaign/downloadCsv"
+    //         + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+    //     this.referenceService.openWindowInNewTab(url);
+    //     this.throughPartnerCampaignPagination.maxResults = maxResults;
+    //     this.throughPartnerCampaignPagination.pageIndex = pageIndex;
+    // }
+
+
+
+  downloadThroughPartnerCampaignReport() {
+     this.throughPartnerCampaignPagination.userId = this.authenticationService.getUserId();
+    const url = `${this.authenticationService.REST_URL}campaign/listCampaign/downloadCsv`;
+    const headers = {
+      'Authorization': `Bearer ${this.authenticationService.access_token}`,
+      'Content-Type': 'application/json'
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(this.throughPartnerCampaignPagination)
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'through_campaign_report.csv';
+        a.click();
+      }, (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.referenseService.loading(this.httpRequestLoader, false);
+        this.xtremandLogger.error(_error);
+        this.customResponse = new CustomResponse('ERROR', "Failed to Download", true);
+      });
+
+  }
 }

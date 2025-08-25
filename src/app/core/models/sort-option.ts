@@ -556,6 +556,23 @@ export class SortOption {
 		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	dormantDropDownOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Last Remainder Sent (A-Z)', 'value': 'time-ASC' },
+		{ 'name': 'Last Remainder Sent (Z-A)', 'value': 'time-DESC' },
+	];
+
+	incompleteCompanyProfileSortOptions = [	
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Last Remainder Sent (A-Z)', 'value': 'sentOn-ASC' },
+		{ 'name': 'Last Remainder Sent (Z-A)', 'value': 'sentOn-DESC' },
+	]
+
+	approvePartnerSortOptions =[
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Email Id Sent (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Id Sent (Z-A)', 'value': 'emailId-DESC' }
+	]
 	/**XNFR-867**/
 	userListLevelCampaignAnalyticsSortDropDownOptions = [
 		{ 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
@@ -773,6 +790,12 @@ export class SortOption {
 	/*** XNFR-850 ***/
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
 
+	/*** XNFR-1108 ***/
+	public partnerAnalyticsSortOption = this.dormantDropDownOptions[0];
+
+	public incompleteCompanyProfileSortOption = this.incompleteCompanyProfileSortOptions[0];
+
+	public approvePartnerSortOption = this.approvePartnerSortOptions[0];
 	/**XNFR-867**/
 	public userListLevelCampaignAnalyticsSortOption: any = this.userListLevelCampaignAnalyticsSortDropDownOptions[this.userListLevelCampaignAnalyticsSortDropDownOptions.length - 1];
 

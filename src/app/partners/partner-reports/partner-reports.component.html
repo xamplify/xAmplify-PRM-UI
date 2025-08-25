@@ -429,6 +429,13 @@
                   <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()">
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
+                <!-- Sort By dormant -->
+                <div class="float-left mr5">
+                <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.partnerAnalyticsSortOption"
+                  (ngModelChange)="sortOptionDropdown($event)" id="select-dropdown">
+                  <option *ngFor="let option of sortOption.dormantDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                </select>
+              </div>
               </div>
             </div>
           </div>
@@ -497,6 +504,27 @@
               <span class="caption-subject font-red-sunglo uppercase">Approve
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
+             <div class="inputs mb5" style="float: right">
+              <!-- Sort By approve partner-->
+            <div class="float-left mr5">
+                <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.approvePartnerSortOption"
+                  (ngModelChange)="approvePartnerSortOption($event)" id="select-dropdown">
+                  <option *ngFor="let option of sortOption.approvePartnerSortOptions" [ngValue]="option">{{option.name}}</option>
+                </select>
+              </div>
+              <!-- Search -->
+              <div class="portlet-input d-flex">
+                <div class="input-icon right mTop">
+                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="searchKey"
+                    [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    (keypress)="approvePartnerSearchKeyPress($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                    (click)="searchKey='';goToApprovePartnersDiv()"></button>
+                  <button type="submit" class="search-box-item-click" (click)="goToApprovePartnersDiv()">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+          </div>
+          </div>
           </div>
           <div class="alert alert-info">
             <span>List Of {{properties?.approvePartnerDescription}}</span>
@@ -510,7 +538,7 @@
                 <thead>
                   <tr>
                     <th class="center-aligned">partners</th>
-                    <th style="text-align: center;">status</th>
+                    <th style="text-align: center;">Launched On</th>
                     <th style="text-align: center;">Actions</th>
                   </tr>
                 </thead>
@@ -621,6 +649,11 @@
                         title="Filter" (click)="toggleFilterOption()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                       </span>
+                      <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;"
+                        (click)="downloadThroughPartnerCampaignReport()">
+                        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+                          data-original-title="Export to Excel"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -677,7 +710,7 @@
                     <tr>
                       <th scope="col" class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
                       <th scope="col" class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
-                      <th scope="col" class="hidden-xs">Status</th>
+                      <th scope="col" class="hidden-xs">Launched On</th>
                       <th scope="col" class="hidden-xs">Created On</th>
                       <th scope="col" style="text-align:left">Actions</th>
                     </tr>
@@ -916,6 +949,14 @@
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
+                 <!-- Sort By pending sign up-->
+            <div class="float-left mr5">
+              <select class="form-control SeclectBoxPaddingsAbj" class="form-control"
+                [(ngModel)]="sortOption.incompleteCompanyProfileSortOption" (ngModelChange)="companyProfileSortOption($event)"
+                id="select-dropdown">
+                <option *ngFor="let option of sortOption.incompleteCompanyProfileSortOptions" [ngValue]="option">{{option.name}}</option>
+              </select>
+            </div>
               </div>
             </div>
           </div>
