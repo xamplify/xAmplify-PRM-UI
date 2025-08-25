@@ -261,6 +261,12 @@
             </td>
             <td>
               <div class="actions-block override-actions tb_view_actions lead_actions">
+                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
+                  title="Ask Oliver" (click)="askOliver(lead)">
+                  <div class="oliveBackground">
+                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+                  </div>
+                </a>
                 <a *ngIf="lead.enableRegisterDealButton" class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" data-toggle="tooltip" data-placement="bottom" title="View Lead"
                   data-toggle="tooltip" data-placement="bottom" id="lead">
                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
@@ -295,12 +301,6 @@
                   <i class="fa fa-envelope IconCustomization" aria-hidden="true"
                     [ngClass]="lead?.associatedDealId > 0 ? 'disabled gray' : ''"></i>
                   <div class="clickicons"></div>
-                </a>
-                <a class="oliveIcon mr5" *ngIf="authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="bottom"
-                  title="Ask Oliver" (click)="askOliver(lead)">
-                  <div class="oliveBackground">
-                    <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
-                  </div>
                 </a>
               </div>
             </td>
