@@ -147,6 +147,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   deletedPartnershipIds: any[] = [];
   selectedPartnershipIdsLoading: boolean = false;
   selectedGlobalGroupId: number | null = null;
+  uploadedTeamMembers: any[] = [];  
+  paginatedUploadedMembers: any[] = []; 
   public searchKey: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -893,9 +895,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.isUploadCsv = false;
     } else {
       this.showUploadedTeamMembers = true;
+      this.uploadedTeamMembers = [];
       this.newlyAddedTeamMembers = []; 
       this.appendCsvDataToTable();      
       this.fileReset();
+      this.findAllUploaded(this.pagination);
     }
   }
 
@@ -914,11 +918,37 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         team['teamMemberGroupId'] = 0;
         team['secondAdmin'] = false;
         this.newlyAddedTeamMembers.push(team);
+        this.uploadedTeamMembers.push(team);
       }
     }
     this.fetchTeamMemberGroupsByCondition();
   }
-
+   findAllUploaded(pagination: Pagination) {
+    if (this.moveToTop) {
+      this.referenceService.scrollSmoothToTop();
+    }
+    const data = {
+      list: this.uploadedTeamMembers,
+      totalRecords: this.uploadedTeamMembers.length
+    };
+    this.teamMembers = data.list;
+    this.pagination.totalRecords = data.totalRecords;
+    this.pagination.pageIndex = pagination.pageIndex;
+    this.pagination.maxResults = pagination.maxResults;
+    let startIndex = (this.pagination.pageIndex - 1) * this.pagination.maxResults;
+    let endIndex = Math.min(startIndex + this.pagination.maxResults, this.teamMembers.length);
+    this.pagination.pagedItems = this.teamMembers.slice(startIndex, endIndex);
+    this.pagination.pager = this.pagerService.getPager(
+      this.pagination.totalRecords,
+      this.pagination.pageIndex,
+      this.pagination.maxResults
+    );
+    this.paginatedUploadedMembers = this.pagination.pagedItems;
+  }
+  setPageUploaded(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.findAllUploaded(this.pagination);
+  }
   validateSecondAdminOptionForCsvUsers(teamMemberGroupId: number, team: any) {
     team.teamMemberGroupId = teamMemberGroupId;
     if (this.showSecondAdmin) {
@@ -1031,9 +1061,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     let emailId = teamMember['emailId'];
     $('#team-member-' + index).remove();
     emailId = emailId.toLowerCase();
-    this.newlyAddedTeamMembers = this.spliceArray(this.newlyAddedTeamMembers, emailId);
+    this.uploadedTeamMembers = this.spliceArray(this.uploadedTeamMembers, emailId);
+    this.pagination.totalRecords = this.uploadedTeamMembers.length;
+    this.findAllUploaded(this.pagination);
     let tableRows = $("#add-team-member-table > tbody > tr").length;
-    if (tableRows == 0 || this.newlyAddedTeamMembers.length == 0) {
+    if (tableRows == 0 || this.uploadedTeamMembers.length == 0) {
       this.clearUploadCsvDataAndGoBack();
     }
   }
@@ -1050,6 +1082,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.showUploadedTeamMembers = false;
     this.newlyAddedTeamMembers = [];
     this.fileReset();
+    this.refreshList();
   }
 
   addServerError(error: any) {
