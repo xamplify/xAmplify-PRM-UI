@@ -206,7 +206,7 @@ export class PreviewemailComponent implements OnInit {
     }
     if (Array.isArray(mailArray)) {
       return mailArray
-        .map((item: any) => (item?.value ? item.value.trim() : ''))
+        .map((item: any) => (item.value ? item.value.trim() : ''))
         .filter((val: string) => val.length > 0)
         .join(',');
     }
