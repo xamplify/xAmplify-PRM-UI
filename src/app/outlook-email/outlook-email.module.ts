@@ -5,12 +5,11 @@ import { InboxComponent } from './inbox/inbox.component';
 import { OutlookEmailRoutingModule } from './outlook-email-routing.module';
 import { OutlookEmailService } from './outlook-email.service';
 import { PreviewemailComponent } from './previewemail/previewemail.component';
-import { ComposeEmailComponent } from './compose-email/compose-email.component';
 import { CKEditorModule } from "ng2-ckeditor";
 
 @NgModule({
   imports: [CommonModule, SharedModule, OutlookEmailRoutingModule,CKEditorModule],
-  declarations: [InboxComponent, PreviewemailComponent,ComposeEmailComponent],
+  declarations: [InboxComponent, PreviewemailComponent],
   providers: [OutlookEmailService]
 })
 export class OutlookEmailModule {}
