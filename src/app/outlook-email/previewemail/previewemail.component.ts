@@ -19,10 +19,10 @@ export class PreviewemailComponent implements OnInit {
   htmlContent: any;
   loading: boolean = false;
   threads: any = {};
-  constructor(private router: Router, private outlookEmailService: OutlookEmailService, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,private referenceService:ReferenceService) {
+  constructor(private router: Router, private outlookEmailService: OutlookEmailService, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer, private referenceService: ReferenceService) {
     this.selectedThread = this.outlookEmailService.getContent();
     if (this.selectedThread.type === "OUTLOOK") {
-        this.threads = {
+      this.threads = {
         subject: this.selectedThread.subject,
         from: this.selectedThread.from,
         //date: this.selectedThread.lastReceivedDate,
@@ -151,32 +151,22 @@ export class PreviewemailComponent implements OnInit {
   }
   actionType: string;
   showEmailModalPopup;
-  toEmailId: string;
   messages: any;
   openEmailModalPopup(msg: any, type: string) {
     this.actionType = type;
     msg.type = type;
-    if (type === 'replytoall') {
-      msg.isreplayAll = true;
-      msg.isreplay = false;
-      msg.forward = false;
-    } else if (type == 'forward') {
-      msg.isreplayAll = false;
-      msg.isreplay = false;
-      msg.forward = true;
-    } else {
-      msg.isreplayAll = false;
-      msg.isreplay = true;
-      msg.forward = false;
-    }
     msg.subject = this.threads.subject,
-    msg.threadId = this.selectedThread.threadId;
+      msg.threadId = this.selectedThread.threadId;
+    msg.to = this.extractEmail(msg.from);
     msg.from = this.selectedThread.authenticateEmailId;
+    msg.toEmailIds = this.convertStringToArray(msg.toEmailIds);
+    msg.ccEmailIds = this.convertStringToArray(msg.ccEmailIds);
+    msg.bccEmailIds = this.convertStringToArray(msg.bccEmailIds);
     this.messages = msg;
     this.showEmailModalPopup = true;
   }
-  closeEmailModalPopup(event:any) {
-     this.showEmailModalPopup = false;
+  closeEmailModalPopup(event: any) {
+    this.showEmailModalPopup = false;
     if (event === "Email sent sucessfully") {
       this.referenceService.showSweetAlertSuccessMessage(event);
     } else {
@@ -189,11 +179,43 @@ export class PreviewemailComponent implements OnInit {
     return match ? match[1] : value;
   }
 
-  isDraftMessages(msg:any):boolean{
-   return msg.labelIds && msg.labelIds.some(label => label.toLowerCase() === 'drafts')
+  isDraftMessages(msg: any): boolean {
+    return msg.labelIds && msg.labelIds.some(label => label.toLowerCase() === 'drafts')
   }
-  showReplayAll(msg:any):boolean {
-    return msg.toEmailIds.length >=1;
+  showReplayAll(mailIds: any): boolean {
+    return mailIds.length >= 1;
+  }
+  convertStringToArray(mailIds: any): string[] {
+    if (!mailIds) {
+      return [];
+    }
+    return mailIds.split(',').map((email: string) => this.extractEmail(email.trim()))
+      .filter((email: string) => email.length > 0)
+      .map((email: string) => ({
+        displayName: email,
+        value: email
+      }));
+  }
+
+  convertArrayToString(mailArray: any[]): string {
+    if (!mailArray) {
+      return '';
+    }
+
+    // if it's already a string, just return it
+    if (typeof mailArray === 'string') {
+      return mailArray;
+    }
+
+    // if it's an array of objects with value
+    if (Array.isArray(mailArray)) {
+      return mailArray
+        .map((item: any) => (item.value? item.value.trim() : ''))
+        .filter((val: string) => val.length > 0)
+        .join(',');
+    }
+
+    return '';
   }
 
 }

@@ -122,11 +122,11 @@
               <div class="xAmplify-sender-avatar">{{getInitials(msg?.from)}}</div>
               <div class="xAmplify-sender-details">
                 <div class="xAmplify-sender-name">
-                  {{msg.from}}
+                  {{msg?.from}}
                 </div>
-                <div class="xAmplify-recipient-info"> {{extractFirstNames(msg?.toEmailIds)}}
-                  <span *ngIf="msg?.ccEmailIds">, {{ extractFirstNames(msg?.ccEmailIds) }}</span>
-                  <span *ngIf="msg?.bccEmailIds">, {{ extractFirstNames(msg?.bccEmailIds) }}</span>
+                <div class="xAmplify-recipient-info"> {{convertArrayToString(msg?.toEmailIds)}}
+                  <span *ngIf="msg?.ccEmailIds">, {{convertArrayToString(msg?.ccEmailIds) }}</span>
+                  <span *ngIf="msg?.bccEmailIds">, {{ convertArrayToString(msg?.bccEmailIds) }}</span>
                   <!-- ,{{extractFirstNames(msg?.ccEmailIds)}}, {{extractFirstNames(msg?.bccEmailIds)}} -->
                   <i class="fa fa-caret-down"></i>
                 </div>
@@ -138,8 +138,7 @@
                     (click)="openEmailModalPopup(msg,'reply')"><i
                       class="fa fa-reply"></i></button>
                   <button class="xAmplify-action-button" aria-label="Reply All"
-                    (click)="openEmailModalPopup(msg,'replytoall')"
-                    *ngIf="extractFirstNames(msg?.ccEmailIds) || extractFirstNames(msg?.bccEmailIds) || showReplayAll(msg)"><i
+                    (click)="openEmailModalPopup(msg,'replytoall')"><i
                       class="fa fa-reply-all"></i></button>
                   <button class="xAmplify-action-button" aria-label="Forward"
                     (click)="openEmailModalPopup(msg,'forward')"><i class="fa fa-share"></i></button>
