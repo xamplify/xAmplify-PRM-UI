@@ -430,7 +430,7 @@
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
                 <!-- Sort By dormant -->
-                <div class="float-left mr5">
+                <div class="float-left mr5" style="padding-left: 5px;">
                 <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.partnerAnalyticsSortOption"
                   (ngModelChange)="sortOptionDropdown($event)" id="select-dropdown">
                   <option *ngFor="let option of sortOption.dormantDropDownOptions" [ngValue]="option">{{option.name}}</option>
@@ -504,9 +504,9 @@
               <span class="caption-subject font-red-sunglo uppercase">Approve
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
-             <div class="inputs mb5" style="float: right">
+             <div class="inputs mb5" style="float: right;margin-right: 47px;">
               <!-- Sort By approve partner-->
-            <div class="float-left mr5">
+              <div class="float-left mr5">
                 <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.approvePartnerSortOption"
                   (ngModelChange)="approvePartnerSortOption($event)" id="select-dropdown">
                   <option *ngFor="let option of sortOption.approvePartnerSortOptions" [ngValue]="option">{{option.name}}</option>
@@ -524,6 +524,12 @@
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
           </div>
+        <!-- Export to Excel -->
+        <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;float: right;margin-right: -43px !important;margin-top: -34px;"
+          (click)="downloadApprovePartnersReport()">
+          <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+            data-original-title="Export to Excel"></i>
+        </button>
           </div>
           </div>
           <div class="alert alert-info">
@@ -538,7 +544,7 @@
                 <thead>
                   <tr>
                     <th class="center-aligned">partners</th>
-                    <th style="text-align: center;">Launched On</th>
+                    <th style="text-align: center;">Status</th>
                     <th style="text-align: center;">Actions</th>
                   </tr>
                 </thead>
@@ -649,7 +655,7 @@
                         title="Filter" (click)="toggleFilterOption()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                       </span>
-                      <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;"
+                      <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 4px;"
                         (click)="downloadThroughPartnerCampaignReport()">
                         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
                           data-original-title="Export to Excel"></i>
@@ -950,7 +956,7 @@
                   </button>
                 </div>
                  <!-- Sort By pending sign up-->
-            <div class="float-left mr5">
+            <div class="float-left mr5" style="padding-left: 5px;">
               <select class="form-control SeclectBoxPaddingsAbj" class="form-control"
                 [(ngModel)]="sortOption.incompleteCompanyProfileSortOption" (ngModelChange)="companyProfileSortOption($event)"
                 id="select-dropdown">

@@ -1860,19 +1860,19 @@ this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = response.li
     }
 
 
-    // downloadThroughPartnerCampaignReport() {
-    //     let pageIndex = this.throughPartnerCampaignPagination.pageIndex;
-    //     let maxResults = this.throughPartnerCampaignPagination.maxResults;
-    //     this.throughPartnerCampaignPagination.loginAsUserId = this.authenticationService.getUserId();
-    //     this.throughPartnerCampaignPagination.maxResults = this.throughPartnerCampaignPagination.totalRecords;
-    //     let pageableUrl = this.referenseService.getPagebleUrl(this.throughPartnerCampaignPagination);
-    //     let url = this.authenticationService.REST_URL + "campaign"
-    //         + "/listCampaign/downloadCsv"
-    //         + "?access_token=" + this.authenticationService.access_token + pageableUrl;
-    //     this.referenceService.openWindowInNewTab(url);
-    //     this.throughPartnerCampaignPagination.maxResults = maxResults;
-    //     this.throughPartnerCampaignPagination.pageIndex = pageIndex;
-    // }
+    downloadApprovePartnersReport() {
+        let pageIndex = this.approvePartnersPagination.pageIndex;
+        let maxResults = this.approvePartnersPagination.maxResults;
+        this.approvePartnersPagination.loginAsUserId = this.authenticationService.getUserId();
+        this.approvePartnersPagination.maxResults = this.approvePartnersPagination.totalRecords;
+        let pageableUrl = this.referenseService.getPagebleUrl(this.approvePartnersPagination);
+        let url = this.authenticationService.REST_URL + "partnership"
+            + "/approve-partner/downloadCsv"
+            + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+        this.referenceService.openWindowInNewTab(url);
+        this.approvePartnersPagination.maxResults = maxResults;
+        this.approvePartnersPagination.pageIndex = pageIndex;
+    }
 
 
 
