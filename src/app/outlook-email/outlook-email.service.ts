@@ -19,22 +19,19 @@ export class OutlookEmailService {
   getContent() {
     return this._content;
   }
-  getGmailThreads(accessToken: string): Observable<EmailThread[]> {
+  getGmailThreads(accessToken: string) {
     const url = this.URL + '/gmail?token=' + accessToken + '&' + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callGetMethod(url)
-      .map(res => res.data as EmailThread[]);
+    return this.authenticationService.callGetMethod(url);
   }
 
-  fetchThreadById(threadId: string): Observable<EmailThread[]> {
+  fetchThreadById(threadId: string) {
     const url = this.URL + '/thread/' + threadId + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callGetMethod(url)
-      .map(res => res.data as EmailThread[]);
+    return this.authenticationService.callGetMethod(url);
   }
 
-  getOutlookThreads(accessToken: string): Observable<EmailThread[]> {
+  getOutlookThreads(accessToken: string){
     const url = this.URL + '/outlook?token=' + accessToken + '&' + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callGetMethod(url)
-      .map(res => res.data as EmailThread[]);
+    return this.authenticationService.callGetMethod(url);
   }
 
   authorizeGmail() {
@@ -55,17 +52,34 @@ export class OutlookEmailService {
     let url = this.URL + "/authorize/" + type + "/" + this.authenticationService.getUserId() + '?' + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callGetMethod(url);
   }
-  
+
   sendOrReply(sendTestEmailDto: EmailRequestDto, formData: FormData) {
-     formData.append('emailRequestDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
-        type: "application/json"
+    formData.append('emailRequestDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
+      type: "application/json"
     }));
-    const url = this.URL + '/mail/send-reply?'+ this.ACCESS_TOKEN_URL;
+    const url = this.URL + '/mail/send-reply?' + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callPostMethod(url, formData);
   }
 
+  replyMail(sendTestEmailDto: EmailRequestDto, formData: FormData, isForward:boolean) {
+    formData.append('emailRequestDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
+      type: "application/json"
+    }));
+    const forward = isForward ? 'forward': 'reply';
+    const url = this.URL + '/mail/'+forward+'?' + this.ACCESS_TOKEN_URL;
+    return this.authenticationService.callPostMethod(url, formData);
+  }
+
+  // forwardMail(sendTestEmailDto: EmailRequestDto, formData: FormData) {
+  //   formData.append('emailRequestDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
+  //     type: "application/json"
+  //   }));
+  //   const url = this.URL + '/mail/forward?' + this.ACCESS_TOKEN_URL;
+  //   return this.authenticationService.callPostMethod(url, formData);
+  // }
+
   fetchGmailsByThreadId(accessToken: string, threadId: string) {
-    const url = this.URL + '/gmail/preview?token=' + accessToken + '&threadId='+threadId+ '&' + this.ACCESS_TOKEN_URL;
+    const url = this.URL + '/gmail/preview?token=' + accessToken + '&threadId=' + threadId + '&' + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callGetMethod(url);
   }
 

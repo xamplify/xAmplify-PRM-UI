@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OutlookEmailService } from '../outlook-email.service';
 import { EmailThread } from '../models/email-thread';
 import { Router } from '@angular/router';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-outlook-inbox',
@@ -18,7 +19,7 @@ export class InboxComponent implements OnInit {
   actionType: string = 'NewMail';
   showEmailModalPopup: boolean = false;
   authenticateEmailId: string;
-  constructor(private outlookEmailService: OutlookEmailService, private router: Router) { }
+  constructor(private outlookEmailService: OutlookEmailService, private router: Router,private referenceService:ReferenceService) { }
 
   ngOnInit() {
     this.getAccessToken();
@@ -59,8 +60,8 @@ export class InboxComponent implements OnInit {
     this.loading = true;
     this.outlookEmailService.getGmailThreads(accessToken).subscribe(
       result => {
-        this.threads = result;
-        //this.statusCode = result.statusCode;
+        this.threads = result.data;
+        this.statusCode = result.statusCode;
         this.loading = false;
       },
       () => this.loading = false
@@ -70,7 +71,8 @@ export class InboxComponent implements OnInit {
     this.loading = true;
     this.outlookEmailService.getOutlookThreads(accessToken).subscribe(
       result => {
-        this.threads = result;
+        this.threads = result.data;
+        this.statusCode = result.statusCode;
         this.loading = false;
       },
       () => this.loading = false
@@ -82,6 +84,9 @@ export class InboxComponent implements OnInit {
     selectedThread.subject = thread.subject;
     selectedThread.threadId = thread.threadId;
     selectedThread.accessToken = this.accessToken;
+    selectedThread.type = this.type;
+    selectedThread.messages = thread.messages;
+    selectedThread.authenticateEmailId = this.authenticateEmailId;
     this.outlookEmailService.setContent(selectedThread);
     this.router.navigateByUrl('/home/mails/preview');
   }
@@ -107,7 +112,12 @@ export class InboxComponent implements OnInit {
     this.actionType = 'NewMail';
     this.showEmailModalPopup = true;
   }
-  closeEmailModalPopup() {
-    this.showEmailModalPopup = false;
+ closeEmailModalPopup(event:any) {
+     this.showEmailModalPopup = false;
+    if (event === "Email sent sucessfully") {
+      this.referenceService.showSweetAlertSuccessMessage(event);
+    } else {
+      this.referenceService.showSweetAlertErrorMessage(event);
+    }
   }
 }

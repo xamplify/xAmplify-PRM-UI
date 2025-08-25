@@ -4,6 +4,8 @@ import { OutlookEmailService } from '../outlook-email.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EmailThread } from '../models/email-thread';
+import { EmailMessage } from '../models/email-message';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-previewemail',
@@ -16,10 +18,21 @@ export class PreviewemailComponent implements OnInit {
   htmlString: string;
   htmlContent: any;
   loading: boolean = false;
-  threads: EmailThread;
-  constructor(private router: Router, private outlookEmailService: OutlookEmailService, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
+  threads: any = {};
+  constructor(private router: Router, private outlookEmailService: OutlookEmailService, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,private referenceService:ReferenceService) {
     this.selectedThread = this.outlookEmailService.getContent();
-    this.fetchGmailsByThreadId();
+    if (this.selectedThread.type === "OUTLOOK") {
+        this.threads = {
+        subject: this.selectedThread.subject,
+        from: this.selectedThread.from,
+        //date: this.selectedThread.lastReceivedDate,
+        messages: this.selectedThread.messages
+      };
+      // this.threads.subject = this.selectedThread.subject || '';
+      // this.threads.messages = [this.selectedThread.messages];
+    } else {
+      this.fetchGmailsByThreadId();
+    }
   }
 
   ngOnInit() {
@@ -58,6 +71,7 @@ export class PreviewemailComponent implements OnInit {
     }
     this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(bodyContent);
     return this.htmlContent;
+
   }
 
   downloadAttachment(att: any) {
@@ -97,7 +111,7 @@ export class PreviewemailComponent implements OnInit {
       this.expandedMessages.add(index);
     }
   }
-  getPreviewText(msg:any): string {
+  getPreviewText(msg: any): string {
     const bodyContent = msg.bodyContent;
     if (!bodyContent) {
       return msg.body;
@@ -117,30 +131,69 @@ export class PreviewemailComponent implements OnInit {
     if (!headerValue) {
       return "";
     }
-    
-
     let result: string[] = [];
-
-    // Split multiple recipients by commas (but ignore commas inside < >)
     const parts = headerValue.split(/,(?=(?:[^<]*<[^>]*>)*[^>]*$)/);
-
     parts.forEach(part => {
       part = part.trim();
       let namePart = "";
-
       if (part.includes("<")) {
         namePart = part.substring(0, part.indexOf("<")).trim().replace(/"/g, "");
       } else {
-        namePart = part; // only email, no <>
+        namePart = part;
       }
-
       if (namePart) {
-        const firstWord = namePart.split(/\s+/)[0]; // take only first word
+        const firstWord = namePart.split(/\s+/)[0];
         result.push(firstWord);
       }
     });
 
     return result.join(", ");
+  }
+  actionType: string;
+  showEmailModalPopup;
+  toEmailId: string;
+  messages: any;
+  openEmailModalPopup(msg: any, type: string) {
+    this.actionType = type;
+    msg.type = type;
+    if (type === 'replytoall') {
+      msg.isreplayAll = true;
+      msg.isreplay = false;
+      msg.forward = false;
+    } else if (type == 'forward') {
+      msg.isreplayAll = false;
+      msg.isreplay = false;
+      msg.forward = true;
+    } else {
+      msg.isreplayAll = false;
+      msg.isreplay = true;
+      msg.forward = false;
+    }
+    msg.subject = this.threads.subject,
+    msg.threadId = this.selectedThread.threadId;
+    msg.from = this.selectedThread.authenticateEmailId;
+    this.messages = msg;
+    this.showEmailModalPopup = true;
+  }
+  closeEmailModalPopup(event:any) {
+     this.showEmailModalPopup = false;
+    if (event === "Email sent sucessfully") {
+      this.referenceService.showSweetAlertSuccessMessage(event);
+    } else {
+      this.referenceService.showSweetAlertErrorMessage(event);
+    }
+  }
+  extractEmail(value: string): string {
+    if (!value) return '';
+    const match = value.match(/<(.+?)>/);
+    return match ? match[1] : value;
+  }
+
+  isDraftMessages(msg:any):boolean{
+   return msg.labelIds && msg.labelIds.some(label => label.toLowerCase() === 'drafts')
+  }
+  showReplayAll(msg:any):boolean {
+    return msg.toEmailIds.length >=1;
   }
 
 }

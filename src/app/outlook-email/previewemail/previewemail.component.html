@@ -42,7 +42,7 @@
     </div>
   </div>
 </div> -->
-<div class="page-content">
+<!-- <div class="page-content">
   <div>
     <button class="action-btn star-btn" (click)="backToList()" title="Back to List">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -97,4 +97,87 @@
       </div>
     </div>
   </div>
+</div> -->
+<div class="page-content">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+    <div class="xAmplify-email-card">
+      <!-- Compose Button -->
+      <!-- <button class="xAmplify-compose-button"><i class="fa fa-envelope"></i> Compose Mail</button> -->
+
+      <!-- Email Preview -->
+      <div class="xAmplify-email-container">
+        <button class="xAmplify-back-button" (click)="backToList()"><i class="fas fa-arrow-left"></i></button>
+        <div class="xAmplify-email-header">
+          <div class="xAmplify-header-left">
+            <div class="xAmplify-email-subject">
+              {{threads?.subject}}
+              <!-- <span class="xAmplify-inbox-label">Inbox</span> -->
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let msg of threads?.messages; let i = index">
+          <div *ngIf="!isDraftMessages(msg)">
+            <div class="xAmplify-sender-info">
+              <div class="xAmplify-sender-avatar">{{getInitials(msg?.from)}}</div>
+              <div class="xAmplify-sender-details">
+                <div class="xAmplify-sender-name">
+                  {{msg.from}}
+                </div>
+                <div class="xAmplify-recipient-info"> {{extractFirstNames(msg?.toEmailIds)}}
+                  <span *ngIf="msg?.ccEmailIds">, {{ extractFirstNames(msg?.ccEmailIds) }}</span>
+                  <span *ngIf="msg?.bccEmailIds">, {{ extractFirstNames(msg?.bccEmailIds) }}</span>
+                  <!-- ,{{extractFirstNames(msg?.ccEmailIds)}}, {{extractFirstNames(msg?.bccEmailIds)}} -->
+                  <i class="fa fa-caret-down"></i>
+                </div>
+              </div>
+              <div class="xAmplify-email-meta">
+                <span>{{msg?.timestamp}}</span>
+                <div class="xAmplify-email-actions">
+                  <button class="xAmplify-action-button" aria-label="Reply"
+                    (click)="openEmailModalPopup(msg,'reply')"><i
+                      class="fa fa-reply"></i></button>
+                  <button class="xAmplify-action-button" aria-label="Reply All"
+                    (click)="openEmailModalPopup(msg,'replytoall')"
+                    *ngIf="extractFirstNames(msg?.ccEmailIds) || extractFirstNames(msg?.bccEmailIds) || showReplayAll(msg)"><i
+                      class="fa fa-reply-all"></i></button>
+                  <button class="xAmplify-action-button" aria-label="Forward"
+                    (click)="openEmailModalPopup(msg,'forward')"><i class="fa fa-share"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="xAmplify-email-content" [innerHTML]="getBodyContent(msg)"></div>
+            <!-- Attachments -->
+            <div class="xAmplify-attachments-section" *ngIf="msg.attachments && msg.attachments.length > 0">
+              <div class="xAmplify-attachments-header">
+                <div class="xAmplify-attachments-title">Attachments</div>
+                <!-- <button class="xAmplify-attachments-close"><i class="fa fa-times"></i></button> -->
+              </div>
+              <div class="xAmplify-attachments-grid" *ngFor="let att of msg.attachments">
+                <div class="xAmplify-attachment-item">
+                  <img *ngIf="att.contentType.startsWith('image/')" [src]="getAttachmentUrl(att)" [alt]="att.name"
+                    class="attachment-img" width="200px" height="100px">
+                  <div *ngIf="!att.contentType.startsWith('image/')" class="attachment-download">
+                    <button (click)="downloadAttachment(att); $event.stopPropagation()">
+                      <i class="fa fa-download"></i> {{ att.name }}
+                    </button>
+                  </div>
+                  <!-- <button class="xAmplify-attachment-close"><i class="fa fa-times"></i></button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Bottom Actions -->
+        <!-- <div class="xAmplify-email-actions-bottom1">
+          <button class="xAmplify-action-btn" (click)="openEmailModalPopup(msg,false)"><i class="fa fa-reply"></i> Reply</button>
+          <button class="xAmplify-action-btn"><i class="fa fa-share"></i> Forward</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
 </div>
+
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [messages]="messages"
+  [accessToken]="selectedThread.accessToken" [type]="selectedThread.type"
+  (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>

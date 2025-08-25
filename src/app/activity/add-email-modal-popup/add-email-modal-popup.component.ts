@@ -46,8 +46,10 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Input() accessToken: string;
   @Input() authenticateEmailId: string;
   @Input() type: string;
+  @Input() messages:any
   composeMail:boolean;
   composeMailDto: EmailRequestDto = new EmailRequestDto();
+  replyMail:boolean;
   /*** XNFR-1105 */
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
@@ -115,6 +117,7 @@ export class AddEmailModalPopupComponent implements OnInit {
     } else if (this.actionType == 'oliveAi') {
       this.isPreview = false;
       this.composeMail = false;//XNFR-1105
+      this.replyMail = false;
       this.referenceService.openModalPopup('addEmailModalPopup');
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
       this.emailActivity.userId = this.authenticationService.getUserId();
@@ -132,6 +135,42 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.referenceService.openModalPopup('addEmailModalPopup');
       this.emailActivity.senderEmailId = this.authenticateEmailId;
       this.composeMail = true;
+      this.replyMail = false;
+    } else if(this.actionType === 'replytoall' || this.actionType === 'reply') {
+      this.isPreview = false;
+      this.OliveAi = false;
+      this.referenceService.openModalPopup('addEmailModalPopup');
+      if (this.messages && Array.isArray(this.messages.labelIds) &&
+        this.messages.labelIds.some((label: string) => label.toLowerCase() === 'inbox')) {
+        this.toEmailIds = this.messages.from ? [this.messages.from] : [];
+      } else {
+        this.toEmailIds = this.messages.toEmailIds
+          ? this.messages.toEmailIds.split(',').map((email: string) => email.trim()) : [];
+      }
+      if (this.actionType === 'replytoall') {
+        if (this.messages && this.messages.ccEmailIds.length > 0) {
+          this.showCCEmailInputField = true;
+          this.ccEmailIds = this.messages.ccEmailIds
+            ? this.messages.ccEmailIds.split(',').map((email: string) => email.trim()) : [];
+        }
+        if (this.messages && this.messages.bccEmailIds.length > 0) {
+          this.showBCCEmailInputField = true;
+          this.bccEmailIds = this.messages.bccEmailIds
+            ? this.messages.bccEmailIds.split(',').map((email: string) => email.trim()) : [];
+        }
+      }
+      this.emailActivity.subject = this.messages.subject;
+      this.emailActivity.senderEmailId = this.messages.from;
+      this.composeMail = false;
+      this.replyMail = true;
+    }else if(this.actionType === 'forward'){
+       this.isPreview = false;
+      this.OliveAi = false;
+      this.composeMail = false;
+      this.referenceService.openModalPopup('addEmailModalPopup');
+      this.emailActivity.subject = this.messages.subject;
+      this.emailActivity.senderEmailId = this.messages.from;
+      this.replyMail = true;
     }
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
@@ -197,8 +236,50 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.outlookEmailService.sendOrReply(this.composeMailDto,this.formData).subscribe(
         response => {
           this.ngxLoading = false;
+          if(response.statusCode === 202 || response.statusCode === 200) {
           this.notifyClose.emit("Email sent sucessfully");
           this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+          } else {
+            this.notifyClose.emit("The email delivery failed. Please try again later.");
+          this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
+          }
+        }, error => {
+          this.ngxLoading = false;
+        });
+      }else{
+        this.isValidToEmailId = false;
+        this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
+      }
+    } else if(this.replyMail){
+       if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+        this.isValidToEmailId = true;
+      this.ngxLoading = true;
+      const isForward  = this.actionType === 'forward' ? true :false;
+      if(isForward) {
+      this.composeMailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      }else {
+        this.composeMailDto.toEmailIds = this.toEmailIds;
+      }
+      this.composeMailDto.bodyHtml = this.emailActivity.body;
+      this.composeMailDto.subject = this.emailActivity.subject;
+      this.composeMailDto.threadId = this.messages.threadId;
+      this.composeMailDto.messageId = this.type === "OUTLOOK" ? this.messages.id:this.messages.messageId;
+      this.composeMailDto.from = this.messages.from;
+      this.composeMailDto.cc = this.extractEmailIds(this.ccEmailIds);
+      this.composeMailDto.bcc = this.extractEmailIds(this.bccEmailIds);
+      this.composeMailDto.type = this.type.toLowerCase();
+      this.composeMailDto.accessToken = this.accessToken;
+      this.prepareFormData();
+      this.outlookEmailService.replyMail(this.composeMailDto,this.formData,isForward).subscribe(
+        response => {
+          this.ngxLoading = false;
+          if(response.statusCode === 202 || response.statusCode === 200) {
+          this.notifyClose.emit("Email sent sucessfully");
+          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+          } else {
+            this.notifyClose.emit("The email delivery failed. Please try again later.");
+          this.customResponse = new CustomResponse('ERROR', "The email delivery failed. Please try again later.", true);
+          }
         }, error => {
           this.ngxLoading = false;
         });
