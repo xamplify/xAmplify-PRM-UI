@@ -10595,7 +10595,7 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
     {{/report.asset_type_distribution.title}}-->
 
     {{#report.summary_overview.title}}
-      <div class="white-card">
+    <div class="white-card">
       <h2>{{report.summary_overview.title}}</h2>
       <p>{{report.summary_overview.description}}</p>
       <table>
@@ -10623,17 +10623,20 @@ iframePartnerGroupContent: any = `<!DOCTYPE html>
         </tbody>
       </table>
       {{/report.summary_overview.title}}
+    </div>
 
-      <!-- Bottom Line -->
-      {{#report.conclusion.description}}
+
+    <!-- Bottom Line -->
+    {{#report.conclusion.description}}
+    <div class="white-card">
       <div class="bottom-line-card">
         <div class="bottom-line-inner">
-          <h3>{{report.conclusion.title}}</h3>
+          <h3>Conclusion</h3>
           <p>{{ report.conclusion.description }}</p>
         </div>
       </div>
-      {{/report.conclusion.description}}
     </div>
+    {{/report.conclusion.description}}
 
   </div>
 
