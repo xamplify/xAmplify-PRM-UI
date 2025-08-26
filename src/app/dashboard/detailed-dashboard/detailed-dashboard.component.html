@@ -54,7 +54,7 @@
             </ng-container>
 
 
-            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
+            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals" [ngClass]="{'mt10': !authenticationService?.module?.isReDistribution}">
                 <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
                 <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
             </div>                

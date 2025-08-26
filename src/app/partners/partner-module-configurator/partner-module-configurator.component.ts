@@ -170,8 +170,8 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
 
   /***** XNFR-1066 *****/
   marketingModulesChange(event: any) {
-    const isCampaignModule= this.defaultModules.find(module => module.moduleId === 2);
-    if (!isCampaignModule.partnerAccessModule) {
+    const isCampaignModule = this.defaultModules.find(module => module.moduleId === 2);
+    if (isCampaignModule && !isCampaignModule.partnerAccessModule) {
       this.isContactsModuleToggleDisabled = event;
     }
     this.hasMarketingModulesAccessToPartner = event;

@@ -14,7 +14,7 @@
       </div>
       <!-- card two For Team Member Analytics -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showlaunchedCampaignCount && (isTeamMemberAnalytics && isVendorVersion)"
+         *ngIf="partnerJourneyAnalytics?.showlaunchedCampaignCount && (isTeamMemberAnalytics && isVendorVersion) && authenticationService?.module?.createCampaign"
          [scrollTo]="partnerJourneyAnalytics?.launchedCampaignCount > 0 ? '#pj-redistributed-campaigns-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100">
          <div

@@ -192,9 +192,9 @@
 
                     <!--Through Partner Campaigns Count-->
                     <app-box-loader [countLoader]=5
-                      *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+                      *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.createCampaign"></app-box-loader>
                     <div
-                      *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+                      *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.createCampaign"
                       class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
                       <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
                         [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
@@ -222,9 +222,9 @@
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5
-              *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+              *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isReDistribution"></app-box-loader>
             <div
-              *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+              *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isReDistribution"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a [className]="redistributedCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter purple-soft' : 'dashboard-stat dashboard-stat-lighter purple-soft disable-tile-pj'"
                 [class.greay]="2!=selectedTabIndex"
@@ -398,7 +398,7 @@
         [applyFilter]="applyFilter" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         [fromDeactivatedPartnersDiv]="isdeactivatePartnersDiv" [fromActivePartnersDiv]="isActivePartnerDiv" [fromAllPartnersDiv]="totalPartnersDiv"
-        *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 8 || selectedTabIndex == 9)"></app-campaigns-launched-by-partners>
+        *ngIf="!loadAllCharts && (selectedTabIndex == 0 || selectedTabIndex == 8 || selectedTabIndex == 9) && authenticationService?.module?.createCampaign"></app-campaigns-launched-by-partners>
     </div>
   </div>
 
@@ -1182,7 +1182,7 @@
   </div>
 
   <!--******************Redistributed Camapign Details*******************-->
-  <div class="row rowPaddingCustomization4">
+  <div class="row rowPaddingCustomization4" *ngIf="authenticationService?.module?.isReDistribution">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <div>
         <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"

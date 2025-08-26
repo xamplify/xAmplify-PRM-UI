@@ -1377,6 +1377,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
                     let addedToQuickLinks = this.saveVideoFile.addedToQuickLinks;
                     let sendForApproval = this.saveVideoFile.sendForApproval;
+                    let disableAccessForOliver = this.saveVideoFile.disableAccessForOliver;
                     /****XNFR-255****/
                     this.saveVideoFile = this.videoForm.value;
                     this.saveVideoFile.damId = damId;
@@ -1439,6 +1440,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
                     this.saveVideoFile.addedToQuickLinks = addedToQuickLinks;
                     this.saveVideoFile.sendForApproval = sendForApproval;
+                    this.saveVideoFile.disableAccessForOliver = disableAccessForOliver;
                     /****XNFR-255****/
                     this.saveVideoFile.draft = saveAsDraft;
                     return this.videoFileService.updateVideoContent(this.saveVideoFile)
@@ -1718,4 +1720,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $("#copy-link").select();
         this.customResponse = new CustomResponse('SUCCESS', message, true);
       }
+
+       setDisableAccessForOliver(event){
+        this.saveVideoFile.disableAccessForOliver = event;
+    }
 }

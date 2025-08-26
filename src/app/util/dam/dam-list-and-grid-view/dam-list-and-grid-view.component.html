@@ -847,6 +847,6 @@
 
 <app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
 	(notifyClose)="closePreview()"></app-preview-content>
-	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
+	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver" [folderPreview]="showUpArrowButton"
 	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
 

@@ -135,7 +135,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
     delete(id: number) {
-        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+        let isVanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let companyProfileName = isVanityUrlFilter?"&companyProfileName="+this.authenticationService.companyProfileName:"";
+        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token + companyProfileName)
             .map(this.extractData)
             .catch(this.handleError);
     }

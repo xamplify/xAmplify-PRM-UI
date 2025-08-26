@@ -238,7 +238,7 @@
     </div>
 </ng-template>
 
-<ng-template #campaignStatistics>
+<ng-template #campaignStatistics *ngIf="authenticationService?.module?.isReDistribution">
     <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard,
         'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard}">
         <!--- Campaign Statistics --->
@@ -290,7 +290,7 @@
     </div>
 </ng-template>
 
-<ng-template #redistributedCampaigns>
+<ng-template #redistributedCampaigns *ngIf="authenticationService?.module?.isReDistribution">
     <div class="clearfix row margin_17"
         *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
     !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && 
@@ -302,7 +302,7 @@
     </div>
 </ng-template>
 
-<ng-template #regionalStatistics>
+<ng-template #regionalStatistics *ngIf="authenticationService?.module?.isReDistribution">
     <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
         *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
         <!---Regional Statistics--->

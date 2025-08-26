@@ -45,6 +45,7 @@ export class AiChatManagerComponent implements OnInit {
   @Input() isPlaybookPartnerView: boolean = false;
    @Input() selectedDeal: any;
   @Input() isFromManageDeal: boolean = false;
+  @Input() folderPreview: boolean = false;
   
   openHistory: boolean;
   messages: any[] = [];
@@ -195,7 +196,7 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
         this.chatGptIntegrationSettingsDto.folderDam = true;
         this.isFromFolderView = true;
-        this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1;
+        this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1 || this.router.url.indexOf("/shared/view/fl/") > -1;
         this.chatGptIntegrationSettingsDto.id = this.categoryId;
         // this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
@@ -204,7 +205,7 @@ export class AiChatManagerComponent implements OnInit {
     /** XNFR-1009 **/
     this.suggestedPromptDTOs = [];
     this.oliverPromptSuggestionDTOs = [];
-    if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+    if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0 && !this.folderPreview) {
         this.getSuggestedpromptsForFolderView(this.categoryId);
     } else if (this.authenticationService.companyProfileName !== undefined &&
       this.authenticationService.companyProfileName !== '') {
