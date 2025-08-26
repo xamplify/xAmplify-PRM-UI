@@ -106,14 +106,28 @@ export class VendorRequestReportComponent implements OnInit {
     ngOnInit() {
         if (this.isTeamMemberRequest) {
             this.loadTeamMembersReportCount();
-            this.pagination = this.utilService.sortOptionValues(this.sortOption.teamMemberAnalyticsSortOptions, this.pagination);
+            this.pagination = this.utilService.sortOptionValues(
+                this.sortOption.teamMemberAnalyticsSortOptions,
+                this.pagination
+            );
             this.listOfResults('ALL');
             this.findPrimaryAdminAndExtraAdmins();
         } else {
+            if (this.sortOption.inviteTeamMemberAnalyticsDropDownOptions &&
+                this.sortOption.inviteTeamMemberAnalyticsDropDownOptions.length > 2) {
+
+                this.sortOption.inviteTeamMemberAnalyticsDropDownOptions =
+                    this.sortOption.inviteTeamMemberAnalyticsDropDownOptions.slice(2);
+            }
             this.requestVendorsReportCount();
             this.listOfVendorRequestReports('ALL');
+            this.pagination = this.utilService.sortOptionValues(
+                this.sortOption.teamMemberAnalyticsSortOptions,
+                this.pagination
+            );
         }
     }
+
 
     /***** XNFR-805 *****/
     listOfRequestReports(statusType: any) {
@@ -195,9 +209,27 @@ export class VendorRequestReportComponent implements OnInit {
         let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
         this.pagination.maxResults = maxResults;
         this.pagination.pageIndex = pageIndex;
-        window.location.href = this.authenticationService.REST_URL + "teamMember/invite-team-member/downloadCsv/type/" + this.getStatusType(this.statusType) + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token + pageableUrl;
+             window.location.href = this.authenticationService.REST_URL + "teamMember/invite-team-member/downloadCsv/type/" + this.getStatusType(this.statusType) + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token + pageableUrl;
     }
 
+
+    downloadInviteVendorCsv() {
+        let pageIndex = this.pagination.pageIndex;
+        let maxResults = this.pagination.maxResults;
+        let sortOrder = this.pagination.sortingOrder;
+        let sortColumn = this.pagination.sortcolumn;
+        this.pagination.loginAsUserId = this.authenticationService.getUserId();
+        this.pagination.maxResults = this.pagination.totalRecords;
+        let pageableUrl = this.referenceService.getPagebleUrl(this.pagination);
+        let url = this.authenticationService.REST_URL + "partnership"
+            + "/vendor-invitation/download/Csv"
+            + "?access_token=" + this.authenticationService.access_token + pageableUrl;
+        this.referenceService.openWindowInNewTab(url);
+        this.pagination.maxResults = maxResults;
+        this.pagination.pageIndex = pageIndex;
+        this.pagination.sortingOrder = sortOrder;
+        this.pagination.sortcolumn = sortColumn;
+    }
     /***** XNFR-850 *****/
     clickFilterOption() {
         this.showFilterOption = !this.showFilterOption;
