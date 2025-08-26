@@ -1,0 +1,252 @@
+<div *ngIf="!manageCampaignsCountsLoader" class="front-count-row mb10">
+   <app-box-loader [countLoader]="4" *ngIf="manageCampaignsCountsLoader"></app-box-loader>
+   <div class="front-count-col">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'all'"
+         (click)="manageCampaignsCounts?.allManageCampaginsCount > 0 && filterAssets('all')"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.allManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon container -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'all',
+           'front-count-blue': selectedFilter !== 'all'
+         }">
+            <i *ngIf="selectedFilter == 'all'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'all'" class="fa fa-database"></i>
+         </div>
+
+         <!-- Count and Label -->
+         <div class="front-count-number">{{manageCampaignsCounts?.allManageCampaginsCount }}</div>
+         <div class="front-count-label">
+            All
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" [attr.title]="
+      moduleType == 'DAM' ? 'Total records of assets' :
+      moduleType == 'TRACK' ? 'Total records of tracks' :
+      moduleType == 'PLAYBOOK' ? 'Total records of playbooks' :
+      ''
+    "></i>
+  </span> -->
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'active-campagins'"
+         (click)="manageCampaignsCounts?.launchedManageCampaginsCount > 0 && filterAssets('active-campagins')"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.launchedManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'active-campagins',
+           'front-count-blue': selectedFilter !== 'active-campagins'
+         }">
+
+            <!-- Icon changes based on selection -->
+            <i *ngIf="selectedFilter == 'active-campagins'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'active-campagins'" class="fa fa-check-circle"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.launchedManageCampaginsCount}}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Active
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total in progress tracks' : 'Total in progress playbooks'"></i>
+            </span> -->
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col">
+
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'scheduled-campagins'"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.scheduledManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}"
+         (click)="manageCampaignsCounts?.scheduledManageCampaginsCount > 0 && filterAssets('scheduled-campagins')">
+
+         <!-- Icon section -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'scheduled-campagins',
+           'front-count-scheduled': selectedFilter !== 'scheduled-campagins'
+         }">
+
+            <!-- Show correct icon -->
+            <i *ngIf="selectedFilter == 'scheduled-campagins'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'scheduled-campagins'" class="fa fa-calendar-check"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.scheduledManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">
+            Scheduled
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total completed tracks' : 'Total completed playbooks'"></i>
+            </span> -->
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'draft-campagins'"
+         (click)="manageCampaignsCounts?.draftManageCampaginsCount > 0 && filterAssets('draft-campagins')"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.draftManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green ': selectedFilter == 'draft-campagins',
+           'front-count-yellow': selectedFilter !== 'draft-campagins'
+         }">
+            <i *ngIf="selectedFilter == 'draft-campagins'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'draft-campagins'" class="fa fa-edit"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.draftManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Draft
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true"
+                  [attr.title]="moduleType == 'TRACK' ? 'Total not viewed tracks' : 'Total not viewed playbooks'"></i>
+            </span> -->
+         </div>
+
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'ended-campaigns'"
+         (click)="manageCampaignsCounts?.endedManageCampaginsCount > 0 && filterAssets('ended-campaigns')"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.endedManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green ': selectedFilter == 'ended-campaigns',
+           'front-count-ended': selectedFilter !== 'ended-campaigns'
+         }">
+            <i *ngIf="selectedFilter == 'ended-campaigns'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'ended-campaigns'" class="fa fa-hourglass-end"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.endedManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Ended
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total interacted assets "></i> </span></div> -->
+         </div>
+      </div>
+   </div>
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'cancelled-campagins'"
+         (click)="manageCampaignsCounts?.cancelledManageCampaginsCount > 0 && filterAssets('cancelled-campagins')"
+         [ngStyle]="{'cursor':manageCampaignsCounts?.cancelledManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green ': selectedFilter == 'cancelled-campagins',
+           'front-count-red': selectedFilter !== 'cancelled-campagins'
+         }">
+            <i *ngIf="selectedFilter == 'cancelled-campagins'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'cancelled-campagins'" class="fa fa-times-circle"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.cancelledManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Cancelled
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total non interacted assets "></i> </span> -->
+         </div>
+      </div>
+   </div>
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'archived-campagins'"
+         (click)="manageCampaignsCounts?.archivedManageCampaginsCount > 0 && filterAssets('archived-campagins')"
+         [ngStyle]="{'cursor': manageCampaignsCounts?.archivedManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'archived-campagins',
+           'front-count-archive': selectedFilter !== 'archived-campagins'
+         }">
+            <i *ngIf="selectedFilter == 'archived-campagins'" class="fa fa-check	"></i>
+            <i *ngIf="selectedFilter !== 'archived-campagins'" class="fa fa-archive"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.archivedManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Archived
+            <!-- <i class="fa fa-info-circle ml5" aria-hidden="true"
+               title="Total folders "></i></div> -->
+         </div>
+      </div>
+   </div>
+
+
+   <div class="front-count-col" *ngIf="marketingModulesEnabled">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'partner-campaigns'"
+         (click)="manageCampaignsCounts?.partnerCampaginsManageCampaginsCount > 0 && filterAssets('partner-campaigns')"
+         [ngStyle]="{'cursor':manageCampaignsCounts?.partnerCampaginsManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'partner-campaigns',
+           'front-count-handshake': selectedFilter !== 'partner-campaigns'
+         }">
+            <i *ngIf="selectedFilter == 'partner-campaigns'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'partner-campaigns'" class="fas fa-handshake"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.partnerCampaginsManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Partner Campaigns
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total non interacted assets "></i> </span> -->
+         </div>
+      </div>
+   </div>
+
+
+
+   <div class="front-count-col">
+      <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folders'"
+         (click)="manageCampaignsCounts?.foldersManageCampaginsCount > 0 && filterAssets('folders')"
+         [ngStyle]="{'cursor':manageCampaignsCounts?.foldersManageCampaginsCount > 0 ? 'pointer' : 'not-allowed'}">
+
+         <!-- Icon background and icon switch -->
+         <div class="front-count-icon" [ngClass]="{
+           'front-count-green': selectedFilter == 'folders',
+           'front-count-purple': selectedFilter !== 'folders'
+         }">
+            <i *ngIf="selectedFilter == 'folders'" class="fa fa-check"></i>
+            <i *ngIf="selectedFilter !== 'folders'" class="fa fa-folder-open"></i>
+         </div>
+
+         <!-- Count -->
+         <div class="front-count-number">{{ manageCampaignsCounts?.foldersManageCampaginsCount }}</div>
+
+         <!-- Label -->
+         <div class="front-count-label">Folders
+            <!-- <span class="tooltip-icon">
+               <i class="fa fa-info-circle ml5" aria-hidden="true" title="Total non interacted assets "></i> </span> -->
+         </div>
+      </div>
+   </div>
+</div>

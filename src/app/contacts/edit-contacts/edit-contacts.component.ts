@@ -445,7 +445,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 
 	}
-
+	onCsvPageSizeChange(newSize: number) {
+		this.pageSize = +newSize;
+		this.setCsvPage(1); 
+	}
 	setClipBoardPage(page: number) {
 		try {
 			if (page < 1 || page > this.pager.totalPages) {

@@ -30,6 +30,7 @@ export class CampaignService {
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     campaignSchedulerUrl = this.authenticationService.SCHEDULER_URL;
     partnerMarketingCampaign: boolean = false;
+     ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -1551,6 +1552,16 @@ changeDomainUserWorkFlowStatus(campaignUser: any) {
             .map(this.extractData)
             .catch(this.handleError);
 
+    }
+    getManageCampaignsCounts(vendorCompanyProfileName: string) {
+        let userId = this.authenticationService.getUserId();
+        let findManageCampaignsCounts =
+            this.URL + 'campaign/manage/campaigns/tileCounts/' +
+            userId + '/' +
+            vendorCompanyProfileName +
+            this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token; // no extra slash
+
+        return this.authenticationService.callGetMethod(findManageCampaignsCounts);
     }
     
     listCampaignPipelinesByCompanyProfile(companyProfileName: string) {

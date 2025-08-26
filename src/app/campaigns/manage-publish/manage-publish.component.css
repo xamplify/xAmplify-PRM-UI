@@ -364,4 +364,27 @@ span.gearicon-font-cu {
   background-color: #5cb85c !important;
   border: none !important;
 }
+.campaign-status-tiles .tile-card {
+  background: #2e2e2e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 6px 0;
+  text-align: center;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.campaign-status-tiles .tile-card:hover {
+  background: #3a3a3a;
+}
+.campaign-status-tiles .tile-card.selected {
+  background-color: #1d72b8;
+  color: #fff;
+  font-weight: bold;
+}
+.tile-content {
+  font-size: 14px;
+}
+
 

@@ -57,6 +57,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   customCsvHeaders: any[];
   duplicateMappedColumns = [];
   paginationType = '';
+  pageSize: number = 12;  
   regularExpressions = new RegularExpressions();
   parsedCsvDtos: Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
   defaultContactsCsvColumnHeaderDtos: Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
@@ -666,14 +667,17 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   setPage(page: number) {
     if (this.paginationType == "csvContacts") {
-      this.pager = this.socialPagerService.getPager(this.contacts.length, page, XAMPLIFY_CONSTANTS.pageSize);
+      this.pager = this.socialPagerService.getPager(this.contacts.length, page, this.pageSize);
       this.pagedItems = this.contacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
     } else if (this.paginationType == "customCsvContacts") {
-      this.pager = this.socialPagerService.getPager(this.parsedCsvDtos.length, page, XAMPLIFY_CONSTANTS.pageSize);
+      this.pager = this.socialPagerService.getPager(this.parsedCsvDtos.length, page, this.pageSize);
       this.pagedItems = this.parsedCsvDtos.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
   }
-
+  onPageSizeChange(newSize: number) {
+  this.pageSize = +newSize;
+  this.setPage(1); 
+}
   setInvalidUsersPage(page: number) {
     this.csvPager = this.socialPagerService.getPager(this.invalidUsers.length, page, XAMPLIFY_CONSTANTS.pageSize);
     this.csvPagedItems = this.invalidUsers.slice(this.csvPager.startIndex, this.csvPager.endIndex + 1);
