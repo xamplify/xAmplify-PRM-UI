@@ -2137,6 +2137,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
 filterContentByType(event: any) {
+    this.selectedSortedOption = this.sortByDropDown[0];
     this.customResponse = new CustomResponse();
     this.pagination.searchKey = '';
     this.pagination.pageIndex = 1;
@@ -2156,6 +2157,7 @@ filterContentByType(event: any) {
         this.selectedFilter = event;
         this.archived = false;
         this.partnerMarketingCampaign = false;
+    this.selectedSortedOption = this.sortByDropDown[0];
 
 
         this.pagination.selectedApprovalStatusCategory = event;
@@ -2223,6 +2225,7 @@ if (event == 'archived-campagins') {
             }
     this.archived = false;
         this.partnerMarketingCampaign = false;
+    this.selectedSortedOption = this.sortByDropDown[0];
 
             // Load folder data
             this.listCampaign(this.pagination);
@@ -2242,6 +2245,8 @@ if (event == 'archived-campagins') {
         this.modulesDisplayType.isFolderGridView = false;
         this.modulesDisplayType.isFolderListView = false;
     this.archived = false;
+        this.selectedSortedOption = this.sortByDropDown[0];
+
         this.partnerMarketingCampaign = false;
 
         // Load campaigns
@@ -2251,6 +2256,7 @@ if (event == 'archived-campagins') {
         this.pagination.selectedApprovalStatusCategory = '';
         this.archived = false;
         this.partnerMarketingCampaign = false;
+    this.selectedSortedOption = this.sortByDropDown[0];
 
         this.refreshPage();
     }
