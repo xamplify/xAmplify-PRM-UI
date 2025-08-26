@@ -360,6 +360,7 @@ listDefaultTemplates(userId:any){
     ).subscribe(
       (blob: Blob) => {
         this.downloadBlob(blob, 'Generated-Presentation.pptx');
+        this.referenceService.showSweetAlertSuccessMessage('Presentation Generated successfully!');
       },
       err => {
         console.error('[pptx] generation failed', err.status, err.error);
