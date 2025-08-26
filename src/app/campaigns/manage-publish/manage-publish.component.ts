@@ -24,6 +24,7 @@ import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { SortOption } from 'app/core/models/sort-option';
 
 declare var swal: any, $: any, flatpickr: any;
 
@@ -151,10 +152,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     marketingModulesEnabled = false;
     hasRedistributionAccess = false;
     marketingModulesAccessForPartner = false;
+    selectedStatus: string = 'ALL';
+ selectedFilter: string = 'all';
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
-        private route: ActivatedRoute, public renderer: Renderer, public properties: Properties) {
+        private route: ActivatedRoute, public renderer: Renderer, public properties: Properties, public referenceService: ReferenceService) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -311,6 +314,44 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
+      const savedView = localStorage.getItem('defaultDisplayType');
+
+        if (savedView == 'LIST') {
+            this.selectedFilter = 'all';
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+              this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+            this.filterContentByType('all'); 
+        }
+    else if (savedView == 'GRID') {
+        this.selectedFilter = 'all';
+        this.modulesDisplayType.isListView = false;
+        this.modulesDisplayType.isGridView = true;
+        this.modulesDisplayType.isFolderGridView = false;
+        this.modulesDisplayType.isFolderListView = false;
+        this.campaignViewType = "grid";
+          this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+        this.filterContentByType('all');
+
+    }
+        else {
+            // Default → Folder Grid View
+            this.selectedFilter = 'folders';
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView = true;
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+              this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+            this.filterContentByType('folders'); 
+        }
+
         try {
             this.archived = this.campaignService.archived;
             this.partnerMarketingCampaign = this.campaignService.partnerMarketingCampaign;
@@ -356,11 +397,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     /*** XNFR-512 ***/
     getCampaignTypes() {
+        this.archived = false;
+        this.partnerMarketingCampaign = false;
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
         const self = this;
         self.campaignService.getCampaignTypes().subscribe(
             response => {
+                this.refService.loading(this.httpRequestLoader, false);
                 let campaignAccess = response.data;
                 self.campaignAccess.emailCampaign = campaignAccess.regular;
                 self.campaignAccess.videoCampaign = campaignAccess.video;
@@ -1213,6 +1257,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "list";
+
+        // 🟢 Force select "all" tile when switching to List View
+        // this.selectedFilter = 'all';
+        // this.pagination.selectedApprovalStatusCategory = 'all';
+
+        // 🟢 Load all campaigns automatically
+        // this.listCampaign(this.pagination);
             this.listCampaign(this.pagination);
         } else if ("Grid" == viewType && (this.categoryId == undefined || this.categoryId == 0)) {
             this.modulesDisplayType.isGridView = true;
@@ -2085,4 +2136,123 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.listCampaign(this.pagination);
     }
 
+filterContentByType(event: any) {
+    this.customResponse = new CustomResponse();
+    this.pagination.searchKey = '';
+    this.pagination.pageIndex = 1;
+
+    // ✅ Valid filter types
+    if (
+        event == 'all' ||
+        event == 'active-campagins' ||
+        event == 'scheduled-campagins' ||
+        event == 'ended-campaigns' ||
+        event == 'cancelled-campagins' ||
+        event == 'archived-campagins' ||
+        event == 'draft-campagins' ||
+        event == 'partner-campaigns' ||
+        event == 'folders'
+    ) {
+        this.selectedFilter = event;
+        this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+
+        this.pagination.selectedApprovalStatusCategory = event;
+
+        // ✅ Handle Archived Campaigns separately
+        if (event == 'archived-campagins') {
+            this.selectedFilter = 'archived-campagins';
+            this.archived = true;
+            this.partnerMarketingCampaign = false;
+                this.pagination.archived = true; // important
+
+            this.showArchivedCampaigns();
+            return;
+        }
+
+        // ✅ Handle Partner Campaigns separately
+        if (event == 'partner-campaigns') {
+            this.selectedFilter = 'partner-campaigns';
+            this.partnerMarketingCampaign = true;
+            this.archived = false;
+            this.showPartnerCampaigns();
+            return;
+        }
+if (event == 'archived-campagins') {
+    this.selectedFilter = 'archived-campagins';
+    this.archived = true;
+    this.partnerMarketingCampaign = false;
+
+    this.modulesDisplayType.isListView = false;
+    this.modulesDisplayType.isGridView = false;
+    this.modulesDisplayType.isFolderGridView = false;
+    this.modulesDisplayType.isFolderListView = false;
+
+    // Apply saved view for archived campaigns
+    const savedView = localStorage.getItem('defaultDisplayType');
+    if (savedView == 'GRID') {
+        this.modulesDisplayType.isGridView = true;
+        this.campaignViewType = "grid";
+    } else {
+        this.modulesDisplayType.isListView = true;
+        this.campaignViewType = "list";
+    }
+
+    this.showArchivedCampaigns();
+    return;
+}
+
+        // ✅ Handle Folders separately
+        if (event == 'folders') {
+            // Reset normal list/grid flags
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+
+            // ✅ Restore the user's last selected folder view
+            if (this.modulesDisplayType.isFolderListView) {
+                this.modulesDisplayType.isFolderListView = true;
+                this.modulesDisplayType.isFolderGridView = false;
+                this.campaignViewType = "Folder-List";
+                this.setViewType("Folder-List");
+            } else {
+                this.modulesDisplayType.isFolderGridView = true;
+                this.modulesDisplayType.isFolderListView = false;
+                this.campaignViewType = "Folder-Grid";
+                this.setViewType("Folder-Grid");
+            }
+    this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+            // Load folder data
+            this.listCampaign(this.pagination);
+            return;
+        }
+          const savedView = localStorage.getItem('defaultDisplayType');
+        if (savedView == 'GRID') {
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
+        } else {
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.campaignViewType = "list";
+        }
+
+        this.modulesDisplayType.isFolderGridView = false;
+        this.modulesDisplayType.isFolderListView = false;
+    this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+        // Load campaigns
+        this.listCampaign(this.pagination);
+
+    } else {
+        this.pagination.selectedApprovalStatusCategory = '';
+        this.archived = false;
+        this.partnerMarketingCampaign = false;
+
+        this.refreshPage();
+    }
+}
 }
