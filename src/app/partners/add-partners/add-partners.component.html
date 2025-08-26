@@ -810,7 +810,11 @@
 
                                         </tbody>
                                     </table>
-
+                                    <div>
+                                        <span class="success">
+                                            <strong>Total Records : {{newPartnerUser?.length}}</strong>
+                                        </span>
+                                    </div>
                                     <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
                                         <li [ngClass]="{disabled:pager.currentPage === 1}"><a
                                                 (click)="setSocialPage(1)">First</a></li>
