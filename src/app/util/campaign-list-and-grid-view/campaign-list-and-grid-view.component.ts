@@ -641,6 +641,9 @@ saveAsCampaign() {
   this.referenceService.loading(this.httpRequestLoader, true);
   const campaignData = this.setCampaignData();
   campaignData.userId = this.authenticationService.getUserId();
+  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+        campaignData.vanityUrlDomainName = this.authenticationService.companyProfileName;
+  }
   this.campaignService.saveAsCampaign(campaignData)
       .subscribe(data => {
           this.clicked = false;
