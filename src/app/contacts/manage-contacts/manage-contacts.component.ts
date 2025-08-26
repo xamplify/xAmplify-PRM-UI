@@ -148,15 +148,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
 		{ 'name': 'List name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
-		{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
-		{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+		{ 'name': 'Creation date (A-Z)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+		{ 'name': 'Creation date (Z-A)', 'value': 'createdTime-DESC', 'for': 'contactList' },
 
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
 		{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
-		{ 'name': 'First name (ASC)', 'value': 'firstName-ASC', 'for': 'contacts' },
-		{ 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
-		{ 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
-		{ 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
+		{ 'name': 'First name (A-Z)', 'value': 'firstName-ASC', 'for': 'contacts' },
+		{ 'name': 'First name (Z-A)', 'value': 'firstName-DESC', 'for': 'contacts' },
+		{ 'name': 'Last name (A-Z)', 'value': 'lastName-ASC', 'for': 'contacts' },
+		{ 'name': 'Last name (Z-A)', 'value': 'lastName-DESC', 'for': 'contacts' },
 
 	];
 
@@ -296,8 +296,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.assignLeads = true;
 			this.module = 'leads';
 			this.checkingContactTypeName = "Lead";
-			this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
-			this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
+			this.sortOptions.push({ 'name': 'Assigned date (A-Z)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
+			this.sortOptions.push({ 'name': 'Assigned date (Z-A)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
 		} else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
 			this.module = 'contacts';
@@ -314,27 +314,27 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				{ 'name': 'Sort by', 'value': '', 'for': '' },
 				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
 				{ 'name': 'Group name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
-				{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
-				{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
-		
+				{ 'name': 'Creation date (A-Z)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+				{ 'name': 'Creation date (Z-A)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+
 				{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
 				{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
-				{ 'name': 'First name (ASC)', 'value': 'firstName-ASC', 'for': 'contacts' },
-				{ 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
-				{ 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
-				{ 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
-		
+				{ 'name': 'First name (A-Z)', 'value': 'firstName-ASC', 'for': 'contacts' },
+				{ 'name': 'First name (Z-A)', 'value': 'firstName-DESC', 'for': 'contacts' },
+				{ 'name': 'Last name (A-Z)', 'value': 'lastName-ASC', 'for': 'contacts' },
+				{ 'name': 'Last name (Z-A)', 'value': 'lastName-DESC', 'for': 'contacts' },
+
 			];
-			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Company (A-Z)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Company (Z-A)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Vertical (A-Z)', 'value': 'vertical-ASC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Vertical (Z-A)', 'value': 'vertical-DESC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Region (A-Z)', 'value': 'region-ASC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Region (Z-A)', 'value': 'region-DESC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Type (A-Z)', 'value': 'partnerType-ASC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Type (Z-A)', 'value': 'partnerType-DESC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Category (A-Z)', 'value': 'category-ASC', 'for': 'contacts' });
+			this.sortOptions.push({ 'name': 'Category (Z-A)', 'value': 'category-DESC', 'for': 'contacts' });
 		}
 
 		this.showAll = true;

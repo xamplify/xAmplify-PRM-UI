@@ -139,20 +139,24 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	showGDPR: boolean;
 	sortOptions = [
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
-		{ 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
-		{ 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
-		{ 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
-		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
-		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
-		{ 'name': 'Onboarded On(ASC)', 'value': 'createdTime-ASC' },
-		{ 'name': 'Onboarded On(DESC)', 'value': 'createdTime-DESC' },
-
-		/* XNFR-556
-		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
-		 { 'name': 'Added(DESC)', 'value': 'id-DESC' },*/
+		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC' },
+		{ 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+		{ 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+		{ 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+		{ 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+		{ 'name': 'Company (A-Z)', 'value': 'contactCompany-ASC' },
+		{ 'name': 'Company (Z-A)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Vertical (A-Z)', 'value': 'vertical-ASC' },
+		{ 'name': 'Vertical (Z-A)', 'value': 'vertical-DESC'},
+		{ 'name': 'Region (A-Z)', 'value': 'region-ASC' },
+		{ 'name': 'Region (Z-A)', 'value': 'region-DESC' },
+		{ 'name': 'Type (A-Z)', 'value': 'partnerType-ASC' },
+		{ 'name': 'Type (Z-A)', 'value': 'partnerType-DESC' },
+		{ 'name': 'Category (A-Z)', 'value': 'category-ASC' },
+		{ 'name': 'Category (Z-A)', 'value': 'category-DESC' },
+		{ 'name': 'Onboarded On (A-Z)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Onboarded On (Z-A)', 'value': 'createdTime-DESC' }
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;

@@ -172,10 +172,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'First name (ASC)', 'value': 'firstName-ASC' },
-		{ 'name': 'First name (DESC)', 'value': 'firstName-DESC' },
-		{ 'name': 'Last name (ASC)', 'value': 'lastName-ASC' },
-		{ 'name': 'Last name (DESC)', 'value': 'lastName-DESC' },
+		{ 'name': 'First name (A-Z)', 'value': 'firstName-ASC' },
+		{ 'name': 'First name (Z-A)', 'value': 'firstName-DESC' },
+		{ 'name': 'Last name (A-Z)', 'value': 'lastName-ASC' },
+		{ 'name': 'Last name (Z-A)', 'value': 'lastName-DESC' },
 	];
 
 	public sortOption: any = this.sortOptions[0];
@@ -372,16 +372,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			this.module = 'partners';
 			this.checkingContactTypeName = "Partner";
-			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
-			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
-			this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC' });
-			this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC' });
-			this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC' });
-			this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC' });
-			this.sortOptions.push({ 'name': 'Type (ASC)', 'value': 'partnerType-ASC' });
-			this.sortOptions.push({ 'name': 'Type (DESC)', 'value': 'partnerType-DESC' });
-			this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC' });
-			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
+			this.sortOptions.push({ 'name': 'Company (A-Z)', 'value': 'contactCompany-ASC' });
+			this.sortOptions.push({ 'name': 'Company (Z-A)', 'value': 'contactCompany-DESC' });
+			this.sortOptions.push({ 'name': 'Vertical (A-Z)', 'value': 'vertical-ASC' });
+			this.sortOptions.push({ 'name': 'Vertical (Z-A)', 'value': 'vertical-DESC' });
+			this.sortOptions.push({ 'name': 'Region (A-Z)', 'value': 'region-ASC' });
+			this.sortOptions.push({ 'name': 'Region (Z-A)', 'value': 'region-DESC' });
+			this.sortOptions.push({ 'name': 'Type (A-Z)', 'value': 'partnerType-ASC' });
+			this.sortOptions.push({ 'name': 'Type (Z-A)', 'value': 'partnerType-DESC' });
+			this.sortOptions.push({ 'name': 'Category (A-Z)', 'value': 'category-ASC' });
+			this.sortOptions.push({ 'name': 'Category (Z-A)', 'value': 'category-DESC' });
 
 		}
 		if (this.checkingContactTypeName == "Contact") {
