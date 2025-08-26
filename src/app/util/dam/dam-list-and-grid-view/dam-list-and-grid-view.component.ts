@@ -826,9 +826,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	viewDetails(asset: any) {
-		/*****XNFR-169***/
 		let url = "/home/dam/sharedp/view/" + asset.id;
+		if (this.FromOliverPopUp) {
+			this.referenceService.openWindowInNewTab(url);
+		} else {
+			/*****XNFR-169***/
 		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		}
 	}
 	getDefaultVideoSettings() {
 		this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
