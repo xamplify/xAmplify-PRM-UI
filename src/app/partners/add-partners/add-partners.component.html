@@ -826,9 +826,14 @@
                                             <a (click)="setSocialPage(pager.totalPages)">Last</a>
                                         </li>
                                     </ul>
-
-
-                                </div>
+                                    <div class="page-size pull-right" *ngIf="newPartnerUser?.length != 0">
+                                        <select id="pageSize" class="form-control form-control-sm" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)" [ngModelOptions]="{standalone: true}">
+                                            <option [ngValue]="12">12</option>
+                                            <option [ngValue]="24">24</option>
+                                            <option [ngValue]="48">48</option>
+                                        </select>
+                                    </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -1007,7 +1012,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="white-space-transform">
-                                                        <div class="actions-block override-actions" style="display: flex;">
+                                                        <div class="actions-block override-actions" style="display: flex;float: unset;">
                                                             <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess && contact.partnerStatus != 'deactivated'"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Update Partner Modules" (click)="editPartnerModulesAccess(contact)">

@@ -193,8 +193,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
-																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService?.marketingModulesAccessToPartner) 
-																&& !FromOliverPopUp">
+																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !FromOliverPopUp">
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
@@ -231,7 +230,9 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Analytics-->
-															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner"
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" 
+																*ngIf="(!authenticationService.module.isMarketingCompany && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner) 
+															    || (authenticationService?.marketingModulesAccessToPartner && isPartnerView)"
 																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>

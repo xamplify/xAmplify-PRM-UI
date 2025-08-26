@@ -388,7 +388,7 @@
                               <div *ngIf="isVendorVersion && lead?.activeCRM" style="margin-left: 61px;" class="neo ml-50">
                                 <h5 class="mb0 mt5"><strong>CRM Id:</strong>
                                   <span>{{lead.crmId}}
-                                  </span>
+                                  </span>                                  
                                 </h5>
                               </div>
                               <div *ngIf="(isVendorVersion || isPartnerVersion && vanityLoginDto?.vanityUrlFilter) && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo ml-50">
@@ -417,8 +417,18 @@
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                                 </app-timestamp>
                               </h5>
-                              <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'" 
-                                data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
+                              <h6 class="green-banner inline-flex" *ngIf="lead?.partnerStatus === 'deactivated'" data-toggle="tooltip"
+                                data-placement="bottom" title="Partnership is deactivated">DEACTIVATED</h6>
+                            <h5 *ngIf="!isPartnerVersion" class='m_t_view mt5 mb0' data-toggle="tooltip" data-placement="bottom" title="{{lead.accountSubType || '-'}}"
+                              style="margin: 7px 0 2px 0;font-weight: 400;">
+                              {{lead.accountSubType ? (lead.accountSubType | slice:0:20) : '-'}}
+                              <span *ngIf="lead.accountSubType?.length > 20">...</span>
+                            </h5>                            
+                            <h5 *ngIf="!isPartnerVersion" class='m_t_view mt5 mb0' data-toggle="tooltip" data-placement="bottom" title="{{lead.partnerType || '-'}}"
+                              style="margin: 7px 0 2px 0;font-weight: 400;">
+                              {{lead.partnerType ? (lead.partnerType | slice:0:20) : '-'}}
+                              <span *ngIf="lead.partnerType?.length > 20">...</span>
+                            </h5>                            
                             </td>
                             <td class="text-center">
                               <!---xnfr-426---->
@@ -783,7 +793,7 @@
   </div>
 </div>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)" [isVendorVersion]="isVendorVersion">
 </app-deal-chat-popup>
 <!-- XNFR-839-->
 <app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [opportunityType]="'LEAD'" [customName]="'manage'" (closeEmitter)="closeEmitter($event)"></app-selectfield>

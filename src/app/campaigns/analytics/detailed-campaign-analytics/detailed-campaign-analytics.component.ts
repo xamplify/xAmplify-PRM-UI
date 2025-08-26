@@ -30,6 +30,7 @@ import { Subject } from 'rxjs';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Lead } from 'app/leads/models/lead';
 import { Deal } from 'app/deals/models/deal';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 declare var $:any, Highcharts:any, swal: any;
 @Component({
   selector: 'app-detailed-campaign-analytics',
@@ -199,12 +200,17 @@ declare var $:any, Highcharts:any, swal: any;
   selectedDeal: Deal;
   isCommentSection: boolean = false;
   loggedInUserCompanyId : number;
-  selectedDealForComments : Deal; // XNFR-426
+  selectedDealForComments: Deal; // XNFR-426
+  showAskOliverModalPopup: boolean = false;
+  oliverDeal: any;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
   @Input() campaignTitle:any;
   canPartnerEditLead: boolean = true;
+  oliverLead: any;
+  isPartnerMarketingCampaignCreatedForVendor: boolean = false;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -1096,12 +1102,13 @@ declare var $:any, Highcharts:any, swal: any;
             this.campaign = data;
             this.campaign.displayTime = new Date(this.campaign.utcTimeInString);
             this.isChannelCampaign = data.channelCampaign;
+            this.isPartnerMarketingCampaignCreatedForVendor = this.loggedInUserCompanyId == this.campaign.createdForCompanyId;
             if((this.campaign.nurtureCampaign || (this.campaign.createdForCompanyId != null && this.campaign.createdForCompanyId > 0)) && this.campaign.companyId == this.loggedInUserCompanyId){
             	this.isNavigatedThroughAnalytics = false;
                 this.isPartnerEnabledAnalyticsAccess = true;
                 this.isDataShare = true;
-            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && (this.loggedInUserCompanyId == this.campaign.createdForCompanyId))) {
-              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared || this.loggedInUserCompanyId == this.campaign.createdForCompanyId;
+            }else if ((this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) || (!this.campaign.nurtureCampaign && (this.isPartnerMarketingCampaignCreatedForVendor))) {
+              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared ;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
               if (data.campaignType === 'EVENT') {
@@ -3194,6 +3201,20 @@ viewCampaignLeadForm(leadId: any) {
       let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
       this.referenceService.goToRouter("/home/campaigns/"+encodedCampaignId+"/"+this.campaignTitle+"/checkin");
     }
+
+  askOliver(data: any) {
+    if (this.showLeads) {
+      this.oliverLead = data;
+    } else if (this.showDeals) {
+      this.oliverDeal = data;
+    }
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI(event: any) {
+    this.chatGptSettingDTO = event;
+    this.showAskOliverModalPopup = false;
+  }
 
 
 }

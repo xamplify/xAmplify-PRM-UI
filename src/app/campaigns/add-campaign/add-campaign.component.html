@@ -467,7 +467,7 @@
 
                                             <!--Configure Pipelines-->
                                             <div class="form-group"
-                                                *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && !isPageCampaign) || (campaignAccess?.enableLeads && !isPageCampaign && showMarketingAutomationOption))">
+                                                *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && !isPageCampaign) || (campaignAccess?.enableLeads && !isPageCampaign && showMarketingAutomationOption)|| (!isPageCampaign && isPartnerMarketingCompany && enableLeadsByVendorCompany))">
                                                 <label class="control-label col-sm-4 tab_p0" translate>Configure
                                                     Pipelines</label>
                                                 <div class="col-sm-8">

@@ -23,7 +23,7 @@
 <ngx-loading [show]="loading" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
 <!---XNFR-125-->
 <ng-container>
-   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="!isTimeLineView &&!showRsvpDetails &&!isShowPartnerLeads && !showDealForm && !showLeadForm" [class.ml0]="authenticationService.isSuperAdmin()">
+   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="!isTimeLineView &&!showRsvpDetails &&!isShowPartnerLeads && !showDealForm && !showLeadForm && !showAskOliverModalPopup" [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar square-box" style="margin: 0 0px 15px">
          <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
          <button *ngIf="campaignType == 'EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" (click)="goToCampaignCheckIn(campaign.campaignId)"  class="btn btn-primary" id="check-in-css">
@@ -208,7 +208,7 @@
                      ">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
                         (click)="openEmailTemplateInNewTab(campaign.emailTemplate)"
-                        [class.disabled]="!isPartnerEnabledAnalyticsAccess  ? true : null">
+                        [class.disabled]="!(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -768,8 +768,8 @@
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb vlt-b-c detail_card"
                            (click)="showCampaignLeads()"
-                           [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-                           [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
+                           [ngClass]="{'forbidden' :!(isDataShare|| isPartnerMarketingCampaignCreatedForVendor) || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ?true:null}"
+                           [disabled]="campaignReport.leadCount < 1 || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor)">
                            <div class="portlet-body text-center">
                               <i class="fa fa-user-circle"></i>
                               <h1>
@@ -783,8 +783,8 @@
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb lt-g-b-c detail_card"
                            (click)="showCampaignDeals()"
-                           [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-                           [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
+                           [ngClass]="{'forbidden' :!(isDataShare|| isPartnerMarketingCampaignCreatedForVendor) || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor) ?true:null}"
+                           [disabled]="campaignReport.dealCount < 1 || !(isPartnerEnabledAnalyticsAccess || isPartnerMarketingCampaignCreatedForVendor)">
                            <div class="portlet-body text-center">
                               <i class="fa fa-tags"></i>
                               <h1>
@@ -1774,7 +1774,7 @@
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
                <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding-top: 4px"
                   aria-hidden="true"></span></a>
-            <app-manage-campaign-leads [campaignId]="campaignId" [fromAnalytics]="!isNavigatedThroughAnalytics"
+            <app-manage-campaign-leads [campaignId]="campaignId" (showOliver)="askOliver($event)" [fromAnalytics]="!isNavigatedThroughAnalytics"
                [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)" 
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
@@ -1794,7 +1794,7 @@
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
-               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
+               (viewCampaignDealForm)="viewCampaignDealForm($event)" (showOliver)="askOliver($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)" [isOneClickLaunchCampaign]="campaign.oneClickLaunch">
             </app-manage-campaign-deals>
          </div>
@@ -3862,3 +3862,6 @@
       </li>
    </ul>
 </ng-template>
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageDeal]="showDeals" [isFromManageLead]="showLeads"
+   [selectedDeal]="oliverDeal" [selectedLead]="oliverLead" (notifyParent)="closeAskAI($event)"
+   [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>

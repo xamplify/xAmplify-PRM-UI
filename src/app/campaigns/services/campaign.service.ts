@@ -1561,4 +1561,9 @@ changeDomainUserWorkFlowStatus(campaignUser: any) {
 
         return this.authenticationService.callGetMethod(findManageCampaignsCounts);
     }
+    
+    listCampaignPipelinesByCompanyProfile(companyProfileName: string) {
+        return this.http.get(this.URL + "/pipeline/campaign/partner/list?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName)
+            .map(this.extractData).catch(this.handleError);
+    }
 }

@@ -55,7 +55,7 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   ngOnInit() {
 	  this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.hasAllAccess = this.referenceService.hasAllAccess();
+    this.hasAllAccess = this.referenceService.hasAllAccess() || this.authenticationService.marketingModulesAccessToPartner;
   }
 
   viewGirdHistory(asset:any){
