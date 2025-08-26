@@ -222,9 +222,9 @@
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5
-              *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isReDistribution"></app-box-loader>
+              *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isCampaign"></app-box-loader>
             <div
-              *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isReDistribution"
+              *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && authenticationService?.module?.isCampaign"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a [className]="redistributedCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter purple-soft' : 'dashboard-stat dashboard-stat-lighter purple-soft disable-tile-pj'"
                 [class.greay]="2!=selectedTabIndex"
