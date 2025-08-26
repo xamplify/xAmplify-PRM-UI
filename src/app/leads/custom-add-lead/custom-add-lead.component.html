@@ -276,7 +276,19 @@
                                     <app-timestamp [isOnlyDate]="true" [dateAndTime]="commentDealAndLeadDto?.createdTime"></app-timestamp>
                                   </span>
                                 </h5>
-                              <!--Lead Created Details-->
+                                <div *ngIf="commentDealAndLeadDto?.accountSubType != null && commentDealAndLeadDto?.accountSubType != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.accountSubType}}">
+                                    <span><strong>Account SubType </strong></span>: {{commentDealAndLeadDto?.accountSubType | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.accountSubType?.length > 25">..</span>
+                                  </h5>
+                                </div>                                
+                                <div *ngIf="commentDealAndLeadDto?.partnerType != null && commentDealAndLeadDto?.partnerType != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.partnerType}}">
+                                    <span><strong>Partner Type </strong></span>: {{commentDealAndLeadDto?.partnerType | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.partnerType?.length > 25">..</span>
+                                  </h5>
+                                </div>
+                                <!--Lead Created Details-->
                               <div class="lead-details-border mt5">
                                 <h5 class="mt10">
                                   <span class="ml5 underline"><strong>Lead Details:</strong></span>
