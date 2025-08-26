@@ -554,6 +554,8 @@
       *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
       <div class="portlet-title">
         <div class="caption">Uploaded Team Members</div>
+        <div><button id="right" type="submit" class="button_blue bgcolor-unset mt10" (click)="addTeamMembers()"><span
+              class="btn btn-primary transition txt_pd-top3">Save</span></button></div>
         <div [hidden]="addTeamMemberLoader.isLoading">
           <a class="close-circle" data-toggle="tooltip" data-placement="bottom" title="Go Back"
             (click)="clearUploadCsvDataAndGoBack()">
@@ -608,7 +610,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let teamMember of newlyAddedTeamMembers;let i=index" class="upload-team-member-class">
+              <tr *ngFor="let teamMember of paginatedUploadedMembers;let i=index" class="upload-team-member-class">
                 <td>
                   <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
                 </td>
@@ -664,9 +666,9 @@
                 </td>
               </tr>
             </tbody>
-          </table>
-          <button id="right" type="submit" class="button_blue bgcolor-unset mt10" (click)="addTeamMembers()"><span
-              class="btn btn-primary transition txt_pd-top3">Save</span></button>
+          </table>              
+          <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAllUploaded($event)"
+                (notifyParent)="setPageUploaded($event)"></app-pagination>
         </div>
       </div>
       <!----End Of Uploaded Team Members-->

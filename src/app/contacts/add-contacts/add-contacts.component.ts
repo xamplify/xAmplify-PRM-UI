@@ -1434,7 +1434,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
 
     }
-
+    onPageSizeChange(newSize: number) {
+        this.pageSize = +newSize;  
+        this.setPage(1);
+    }
     validateSocialContacts(socialUsers: any) {
         let users = [];
         for (let i = 0; i < socialUsers.length; i++) {
