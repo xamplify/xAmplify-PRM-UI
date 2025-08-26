@@ -107,7 +107,8 @@ export class LandingPageService {
         let landingPageId = "landingPageId="+id;
         let vanityUrlFilter = "&vanityUrlFilter="+isVanityUrlFilter;
         let companyProfileName = isVanityUrlFilter?"&vanityCompanyProfileName="+this.authenticationService.companyProfileName:"";
-        return this.http.get( this.URL + "getById?"+landingPageId+vanityUrlFilter+companyProfileName +"&access_token=" + this.authenticationService.access_token, "" )
+        let loggedInUserId = "&loggedInUserId="+this.authenticationService.getUserId();
+        return this.http.get( this.URL + "getById?"+landingPageId+vanityUrlFilter+companyProfileName +loggedInUserId +"&access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

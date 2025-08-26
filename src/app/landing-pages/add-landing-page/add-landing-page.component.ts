@@ -58,6 +58,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     updatedAndCloseButtonText = this.properties.UPDATE_AND_CLOSE;
     @Input() isFromOliver: boolean = false;
     @Output() notifyEmit: EventEmitter<any> = new EventEmitter();
+    partnerMarketingVendorLogo: string = "";
+    partnerMarketingPartnerLogo: string = "";
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
@@ -114,6 +116,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         this.landingPage.type = landingPage.type;
                         this.landingPage.categoryId = landingPage.categoryId;
                         this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
+                        this.partnerMarketingVendorLogo = landingPage.vendorLogPath;
+                        this.partnerMarketingPartnerLogo = landingPage.partnerLogoPath;
                         $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                         var request = function (method, url, data, type, callback) {
                             var req = new XMLHttpRequest();
@@ -147,12 +151,17 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         var save = function (jsonContent: string, htmlContent: string) {
                             self.landingPage.htmlBody = htmlContent;
                             self.landingPage.jsonBody = jsonContent;
-                            if (self.landingPage.coBranded) {
-                                if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                                    swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
-                                    return false;
-                                }
-                            }
+                    if (self.landingPage.coBranded) {
+                      if (self.authenticationService.marketingModulesAccessToPartner) {
+                        if (jsonContent.indexOf(self.partnerMarketingVendorLogo) < 0 || jsonContent.indexOf(self.partnerMarketingPartnerLogo) < 0) {
+                          swal("", "Whoops! We're unable to save this page because you deleted the partner logo or Vendor logo. You'll need to select a new page and start over.", "error");
+                          return false;
+                        }
+                      } else if (jsonContent.indexOf(self.coBraningImage) < 0) {
+                        swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
+                        return false;
+                      }
+                    }
 
                             if (!defaultLandingPage) {
                                 self.name = landingPageName;

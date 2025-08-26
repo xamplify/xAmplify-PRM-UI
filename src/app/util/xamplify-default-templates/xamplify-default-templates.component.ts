@@ -68,6 +68,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   isSubjectDuplicate: boolean = false;
   categoriesAndCompaniesImage  = "https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg";
   googleMapsImage= "https://xamplify.s3.amazonaws.com/dev/images/bee-1305/f-7f38af0f-f5ed-4ee6-a6f6-c4d9909ceb4e-94151676035396555.jpeg";
+  partnerMarketingVendorLogo: string = "";
+  partnerMarketingPartnerLogo: string = "";
   constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,private logger: XtremandLogger,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -875,6 +877,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   this.landingPage.type = landingPage.type;
                   this.landingPage.categoryId = landingPage.categoryId;
                   this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
+                  this.partnerMarketingVendorLogo = landingPage.vendorLogPath;
+                  this.partnerMarketingPartnerLogo = landingPage.partnerLogoPath;
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'
                     ||landingPage.sourceInString == 'WELCOME_PAGE' || landingPage.sourceInString == 'PARTNER_JOURNEY_PAGE'
                     || landingPage.sourceInString == 'VENDOR_MARKETPLACE_PAGE'){
@@ -934,12 +938,17 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           return false;
                         }
                       }
-                      if (self.landingPage.coBranded) {
-                          if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                              swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
-                              return false;
-                          }
+                    if (self.landingPage.coBranded) {
+                      if (self.authenticationService.marketingModulesAccessToPartner) {
+                        if (jsonContent.indexOf(self.partnerMarketingVendorLogo) < 0 || jsonContent.indexOf(self.partnerMarketingPartnerLogo) < 0) {
+                          swal("", "Whoops! We're unable to save this page because you deleted the partner logo or Vendor logo. You'll need to select a new page and start over.", "error");
+                          return false;
+                        }
+                      } else if (jsonContent.indexOf(self.coBraningImage) < 0) {
+                        swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
+                        return false;
                       }
+                    }
                       if(self.isVendorMarketplacePages && (jsonContent.indexOf(self.categoriesAndCompaniesImage) < 0 
                        && jsonContent.indexOf(self.googleMapsImage) < 0)){
                         swal("", "Whoops! We're unable to save this page because you deleted the Company Tiles Logo and Google Maps Logo. You'll need to select a new page and start over.", "error");
