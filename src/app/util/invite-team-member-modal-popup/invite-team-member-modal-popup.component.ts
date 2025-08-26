@@ -184,7 +184,12 @@ export class InviteTeamMemberModalPopupComponent implements OnInit {
         response => {
           this.isPopupLoading = false;
           this.teamMemberGroups = response.data;
+           if (this.teamMemberGroups && this.teamMemberGroups.length) {
+        this.teamMemberGroupId = this.teamMemberGroups[0].id;
+        this.getPartnersCount(this.teamMemberGroupId);          
+      }
         }, error => {
+          this.isPopupLoading = false;
           this.addServerError(error);
         });
   }
@@ -195,7 +200,10 @@ export class InviteTeamMemberModalPopupComponent implements OnInit {
       .subscribe(
         response => {
           this.teamMemberGroups = response.data;
-          this.teamMemberGroupId = this.teamMemberGroups[0].id;
+          if (this.teamMemberGroups && this.teamMemberGroups.length) {
+        this.teamMemberGroupId = this.teamMemberGroups[0].id;   // pre-select
+        this.getPartnersCount(this.teamMemberGroupId);          // << call here
+      }
           this.isPopupLoading = false;
         },
         error => {
