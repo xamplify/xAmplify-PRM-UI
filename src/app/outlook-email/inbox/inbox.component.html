@@ -1,15 +1,18 @@
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"
-  style="padding-bottom:20px"></ngx-loading>
 <div class="page-content">
   <div class="col-md-12">
     <div class="portlet light">
-       <ng-container *ngIf="!loading && threads?.length === 0">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
+       <ng-container *ngIf="!loading &&  (threads?.length <= 0 || statusCode != 200)">
         <div class="alert alert-danger"><strong>Configure Your Mail Settings.</strong></div>
       </ng-container>
-      <div class="portlet-title">
+      <div class="portlet-title" *ngIf="!loading && (threads?.length > 0 || statusCode === 200 || statusCode === 202)">
         <!-- <div class="caption">All</div> -->
+         <button class="btn btn-primary" (click)="openEmailModalPopup()"><i class="fa fa-envelope"></i> Compose Mail</button>
+          <button class="btn btn-primary" (click)="getAccessToken()">
+							<i class="fa fa-refresh" title="refresh" data-toggle="tooltip"
+								aria-hidden="true"></i></button>
       </div>
-      <div class="mail-threads">
+      <div class="mail-threads" *ngIf="!loading">
         <div class="email-list">
           <div class="container-fluid">
             <div class="email-item" *ngFor="let thread of threads; let i = index" (click)="selectThread(thread)" [class.active]="selectedThread===thread">
@@ -47,7 +50,7 @@
                     </div>
                     <div class="email-meta">
                       <div class="email-timestamp">
-                        {{thread.messages[0]?.timestamp}}
+                        {{thread?.lastReceivedDate}}
                       </div>
                     </div>
                   </div>
@@ -59,25 +62,7 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-8" *ngIf="selectedThread">
-    <div class="portlet light thread-view">
-      <div class="portlet-title">
-        <div class="caption">{{selectedThread.subject}}</div>
-      </div>
-      <div class="thread-messages">
-        <div *ngFor="let msg of selectedThread.messages" class="mail-message">
-          <div class="header">
-            <strong>{{msg.from}}</strong>
-            <span class="pull-right">{{msg.timestamp}}</span>
-          </div>
-          <div class="body" [innerHTML]="msg.body"></div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <app-previewemail *ngIf="selectedThread"></app-previewemail>
 
 </div>
-<!-- <div *ngIf="loading" class="text-center">
-  <img src="assets/images/loader.gif" alt="Loading..." />
-</div> -->
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [accessToken]="accessToken" [authenticateEmailId]="authenticateEmailId" [type]="type"  (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
