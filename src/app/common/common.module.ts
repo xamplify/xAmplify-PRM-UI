@@ -235,6 +235,7 @@ import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member
 import { DamAnalyticsDetailsComponent } from 'app/dam/dam-analytics-details/dam-analytics-details.component';
 import { PptDesignPickerComponent } from 'app/util/ppt-design-picker/ppt-design-picker.component';
 import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe';
+import { SelectManageCampaignComponent } from 'app/campaigns/select-manage-campaign/select-manage-campaign.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -279,7 +280,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe, SelectManageCampaignComponent
 	],
 
 
@@ -323,7 +324,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
 		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe, SelectManageCampaignComponent
 	]
 
 
