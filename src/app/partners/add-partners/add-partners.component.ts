@@ -1432,7 +1432,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "addPartnerComponent", "setPage");
 		}
 	}
-
+	onPageSizeChange(newSize: number) {
+		this.pageSize = +newSize;
+		this.setSocialPage(1); 
+	}
 	googleContacts() {
 		try {
 			if (this.loggedInThroughVanityUrl) {

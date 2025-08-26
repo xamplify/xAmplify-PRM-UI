@@ -882,7 +882,15 @@
 															<a (click)="setCsvPage(pager.totalPages)" translate>Last</a>
 														</li>
 													</ul>
-												</div>
+													<div class="page-size" style="display:inline-block; float:right; margin-left:10px;">
+														<select id="pageSize" class="form-control form-control-sm" [(ngModel)]="pageSize"
+															(ngModelChange)="onCsvPageSizeChange($event)" [ngModelOptions]="{standalone: true}">
+															<option [ngValue]="12">12</option>
+															<option [ngValue]="24">24</option>
+															<option [ngValue]="48">48</option>
+														</select>
+													</div>
+													</div>
 
 												<!----- XNFR-671 Custom CSV Mapped Option ----->
 												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 1">
