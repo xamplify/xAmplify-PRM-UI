@@ -1,7 +1,7 @@
 (function (window) {
 	window.__env = window.__env || {};
 
-	window.__env.domainName = "bytedance";
+	window.__env.domainName = "";
 	
 	/*************Local*******************************/
 
