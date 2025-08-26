@@ -120,7 +120,7 @@ export class LandingPageService {
             url = this.URL +"vendorJourneyLandingpagedeleteById/"
         }else{
            url =  this.URL + "delete/"
-        companyProfileName = isVanityUrlFilter?"vanityCompanyProfileName="+this.authenticationService.companyProfileName+"&":"";
+        companyProfileName = isVanityUrlFilter?"companyProfileName="+this.authenticationService.companyProfileName+"&":"";
         }
         return this.http.get( url + id + "/"+this.authenticationService.getUserId()+"?"+companyProfileName+"access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
