@@ -558,20 +558,20 @@ export class SortOption {
 
 	dormantDropDownOptions = [
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Last Remainder Sent (A-Z)', 'value': 'time-ASC' },
-		{ 'name': 'Last Remainder Sent (Z-A)', 'value': 'time-DESC' },
+		{ 'name': 'Last Remainder Sent ASC', 'value': 'time-ASC' },
+		{ 'name': 'Last Remainder Sent DESC', 'value': 'time-DESC' },
 	];
 
 	incompleteCompanyProfileSortOptions = [	
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Last Remainder Sent (A-Z)', 'value': 'sentOn-ASC' },
-		{ 'name': 'Last Remainder Sent (Z-A)', 'value': 'sentOn-DESC' },
+		{ 'name': 'Last Remainder Sent ASC', 'value': 'sentOn-ASC' },
+		{ 'name': 'Last Remainder Sent DESC', 'value': 'sentOn-DESC' },
 	]
 
 	approvePartnerSortOptions =[
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Email Id Sent (A-Z)', 'value': 'emailId-ASC' },
-		{ 'name': 'Email Id Sent (Z-A)', 'value': 'emailId-DESC' }
+		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' }
 	]
 	/**XNFR-867**/
 	userListLevelCampaignAnalyticsSortDropDownOptions = [
