@@ -79,8 +79,9 @@
             <i class="mrfpx" [ngClass]="marketingModule?.moduleId === 5 ? 'fa fa-file-pdf-o' : marketingModule?.moduleId === 17 
             ? 'fa fa-paint-brush' : marketingModule?.moduleId === 7 ? 'fa fa-file-text-o' : marketingModule?.moduleId === 10 
             ? 'fa fa-object-group' : marketingModule?.angularIcon" aria-hidden="true"></i>
-            {{ marketingModule.moduleId === 7 || marketingModule.moduleId === 10 || marketingModule.moduleId === 17 
-              ? 'Design ' + marketingModule.moduleName : marketingModule.moduleName }}
+            {{ marketingModule.moduleId === 7 || marketingModule.moduleId === 10 || marketingModule.moduleId === 17
+              ? 'Design ' + marketingModule.moduleName : marketingModule.moduleId === 2 
+              ? 'Create ' + marketingModule.moduleName :  marketingModule.moduleName }}
           </td>
           <td class="override-actions">
             <i class="fa fa-check success" aria-hidden="true"></i>

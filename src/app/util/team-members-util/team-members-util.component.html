@@ -1010,7 +1010,7 @@
           class="row rowPaddingCustomize4">
           <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.contactsAccessGivenByVendor">
+            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.contactsAccessGivenByVendor && authenticationService?.module?.isContact">
           </app-team-member-analytics-contact-details>
         </div>
         <!--******************Company Details*******************-->
@@ -1019,7 +1019,7 @@
           class="row rowPaddingCustomize4">
           <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.contactsAccessGivenByVendor">
+            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.contactsAccessGivenByVendor && authenticationService?.module?.isContact">
           </app-team-member-analytics-company-details>
         </div>
         <div *ngIf="!isVendorVersion" class="row rowPaddingCustomization2">

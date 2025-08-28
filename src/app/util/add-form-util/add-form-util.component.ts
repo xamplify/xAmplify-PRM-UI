@@ -192,20 +192,20 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     /***XNFR-433***/
     @Input() isCopyForm: boolean = false;
 
-     /** XNFR-424 **/
-     rowInfos = [];
-     //rowInfosDuplicate = [];
-     selectedRow: any;
-     totalRows: number = 0;
-     totalColumns: number = 0;
-     isRowClicked: boolean = false;
-     rowIndexForAdd: number;
-     columnIndexForAdd: number;
-     customResponseForNewFeature: CustomResponse = new CustomResponse();
+    /** XNFR-424 **/
+    rowInfos = [];
+    //rowInfosDuplicate = [];
+    selectedRow: any;
+    totalRows: number = 0;
+    totalColumns: number = 0;
+    isRowClicked: boolean = false;
+    rowIndexForAdd: number;
+    columnIndexForAdd: number;
+    customResponseForNewFeature: CustomResponse = new CustomResponse();
     /** XNFR-424 ENDS **/
     /** XNFR-522 **/
-    @Input() isVendorOrMasterLandingPage:boolean = false;
-    @Output() goBack:EventEmitter<any> = new EventEmitter();
+    @Input() isVendorOrMasterLandingPage: boolean = false;
+    @Output() goBack: EventEmitter<any> = new EventEmitter();
     isValidFormWithFormLabels = true;
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -258,14 +258,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.isHideFormInfo = true;
             $('#add-form-name-modal').modal('show');
             this.getById(this.selectedDefaultFormId);
-        } else if (this.isCopyForm){
+        } else if (this.isCopyForm) {
             this.isAdd = true;
             this.isHideFormInfo = true;
             this.isSaveAs = true;
             this.ngxloading = true;
             this.getById(this.selectedDefaultFormId);
             $('#add-form-name-modal').modal('show');
-        }else {
+        } else {
             this.listDefaultColumns();
             this.highlightByLength(1, 1);
         }
@@ -445,12 +445,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 this.categoryNames = data.data;
                 let categoryIds = this.categoryNames.map(function (a: any) { return a.id; });
                 if (this.isAdd && !this.isCopyForm) {
-                    //this.form.categoryId = categoryIds[0];
-                    this.selectCategory(categoryIds[0]);
+                    const defaultCategory = this.categoryNames.find((c: any) => c.defaultCategory);
+                    setTimeout(() => {
+                        this.selectCategory(defaultCategory.id);
+                    }, 500);
                 }
-
-            },
-            error => { this.logger.error("error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error); },
+            }, error => { this.logger.error("error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error); },
             () => this.logger.info("Finished listCategories()"));
     }
 
@@ -479,7 +479,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         });
     }
 
- 	/** XNFR-424 **/
+    /** XNFR-424 **/
     listDefaultColumns() {
         const self = this;
         $.each(this.defaultColumns, function (rowIndex: number, column: any) {
@@ -595,31 +595,31 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     highlightByLength(rowLength: number, columnLength: number) {
-        if (rowLength > 0 && columnLength > 0 ) {
-            if(this.rowInfos!=undefined && this.rowInfos.length>0){
+        if (rowLength > 0 && columnLength > 0) {
+            if (this.rowInfos != undefined && this.rowInfos.length > 0) {
                 this.selectedRow = this.rowInfos[rowLength - 1];
                 this.selectedColumn = this.selectedRow.formLabelDTOs[columnLength - 1];
                 this.isRowClicked = true;
                 this.isColumnClicked = true;
-            }else{
-                if(this.isMdfForm){
+            } else {
+                if (this.isMdfForm) {
                     this.isValidFormWithFormLabels = false;
-                }else{
+                } else {
                     this.isValidFormWithFormLabels = true;
                 }
             }
-            
+
         }
     }
 
     addColumn(column: any, isDefaultColumn: boolean) {
         let columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
-        if(this.columnIndexForAdd === undefined && this.rowIndexForAdd === undefined){
+        if (this.columnIndexForAdd === undefined && this.rowIndexForAdd === undefined) {
             columnInfos = undefined;
         } else {
             columnInfos = this.rowInfos[this.rowIndexForAdd].formLabelDTOs;
         }
-        if(columnInfos === undefined || columnInfos.length < 3){
+        if (columnInfos === undefined || columnInfos.length < 3) {
             if (column.labelType === 'quiz_radio' || column.labelType === 'quiz_checkbox') {
                 if (!this.form.quizForm) {
                     this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
@@ -630,7 +630,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.columnInfo = new ColumnInfo();
             this.totalColumns++;
             this.columnInfo = this.setColumns(column, isDefaultColumn, this.totalColumns);
-            if(columnInfos === undefined){
+            if (columnInfos === undefined) {
                 let rowInfoPerRow: Array<ColumnInfo> = new Array<ColumnInfo>();
                 rowInfoPerRow.push(this.columnInfo);
                 this.totalRows++;
@@ -930,7 +930,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                     columnInfosList.push(...rowInfo.formLabelDTOs)
                 });
                 let duplicateFieldLabels = this.referenceService.returnDuplicates(columnInfosList.map(function (a) { return a.hiddenLabelId; }));
-                $.each(this.rowInfos, function(index, rowInfo) {
+                $.each(this.rowInfos, function (index, rowInfo) {
                     $.each(rowInfo.formLabelDTOs, function (index, columnInfo) {
                         $('#' + columnInfo.divId).removeClass(self.borderErrorClass);
                         $('#' + columnInfo.divId).addClass(self.borderSuccessClass);
@@ -949,7 +949,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                         if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
                             self.validateQuizChoices(columnInfo);
                         }
-    
+
                     });
                 })
                 let invalidLabelDivCount = 0;
@@ -1261,7 +1261,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.customResponse = new CustomResponse('ERROR', result.message, true);
                         } else {
                             this.referenceService.isUpdated = true;
-                            if(this.isVendorOrMasterLandingPage){
+                            if (this.isVendorOrMasterLandingPage) {
                                 this.goBack.emit()
                                 this.ngxloading = false;
                                 return;
@@ -1330,7 +1330,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     navigateBack() {
-        if(this.isVendorOrMasterLandingPage){
+        if (this.isVendorOrMasterLandingPage) {
             this.goBack.emit();
         }
         else if (this.isMdfForm) {
@@ -1964,7 +1964,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
     checkForQuizFields(rowInfos: any) {
         let quizFieldsCount;
-        $.each(rowInfos, function(index, rowInfo) {
+        $.each(rowInfos, function (index, rowInfo) {
             const quizFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
             quizFieldsCount = quizFieldsCount + quizFieldsCountRowWise;
         });
@@ -2014,8 +2014,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         }
     }
 
-     /*** XNFR-424 ***/
-     setRowInfo(columnInfos: any, rowIndex: number) {
+    /*** XNFR-424 ***/
+    setRowInfo(columnInfos: any, rowIndex: number) {
         const rowInfo: any = {};
         rowInfo['divId'] = "row-" + rowIndex;
         rowInfo['formLabelDTOs'] = columnInfos;
@@ -2062,15 +2062,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     removeRow(rowInfo: any, rowIndex: number) {
-        let columnInfos:Array<ColumnInfo> =  rowInfo['formLabelDTOs'];
+        let columnInfos: Array<ColumnInfo> = rowInfo['formLabelDTOs'];
         const defaultColumnsLength = columnInfos.filter((item) => item.defaultColumn === true).length;
-        if(defaultColumnsLength < 1) {
+        if (defaultColumnsLength < 1) {
             this.rowInfos = this.referenceService.removeObjectFromArrayList(this.rowInfos, rowInfo.divId, 'divId');
             $('#' + rowInfo.divId).remove();
             this.checkAndRemoveEmptyRows();
             this.isRowClicked = false;
             this.isColumnClicked = false;
-            this.checkForQuizFields(this.rowInfos);   
+            this.checkForQuizFields(this.rowInfos);
         } else {
             this.customResponse = new CustomResponse('ERROR', 'Can not delete the row as it includes default feilds.', true);
             this.referenceService.goToTop();

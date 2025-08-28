@@ -155,8 +155,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Type (Z-A)', 'value': 'partnerType-DESC' },
 		{ 'name': 'Category (A-Z)', 'value': 'category-ASC' },
 		{ 'name': 'Category (Z-A)', 'value': 'category-DESC' },
-		{ 'name': 'Onboarded On (A-Z)', 'value': 'createdTime-ASC' },
-		{ 'name': 'Onboarded On (Z-A)', 'value': 'createdTime-DESC' }
+		{ 'name': 'Onboarded On (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Onboarded On (DESC)', 'value': 'createdTime-DESC' }
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;

@@ -50,7 +50,7 @@
       </div>
       <!-- card three  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showContactCount && referenseService?.contactsAccessGivenByVendor"
+         *ngIf="partnerJourneyAnalytics?.showContactCount && referenseService?.contactsAccessGivenByVendor && authenticationService?.module?.isContact"
          [scrollTo]="partnerJourneyAnalytics?.contactCount > 0 ? '#ta-contact-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.contacts_Info + infoName : ''}}">
          <div
@@ -62,7 +62,7 @@
       </div>
       <!-- card eleven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showCompanyCount && isTeamMemberAnalytics && referenseService?.contactsAccessGivenByVendor"
+         *ngIf="partnerJourneyAnalytics?.showCompanyCount && isTeamMemberAnalytics && referenseService?.contactsAccessGivenByVendor && authenticationService?.module?.isContact"
          [scrollTo]="partnerJourneyAnalytics?.companyCount > 0 ? '#ta-company-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div

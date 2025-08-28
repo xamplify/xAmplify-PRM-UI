@@ -1572,12 +1572,14 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     }
 
     fetchModuleForPartnerModuleAccess() {
-        let url = this.moduleUrl + 'fetchModuleForPartnerModuleAccess/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+        let url = this.moduleUrl + 'fetchModuleForPartnerModuleAccess/' + this.authenticationService.getUserId()
+            + '?access_token=' + this.authenticationService.access_token + '&companyProfileName=' + this.authenticationService.companyProfileName;
         return this.authenticationService.callGetMethod(url);
     }
 
-    fetchModulesForEditPartnerModule(partnershipId:any) {
-        let url = this.moduleUrl + 'fetchModulesForEditPartnerModule/'+this.authenticationService.getUserId()+'/'+partnershipId+'?access_token=' + this.authenticationService.access_token;
+    fetchModulesForEditPartnerModule(partnershipId: any) {
+        let url = this.moduleUrl + 'fetchModulesForEditPartnerModule/' + this.authenticationService.getUserId() + '/' + partnershipId
+            + '?access_token=' + this.authenticationService.access_token + '&companyProfileName=' + this.authenticationService.companyProfileName;
         return this.authenticationService.callGetMethod(url);
     }
 
