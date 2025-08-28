@@ -800,6 +800,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.prmDashboard = data.prmDashboard;
 					/***XBI-1533**/
 					this.authenticationService.module.isAdmin = data.admin;
+this.authenticationService.module.isContact = data.contacts;
 					this.authenticationService.module.isPartnerAdmin = data.partnerAdmin;
 					this.authenticationService.module.isTeamMember = data.teamMember;
 					this.authenticationService.module.isPartnerCompany = data.partnerCompany;
