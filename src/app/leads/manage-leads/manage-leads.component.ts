@@ -25,6 +25,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { UserService } from 'app/core/services/user.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -32,7 +33,7 @@ declare var swal:any, $:any, videojs: any;
   selector: 'app-manage-leads',
   templateUrl: './manage-leads.component.html',
   styleUrls: ['./manage-leads.component.css'],
-  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue,Properties],
+  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue,Properties,DamService],
   animations: [CustomAnimation]
 })
 export class ManageLeadsComponent implements OnInit {
