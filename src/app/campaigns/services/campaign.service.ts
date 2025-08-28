@@ -1568,4 +1568,11 @@ changeDomainUserWorkFlowStatus(campaignUser: any) {
         return this.http.get(this.URL + "/pipeline/campaign/partner/list?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName)
             .map(this.extractData).catch(this.handleError);
     }
+
+        getHalopsaPipelinesByTicketTypeAndCompanyId(ticketTypeId: number, companyId: number, pipelineType: any) {
+        return this.http.get(this.URL + "/pipeline/company/ticket-type/" + ticketTypeId + "/" + companyId + "/" + pipelineType + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

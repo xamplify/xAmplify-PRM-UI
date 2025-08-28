@@ -2557,7 +2557,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     onChangeLeadTicketType() {
         let self = this;
-        this.getHalopsaLeadPipelines();
+        if (this.authenticationService.marketingModulesAccessToPartner) {
+            this.getHalopsaLeadPipelinesByCompanyId();
+        } else {
+            this.getHalopsaLeadPipelines();
+        }
         if ('ZOHO' === this.activeCRMDetails.type) {
             this.getZohoDealLayouts();
         }
@@ -2565,7 +2569,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
       onChangeDealTicketType() {
         let self = this;
-        this.getHalopsaDealPipelines();
+                    if (this.authenticationService.marketingModulesAccessToPartner) {
+                        this.getHalopsaDealPipelinesByCompanyId();
+                    } else {
+                        this.getHalopsaDealPipelines();
+                    }
       }
 
       getHalopsaLeadPipelines() {
@@ -2575,25 +2583,29 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
          this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.leadTicketTypeId, this.loggedInUserId, "LEAD")
                 .subscribe(
                     response => {
-                        this.ngxLoading = false;
-                        if (response.statusCode == 200) {
-                            let data = response.data;                            
-                            this.leadPipelines = data;
-                            if(this.leadPipelines!=undefined && this.leadPipelines.length>0){
-                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
-                            }else{
-                                this.defaultLeadPipelineId = 0;
-                                this.campaign.leadPipelineId = 0;
-                            }
-                            
-                        }
+                        this.populateHalopsaLeadPipelines(response);
                     },
                     error => {
                         this.ngxLoading = false;
                         this.xtremandLogger.error(error);
                     });
       }
+
+    private populateHalopsaLeadPipelines(response: any) {
+        this.ngxLoading = false;
+        if (response.statusCode == 200) {
+            let data = response.data;
+            this.leadPipelines = data;
+            if (this.leadPipelines != undefined && this.leadPipelines.length > 0) {
+                this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                this.campaign.leadPipelineId = this.leadPipelines[0].id;
+            } else {
+                this.defaultLeadPipelineId = 0;
+                this.campaign.leadPipelineId = 0;
+            }
+
+        }
+    }
 
       getHalopsaDealPipelines() {
         let self = this;
@@ -2602,18 +2614,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
          this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.dealTicketTypeId, this.loggedInUserId, "DEAL")
          .subscribe(
              response => {
-                this.ngxLoading = false;
-                 if (response.statusCode == 200) {
-                     let data = response.data;                            
-                     this.dealPipelines = data;
-                     if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
-                        this.defaultDealPipelineId = this.dealPipelines[0].id;
-                        this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                     }else{
-                        this.defaultDealPipelineId = 0;
-                        this.campaign.dealPipelineId = 0;
-                     }
-                 }
+                this.populateHalopsaDealPipelines(response);
              },
              error => {
                 this.ngxLoading = false;
@@ -2621,12 +2622,31 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
              });
       }
 
+    private populateHalopsaDealPipelines(response: any) {
+        this.ngxLoading = false;
+        if (response.statusCode == 200) {
+            let data = response.data;
+            this.dealPipelines = data;
+            if (this.dealPipelines != undefined && this.dealPipelines.length > 0) {
+                this.defaultDealPipelineId = this.dealPipelines[0].id;
+                this.campaign.dealPipelineId = this.dealPipelines[0].id;
+            } else {
+                this.defaultDealPipelineId = 0;
+                this.campaign.dealPipelineId = 0;
+            }
+        }
+    }
+
       getHalopsaTicketTypes(){
         let self = this;
-        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-            (result: any) => {
-                self.getHalopsaTicketTypesByCompanyId(result);
-            });
+        if(this.authenticationService.marketingModulesAccessToPartner){
+            self.getHalopsaTicketTypesByCompanyId(this.authenticationService.vendorCompanyId);
+        }else{
+            this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+                (result: any) => {
+                    self.getHalopsaTicketTypesByCompanyId(result);
+                });
+        }
       }
 
       getHalopsaTicketTypesByCompanyId(companyId: number) {
@@ -2649,8 +2669,13 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     }else{
                         this.defaultLeadTicketTypeId = 0;
                     }
-                    this.getHalopsaLeadPipelines();
-                    this.getHalopsaDealPipelines();
+                    if (this.authenticationService.marketingModulesAccessToPartner) {
+                        this.getHalopsaLeadPipelinesByCompanyId();
+                        this.getHalopsaDealPipelinesByCompanyId();
+                    } else {
+                        this.getHalopsaLeadPipelines();
+                        this.getHalopsaDealPipelines();
+                    }
                 }
                 this.referenceService.stopLoader(this.pipelineLoader);
             },
@@ -2669,10 +2694,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     getZohoLeadLayouts() {
         let self = this;
+        if(this.authenticationService.marketingModulesAccessToPartner){
+            self.getZohoLeadTicketTypesById(this.authenticationService.vendorCompanyId);
+        }else{
         this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
             (result: any) => {
                 self.getZohoLeadTicketTypesById(result);
             });
+        }
     }
 
     getZohoLeadTicketTypesById(companyId:any) {
@@ -2693,7 +2722,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.isDealLayoutSelected = true;
                     this.getZohoDealTicketTypesById(companyId);
                     this.getMappedDealLayoutIdByLeadLayoutId(companyId, this.campaign.leadTicketTypeId);
-                    this.getHalopsaLeadPipelines();
+                    if (this.authenticationService.marketingModulesAccessToPartner) {
+                        this.getHalopsaLeadPipelinesByCompanyId();
+                    } else {
+                        this.getHalopsaLeadPipelines();
+                    }
                 }
                 this.referenceService.stopLoader(this.pipelineLoader);
             },
@@ -2736,7 +2769,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     if(this.dealTicketTypes!=undefined && this.dealTicketTypes.length>0){
                         this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
                     }
-                    this.getHalopsaDealPipelines();
+                    if (this.authenticationService.marketingModulesAccessToPartner) {
+                        this.getHalopsaDealPipelinesByCompanyId();
+                    } else {
+                        this.getHalopsaDealPipelines();
+                    }
                 }
             }
         )
@@ -2819,4 +2856,34 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     });
         }
     }
+
+    getHalopsaLeadPipelinesByCompanyId() {
+        let self = this;
+        this.loggedInUserId = this.authenticationService.getUserId();
+         this.ngxLoading = true;
+         this.campaignService.getHalopsaPipelinesByTicketTypeAndCompanyId(this.campaign.leadTicketTypeId, this.authenticationService.vendorCompanyId, "LEAD")
+                .subscribe(
+                    response => {
+                        this.populateHalopsaLeadPipelines(response);
+                    },
+                    error => {
+                        this.ngxLoading = false;
+                        this.xtremandLogger.error(error);
+                    });
+      }
+
+    getHalopsaDealPipelinesByCompanyId() {
+        let self = this;
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.ngxLoading = true;
+         this.campaignService.getHalopsaPipelinesByTicketTypeAndCompanyId(this.campaign.dealTicketTypeId, this.authenticationService.vendorCompanyId, "DEAL")
+         .subscribe(
+             response => {
+                this.populateHalopsaDealPipelines(response);
+             },
+             error => {
+                this.ngxLoading = false;
+                 this.xtremandLogger.error(error);
+             });
+      }
 }
