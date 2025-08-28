@@ -220,6 +220,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   }
 
   getSelectedIndex(index: any) {
+    this.pagination.pageIndex = 1;
     this.pagination.partnerTeamMemberGroupFilter = index == 1;
     this.findPartnerCompanies(this.pagination);
   }
