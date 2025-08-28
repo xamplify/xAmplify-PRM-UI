@@ -1904,4 +1904,12 @@ this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = response.li
       });
 
   }
+  clearSearchAndResetResponse() {
+  this.searchKey = '';
+  this.customResponse = new CustomResponse(); // This resets the alert
+  // OR just hide it:
+  // this.customResponse.isVisible = false;
+  this.goToApprovePartnersDiv(); // Reloads the data
+}
+
 }

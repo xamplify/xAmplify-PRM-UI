@@ -558,14 +558,14 @@ export class SortOption {
 
 	dormantDropDownOptions = [
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Last Remainder Sent ASC', 'value': 'time-ASC' },
-		{ 'name': 'Last Remainder Sent DESC', 'value': 'time-DESC' },
+		{ 'name': 'Last Reminder Sent (ASC)', 'value': 'time-ASC' },
+		{ 'name': 'Last Reminder Sent (DESC)', 'value': 'time-DESC' },
 	];
 
 	incompleteCompanyProfileSortOptions = [	
 		{ 'name': 'Sort By', 'value': '' },
-		{ 'name': 'Last Remainder Sent ASC', 'value': 'sentOn-ASC' },
-		{ 'name': 'Last Remainder Sent DESC', 'value': 'sentOn-DESC' },
+		{ 'name': 'Last Reminder Sent (ASC)', 'value': 'sentOn-ASC' },
+		{ 'name': 'Last Reminder Sent (DESC)', 'value': 'sentOn-DESC' },
 	]
 
 	approvePartnerSortOptions =[
