@@ -1585,7 +1585,7 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
 
     updatePartnerModulesAccess(partner:any) {
         partner.userId = this.authenticationService.getUserId();
-        let url = this.moduleUrl + 'updatePartnerModulesAccess?access_token=' + this.authenticationService.access_token;
+        let url = this.moduleUrl + 'updatePartnerModulesAccess?access_token=' + this.authenticationService.access_token + '&companyProfileName=' + this.authenticationService.companyProfileName;
         return this.authenticationService.callPutMethod(url, partner);
     }
 
