@@ -25,6 +25,8 @@ export class SelectManageCampaignComponent implements OnInit {
   @Input() selectedFilter: string = ''; // <-- this line is required
   @Input() marketingModulesEnabled: boolean = false;
   @Input() archived: boolean = false;
+  @Input() campaignAccess: any;
+  @Input() authModule: any;
 
   constructor(private authenticationService: AuthenticationService, private referenceService: ReferenceService,
     private router: Router, private campaignService: CampaignService, public vanityUrlService: VanityURLService) {

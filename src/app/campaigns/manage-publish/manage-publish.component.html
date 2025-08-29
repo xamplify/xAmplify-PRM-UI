@@ -32,6 +32,8 @@
    <app-select-manage-campaign [selectedFilter]="selectedFilter" [marketingModulesEnabled]="marketingModulesEnabled"
       (archivedCampaignsClick)="showArchivedCampaigns()" [archived]="archived"
       (partnerCampaignsClick)="showPartnerCampaigns()"
+        [campaignAccess]="campaignAccess"
+          [authModule]="authenticationService?.module"
       (filterContentByType)="filterContentByType($event)"></app-select-manage-campaign>
    <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
    </ngx-loading>
