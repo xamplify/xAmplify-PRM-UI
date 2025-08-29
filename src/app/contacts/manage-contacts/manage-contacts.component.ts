@@ -148,8 +148,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
 		{ 'name': 'List name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
-		{ 'name': 'Creation date (A-Z)', 'value': 'createdTime-ASC', 'for': 'contactList' },
-		{ 'name': 'Creation date (Z-A)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+		{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+		{ 'name': 'Created On (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
 
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
 		{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
@@ -314,8 +314,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				{ 'name': 'Sort by', 'value': '', 'for': '' },
 				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
 				{ 'name': 'Group name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
-				{ 'name': 'Creation date (A-Z)', 'value': 'createdTime-ASC', 'for': 'contactList' },
-				{ 'name': 'Creation date (Z-A)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+				{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+				{ 'name': 'Created On (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
 
 				{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
 				{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
