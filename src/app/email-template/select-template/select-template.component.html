@@ -34,10 +34,10 @@
                                     </li>
                                     <li class="filter" (click)="showRichTemplates(2)"
                                         [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex"
-                                        *ngIf="!httpRequestLoader.isLoading" translate>Email</li>
+                                        *ngIf="campaignAccess.emailCampaign && !httpRequestLoader.isLoading" translate>Email</li>
                                     <li class="filter" (click)="showRichVideoTemplates(4)"
                                         [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex"
-                                        *ngIf="campaignAccess.videoCampaign &&!httpRequestLoader.isLoading " translate>
+                                        *ngIf="campaignAccess.videoCampaign && !httpRequestLoader.isLoading" translate>
                                         Video</li>
                                     <li class="filter" (click)="showRegularCoBrandingTemplates(6)"
                                         [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex"
@@ -49,7 +49,7 @@
                                         translate>Video Co-Branding</li>
                                     <li class="filter" (click)="showUploadTemplates(5)"
                                         [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex"
-                                        *ngIf="!httpRequestLoader.isLoading" translate>Upload Custom</li>
+                                        *ngIf="!httpRequestLoader.isLoading && (campaignAccess.emailCampaign || campaignAccess.videoCampaign)" translate>Upload Custom</li>
                                     <li class="filter" (click)="showEventTemplates(9)"
                                         [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex"
                                         *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>
