@@ -660,6 +660,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.validateAddTeamMemberForm("teamMemberGroup");
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.loading(this.addTeamMemberLoader, false);
+          this.getPartnersCount(teamMemberGroupId, undefined);
         },
         error => {
           this.logger.errorPage(error);
