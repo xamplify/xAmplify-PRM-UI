@@ -216,7 +216,8 @@ export const routes: Routes = [
 
 	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
-    { path: 'prl/:alias', component: ShowLandingPageComponent , canActivate: [AuthGuard], data: { preload: true }},
+    // { path: 'landing/:alias', component: ShowLandingPageComponent , canActivate: [AuthGuard], data: { preload: true }},
+    { path: 'landing/:alias', component: ShowLandingPageComponent },
 
 	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
 	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
