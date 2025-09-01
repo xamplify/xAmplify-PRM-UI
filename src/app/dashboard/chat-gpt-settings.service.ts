@@ -407,6 +407,7 @@ listDefaultTemplates(userId:any){
     this.downloadDocx(chatGptSettings).subscribe((blob: Blob) => {
       this.downloadBlob(blob, 'document.docx');
       this.referenceService.docxLoader = false;
+      this.referenceService.showSweetAlertSuccessMessage('Document downloaded successfully');
     }, error => {
       console.error('Download failed', error);
     });
