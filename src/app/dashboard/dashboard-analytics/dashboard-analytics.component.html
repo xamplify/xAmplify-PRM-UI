@@ -414,7 +414,7 @@
                         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
                     <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading"
                         [applyFilter]="applyFilter"></app-donut-pie-chart>
-                    <app-horizontal-bat-chart *ngIf="!ngxLoading"
+                    <app-horizontal-bat-chart *ngIf="!ngxLoading && authenticationService?.module?.createCampaign"
                         [applyFilter]="applyFilter"></app-horizontal-bat-chart>
                 </div>
                 <div [className]="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
@@ -476,7 +476,7 @@
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics"
         [(dragulaModel)]="defaultDashboardLayout">
-        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name ? template.name : template.title">
+        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name ? template.name : template.title" [ngClass]="{ 'disable-clicks': isDraggingEnabled }">
             <ng-template *ngIf="template?.ref" [ngTemplateOutlet]="template.ref"></ng-template>
             <ng-container *ngIf="template?.title">
                 <ng-container *ngTemplateOutlet="dynamicTemplate; context: { template: template }"></ng-container>

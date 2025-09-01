@@ -157,6 +157,9 @@ a.social-stats {
   cursor: move;
   transition: transform 0.2s ease;
 }
+.disable-clicks * {
+  pointer-events: none;
+}
 .gu-transit:not(.gu-mirror) {
   opacity: 0.5;
   transform: scale(0.95);
