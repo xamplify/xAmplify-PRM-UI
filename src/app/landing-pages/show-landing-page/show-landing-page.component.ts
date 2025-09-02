@@ -262,7 +262,7 @@ export class ShowLandingPageComponent implements OnInit {
                 const currentUser = localStorage.getItem('currentUser');
 
                 if (!currentUser) {
-                  const landingUrl = `/landing/${alias}`;
+                  const landingUrl = `/l/${alias}`;
                   this.router.navigate(['/login'], {
                     queryParams: { returnUrl: landingUrl }
                   });
