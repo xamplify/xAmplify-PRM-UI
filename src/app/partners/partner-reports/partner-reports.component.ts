@@ -1310,7 +1310,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = response.list;
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
-                this.referenseService.loading(this.httpRequestLoader, false);
+                this.referenseService.loading(this.httpRequestLoader, false);           
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -1840,7 +1840,7 @@ this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = response.li
 
     getAllFilteredCompanyProfileResultsData(incompleteCompanyProfileAndPendingSingupPagination: Pagination) {
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
-        this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = this.sortOption.searchKey;
+        // this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = this.sortOption.searchKey;
         this.incompleteCompanyProfileAndPendingSingupPagination = this.utilService.sortOptionValues(this.sortOption.incompleteCompanyProfileSortOption, this.incompleteCompanyProfileAndPendingSingupPagination);
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
