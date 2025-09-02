@@ -24,13 +24,14 @@ import { OliverPromptSuggestionDTO } from '../models/oliver-prompt-suggestion-dt
 import { ExecutiveReport } from '../models/oliver-report-dto';
 import { Observable, Subscription } from 'rxjs';
 import { GroupOliverReportDTO } from '../models/group-oliver-report-dto';
+import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 
 declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
   templateUrl: './chat-gpt-modal.component.html',
   styleUrls: ['./chat-gpt-modal.component.css'],
-  providers: [Properties, SortOption, DamService]
+  providers: [Properties, SortOption, DamService, OutlookEmailService]
 })
 export class ChatGptModalComponent implements OnInit {
   @Input() isChatGptIconDisplayed: boolean;

@@ -29,6 +29,7 @@ import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-j
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { DamService } from 'app/dam/services/dam.service';
+import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 declare var $: any, swal: any;
 
 @Component({
@@ -36,7 +37,7 @@ declare var $: any, swal: any;
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
   providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService,
-    CallIntegrationService, DamService]
+    CallIntegrationService, DamService,OutlookEmailService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
