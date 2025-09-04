@@ -1,0 +1,153 @@
+
+.cancel-ribbon {
+  background-color: red;
+}
+.ribbon div {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
+}
+.ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.ribbon div::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.cancelled-event {
+  border: 2px solid #bdbdbd !important;
+  background: #bdbdbd !important;
+  color: white !important;
+  cursor: not-allowed !important;
+  border-radius: 50%;
+  padding-top: 0px !important;
+  padding-right: 4px;
+  padding-bottom: 4px !important;
+  padding-left: 4px;
+  /* margin-top: 1px; */
+}
+.mobile-left {
+  float: none;
+}
+.pcgridHeight {
+  height: 290px;
+}
+@media only screen and (max-width: 768px) {
+  .modal-template {
+    width: 95% !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .modal-template {
+    width: 65% !important;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .mobile-left {
+    float: left;
+    margin: 1px;
+  }
+}
+.override-actions {
+  margin: 0 auto;
+  display: table;
+  float: none !important;
+}
+.imageClass {
+  background: #f2f4f9;
+  border: solid 1px #008fd5;
+  border-radius: 5px;
+}
+.gearDropdownMenu {
+  top: 4px;
+  /* color: #00a6e8; */
+  cursor: pointer;
+}
+#download-template {
+  /* border: 1px solid #5ab2f5; */
+  width: 27px;
+  height: 27px;
+  border-radius: 30px;
+}
+#download-template-grid {
+  /* border: 1px solid #fff; */
+  width: 28px;
+  height: 28px;
+  border-radius: 30px;
+}
+#download-drop {
+  box-shadow: none;
+  font-size: 12px;
+}
+/* sudha sri */
+@media (max-width: 375px) {
+  .right {
+    right: -74px !important;
+  }
+}
+@media (max-width: 320px) {
+  .right {
+    right: -108px !important;
+  }
+}
+.mix-filter {
+  margin: 0px !important;
+}
+.input-icon > .form-control {
+  padding-left: 10px;
+}
+.bar a {
+  width: 28px;
+}
+
+/* 05-07-2023 */
+ul.custome-dropdown-changs {
+  width: 170px;
+}
+.custome-dropdown-changs a {
+  /* border: 1px solid #54a7e9; */
+  width: 28px;
+  height: 29px;
+  border-radius: 50% !important;
+}
+.custome-dropdown-changs a i {
+  position: relative;
+  left: -8px;
+  margin: -6px !important;
+  bottom: 4px;
+  /* color: #54a7e9 !important; */
+}
+ul.custome-dropdown-changs {
+  width: 161px;
+  padding: 0px 0px;
+}
+.custome-dropdown-changs li a {
+  margin: 6px 10px !important;
+}

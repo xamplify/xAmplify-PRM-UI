@@ -1,0 +1,15 @@
+<div class="page-content">
+  <div class="page-bar">
+     <ul class="page-breadcrumb">
+        <li><i class="fa fa-home" aria-hidden="true"></i> 
+           <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li>
+           <a (click)="goToManageCampaigns()" translate>Manage Campaigns</a>
+        </li>
+     </ul>
+  </div>
+  <!---Component Comes here-->
+  <app-campaign-list-and-grid-view></app-campaign-list-and-grid-view>
+</div>
