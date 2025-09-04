@@ -1,0 +1,294 @@
+<app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
+<ng-container *ngIf="!loader.isLoading">
+   <div class="portlet light shadow" id="campaign-work-flow">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !loader.isLoading">
+      </app-response-message>
+      <div class="portlet-title">
+         <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Add Workflows</h4>
+         <a class="close-circle pull-right" *ngIf="!isPlaybookWorkflow" data-dismiss="modal"
+            (click)="goToManageCampaigns()">
+            <i class="fa fa-times"></i>
+         </a>
+      </div>
+      <div class="portlet-body clearfix">
+         <div class="row" id="row-margin">
+            <div class="col-xs-12" *ngIf="!isPlaybookWorkflow">
+               <div class="col-xs-6">
+                  <a *ngIf=" urlLinks?.length==0" class="dashboard-stat website-auto-response blur">
+                     <em class="fa fa-ban p0"></em>
+                     No website links found
+                  </a>
+                  <a *ngIf=" urlLinks?.length>0 " class="dashboard-stat website-auto-response" (click)="addClickRows()">
+                     <em class="fa fa-plus-square p0" id="i-margin"></em>
+                     {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                  </a>
+               </div>
+               <div class="col-xs-6">
+                  <a class="dashboard-stat email-auto-response" (click)="addReplyRows()">
+                     <em class="fa fa-plus-square p0" id="i-margin"></em>
+                     {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                  </a>
+               </div>
+            </div>
+
+            <div class="row d-flex justify-content-center" *ngIf="isPlaybookWorkflow">
+               <div class="col-xs-6" *ngIf="isPlaybookWorkflow">
+                  <a class="dashboard-stat email-auto-response" (click)="addReplyRows()">
+                     <em class="fa fa-plus-square p0" id="i-margin"></em>
+                     {{properties.ADD_AUTO_RESPONSE_PLAYBOOK}}
+                  </a>
+               </div>
+            </div>
+            <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: -7px;">
+
+               <app-response-message [customResponse]="errorCustomResponse"
+                  *ngIf="errorCustomResponse.isVisible"></app-response-message>
+               <fieldset *ngIf="replies?.length>0">
+                  <legend class="workflow-title" *ngIf="!isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                  </legend>
+                  <legend class="workflow-title" *ngIf="isPlaybookWorkflow"> {{properties.ADD_AUTO_RESPONSE_PLAYBOOK}}
+                  </legend>
+                  <div *ngFor="let reply of replies;let i=index">
+                     <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
+                        <app-response-message [customResponse]="InfoCustomResponse"
+                           *ngIf="InfoCustomResponse.isVisible"></app-response-message>
+
+                        <div class="portlet-title custom-change-css"
+                           [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                           <div class="col-xs-12 col-lg-6">
+                              <h4 class="text-left white">Add an Auto-response to your {{responseType}}-{{i+1}}</h4>
+                           </div>
+                           <div class="col-xs-12 col-lg-6 mt3">
+                              <div class="pull-right">
+                                 <label *ngIf="isPlaybookWorkflow && !(authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember)" class="f-w-600"
+                                    translate>Choose Template</label>
+                                 <switch *ngIf="isPlaybookWorkflow && !(authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember)"
+                                    [status]="reply.customTemplateSelected" [onText]="callActionSwitch.onTextValue"
+                                    [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch"
+                                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                    class="switchControl"
+                                    (statusChange)="selectEmailTemplateForEmailAutoResponseWorkflow($event,i,reply)">
+                                 </switch>
+                                 <button type="button" class="btn btn-danger button-blue"
+                                    (click)="remove(reply.divId,'replies',reply)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                 </button>
+                                 <button type="button" class="btn btn-primary button-blue" (click)="addReplyRows()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                 </button>
+                              </div>
+                           </div>
+                           <!--End of col-xs-6-->
+                        </div>
+                        <div class="row">
+                           <form class="role add-reply" id="form-{{reply.divId}}">
+                              <div class="col-xs-12 p0">
+                                 <div class="col-xs-12 p0" *ngIf="!isPlaybookWorkflow">
+                                    <div class="col-xs-6" id="margin-bottom">
+                                       <label class="default-cursor f-w-600" for="reason">Reason <strong
+                                             class="red">*</strong></label>
+                                       <select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
+                                          <ng-container
+                                             *ngFor='let option of workflowsMap.emailWorkflowOptions; let i=index'>
+                                             <option value="{{option.workflowId}}">{{option.workflowName}}</option>
+                                          </ng-container>
+                                          <!-----Channel Email Workflows---->
+                                          <ng-container
+                                             *ngIf="campaign.campaignType=='REGULAR' && campaign.channelCampaign">
+                                             <ng-container
+                                                *ngFor='let option of workflowsMap.channelEmailWorkflowOptions; let i=index'>
+                                                <option value="{{option.workflowId}}">{{option.workflowName}}</option>
+                                             </ng-container>
+                                          </ng-container>
+                                          <!-----Event Workflows---->
+                                          <ng-container *ngIf="campaign.campaignType=='EVENT'">
+                                             <ng-container *ngIf="campaign.channelCampaign">
+                                                <ng-container
+                                                   *ngFor='let option of workflowsMap.channelEventWorkflowOptions; let i=index'>
+                                                   <option value="{{option.workflowId}}">{{option.workflowName}}
+                                                   </option>
+                                                </ng-container>
+                                             </ng-container>
+                                             <ng-container
+                                                *ngFor='let option of workflowsMap.eventWorkflowoptions; let i=index'>
+                                                <option value="{{option.workflowId}}">{{option.workflowName}}</option>
+                                             </ng-container>
+                                          </ng-container>
+                                          <!-----Video Workflows---->
+                                          <ng-container *ngIf="campaign.campaignType=='VIDEO'">
+                                             <ng-container *ngIf="campaign.channelCampaign">
+                                                <ng-container
+                                                   *ngFor='let option of workflowsMap.channelVideoWorkflowOptions; let i=index'>
+                                                   <option value="{{option.workflowId}}">{{option.workflowName}}
+                                                   </option>
+                                                </ng-container>
+                                             </ng-container>
+                                             <ng-container
+                                                *ngFor='let option of workflowsMap.videoWorkflowOptions; let i=index'>
+                                                <option value="{{option.workflowId}}">{{option.workflowName}}</option>
+                                             </ng-container>
+                                          </ng-container>
+                                       </select>
+                                    </div>
+                                    <div class="col-xs-6" *ngIf="reply.actionId!=16 && reply.actionId!=17  && reply.actionId!=25 && reply.actionId!=26
+                                       && reply.actionId!=27 &&reply.actionId!=28">
+                                       <label class="default" for="days" id="reply-days-{{reply.divId}}">
+                                          <ng-container *ngIf="reply.actionId==29 ||reply.actionId==30">Send Before X
+                                             Days
+                                          </ng-container>
+                                          <ng-container
+                                             *ngIf="reply.actionId!=29 && reply.actionId!=30 && reply.actionId!=31 && reply.actionId!=32">
+                                             Reply In X Days
+                                          </ng-container>
+                                          <ng-container *ngIf="reply.actionId==31 || reply.actionId==32">Send After X
+                                             Days
+                                          </ng-container>
+                                          <strong class="red">*</strong>
+                                          <strong>(Minimum 1 Day)</strong>
+                                       </label>
+                                       <input type="number" class="form-control" name="days" placeholder="Days"
+                                          [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <label class="default" for="time" id="reply-subject-{{reply.divId}}">Subject
+                                          <strong class="red">*</strong>
+                                       </label>
+                                       <input type="text" class="form-control" name="subject"
+                                          [(ngModel)]="reply.subject" placeholder="Subject" maxlength="200">
+                                    </div>
+                                 </div>
+
+                                 <!--End of col-xs-12 p0-->
+                                 <div class="col-xs-12 p0" *ngIf="isPlaybookWorkflow">
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default-cursor f-w-600" id="reply-playbook-{{reply.divId}}"
+                                          for="reason">Reason </label>
+                                       <select class="form-control" name="subjecctId" [(ngModel)]="reply.subjectId"
+                                          (ngModelChange)="validateTriggerDate(reply)">
+                                          <ng-container *ngFor='let option of subjects; let i=index'>
+                                             <option value="{{option.id}}">{{option.value}}</option>
+                                          </ng-container>
+                                       </select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default-cursor" for="reason"></label>
+                                       <select class="form-control mt5" name="actionId" [(ngModel)]="reply.actionId"
+                                          (ngModelChange)="validateTriggerDate(reply)">
+                                          <ng-container *ngFor='let option of actions; let i=index'>
+                                             <option value="{{option.id}}">{{option.value}}</option>
+                                          </ng-container>
+                                       </select>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default-cursor f-w-600" id="reply-days-{{reply.divId}}"
+                                          for="reason">Send In X Days* </label>
+                                       <input type="number" placeholder="Enter Days" class="form-control full-width"
+                                          [(ngModel)]="reply.customDays" name="reply.customDays" autocomplete="off"
+                                          (input)="validateReplyInDays(reply)" min="1"
+                                          oninput="validity.valid||(value='');">
+                                       <span *ngIf="!isValidCustomDays"><strong>(Minimum 1 Day)</strong></span>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-xs-12 p0" *ngIf="isPlaybookWorkflow">
+
+                                    <!---Subject-->
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default f-w-600" for="time" id="reply-subject-{{reply.divId}}"
+                                          translate>Subject
+                                          <strong class="required">*</strong>
+                                       </label>
+                                       <div class="input-group merge-tag-input-border">
+                                          <input type="text" autocomplete="off" class="form-control" name="subject"
+                                             [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line"
+                                             maxlength="1000">
+                                          <span class="input-group-btn">
+                                             <button class="btn btn-default" type="button" data-toggle="tooltip"
+                                                data-placement="bottom" title="Insert Merge Tags"
+                                                (click)="openMergeTagsPopup('subject',reply)">
+                                                <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+                                             </button>
+                                          </span>
+                                       </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default f-w-600" for="time" id="reply-preHeader-{{reply.divId}}"
+                                          translate>Pre Header
+                                          <strong class="required">*</strong>
+                                       </label>
+                                       <input type="text" autocomplete="off" class="form-control" name="preHeader"
+                                          [(ngModel)]="reply.preHeader" placeholder="Pre Header" maxlength="1000">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4 workflow-margin">
+                                       <label class="default f-w-600" for="time" id="reply-fromEmail-{{reply.divId}}"
+                                          translate>From Email
+                                       </label>
+                                       <select class="form-control" name="reply.fromEmailUserId"
+                                          [(ngModel)]="reply.fromEmailUserId" style="width: 100%">
+                                          <option *ngFor="let fromEmailUser of fromEmailUsers"
+                                             [ngValue]="fromEmailUser.id">
+                                             {{fromEmailUser.emailId}}
+                                          </option>
+                                       </select>
+                                    </div>
+                                 </div>
+
+                                 <!--Ckeditor strats here-->
+                                 <div class="col-xs-12 mt10">
+
+                                    <div id="ck-editor-{{i}}" [@fadeInOut] *ngIf="!reply.customTemplateSelected">
+                                       <div style="margin-left: 1px;">
+                                          <label class="default f-w-600" for="days"
+                                             id="reply-message-{{reply.divId}}">Message
+                                             <strong class="red">*</strong>
+                                          </label>
+                                       </div>
+                                       <div>
+                                          <ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
+                                       </div>
+                                    </div>
+
+                                    <div id="replay-template-{{i}}" [@fadeInOut] *ngIf="reply.customTemplateSelected">
+                                       <div style="margin-left: 1px;">
+                                          <label class="default f-w-600" for="days"
+                                             id="reply-message-{{reply.divId}}">Select an
+                                             email template
+                                             <strong class="red">*</strong>
+                                          </label>
+                                       </div>
+                                       <div>
+                                          <app-select-email-template [@fadeInOut] *ngIf="reply?.customTemplateSelected"
+                                             [selectedEmailTemplateId]="reply?.templateId"
+                                             [previouslySelectedTemplateId]="reply.previouslySelectedTemplateId"
+                                             (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event, reply)">
+                                          </app-select-email-template>
+                                       </div>
+                                    </div>
+
+                                 </div>
+                                 <!--End of col-xs-12-->
+                              </div>
+                           </form>
+                        </div>
+                        <!--End of row-->
+                     </div>
+                  </div>
+                  <!--End of ngFor-->
+               </fieldset>
+            </div>
+            <!--End of col-xs-12-->
+         </div>
+         <!--End of row-->
+         <div id="bottom-right" *ngIf="!isPlaybookWorkflow">
+            <button class="btn btn-primary" [disabled]="replies.length==0 && urls.length==0"
+               (click)="saveWorkflows()">Save</button>
+         </div>
+      </div>
+      <!--End of portlet-body clearfix-->
+   </div>
+   <!--End of portlet light-->
+</ng-container>
+<app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()"
+   (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>

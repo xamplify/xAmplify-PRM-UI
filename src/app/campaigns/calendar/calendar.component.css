@@ -1,0 +1,8 @@
+h5 {font-size: 14px;font-weight: 600;margin-bottom: 0;word-break: break-all;color: #2874f0;}
+h6 {font-size: 12px;margin-top: 7px;}
+.campaign-label {text-transform: uppercase;border: 1px solid #4b96db;color: #4b96db;padding: 3px 10px;font-size: 9px;letter-spacing: 1px;font-weight: 600;}
+.campaign-label.now{background: #28a745;color: white;border: 1px solid #28a745;}
+.campaign-label.save{background: #6c757d;color: white;border: 1px solid #6c757d;}
+.campaign-label.schedule{background: #007bff;color: white;border: 1px solid #007bff;}
+.progress {height: 7px; margin: 10px 0;}
+.calendar-border{padding: 25px;border: 1px solid #CCC;}

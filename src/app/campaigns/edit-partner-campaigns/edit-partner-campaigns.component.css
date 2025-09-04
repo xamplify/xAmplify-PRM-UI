@@ -1,0 +1,265 @@
+label {
+  font-weight: 600;
+}
+
+.fa.fa-users.disabled {
+  background: gray;
+}
+
+.fa.fa-users {
+  padding: 1em;
+  font-size: 20px;
+  line-height: 1em;
+  background: #00a6e8;
+  color: white;
+  border-radius: 100%;
+  margin-left: 1em;
+}
+
+fieldset {
+  padding: 10px 20px;
+}
+
+.dashboard-stat.yellow-gold {
+  text-align: center;
+  padding: 15px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.portlet.light.dashboard-stat2.border-error {
+  border-color: red;
+}
+
+.blur {
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  filter: blur(1px);
+  cursor: default;
+}
+
+.custom-change-css {
+  background: #eaeaea;
+  border-radius: 0;
+  width: 102%;
+  position: relative;
+  top: -10px;
+  margin-bottom: -16px;
+  right: 10px;
+}
+
+.button-blue {
+  position: relative;
+  background: #8395a7 !important;
+  top: 6px;
+  font-size: 4px;
+}
+
+.error-div {
+  width: 97%;
+  top: 12px;
+  right: -17px;
+  position: relative;
+}
+
+.colorBlue {
+  background: #808080;
+}
+
+.colorRed {
+  background: #5bb1d4;
+}
+
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 45% !important;
+    right: 0 !important;
+  }
+
+  .modal-template {
+    width: 60% !important;
+    right: 0 !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
+  }
+
+  .modal-template {
+    width: 100% !important;
+    right: 0 !important;
+  }
+  .mrgn_lft0{
+    margin-left: 3px !important;
+  }
+  .mrg-left25{
+    margin-left:0px!important;
+  }
+  .email-tempbtn{
+    padding: 4px;
+  }
+  .custom-change-css{
+    width: 107%;
+  }
+  .add_response-email{
+    padding-left: 12px!important;
+  }
+}
+
+#download-drop {
+  box-shadow: none;
+  margin-left: 7px;
+}
+
+#rcaretw {
+  width: 400px;
+}
+
+fieldset.scheduler-border {
+  border: 1px solid silver;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 1.5em 0 !important;
+  -webkit-box-shadow: 0px 0px 0px 0px #000;
+  box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+  width: auto;
+  padding: 0 10px;
+  color: #00a6e8;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: none;
+}
+
+.height160 {
+  height: 160px;
+}
+
+.button-border {
+  border: 1px solid #fff;
+}
+
+/* 29/05/2023 */
+.Sch-class {
+  background-color: #f76c1a !important;
+}
+
+.Sch-class:hover {
+  background-color: #dd804b !important;
+}
+
+span.ui-column-resize {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  width: 8px;
+  height: 100%;
+  padding: 0;
+  cursor: e-resize;
+  border: 1px solid transparent;
+}
+
+table.table-bordered.dataTable {
+  border-collapse: collapse !important;
+}
+
+.inc-width {
+  padding: 0px 25px;
+}
+
+@media(max-width:578px) {
+  .fa-users {
+    margin-left: unset !important;
+  }
+
+  .height160 {
+    height: unset !important;
+  }
+
+  .mb_wrap {
+    white-space: unset !important;
+    word-wrap: break-word !important;
+  }
+
+  .mb_flex {
+    display: flex;
+  }
+}
+
+/* 19-07-2023 */
+img.Selected-email-template-imgcu {
+  width: 100%;
+  height: 102px;
+  object-fit: fill;
+  border-radius: 2px;
+}
+
+@media screen and (max-width:1024px) {
+  .tab_sub {
+    margin-left: 0px !important;
+  }
+  .mb-flex-wrap{
+    flex-wrap: wrap;
+  }
+  .email-temp-mb10{
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (min-width:768px) and (max-width: 1024px) {
+  .scheduler_height {
+    height: auto !important;
+  }
+
+}
+
+@media only screen and (min-width:991px) and (max-width: 1061px) {
+  label.lableTitleDec {
+    font-size: 12px;
+  }
+
+  .valid-users-count-span {
+    color: cornflowerblue;
+    font-weight: 600;
+    float: left;
+    margin-bottom: 10px;
+  }
+
+}
+/* launch option btns */
+.mrg-left25{
+margin-left:25px;
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+  border-bottom-width: 1px;
+  width: 5px;
+  padding-right: 1px;
+}
+@media screen and (max-width: 767px){
+.table-responsive>.table-bordered {
+    border: 1px solid #ddd;
+}
+}
+.email-tempbtn{
+  padding:0px;
+}
+.ml-5{
+  margin-left: 5px;
+}
+#folder-margin-xamp{
+  margin-top: 6px !important;
+  margin-right: 5px !important;
+}
+.btn-default {
+    background-color: #f1f3fa;}
+.btn-default > i {
+    color: #626262;
+}
