@@ -14,8 +14,6 @@ import { SenderMergeTag } from "../../core/models/sender-merge-tag";
 import { Timezone } from "../../core/models/timezone";
 import { Ng2DeviceService } from "ng2-device-detector";
 import { EmailTemplate } from "../../email-template/models/email-template";
-import { Campaign } from "../../campaigns/models/campaign";
-import { CampaignAccess } from "app/campaigns/models/campaign-access";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "../../common/models/custom-response";
 import { User } from "../../core/models/user";
@@ -114,7 +112,7 @@ export class ReferenceService {
   selectedVideoLogodesc: string;
   contentManagementLoader: boolean;
   namesArray: any;
-  campaignAccess: CampaignAccess;
+  campaignAccess: any;
   manageRouter = false;
   detailViewIsLoading: boolean;
   videoCampaign = false;
@@ -1934,7 +1932,7 @@ export class ReferenceService {
     updatedBody: string,
     partnerLogo: string,
     partnerCompanyUrl: string,
-    campaign: Campaign
+    campaign: any
   ) {
     if (campaign.partnerCompanyLogo != undefined) {
       partnerLogo = campaign.partnerCompanyLogo;
@@ -2117,7 +2115,7 @@ export class ReferenceService {
   }
 
   showEmailTemplatePreview(
-    campaign: Campaign,
+    campaign: any,
     campaignType: string,
     selectedVideoGifPath: string,
     emailTemplateBody: string
