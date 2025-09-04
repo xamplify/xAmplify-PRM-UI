@@ -18,7 +18,6 @@ import { AppComponent } from './app.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
-import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 import { RssService } from './social/services/rss.service';
 import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
@@ -33,7 +32,6 @@ import { ReferenceService } from './core/services/reference.service';
 import { PagerService } from './core/services/pager.service';
 import { EmailTemplateService } from './email-template/services/email-template.service';
 import { EmailSpamCheckService } from './email-template/services/email-spam-check.service';
-import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { VideoUtilService } from './videos/services/video-util.service';
@@ -45,21 +43,12 @@ import { LoggerService } from './error-pages/services/logger.service';
 import { ConsoleLoggerService } from './error-pages/services/console-logger.service';
 import { XtremandLogger } from './error-pages/xtremand-logger.service';
 
-import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
-import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
-import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
-import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 import { EnvServiceProvider } from './env.service.provider';
-import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
-import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
-import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
-import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
-import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { IntegrationService } from './core/services/integration.service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
@@ -79,18 +68,13 @@ import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
-import { CampaignMdfAnalyticsComponent } from './campaigns/campaign-mdf-analytics/campaign-mdf-analytics.component';
-import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-template-preview/campaign-mdf-template-preview.component';
 import { PublicTopNavigationBarComponent } from './util/public-top-navigation-bar/public-top-navigation-bar.component';
-import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-mdf-search.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-        , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
-        LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
+        ShowLandingPageComponent, PageNotFoundComponent, VanitySocialLoginComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
-        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent, PublicTopNavigationBarComponent, CampaignMdfSearchComponent,
+        PublicTopNavigationBarComponent,
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
@@ -118,7 +102,7 @@ import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-
 	{provide: ErrorHandler, useClass: ClearChunkFile},
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
         VanityURLService,LinkedinService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 
