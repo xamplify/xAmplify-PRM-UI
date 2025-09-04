@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs';
+import 'rxjs/add/observable/of';
 import { EnvService } from 'app/env.service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -1671,6 +1672,11 @@ vanityWelcomePageRequired(userId) {
     }
     if (buf) out.push(buf);
     return out;
+  }
+
+  validateDuplicateMdfRequest(_req: any): Observable<any> {
+    // Placeholder API call. The real implementation was removed with campaign features.
+    return Observable.of({});
   }
 
   sendEmailToUser (sendTestEmailDto: SendTestEmailDto, formData: FormData) {
