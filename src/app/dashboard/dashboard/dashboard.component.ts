@@ -16,7 +16,6 @@ import { UtilService } from '../../core/services/util.service';
 
 import { ContactService } from '../../contacts/services/contact.service';
 import { UserService } from '../../core/services/user.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
@@ -27,6 +26,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DashboardStatesReport } from '../models/dashboard-states-report';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { setDayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
         public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
-        public campaignService: CampaignService, public referenceService: ReferenceService,
+        public referenceService: ReferenceService,
         public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
@@ -515,21 +515,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listCampaignInteractionsData(userId: number, reportType: string) {
-        this.campaignService.listCampaignInteractionsData(userId, reportType)
-            .subscribe(
-                data => {
-                    this.xtremandLogger.info(data);
-                    this.campaigns = data;
-                    this.xtremandLogger.log(data);
-                    const campaignIdArray = data.map(function (a) { return a[0]; });
-                    this.totalCampaignsCount = this.campaigns.length;
-                    if (this.totalCampaignsCount >= 1) {
-                        this.getCampaignsEamailBarChartReports(campaignIdArray);
-                    }
-                },
-                error => { },
-                () => this.xtremandLogger.info('Finished listCampaign()')
-            );
+      
     }
 
     createCampaign(campaignType: string) {
@@ -538,26 +524,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getUserCampaignReport(userId: number) {
-        this.campaignService.getUserCampaignReport(userId)
-            .subscribe(
-                data => {
-                    this.userCampaignReport = data['userCampaignReport'];
-                    this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
-                },
-                error => { },
-                () => {
-                    this.xtremandLogger.info('Finished getUserCampaignReport()');
-                    if (this.userCampaignReport == null) {
-                        this.userCampaignReport = new CampaignReport();
-                        this.userCampaignReport.userId = userId;
-                        this.userCampaignReport.campaignReportOption = 'RECENT';
-                    }
-
-                    this.setLaunchedCampaignsChild(this.userCampaignReport);
-                    this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
-
-                }
-            );
+      
     }
 
     setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
@@ -602,21 +569,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     saveUserCampaignReport(userCampaignReport: CampaignReport) {
-        if (userCampaignReport.userId == null) {
-            userCampaignReport.userId = this.loggedInUserId;
-        }
-        this.campaignService.saveUserCampaignReport(userCampaignReport)
-            .subscribe(
-                data => {
-                    this.userCampaignReport = data;
-                    this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
-                    this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
-                },
-                error => {
-                    this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
-                },
-                () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
-            );
+       setDayOfWeek
     }
 
     setCampaignReportResponse(response: string, responseMessage: string) {

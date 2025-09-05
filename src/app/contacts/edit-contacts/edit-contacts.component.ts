@@ -27,8 +27,6 @@ import { SocialPagerService } from '../services/social-pager.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { UserService } from '../../core/services/user.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
-import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
@@ -79,7 +77,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isTeamMemberPartnerList: boolean;
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
-	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	criteria = new Criteria();
 	editUser: EditUser = new EditUser();
@@ -330,7 +327,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		public contactService: ContactService, private manageContact: ManageContactsComponent, public authenticationService: AuthenticationService, 
 		private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, 
+		public teamMemberService: TeamMemberService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService,
 		private chatgptSettingsService: ChatGptSettingsService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -3250,10 +3247,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	addCampaigns(contact: any) {
-		this.sendCampaignComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
-	}
-
 	/*openCampaignsPopupForNewlyAddedPartners() {
 		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.contactListId, this.newUserDetails, this.checkingContactTypeName);
 	}*/
@@ -3364,6 +3357,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
+
+		addCampaigns(contact: any) {
+	}
 
 	hideModulesPreviewPopUp() {
 		this.showModulesPopup = false;

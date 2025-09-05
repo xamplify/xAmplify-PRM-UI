@@ -1,5 +1,4 @@
 import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { Properties } from 'app/common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
@@ -38,7 +37,7 @@ export class SelectEmailTemplateComponent implements OnInit {
   selectedEmailTemplate = {};
   openEditTemplateModalPopup = false;
   isAdd = false;
-  constructor(private campaignService:CampaignService,private xtremandLogger:XtremandLogger,
+  constructor(private xtremandLogger:XtremandLogger,
     private pagerService:PagerService,private properties:Properties,
     private authenticationService:AuthenticationService,
     private emailTemplateService:EmailTemplateService,private utilService:UtilService,public referenceService:ReferenceService) { }
@@ -64,18 +63,7 @@ export class SelectEmailTemplateComponent implements OnInit {
   }
 
   findEmailTemplates(pagination:Pagination){
-    this.emailTemplatesLoader = true;
-    pagination.filterBy = this.properties.campaignRegularEmailsFilter;
-    this.campaignService.findCampaignEmailTemplates(pagination).subscribe(
-      response=>{
-          const data = response.data;
-          pagination.totalRecords = data.totalRecords;
-          this.emailTemplatesSortOption.totalRecords = data.totalRecords;
-          pagination = this.pagerService.getPagedItems(pagination, data.list);
-          this.emailTemplatesLoader = false;
-      },error=>{
-          this.xtremandLogger.errorPage(error);
-      });
+   
   }
 
   findEmailTemplatesOnEnterKeyPress(eventKeyCode:number){

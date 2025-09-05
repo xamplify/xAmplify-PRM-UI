@@ -17,7 +17,6 @@ import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { EmailActivityService } from 'app/activity/services/email-activity-service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { ActivityService } from 'app/activity/services/activity-service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
@@ -36,7 +35,7 @@ declare var $: any, swal: any;
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService,
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, ActivityService, CalendarIntegrationService, CompanyService,
     CallIntegrationService, DamService,OutlookEmailService]
 })
 export class ContactDetailsComponent implements OnInit {
@@ -165,7 +164,7 @@ export class ContactDetailsComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
+    public emailActivityService: EmailActivityService, public activityService:ActivityService,
     public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
     public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -214,7 +213,6 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
-    this.fetchCampaignsAndCount();
     this.referenceService.aircallPhone.on('call_ended', callInfos => {
       this.reloadCallTab();
     });
@@ -598,78 +596,6 @@ export class ContactDetailsComponent implements OnInit {
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
-
-  fetchCampaignsAndCount() {
-    this.referenceService.loading(this.campaignsLoader, true);
-    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
-      response => {
-        const data = response.data;
-        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
-        if (isSuccess) {
-          this.campaignsCount = data.totalRecords;
-          this.contactCampaigns = data.list;
-          this.formattedCampaignsCount = this.formatNumber(this.campaignsCount);
-        } else {
-          this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
-        }
-        this.referenceService.loading(this.campaignsLoader, false);
-      }, error => {
-        this.referenceService.loading(this.campaignsLoader, false);
-        let message = this.referenceService.getApiErrorMessage(error);
-        this.campaignsResponse = new CustomResponse('ERROR', message, true);
-      }
-    )
-  }
-
-  viewMoreCampaigns() {
-    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourney) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/cjcd';
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourneyEditContacts) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/fcjcd';
-      this.referenceService.goToRouter(url);
-    } else if (this.isCompanyJourney) {
-      this.showCompanyCampaigns = true;
-    } else {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
-      url += this.isFromEditContacts ? "/" + RouterUrlConstants.cd : "/mcd";
-      this.referenceService.goToRouter(url);
-    }
-  }
-
-  viewCampaignTimeLine(campaignData:any){
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.campaignId);
-    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
-      this.referenceService.goToRouter(url);
-    } else if (this.isCompanyJourney) {
-      let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignTitle);
-			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
-		} else if (this.isFromCompanyJourneyEditContacts) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/fcjcd";
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourney) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/cjcd";
-      this.referenceService.goToRouter(url);
-    } else {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId;
-      url += this.isFromEditContacts ? "/"+RouterUrlConstants.cd : "/mcd";
-      this.referenceService.goToRouter(url);
-    }
-	}
 
   openTaskModalPopup() {
     this.actionType = 'add';

@@ -10,7 +10,6 @@ import { LandingPageService } from '../services/landing-page.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import {LandingPageAnalyticsPostDto} from '../../landing-pages/models/landing-page-analytics-post-dto';
-import {CampaignService} from 'app/campaigns/services/campaign.service';
 declare var  $,swal: any;
 
 @Component({
@@ -64,7 +63,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     islandscapePages:boolean = false;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
-        public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
+        public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService) {
         this.daySort = this.videoUtilService.sortMonthDates[3];
         this.pagination.userId = this.authenticationService.getUserId();
     }
@@ -134,25 +133,11 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     }
 
     validateCampaignIdAndUserId(){
-        this.campaignService.validateCampaignIdAndUserId(this.campaignId,this.partnerId).
-        subscribe(
-            response=>{
-                this.loadAnalyticsOrNavigateToPageNotFound(response);
-            },error=>{
-                this.logger.errorPage(error);
-            }
-        );
+        
     }
 
     validateCampaignId(){
-        this.campaignService.checkCampaignIdAccess(this.campaignId).
-        subscribe(
-            response=>{
-                this.loadAnalyticsOrNavigateToPageNotFound(response);
-            },error=>{
-                this.logger.errorPage(error);
-            }
-        );
+    
     }
 
     loadAnalyticsOrNavigateToPageNotFound(response){

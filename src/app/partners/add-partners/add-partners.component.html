@@ -1512,12 +1512,6 @@
     </div>
 </div>
 
-<div *ngIf="contactListAssociatedCampaignsList?.length && openCampaignModal">
-    <app-contacts-campaigns-mails [associatedCampaignDetails]="contactListAssociatedCampaignsList" [isPartner]="true"
-        [users]="newUserDetails" [contactListId]="partnerListId"
-        (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
-</div>
-
 
 
 <!-- MARKETO -->
@@ -1772,7 +1766,7 @@
 </app-share-unpublished-content>
 
 <!--Open Pop up-->
-<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+<!-- <app-send-campaigns #sendCampaignComponent></app-send-campaigns> -->
 
 
 <!-- Cloud Partner Saving Modal Popup -->

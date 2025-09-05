@@ -16,7 +16,6 @@ import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { Pagination } from 'app/core/models/pagination';
 import { EmailTemplateType } from 'app/email-template/models/email-template-type';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { EmailRequestDto } from 'app/outlook-email/models/email-request-dto';
 import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
@@ -96,7 +95,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   isValidToShowChooseTemplate: boolean = false;
   
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService,private outlookEmailService: OutlookEmailService) {}
+    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private pagerService: PagerService,private outlookEmailService: OutlookEmailService) {}
 
   ngOnInit() {
     this.emailActivity.userId = this.userId;
@@ -594,21 +593,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   findEmailTemplates(emailTemplatesPagination: Pagination) {
-    this.activationLoaderEnabled = true;
-    emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-    emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
-    emailTemplatesPagination.isCompanyJourney = true;
-    this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
-      response => {
-        const data = response.data;
-        emailTemplatesPagination.totalRecords = data.totalRecords;
-        this.emailTemplatesSortOption.totalRecords = data.totalRecords;
-        emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, data.list);
-        this.activationLoaderEnabled = false;
-      }, error => {
-        this.activationLoaderEnabled = false;
-      });
-
+   
   }
 
   changeStatus(event) {

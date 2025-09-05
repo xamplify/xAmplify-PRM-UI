@@ -494,8 +494,6 @@
         [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
-      <app-campaign-work-flows-util *ngIf="type == 'PLAYBOOK'" #campaignWorkFlowsUtilComponent  [isPlaybookWorkflow] = "true" [tracksPlayBook] = "tracksPlayBook" [playbookReplies]="replies" 
-      [deletedWorkflowIds]="deletedWorkflowIds" [expiryDateTime]="tracksPlayBook.expireDate" (updateReplies) ="updateRepliesData($event)" ></app-campaign-work-flows-util>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">

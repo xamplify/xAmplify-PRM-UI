@@ -241,10 +241,7 @@
 <ng-template #campaignStatistics *ngIf="authenticationService?.module?.isReDistribution">
     <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard,
         'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard}">
-        <!--- Campaign Statistics --->
-        <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
-            && authenticationService.module.showCampaignsAnalyticsDivInDashboard" [isDraggingEnabled]="isDraggingEnabled"></app-campaign-statistics-analytics>
-
+       
         <!--- Email Statistics --->
         <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
             class="portlet light col-xs-12 col-sm-6 pr0 margin_0">
@@ -297,8 +294,8 @@
     !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember && 
     !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember && 
     !authenticationService?.module?.isMarketingCompany && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-        <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"
-            [isDraggingEnabled]="isDraggingEnabled"></app-redistributed-campaigns-wordcloud-map>
+        <!-- <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"
+            [isDraggingEnabled]="isDraggingEnabled"></app-redistributed-campaigns-wordcloud-map> -->
     </div>
 </ng-template>
 

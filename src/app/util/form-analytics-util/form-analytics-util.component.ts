@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { FormSubmit } from 'app/forms/models/form-submit';
 import { Roles } from 'app/core/models/roles';
 
@@ -74,7 +73,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
         public logger: XtremandLogger, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        private campaignService: CampaignService,public changeDetectorRef: ChangeDetectorRef
+        public changeDetectorRef: ChangeDetectorRef
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
@@ -297,19 +296,7 @@ ngOnDestroy(){
     }
 
     downloadCsvFile() {
-        this.campaignService.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
-            data => {
-                if (data.access) {
-                    if (this.pagination.totalAttendees) {
-                        window.open(this.authenticationService.REST_URL + "campaign/download/ectl/" + this.pagination.campaignId + "/" + this.isTotalAttendees + "?access_token=" + this.authenticationService.access_token);
-                    } else if (this.campaignFormAnalyticsDownload) {
-                        window.open(this.authenticationService.REST_URL + "form/download/cfa/" + this.alias + "/" + this.pagination.campaignId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
-                    }
-                } else {
-                    this.authenticationService.forceToLogout();
-                }
-            }
-        );
+        
     }
     addLeadsOptionRequired(){
         //orgadmin,orgadminteammenber, partner, partnerTeammenber

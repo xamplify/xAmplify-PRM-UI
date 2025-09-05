@@ -331,14 +331,6 @@
           </div>
           <!-- END PORTLET-->
         </div>
-        <!-- -Campaigns Launched By Partners -->
-        <ng-container *ngIf="reloadWithFilter">
-          <app-campaigns-launched-by-partners [applyFilter]="applyFilter"></app-campaigns-launched-by-partners>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-kpi [applyTeamMemberFilter]="applyFilter"></app-kpi>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-        </ng-container>
       </div>
 
     </div>
@@ -484,11 +476,7 @@
     </div>
   </div>
 
-  <!-- ------****************Through Partner Div************************** -->
-  <div id="redistribute-partners-div" style="display: none;">
-    <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
-    <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2" [applyFilter]="applyFilter"></app-redistributed-campaigns>
-  </div>
+
 
   <div id="through-partner-div" style="display: none;">
     <div class="row">

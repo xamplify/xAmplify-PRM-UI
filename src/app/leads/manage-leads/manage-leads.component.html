@@ -774,13 +774,7 @@
                 <a (click)="closeCampaignLeads()" class="pull-right close-circle" style="margin: 0px 14px;">
                   <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                     aria-hidden="true"></span></a>
-                <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId"
-                  [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
-                  [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-                  (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
-                  (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
-                  (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)" (showOliver)="askOliver($event)">
-                </app-manage-campaign-leads>
+              
               </div>
             </div>
           </div>

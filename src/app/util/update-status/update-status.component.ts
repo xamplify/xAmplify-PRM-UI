@@ -28,7 +28,6 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Properties } from '../../common/models/properties';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 /*****XNFR-222******/
@@ -134,7 +133,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		public authenticationService: AuthenticationService, private contactService: ContactService,
 		private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
 		private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-		public referenceService: ReferenceService, public campaignService: CampaignService,
+		public referenceService: ReferenceService,
 		public utilService:UtilService,public renderer:Renderer) {
 		this.referenceService.renderer = this.renderer;
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -539,12 +538,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 
 	redirect() {
-		if (this.authenticationService.isOnlyPartner()) {
-			this.router.navigate(['home/campaigns/partner/social']);
-		}
-		else {
-			this.router.navigate(['/home/campaigns/manage']);
-		}
+		
 	}
 
 	goToManage() {
@@ -847,17 +841,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			contactListsPagination.parentCampaignId = this.socialCampaign.campaignId;
 		}
 		contactListsPagination.userId = this.authenticationService.getUserId();
-		this.campaignService.listCampaignUsers(contactListsPagination)
-			.subscribe(
-				(response: any) => {
-					let data = response.data;
-					contactListsPagination.totalRecords = data.totalRecords;
-					contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
-					this.referenceService.loading(this.recipientsLoader, false);
-				},
-				(error: string) => this.logger.errorPage(error),
-				() => this.logger.info("Finished loadContactList()")
-			);
 	}
 
 	/*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -1021,8 +1004,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.loadContactLists(this.contactListsPagination);
 	}
 	loadCampaignNames(userId: number) {
-		this.campaignService.getCampaignNames(userId).subscribe(data => { this.campaignNames.push(data); },
-			error => console.log(error), () => console.log("Campaign Names Loaded"));
+	
 	}
 
 	validateCampaignName(campaignName: string) {
@@ -1666,22 +1648,6 @@ checkAliasAccess(socialCampaignAlias: string) {
 	
 
 	listAllTeamMemberEmailIds(){
-		this.loading = true;
-        this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
-        .subscribe(
-        data => {
-          let self = this;
-          $.each(data,function(index:number,_value:any){
-              self.teamMemberEmailIds.push(data[index]);
-          });
-		  let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ==this.loggedInUserId)[0];
-		  this.socialCampaign.fromEmail = teamMember.emailId;
-		  this.socialCampaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
-		  this.setEmailIdAsFromName();
-        },
-        error => {this.loading = false;},
-        () => {this.loading = false;}
-        );
     }
 
 	setLoggedInUserEmailId(){
@@ -1760,21 +1726,7 @@ checkAliasAccess(socialCampaignAlias: string) {
 
 	/** XNFR-929 **/
 	getMaximumContactCountForCampaignLaunch() {
-		this.loading = true;
-		this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
-		(result: any) => {
-			if (result.statusCode == 200) {
-				this.maxRecipientCount = result.data;
-			} else {
-				this.maxRecipientCount = 0;
-			}
-			this.loading = false;
-		},
-		(error: string) => {
-			this.loading = false;
-		}, ()=>{
-			this.checkRecipientCountLimitReached();
-		})
+		
 	}
 	
 	checkRecipientCountLimitReached() {

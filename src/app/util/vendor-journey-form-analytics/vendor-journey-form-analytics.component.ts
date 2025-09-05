@@ -11,7 +11,6 @@ import { PagerService } from '../../core/services/pager.service';
 import { Properties } from '../../common/models/properties';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 declare var $: any;
 
 @Component({

@@ -23,7 +23,6 @@ import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-t
 import { ModuleAccessComponent } from "./module-access/module-access.component";
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
-import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.component";
 import { QuickLinksComponent } from "./quick-links/quick-links.component";
@@ -66,7 +65,6 @@ const routes: Routes = [
   {path:'dashboard-stats/:userId/:companyId/:userAlias', component:ModuleAccessComponent},
   {path:'dashboard-stats/:userId/:companyId', component:ModuleAccessComponent},
   {path:'spf', component:SpfComponent},
-  {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
   { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
   {path:RouterUrlConstants.quickLinks,component:QuickLinksComponent},

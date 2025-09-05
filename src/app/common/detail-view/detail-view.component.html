@@ -1,6 +1,5 @@
 <section>
 	<ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 	<div id="timeline-view" class="page-content">
 	   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	   <div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">

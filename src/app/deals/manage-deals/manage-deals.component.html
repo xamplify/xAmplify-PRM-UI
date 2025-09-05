@@ -766,13 +766,7 @@
                   style="margin: -1px 14px;padding-top: 3px;padding-left: 5px;">
                   <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                     aria-hidden="true"></span></a>
-                <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId"
-                  [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
-                  [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-                  (viewCampaignDealForm)="viewCampaignDealForm($event)" (showOliver)="askOliver($event)"
-                  (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
-                  (showCommentsPopUp)="showComments($event)">
-                </app-manage-campaign-deals>
+
               </div>
               <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError"
                 translate>

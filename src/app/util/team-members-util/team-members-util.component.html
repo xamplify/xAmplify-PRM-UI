@@ -535,7 +535,6 @@
                     </div>
                   </div>
                 </div>
-                <app-select-partners-and-share-leads *ngIf="!loading && !selectedPartnershipIdsLoading &&  team.teamMemberGroupId != 0 && team?.teamMemberGroupPartnersCount>0 " [teamMemberGroupId]="team.teamMemberGroupId" [IsTeamMemberGroup]="true" [existingPartnershipIds] = "previousTeamMemberGroupId == team.teamMemberGroupId ? existingPartnershipIds:[]" [teamMemberId] = "team.teamMemberId" (selectedPartnershipIdsEmitter) ="updateSelectedPartnershipIds($event)"></app-select-partners-and-share-leads>
                 <div class="col-lg-11 p0 mt10">
                   <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
                     (click)="addOrUpdateTeamMember()"><span
@@ -930,25 +929,6 @@
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
             [toDateFilter]="toDateFilter"></app-team-member-analytics-all-partners-details>
         </div>
-        <!--******************Redistributed Camapign Details*******************-->
-        <div
-          *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing || isVendorRole"
-          class="row rowPaddingCustomization5">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization" *ngIf="referenceService?.campaignAccessGivenByVendor && authenticationService?.module?.isCampaign">
-            <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
-              (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
-              (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isTeamMemberAnalytics]="true"
-              [isVendorVersion]="isVendorVersion" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
-              [toDateFilter]="toDateFilter"></app-pie-chart>
-            <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType" [isTeamMemberAnalytics]="true"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
-              [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
-            </app-redistributed-campaign-details>
-          </div>
-        </div>
         <!--******************Share Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService.module?.hasShareLeadAccess">
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomize4">
@@ -959,31 +939,6 @@
               [toDateFilter]="toDateFilter" *ngIf="referenceService?.sharedLeadAccessGivenByVendor"></app-share-lead-details>
           </div>
         </span>
-        <!--******************Graphs Details*******************-->
-        <div *ngIf="!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm && (referenceService?.opportunitiesAccessGivenByVendor || referenceService?.campaignAccessGivenByVendor)"
-          class="row rowPaddingCustomization3">
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter" *ngIf="referenceService?.campaignAccessGivenByVendor && authenticationService?.module?.isReDistribution">
-          </app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.opportunitiesAccessGivenByVendor">
-          </app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'redistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter" *ngIf="referenceService?.campaignAccessGivenByVendor && authenticationService?.module?.isReDistribution"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'top10LeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter" *ngIf="referenceService?.opportunitiesAccessGivenByVendor"></app-redistributed-campaigns-and-leads-bar-chart>
-        </div>
         <!--******************Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
           <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">

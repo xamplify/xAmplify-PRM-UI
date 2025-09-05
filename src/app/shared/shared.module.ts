@@ -53,7 +53,6 @@ import { MeetingActivityComponent } from 'app/activity/meeting-activity/meeting-
 import { CalendarIntegrationModalPopupComponent } from 'app/activity/calendar-integration-modal-popup/calendar-integration-modal-popup.component';
 import { PreviewMeetingActivityComponent } from 'app/activity/preview-meeting-activity/preview-meeting-activity.component';
 import { EventCalendarComponent } from 'app/activity/event-calendar/event-calendar.component';
-import { CompanyCampaignsListComponent } from 'app/campaigns/company-campaigns-list/company-campaigns-list.component';
 import { SelectContactComponent } from 'app/deals/select-contact/select-contact.component';
 import { CallActivityComponent } from 'app/activity/call-activity/call-activity.component';
 import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-email-list.component';
@@ -70,7 +69,7 @@ import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-e
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
                 CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
-                 AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent,WelcomeEmailListComponent], 
+                 AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CallActivityComponent,WelcomeEmailListComponent], 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
@@ -79,7 +78,7 @@ import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-e
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent,
                 CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
-                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent,WelcomeEmailListComponent],
+                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CallActivityComponent,WelcomeEmailListComponent],
         providers: [FormService],
 })
 

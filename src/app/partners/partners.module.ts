@@ -10,7 +10,6 @@ import { PartnerReportsComponent } from './partner-reports/partner-reports.compo
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { CKEditorModule } from "ng2-ckeditor";
 import { KpiComponent } from './kpi/kpi.component';
-import { RedistributedCampaignsComponent } from './redistributed-campaigns/redistributed-campaigns.component';
 import { ViewPartnersComponent } from './view-partners/view-partners.component';
 import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
 import { ActivePartnersTableComponent } from './active-partners-table/active-partners-table.component';
@@ -20,7 +19,6 @@ import { PartnerDetailedAnalyticsComponent } from './partner-detailed-analytics/
 import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-members-table/partner-journey-team-members-table.component';
 import { PartnerJourneyContactDetailsComponent } from './partner-journey-contact-details/partner-journey-contact-details.component';
 import { PartnerJourneyCompanyInfoComponent } from './partner-journey-company-info/partner-journey-company-info.component';
-import { CampaignCountTilesComponent } from './campaign-count-tiles/campaign-count-tiles.component';
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
@@ -37,6 +35,6 @@ import { PlayBookJourneyInteractionDetailsComponent } from './play-book-journey-
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, AllPartnerTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent, PlayBookJourneyInteractionDetailsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, AllPartnerTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent, PlayBookJourneyInteractionDetailsComponent]
 })
 export class PartnersModule { }

@@ -26,10 +26,8 @@ import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
-import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
@@ -215,7 +213,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public placeHolder: string = 'Select Legal Basis';
 	isValidLegalOptions = true;
 	filePreview = false;
-	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
 	cloudPartnersModalCheckBox = false;
 	sourceType = "";
 	loggedInThroughVanityUrl = false;
@@ -356,8 +353,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
-		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public campaignService: CampaignService, public integrationService: IntegrationService,
+		public callAsctionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
+		public integrationService: IntegrationService,
 		private utilService: UtilService,
 		public parterService: ParterService,private chatgptSettingsService: ChatGptSettingsService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -3690,7 +3687,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/************Add Campaigns Pop up****************************** */
 	addCampaigns(contact: any) {
-		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
 	}
 
 	checkingZohoContactsAuthentication() {
