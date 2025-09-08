@@ -163,7 +163,7 @@
                         (click)="exportExcelSelection()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled &&  !this.authenticationService.module.isPrmTeamMember"
+                      <a *ngIf="(isPartnerVersion) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled &&  !this.authenticationService.module.isPrmTeamMember"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
@@ -798,7 +798,7 @@
 
     </div>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+      [isOrgAdmin]="false" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
 

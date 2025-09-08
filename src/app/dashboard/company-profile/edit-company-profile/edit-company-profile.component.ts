@@ -2093,8 +2093,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     /***** XNFR-763 *****/
     getCompanyNameandProfileInfo() {
-        if (!this.authenticationService.isOnlyPartner() && (this.authenticationService.isSuperAdmin || this.authenticationService.isVendor() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendorAndPartnerTeamMember || this.authenticationService.module.isPrmCompany
-            || this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany)) {
+        if (!this.authenticationService.isOnlyPartner() && (this.authenticationService.module.isPrmCompany
+            )) {
             this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_INFO;
         } else if (this.authenticationService.isOnlyUser() || this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) {
             this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_PARTNER_INFO;

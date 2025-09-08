@@ -2,11 +2,9 @@
   <div class="panel panel-info mh530 panel-bgMain panel-card br-10">
     <div class="panel-heading panel-heading-custom panel-bg" id="pj-track-playbook-details-div">
       <h3 class="panel-title mt7 Responsivetitle">{{type | titlecase }} Counts
-         <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="tooltipText" *ngIf="authenticationService.module.isOrgAdmin ||
-    authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
-    authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || !authenticationService.module.isVendorTierTeamMember || authenticationService.module.isVendorTierAndPartner ||
-    authenticationService.module.isVendorTierAndPartnerTeamMember || authenticationService.module.isMarketingTeamMember || authenticationService.module.isMarektingAndPartner ||
-    authenticationService.module.isMarketingAndPartnerTeamMember"></i>
+         <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="tooltipText" *ngIf="
+     authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
+    authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember"></i>
     <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="partnerTeamMemberText" *ngIf="isVendorVersion"></i>
     <i class="fa fa-info-circle info_circle ml5"  data-toggle="tooltip" data-placement="bottom" [attr.title]="vendorTeamMemberText" *ngIf="authenticationService.module.isOnlyPartner"></i>
       </h3>

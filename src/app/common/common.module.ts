@@ -20,7 +20,6 @@ import { ExportCsvComponent } from './export/export-csv/export-csv.component';
 import { LoadingModule } from 'ngx-loading';
 import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
-import { DetailViewComponent } from './detail-view/detail-view.component';
 import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { SaveAsComponent } from './save-as/save-as.component';
@@ -43,7 +42,6 @@ import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-ana
 import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-util/category-folder-view-util.component';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
-import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { TagInputModule } from 'ngx-chips'
 import { LoaderComponent } from '../loader/loader.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -208,7 +206,6 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		ImageCropperComponent, AutoResponseLoaderComponent, PreviewPopupComponent, FormPreviewComponent,
 		DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		 CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, FormsListViewUtilComponent,
-		 SocialStatusComponent,
 		LoaderComponent, 
 		AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent,
 		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
@@ -251,7 +248,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		PreviewPopupComponent, FormPreviewComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
 		MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, CategoryFolderViewUtilComponent,
 		AddFolderModalPopupComponent, FormsListViewUtilComponent,
-	    SocialStatusComponent, LoaderComponent,
+	   LoaderComponent,
 		AddFormUtilComponent, AddTagsUtilComponent, 
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent,
 		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 

@@ -15,8 +15,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
 import { AppComponent } from './app.component';
-import { SocialLoginComponent } from './social/common/social-login/social-login.component';
-import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { RssService } from './social/services/rss.service';
 import { TwitterService } from './social/services/twitter.service';
@@ -51,7 +49,6 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 import { NoCacheHeadersInterceptor } from './core/no-cache-provider';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -68,9 +65,9 @@ import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
 import { PublicTopNavigationBarComponent } from './util/public-top-navigation-bar/public-top-navigation-bar.component';
 
 @NgModule({
-    declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent
+    declarations: [AppComponent, ShareVideoComponent
         ,
-    PageNotFoundComponent, VanitySocialLoginComponent, DomainErrorComponent,
+    PageNotFoundComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
         PublicTopNavigationBarComponent,
     ],

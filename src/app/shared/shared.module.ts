@@ -41,7 +41,6 @@ import { AgmCoreModule } from '@agm/core';
 import { MarketplaceUtilComponent } from 'app/util/marketplace-util/marketplace-util.component';
 import { MarketplaceMapUtilComponent } from 'app/util/marketplace-map-util/marketplace-map-util.component';
 import { FormAnalyticsUtilComponent } from 'app/util/form-analytics-util/form-analytics-util.component';
-import { DetailViewComponent } from 'app/common/detail-view/detail-view.component';
 import { AddTaskModalPopupComponent } from 'app/activity/add-task-modal-popup/add-task-modal-popup.component';
 import { TaskActivityComponent } from 'app/activity/task-activity/task-activity.component';
 import { PreviewTaskActivityComponent } from 'app/activity/preview-task-activity/preview-task-activity.component';
@@ -65,7 +64,7 @@ import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-e
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, DetailViewComponent,
+                CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent,
                  AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CallActivityComponent,WelcomeEmailListComponent], 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -74,7 +73,7 @@ import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-e
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, CustomManageLeadsComponent,
-                CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
+                CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, AddTaskModalPopupComponent, TaskActivityComponent,
                 PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CallActivityComponent,WelcomeEmailListComponent],
         providers: [FormService],
 })

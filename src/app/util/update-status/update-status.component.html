@@ -233,13 +233,6 @@
                     </div>
                 </div>
     
-                <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && alias">
-                    <h6 _ngcontent-c6="" class="caption-subject font-red-sunglo uppercase bold m10">Original Posts</h6>
-                    <div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
-                        <app-social-status [socialStatus]="socialStatus"></app-social-status>
-                    </div>
-                </div>
-    
                 <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="content-div"
                     [hidden]="!showPostDiv || socialAccountsLoader?.isLoading">
                     <div class="clearfix">
@@ -1102,10 +1095,7 @@
         <!-- modal -->
     </div>
     <app-connect-accounts></app-connect-accounts>
-<div id='fc-{{item.socialStatus.id}}-{{item.socialStatusProvider.id}}' *ngFor="let item of socialStatusDtos"
-    class='clearfix m10 hidden'>
-    <app-social-status [socialStatus]="item.socialStatus"></app-social-status>
-</div>
+
 </ng-container>
 <!--XNFR-726-->
 <ng-container *ngIf="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">

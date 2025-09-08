@@ -321,6 +321,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus: boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
+	integrationCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
 	isDashboardButtonsOptionClicked: boolean;
@@ -1928,7 +1929,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// XNFR-215
 
 	configmarketo() {
-		this.integrationTabIndex = 1;
+		// this.integrationTabIndex = 1;
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 	/*****XNFR-528*****/
@@ -2401,43 +2404,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configHubSpot() {
-		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'hubspot';
-			this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(this.hubSpotCurrentUser);
-			const encodedUrl = window.btoa(this.hubSpotRedirectURL);
-			let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
-			let url = null;
-			if (this.hubSpotRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
-
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
-
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-		}
-		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
-			window.location.href = this.hubSpotRedirectURL;
-		}
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 	configureMicrosoft() {
-		this.integrationTabIndex = 3;
-		//let providerName = 'microsoft';
+this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);		//let providerName = 'microsoft';
 		//this.configureCRM(providerName, this.microsoftRedirectURL);		
 	}
 
 	// XNFR-215
 	configurePipedrive() {
-		this.integrationTabIndex = 6;
-	}
+this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);	}
 
 	closeMicrosoftForm(event: any) {
-		if (event === "0")
-			this.integrationTabIndex = 0;
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 	configureCRM(providerName: string, crmRedirectURL: any) {
@@ -2463,59 +2447,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configSalesforce() {
-		if (this.loggedInThroughVanityUrl) {
-			/*	let providerName = 'salesforce';
-				let salesforceCurrentUser = localStorage.getItem('currentUser');
-				let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-				let redirectURL = window.btoa(this.sfRedirectURL);
-				let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
-				var x = screen.width / 2 - 700 / 2;
-				var y = screen.height / 2 - 450 / 2;
-				window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
-
-			let providerName = 'isalesforce';
-			let salesforceCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(salesforceCurrentUser);
-			const encodedUrl = window.btoa(this.sfRedirectURL);
-			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-			let url = null;
-			if (this.sfRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
-
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-			//this.referenceService.showSweetAlertInfoMessage();
-		}
-		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
-			window.location.href = this.sfRedirectURL;
-		}
+        this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 	configZoho() {
-		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'zoho';
-			let zohoCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(zohoCurrentUser);
-			const encodedUrl = window.btoa(this.zohoRedirectURL);
-			let vanityUserId = JSON.parse(zohoCurrentUser)['userId'];
-			let url = null;
-			if (this.zohoRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + 'configuration' + "/" + null;
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
-
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-		}
-		else if (this.zohoRedirectURL !== undefined && this.zohoRedirectURL !== '') {
-			window.location.href = this.zohoRedirectURL;
-		}
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 	/*********************GDPR Setting********************** */
@@ -3237,13 +3175,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	salesforceSettings() {
-		this.sfcfPagedItems = [];
-		this.sfcfMasterCBClicked = false;
-		this.customFieldsResponse.isVisible = false;
-		//this.integrationTabIndex = 2;
-		this.integrationType = 'SALESFORCE';
-		this.integrationTabIndex = 5;
-		//this.listSalesforceCustomFields();
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true)
 	}
 
 	hubspotSettings() {
@@ -5011,8 +4944,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configureConnectWise() {
-		this.integrationTabIndex = 7;
-	}
+this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);	}
 
 	// halo psa
 	checkHaloPsaIntegration() {
@@ -5036,7 +4969,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configureHaloPsa() {
-		this.integrationTabIndex = 8;
+	this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
 	}
 
 
@@ -5140,7 +5074,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	/**XNFR-677**/
 	showSalesforceInstanceModelPopup() {
-		this.showModelPopupForSalesforce = true;
+		this.integrationCustomResponse = new CustomResponse();
+        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true)
 	}
 
 	closeModelPopup() {

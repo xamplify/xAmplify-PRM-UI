@@ -5,8 +5,6 @@ import { AuthGuardService } from './auth-guard.service';
 import { AppCustomPreloader } from './app-routing-loader';
 import { HomeComponent } from './core/home/home.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
-import { SocialLoginComponent } from './social/common/social-login/social-login.component';
-import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
@@ -23,7 +21,6 @@ import { RequestDemoComponent } from './authentication/request-demo/request-demo
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
-import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
@@ -76,7 +73,6 @@ export const routes: Routes = [
 			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
 			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
 			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule', data: { preload: true } },
-			{ path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule', data: { preload: true } },
 			{ path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule', data: { preload: true } },
 			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
@@ -113,10 +109,6 @@ export const routes: Routes = [
 	{ path: 'privacy-policy', component: TermsConditonComponent },
 	{ path: 'userlock', component: ProfileLockComponent },
 	{ path: 'logout', component: LoginComponent },
-	{ path: ':social/login', component: SocialLoginComponent },
-	{ path: ':social/callback', component: SocialCallbackComponent },
-	{ path: 'v/:socialProvider/:vud', component: VanitySocialLoginComponent },
-	{ path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
 	{ path: 'v/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule/:redirectURL', component: VanityAddContactsComponent },
 	{ path: 'syn/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule', component: VanitySynchronizeContactsComponent },
 	{ path: 'share/:alias', component: ShareVideoComponent },

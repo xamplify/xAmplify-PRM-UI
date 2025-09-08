@@ -813,7 +813,7 @@
           [toDateFilter]="toDateFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"></app-partner-journey-count-tiles>
       </div>
       <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization">
+        <div *ngIf="!isVendorVersion || isPrm " class="row rowPaddingCustomization">
           <div>
             <!--******************Interacted & Not Interacted Donut Chart******************-->
             <div class="ml15m">
@@ -837,7 +837,7 @@
       <!--******************Status wise Track Assets Donut Chart & Details******************-->
       <div class="row rowPaddingCustomization">
         <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="cardPaddingCustomization">
+          <div *ngIf="!isVendorVersion  || isPrm " class="cardPaddingCustomization">
             <!--******************Type wise Track Assets Donut Chart******************-->
             <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
               [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
@@ -856,7 +856,7 @@
           </div>
         </span>
         <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess || authenticationService.module?.playbookAccess">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
+          <div *ngIf="!isVendorVersion || isPrm " class="row rowPaddingCustomization1">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Team Member wise Track Counts******************-->
               <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
@@ -892,7 +892,7 @@
         </span>
         <!--******************Track & Playbook Asset Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess || authenticationService.module?.playbookAccess">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
+          <div *ngIf="!isVendorVersion ||  isPrm " class="row rowPaddingCustomization1">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Track Asset Details*******************-->
               <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
@@ -912,7 +912,7 @@
         </span>
         <!--******************Team Member Wise Assets Details*******************-->
         <span *ngIf="authenticationService?.module?.damAccess && referenceService?.assetAccessGivenByVendor">
-          <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
+          <div *ngIf="isVendorVersion && (isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
               <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
@@ -924,14 +924,14 @@
           </div>
         </span>
         <!--******************All Partner Details*******************-->
-        <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm )" class="row rowPaddingCustomize4">
+        <div *ngIf="isVendorVersion && ( isPrm )" class="row rowPaddingCustomize4">
           <app-team-member-analytics-all-partners-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
             [toDateFilter]="toDateFilter"></app-team-member-analytics-all-partners-details>
         </div>
         <!--******************Share Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService.module?.hasShareLeadAccess">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomize4">
+          <div *ngIf="!isVendorVersion || isPrm " class="row rowPaddingCustomize4">
             <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
@@ -941,7 +941,7 @@
         </span>
         <!--******************Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+          <div *ngIf="!isVendorVersion" class="row rowPaddingCustomize4">
             <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
@@ -959,18 +959,9 @@
               [toDateFilter]="toDateFilter" *ngIf="referenceService?.opportunitiesAccessGivenByVendor"></app-partner-journey-deal-details>
           </div>
         </span>
-        <!--******************Contact Details*******************-->
-        <div
-          *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
-          class="row rowPaddingCustomize4">
-          <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.contactsAccessGivenByVendor && authenticationService?.module?.isContact">
-          </app-team-member-analytics-contact-details>
-        </div>
         <!--******************Company Details*******************-->
         <div
-          *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
+          *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm )"
           class="row rowPaddingCustomize4">
           <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
