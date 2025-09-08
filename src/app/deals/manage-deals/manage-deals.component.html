@@ -815,7 +815,3 @@
 <app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" [opportunityType]="'DEAL'"
   (closeEmitter)="closeEmitter($event)"></app-selectfield>
 <!-- XNFR-840 -->
-
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageDeal]="showAskOliverModalPopup"
-  [selectedDeal]="oliverDeal" (notifyParent)="closeAskAI($event)"
-  [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>

@@ -2736,23 +2736,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	showCampaigns(userId: number) {
-		this.campaignLoader = true;
-		let self = this;
-		let encodedUserId = this.referenceService.encodePathVariable(userId);
-		setTimeout(function () {
-			let prefixUrl = "/home/campaigns/user-campaigns/";
-			if (self.isPartner) {
-				self.referenceService.goToRouter(prefixUrl + "/pm/" + encodedUserId);
-			} else {
-				if(!self.sharedLeads){
-					self.referenceService.goToRouter(prefixUrl + "/c/" + encodedUserId);
-				}
-				else{
-					self.referenceService.goToRouter(prefixUrl + "/sl/" + encodedUserId);
-				}
-			}
-		}, 250);
-
 	}
 
 	selectedSharePartner(event: any) {

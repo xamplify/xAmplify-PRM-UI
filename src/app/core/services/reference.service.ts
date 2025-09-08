@@ -89,7 +89,6 @@ export class ReferenceService {
   selectModuleRouter = "/home/select-modules";
   onboardingPartnerRouter = "/home/partners/add";
   sharedDamRouter = "/home/dam/shared";
-  manageCampaignsRouter = "/home/campaigns/manage";
   loginUrl = "/login";
   pageContnetBgColor = "#F1F3FA";
   isPlayVideo = false;
@@ -2016,22 +2015,11 @@ export class ReferenceService {
   }
 
   goToCampaignAnalytics(campaign:any) {
-    let campaignId = campaign.campaignId;
-    let encodedCampaignId = this.encodePathVariable(campaignId);
-    let campaignTitle = campaign.campaignTitle;
-    if(campaignTitle!=undefined && this.getTrimmedData(campaignTitle).length>0){
-      let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
-      this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
-    }else{
-      this.showSweetAlertErrorMessage("Campaign Title Not Found");
-    }
     
   }
 
   navigateBackToCampaignAnalytics(campaign:any) {
-    let campaignId = campaign.campaignId;
-    let encodedCampaignId = this.encodePathVariable(campaignId);
-    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+campaign.campaignTitle+ "/details"]);
+  
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
@@ -3348,7 +3336,6 @@ export class ReferenceService {
 
   /********Campaigns****/
   goToManageCampaigns(viewType: string) {
-    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)]);
   }
 
   navigateToManageCampaignsByViewType(folderViewType: string, viewType: string, categoryId: number) {
@@ -3359,7 +3346,6 @@ export class ReferenceService {
     }
   }
   goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
-    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
    /********Campaigns****/
 

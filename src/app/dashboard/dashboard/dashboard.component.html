@@ -214,7 +214,6 @@
                 <a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
                     <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal" *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
                 </a>
-                <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="campaigns?.length == 0 && ((hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany)">Create Campaign</a>
             </div>
             <div class="portlet-body clearfix">
                 <section *ngFor="let campaign of campaigns; let i=index">
@@ -252,21 +251,6 @@
                                 <h5 class="text-primary" style="margin-top: 3.2em;">Released on
                                     <app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp>
                                 </h5>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()) && (!authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)">
-                        <div class="portlet light border-radius-0">
-                            <div class="portlet-body">
-                                <div class="text-center" style="margin: 1.3em 0.5em;">
-                                    <h5 style="color: rgb(119, 119, 119);">What type of campaign would you like to create? </h5>
-                                    <button class="color3 btn-campaign btn-block" *ngIf="referenceService.videoCampaign" (click)="createCampaign('video')">Video Campaign</button>
-                                    <button class="color1 btn-campaign btn-block" *ngIf="referenceService.emailCampaign" (click)="createCampaign('regular')">Email Campaign</button>
-                                    <button class="color4 btn-campaign btn-block" *ngIf="referenceService.socialCampaign" [routerLink]="['/home/campaigns/social']">Social Campaign</button>
-                                    <button class="color2 btn-campaign btn-block" *ngIf="referenceService.eventCampaign" [routerLink]="['/home/campaigns/event']">Event Campaign</button>
-                                </div>
                             </div>
                         </div>
                     </div>

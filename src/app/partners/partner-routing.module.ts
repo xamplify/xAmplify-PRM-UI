@@ -6,7 +6,6 @@ import { SocialContactsCallbackComponent } from '../contacts/social-contacts-cal
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
-import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
 import { WelcomeEmailListComponent } from 'app/util/welcome-email-list/welcome-email-list.component';
 
@@ -25,8 +24,6 @@ const routes: Routes = [
     {path: 'analytics/:id', component: PartnerReportsComponent},
     {path: 'individual-partner', component:IndividualPartnerAnalyticsComponent},
     {path: 'experience-automation', component:PartnersJourneyAutomationComponent},
-    {path: 'partner-workflow', component:WorkflowFormComponent,canDeactivate: [PendingChangesGuard]},
-    {path: 'partner-workflow/:id', component:WorkflowFormComponent,canDeactivate: [PendingChangesGuard]},
     { path: 'welcome-email-list', component: WelcomeEmailListComponent },
    
 ];

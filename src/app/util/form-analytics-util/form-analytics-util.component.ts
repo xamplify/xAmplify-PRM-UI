@@ -219,7 +219,6 @@ ngOnDestroy(){
     }
 
     goToCampaignAnalytics() {
-        this.router.navigate(['home/campaigns/' + parseInt(this.campaignAlias) + '/details']);
     }
 
 

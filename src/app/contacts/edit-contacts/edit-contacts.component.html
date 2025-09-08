@@ -2251,6 +2251,3 @@
 	[criteria]="criteria"	(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
-
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-	[isFromManageContact]="isFromManageContact" [isFromManagePartner]="isFromManagePartner" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

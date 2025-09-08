@@ -84,12 +84,6 @@ export class RssComponent implements OnInit {
   }
 
   goToUpdateStatusOrCampaign(feed:any,type:number){
-    this.referenceService.selectedFeed = feed;
-    this.loading = true;
-    if(1==type){
-      this.router.navigate(["/home/campaigns/social"]);
-    }else{
-      this.router.navigate(["/home/social/update-status"]);
-    }
+    
   }
 }

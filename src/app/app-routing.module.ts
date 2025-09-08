@@ -19,7 +19,6 @@ import { VerifyEmailComponent } from './authentication/verify-email/verify-email
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { FormPreviewComponent } from './forms/preview/form-preview.component';
-import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
@@ -34,7 +33,6 @@ import { SelectContentModulesComponent } from 'app/core/select-content-modules/s
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
-import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
@@ -76,7 +74,6 @@ export const routes: Routes = [
 		path: 'home', component: HomeComponent, canActivate: [AuthGuard],
 		children: [
 			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
-			{ path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule', data: { preload: true } },
 			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
 			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule', data: { preload: true } },
 			{ path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule', data: { preload: true } },
@@ -89,7 +86,6 @@ export const routes: Routes = [
 			{ path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule', data: { preload: true } },
 			{ path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule', data: { preload: true } },
 			{ path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule', data: { preload: true } },
-			{ path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule', data: { preload: true } },
 			{ path: 'design', loadChildren: 'app/design/design.module#DesignModule', data: { preload: true } },
 			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule', data: { preload: true } },
 			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: true } },
@@ -134,16 +130,6 @@ export const routes: Routes = [
 	{ path: 'mlpf/:alias', component: FormPreviewComponent },
 	{ path: 'mlvjf/:landingPageId/:alias', component: FormPreviewComponent },
 	{ path: 'vjf/:alias', component: FormPreviewComponent },
-	{ path: 'l/:alias/:seoName', component: ShowLandingPageComponent },
-	{ path: 'pl/:alias/:seoName', component: ShowLandingPageComponent },
-	{ path: 'l/:alias', component: ShowLandingPageComponent },
-	{ path: 'pl/:alias', component: ShowLandingPageComponent },
-	{ path: 'vjpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'mlpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'mlvjpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'showCampaignLandingPage/:alias', component: ShowLandingPageComponent },
-	{ path: 'scp/:alias', component: ShowLandingPageComponent },
-	{ path: 'clpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'requestdemo', component: RequestDemoComponent },
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
 	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
@@ -154,24 +140,6 @@ export const routes: Routes = [
 	{ path: 'vanity-domain-error', component: DomainErrorComponent },
 	{ path: 'maintenance', component: MaintenanceComponent },
 	{ path: 'login/preview', component: PreviewLoginComponent },
-	{ path: 'pv/t/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/evt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/edevt/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ct/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ulctp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sct/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sect/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwaret/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwaret/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwaretfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwarwlt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwarwlt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwarwltfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/wt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/vt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/lp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/plp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/vjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
@@ -184,20 +152,11 @@ export const routes: Routes = [
 	{ path: 'mp/vmp/:alias', component: MarketplaceUtilComponent },
 	{ path: 'pv/pjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/vmplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
-
-	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'pjpf/:alias', component: FormPreviewComponent },
 	{ path: 'vmpf/:alias', component: FormPreviewComponent },
 	{ path: 'vmppjf/:landingPageId/:alias', component: FormPreviewComponent },
-
-	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
-    // { path: 'landing/:alias', component: ShowLandingPageComponent , canActivate: [AuthGuard], data: { preload: true }},
-    // { path: 'l/:alias', component: ShowLandingPageComponent },
-
 	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
 	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
-	{ path: 'pv/otp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
 
 
 	{ path: '404', component: PageNotFoundComponent },

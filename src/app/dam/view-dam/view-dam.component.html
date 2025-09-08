@@ -142,6 +142,3 @@
 <div *ngIf="openSelectDigitalSignatureModalPopUp">
 	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="assetDetailsViewDto.sharedAssetPath"></app-select-digital-signature>
 </div>
-<!-- <div *ngIf="askAiValue">
-	<app-ai-chat-manager [assetDetailsViewDto]="assetDetailsViewDto" [pdfFile]="pdfDoc"(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
-</div> -->

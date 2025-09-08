@@ -57,7 +57,6 @@ import { MY_PROFILE_MENU_CONSTANTS } from './../../../constants/my-profile-menu-
 import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var swal:any, $:any, videojs: any, Papa: any;
 
 @Component({
@@ -411,7 +410,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
-		public landingPageService: LandingPageService) {
+		) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -2968,8 +2967,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.router.navigate(['/home/forms/manage/' + categoryId]);
 			} else if ("Pages" == type) {
 				this.router.navigate(['/home/pages/manage/l/' + categoryId + '/fg']);
-			} else if ("Campaigns" == type) {
-				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
 			} else if ("Asset Library" == type) {
 				this.router.navigate(['/home/dam/manage/l/' + categoryId + '/fg']);
 			} else if ("Track Builder" == type) {

@@ -24,7 +24,6 @@ export const RouterUrlConstants = {
     damPartnerView:'sharedp/',
     view:'view/',
     authorize:'authorize/',
-    campaigns:'campaigns/',
     userCampaigns:'user-campaigns/',
     ccd:'ccd',
     cd:'cd',

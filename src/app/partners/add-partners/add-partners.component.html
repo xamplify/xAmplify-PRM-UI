@@ -1585,21 +1585,6 @@
 <div *ngIf="showMicrosoftAuthenticationForm">
     <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
 </div>
-<!-- XNFR-230-->
-<div *ngIf="showPipedriveAuthenticationForm">
-    <app-pipedrive-authentication-popup (closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
-</div>
-
-<!-- XNFR-403-->
-<div *ngIf="showConnectWiseAuthenticationForm">
-    <app-connectwise-authentication-popup
-        (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
-</div>
-
-<!-- XNFR-502-->
-<div *ngIf="showHaloPSAAuthenticationForm">
-    <app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
-</div>
 
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
@@ -2012,6 +1997,3 @@
 <!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
     (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>
-
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-[isFromManagePartner]="true" [isFromOnboardSection]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

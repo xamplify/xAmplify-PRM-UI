@@ -23,7 +23,6 @@ import { DashboardReport } from '../../core/models/dashboard-report';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DashboardStatesReport } from '../models/dashboard-states-report';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { setDayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
@@ -89,7 +88,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
-        public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
+        public facebookService: FacebookService, public socialService: SocialService, 
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public referenceService: ReferenceService,
         public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
@@ -240,9 +239,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                     events: {
                         click: function (event) {
-                          self.loading = true;
-                          self.referenceService.campaignType = event.point.campaignType;
-                          self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
+                          
                         }
                     }
                 }
@@ -519,8 +516,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     createCampaign(campaignType: string) {
-        this.referenceService.selectedCampaignType = campaignType;
-        this.router.navigate(['/home/campaigns/create']);
+        
     }
 
     getUserCampaignReport(userId: number) {
@@ -998,9 +994,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     showCampaignDetails(campaign:any){
-      this.loading = true;
-      this.referenceService.campaignType = campaign[7];
-      this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
     }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;

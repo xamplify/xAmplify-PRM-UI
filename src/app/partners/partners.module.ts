@@ -20,7 +20,6 @@ import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-
 import { PartnerJourneyContactDetailsComponent } from './partner-journey-contact-details/partner-journey-contact-details.component';
 import { PartnerJourneyCompanyInfoComponent } from './partner-journey-company-info/partner-journey-company-info.component';
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
-import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
 import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './partner-journey-team-member-high-level-analytics-table/partner-journey-team-member-high-level-analytics-table.component';
 import { PartnerJourneyAssetDetailsComponent } from './partner-journey-asset-details/partner-journey-asset-details.component';
@@ -35,6 +34,6 @@ import { PlayBookJourneyInteractionDetailsComponent } from './play-book-journey-
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, AllPartnerTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent, PlayBookJourneyInteractionDetailsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, AllPartnerTableComponent, DeactivatedPartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, PartnersJourneyAutomationComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent, PartnerModuleConfiguratorComponent, AssetJourneyAssetDetailsComponent, PlayBookJourneyInteractionComponent, PlayBookJourneyInteractionDetailsComponent]
 })
 export class PartnersModule { }

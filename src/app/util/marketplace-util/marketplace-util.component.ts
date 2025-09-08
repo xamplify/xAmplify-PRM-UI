@@ -6,7 +6,6 @@ import { Processor } from 'app/core/models/processor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
 
 declare var BroadcastChannel: any;
@@ -15,7 +14,7 @@ declare var BroadcastChannel: any;
   selector: 'app-marketplace-util',
   templateUrl: './marketplace-util.component.html',
   styleUrls: ['./marketplace-util.component.css'],
-  providers: [HttpRequestLoader, Processor, LandingPageService, TracksPlayBookUtilService],
+  providers: [HttpRequestLoader, Processor, TracksPlayBookUtilService],
 })
 export class MarketplaceUtilComponent implements OnInit {
   searchTerm: string = '';
@@ -34,7 +33,6 @@ export class MarketplaceUtilComponent implements OnInit {
   isHoveringReadMore:boolean = false;
   constructor(
     private route: ActivatedRoute,
-    private landingPageService: LandingPageService,
     private logger: XtremandLogger,
     public httpRequestLoader: HttpRequestLoader,
     public processor: Processor,
@@ -87,17 +85,7 @@ export class MarketplaceUtilComponent implements OnInit {
   }
 
   getVendorCompaniesByAlias() {
-    this.landingPageService.getVendorCompaniesByAlias(this.alias, this.isMasterLandingPage).subscribe(
-      response => {
-        this.categories = response.data;
-        this.getFilteredCompanies();
-      },
-      error => {
-        this.categories = [];
-      },()=>{
-        this.setParentIframeHeight();
-      }
-    );
+   
   }
 
   navigateToParent(event: any, openInNewTab: boolean): void {

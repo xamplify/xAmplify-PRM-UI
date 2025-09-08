@@ -351,9 +351,7 @@ campaignRouter(alias:string, viewBy:string) {
              this.referenceService.campaignVideoFile = videoFile;
              this.referenceService.selectedCampaignType = 'video';
              this.referenceService.isCampaignFromVideoRouter = true;
-            // this.router.navigateByUrl('/home/campaigns/create');
-             this.referenceService.goToRouter('/home/campaigns/create');
-             }else{
+           }else{
                  this.authenticationService.forceToLogout();
              }
          },

@@ -1692,13 +1692,6 @@ checkAliasAccess(socialCampaignAlias: string) {
 	}
 
 	nagivatetoRouter(urlType :any){
-		if(urlType =='home'){
-			this.referenceService.goToRouter(this.referenceService.homeRouter);
-		}else if(urlType =='campaigns'){
-			this.referenceService.goToRouter('../../campaigns/select');
-		}else if(urlType =='social'){
-			this.referenceService.goToRouter('/home/campaigns/partner/social');
-		}
 		}
 		backAi(){
 			this.notifyClose.emit();

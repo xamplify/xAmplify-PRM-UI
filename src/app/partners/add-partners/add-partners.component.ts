@@ -3925,12 +3925,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	goToCampaigns(contact: any) {
-		this.loading = true;
-		let self = this;
-		let encodedId = this.referenceService.encodePathVariable(contact.id);
-		setTimeout(function () {
-			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + encodedId]);
-		}, 250);
+	
 	}
 
 	googleVanityAuthentication() {

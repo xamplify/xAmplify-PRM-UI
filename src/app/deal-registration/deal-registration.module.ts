@@ -4,13 +4,12 @@ import { SharedModule } from '../shared/shared.module';
 import { DealRegistrationService } from './services/deal-registration.service';
 import { CommonComponentModule } from '../common/common.module';
 import { CommonModule } from '@angular/common';
-import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { SharedRssModule } from 'app/shared/shared-rss.module';
 
 @NgModule({
   imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,SharedRssModule],
   declarations: [],
-  providers:[DealRegistrationService,EmailTemplateService],
+  providers:[DealRegistrationService],
   exports:[]
 })
 export class DealRegistrationModule { }

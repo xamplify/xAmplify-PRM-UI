@@ -1880,27 +1880,6 @@
                                                     (closeEvent)="refreshIntegrationSettings($event)"
                                                     (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                             </div>
-
-                                            <!-- XNFR-215 -->
-                                            <div *ngIf="integrationTabIndex == 6">
-                                                <app-pipedrive-authentication [loggedInUserId]="loggedInUserId"
-                                                    (closeEvent)="refreshIntegrationSettings($event)">
-                                                </app-pipedrive-authentication>
-                                            </div>
-
-                                            <!-- XNFR-215 -->
-                                            <div *ngIf="integrationTabIndex == 7">
-                                                <app-connectwise-authentication [loggedInUserId]="loggedInUserId"
-                                                    (closeEvent)="refreshIntegrationSettings($event)">
-                                                </app-connectwise-authentication>
-                                            </div>
-
-                                            <!--halopsa -->
-                                            <div *ngIf="integrationTabIndex == 8">
-                                                <app-halopsa-authentication [loggedInUserId]="loggedInUserId"
-                                                    (closeEvent)="refreshIntegrationSettings($event)">
-                                                </app-halopsa-authentication>
-                                            </div>
                                         </div>
                                         <!---Lead Pipe Lines-->
                                         <div class="tab-pane"
@@ -2361,12 +2340,6 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'mailIntegration'}"
                                          *ngIf="showMailIntegration">
                                             <app-mail-integration></app-mail-integration>
-                                        </div>
-
-                                        <!-- Your Templates TAB -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'templates'}">
-                                            <app-vanity-email-templates *ngIf="showTemplates"
-                                                (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
                                         </div>
 
                                         <!-- Categories -->
@@ -3403,69 +3376,10 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <!-- Vendor Journey -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
-                                            <app-vendor-journey *ngIf="vendorJourney"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                [moduleType]="properties.vendorJourney"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
-                                        </div>
-                                        <!-- Landing Pages -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
-                                            <app-vendor-journey *ngIf="isLandingPages"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"
-                                                [moduleType]="properties.landingPages"></app-vendor-journey>
-                                        </div>
-                                        <!--Master Landing Pages -->
-                                        <div class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
-                                            <app-vendor-journey *ngIf="isMasterLandingPages"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"
-                                                [moduleType]="properties.masterLandingPages"></app-vendor-journey>
-                                        </div>
-                                        <!-- Welcome Pages -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'welcomePages'}">
-                                            <app-vendor-journey *ngIf="welcomePages"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                [moduleType]="properties.welcomePages"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
-                                        </div>
-
                                         <div class="tab-pane" *ngIf="activeTabName == 'contactUploadManagementSettings'" 
                                             [ngClass]="{'active': activeTabName == 'contactUploadManagementSettings'}">
                                             <app-partner-contact-upload-management-settings></app-partner-contact-upload-management-settings>
-                                        </div>
-
-                                        <!-- Partner Journey Pages -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'partnerJourneyPages'}">
-                                            <app-vendor-journey *ngIf="isPartnerJourneyPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                [moduleType]="properties.partnerJourneyPages"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
-                                        </div>
-                                        <!-- Vendor Partner Journey Pages -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorPartnerJourneyPages'}">
-                                            <app-vendor-journey *ngIf="isVendorPartnerJourneyPages"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"
-                                                [moduleType]="properties.vendorPartnerJourneyPages"></app-vendor-journey>
-                                        </div>
-                                        <!--Master Landing Pages -->
-                                        <div class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'vendorMarketplacePages'}">
-                                            <app-vendor-journey *ngIf="isVendorMarketplacePages"
-                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                                (goBackToMyProfile)="goBackToMyProfile()"
-                                                [moduleType]="properties.vendorMarketplacePages"></app-vendor-journey>
-                                        </div>                                     
+                                        </div>                                    
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
@@ -3477,9 +3391,6 @@
                                         <app-custom-html-block *ngIf="isCustomHtmlBlockOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOM_HTML_BLOCK_MENU_HEADER}"></app-custom-html-block>
                                         <!--- XNFR-860 Custom Dashboard Settings --->
                                         <app-custom-dashboard-settings *ngIf="isCustomDashboardOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER}"></app-custom-dashboard-settings>
-                                        <!--XNFR-628 Chat GPT-->
-                                        <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
-                                        <!--XNFR-679 Flexi Fields-->
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
                                         <!--- XNFR-967 Contact Status--->
                                         <app-contact-status-drop-down *ngIf="isContactStatusOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"></app-contact-status-drop-down>
@@ -3580,10 +3491,6 @@
                                         properties.LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_VENDOR_ORG_PRM_COMPANIES}}</p>
                                 </div>
                             </div>
-                            <div class="portlet-body clearfix">
-                                <app-xamplify-default-templates
-                                    [xamplifyDefaultTemplate]="xamplifyDefaultTemplate"></app-xamplify-default-templates>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -3620,10 +3527,6 @@
                                 <app-response-message class="pg8" [customResponse]="customLoginTemplateResponse"
                                     *ngIf="customLoginTemplateResponse.isVisible">
                                 </app-response-message>
-                                <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
-                                    <app-bee-template-util [beeContainerInput]="beeContainerInput"
-                                        (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-                                </ng-container>
                             </div>
                         </div>
                     </div>

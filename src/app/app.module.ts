@@ -30,8 +30,6 @@ import { VideoFileService } from './videos/services/video-file.service';
 import { UploadCloudvideoService } from './videos/services/upload-cloudvideo.service';
 import { ReferenceService } from './core/services/reference.service';
 import { PagerService } from './core/services/pager.service';
-import { EmailTemplateService } from './email-template/services/email-template.service';
-import { EmailSpamCheckService } from './email-template/services/email-spam-check.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { VideoUtilService } from './videos/services/video-util.service';
@@ -44,7 +42,6 @@ import { ConsoleLoggerService } from './error-pages/services/console-logger.serv
 import { XtremandLogger } from './error-pages/xtremand-logger.service';
 
 import { EnvServiceProvider } from './env.service.provider';
-import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { CommonComponentModule } from 'app/common/common.module';
@@ -73,7 +70,7 @@ import { PublicTopNavigationBarComponent } from './util/public-top-navigation-ba
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent
         ,
-    ShowLandingPageComponent, PageNotFoundComponent, VanitySocialLoginComponent, DomainErrorComponent,
+    PageNotFoundComponent, VanitySocialLoginComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
         PublicTopNavigationBarComponent,
     ],
@@ -103,7 +100,7 @@ import { PublicTopNavigationBarComponent } from './util/public-top-navigation-ba
 	{provide: ErrorHandler, useClass: ClearChunkFile},
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
+        VideoFileService, UploadCloudvideoService, ContactService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
         VanityURLService,LinkedinService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 

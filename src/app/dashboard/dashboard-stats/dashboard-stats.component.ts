@@ -86,7 +86,6 @@ export class DashboardStatsComponent implements OnInit {
    }
 
   goToManageCampaigns(){
-    this.router.navigate(["/home/campaigns/manage"]);
    }
 
   goToManageVideos(){

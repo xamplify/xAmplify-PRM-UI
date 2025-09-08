@@ -10,7 +10,6 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../core/models/sort-option';
 import { PagerService } from '../../core/services/pager.service';
 import { MarketPlaceCategory } from '../models/market-place-category'
-import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 
 declare var swal, $: any;
 
@@ -36,7 +35,7 @@ export class MarketPlaceCategoriesComponent implements OnInit {
 
   constructor(public referenceService: ReferenceService, public httpRequestLoader: HttpRequestLoader,
     public utilService: UtilService, public authenticationService: AuthenticationService, public logger: XtremandLogger,
-    public pagerService: PagerService, public landingPageService : LandingPageService)
+    public pagerService: PagerService)
     {
     this.loggedInUserId = this.authenticationService.getUserId();
     }
@@ -48,25 +47,7 @@ export class MarketPlaceCategoriesComponent implements OnInit {
  
    /***************Categories*************** */
   listMasterPlaceCategories(pagination: Pagination) {
-      pagination.userId = this.loggedInUserId;
-      this.referenceService.startLoader(this.httpRequestLoader);
-      this.landingPageService.listMarketPlaceCategories(pagination)
-        .subscribe(
-          response => {
-            this.referenceService.stopLoader(this.httpRequestLoader);
-            const data = response.data;
-            pagination.totalRecords = data.totalRecords;
-            this.categorySortOption.totalRecords = data.totalRecords;
-            $.each(data.categories, function (_index: number, marketPlaceCategory: any) {
-              marketPlaceCategory.displayTime = new Date(marketPlaceCategory.createdDateInUTCString);
-            });
-            pagination = this.pagerService.getPagedItems(pagination, data.categories);
-          },
-          (error: any) => {
-            this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-          },
-          () => this.logger.info('Finished listMasterLandingPageCategories()')
-        );
+      
   }
  
   getCategoryById(selectedCategory: MarketPlaceCategory, actionType: string) {
@@ -113,20 +94,7 @@ export class MarketPlaceCategoriesComponent implements OnInit {
   }
   
   deleteCategoryById(id: number){
-  		this.landingPageService.deleteMarketPlaceCategory(id)
-			.subscribe(
-				(result: any) => {
-					if (result.statusCode==200) {
-						this.marketPlaceCategoryResponse = new CustomResponse('SUCCESS', result.message, true);
-              			this.categoryPagination.pageIndex = 1;
-              			 this.listMasterPlaceCategories(this.categoryPagination);
-					}else if(result.statusCode == 400){
-						this.marketPlaceCategoryResponse = new CustomResponse('ERROR', result.message, true);
-          }
-				},
-				(error: string) => {
-					this.referenceService.stopLoader(this.httpRequestLoader);
-				});
+  		
   }
   
   
@@ -153,30 +121,7 @@ export class MarketPlaceCategoriesComponent implements OnInit {
 	}
 
 	saveOrUpdateCategory() {
-	if(this.marketPlaceCategory.name && this.marketPlaceCategory.name.trim()){
-		this.referenceService.startLoader(this.addCategoryLoader);
-		this.marketPlaceCategory.loggedInUserId = this.loggedInUserId;
-		this.landingPageService.saveOrUpdateCategory(this.marketPlaceCategory)
-			.subscribe(
-				(result: any) => {
-					if (result.statusCode==200) {
-						this.closeCategoryModal();
-						this.marketPlaceCategoryResponse = new CustomResponse('SUCCESS', result.message, true);
-						 this.categoryPagination = new Pagination();
-                         this.listMasterPlaceCategories(this.categoryPagination);
-					}else if (result.statusCode==401) {
-					  this.referenceService.stopLoader(this.addCategoryLoader);
-					  this.marketPlaceCategory.isValid = false;
-					  this.categoryNameErrorMessage = result.message;
-					}					
-				},
-				(error: string) => {
-					this.referenceService.stopLoader(this.httpRequestLoader);
-				});
-		}else{
-		        this.marketPlaceCategory.isValid = false;
-				this.categoryNameErrorMessage = "category name is required";
-	}
+	
  }
   
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchMarketplaceCategories(); } }

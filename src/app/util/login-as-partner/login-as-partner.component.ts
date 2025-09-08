@@ -95,19 +95,7 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   logoutAsPartnerOrTeamMember() {
-    let isCreateCampaignUrl = this.router.url.indexOf("/campaigns/create/email") > -1;
-    if (isCreateCampaignUrl) {
-      this.authenticationService.module.logoutButtonClicked = isCreateCampaignUrl;
-      this.referenceService.goToDashboard();
-    }
-    this.utilService.addLoginAsLoader();
-    this.utilService.reloadAppInAllTabs()
-    this.referenceService.isWelcomePageLoading = true;
-    if (this.isLoggedInAsTeamMember) {
-      this.logoutAsTeamMember();
-    } else {
-      this.logoutAsPartner();
-    }
+  
   }
 
   logoutAsTeamMember() {

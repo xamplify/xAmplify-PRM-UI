@@ -13,7 +13,6 @@ import { CustomLoginScreen } from 'app/vanity-url/models/custom-login-screen';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
-import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { EnvService } from 'app/env.service';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
@@ -57,7 +56,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   message = "";
   statusCode: number;
   isShowUploadScreen = false;
-  @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent: EmailTemplatePreviewUtilComponent;
   loading: boolean;
   customLoinTemplates: CustomLoginTemplate[] = [];
   aspectRatio: any;
@@ -233,8 +231,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
 
   previewTemplate(emailTemplate: CustomLoginTemplate) {
-    emailTemplate.htmlBody = this.vanityURLService.sanitizeHtmlWithImportant(emailTemplate.htmlBody)
-    this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
+    
   }
 
   bgImageClick() {

@@ -8,7 +8,6 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import flatpickr from 'flatpickr';
@@ -39,7 +38,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
  /*** Glassmorphism Default *****/
  pageLoading = false;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router, public dashBoardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer, public userService:UserService
+    private vanityURLService: VanityURLService, public sanitizer: DomSanitizer, public userService:UserService
   ) {
     if (this.vanityURLService.isVanityURLEnabled()) {
       this.vanityURLService.checkVanityURLDetails();
@@ -256,22 +255,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
 
 
 getHtmlBodyAlias(){
-     let landingPageHtmlDto = {
-       "vendorJourney":false,
-       "masterLandingPage":false,
-       "fromMasterLandingPage":false,
-     }
-     this.landingPageService.getActiveWelcomePageByVanity(landingPageHtmlDto)
-     .subscribe(
-       (response: any) => {
-                this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.message)
-                this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
-                this.pageLoading = false;
-       },
-       (error: string) => {
-        this.xtremandLogger
-       }
-     );
+    
  } 
 
  getDefaultImagePath(name: any, themeId: any) {

@@ -166,11 +166,6 @@
                     <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal"
                         data-target="#customizeCampaignModal" aria-hidden="true"></i>
                 </a>
-                <a *ngIf="campaigns?.length == 0 &&authenticationService?.module?.createCampaign"
-                    [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right"
-                    id="campaign-creation-dashboard">
-                    Create Campaign
-                </a>
             </ng-container>
         </div>
         <!---Top 4 Campaigns--------->

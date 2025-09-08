@@ -224,21 +224,7 @@
 										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-campaign-list-and-grid-view>
 								</ng-container> -->
 
-								<!----Email Templates---->
-								<ng-container *ngIf="moduleId==roles.emailTemplateId">
-									<app-email-templates-list-and-grid-view [folderListViewCategoryId]="category.id"
-										[folderListViewExpanded]="category.expanded"
-										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-email-templates-list-and-grid-view>
-								</ng-container>
-
-								<!----Landing Pages---->
-								<ng-container *ngIf="moduleId==roles.landingPageId">
-									<app-landing-pages-list-and-grid-view [folderListViewCategoryId]="category.id"
-										[folderListViewExpanded]="category.expanded"
-										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-landing-pages-list-and-grid-view>
-								</ng-container>
-
-
+								
 							</ng-container>
 						</td>
 					</tr>

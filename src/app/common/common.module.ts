@@ -27,12 +27,9 @@ import { SaveAsComponent } from './save-as/save-as.component';
 import { TimestampNewComponent } from './timestamp-new/timestamp.component';
 import { VideoPlayComponent } from './video-play/video-play.component';
 import { ImageCropperComponent } from './image-cropper/component/image-cropper.component';
-import { EmailSpamCheckComponent } from '../email-template/email-spam-check/email-spam-check.component';
 import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-response-loader.component';
 import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.component';
-import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
 import { FormPreviewComponent } from '../forms/preview/form-preview.component';
-import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
 import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
 import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-analytics-util.component';
@@ -45,13 +42,10 @@ import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
 import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-util/category-folder-view-util.component';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
-import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
 import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { TagInputModule } from 'ngx-chips'
 import { LoaderComponent } from '../loader/loader.component';
-import { XamplifyDefaultTemplatesComponent } from 'app/util/xamplify-default-templates/xamplify-default-templates.component';
-import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DragulaModule } from 'ng2-dragula';
@@ -60,7 +54,6 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { AddLeadComponent } from '../leads/add-lead/add-lead.component';
-import { BeeTemplateUtilComponent } from 'app/util/bee-template-util/bee-template-util.component';
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
 import { ImageLoaderComponent } from './image-loader/image-loader.component';
 import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.component';
@@ -101,7 +94,6 @@ import { DamListAndGridViewComponent } from 'app/util/dam/dam-list-and-grid-view
 import { CountStatisticsComponent } from 'app/util/count-statistics/count-statistics.component';
 import { ImgCropprV2Component } from './image-cropper-v2/img-croppr-v2/img-croppr-v2.component';
 import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-partner.component';
-import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-authentication-popup/pipedrive-authentication-popup.component';
 /*********XNFR-255******/
 import { PartnerCompanyAndGroupsComponent } from 'app/util/partner-company-and-groups/partner-company-and-groups.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
@@ -113,13 +105,10 @@ import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xam
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { AllPartnersListComponent } from 'app/dashboard/all-partners-list/all-partners-list.component';
 import { QueryBuilderModule } from "angular2-query-builder";
-import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
 import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
 import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
-import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates/email-templates-list-and-grid-view/email-templates-list-and-grid-view.component';
 import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
-import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or-page-modal-popup/edit-template-or-page-modal-popup.component';
 import { ImageUploadCropperComponent } from './image-upload-cropper/image-upload-cropper.component';
 import { ShareAssetsComponent } from './share-assets/share-assets.component';
 import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
@@ -127,7 +116,6 @@ import { ShareUnpublishedContentComponent } from './share-unpublished-content/sh
 import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/share-tracks-or-playbooks.component';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/searchable-dropdown.component';
-import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
@@ -136,10 +124,8 @@ import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popu
 import { ChatComponent } from 'app/util/chat/chat.component';
 import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-chat-modal-popup/opportunities-chat-modal-popup.component';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
-import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
-import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
 import { PartnerJourneyCountTilesComponent } from 'app/util/partner-journey-count-tiles/partner-journey-count-tiles.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
@@ -168,7 +154,6 @@ import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.co
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
 import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
 import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
-import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
 import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/multi-select-dropdown.component';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 import { CopyTextComponent } from './copy-text/copy-text.component';
@@ -187,8 +172,6 @@ import { DateRangeDisplayComponent } from './date-range-display/date-range-displ
 import { SelectDigitalSignatureComponent } from 'app/util/select-digital-signature/select-digital-signature.component';
 import { SelectfieldComponent } from './selectfield/selectfield.component';
 import { OrderFieldsComponent } from './order-fields/order-fields.component';
-import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulider.component';
-import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
 import { UpdateStatusComponent } from 'app/util/update-status/update-status.component';
@@ -202,12 +185,9 @@ import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/cus
 import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 import { AddCompanyComponent } from '../company/add-company/add-company.component';
-import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
-import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
 import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
-import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-landing-page.component';
 import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
 
 import { ExecutiveSummaryReportComponent } from 'app/executive-summary-report/executive-summary-report.component';
@@ -225,12 +205,12 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ListLoaderComponent,
 		PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
 		TimestampComponent, ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent,
-		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
-		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
-		 CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
+		ImageCropperComponent, AutoResponseLoaderComponent, PreviewPopupComponent, FormPreviewComponent,
+		DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
+		 CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, FormsListViewUtilComponent,
 		 SocialStatusComponent,
-		LoaderComponent, XamplifyDefaultTemplatesComponent, 
-		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent,
+		LoaderComponent, 
+		AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent,
 		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
@@ -240,26 +220,26 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		LoginAsPartnerComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,AllPartnersListComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
-		EditTemplateOrPageModalPopupComponent, ShareAssetsComponent, SharePlaybooksComponent,
+		HomeGuideComponent,DonutPieChartComponent,AllPartnersListComponent,CustomUiSwitchComponent,
+		ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
+		BrowseContentComponent,DealChatPopupComponent,
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,AddEmailModalPopupComponent,
 		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		ChooseEmailtemplateComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	],
 
 
@@ -267,13 +247,13 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
 		ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
 		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent,
-		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,
-		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
+		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, AutoResponseLoaderComponent,
+		PreviewPopupComponent, FormPreviewComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
 		MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, CategoryFolderViewUtilComponent,
-		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
+		AddFolderModalPopupComponent, FormsListViewUtilComponent,
 	    SocialStatusComponent, LoaderComponent,
-		XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
-		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent,
+		AddFormUtilComponent, AddTagsUtilComponent, 
+		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent,
 		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
@@ -283,27 +263,27 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		ImgCropprV2Component,LoginAsPartnerComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
-		UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,AllPartnersListComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
+		UserGuideHelpButtonComponent,
+		DonutPieChartComponent,AllPartnersListComponent,QueryBuilderModule,CustomUiSwitchComponent,
 		ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,DealChatPopupComponent,ChatComponent,
-		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
+		BrowseContentComponent,DealChatPopupComponent,ChatComponent,
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,SelectfieldComponent,
-		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , ChatGptIntegrationSettingsComponent,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		OrderFieldsComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
+		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
+		AddDamComponent,PartnerCompanyDomainModalPopupComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	]
 
 

@@ -14,7 +14,6 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
@@ -87,7 +86,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	/****XNFR-571****/
 	@Input()customDropDown = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
-		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
+		public referenceService: ReferenceService, public properties: Properties,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
 		 this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -628,28 +627,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		}
 
 		shareLandingPageToPartners(shareLandingPageDTO : any){
-			this.landingPageService.shareVendorJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
-				this.referenceService.scrollToModalBodyTopByClass();
-				this.stopLoaders();
-				if (data.access) {
-					this.sendSuccess = true;
-					this.statusCode = data.statusCode;
-					if (data.statusCode == 200) {
-						this.responseMessage = "Published Successfully";
-					} else {
-						this.responseMessage = data.message;
-					}
-					this.closePopupEmit(this.responseMessage)
-				} else {
-					this.ngxLoading = false;
-					this.authenticationService.forceToLogout();
-				}
-			}, _error => {
-				this.stopLoaders();
-				this.sendSuccess = false;
-				this.referenceService.goToTop();
-				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-			});
 		}
 
 		closePopupEmit(message) {

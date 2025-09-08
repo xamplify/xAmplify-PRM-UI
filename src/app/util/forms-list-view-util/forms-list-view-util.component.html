@@ -67,8 +67,6 @@
                     </div>
                 </div>
             </div>
-            <app-landing-page-loader [maxBoxLength]=4
-                *ngIf="httpRequestLoader.isLoading && isGridView"></app-landing-page-loader>
             <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
             <section *ngIf="isListView">
                 <ng-container *ngIf="!httpRequestLoader.isLoading">

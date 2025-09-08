@@ -16,7 +16,6 @@ import { HomeComponent } from '../../core/home/home.component';
 
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
-import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { CloudContent } from '../models/cloudcontent';
 
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
@@ -96,7 +95,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
         public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
         public cloudUploadService: UploadCloudvideoService, public sanitizer: DomSanitizer, public refService: ReferenceService,
-        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties, public emailTemplateService: EmailTemplateService) {
+        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties) {
         try {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -973,24 +972,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
     }
       uploadToServer( formData: FormData ) {
-        this.contentProcessing = true;
-        this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
-            .subscribe( data => {
-            	if(data.access){
-              if ( data.statusCode === 1020 ) {
-                this.refService.contentManagementLoader = true;
-                if(!this.redirectContent){
-                  this.redirectContent = false;
-                  setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content/manage']); }, 1200); }
-              } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
-            }else{
-            	this.authenticationService.forceToLogout();
-            }
-            },
-            ( error: string ) => {
-              this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
-             // this.xtremandLogger.errorPage( error );
-              this.contentProcessing = false; });
+       
       }
       dropBoxContentChange() {
           try {

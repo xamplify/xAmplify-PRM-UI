@@ -477,13 +477,7 @@ filterByCompanyProfileName(){
 }
 
 showCampaignDetails(campaign:any){
-    this.ngxLoading = true;
-    this.referenceService.campaignType = campaign[7];
-    let campaignId = campaign[0];
-    let campaignTitle = campaign[8];
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
-    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+encodedTitle+'/details']);
+
   }
 
   showSubmitDealSuccess() {

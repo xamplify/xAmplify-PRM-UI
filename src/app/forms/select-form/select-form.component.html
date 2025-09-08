@@ -52,8 +52,6 @@
                 </div>
                 <div class="portlet-body" style="padding: 10px 0px 0px 0px;margin-top: -10px;">
                     <div class="row m0">
-                        <app-landing-page-loader [maxBoxLength]=4
-                            *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
                             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings"

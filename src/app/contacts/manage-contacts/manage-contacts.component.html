@@ -1800,10 +1800,6 @@
       </div>
       <app-scroll-top></app-scroll-top>
    </div>
-
-   <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-   [isFromManagePartner]="'true'" [selectedContact]="selectedList" [isFromGroupOfPartners]="'true'"
-   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
 </div>
 <!-- Filter Modal -->
 <div id="filterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">

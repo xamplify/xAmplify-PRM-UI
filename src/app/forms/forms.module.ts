@@ -9,8 +9,6 @@ import {FormsRoutingModule} from "./forms-routing.module";
 import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
 import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';
-import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
-import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { SelectFormComponent } from './select-form/select-form.component';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
@@ -23,7 +21,7 @@ import { FormDetailResponseComponent } from './form-detail-response/form-detail-
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
-    declarations: [AddFormComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent],
+    declarations: [AddFormComponent,FormAnalyticsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent],
     
 } )
 export class FormsModule { }

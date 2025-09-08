@@ -141,18 +141,7 @@ export class ActivityStreamComponent implements OnInit {
   }
 
   viewCampaignTimeLine(campaignData:any){
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.id);
-    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule) {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
-    } else if (this.isCompanyJourney) {
-      let encodedCampaignIdForNewTab = this.referenceService.encodePathVariableInNewTab(campaignData.id);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.dueDateString);
-			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignIdForNewTab + "/" + encodedTitle + "/details");
-		} else {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
-    }
+  
 	}
 
   closeModalPopup() {

@@ -19,7 +19,6 @@ import { ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from 'app/core/services/util.service';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -207,7 +206,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     @Input() isVendorOrMasterLandingPage: boolean = false;
     @Output() goBack: EventEmitter<any> = new EventEmitter();
     isValidFormWithFormLabels = true;
-    constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
+    constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute,
         public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement, public properties: Properties) {
@@ -1552,25 +1551,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     listItems(pagination: Pagination) {
-        this.referenceService.loading(this.httpRequestLoader, true);
-        this.emailTemplateService.listAwsFiles(pagination, this.loggedInUserId)
-            .subscribe(
-                (data: any) => {
-                    data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-                    for (var i = 0; i < data.length; i++) { data[i]["id"] = i; }
-                    this.list = data;
-                    this.searchList = data;
-                    this.sortList = data;
-                    if (this.list.length > 0) {
-                        this.exisitingFileNames = this.list.map(function (a) { return a.fileName.toLowerCase(); });
-                    } else {
-                        // this.customResponse = new CustomResponse( 'INFO', "No records found", true );
-                    }
-                    this.referenceService.loading(this.httpRequestLoader, false);
-                    this.paginatedList = this.list;
-                    this.setPage(1);
-                },
-                (error: string) => { this.logger.errorPage(error); });
     }
 
     setFileCheck(filePath: string) {
@@ -1614,39 +1594,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     errorHandler(event) { event.target.src = 'assets/images/your-logo.png'; }
 
     uploadFile(file: File, type: string) {
-        this.loading = true;
-        this.referenceService.loading(this.httpRequestLoader, true);
-        const formData: FormData = new FormData();
-        formData.append('files', file, file.name);
-        this.emailTemplateService.uploadFileFromForm(this.authenticationService.getUserId(), formData)
-            .subscribe(
-                (data: any) => {
-                    if (data.statusCode === 1024 || data.statusCode === 1025) {
-                        if (type == 'backgroundImage') {
-                            this.backgroundImageChangedEvent = null;
-                            this.croppedBackgroundImage = null;
-                        } else if (type == 'companyLogo') {
-                            this.companyLogoChangedEvent = null;
-                            this.croppedCompanyLogoImage = null;
-                        }
-                        this.showSweetAlert(data.message);
-                    } else if (data.access) {
-                        if (type == 'backgroundImage') {
-                            this.form.backgroundImage = data.filePath;
-                            this.formBackgroundImage = data.filePath;
-                        } else if (type == 'companyLogo') {
-                            this.form.companyLogo = data.filePath;
-                        }
-                    } else {
-                        this.authenticationService.forceToLogout();
-                    }
-                    this.loading = false;
-                    this.referenceService.loading(this.httpRequestLoader, false);
-                },
-                (error: string) => {
-                    this.loading = false;
-                    this.logger.errorPage(error);
-                });
+    
     }
 
     openFormFields() {
@@ -1742,37 +1690,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
     deleteFile(file: ContentManagement) {
-        this.customResponse.isVisible = false;
-        if (this.selectedFileIds.length < 1) {
-            this.awsFileKeys.push(file.fileName);
-        } else {
-            for (let i = 0; i < this.selectedFileIds.length; i++) {
-                if (this.selectedFiles[i].fileName) {
-                    this.awsFileKeys.push(this.selectedFiles[i].fileName);
-                }
-            }
-
-        }
-        this.referenceService.loading(this.httpRequestLoader, true);
-        file.userId = this.loggedInUserId;
-        file.awsFileKeys = this.awsFileKeys;
-        this.emailTemplateService.deleteFile(file)
-            .subscribe(
-                data => {
-                    let deleteMessage;
-                    if (this.selectedFileIds.length === 1) { deleteMessage = file.fileName + ' deleted successfully'; }
-                    else { deleteMessage = 'File(s) deleted successfully'; }
-                    this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
-                    this.listItems(this.pagination);
-                    if (this.selectedFileIds) {
-                        this.selectedFileIds.length = 0;
-                        this.selectedFiles.length = 0;
-                    }
-                },
-                (error: string) => {
-                    this.logger.errorPage(error);
-                }
-            );
+      
     }
 
     selectedPageNumber(event) {

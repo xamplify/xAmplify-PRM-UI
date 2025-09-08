@@ -3252,18 +3252,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}*/
 
 	goToCampaigns(contact: any) {
-		this.loading = true;
-		let type = this.checkingContactTypeName;
-		let self = this;
-		let encodedParameter = this.refService.encodePathVariable(contact.id);
-		setTimeout(function () {
-			let prefixUrl = "/home/campaigns/user-campaigns/";
-			if ("Partner" == type) {
-				self.refService.goToRouter(prefixUrl + "/pm/" + encodedParameter);
-			} else if ("Contact" == type) {
-				self.refService.goToRouter(prefixUrl + "/c/" + encodedParameter);
-			}
-		}, 250);
 
 	}
 

@@ -7,7 +7,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
-import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { ContentManagement } from '../models/content-management';
 declare var $, swal:any;
 
@@ -52,7 +51,7 @@ export class ContentManageComponent implements OnInit {
   constructor(public referenceService: ReferenceService,
       public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
       public authenticationService: AuthenticationService, private logger: XtremandLogger,
-      private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
+      private contentManagement: ContentManagement ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isListView = "LIST" ==localStorage.getItem('defaultDisplayType');
       
@@ -208,25 +207,6 @@ export class ContentManageComponent implements OnInit {
 
   /**************List Items************************/
   listItems( pagination: Pagination ) {
-      this.referenceService.loading( this.httpRequestLoader, true );
-      this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
-          .subscribe(
-          ( data: any ) => {
-             data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
-             for(var i=0;i< data.length; i++){ data[i]["id"] = i;}
-             this.list = data;
-             this.searchList = data;
-             this.sortList = data;
-              if ( this.list.length > 0 ) {
-                  this.exisitingFileNames = this.list.map( function( a ) { return a.fileName.toLowerCase(); });
-              } else {
-                 // this.customResponse = new CustomResponse( 'INFO', "No records found", true );
-              }
-              this.referenceService.loading( this.httpRequestLoader, false );
-              this.paginatedList = this.list;
-              this.setPage( 1 );
-           },
-           ( error: string ) => {  this.logger.errorPage( error ); } );
   }
 
   /******Preview*****************/
@@ -261,37 +241,7 @@ export class ContentManageComponent implements OnInit {
 
 
   deleteFile( file: ContentManagement ) {
-      this.customResponse.isVisible = false;
-      if ( this.selectedFileIds.length < 1 ) {
-          this.awsFileKeys.push( file.fileName );
-      } else {
-          for ( let i = 0; i < this.selectedFileIds.length; i++ ) {
-              if ( this.selectedFiles[i].fileName ) {
-                  this.awsFileKeys.push( this.selectedFiles[i].fileName );
-              }
-          }
-
-      }
-      this.referenceService.loading( this.httpRequestLoader, true );
-      file.userId = this.loggedInUserId;
-      file.awsFileKeys = this.awsFileKeys;
-      this.emailTemplateService.deleteFile( file )
-          .subscribe(
-          data => {
-              let deleteMessage ;
-              if(this.selectedFileIds.length === 1){  deleteMessage = file.fileName + ' deleted successfully';}
-              else { deleteMessage = 'File(s) deleted successfully'; }
-              this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
-              this.listItems( this.pagination );
-              if ( this.selectedFileIds ) {
-                  this.selectedFileIds.length = 0;
-                  this.selectedFiles.length = 0;
-              }
-          },
-          ( error: string ) => {
-              this.logger.errorPage( error );
-          }
-          );
+   
   }
   ngOnInit() {
       this.listItems( this.pagination );

@@ -41,7 +41,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
         public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) {
         this.isFromCampaignModule = this.router.url.indexOf("campaigns")>-1; 
- 		this.isFromRedistributedCampaignSection = this.router.url.indexOf("campaigns/partner")>-1; 
+ 		this.isFromRedistributedCampaignSection = null; 
          
     }
 
@@ -181,32 +181,11 @@ export class CategoryFolderViewUtilComponent implements OnInit {
                  this.titleHeader = "Manage Pages";
 			}
            
-        }else if(type==4){
-            let teamMemberId = this.moduleType['teamMemberId'];
-            if(teamMemberId!=undefined && teamMemberId>0){
-                this.titleHeader ="Manage Campaigns";
-                this.router.navigate( ['home/campaigns/manage/' + categoryId+"/"+teamMemberId] );
-                
-            }else{
-                this.titleHeader ="Manage Campaigns";
-                this.router.navigate( ['home/campaigns/manage/' + categoryId] );
-                
-            }
-        }else if(type==5){
-            this.router.navigate( ['home/campaigns/partner/f/' + categoryId] );
-            this.titleHeader ="Campaigns shared by Vendors";
         }
         
     }
 
     goToCalendarView(){
-        this.navigatingToRelatedComponent.emit();
-        let teamMemberId = this.route.snapshot.params['teamMemberId'];
-        if(teamMemberId!=undefined && teamMemberId>0){
-            this.router.navigate(['/home/campaigns/calendar/' + teamMemberId]);
-        }else{
-            this.router.navigate(['/home/campaigns/calendar']);
-        }
      
     }
 

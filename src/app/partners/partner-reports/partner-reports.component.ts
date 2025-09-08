@@ -700,8 +700,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     goToCampaignAnalytics(campaign) {
-        this.referenseService.campaignType = campaign.campaignType;
-        this.router.navigate(["/home/campaigns/" + campaign.campaignId + "/details"]);
+       
     }
 
 

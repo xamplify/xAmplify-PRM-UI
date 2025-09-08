@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
-import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { UtilService } from '../../core/services/util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
@@ -12,12 +11,12 @@ import { Processor } from '../../core/models/processor';
   selector: 'app-save-geo-location-analytics',
   templateUrl: './save-geo-location-analytics.component.html',
   styleUrls: ['./save-geo-location-analytics.component.css'],
-  providers: [Processor,LandingPageService],
+  providers: [Processor],
 })
 export class SaveGeoLocationAnalyticsComponent implements OnInit {
 
     deviceInfo: any;
-    constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,
+    constructor(private route: ActivatedRoute,
             private logger:XtremandLogger,public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService) { }
 
     ngOnInit() {
@@ -69,22 +68,7 @@ export class SaveGeoLocationAnalyticsComponent implements OnInit {
     
     
     saveAnalytics(geoLocationAnalytics:GeoLocationAnalytics){
-        console.log(geoLocationAnalytics);
-        this.landingPageService.saveAnalytics(geoLocationAnalytics)
-        .subscribe(
-          (data: any) => {
-              let response = data.data;
-              if(data.statusCode==200){
-                  this.logger.info("Location Details Saved Successfully");
-              }else{
-                  this.logger.error("Error In Saving Location Tracking Details");
-              }
-          },
-          (error: string) => {
-              this.logger.error( "Error In saving Location Details",error); 
-          }
-        );
-        
+
     }
 
 }

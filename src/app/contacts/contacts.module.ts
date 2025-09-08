@@ -4,9 +4,7 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 import { SharedModule } from '../shared/shared.module';
 import { ContactRoutingModule } from './contact-routing.module';
 import { SharedContactsModule } from '../shared/shared-contacts.module';
-import { WorkflowFormComponent } from './workflow-form/workflow-form.component';
 import { CKEditorComponent, CKEditorModule } from 'ng2-ckeditor';
-import { HalopsaauthenticationpopupComponent } from './halopsaauthenticationpopup/halopsaauthenticationpopup.component';
 
 
 @NgModule({

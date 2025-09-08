@@ -835,9 +835,4 @@
 <app-send-test-email *ngIf="isLeadOptionClicked" [id]="leadId" [toEmailId]="partnerEmailAddress" [isLeadOptionClicked]="isLeadOptionClicked" (sendTestEmailComponentEventEmitter)="closeSendReminiderPopup()">
 </app-send-test-email>
 
-  <!--- XNFR-1091 --->
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageLead]="showAskOliverModalPopup" [selectedLead]="oliverLead"
-  (notifyParent)="closeAskAI($event)" [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>
-
-
 <!-- END CONTENT -->

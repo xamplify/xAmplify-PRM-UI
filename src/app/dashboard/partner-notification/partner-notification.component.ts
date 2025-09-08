@@ -60,12 +60,7 @@ export class PartnerNotificationComponent implements OnInit {
   }
   
   goToRedistributeDiv(campaignType:string){
-      let url = 'home/campaigns/partner/'+campaignType;
-      if("page"==campaignType){
-          this.router.navigate(['home/pages/partner']);
-      }else{
-          this.router.navigate([url]);
-      }
+
       
   }
   
