@@ -149,25 +149,13 @@ export class HomeComponent implements OnInit {
           if (result !== "") {
             this.loader = false;
             this.referenceService.companyId = result;
-            if (result != undefined && result > 0) {
-              this.getOrgCampaignTypes();
-            }
-
           }
         }, (error: any) => { this.xtremandLogger.log(error); }
       );
     } catch (error) { this.xtremandLogger.log(error); }
   }
 
-  getOrgCampaignTypes() {
-    this.referenceService.getOrgCampaignTypes(this.referenceService.companyId).subscribe(
-      data => {
-        this.referenceService.videoCampaign = data.video;
-        this.referenceService.emailCampaign = data.regular;
-        this.referenceService.socialCampaign = data.social;
-        this.referenceService.eventCampaign = data.event;
-      });
-  }
+  
 
   getPartnerCampaignsNotifications() {
     if (!this.referenceService.eventCampaignTabAccess || !this.referenceService.socialCampaignTabAccess) {
@@ -194,10 +182,7 @@ export class HomeComponent implements OnInit {
             this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
             this.authenticationService.superiorRole = response.data.superiorRole;
             const roles = this.authenticationService.getRoles();
-            this.checkEnableLeads()
-
             if (roles) {
-
               if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
                 this.authenticationService.isCompanyPartner = true;
               }
@@ -234,48 +219,7 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  checkEnableLeads() {
-    if (this.authenticationService.loggedInUserRole != "Team Member") {
-      const url = "admin/get-company-id/" + this.userId + "?access_token=" + this.token;
-      this.referenceService.getHomeCompanyIdByUserId(url)
-        .subscribe(response => {
-          const campaignUrl = "campaign/access/" + response + "?access_token=" + this.token + "&companyProfileName=" + this.authenticationService.companyProfileName;
-          this.referenceService.getHomeOrgCampaignTypes(campaignUrl)
-            .subscribe(data => {
-              this.authenticationService.enableLeads = data.enableLeads;
-              if (!this.authenticationService.enableLeads) {
-                this.checkEnableLeadsForPartner();
-              }
-            });
-
-        })
-    } else if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")) {
-
-      try {
-        this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
-          (result: any) => {
-            if (result !== "") {
-              this.referenceService.companyId = result;
-              this.dealsService.getVendorLeadServices(this.authenticationService.user.id, this.referenceService.companyId).subscribe(response => {
-                this.authenticationService.enableLeads = response.data;
-                if (!this.authenticationService.enableLeads) {
-                  this.checkEnableLeadsForPartner();
-                }
-              })
-            }
-          }, (error: any) => { this.xtremandLogger.log(error); }
-        );
-      } catch (error) { this.xtremandLogger.log(error); }
-
-    } else {
-      if (!this.authenticationService.enableLeads) {
-        this.checkEnableLeadsForPartner();
-      }
-    }
-
-
-  }
-
+ 
   checkEnableLeadsForPartner() {
 
     if (!this.authenticationService.enableLeads && (this.authenticationService.isCompanyPartner || (this.authenticationService.loggedInUserRole == "Team Member" && this.authenticationService.superiorRole.includes("Partner")))) {
@@ -326,7 +270,6 @@ export class HomeComponent implements OnInit {
         this.getVideoDefaultSettings();
         this.referenceService.defaulgVideoMethodCalled = true;
         this.getTeamMembersDetails();
-        this.getPartnerCampaignsNotifications();
         this.getCategorisService();
       }
       this.vanityURLService.isVanityURLEnabled();

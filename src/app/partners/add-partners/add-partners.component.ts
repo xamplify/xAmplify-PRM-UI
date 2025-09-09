@@ -1343,68 +1343,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactService.isContactModalPopup = true;
 	}
 
-	socialContactImage() {
-		try {
-			this.contactService.socialContactImages()
-				.subscribe(
-					data => {
-						this.storeLogin = data;
-						if (this.storeLogin.GOOGLE == true) {
-							this.googleImageNormal = true;
-						} else {
-							this.googleImageBlur = true;
-						}
-						if (this.storeLogin.SALESFORCE == true) {
-							this.sfImageNormal = true;
-						} else {
-							this.sfImageBlur = true;
-						}
-						if (this.storeLogin.ZOHO == true) {
-							this.zohoImageNormal = true;
-						} else {
-							this.zohoImageBlur = true;
-						}
-						if (this.storeLogin.MARKETO == true) {
-							this.marketoImageNormal = true;
-						} else {
-							this.marketoImageBlur = true;
-						}
-						if (this.storeLogin.HUBSPOT == true) {
-							this.hubspotImageNormal = true;
-						} else {
-							this.hubspotImageBlur = true;
-						}
-						if (this.storeLogin.MICROSOFT == true) {
-							this.microsoftDynamicsImageNormal = true;
-						} else {
-							this.microsoftDynamicsImageBlur = true;
-						}
-						if (this.storeLogin.PIPEDRIVE == true) {
-							this.pipedriveImageNormal = true;
-						} else {
-							this.pipedriveImageBlur = true;
-						}
-						if (this.storeLogin.CONNECTWISE == true) {
-							this.connectWiseImageNormal = true;
-						} else {
-							this.connectWiseImageBlur = true;
-						}
-						if (this.storeLogin.HALOPSA == true) {
-							this.haloPSAImageNormal = true;
-						} else {
-							this.haloPSAImageBlur = true;
-						}
-					},
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.log("AddContactsComponent socialContactImage() finished.")
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "social Partners images");
-		}
-	}
+	
 
 	setSocialPage(page: number) {
 		try {
@@ -2278,53 +2217,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$("#settingSocialNetworkPartner").appendTo("body");
 	}
 
-	unlinkSocailAccount() {
-		try {
-			let socialNetwork = this.settingSocialNetwork.toUpperCase();
-			this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
-				.subscribe(
-					(data: any) => {
-						if (socialNetwork == 'SALESFORCE') {
-							$("#salesforceContact_buttonNormal").hide();
-							$("#salesforceGear").hide();
-							this.sfImageBlur = true;
-							this.socialContactImage();
-						}
-						else if (socialNetwork == 'GOOGLE') {
-							$("#googleContact_buttonNormal").hide();
-							$("#GoogleGear").hide();
-							this.googleImageBlur = true;
-						}
-						else if (socialNetwork == 'ZOHO') {
-							$("#zohoContact_buttonNormal").hide();
-							$("#zohoGear").hide();
-							this.zohoImageBlur = true;
-						}
-						$('#settingSocialNetworkPartner').modal('hide');
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true);
-					},
-					(error: any) => {
-						if (error._body.search('Please launch or delete those campaigns first') != -1) {
-							this.Campaign = error;
-							$('#settingSocialNetworkPartner').modal('hide');
-							this.deleteErrorMessage = true;
-							setTimeout(function () { $("#campaignError").slideUp(500); }, 3000);
-						} else {
-							this.xtremandLogger.errorPage(error);
-						}
-					},
-					() => {
-						$('#settingSocialNetworkPartner').modal('hide');
-						this.cancelPartners();
-						this.xtremandLogger.info("deleted completed");
-					}
-				);
-			this.deleteErrorMessage = false;
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "unlink social accounts Partners");
-		}
-	}
-
+	
 	removeDuplicates(originalArray, prop) {
 		var newArray = [];
 		var lookupObject = {};
@@ -2685,7 +2578,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	urlLink: any;
 	ngOnInit() {
 		try {
-			this.socialContactImage();
 			this.searchWithModuleName = 11;
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
@@ -2751,10 +2643,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
-		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
-		this.fetchOliverActiveIntegration();
-		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -3870,7 +3759,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.getGoogleConatacts = data;
 		this.zohoImageNormal = false;
 		this.zohoImageBlur = false;
-		this.socialContactImage();
 		let contacts = this.getGoogleConatacts['contacts'];
 		if (contacts != null && contacts.length > 0) {
 			for (var i = 0; i < this.getGoogleConatacts.contacts.length; i++) {
@@ -4812,20 +4700,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			);
 	}
 
-	getActiveCrmType() {
-		this.loading = true;
-		this.contactService.getActiveCrmType(this.loggedInUserId)
-			.subscribe(
-				result => {
-					this.activeCrmType = result.data;
-					this.loading = false;
-				},
-				(error: any) => {
-					this.loading = false;
-				},
-			);
 
-	}
 triggerUniversalSearch(){
 	if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Partners') {
 		if(this.searchKey) {
@@ -5084,33 +4959,8 @@ triggerUniversalSearch(){
 		return contactName;
 	}
 
-	fetchOliverActiveIntegration() {
-		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
-		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
-			(response: any) => {
-				if (response.statusCode == 200 && response.data) {
-					let data = response.data;
-					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
-					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
-					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
-					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
-				}
-			}, error => {
-				console.log('Error in fetchOliverActiveIntegration() ', error);
-			});
-	}
+	
 
-	getOliverAgentAccessSettings() {
-		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
-			result => {
-				if (result.data && result.statusCode == 200) {
-					let data = result.data;
-					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
-				}
-			}, error => {
-				console.log('Error in getOliverAgentAccessSettings() ', error);
-			});
-	}
+	
 
 }
