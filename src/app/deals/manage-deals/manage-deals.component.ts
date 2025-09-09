@@ -313,22 +313,7 @@ export class ManageDealsComponent implements OnInit {
         }  
       });    
     });
-    this.getVendorRegisterDealValue();
 
-  }
-
-  getVendorRegisterDealValue() {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-      data => {
-        if (data.statusCode == 200) {
-          this.isRegisterDealEnabled = data.data;
-        }
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }, error => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }
-    );
   }
 
     setEnableLeads() {

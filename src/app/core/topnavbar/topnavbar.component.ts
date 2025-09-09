@@ -230,18 +230,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  getUnreadNotificationsCount() {
-    try {
-      this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
-        .subscribe(
-          data => {
-            this.userService.unreadNotificationsCount = data;
-          },
-          error => this.logger.log(error),
-          () => this.logger.log('Finished')
-        );
-    } catch (error) { this.logger.error('error' + error); }
-  }
+
 
   isAddedByVendor() {
     try {
@@ -304,13 +293,9 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     try {
       this.getDashboardType();
-      this.getUnreadNotificationsCount();
       this.getRoles();
-      this.isAddedByVendor();
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
       this.helpGuidesUrl = this.router.url.includes('home/help');
-      this.getVendorRegisterDealValue();
-      this.getReferVendorOption();
       this.isOnlyUser = this.authenticationService.isOnlyUser();
       this.isSuperAdmin = this.authenticationService.isSuperAdmin();
     } catch (error) { this.logger.error('error' + error); }
@@ -579,19 +564,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     }
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
-    // header navbar end
 
-  getVendorRegisterDealValue() {
-    this.authenticationService.module.topNavBarLoader = true;
-    this.integrationService.getVendorRegisterDealValue(this.userId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-      data => {
-        if (data.statusCode == 200) {
-          this.isRegisterDealEnabled = data.data;
-        }
-        this.authenticationService.module.topNavBarLoader = false
-      }, error => {
-        this.authenticationService.module.topNavBarLoader = false;
-      }
-    )
-  }
 }
+

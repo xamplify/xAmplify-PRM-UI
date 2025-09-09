@@ -144,11 +144,6 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    getUnreadNotificationsCount(userId: number) {
-        return this.http.get(this.URL + `notifications/unread-count/${userId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
 
     markAllAsRead(userId: number) {
         return this.http.get(this.URL + `notifications/mark-all-as-read/${userId}?access_token=${this.authenticationService.access_token}`)

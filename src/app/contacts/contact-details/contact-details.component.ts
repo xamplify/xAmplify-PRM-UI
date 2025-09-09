@@ -203,7 +203,6 @@ export class ContactDetailsComponent implements OnInit {
       this.getContact();
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
-      this.getVendorRegisterDealValue();
       this.fetchOliverActiveIntegration();
       this.getOliverAgentAccessSettings();
     }
@@ -792,19 +791,7 @@ export class ContactDetailsComponent implements OnInit {
     this.referenceService.openWindowInNewTab(url);
   }
 
-  getVendorRegisterDealValue() {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-      data => {
-        if (data.statusCode == 200) {
-          this.isRegisterDealEnabled = data.data;
-        }
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }, error => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }
-    );
-  }
+
 
   closeCompanyCampaigns() {
     this.showCompanyCampaigns = false;

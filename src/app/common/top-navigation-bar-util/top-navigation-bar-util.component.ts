@@ -298,31 +298,6 @@ private beforeAdd(tag: any) {
     });
   }
 
-  getUnreadNotificationsCount() {
-    try {
-      this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
-        .subscribe(
-          data => {
-            this.userService.unreadNotificationsCount = data;
-          },
-          error => this.logger.log(error),
-          () => this.logger.log('Finished')
-        );
-    } catch (error) { this.logger.error('error' + error); }
-  }
-
-  isAddedByVendor() {
-    try {
-      this.userService.isAddedByVendor(this.authenticationService.getUserId())
-        .subscribe(
-          data => {
-            this.authenticationService.isAddedByVendor = data;
-          },
-          error => this.logger.log(error),
-          () => this.logger.log('Finished')
-        );
-    } catch (error) { this.logger.error('error' + error); }
-  }
 
   getRoles() {
     this.userService.getRoles(this.authenticationService.getUserId())
@@ -673,17 +648,7 @@ private beforeAdd(tag: any) {
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
    
-  getVendorRegisterDealValue() {
-    if (this.authenticationService.vanityURLEnabled) {
-      this.integrationService.getVendorRegisterDealValue(this.userId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isRegisterDealEnabled = data.data;
-          }
-        }
-      )
-    }
-  }
+ 
 
   openSidebar() {
     let navLinks = document.querySelector(".nav-link") as HTMLElement | null;
@@ -820,18 +785,6 @@ this.authenticationService.module.isContact = data.contacts;
           this.authenticationService.approvalRequiredForAssets = data.approvalRequiredForAssets;
           this.authenticationService.approvalRequiredForTracks = data.approvalRequiredForTracks;
           this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
-          this.authenticationService.isOliverActive = data.oliverActive;
-          this.authenticationService.contactSubscriptionLimitEnabled = data.contactSubscriptionLimitEnabled;
-
-          this.authenticationService.oliverInsightsEnabled = data.oliverInsightsEnabled;
-          this.authenticationService.brainstormWithOliverEnabled = data.brainstormWithOliverEnabled;
-          this.authenticationService.oliverSparkWriterEnabled = data.oliverSparkWriterEnabled;
-          this.authenticationService.oliverParaphraserEnabled = data.oliverParaphraserEnabled;
-          this.authenticationService.oliverContactAgentEnabled = data.oliverContactAgentEnabled;
-          this.authenticationService.oliverPartnerAgentEnabled = data.oliverPartnerAgentEnabled;
-          this.authenticationService.marketingModulesAccessToPartner = data.marketingModulesAccessToPartner;
-          this.authenticationService.oliverCampaignAgentEnabled = data.oliverCampaignEnabled;
-
           this.menuItems = data.menuItems;
 
 
@@ -1185,12 +1138,9 @@ this.authenticationService.module.isContact = data.contacts;
       data => {
         if(isWelcomePageEnabled == data.data){
           this.getDashboardType();
-          this.getUnreadNotificationsCount();
           this.getRoles();
-          this.isAddedByVendor();
           this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
           this.helpGuidesUrl = this.router.url.includes('home/help');
-          this.getVendorRegisterDealValue();
           this.getReferVendorOption();
     
           this.findMenuItems();
