@@ -32,22 +32,7 @@ export class NotificationsComponent implements OnInit {
         // this.pageNumber = this.paginationComponent.numberPerPage[0];
     }
     pagination: Pagination = new Pagination();
-    listNotifications(pagination:Pagination) {
-      try{
-        this.referenceService.loading(this.httpRequestLoader, true);
-        this.userService.listNotifications(this.authenticationService.getUserId())
-            .subscribe(
-            data => {
-                this.notifications = data;
-                pagination.totalRecords = this.notifications.length;
-                pagination =this.pagerService.getPagedItems(pagination, data);
-                this.pager = this.socialPagerService.getPager( this.notifications.length, this.pagination.pageIndex, this.pagination.maxResults );
-                this.pagination.pagedItems = this.notifications.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-                this.referenceService.loading(this.httpRequestLoader, false);
-            },
-            error => console.log(error));
-        }catch(error) {console.error('error'+error); }
-    }
+    
     
     markAllAsRead() {
       try{
@@ -91,7 +76,6 @@ export class NotificationsComponent implements OnInit {
     }
     setPage(event: any) {
         this.pagination.pageIndex = event.page;
-        this.listNotifications(this.pagination);
     }
 
     // setPage( page: number ) {
@@ -115,7 +99,6 @@ export class NotificationsComponent implements OnInit {
         if(this.router.url.includes('home/dashboard/notifications')){
         this.utilService.setRouterLocalStorage('notification');
         }
-        this.listNotifications(this.pagination);
     }
 
 }
