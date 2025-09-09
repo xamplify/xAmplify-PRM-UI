@@ -27,7 +27,6 @@ import { PartnerNotificationComponent } from './partner-notification/partner-not
 import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 import { VendorReportsComponent } from './vendor-reports/vendor-reports.component';
-import { AdminReportComponent } from './admin-report/admin-report.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { MarketoAuthenticationComponent } from './marketo-authentication/marketo-authentication.component';
 import { CKEditorModule } from "ng2-ckeditor";
@@ -43,7 +42,6 @@ import { VendorActivityAnalyticsComponent } from './dashboard-analytics-componen
 import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-components/regional-statistics-analytics/regional-statistics-analytics.component';
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
-import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
 import { TagsComponent } from './tags/tags.component';
@@ -129,7 +127,7 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent, EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent,
-        VendorReportsComponent, AdminReportComponent,
+        VendorReportsComponent,
         MarketoAuthenticationComponent,
         VendorRequestReportComponent,
         DemoRequestComponent,
@@ -142,7 +140,6 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         RegionalStatisticsAnalyticsComponent,
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
-        SocialAccountsAnalyticsComponent,
         DashboardButtonsCarouselComponent,
         ModuleAccessComponent,
         TagsComponent,

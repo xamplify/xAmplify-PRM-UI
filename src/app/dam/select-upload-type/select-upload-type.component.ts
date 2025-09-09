@@ -14,8 +14,7 @@ loading = false;
   }
 
   addAsset() {
-		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/add");
+				     this.referenceService.showAlert();
   }
   
   goToUpload(){

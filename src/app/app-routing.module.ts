@@ -72,8 +72,6 @@ export const routes: Routes = [
 		children: [
 			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
 			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
-			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule', data: { preload: true } },
-			{ path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule', data: { preload: true } },
 			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
@@ -91,8 +89,6 @@ export const routes: Routes = [
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule', data: { preload: true } },
 			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule', data: { preload: true } },
 			{ path: 'select-modules', component: SelectContentModulesComponent, data: { preload: true } },
-			/*******XNFR-83*******/
-			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule', data: { preload: true } },
 			/*******XNFR-83*******/
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule', data: { preload: true } },
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule', data: { preload: true } },

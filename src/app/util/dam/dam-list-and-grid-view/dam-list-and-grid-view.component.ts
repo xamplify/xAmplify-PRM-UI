@@ -1370,7 +1370,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
   }
 
   navigateToAddAsset() {
-    this.referenceService.goToRouterByNavigateUrl('/home/dam/add?from=manage');
+		     this.referenceService.showAlert();
   }
 
 	handleFolders(event) {

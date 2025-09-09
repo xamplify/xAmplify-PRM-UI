@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import {  FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../services/user.service';
-import { SocialService } from '../../social/services/social.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -90,7 +89,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   }
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
-    public socialService: SocialService, public authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger, public properties: Properties, private translateService: TranslateService,
     private vanityServiceURL: VanityURLService, private integrationService: IntegrationService) {
     try {
@@ -156,26 +155,11 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
           if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
             this.authenticationService.module.hasVideoRole = true;
           }
-          if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-            this.authenticationService.module.hasSocialStatusRole = true;
-          }
-          if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-            this.authenticationService.module.isOrgAdmin = true;
-          }
           if (roles.length === 1) {
             this.isUser = true;
           }
           if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
             this.authenticationService.module.isCompanyPartner = true;
-          }
-          if (roles.indexOf(this.roleName.vendorRole) > -1) {
-            this.authenticationService.module.isVendor = true;
-          }
-          if (roles.indexOf(this.roleName.vendorTierRole) > -1) {
-            this.authenticationService.module.isVendorTier = true;
-          }
-          if (roles.indexOf(this.roleName.marketingRole) > -1) {
-            this.authenticationService.module.isMarketing = true;
           }
           if (roles.indexOf(this.roleName.prmRole) > -1) {
             this.authenticationService.module.isPrm = true;

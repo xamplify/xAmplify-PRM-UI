@@ -8,12 +8,11 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivity } from 'app/activity/models/email-activity-dto';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { PagerService } from 'app/core/services/pager.service';
-import { EmailActivityService } from 'app/activity/services/email-activity-service';
 @Component({
   selector: 'app-welcome-email-list',
   templateUrl: './welcome-email-list.component.html',
   styleUrls: ['./welcome-email-list.component.css'],
-  providers: [HttpRequestLoader, SortOption,EmailActivityService]
+  providers: [HttpRequestLoader, SortOption]
 })
 export class WelcomeEmailListComponent implements OnInit {
 

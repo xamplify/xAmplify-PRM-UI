@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from "@angular/router";
 import { ManageDamComponent } from './manage-dam/manage-dam.component';
-import { AddDamComponent } from './add-dam/add-dam.component';
 import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
 import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners-analytics/dam-published-partners-analytics.component';
@@ -30,22 +29,12 @@ export const routes: Routes = [
 	{ path: "shared/:viewType", component: ManageDamComponent },
 	{ path: "shared/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	/****************************/
-	{ path: "add", component: AddDamComponent },
 	{ path: "upload", component: UploadAssetComponent },
 	/************XNFR-169*********/
 	{ path: "editDetails/:id", component: UploadAssetComponent },
 	{ path: "editDetails/:id/:viewType", component: UploadAssetComponent },
 	{ path: "editDetails/:id/:viewType/:categoryId/:folderViewType", component: UploadAssetComponent },
 	/*******************************/
-	/************XNFR-169*********/
-	{ path: "edit/:id", component: AddDamComponent },
-	{ path: "edit/:id/:viewType", component: AddDamComponent },
-	{ path: "edit/:id/:viewType/:categoryId/:folderViewType", component: AddDamComponent },
-	/*****************************/
-	/************XNFR-169*********/
-	{ path: "editp/:id", component: AddDamComponent },
-	{ path: "editp/:id/:viewType", component: AddDamComponent },
-	{ path: "editp/:id/:viewType/:categoryId/:folderViewType", component: AddDamComponent },
 	/*****************************/
 	/************XNFR-169*********/
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
@@ -81,7 +70,6 @@ export const routes: Routes = [
 	{ path: approvalRouterUrl + "editVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
 	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
 	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId", component: ManageDamComponent },
-	{ path: approvalRouterUrl + "edit/:id/:viewType", component: AddDamComponent },
 	{ path: approvalRouterUrl + damPartnerCompanyAnalyticsRouterUrl + ":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: approvalRouterUrl + damPartnerAnalyticsRouterUrl + ":damId/:damPartnerId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: approvalRouterUrl + "vda/:damId/:damPartnerId/:partnerId/:viewType", component: DamAnalyticsComponent },

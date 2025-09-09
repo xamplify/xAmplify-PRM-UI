@@ -16,10 +16,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
 import { AppComponent } from './app.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
-import { RssService } from './social/services/rss.service';
-import { TwitterService } from './social/services/twitter.service';
-import { FacebookService } from './social/services/facebook.service';
-import { SocialService } from './social/services/social.service';
 import { UserService } from './core/services/user.service';
 import { LogService } from './core/services/log.service';
 import { HttpService } from './core/services/http.service';
@@ -57,7 +53,6 @@ import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchroniz
 import {ClearChunkFile} from 'app/core/clear-chunk-file';
 import { ErrorHandler } from '@angular/core';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
-import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -95,10 +90,10 @@ import { PublicTopNavigationBarComponent } from './util/public-top-navigation-ba
         multi: true
     },
 	{provide: ErrorHandler, useClass: ClearChunkFile},
-        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
-        TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService,
+        XtremandLogger, VideoUtilService, ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
-        VanityURLService,LinkedinService,DatePipe,UrlAuthGuardService],
+        VanityURLService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 
 })

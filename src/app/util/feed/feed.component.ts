@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SocialService } from '../../social/services/social.service';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -12,12 +11,11 @@ export class FeedComponent implements OnInit {
 @Input('feed') feed: any;
 link: any;
 isRssWelcome = false;
-  constructor(public socialService: SocialService, public router:Router) {
+  constructor(public router:Router) {
     this.isRssWelcome = this.router.url.includes('/home/rss/welcome');
   }
 
   addFeed(){
-    this.socialService.selectedFeed = this.feed;
   }
 
   ngOnInit() {

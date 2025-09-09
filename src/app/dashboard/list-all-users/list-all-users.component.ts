@@ -17,7 +17,7 @@ declare var $:any, swal: any;
 @Component({
 	selector: 'app-list-all-users',
 	templateUrl: './list-all-users.component.html',
-	styleUrls: ['./list-all-users.component.css','../admin-report/admin-report.component.css'],
+	styleUrls: ['./list-all-users.component.css'],
 	providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 
 })

@@ -171,24 +171,19 @@ import { SelectDigitalSignatureComponent } from 'app/util/select-digital-signatu
 import { SelectfieldComponent } from './selectfield/selectfield.component';
 import { OrderFieldsComponent } from './order-fields/order-fields.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
-import { UpdateStatusComponent } from 'app/util/update-status/update-status.component';
 import { ConnectAccountsComponent } from 'app/util/connect-accounts/connect-accounts.component';
 import { FeedUpdateComponent } from 'app/util/feed-update/feed-update.component';
 import { FeedComponent } from 'app/util/feed/feed.component';
 import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
-import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
 import { PreviewContentComponent } from 'app/util/preview-content/preview-content.component';
 import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/custom-blocks-modal-popup.component';
 import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 import { AddCompanyComponent } from '../company/add-company/add-company.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
-import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
 import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
 import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
 
-import { ExecutiveSummaryReportComponent } from 'app/executive-summary-report/executive-summary-report.component';
 import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member-modal-popup/invite-team-member-modal-popup.component';
 import { DamAnalyticsDetailsComponent } from 'app/dam/dam-analytics-details/dam-analytics-details.component';
 import { PptDesignPickerComponent } from 'app/util/ppt-design-picker/ppt-design-picker.component';
@@ -234,9 +229,9 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		DropdownLoaderComponent,DisplayErrorMessageComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,AddEmailModalPopupComponent,
-		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
-		ChooseEmailtemplateComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,
+		ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
+		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	],
 
 
@@ -278,9 +273,9 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,SelectfieldComponent,
-		OrderFieldsComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		OrderFieldsComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
+		CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
+		PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	]
 
 

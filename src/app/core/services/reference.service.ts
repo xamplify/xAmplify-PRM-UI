@@ -4126,6 +4126,22 @@ getFirstLetter(inputString:any) {
     let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(userId));
     this.openWindowInNewTab("pv/otp/" + encodedURLString + "/" + encodedFromEmailUserIdURLString);
   }
+
+  showAlert() {
+			let self = this;
+			swal({
+				title: 'Upgrade Your account to access this feature',
+				text: "You won't be able to perform this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+			}).then(function (myData: any) {
+				console.log("you clicked on option" + myData);
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+	}
 }
 
 

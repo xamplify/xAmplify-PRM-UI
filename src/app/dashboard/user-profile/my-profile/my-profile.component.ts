@@ -1929,9 +1929,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// XNFR-215
 
 	configmarketo() {
-		// this.integrationTabIndex = 1;
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+		     this.referenceService.showAlert();
 	}
 
 	/*****XNFR-528*****/
@@ -2404,24 +2402,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configHubSpot() {
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+				     this.referenceService.showAlert();
 	}
 
 	configureMicrosoft() {
-this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);		//let providerName = 'microsoft';
-		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+		     this.referenceService.showAlert();
+	
 	}
 
 	// XNFR-215
 	configurePipedrive() {
-this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);	}
+		     this.referenceService.showAlert();
+	}
 
 	closeMicrosoftForm(event: any) {
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+				     this.referenceService.showAlert();
+
 	}
 
 	configureCRM(providerName: string, crmRedirectURL: any) {
@@ -2447,13 +2443,13 @@ this.integrationCustomResponse = new CustomResponse();
 	}
 
 	configSalesforce() {
-        this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+        		     this.referenceService.showAlert();
+
 	}
 
 	configZoho() {
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+				     this.referenceService.showAlert();
+
 	}
 
 	/*********************GDPR Setting********************** */
@@ -3175,8 +3171,8 @@ this.integrationCustomResponse = new CustomResponse();
 	}
 
 	salesforceSettings() {
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true)
+				     this.referenceService.showAlert();
+
 	}
 
 	hubspotSettings() {
@@ -4944,8 +4940,8 @@ this.integrationCustomResponse = new CustomResponse();
 	}
 
 	configureConnectWise() {
-this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);	}
+		     this.referenceService.showAlert();
+	}
 
 	// halo psa
 	checkHaloPsaIntegration() {
@@ -4969,8 +4965,8 @@ this.integrationCustomResponse = new CustomResponse();
 	}
 
 	configureHaloPsa() {
-	this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true);
+			     this.referenceService.showAlert();
+
 	}
 
 
@@ -5074,8 +5070,8 @@ this.integrationCustomResponse = new CustomResponse();
 
 	/**XNFR-677**/
 	showSalesforceInstanceModelPopup() {
-		this.integrationCustomResponse = new CustomResponse();
-        this.integrationCustomResponse = new CustomResponse('ERROR', "Upgrade Your Account", true)
+			     this.referenceService.showAlert();
+
 	}
 
 	closeModelPopup() {

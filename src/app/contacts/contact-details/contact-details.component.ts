@@ -15,9 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-import { EmailActivityService } from 'app/activity/services/email-activity-service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { ActivityService } from 'app/activity/services/activity-service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CompanyService } from 'app/company/service/company.service';
@@ -35,7 +33,7 @@ declare var $: any, swal: any;
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, ActivityService, CalendarIntegrationService, CompanyService,
+  providers: [LeadsService, DealsService, Properties, UserService, CalendarIntegrationService, CompanyService,
     CallIntegrationService, DamService,OutlookEmailService]
 })
 export class ContactDetailsComponent implements OnInit {
@@ -164,7 +162,6 @@ export class ContactDetailsComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public activityService:ActivityService,
     public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
     public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -625,22 +622,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   fetchLogoFromExternalSource() {
-    this.imgPathLoading = true;
-    this.activityService.fetchLogoFromExternalSource(this.contactId, this.isCompanyJourney).subscribe(
-      response => {
-        const data = response.data;
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
-          this.imageSourcePath = data;
-          this.showImageTag = true;
-        } else {
-          this.showImageTag = false;
-        }
-        this.imgPathLoading = false;
-      }, error => {
-        this.showImageTag = false;
-        this.imgPathLoading = false;
-      }
-    )
+  
   }
 
   openMeetingModalPopup() {
