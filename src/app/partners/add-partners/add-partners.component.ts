@@ -353,7 +353,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
-		public callAsctionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
+		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public integrationService: IntegrationService,
 		private utilService: UtilService,
 		public parterService: ParterService,private chatgptSettingsService: ChatGptSettingsService) {
