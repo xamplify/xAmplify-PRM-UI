@@ -2335,12 +2335,6 @@
                                             <app-call-integrations></app-call-integrations>
                                         </div>
 
-                                         <!-- Mail integration -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'mailIntegration'}"
-                                         *ngIf="showMailIntegration">
-                                            <app-mail-integration></app-mail-integration>
-                                        </div>
-
                                         <!-- Categories -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'categories'}">
                                             <ng-container *ngIf="!isFolderPreview">

@@ -95,9 +95,7 @@ export const routes: Routes = [
 
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
 			{ path: 'approval-hub', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
-            { path: 'insights', loadChildren: 'app/insights/insights.module#InsightsModule', data: { preload: true } },
              /*** XNFR-1062 ***/
-            { path: 'mails', loadChildren: 'app/outlook-email/outlook-email.module#OutlookEmailModule', data: { preload: true } },
 
 		]
 	},

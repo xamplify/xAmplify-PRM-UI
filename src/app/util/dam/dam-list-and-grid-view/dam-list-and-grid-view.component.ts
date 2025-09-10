@@ -30,14 +30,13 @@ import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name'
 import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
-import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription, OutlookEmailService]
+	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription ]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
