@@ -18,7 +18,6 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { CompanyService } from 'app/company/service/company.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
@@ -32,7 +31,7 @@ declare var $: any, swal: any;
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, CalendarIntegrationService, CompanyService,
+  providers: [LeadsService, DealsService, Properties, UserService, CalendarIntegrationService,
     CallIntegrationService, DamService]
 })
 export class ContactDetailsComponent implements OnInit {
@@ -161,7 +160,7 @@ export class ContactDetailsComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
+    public calendarIntegratonService: CalendarIntegrationService, public integrationService: IntegrationService,
     public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -695,24 +694,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   getCompany() {
-    this.isLoading = true
-    this.companyService.getCompanyById(this.contactId, this.authenticationService.getUserId()).subscribe(
-      data => {
-        this.selectedContact = data.data;
-        this.selectedContact.mobileNumber = this.selectedContact.phone!=undefined ? this.selectedContact.phone : '';
-        this.selectedContact.emailId = this.selectedContact.email!=undefined ? this.selectedContact.email : '';
-        this.selectedContact.zipCode = this.selectedContact.zip!=undefined ? this.selectedContact.zip:  '';
-        this.isLoading = false;
-      },
-      error => {
-        this.isLoading = false;
-      },
-      () => {
-        this.setHighlightLetter();
-        this.showActivityTab = true;
-        this.contactName = this.selectedContact.name;
-      }
-    )
+
   }
 
   closeCompanyModal() {

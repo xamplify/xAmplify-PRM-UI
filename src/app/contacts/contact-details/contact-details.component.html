@@ -547,6 +547,3 @@
   [isFromCompanyJourney]="isFromCompanyJourney" [companyJourneyId]="companyJourneyId"
   [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts" (notifyClose)="closeDealForm()"></app-add-deal>
 
-
-<app-add-company *ngIf="showEditCompanyModalPopup" (closeEvent)="closeCompanyModal($event)" [actionType]="'edit'"
-    [companyId]="companyIdForEdit" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
