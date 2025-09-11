@@ -39,17 +39,7 @@ export class MicrosoftAuthenticationComponent implements OnInit {
   }
 
   checkAuthorization() {
-    this.loading = true;
-    this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
-      this.loading = false;
-			let response = data;      
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.getPreIntegrationSettings();
-			}
-		}, error => {
-      this.loading = false;
-		}, () => {}
-    );
+    
   }
 
   getPreIntegrationSettings() {

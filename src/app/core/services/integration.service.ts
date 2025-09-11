@@ -17,16 +17,12 @@ export class IntegrationService {
 
     checkConfigurationByType(type: string) {
         this.logger.info(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/authorize?access_token=" + this.authenticationService.access_token);
-        return this._http.get(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/authorize?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
     
     checkConfigurationByTypeAndUserId(type: string, userId: number) {
         this.logger.info(this.authenticationService.REST_URL + type + "/" + userId + "/authorize?access_token=" + this.authenticationService.access_token);
-        return this._http.get(this.authenticationService.REST_URL + type + "/" + userId + "/authorize?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null
     }
 
     handleCallbackByType(code: string, type: string): Observable<String> {
@@ -59,235 +55,151 @@ export class IntegrationService {
     }
     
     listSalesforceCustomFields(userId: number, type: any) {
-        return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + type + "/formfields/" + userId + "/all?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
     
     syncSalesforceCustomForm(userId: number, request: any) {
-        return this._http.post(this.authenticationService.REST_URL + "/salesforce/form/" + userId + "/sync?access_token=" + this.authenticationService.access_token, request)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null
         
     }
     
     checkSfCustomFields(userId: number) {
-        return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + userId + "/checkCustomFields?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null
     }
 
     getContacts(type: string): Observable<any> {
         this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type);
-        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return;
     }
 
     getContactLists(type: string): Observable<any> {
         this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts/lists?access_token=" + this.authenticationService.access_token + "&type="+type);
-        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts/lists?access_token=" + this.authenticationService.access_token + "&type="+type)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getContactListsById(listId: any, type: string): Observable<any> {
         this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/lists/" + listId + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type);
-        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/lists/" + listId + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     saveContacts(contacts: SocialContact): Observable<any> {
-        this.logger.info(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token);
-        var requestoptions = new RequestOptions({
-            body: contacts,
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        return this._http.post(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     listExternalCustomFields(type:string, userId: number) {
-        return this._http.get(this.authenticationService.REST_URL + "/external/" + userId + "/custom-fields?access_token=" + this.authenticationService.access_token+ "&type="+type)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getIntegrationDetails(type: string, loggedInUserId: any) {
-        return this._http.get(this.authenticationService.REST_URL + `/${type}/user/info/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     syncPipeline(pipelineId: number, userId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `external/pipeline/sync/${userId}/${pipelineId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getActiveCRMDetails(createdForCompanyId: number, loggedInUserId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `crm/active/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getActiveCRMDetailsByUserId(loggedInUserId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `crm/active/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getactiveCRMCustomForm(companyId: any, dealId: any, ticketTypeId: any, opportunityType: any) {
-        return this._http.get(this.authenticationService.REST_URL + "crm/active/" + opportunityType + "/custom/form/" + companyId + "/" + dealId + "/" + this.authenticationService.getUserId() + "/" + ticketTypeId + "?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }  
 
     syncCustomForm(userId: number, request: any, type: any, opportunityType: any) {
-        return this._http.post(this.authenticationService.REST_URL + `external/${opportunityType}/form/sync/${userId}/${type}/v2?access_token=${this.authenticationService.access_token}`, request)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     setActiveCRM(request: any) {
-        return this._http.post(this.authenticationService.REST_URL + `crm/active?access_token=${this.authenticationService.access_token}`, request)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     unlinkCRM(userId: number, type: any) {
-        return this._http.get(this.authenticationService.REST_URL + type+"/unlink/" + userId + "?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getCRMPipelines(loggedInUserId: number, type: any) {
-        return this._http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/${type}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+        return null;
       }
 
       syncActiveCRMPipelines(loggedInUserId: number, type: any) {
-        return this._http.get(this.authenticationService.REST_URL + `${type}/sync/pipelines/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     getHaloPSATicketTypes(companyId: number, integrationType: any, moduleType: string) {
-        return this._http.get(this.authenticationService.REST_URL + `/${integrationType}/opportunity/types/${companyId}/${moduleType}?access_token=${this.authenticationService.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+        return null;
     }
 
     getLeadConvertMappingLayoutId(companyId:number , layoutId:string) {
-        return this._http.get(this.authenticationService.REST_URL + `/zoho/layout/${companyId}/${layoutId}?access_token=${this.authenticationService.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+        return null;
     }
 
     updateCRMSettings(integrationType:string, loggedInUserId:any, integrationDetails:any) {
-        return this._http.post(this.authenticationService.REST_URL + `update/${integrationType}/crm/settings/${loggedInUserId}?access_token=${this.authenticationService.access_token}`,integrationDetails)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
     
     getCRMPipelinesForCRMSettings(createdForCompanyId: number, loggedInUserId: number, type: any, halopsaTicketTypeId: any, pipelineType:any) {
-        return this._http.get(this.authenticationService.REST_URL + `/pipeline/${pipelineType}/${type}/${createdForCompanyId}/${loggedInUserId}/${halopsaTicketTypeId}?access_token=${this.authenticationService.access_token}`)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return null;
       }
 
     getVendorRegisterDealValue(partnerUserId:number, vendorCompanyProfileName:string) {
-        return this._http.get(this.authenticationService.REST_URL + `/vendor/register/deal/${partnerUserId}/${vendorCompanyProfileName}?access_token=${this.authenticationService.access_token}`)
-          .map(this.extractData)
-          .catch(this.handleError);
+        return null;
     }
 
     findPipelinesForCRMSettings(loggedInUserId:number, integrationType:any, pipelineType:any, ticketId:any) {
-        let ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
-        let ticketIdParameter = ticketId!=undefined && ticketId>0 ? "&ticketTypeId="+ticketId:"&ticketTypeId=0";
-        let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
-        let integrationTypeRequestParam = integrationType!=undefined ? "&integrationType="+integrationType:"&integrationType="+'';
-        let pipelineTypeRequestParam = pipelineType!=undefined ? "&pipelineType="+pipelineType:"&pipelineType="+'';
-        let url = this.authenticationService.REST_URL+"pipeline/findPipelinesForCRMSettings"+ACCESS_TOKEN_SUFFIX_URL+loggedInUserIdRequestParam+ticketIdParameter+integrationTypeRequestParam+pipelineTypeRequestParam;
-        return this.authenticationService.callGetMethod(url);
+        return null;
       
       }
 
     getCrmCustomDropdowns(parentLabelId: string, selectedValue: string) {
-        return this._http.get(this.authenticationService.REST_URL + `crm/custom/choices/${parentLabelId}/${selectedValue}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     /**XNFR-677**/
     getSalesforceRedirectUrl(instanceType:any) {
-        let url = this.authenticationService.REST_URL + "salesforce/redirect-url/"+instanceType+"?access_token="+this.authenticationService.access_token;
-        return this.authenticationService.callGetMethod(url);
+        return null;
     }
 
     //XNFR-710
     getFormLabelsValues(dealId: any, opportunityType: any, createdForCompanyId: any) {
-        let loggedInUserId = this.authenticationService.getUserId();
-        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
-        let dealIdRequestParam = dealId != undefined && dealId > 0 ? dealId : 0;
-        let opportunityTypeRequestParam = opportunityType != undefined ? "&opportunityType=" + opportunityType : "&opportunityType =''";
-        let companyIdRequestParam = createdForCompanyId != undefined && createdForCompanyId > 0 ? createdForCompanyId : 0;
-        let url = this.authenticationService.REST_URL + "crm/view/opportunites?access_token="+this.authenticationService.access_token + "&loggedInUserId=" + loggedInUserIdRequestParam
-            + opportunityTypeRequestParam + "&opportunityId=" + dealIdRequestParam + "&companyId=" + companyIdRequestParam;
-        return this.authenticationService.callGetMethod(url);
+        return null;
     }
 
     getFormLabelChoices(formLabelId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `crm/view/getLabelChoices/${formLabelId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
     saveCustomFields(request: any) {
-        let url = this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token
-        return this.authenticationService.callPostMethod(url, request);
+        return null;
     }
 
     syncCustomFieldsForm(request: any) {
-        let url = this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token
-        return this.authenticationService.callPostMethod(url, request);
+        return null;
     }
 
     getCustomFields(opportunityType: any) {
-        let loggedInUserId = this.authenticationService.getUserId();
-        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}/${opportunityType}?access_token=${this.authenticationService.access_token}`
-        return this.authenticationService.callGetMethod(url);
+        return null;
     }
 
     deleteCustomField(customFieldId: number, loggedInUserId: any) {
-        let url = this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}/${customFieldId}?access_token=${this.authenticationService.access_token}`
-        return this.authenticationService.callDeleteMethod(url);
+        return null;
     }
 
     getLeadCountForCustomField(customFieldId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `/customFields/leads/count/${customFieldId}?access_token=${this.authenticationService.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+        return null;
     }
     /**** XNFR-887  ****/
     getActiveIntegrationTypeByCompanyName(companyProfileName:string) {
-        return this._http.get(this.authenticationService.REST_URL + `/crm/active/companyProfileName/${companyProfileName}?access_token=${this.authenticationService.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+        return null;
     }
     /**** XNFR-887  ****/
 
         checkSfCustomFieldsByCompanyProfileName(companyProfileName: string) {
-        return this._http.get(this.authenticationService.REST_URL + "/salesforce/campaign/checkCustomFields?access_token=" + this.authenticationService.access_token+"&companyProfileName=" + companyProfileName)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return null;
     }
 
 }

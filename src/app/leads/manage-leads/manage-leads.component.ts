@@ -424,7 +424,6 @@ triggerUniversalSearch(){
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;    
     this.listLeads(this.leadsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showWonLeads() {
@@ -445,7 +444,6 @@ triggerUniversalSearch(){
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listLeads(this.leadsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showLostLeads() {
@@ -465,7 +463,6 @@ triggerUniversalSearch(){
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listLeads(this.leadsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showConvertedLeads() {
@@ -485,7 +482,6 @@ triggerUniversalSearch(){
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listLeads(this.leadsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   listLeads(pagination: Pagination) {
@@ -497,47 +493,12 @@ triggerUniversalSearch(){
     }
   }
 
-  listCampaigns(pagination: Pagination) {
-    pagination.userId = this.loggedInUserId;
-    if (this.isVendorVersion) {
-      this.listCampaignsForVendor(pagination);
-    } else if (this.isPartnerVersion) {
-      this.listCampaignsForPartner(pagination);
-    }
-  }
-
   listCampaignsForVendor(pagination: Pagination) {
-    this.referenceService.loading(this.campaignRequestLoader, true);
-    this.leadsService.listCampaignsForVendor(pagination)
-      .subscribe(
-        response => {
-          this.referenceService.loading(this.campaignRequestLoader, false);
-          pagination.totalRecords = response.data.totalRecords;
-          this.campaignSortOption.totalRecords = response.data.totalRecords;
-          pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
-        },
-        error => {
-          this.campaignRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+   
   }
 
   listCampaignsForPartner(pagination: Pagination) {
-    this.referenceService.loading(this.campaignRequestLoader, true);
-    this.leadsService.listCampaignsForPartner(pagination)
-      .subscribe(
-        response => {
-          this.referenceService.loading(this.campaignRequestLoader, false);
-          pagination.totalRecords = response.data.totalRecords;
-          this.campaignSortOption.totalRecords = response.data.totalRecords;
-          pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
-        },
-        error => {
-          this.campaignRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+
   }
  
   listLeadsForVendor(pagination: Pagination) {
@@ -644,7 +605,6 @@ triggerUniversalSearch(){
     this.listLeads(pagination);
     this.campaignPagination.pageIndex = 1;
     this.campaignPagination.searchKey = this.leadsSortOption.searchKey;
-    this.listCampaigns(this.campaignPagination);
   }
   leadEventHandler(keyCode: any) { if (keyCode === 13) { this.searchLeads(); } }
 
@@ -652,14 +612,13 @@ triggerUniversalSearch(){
   setCampaignsPage(event: any) {
     // this.pipelineResponse = new CustomResponse();
     // this.customResponse = new CustomResponse();
-    this.campaignPagination.pageIndex = event.page;
-    this.listCampaigns(this.campaignPagination);
+
+    
   }
 
   getAllFilteredResultsCampaigns(pagination: Pagination) {
-    this.campaignPagination.pageIndex = 1;
-    this.campaignPagination.searchKey = this.campaignSortOption.searchKey;
-    this.listCampaigns(this.campaignPagination);
+    
+    
   }
 
   closeLeadModal() {
@@ -679,15 +638,14 @@ triggerUniversalSearch(){
   /************Page************** */
   setPartnersPage(event: any) {
 
-    this.partnerPagination.pageIndex = event.page;
-    this.listPartnersForCampaign(this.partnerPagination);
+
   }
 
   getAllFilteredResultsPartners(pagination: Pagination) {
 
     this.partnerPagination.pageIndex = 1;
     this.partnerPagination.searchKey = this.partnerSortOption.searchKey;
-    this.listPartnersForCampaign(this.partnerPagination);
+
   }
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
@@ -809,106 +767,23 @@ triggerUniversalSearch(){
   }
 
   checkSalesforceIntegration(): any {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.loggedInUserId).subscribe(data => {
-      let response = data;
-      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-        this.integrationService.checkSfCustomFields(this.loggedInUserId).subscribe(cfData => {
-          let cfResponse = cfData;
-          if (cfResponse.statusCode === 400) {
-            this.syncSalesForce = false;
-          } else {
-            this.syncSalesForce = true;
-          }
-        }, error => {
-          console.log("Error in salesforce checkSalesforceIntegration()");
-        }, () => console.log("Error in salesforce checkSalesforceIntegration()"));
-        console.log("Error in salesforce checkSalesforceIntegration()");
-      } else {
-        this.syncSalesForce = false;
-      }
-    }, error => {
-      console.log("Error in salesforce checkSalesforceIntegration()");
-    }, () => console.log("Error in checkSalesforceIntegration()"));
-    this.referenceService.loading(this.httpRequestLoader, false);
+    
   }
 
   checkMicrosoftIntegration(): any {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.checkConfigurationByTypeAndUserId("microsoft", this.loggedInUserId).subscribe(data => {
-      let response = data;
-      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-        this.syncMicrosoft = true;  
-      } else {
-        this.syncMicrosoft = false;
-      }
-    }, error => {
-      console.log("Error in salesforce checkMicrosoftIntegration()");
-    }, () => console.log("Error in checkMicrosoftIntegration()"));
-    this.referenceService.loading(this.httpRequestLoader, false);
+  
   }
 
   syncLeadsAndDeals() {
-    if (this.activeCRMDetails.type === 'SALESFORCE') {
-      this.syncLeadsWithSalesforce();
-    } else {
-      this.syncLeadsWithActiveCRM();
-    }
+
   }
 
   syncLeadsWithSalesforce() {
-    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.leadsService.syncLeadsWithSalesforce(this.loggedInUserId)
-      .subscribe(
-        data => {
-          let statusCode = data.statusCode;
-          if (statusCode == 200) {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
-            //this.getCounts();  
-            this.showLeads();
-          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
-          } else {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
-          }
-        },
-        error => {
-
-        },
-        () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-        }
-      );
+    
   }
 
   syncLeadsWithMicrosoft() {
-    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.leadsService.syncLeadsWithMicrosoft(this.loggedInUserId)
-      .subscribe(
-        data => {
-          let statusCode = data.statusCode;
-          if (statusCode == 200) {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
-            //this.getCounts();  
-            this.showLeads();
-          } else {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
-          }
-        },
-        error => {
-
-        },
-        () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-        }
-      );
+  
   }
 
   showPartners(campaign: any) {
@@ -927,67 +802,39 @@ triggerUniversalSearch(){
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.partnerSortOption.searchKey = "";
-          this.listPartnersForCampaign(this.partnerPagination);
+
         }
       } else {
-        this.showOwnCampaignLeads();
+
       }
     }
   }
 
   listPartnersForCampaign(pagination: Pagination) {
-    this.referenceService.loading(this.partnerRequestLoader, true);
-    pagination.userId = this.loggedInUserId;
-    pagination.campaignId = this.selectedCampaignId;    
-    this.leadsService.listPartnersForCampaign(pagination)
-      .subscribe(
-        response => {
-          this.referenceService.loading(this.partnerRequestLoader, false);
-          pagination.totalRecords = response.data.totalRecords;
-          this.partnerSortOption.totalRecords = response.data.totalRecords;
-          pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+   
   }
 
   showCampaignLeadsByPartner(partner: any) {
-    if (partner.companyId > 0 && this.selectedCampaignId) {
-      this.selectedPartnerCompanyId = partner.companyId;
-      this.selectedPartnerCompanyName = partner.companyName;
-      this.showCampaignLeads = true;
-    }
+   
   }
 
   closeCampaignLeads() {
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showOwnCampaignLeads() {
-    if (this.selectedCampaignId > 0) {
-      this.selectedPartnerCompanyId = 0;
-      this.selectedPartnerCompanyName = "";
-      this.showCampaignLeads = true;
-    }
+   
   }
 
   viewCampaignLeadForm(leadId: any) {
-    this.showLeadForm = true;
-    this.actionType = "view";
-    this.leadId = leadId;
+   
 
   }
 
   editCampaignLeadForm(leadId: any) {
-    this.showLeadForm = true;
-    this.actionType = "edit";
-    this.leadId = leadId;
+   
   }
 
   refreshCounts() {
@@ -1278,7 +1125,6 @@ triggerUniversalSearch(){
     this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
     this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
     this.listLeadsForVendor(this.leadsPagination);
-    this.listCampaignsForVendor(this.campaignPagination);
     
   }
 
@@ -1324,9 +1170,8 @@ triggerUniversalSearch(){
   }
 
   getActiveCRMDetails() {
-    this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
-      .subscribe(
-        response => {
+    this.leadsService.getActiveCRMDetailsByUserId(this.loggedInUserId)
+    .subscribe(response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;            
           }
@@ -1340,41 +1185,7 @@ triggerUniversalSearch(){
   }
 
   syncLeadsWithActiveCRM() {
-    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.referenceService.loading(this.campaignRequestLoader,true);
-    this.leadsService.syncLeadsWithActiveCRM(this.loggedInUserId)
-      .subscribe(
-        data => {
-          let statusCode = data.statusCode;
-          if (statusCode == 200) {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
-            //this.getCounts();  
-            this.showLeads();
-          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
-          } 
-          else {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
-          }
-        },
-        error => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          if(integrationType == 'Salesforce' || integrationType == 'Halopsa'){
-            this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
-          } else {
-            this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
-          }
 
-        },
-        () => {
-          // this.referenceService.loading(this.httpRequestLoader, false);
-        }
-      );
   }
 
   companyNamesForPartner(){
@@ -1649,19 +1460,6 @@ triggerUniversalSearch(){
   }
  
   getActiveCRMDetailsByCompanyProfileName() {
-    this.integrationService.getActiveIntegrationTypeByCompanyName(this.vanityLoginDto.vendorCompanyProfileName )
-      .subscribe(
-        response => {
-          this.activeCRMDetailsByCompany = response.data;
-          if (this.activeCRMDetailsByCompany === undefined || this.activeCRMDetailsByCompany === null || this.activeCRMDetailsByCompany === '' || this.activeCRMDetailsByCompany === "salesforce") {
-            this.showSlectFieldComponent = true;
-          } else {
-            this.downloadLeads(this.leadsPagination);
-          }
-        }, (error) => {
-          console.error("Error fetching CRM details:", error);
-          this.downloadLeads(this.leadsPagination); // Fallback in case of an API error
-        });
   }
 
   /*** XNFR-839 */

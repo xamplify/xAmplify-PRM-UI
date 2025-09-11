@@ -155,47 +155,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	}
 
 	integrationCallback(code: string, type: string) {
-        try {
-            this.integrationService.handleCallbackByType(code, type)
-                .subscribe(
-                    result => {
-                        this.referenceService.integrationCallBackStatus = true;
-                        this.xtremandLogger.info("Integration Callback :: " + result);
-                        localStorage.removeItem("userAlias");
-                        localStorage.removeItem("currentModule");
-                        let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-                        if (vanityUrlFilter == 'true' ) {
-                                if(type == 'hubspot'){
-                                    this.postingMessage = "isHubSpotAuth";
-                                } else if(type === "isalesforce"){
-                                    this.postingMessage = "isSalesForceAuth";
-                                } else if(type === "microsoft"){
-                                    this.postingMessage = "isMicrosoftAuth";
-                                } else if(type === 'zoho') {
-									this.postingMessage = "isZohoAuth";
-								} else if (type == 'calendly') {
-									this.postingMessage = "isCalendlyAuth";
-								}
-                                this.postingMessageToParentWindow(this.postingMessage);
-                        }
-                        else{
-                        	this.referenceService.integrationCallBackStatus = true;
-                            this.router.navigate(['/home/dashboard/myprofile']);
-                        }
-                        // Commented below code by Swathi. Custom form creation should not be done here.
-                        /*if(type === "isalesforce"){
-                            this.contactService.getSfFormFields().subscribe(result =>{
-                                console.log(result);
-                            })
-                        }*/
-                    },
-                    error => {
-                        localStorage.removeItem("userAlias");
-                        this.xtremandLogger.info(error)
-                    });
-        } catch (error) {
-            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
-        }
+      
     }
 
 	postingMessageToParentWindow(message: string) {

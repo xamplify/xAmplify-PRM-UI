@@ -127,15 +127,6 @@ export class CustomManageDealsComponent implements OnInit {
       }
     }
 
-    if (this.authenticationService.vanityURLEnabled) {
-      this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isRegisterDealEnabled = data.data;
-          }
-        }
-      )
-    }
   }
 
   showDeals() {

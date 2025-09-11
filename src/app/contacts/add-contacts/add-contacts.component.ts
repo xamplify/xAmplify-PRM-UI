@@ -3521,102 +3521,21 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingMicrosoftContactsAuthentication() {
-        if (this.selectedAddContactsOption == 8) {
-            this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
-                let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                    this.xtremandLogger.info("isAuthorize true");
-                    this.getMicrosoftContacts();
-                }
-                else {
-                    this.showMiscrosoftPreSettingsForm();
-                }
-            }, (error: any) => {
-                this.loading = false;
-                let errorMessage = this.referenceService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-                this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
-            }, () =>
-                this.xtremandLogger.log("Microsoft Configuration Checking done")
-            );
-        }
+    
     }
 
     //XNFR-230
     checkingPipedriveContactsAuthentication() {
-        this.hideCSVInNotes = true;
-        if (this.selectedAddContactsOption == 8) {
-            this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
-                let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                    this.xtremandLogger.info("isAuthorize true");
-                    this.getPipedriveContacts();
-                }
-                else {
-                    this.showPipedrivePreSettingsForm();
-                }
-            }, (error: any) => {
-                this.loading = false;
-                let errorMessage = this.referenceService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-                this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
-            }, () =>
-                this.xtremandLogger.log("Pipedrive Configuration Checking done")
-            );
-        }
+      
     }
 
     //XNFR-403
     checkingConnectWiseContactsAuthentication() {
-        if (this.selectedAddContactsOption == 8) {
-            this.integrationService.checkConfigurationByType('connectwise').subscribe(data => {
-                let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                    this.xtremandLogger.info("isAuthorize true");
-                    // this.getConnectWiseContacts();
-                    this.showConnectWiseModal();
-                }
-                else {
-                    this.showConnectWisePreSettingsForm();
-                }
-            }, (error: any) => {
-                this.loading = false;
-                let errorMessage = this.referenceService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-                this.xtremandLogger.error(error, "Error in ConnectWise checkIntegrations()");
-            }, () =>
-                this.xtremandLogger.log("ConnectWise Configuration Checking done")
-            );
-        }
+        
     }
 
     hubSpotVanityAuthentication() {
-        this.contactService.vanitySocialProviderName = 'hubspot';
-        if (this.selectedAddContactsOption == 8) {
-            this.hubSpotService.configHubSpot().subscribe(data => {
-                let response = data;
-                let providerName = 'hubspot'
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                    this.xtremandLogger.info("isAuthorize true");
-                    this.showHubSpotModal();
-                }
-                else {
-                    if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-                        this.loggedInUserId = this.authenticationService.getUserId();
-                        this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-                        let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
-                        let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
-
-                        var x = screen.width / 2 - 700 / 2;
-                        var y = screen.height / 2 - 450 / 2;
-                        window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
-
-                    }
-                }
-            }, (error: any) => {
-                this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-            }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
-        }
+       
     }
 
     microsoftVanityAuthentication() {
@@ -3906,109 +3825,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     saveExternalContactsWithPermission_old(type: string) {
-        if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            if (type === 'marketo') {
-                this.contactListObject.synchronisedList = false;
-            } else {
-                this.contactListObject.synchronisedList = true;
-            }
-
-            this.contactListObject.socialNetwork = type.toLocaleUpperCase();
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.publicList = true;
-            this.socialContact.moduleName = this.getModuleName();
-            this.contactListObject.externalListId = this.hubSpotSelectContactListOption;
-            this.setSocialUserObjs();
-            this.setLegalBasisOptions(this.socialUsers);
-
-            this.userUserListWrapper.users = this.socialUsers;
-            this.userUserListWrapper.userList = this.contactListObject;
-            this.saveAssignedLeadsList();
-        } else {
-            this.loading = true;
-            this.socialContact.type = type;
-            this.socialContact.userId = this.authenticationService.getUserId();
-            this.socialContact.externalListId = this.hubSpotSelectContactListOption;
-            this.setLegalBasisOptions(this.socialContact.contacts);
-            this.socialContact.publicList = this.model.isPublic;
-            this.socialContact.moduleName = this.getModuleName();
-            this.integrationService.saveContacts(this.socialContact)
-                .subscribe(
-                    data => {
-                        if (data.access) {
-                            this.loading = false;
-                            this.selectedAddContactsOption = 8;
-                            this.contactService.saveAsSuccessMessage = "add";
-                            this.router.navigateByUrl('/home/contacts/manage');
-                            localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.authenticationService.forceToLogout();
-                            localStorage.removeItem('isZohoSynchronization');
-                        }
-                    },
-
-                    (error: any) => {
-                        this.loading = false;
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => this.xtremandLogger.info("addcontactComponent saveExternalContactsWithPermission() finished")
-                )
-        }
+       
     }
 
     saveHubSpotSelectedContactsWithPermission() {
-        if (this.assignLeads) {
-            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
-                "CONTACT", "MANUAL", this.alias, false);
-            this.setLegalBasisOptions(this.allselectedUsers);
-            this.userUserListWrapper.users = this.allselectedUsers;
-            this.saveAssignedLeadsList();
-        } else {
-            this.loading = true;
-            this.setLegalBasisOptions(this.allselectedUsers);
-            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
-                "CONTACT", "MANUAL", this.alias, false);
-            this.contactService.saveContactList(this.userUserListWrapper)
-                .subscribe(
-                    data => {
-                        if (data.access) {
-                            this.loading = false;
-                            if (data.statusCode === 401) {
-                                this.customResponse = new CustomResponse('ERROR', data.message, true);
-                                this.socialUsers = [];
-                            } else if (data.statusCode === 402) {
-                                this.customResponse = new CustomResponse('ERROR', data.message + '<br>' + data.data, true);
-                                this.socialUsers = [];
-                            } else {
-                                this.selectedAddContactsOption = 8;
-                                this.contactService.saveAsSuccessMessage = "add";
-                                this.disableOtherFuctionality = false;
-                                if (this.isPartner == false) {
-                                    this.router.navigateByUrl('/home/contacts/manage');
-                                    localStorage.removeItem('isZohoSynchronization');
-                                } else {
-                                    this.router.navigateByUrl('home/partners/manage');
-                                    localStorage.removeItem('isZohoSynchronization');
-                                }
-                            }
-                        } else {
-                            this.authenticationService.forceToLogout();
-                            localStorage.removeItem('isZohoSynchronization');
-                        }
-                    },
-
-                    (error: any) => {
-                        this.loading = false;
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => this.xtremandLogger.info("addcontactComponent saveHubSpotSelectedContactsWithPermission() finished")
-                )
-        }
+   
     }
 
     saveExternalSelectedContactsWithPermission_old() {
@@ -4386,26 +4207,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getMicrosoftContacts() {
-        this.loading = true;
-        this.integrationService.getContacts('microsoft').subscribe(data => {
-            this.loading = false;
-            if (data.statusCode == 401) {
-                this.customResponse = new CustomResponse('ERROR', data.message, true);
-            } else {
-                let response = data.data;
-                this.selectedAddContactsOption = 10;
-                this.disableOtherFuctionality = true;
-                this.microsoftDynamicsImageBlur = false;
-                this.microsoftDynamicsImageNormal = true;
-                this.frameMicrosoftPreview(response);
-            }
-        }, (error: any) => {
-            this.loading = false;
-            let errorMessage = this.referenceService.getApiErrorMessage(error);
-            this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-        }, () =>
-            this.xtremandLogger.log("Microsoft Configuration Checking done")
-        );
+       
     }
 
     frameMicrosoftPreview(response: any) {
@@ -4457,26 +4259,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     getPipedriveContacts() {
-        this.loading = true;
-        this.integrationService.getContacts('pipedrive').subscribe(data => {
-            this.loading = false;
-            if (data.statusCode == 401) {
-                this.customResponse = new CustomResponse('ERROR', data.message, true);
-            } else {
-                let response = data.data;
-                this.selectedAddContactsOption = 11;
-                this.disableOtherFuctionality = true;
-                this.pipedriveImageBlur = false;
-                this.pipedriveImageNormal = true;
-                this.framePipedrivePreview(response);
-            }
-        }, (error: any) => {
-            this.loading = false;
-            let errorMessage = this.referenceService.getApiErrorMessage(error);
-            this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-        }, () =>
-            this.xtremandLogger.log("Pipedrive Configuration Checking done")
-        );
+       
     }
 
     framePipedrivePreview(response: any) {
@@ -4548,28 +4331,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 $("button#connectwise_save_button").prop('disabled', false);
             }
-
-
-            if (this.contactType === "lists") {
-                $("button#connectwise_save_button").prop('disabled', true);
-                this.integrationService.getContactLists('connectwise').subscribe(data => {
-                    let response = data.data;
-                    if (response.contacts.length > 0) {
-                        for (var i = 0; i < response.contacts.length; i++) {
-                            this.connectWiseContactListsData.push(response.contacts[i]);
-                        }
-                    } else {
-                        this.customResponse = new CustomResponse('ERROR', "No " + this.contactType + " found", true);
-                        this.hideConnectWiseModal();
-                    }
-                },
-                    (error: any) => {
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => this.xtremandLogger.log("onChangeConnectWiseDropdown")
-                );
-            }
         } catch (error) {
             this.xtremandLogger.error(error, "AddContactsComponent onChangeConnectWiseDropdown().")
         }
@@ -4600,50 +4361,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getConnectWiseContacts() {
-        this.loading = true;
-        this.integrationService.getContacts('connectwise').subscribe(data => {
-            this.loading = false;
-            if (data.statusCode == 401) {
-                this.customResponse = new CustomResponse('ERROR', data.message, true);
-            } else {
-                let response = data.data;
-                this.selectedAddContactsOption = 12;
-                this.disableOtherFuctionality = true;
-                this.connectWiseImageBlur = false;
-                this.connectWiseImageNormal = true;
-                this.frameConnectWisePreview(response);
-            }
-        }, (error: any) => {
-            this.loading = false;
-            let errorMessage = this.referenceService.getApiErrorMessage(error);
-            this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-        }, () =>
-            this.xtremandLogger.log("ConnectWise Configuration Checking done")
-        );
+       
     }
     getConnectWiseContactListsById() {
-        this.loading = true;
-        if (this.connectWiseSelectContactListOption !== undefined && this.connectWiseSelectContactListOption !== '') {
-            this.integrationService.getContactListsById(this.connectWiseSelectContactListOption, 'connectwise').subscribe(data => {
-                this.loading = false;
-                if (data.statusCode == 401) {
-                    this.customResponse = new CustomResponse('ERROR', data.message, true);
-                } else {
-                    let response = data.data;
-                    this.selectedAddContactsOption = 12;
-                    this.disableOtherFuctionality = true;
-                    this.connectWiseImageBlur = false;
-                    this.connectWiseImageNormal = true;
-                    this.frameConnectWisePreview(response);
-                }
-            }, (error: any) => {
-                this.loading = false;
-                let errorMessage = this.referenceService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-            }, () =>
-                this.xtremandLogger.log("ConnectWise Configuration Checking done")
-            );
-        }
+        
     }
     frameConnectWisePreview(response: any) {
         this.connectWiseErrorMessage = false;
@@ -4806,49 +4527,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-        this.hideCSVInNotes = true;
-        if (this.selectedAddContactsOption == 8) {
-            this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
-                let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                    this.xtremandLogger.info("isAuthorize true");
-                    this.getHaloPSAContacts();
-                }
-                else {
-                    this.showHaloPSAPreSettingsForm();
-                }
-            }, (error: any) => {
-                this.loading = false;
-                let errorMessage = this.referenceService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-                this.xtremandLogger.error(error, "Error in HaloPSA checkIntegrations()");
-            }, () =>
-                this.xtremandLogger.log("HaloPSA Configuration Checking done")
-            );
-        }
+     
     }
 
     getHaloPSAContacts() {
-        this.loading = true;
-        this.integrationService.getContacts('halopsa').subscribe(data => {
-            this.loading = false;
-            if (data.statusCode == 401) {
-                this.customResponse = new CustomResponse('ERROR', data.message, true);
-            } else {
-                let response = data.data;
-                this.selectedAddContactsOption = 13;
-                this.disableOtherFuctionality = true;
-                this.haloPSAImageBlur = false;
-                this.haloPSAImageNormal = true;
-                this.frameHaloPSAPreview(response);
-            }
-        }, (error: any) => {
-            this.loading = false;
-            let errorMessage = this.referenceService.getApiErrorMessage(error);
-            this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-        }, () =>
-            this.xtremandLogger.log("HaloPSA Configuration Checking done")
-        );
+      
     }
 
     showHaloPSAPreSettingsForm() {

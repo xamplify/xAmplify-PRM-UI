@@ -106,23 +106,7 @@ export class SocialContactsCallbackComponent implements OnInit {
     }
 
     integrationCallback(code:string,type:string) {
-        try {
-            this.integrationService.handleCallbackByType(code,type)
-                .subscribe(
-                    result => {
-                        this.referenceService.integrationCallBackStatus = true;
-                        this.xtremandLogger.info("Integration Callback :: " + result);
-                        localStorage.removeItem("userAlias");
-                        localStorage.removeItem("currentModule");
-                        this.router.navigate(['/home/dashboard/myprofile']);                       
-                    },
-                    error => {
-                        localStorage.removeItem("userAlias");
-                        this.xtremandLogger.info(error)
-                    });
-        } catch (error) {
-            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
-        }
+        
     }
 
     ngOnInit() {

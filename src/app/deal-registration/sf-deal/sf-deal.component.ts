@@ -9,6 +9,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { LeadsService } from 'app/leads/services/leads.service';
 
 declare var $: any, swal: any;
 
@@ -83,7 +84,7 @@ export class SfDealComponent implements OnInit {
   previousTicketTypeId: any = 0;
   @Input() isEmailEmpty: boolean = false;
   @Input() isFromFormAnalytics: boolean = false;
-  constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
+  constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService, public leadService: LeadsService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
 
@@ -237,34 +238,12 @@ export class SfDealComponent implements OnInit {
     if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
       ticketTypeId = this.ticketTypeId;
     }
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, ticketTypeId, this.opportunityType).subscribe(result => {
+    this.leadService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.opportunityType).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
-        if(this.form.formLabelDTOs.length==0){
-          this.showSFFormError = true;
-          this.sfFormError = "Your Salesforce integration is not valid. Re-configure with valid credentials";
-        }
         this.formDescription = result.data.description;
-        this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
-          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
-            columnInfo.value = columnInfo.defaultChoiceLabel;
-            if (columnInfo.private) {
-              columnInfo.hideFieldInfo = true;
-            }
-          }
-          if (columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add') {
-            columnInfo.value = columnInfo.dropDownChoices[0].labelId;
-          }
-          if (columnInfo.value !== undefined && columnInfo.formDefaultFieldType === 'CONTACT_EMAIL'
-            && this.contactId != undefined && this.actionType === 'edit') {
-            columnInfo.columnDisable = true;
-          }
-          if ('ZOHO' == this.activeCRM.createdForActiveCRMType && columnInfo.labelType == "lookup") {
-            columnInfo.selectedChoiceValue = columnInfo.lookupDropDownChoices.find(column => column.id == columnInfo.value).name;
-          }
-        });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {
@@ -277,18 +256,6 @@ export class SfDealComponent implements OnInit {
               multiSelectvalueArray.push(this.optionObj);
             }
             multiSelectObj.value = multiSelectvalueArray;
-          }
-        }
-
-        for (let dropDownObj of allDropdowns) {
-          if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
-            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
-            if (haveChildrenDropDown) {
-              let parentLabelId = dropDownObj.labelId;
-              let selectedParentValue = dropDownObj.value;
-              let parentLabelType = dropDownObj.labelType;
-              this.populateDependentChildValuesByParentValue(dropDownObj.id, selectedParentValue,parentLabelId,parentLabelType);
-            }
           }
         }
 
@@ -799,54 +766,11 @@ export class SfDealComponent implements OnInit {
   }
 
   getCrmCustomDropdownsBySelectedValue(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
-    column.isDropDownLoading = true;
-    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
-      .subscribe(
-        result => {
-          if (result.statusCode == 200) {
-            column.dropDownChoices = result.data;
-            column.isDropDownLoading = false;
-            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
-              column.labelType = "text";
-            } else {
-              column.labelType = "select";
-            }
-          }
-        },
-        error => {
-          column.isDropDownLoading = false;
-          this.sfFormError = this.referenceService.getApiErrorMessage(error);
-        },
-        () => { }
-      );
+    
   }
 
   getCrmCustomDropdowns(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
-    column.isDropDownLoading = true;
-    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
-      .subscribe(
-        result => {
-          if (result.statusCode == 200) {
-            column.dropDownChoices = result.data;
-            column.isDropDownLoading = false;
-            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
-              column.labelType = "text";
-            } else {
-              column.labelType = "select";
-            }
-            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
-            if (haveChildrenDropDown) {
-              let labelType = column.labelType;
-              this.setChildDropDownType(column, labelType);
-            }
-          }
-        },
-        error => {
-          column.isDropDownLoading = false;
-          this.sfFormError = this.referenceService.getApiErrorMessage(error);
-        },
-        () => { }
-      );
+    
   }
 
   setChildDropDownType(column: ColumnInfo, parentLabelType: any) {
@@ -881,44 +805,7 @@ export class SfDealComponent implements OnInit {
   }
 
   getFormLablesValues() {
-    this.addLoader();
-    this.integrationService.getFormLabelsValues(this.dealId, this.opportunityType, this.createdForCompanyId).subscribe(result => {
-      this.showSFFormError = false;
-      this.removeLoader();
-      if (result.statusCode == 200) {
-        this.formLabels = result.data;
-        this.formLabels.forEach((columnInfo: ColumnInfo) => {
-
-          if (columnInfo.labelType === "checkbox" || columnInfo.labelType === "radio") {
-            columnInfo.isDropDownLoading = true;
-            this.integrationService.getFormLabelChoices(columnInfo.id).subscribe(result => {
-              columnInfo.isDropDownLoading = false;
-              if (result.statusCode == 200) {
-                columnInfo.formLabelChoices = result.data;
-              }
-            }, error => {
-              columnInfo.isDropDownLoading = false;
-              this.sfFormError = this.referenceService.getApiErrorMessage(error);
-            });
-          }
-
-
-          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
-            if (columnInfo.private) {
-              columnInfo.hideFieldInfo = true;
-            }
-          }
-
-          if (columnInfo.formLabelDefaultFieldType === "LEAD_ID" || columnInfo.formLabelDefaultFieldType === "DEAL_ID") {
-            columnInfo.hideFieldInfo = true;
-          }
-        });
-      }
-    }, error => {
-      this.removeLoader();
-      this.showSFFormError = true;
-      this.sfFormError = this.referenceService.getApiErrorMessage(error);
-    });
+ 
   }
 
   autoFillContactFieldsForDeal() {

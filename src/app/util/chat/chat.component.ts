@@ -143,7 +143,6 @@ export class ChatComponent implements OnInit {
     }
 
     ngOnDestroy() {
-      console.log(this.commentList.length); 
       if ("deal" === this.moduleType || "lead" === this.moduleType) {
         this.updateChatStatistics();
       }        
