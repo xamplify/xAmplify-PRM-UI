@@ -158,5 +158,12 @@ export class LmsService {
     let findContentCounts = this.URL+'/content/counts/'+userId+'/'+ vendorCompanyProfileName+'/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(findContentCounts);
   }
+
+
+  checkAWSCredentials(){
+    let findContentCounts = this.URL+'/checkAWSCredentials/'+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(findContentCounts);
+  }
+
   
 }

@@ -863,7 +863,7 @@
 											</div>
 										</div>
 									</ng-template>
-									<div class="pull-right" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && !isFromAdminPanel">
+									<div class="pull-right" *ngIf="!isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="!isDisable" id="saveOrUpdateCompanyButton" (click)="save()"
 											class="button bgcolor-unset" disabled="disabled" translate><span

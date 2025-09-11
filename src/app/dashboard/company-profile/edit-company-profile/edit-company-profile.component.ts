@@ -922,7 +922,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 }, () => {
                     this.removeBlurContent();
                     this.logger.info("Completed getCompanyProfileByUserId()");
-                    this.checkAndAutofillCompanyProfile();
                 }
             );
         }
@@ -2099,78 +2098,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         } else if (this.authenticationService.isOnlyUser() || this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) {
             this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_PARTNER_INFO;
         }
-    }
-
-    /*** XNFR-760 ***/
-    checkAndAutofillCompanyProfile() {
-        if (!this.authenticationService.user.hasCompany && (this.authenticationService.isPartner()
-            || this.authenticationService.isTeamMember() || this.authenticationService.isOnlyUser())) {
-            this.autoFillCompanyProfile();
-        }
-    }
-
-    /*** XNFR-760 ***/
-    autoFillCompanyProfile() {
-        this.isLoading = true;
-        this.autoSaveLoader = true;
-        this.companyProfileService.autoFillCompanyProfile().subscribe(
-            (result: any) => {
-                if (result.statusCode == 200) {
-                    this.autofillCompanyProfile = result.data;
-                    this.companyLogoSourceLink = this.autofillCompanyProfile.companyLogoSourceLink;
-                    this.companyProfile.companyName = this.autofillCompanyProfile.companyName;
-                    this.companyProfile.companyProfileName = this.autofillCompanyProfile.companyProfileName;
-                    this.companyProfile.aboutUs = this.autofillCompanyProfile.aboutUs;
-                    this.companyProfile.website = this.autofillCompanyProfile.website;
-                    this.companyProfile.city = this.autofillCompanyProfile.city;
-                    this.companyProfile.country = this.autofillCompanyProfile.country;
-                    this.companyProfile.state = this.autofillCompanyProfile.state;
-                    this.companyProfile.instagramLink = this.autofillCompanyProfile.instagramLink;
-                    this.companyProfile.facebookLink = this.autofillCompanyProfile.facebookLink;
-                    this.companyProfile.twitterLink = this.autofillCompanyProfile.twitterLink;
-                    this.companyProfile.googlePlusLink = this.autofillCompanyProfile.googlePlusLink;
-                    this.companyProfile.linkedInLink = this.autofillCompanyProfile.linkedInLink;
-                    this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = this.autofillCompanyProfile.companyLogoPath;
-                    this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
-                    this.validateCompanyLogo();
-                    this.saveCompanyProfile();
-                }
-            }, (error: any) => {
-                this.isLoading = false;
-                this.autoSaveLoader = false;
-                let message = this.refService.getApiErrorMessage(error);
-                this.customResponse = new CustomResponse('ERROR', message, true);
-                this.removeBlurContent();
-                console.log('Error Occured while retriving the company profile automatically :', error);
-            });
-    }
-
-    /*** XNFR-760 ***/
-    async autofillCompanyLogoFromUrl(imageUrl: string): Promise<void> {
-        let file: any;
-        try {
-            if (this.refService.isValidText(imageUrl)) {
-                const targetWidth = 800;
-                const aspectRatio = 3 / 1;
-                file = await this.companyProfileService.resizeAndCropImage(imageUrl, targetWidth, aspectRatio);
-            } else {
-                this.companyLogoSourceLink = this.authenticationService.DOMAIN_URL + "assets/images/company-profile-logo.png";
-                this.http.get(this.companyLogoSourceLink, { responseType: 'blob' }).subscribe(blob => {
-                    file = new File([blob], 'company-profile-logo.png', { type: blob.type });
-                });
-            }
-            this.fileUploadCode(file);
-            console.log('Image source link has converted as file object as : ', file);
-        } catch (error) {
-            console.log('Error converting the url link to image :', error);
-            this.companyLogoSourceLink = this.authenticationService.DOMAIN_URL + "assets/images/company-profile-logo.png";
-            this.http.get(this.companyLogoSourceLink, { responseType: 'blob' }).subscribe(blob => {
-                file = new File([blob], 'company-profile-logo.png', { type: blob.type });
-                this.fileUploadCode(file);
-            })
-        }
-    }
-  
+    }  
 
     /**XNFR-832***/
     unlockMdfFundingUiSwitchEventReceiver(event:any){

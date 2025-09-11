@@ -4142,6 +4142,21 @@ getFirstLetter(inputString:any) {
 				console.log('you clicked on option' + dismiss);
 			});
 	}
+
+  showAlertForAWSAccess() {
+    swal({
+      title: 'AWS Access Required',
+      text: "You won't be able to perform few actions without AWS access!",
+      type: 'warning',
+      showCancelButton: false,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+    }).then(function (myData: any) {
+      console.log("you clicked on option" + myData);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+	}
 }
 
 
