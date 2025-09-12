@@ -413,7 +413,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
 		) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();

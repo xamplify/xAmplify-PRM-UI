@@ -1261,24 +1261,9 @@ export class AuthenticationService {
     return this.envService.CLIENT_URL == "http://localhost:4200/";
   }
 
-  public isQADomain() {
-    return this.envService.CLIENT_URL == "https://xamplify.co/";
-  }
-
-  public isProductionDomain() {
-    return this.envService.CLIENT_URL == "https://xamplify.io/";
-  }
-
+  
   setDomainUrl() {
-    if (this.vanityURLEnabled) {
-      if (this.isQADomain() || this.isLocalHost()) {
-        this.DOMAIN_URL = "https://" + this.getSubDomain() + ".xamplify.co/";
-      } else {
-        this.DOMAIN_URL = "https://" + this.getSubDomain() + ".xamplify.io/";
-      }
-    } else {
-      this.DOMAIN_URL = this.APP_URL;
-    }
+    this.DOMAIN_URL = this.APP_URL;
   }
 
   setCustomDomainUrl(customDomain:string) {

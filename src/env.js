@@ -1,7 +1,7 @@
 (function (window) {
 	window.__env = window.__env || {};
 
-	window.__env.domainName = "";
+	window.__env.domainName = "xamplify-prm";
 	
 	/*************Local*******************************/
 
@@ -11,34 +11,14 @@
 	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.PREVIEW_HOST = "http://localhost:5000/";
 
-	/*********************QA**********************/
+	/*********************Production**********************/
 
 	// window.__env.CLIENT_URL = 'https://xamplify.co/';
 	// window.__env.SERVER_URL =  'https://aravindu.com/';
 	//window.__env.SCHEDULER_URL = window.__env.SERVER_URL; 
-	// window.__env.imagesHost = "https://aravindu.com/vod/images/";
-	// window.__env.PREVIEW_HOST = "https://assets.xamplify.co/";
+	// window.__env.imagesHost = window.__env.SERVER_URL+"/vod/images/";
+	// window.__env.PREVIEW_HOST = window.__env.CLIENT_URL;
 
-
-	/********************Production************************/
-	// window.__env.CLIENT_URL = 'https://xamplify.io/'; 
-	// window.__env.SERVER_URL = 'https://xamp.io/'; 
-	//window.__env.SCHEDULER_URL = 'https://scheduler.xamp.io/';
-	// window.__env.imagesHost = "https://xamp.io/vod/images/";
-	// window.__env.PREVIEW_HOST ="https://assets.xamplify.io/";
-
-	
-
-	/*********************Release**********************/
-	//window.__env.CLIENT_URL = 'https://xtremand.com/';
-	//window.__env.SERVER_URL =  'https://release.xamp.io/';
-	//window.__env.SCHEDULER_URL = 'https://release.xamp.io/';
-	//window.__env.imagesHost = "https://assets.xamplify.co/";
-
-	/**********UI******************/
-	//window.__env.CLIENT_URL = 'https://x-amplify.com/';
-	//window.__env.SERVER_URL =  'https://aravindu.com/';
-	//window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 	/******Auto Reload Deployment Configurations */
 	window.__env.reloadAfterDeployment = true;

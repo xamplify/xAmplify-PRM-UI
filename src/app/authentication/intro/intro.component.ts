@@ -68,7 +68,7 @@ export class IntroComponent implements OnInit {
     try {
       if (localStorage.getItem("currentUser")) {
         this.callSetTimeOut(900); this.authenticationService.navigateToDashboardIfUserExists();
-      } else if (localStorage.getItem("isLogout") && this.clientUrl ==='https://xamplify.io/') {
+      } else if (localStorage.getItem("isLogout")) {
         this.callSetTimeOut(1500);
         window.location.href = 'https://www.xamplify.com/';
         localStorage.removeItem("isLogout")

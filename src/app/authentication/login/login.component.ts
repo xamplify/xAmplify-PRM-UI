@@ -158,9 +158,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resendActiveMail = false;
     this.resendAccountSignUpMail = false;
     if(userName!=undefined && userName!="undefined"){
-      if(userName=="superadmin@xamplify.io" && this.isLoggedInVanityUrl){
-        userName = "admin@xamplify.io";
-      }
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
       body.set('username', userName);
@@ -342,105 +339,13 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
-          this.route.queryParams.filter(params => params.error)
-          .subscribe(params => {
-            if (params.error === "verr1") {
-              this.showVanityLoginErrorMessage();
-            } else if (params.error === "server_error_message") {
-              this.setCustomeResponse("ERROR", this.properties.serverErrorMessage);
-            } else if (params.error === "authentication_failed") {
-              this.setCustomeResponse("ERROR", this.properties.AUTHENTICATION_FAILURE);
-            }           
-          }
-        );
-
-          this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-          this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-            this.vanityURLEnabled = result.enableVanityURL;
-            this.authenticationService.companyProfileName = result.companyProfileName;
-            this.xtremandLogger.info("Company Profile Name : "+this.authenticationService.companyProfileName);
-            this.authenticationService.vendorCompanyId = result.companyId;
-            this.authenticationService.v_companyName = result.companyName;
-            this.authenticationService.vanityURLink = result.vanityURLink;
-            this.authenticationService.companyUrl = result.companyUrl;
-            this.authenticationService.loginType = result.loginType;
-            this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
-            this.isBgColor = result.styleOneBgColor;
-            let path = "https://xamplify.io/assets/images/stratapps.jpeg";
-            if(result.loginType === "STYLE_ONE"){
-              this.isStyleOne = true;
-              this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;
-              if(result.styleOneBgColor) {
-              document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
-              } else {
-                if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
-                document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
-                } else {
-                  document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+path+')');
-                }
-              }
-            } else {
-              this.isStyleOne = false;
-              this.authenticationService.loginScreenDirection = result.loginScreenDirection;
-              if(result.styleTwoBgColor) {
-              document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
-              } else {
-                if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
-                  document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
-                } else {
-                document.documentElement.style.setProperty('--login-bg-image', 'url('+path+')');
-                }
-              }
-            }
-            if(result.companyBgImagePath) {
-              this.bgIMage2 = this.authenticationService.MEDIA_URL+ result.companyBgImagePath;
-            } else {
-              this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
-            }
-            if(!this.vanityURLEnabled){
-              this.router.navigate( ['/vanity-domain-error'] );
-              return;
-            }
-            this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-            this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-            if (result.companyBgImagePath && result.backgroundLogoStyle2) {
-              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
-              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-            } else if(result.companyBgImagePath){
-              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-            } else if(result.backgroundLogoStyle2) {
-              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
-            }else {
-              this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-            }
-            this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            localStorage.setItem('appIcon',result.companyFavIconPath);
-            this.vanityURLService.setVanityURLTitleAndFavIcon();         
-
-            if (result.showVendorSSO) {
-              this.showVendorSSO = result.showVendorSSO;
-              if (result.vendorSSOType === "oauth") {
-                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
-              } else if (result.vendorSSOType === "saml") {
-                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
-              }              
-            }
-
-            if (result.showMicrosoftSSO) {
-              this.orLoginWithText = result.showMicrosoftSSO;
-              this.vanityMicrosoftSSOProvider = { "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" };
-            } 
-            
-          }, error => {
-            console.log(error);
-          });
-          let self = this;
-          window.addEventListener('message', function (e) {
-            self.loginAfterSSOCallbackInVanity(e.data);
-          }, false);
-        } else {
-          this.isNotVanityURL = true;
-        }
+           this.vanityURLEnabled = true;
+           this.authenticationService.companyProfileName = this.envService.domainName;
+           this.authenticationService.v_companyName = "xAmplify-Prm";
+           this.vanityURLService.setVanityURLTitleAndFavIcon();   
+           this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+           this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
+        } 
         this.cleaningLeftSidebar();
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(() => { this.mainLoader = false; }, 900);

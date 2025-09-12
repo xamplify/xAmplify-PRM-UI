@@ -211,64 +211,12 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 }
 /**** XNFR-416 *****/
   isVanityURLEnabled() {
-   let url = window.location.hostname;
-    let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
-    this.envService.CLIENT_URL.indexOf('localhost')>-1;
-    url = this.setUrlForLocalHost(isLocalHost, url);
-    if (!url.includes("192.168") && !url.includes("172.16")) {
-      let domainName = url.split('.');
-      if (domainName.length > 2) {
-        if(url.includes("xamplify.co") || url.includes("xamplify.io")){
-          this.authenticationService.companyProfileName = domainName[0];
-          this.setVanityVariables(this.authenticationService.companyProfileName);
-        }else{
-          let subDomain  = this.getCustomDomain(url);
-          console.log(url+" is the url And Custom Domain : "+subDomain);
-          let companyProfileName = this.authenticationService.companyProfileName;
-          if(companyProfileName==undefined || companyProfileName==""){
-            this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
-              response=>{
-                let statusCode = response.statusCode;
-                if(statusCode == 200){
-                  this.authenticationService.companyProfileName = response.data;
-                  this.setVanityVariables(this.authenticationService.companyProfileName);
-                }else{
-                  this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
-                  this.router.navigate( ['/vanity-domain-error'] );
-                }
-              
-              },error=>{
-                this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
-              });
-          }else{
-            console.log("API is not needed to get the company profile name");
-          }
-        }
-        return true;
-      }
-    }
+   let url = "https://xamplify-prm.opensource.com";
+   this.authenticationService.companyProfileName = "xamplify-prm";
+   this.setVanityVariables(this.authenticationService.companyProfileName);
+    return true;
   }
 
-  private getCustomDomain(url:string) {
-    var textBeforeLogin = url.replace(/\/login$/, "");
-    textBeforeLogin = textBeforeLogin.replace(/https?:\/\/|\/$/g, "");
-    return textBeforeLogin;
-  }
-
-  private setUrlForLocalHost(isLocalHost: boolean, url: string) {
-    if (isLocalHost) {
-      let domainName = this.envService.domainName;
-      if (domainName != "" && domainName != window.location.hostname) {
-        var dotCount = (domainName.match(/\./g) || []).length;
-        if (dotCount == 0) {
-          url = this.envService.domainName + ".xamplify.co";
-        } else {
-          url = "https://"+this.envService.domainName+"/login";
-        }
-      }
-    }
-    return url;
-  }
 
   private setVanityVariables(companyProfileNameOrDomain:string) {
     this.authenticationService.vanityURLEnabled = true;
@@ -287,34 +235,10 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
   }
 
   checkVanityURLDetails() {
-    if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
-      this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-        this.authenticationService.v_companyName = result.companyName;
-        this.authenticationService.vanityURLink = result.vanityURLink;   
-        if(!result.enableVanityURL){
-          this.router.navigate( ['/vanity-domain-error'] );
-          return;
-        }     
-        this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-        this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-        this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
-        if (result.companyBgImagePath) {
-          this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-        } else {
-          this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-        }
-        if(result.backgroundLogoStyle2){
-          this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2
-        } else {
-          this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
-        }
-        this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-        this.authenticationService.loginScreenDirection = result.loginScreenDirection;
-        this.setVanityURLTitleAndFavIcon();        
-      }, error => {
-        console.log(error);
-      });
-    }
+    this.authenticationService.v_companyName = "xAmplify-Prm";
+     this.setVanityURLTitleAndFavIcon(); 
+     this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+     this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
   }
 
 
@@ -335,13 +259,11 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 
   public setVanityURLTitleAndFavIcon() {
     if (this.authenticationService.v_companyName){      
-      this.titleService.setTitle(this.authenticationService.v_companyName);
+      this.titleService.setTitle("xAmplify-Prm");
+       this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.APP_URL + "assets/images/Xamplify.ico");
+
     }
-    if(this.authenticationService.v_companyFavIconPath) {
-      if(this.isVanityURLEnabled()){
-        this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
-      }
-    }
+  
   }
 
 

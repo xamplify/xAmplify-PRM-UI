@@ -141,7 +141,7 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
     private renderer2: Renderer2, @Inject(DOCUMENT) private _document:any,public location: Location, public referenceService: ReferenceService
 		, private dashBoardService: DashboardService) {
     try {
-      if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
+      if (this.authenticationService.isLocalHost()) {
       }
       let setSearchKey = localStorage.getItem(XAMPLIFY_CONSTANTS.universalSearchKey);//XNFR-574
       if (setSearchKey) {

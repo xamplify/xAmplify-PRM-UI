@@ -93,8 +93,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     public refService: ReferenceService, public logger: XtremandLogger, public properties: Properties, private translateService: TranslateService,
     private vanityServiceURL: VanityURLService, private integrationService: IntegrationService) {
     try {
-      if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
-      }
       this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
