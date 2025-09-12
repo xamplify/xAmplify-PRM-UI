@@ -18,7 +18,6 @@
 					<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
 						data-toggle="tooltip" data-placement="left" title="Close"> X </a>
 				</div>
-				<app-response-message [customResponse]="customResponse"	*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
 				<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
 					<div class="row solid-wb" style="margin-top: 28px;"></div>
 				<ng-template [ngTemplateOutlet]="showTermsAndPolicies"></ng-template>

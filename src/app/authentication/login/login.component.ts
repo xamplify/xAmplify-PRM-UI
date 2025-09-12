@@ -94,7 +94,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     
     if (this.authenticationService.showVanityURLError1) {
-      this.showVanityLoginErrorMessage();
       this.authenticationService.showVanityURLError1 = false;
     }
     this.signInText = "Sign In";
@@ -131,15 +130,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.referenceService.userName = userName;
           if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
             this.isPleaseWaitButtonDisplayed = true;
-            this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, userName).subscribe(result => {
-              if (result.message === "success") {
-                this.loginWithUser(userName);
-              } else {
-                this.loading = false;
-                this.isPleaseWaitButtonDisplayed = false;
-                this.showVanityLoginErrorMessage();
-              }
-            });
+            this.loginWithUser(userName);
+            this.loading = false;
+            this.isPleaseWaitButtonDisplayed = false;
           }
           else {
             this.loginWithUser(userName);
@@ -359,132 +352,11 @@ bgIMage2:any;
     $('#org-admin-deactivated').hide();
   }
 
-  loginUsingSocialAccounts(socialProvider: any) {
-    const currentPath = this.router.url;
-    localStorage.setItem('returnUrl', currentPath);
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser != undefined) {
-      this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
-    } else {
-      let socialProviderName = socialProvider.name.toLowerCase()
-      if (socialProviderName === "microsoft") {
-        socialProviderName = "microsoftsso"
-      }
-      let loginUrl = "/" + socialProviderName + "/login";
-      if (this.isLoggedInVanityUrl) {
-        if (socialProvider.value === "samlsso" || socialProvider.value === "oauthsso") {
-          loginUrl = "/" + socialProvider.value + "/login";
-          this.router.navigate([loginUrl]);
-        } else {
-          let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
-          let x = screen.width / 2 - 700 / 2;
-          let y = screen.height / 2 - 450 / 2;
-          window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
-        }        
-      } else {
-        this.router.navigate([loginUrl]);
-      }
-
-
-    }
-  }
 
   redirectToXamplify(){
-    window.open("https://xamplify.co/login");
+   
   }
 
-  loginAfterSSOCallbackInVanity(data: any) {
-    this.loading = true;
-    this.referenceService.userName = data.emailId;
-    let providerName = data.providerName;
-    let client_id: string;
-    let client_secret: string;
-    if (providerName === "salesforce") {
-      client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
-      client_secret = "8542957351694434668";
-    } else if (providerName === "google") {
-      client_id = "1026586663522-tv2c457u9h9bj4ikc47u29g321dkjg6m.apps.googleusercontent.com";
-      client_secret = "yKAddi6F_xkiERVCnWna3bXT";
-    } else if (providerName === "facebook") {
-      client_id = "1348853938538956";
-      client_secret = "69202865ccc82e3cf43a5aa097c4e7bf";
-    } else if (providerName === "twitter") {
-      client_id = "J60F2OG6jZOEK33xK3MtiU4zI";
-      client_secret = "d3xQ5hPlPZtQdeMkNAjlejXFvwRrPSalwbpyApncxi49Pf4lFi";
-    } else if (providerName === "linkedin") {
-      client_id = "81ujzv3pcekn3t";
-      client_secret = "bfdJ4u0j6izlWSyd";
-    } else if (providerName === "microsoftsso") {
-      if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
-        this.xtremandLogger.info("production keys are used");
-        client_id = this.envService.microsoftProdClientId;
-        client_secret = this.envService.microsoftProdClientSecret;
-      }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
-        this.xtremandLogger.info("QA keys are used");
-        client_id = this.envService.microsoftQAClientId;
-        client_secret = this.envService.microsoftQAClientSecret;
-      }else{
-        this.xtremandLogger.info("dev keys are used");
-        client_id = this.envService.microsoftDevClientId;
-        client_secret = this.envService.microsoftDevClientSecret;
-      }
-    } else if (providerName === "oauthsso") {
-      client_id = "my-trusted-client";
-      client_secret = "";
-    }
-
-    if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.referenceService.userName!=undefined) {
-      this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).
-      subscribe(result => {
-        if (result.message === "success") {
-          this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
-        } else {
-          this.loading = false;
-          this.showVanityLoginErrorMessage();
-        }
-      },error=>{
-        this.loading = false;
-      });
-    }
-    else {
-      this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
-    }
-  }
-
-  loginSSOUser(userName: string, client_id: string, client_secret: string) {
-    const storedReturnUrl = localStorage.getItem('returnUrl');
-    if (storedReturnUrl && storedReturnUrl !== '/') {
-      localStorage.removeItem('returnUrl');
-      this.router.navigateByUrl(storedReturnUrl);
-      return;
-    }
-   if(userName!=undefined && userName!="undefined"){
-    const authorization = 'Basic' + btoa(client_id + ':');
-    const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
-
-    this.authenticationService.login(authorization, body, userName)
-      .subscribe(result => {
-        if (this.authenticationService.user) {
-          const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-          if (currentUser.hasCompany) {
-            this.router.navigate(['/home/dashboard/default']);
-          } else {
-            this.router.navigate(['/home/dashboard/add-company-profile']);
-          }
-        } else {
-          this.router.navigate(['/logout']);
-        }
-      },
-        error => {
-          console.log(error);
-          this.loading = false;
-        },
-        () => console.log('login() Complete'));
-   }else{
-    this.loading = false;
-   }
-    return false;
-  }
 
   clearErrorMessage(){
    this.customResponse = new CustomResponse();
@@ -495,68 +367,12 @@ bgIMage2:any;
 
 
   createdUserId:any;
-  getActiveLoginTemplate(companyProfileName:any){
-      this.vanityURLService.getActiveLoginTemplate(companyProfileName)
-      .subscribe(
-        data => {
-          if(data['data']!=undefined){
-            this.loginStyleId = data.data.templateId;
-            this.authenticationService.lognTemplateId = this.loginStyleId;
-            this.createdUserId = data.data.createdBy;
-            this.previewTemplate(this.loginStyleId,this.createdUserId);
-          }
-        })
-  }
+
   htmlContent:any;
   htmlString:any;
-  previewTemplate(id: number,createdBy:number) {
-    $(this.htmlContent).empty();
-    this.vanityURLService.getLogInTemplateById(id, createdBy).subscribe(
-      response => {
-        if (response.statusCode == 200) {
-          this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.data.htmlBody)
-          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
-        } else {
-          this.customResponse = new CustomResponse('ERROR', response.message, true)
-        }
-      }
-    )
-  }
+
   /****** XNFR-233 ************/
 
-  /** XNFR-618 **/
-  showVanityLoginErrorMessage() {
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if (companyProfileName != undefined && companyProfileName != '') {
-      this.vanityURLService.getVanityUrlDetailsbyCompanyProfileName(companyProfileName).subscribe(
-        response => {
-          if (response.statusCode == 200) {
-            let companyName = response.data.companyName;
-            let supportEmailId = response.data.supportEmailId;
-            let errorMessage = '';
-            if (companyProfileName == 'versa-networks') {
-              errorMessage += `We are sorry you are unable to access the ${companyName} Partner Portal.`;
-              if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
-                errorMessage += ` Please email us at <a href="mailto:${supportEmailId}">${supportEmailId}</a> and include the error message.\nThank you.`;
-              }
-            } else {
-              errorMessage += `You are not associated to ${companyName}.`;
-              if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
-                errorMessage += ` Please contact <a href="mailto:${supportEmailId}">${supportEmailId}</a>`;
-              }
-            }
-            this.setCustomeResponse("ERROR", errorMessage);
-          } else {
-            this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
-          }
-        }, error => {
-          this.xtremandLogger.errorPage(error);
-          this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
-        });
-    } else {
-      this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
-    }
-  }
 
   /** XNFR-658 **/
   showLoginWithCredentialsForm() {

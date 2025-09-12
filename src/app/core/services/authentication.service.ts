@@ -276,6 +276,7 @@ export class AuthenticationService {
       return this.map;
     }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
       this.vanityURLUserRoles = response.data;
+      alert(this.vanityURLUserRoles);
       this.isWelcomePageEnabled = response.map.isWelcomePageEnabled;
     }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
