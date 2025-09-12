@@ -361,7 +361,6 @@ listDefaultTemplates(userId:any){
   /** XNFR-1079  **/
   downloadWordFile(chatGptSettings: ChatGptIntegrationSettingsDto) {
     this.downloadDocx(chatGptSettings).subscribe((blob: Blob) => {
-      this.downloadBlob(blob, 'document.docx');
       this.referenceService.docxLoader = false;
       this.referenceService.showSweetAlertSuccessMessage('Document downloaded successfully');
     }, error => {
