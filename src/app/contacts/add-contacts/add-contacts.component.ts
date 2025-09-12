@@ -1220,56 +1220,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     googleContacts() {
-        this.hideCSVInNotes = true;
-        try {
-            if (this.loggedInThroughVanityUrl) {
-                this.googleVanityAuthentication();
-
-            } else {
-                if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                    this.noOptionsClickError = false;
-                    this.xtremandLogger.info("addContactComponent googlecontacts() login:");
-                    this.socialContact.firstName = '';
-                    this.socialContact.lastName = '';
-                    this.socialContact.emailId = '';
-                    this.socialContact.contactName = '';
-                    this.socialContact.showLogin = true;
-                    this.socialContact.jsonData = '';
-                    this.socialContact.statusCode = 0;
-                    this.socialContact.contactType = '';
-                    this.socialContact.alias = '';
-                    this.socialContact.socialNetwork = "GOOGLE";
-                    this.contactService.socialProviderName = 'google';
-                    let currentModule = "";
-                    this.contactService.googleLogin(this.module)
-                        .subscribe(
-                            data => {
-                                if (data.statusCode == 200) {
-                                    console.log("AddContactComponent googleContacts() Authentication Success");
-                                    this.getGoogleContactsUsers();
-                                    this.xtremandLogger.info("called getGoogle contacts method:");
-                                } else {
-                                    this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
-                                }
-                            },
-                            (error: any) => {
-                                this.xtremandLogger.error(error);
-                                if (error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")) {
-                                    this.referenceService.showReAuthenticateMessage();
-                                } else {
-                                    this.xtremandLogger.errorPage(error);
-                                }
-
-                            },
-                            () => this.xtremandLogger.log("AddContactsComponent() googleContacts() finished.")
-                        );
-                }
-            }
-
-
-        } catch (error) {
-            this.xtremandLogger.error(error, "AddContactsComponent() googleContacts().")
-        }
+              this.referenceService.showAlert();
     }
 
 
@@ -2077,37 +2028,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     salesforceContacts() {
-        try {
-            if (this.loggedInThroughVanityUrl) {
-                this.salesForceVanityAuthentication();
-            } else {
-                if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                    this.contactType = "";
-                    this.noOptionsClickError = false;
-                    this.socialContact.socialNetwork = "salesforce";
-                    this.contactService.salesforceLogin(this.module)
-                        .subscribe(
-                            data => {
-                                this.storeLogin = data;
-                                if (data.statusCode == 200) {
-                                    this.showModal();
-                                    console.log("AddContactComponent salesforce() Authentication Success");
-                                    //this.checkingPopupValues();
-                                } else {
-                                    this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
-                                }
-                            },
-                            (error: any) => {
-                                this.xtremandLogger.error(error);
-                            },
-                            () => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
-                        );
-                }
-            }
+              this.referenceService.showAlert();
 
-        } catch (error) {
-            this.xtremandLogger.error(error, "AddContactsComponent SalesforceContacts().")
-        }
     }
 
     salesForceVanityAuthentication() {
@@ -2479,68 +2401,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    socialContactImage() {
-        try {
-            this.contactService.socialContactImages()
-                .subscribe(
-                    data => {
-                        this.storeLogin = data;
-                        if (this.storeLogin.GOOGLE == true) {
-                            this.googleImageNormal = true;
-                        } else {
-                            this.googleImageBlur = true;
-                        }
-                        if (this.storeLogin.SALESFORCE == true) {
-                            this.sfImageNormal = true;
-                        } else {
-                            this.sfImageBlur = true;
-                        }
-                        if (this.storeLogin.ZOHO == true) {
-                            this.zohoImageNormal = true;
-                        } else {
-                            this.zohoImageBlur = true;
-                        }
-                        if (this.storeLogin.MARKETO == true) {
-                            this.marketoImageNormal = true;
-                        } else {
-                            this.marketoImageBlur = true;
-                        }
-                        if (this.storeLogin.HUBSPOT == true) {
-                            this.hubspotImageNormal = true;
-                        } else {
-                            this.hubspotImageBlur = true;
-                        }
-                        if (this.storeLogin.MICROSOFT == true) {
-                            this.microsoftDynamicsImageNormal = true;
-                        } else {
-                            this.microsoftDynamicsImageBlur = true;
-                        }
-                        if (this.storeLogin.PIPEDRIVE == true) {
-                            this.pipedriveImageNormal = true;
-                        } else {
-                            this.pipedriveImageBlur = true;
-                        }
-                        if (this.storeLogin.CONNECTWISE == true) {
-                            this.connectWiseImageNormal = true;
-                        } else {
-                            this.connectWiseImageBlur = true;
-                        }
-                        if (this.storeLogin.HALOPSA == true) {
-                            this.haloPSAImageNormal = true;
-                        } else {
-                            this.haloPSAImageBlur = true;
-                        }
-
-                    },
-                    (error: any) => {
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => this.xtremandLogger.log("AddContactsComponent socialContactImage() finished.")
-                );
-        } catch (error) {
-            this.xtremandLogger.error(error, "addContactComponent", "social Partners images");
-        }
+    socialContactImage() {        
     }
 
     partnerEmails() {
@@ -2965,54 +2826,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     marketoContacts() {
     }
     checkingMarketoContactsAuthentication() {
-        try {
-            if (this.loggedInThroughVanityUrl) {
-                //this.referenceService.showSweetAlertInfoMessage();
-                this.vanityCheckingMarketoContactsAuthentication();
-
-            } else {
-                if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                    this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
-                        .subscribe(
-                            (data: any) => {
-
-                                if (data.statusCode == 8000) {
-                                    this.showMarketoForm = false;
-
-                                    this.marketoAuthError = false;
-                                    this.loading = false;
-                                    this.retriveMarketoContacts();
-                                }
-                                else {
-
-
-                                    $("#marketoShowLoginPopup").modal('show');
-                                    this.marketoAuthError = false;
-                                    this.loading = false;
-
-                                }
-                            },
-                            (error: any) => {
-                                var body = error['_body'];
-                                if (body != "") {
-                                    var response = JSON.parse(body);
-                                    if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
-                                        this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
-                                    } else {
-                                        this.xtremandLogger.errorPage(error);
-                                    }
-                                } else {
-                                    this.xtremandLogger.errorPage(error);
-                                }
-                            },
-                            () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
-                        )
-                }
-            }
-
-        } catch (error) {
-            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
-        }
+       this.referenceService.showAlert();
     }
 
 
@@ -3495,43 +3309,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     // HubSpot Implementation
 
     checkingHubSpotContactsAuthentication() {
-        if (this.loggedInThroughVanityUrl) {
-            //this.referenceService.showSweetAlertInfoMessage();
-            this.hubSpotVanityAuthentication();
-        } else {
-            if (this.selectedAddContactsOption == 8) {
-                this.hubSpotService.configHubSpot().subscribe(data => {
-                    let response = data;
-                    if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                        this.xtremandLogger.info("isAuthorize true");
-                        this.showHubSpotModal();
-                    }
-                    else {
-                        if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-                            window.location.href = response.data.redirectUrl;
-                        }
-                    }
-                }, (error: any) => {
-                    this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-                }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
-            }
-        }
+          this.referenceService.showAlert();
 
 
     }
 
     checkingMicrosoftContactsAuthentication() {
-    
+           this.referenceService.showAlert();
+
     }
 
     //XNFR-230
     checkingPipedriveContactsAuthentication() {
-      
+             this.referenceService.showAlert();
+
     }
 
     //XNFR-403
     checkingConnectWiseContactsAuthentication() {
-        
+               this.referenceService.showAlert();
+
     }
 
     hubSpotVanityAuthentication() {
@@ -3905,38 +3702,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /**************Sravan************************ */
 
     checkingZohoContactsAuthentication() {
-        localStorage.removeItem('isZohoSynchronization');
-        try {
-            if (this.loggedInThroughVanityUrl) {
-                this.zohoVanityUrlAuthentication();
-            }
-            else {
-                // this.zohoPopupLoader = true;
-                let selectedOption = $("select.opts:visible option:selected ").val();
+             this.referenceService.showAlert();
 
-                if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                    this.contactService.checkingZohoAuthentication(this.module)
-                        .subscribe(
-                            (data: any) => {
-                                this.storeLogin = data;
-                                if (data.statusCode == 200) {
-                                    this.zohoShowModal();
-                                } else {
-                                    this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
-                                }
-                            },
-                            (error: any) => {
-                                //this.zohoPopupLoader = false;
-                                this.referenceService.showSweetAlertServerErrorMessage();
-                            },
-                            () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
-                        )
-                }
-
-            }
-        } catch (error) {
-            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
-        }
     }
 
     zohoVanityUrlAuthentication() {
@@ -4527,7 +4294,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-     
+     this.referenceService.showAlert();
     }
 
     getHaloPSAContacts() {
@@ -4661,3 +4428,5 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
       }
 }
+
+
