@@ -86,10 +86,9 @@ export class CrmSettingsComponent implements OnInit {
     public referenceService:ReferenceService,public properties: Properties, public leadSerivce: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLocalHost = this.authenticationService.isLocalHost();
-    this.isVendorAndPartnerLeadsRegisterDealToggleVisible = this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor || this.authenticationService.module.isPrm 
-    || (this.authenticationService.module.adminOrSuperVisor && !this.authenticationService.module.isMarketingCompany);
-    this.isSelfLeadsRegisterDealToggleVisible = this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isMarketing || this.authenticationService.isOrgAdminSuperVisor 
-    || (this.authenticationService.module.isMarketingTeamMember && this.authenticationService.module.adminOrSuperVisor);
+    this.isVendorAndPartnerLeadsRegisterDealToggleVisible = this.authenticationService.module.isPrm 
+    || this.authenticationService.module.adminOrSuperVisor;
+    this.isSelfLeadsRegisterDealToggleVisible = false;
    }
 
   ngOnInit() {
@@ -183,26 +182,7 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   updateIntegrationSettings() {
-    this.ngxLoading = true;
-    this.reAssignIntegrationSettingsValues();
-    this.integrationService.updateCRMSettings(this.integrationType.toLowerCase(),this.loggedInUserId,this.integrationDetails)
-      .subscribe(data => {
-        if (data.statusCode == 200) {
-          this.referenceService.goToTop();
-          this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-          this.notifySubmitSuccess.emit(this.customResponse);
-        } else {
-          this.referenceService.goToTop();
-          this.customResponse = new CustomResponse('ERROR', data.message, true);
-          this.notifySubmitSuccess.emit(this.customResponse);
-        }
-        this.ngxLoading = false;
-      },
-      error => {
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        this.notifySubmitSuccess.emit(this.customResponse);
-        this.ngxLoading = false;
-      })
+   
   }
 
   private reAssignIntegrationSettingsValues() {
@@ -247,22 +227,7 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   getLeadPipelines(){
-    this.ngxLoading = true;
-    this.integrationService.findPipelinesForCRMSettings(this.loggedInUserId,this.integrationType,'LEAD',0).subscribe(
-      data => {
-        this.ngxLoading = false;
-        if (data.statusCode === 200) {
-          this.leadPipelines = data.data;
-          if (this.integrationDetails.leadPipelineId != undefined && this.integrationDetails.leadPipelineId>0 
-            && !this.integrationDetails.showLeadPipelineStage) {
-            this.findLeadPipelineStagesByPipelineId(this.integrationDetails.leadPipelineId);
-          }
-        }
-      },
-      error => {
-        this.ngxLoading = false;
-      }
-    )
+
   }
 
   findLeadPipelineStagesByPipelineId(pipelineId:any) {
@@ -313,22 +278,7 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   getDealPipelines(){
-    this.ngxLoading = true;
-    this.integrationService.findPipelinesForCRMSettings(this.loggedInUserId,this.integrationType,'DEAL',0).subscribe(
-      data => {
-        this.ngxLoading = false;
-        if (data.statusCode === 200) {
-          this.dealPipelines = data.data;
-          if (this.integrationDetails.dealPipelineId != undefined && this.integrationDetails.dealPipelineId>0 
-            && !this.integrationDetails.showDealPipelineStage) {
-            this.findDealPipelineStagesByPipelineId(this.integrationDetails.dealPipelineId);
-          }
-        }
-      },
-      error => {
-        this.ngxLoading = false;
-      }
-    )
+   
   }
 
   onChangeLeadPipelineStage(showLeadPipelineStage){

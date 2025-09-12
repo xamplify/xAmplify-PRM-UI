@@ -3,13 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
 import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';
-import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campaign-form-analytics.component';
-import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
-import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
-import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
 import { SelectFormComponent } from './select-form/select-form.component';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
-import { CampaignSurveyFormsComponent } from './campaign-survey-forms/campaign-survey-forms.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -26,20 +21,8 @@ export const routes: Routes = [
     { path: "lpf/:alias/:campaignAlias/:campaignTitle/analytics", component: FormAnalyticsComponent},
     { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},
     { path: ":partner/f/:formId/:partnerLandingPageAlias/analytics", component: FormAnalyticsComponent},
-    { path: "lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     { path: ":alias/:campaignAlias/:partnerId/analytics/cfa", component: FormAnalyticsComponent},
     { path: "cpfp/:alias/:campaignAlias/:partnerId/:campaignTitle/analytics/cfa", component: FormAnalyticsComponent},
-    {path: "cf/:alias",component:CampaignFormAnalyticsComponent},
-    {path: "lf/:landingPageId",component:LandingPageFormsComponent},
-    {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId",component:CampaignLandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId/:campaignTitle",component:CampaignLandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId/:partnerId/:campaignTitle",component:CampaignLandingPageFormsComponent},
-    {path: "csf/:surveyCampaignId/:campaignTitle",component:CampaignSurveyFormsComponent},
-    {path: "csf/:surveyCampaignId/:partnerId/:campaignTitle",component:CampaignSurveyFormsComponent},
-    {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
-    { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     { path: "select", component: SelectFormComponent},   
     
 ];

@@ -9,7 +9,6 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Properties } from '../../common/models/properties';
 import { Campaign } from 'app/campaigns/models/campaign';
 import { CampaignReport } from 'app/campaigns/models/campaign-report';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { DashboardService } from '../dashboard.service';
 import { UtilService } from 'app/core/services/util.service';
@@ -129,7 +128,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     customHtmlBlockId: number;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
-        public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
+        public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties,
         public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
         public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef, public sanitizer: DomSanitizer) {
 
@@ -285,31 +284,7 @@ setDashboardAsDefaultPage(event: any) {
 
 /*******************Top 4 Campaigns Releated Code************************** */
 getUserCampaignReport() {
-    this.referenceService.loading(this.topFourCampaignsLoader,true);
-    this.referenceService.loading(this.emailStatisticsLoader,true);
-    this.topFourLoading = true;  
-    this.campaignService.getUserCampaignReportForVanityURL(this.dashboardAnalyticsDto)
-        .subscribe(
-            data => {
-                this.userCampaignReport = data['userCampaignReport'];
-                this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
-            },
-            error => { 
-               this.topFourLoading = false;
-               this.xtremandLogger.error(error); 
-              },
-            () => {
-                this.xtremandLogger.info('Finished getUserCampaignReport()');
-                this.topFourLoading = false;
-                if (this.userCampaignReport == null) {
-                    this.userCampaignReport = new CampaignReport();
-                    this.userCampaignReport.userId = this.loggedInUserId;
-                    this.userCampaignReport.campaignReportOption = 'RECENT';
-                }
-                this.setLaunchedCampaignsChild(this.userCampaignReport);
-                this.listCampaignInteractionsData(this.loggedInUserId, this.userCampaignReport.campaignReportOption);
-            }
-        ); 
+
 }
 
 setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
@@ -328,31 +303,7 @@ if (('CUSTOM' === userCampaignReport.campaignReportOption) && (null != userCampa
 }
 
 listCampaignInteractionsData(userId: number, reportType: string) {
-this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnalyticsDto,reportType)
-    .subscribe(
-        data => {
-            this.topFourCampaignErrorResponse  = new CustomResponse();
-            this.campaigns = data;
-            this.referenceService.loading(this.topFourCampaignsLoader,false);
-            const campaignIdArray = data.map(function (a) { return a[0]; });
-            this.totalCampaignsCount = this.campaigns.length;
-            this.referenceService.loading(this.emailStatisticsLoader,false);
-                this.topFourLoading = false;
-            if (this.totalCampaignsCount >= 1) {
-                this.getCampaignsEamailBarChartReports(campaignIdArray);
-            }else{
-                this.referenceService.loading(this.emailStatisticsLoader,false);
-                this.topFourLoading = false;
-            }
-        },
-        error => { 
-            this.topFourLoading = false;
-            this.referenceService.showServerError(this.topFourCampaignsLoader);
-            this.referenceService.showServerError(this.emailStatisticsLoader);
-            this.topFourCampaignErrorResponse = new CustomResponse('ERROR','Please Contact Admin.',true);
-         },
-        () => this.xtremandLogger.info('Finished listCampaign()')
-    );
+
 }
 
 validateUserCampaignReport(userCampaignReport: CampaignReport) {
@@ -382,21 +333,7 @@ validateUserCampaignReport(userCampaignReport: CampaignReport) {
 }
 
 saveUserCampaignReport(userCampaignReport: CampaignReport) {
-  if (userCampaignReport.userId == null) {
-      userCampaignReport.userId = this.loggedInUserId;
-  }
-  this.campaignService.saveUserCampaignReport(userCampaignReport)
-      .subscribe(
-          data => {
-              this.userCampaignReport = data;
-              this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
-              this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
-          },
-          error => {
-              this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
-          },
-          () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
-      );
+  
 }
 
 setCampaignReportResponse(response: string, responseMessage: string) {
@@ -540,13 +477,7 @@ filterByCompanyProfileName(){
 }
 
 showCampaignDetails(campaign:any){
-    this.ngxLoading = true;
-    this.referenceService.campaignType = campaign[7];
-    let campaignId = campaign[0];
-    let campaignTitle = campaign[8];
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
-    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+encodedTitle+'/details']);
+
   }
 
   showSubmitDealSuccess() {

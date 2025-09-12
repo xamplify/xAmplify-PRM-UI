@@ -76,7 +76,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	public sortOption: any = this.sortOptions[0].value;
    /*** XNFR-906  ****/
    vanityLoginDto : VanityLoginDto = new VanityLoginDto();
-  constructor(public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService,public dashboardService:DashboardService) { 
+  constructor(public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService,public dashboardService:DashboardService, public leadService: LeadsService) { 
 	/*** XNFR-906  ****/
 	this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -117,7 +117,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 		this.ngxloading = true;
 		let self = this;
 		this.customFieldsDtosLoader = true;
-		self.integrationService.getCustomFields(this.opportunityType)
+		self.leadService.getCustomFields(this.opportunityType)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -260,7 +260,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 		this.customFields.loggedInUserId = this.loggedInUserId;
 		this.customFields.selectedFields = this.selectedCustomFieldsDtos;
 		this.customFields.objectType = this.opportunityType;
-		this.integrationService.syncCustomFieldsForm(this.customFields)
+		this.leadService.syncCustomFieldsForm(this.customFields)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -496,7 +496,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 
   confirmDelete(customFieldId: number) {
 	let self = this;
-	this.integrationService.getLeadCountForCustomField(customFieldId).subscribe(data => {
+	this.leadService.getLeadCountForCustomField(customFieldId).subscribe(data => {
 	  let leadText = data.data > 0 ? `Deleting this Custom Field will also remove the data of ${data.data} ${this.opportunityType}'s linked to it.` 
 								   : `This Custom Field will be deleted, with no impact on any ${this.opportunityType}'s.`;
 	  swal({
@@ -517,7 +517,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 
 	deleteCustomField(customFieldId: number) {
 		this.ngxloading = true;
-		this.integrationService.deleteCustomField(customFieldId, this.loggedInUserId).subscribe(
+		this.leadService.deleteCustomField(customFieldId, this.loggedInUserId).subscribe(
 			response => {
 				if (response.statusCode == 200) {
 					this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);

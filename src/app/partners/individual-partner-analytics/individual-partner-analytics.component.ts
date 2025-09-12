@@ -9,7 +9,6 @@ import { HomeComponent } from '../../core/home/home.component';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
@@ -77,7 +76,7 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
   partner:any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
-    public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
+    public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public sortOption: SortOption,
     public utilService: UtilService,private route: ActivatedRoute) { this.loggedInUserId = this.authenticationService.getUserId();
       this.utilService.setRouterLocalStorage('partnerAnalytics');
       this.isListView = !this.referenseService.isGridView;
@@ -298,24 +297,7 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
 
     listThroughPartnerCampaigns(pagination: Pagination) {
-        this.referenseService.loading(this.httpRequestLoader, true);
-        this.campaignService.listCampaign(pagination, this.loggedInUserId)
-            .subscribe(
-                data => {
-                    $.each(data.campaigns, function (index, campaign) {
-                        campaign.displayTime = new Date(campaign.utcTimeInString);
-                        campaign.createdDate = new Date(campaign.createdDate);
-                    });
-                    this.sortOption.totalRecords = data.totalRecords;
-                    pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    this.referenseService.loading(this.httpRequestLoader, false);
-                },
-                error => {
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => this.xtremandLogger.info("Finished listThroughPartnerCampaigns()")
-            );
+        
     }
 
 
@@ -530,8 +512,7 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
 
     goToCampaignAnalytics(campaign) {
-        this.referenseService.campaignType = campaign.campaignType;
-        this.router.navigate(["/home/campaigns/" + campaign.campaignId + "/details"]);
+       
     }
 
 

@@ -14,7 +14,7 @@ declare var $: any, swal: any;
 @Component({
     selector: 'app-vendor-report',
     templateUrl: './vendor-report.component.html',
-    styleUrls: ['./vendor-report.component.css', '../admin-report/admin-report.component.css'],
+    styleUrls: ['./vendor-report.component.css'],
     providers: [Pagination, HttpRequestLoader, Properties, CampaignAccess]
 })
 export class VendorReportComponent implements OnInit {

@@ -69,7 +69,7 @@ export class AddLeadComponent implements OnInit {
 
   //XNFR-426
   selectedLead: Lead;
-  isCommentSection = false;
+  // isCommentSection = false;
   editTextArea: boolean = false;
 
   disableCreatedFor: boolean = false;
@@ -645,79 +645,7 @@ export class AddLeadComponent implements OnInit {
   }
 
   getActiveCRMDetails() {
-    this.ngxloading = true;
-    this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
-      .subscribe(
-        response => {
-          this.ngxloading = false;
-          if (response.statusCode == 200) {
-            this.activeCRMDetails = response.data;
-            if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
-              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-                (result: any) => {
-                  this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
-                });
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else {
-              this.showTicketTypesDropdown = false;
-            }
-            if (!this.activeCRMDetails.activeCRM) {
-              if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.getPipelines();
-                }
-              } else {
-                if (this.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.resetPipelines();
-                }
-              }
-            } else {
-              //this.getSalesforcePipeline();
-              if (this.lead.campaignId > 0) {
-                this.getCampaignLeadPipeline();
-              } else {
-                this.getActiveCRMPipeline();
-              }
-            }
-            if (this.actionType === "view") {
-              this.getLeadPipelinesForView();
-            }
-            else {
-              if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
-                this.getLeadPipelines();
-              }
-            }
-          }
-        },
-        error => {
-          this.ngxloading = false;
-          console.log(error);
-        },
-        () => {
-
-        });
+    
   }
   getActiveCRMPipeline() {
     this.ngxloading = true;
@@ -945,29 +873,23 @@ export class AddLeadComponent implements OnInit {
 
 
   /********XNFR-426********/
-  showComments(lead: any) {
-    this.selectedLead = lead;
-    this.isCommentSection = !this.isCommentSection;
-    this.editTextArea = !this.editTextArea;
-  }
+  // showComments(lead: any) {
+  //   this.selectedLead = lead;
+  //   this.isCommentSection = !this.isCommentSection;
+  //   this.editTextArea = !this.editTextArea;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedLead.unReadChatCount = 0;
+  // addCommentModalClose(event: any) {
+  //   this.selectedLead.unReadChatCount = 0;
     // console.log(this.selectedLead.unReadChatCount)
-    this.isCommentSection = !this.isCommentSection;
-    this.editTextArea = !this.editTextArea;
-  }
+  //   this.isCommentSection = !this.isCommentSection;
+  //   this.editTextArea = !this.editTextArea;
+  // }
 
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
-    this.ngxloading = true;
-    this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
-      this.ngxloading = false;
-      if (data.statusCode == 200) {
-        this.halopsaTicketTypes = data.data;
-      }
-    })
+  
   }
 
   onChangeTicketType() {

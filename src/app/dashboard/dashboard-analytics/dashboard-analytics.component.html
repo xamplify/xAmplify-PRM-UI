@@ -153,130 +153,6 @@
         [isDraggingEnabled]="isDraggingEnabled"></app-vendor-activity-analytics>
 </ng-template>
 
-<ng-template #campaignsGrid>
-    <div *ngIf="((authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
-        && authenticationService.module.showCampaignsAnalyticsDivInDashboard && authenticationService?.module?.createCampaign)"
-        class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
-        <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
-            <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
-            <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
-                <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() 
-                || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isMarketingRole()"
-                    data-toggle="tooltip" data-placement="bottom" title="Customize campaign report" id="right">
-                    <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal"
-                        data-target="#customizeCampaignModal" aria-hidden="true"></i>
-                </a>
-                <a *ngIf="campaigns?.length == 0 &&authenticationService?.module?.createCampaign"
-                    [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right"
-                    id="campaign-creation-dashboard">
-                    Create Campaign
-                </a>
-            </ng-container>
-        </div>
-        <!---Top 4 Campaigns--------->
-        <div class="portlet-body clearfix">
-            <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
-            <div style="position: relative; top:-4px;">
-                <app-response-message [customResponse]="topFourCampaignErrorResponse"
-                    *ngIf="topFourCampaignErrorResponse.isVisible"></app-response-message>
-            </div>
-            <ng-container *ngIf="!topFourCampaignsLoader?.isLoading">
-                <section *ngFor="let campaign of campaigns; let i=index">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 campaign_card" *ngIf="i<4">
-                        <div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign)"
-                            style="cursor: pointer">
-                            <div class="bookmark-ribbon">
-                                <span class="camp_icon_colors" style="margin: 0px -7px; font-size: 17px; color: white;">
-                                    <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top"
-                                        title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
-                                    <i *ngIf="campaign[7]==='REGULAR'" data-toggle="tooltip" data-placement="top"
-                                        title="Email" class="fa fa-envelope" aria-hidden="true"></i>
-                                    <i *ngIf="campaign[7]==='SOCIAL'" data-toggle="tooltip" data-placement="top"
-                                        title="Social" class="fa fa-globe" aria-hidden="true"></i>
-                                    <i *ngIf="campaign[7]==='EVENT'" data-toggle="tooltip" data-placement="top"
-                                        title="Event" class="fa fa-calendar" aria-hidden="true"></i>
-                                    <i *ngIf="campaign[7]==='LANDINGPAGE'" data-toggle="tooltip" data-placement="top"
-                                        title="Landing Page" class="fa fa-wpforms" aria-hidden="true"></i>
-                                    <i *ngIf="campaign[7]==='SURVEY'" data-toggle="tooltip" data-placement="top"
-                                        title="Survey" class="fas fa-poll-h" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <h3 class="caption-subject camp-title-color" style="margin: 0;"
-                                        title="{{campaign[1]}}">
-                                        {{campaign[1] | slice: 0: 23}}
-                                        <span *ngIf="campaign[1]?.length>23">...</span>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div class="portlet-body text-center">
-                                <i *ngIf="campaign[2]" data-toggle="tooltip" data-placement="left"
-                                    title="Through Campaign" class="fa fa-handshake-o pull-right text-primary"
-                                    aria-hidden="true" style="position: absolute; right: 6px;font-size: 22px;"></i>
-                                <section class="percentage-circle">
-                                    <svg width="120" height="120" viewBox="0 0 120 120"
-                                        style="transform: rotate(-90deg)">
-                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
-                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5"
-                                            stroke-dasharray="339.292006588"
-                                            [ngStyle]="{'stroke-dashoffset': campaign[5] === 0 ? 339.292006588 : 339.292 * (1 - campaign[4]/campaign[5])}" />
-                                    </svg>
-                                    <h2 class="percentage-value customePercentageValue">{{campaign[6]}}%
-                                    </h2>
-                                    <h6 class="percentage-text customePercentagetext">interaction</h6>
-                                </section>
-                                <h5 class="text-primary" style="margin-top: 3.2em;">Released on
-                                    <app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </ng-container>
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #campaignStatistics *ngIf="authenticationService?.module?.isReDistribution">
-    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard,
-        'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard}">
-        <!--- Campaign Statistics --->
-        <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
-            && authenticationService.module.showCampaignsAnalyticsDivInDashboard" [isDraggingEnabled]="isDraggingEnabled"></app-campaign-statistics-analytics>
-
-        <!--- Email Statistics --->
-        <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-            class="portlet light col-xs-12 col-sm-6 pr0 margin_0">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                    <span class="caption-subject" translate>Email Statistics</span>
-                </div>
-            </div>
-            <div class="portlet-body" style="min-height: 232px;  max-height: 100%; max-width: auto;">
-                <app-modal-popup-loader [height]=220
-                    [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
-                <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
-                    <table id="trellis" aria-describedby="desc">
-                        <tr>
-                            <td class="first"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </div>
-                <ng-container *ngIf="!emailStatisticsLoader.isLoading">
-                    <div *ngIf="categories?.length < 1" style="max-width: 100%;text-align: center;">
-                        <span style="position: absolute;top: 130px;left: 220px;">No data
-                            available</span>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
 <ng-template #partnerStatistics>
     <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
         *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
@@ -287,18 +163,6 @@
         <app-partners-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partners-statistics>
         <app-partner-contacts-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partner-contacts-statistics>
         <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter" [isDashboardView]="true"></app-mdf-statistics>
-    </div>
-</ng-template>
-
-<ng-template #redistributedCampaigns *ngIf="authenticationService?.module?.isReDistribution">
-    <div class="clearfix row margin_17"
-        *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
-    !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && 
-    !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember && 
-    !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember && 
-    !authenticationService?.module?.isMarketingCompany && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-        <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"
-            [isDraggingEnabled]="isDraggingEnabled"></app-redistributed-campaigns-wordcloud-map>
     </div>
 </ng-template>
 
@@ -428,10 +292,6 @@
     </div>
 </ng-template>
 
-<ng-template #socialAccounts>
-    <app-social-accounts-analytics></app-social-accounts-analytics>
-</ng-template>
-
 <ng-template #dynamicTemplate let-template="template">
     <div class="portlet light margin_17 position-relative custom_block"
         [ngClass]="{'border_dashed': isDraggingEnabled}">
@@ -517,100 +377,6 @@
         </div>
     </section>
 </ng-container>
-
-<!-- Customize Campaign Modal -->
-<div class="modal fade right" id="customizeCampaignModal" tabindex="-1" role="dialog"
-    aria-labelledby="customizeCampaignModalLabel">
-    <div class="modal-dialog modal-customize" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </a>
-                <h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
-            </div>
-            <div class="modal-body">
-                <div class="clearfix">
-                    <div class="col-xs-12" style="margin-bottom: 10px;" *ngIf="userCampaignReport.response != null">
-                        <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
-                       'alert-danger': userCampaignReport.response == 'ERROR',
-                       'alert-warning': userCampaignReport.response == 'WARNING'}">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
-                                (click)="userCampaignReport.response = null">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h5 class="flex">
-                                <i class="fa" [ngClass]="{'fa-check': userCampaignReport.response == 'SUCCESS',
-                       'fa-exclamation': userCampaignReport.response == 'ERROR',
-                       'fa-exclamation-triangle': userCampaignReport.response == 'WARNING'}" aria-hidden="true"
-                                    style="padding-right: 7px;"></i>
-                                <span>{{userCampaignReport.responseMessage}}</span>
-                            </h5>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
-                            <label class="form-check-label">
-                                <input class="form-check-input radioButton_shadow" type="radio"
-                                    name="campaignReportType" [value]="item"
-                                    [checked]="item === userCampaignReport.campaignReportOption"
-                                    (change)="onSelectionChangeCampaignReportOption(item)"> {{item}}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
-                        <hr>
-                        <div [hidden]="launchedCampaignsMaster?.length==0">
-                            <div style="margin-bottom: 10px;"><span>Select up to 4 campaigns by dragging &
-                                    dropping</span></div>
-                            <div class="wrapper">
-                                <div class="col-xs-6" style="padding: 0 5px 0 0">
-                                    <div class="portlet light border-radius-0">
-                                        <div class="portlet-title">
-                                            <h5>YOUR CAMPAIGNS</h5>
-                                        </div>
-                                        <div class="portlet-body scrollbar launchedCampaignsMaster"
-                                            [dragula]='"bag-items"'>
-                                            <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-                                                <h6 data-placement="bottom" data-toggle="tooltip"
-                                                    title="{{item.campaign}}" class="gu-block-content" [id]="item.id">
-                                                    {{item.campaign |
-                                                    slice:0:19}}<span *ngIf="item.campaign?.length>19">...</span></h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6" style="padding: 0">
-                                    <div class="portlet light border-radius-0">
-                                        <div class="portlet-title">
-                                            <h5>SELECTED CAMPAIGNS
-                                                <strong>(MAX 4)</strong>
-                                            </h5>
-                                        </div>
-                                        <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;"
-                                            [dragula]='"bag-items"'>
-                                            <div class="gu-block" *ngFor="let item of launchedCampaignsChild">
-                                                <h6 class="gu-block-content" [id]="item.id">{{item.campaign |
-                                                    slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <span [hidden]="launchedCampaignsMaster.length>0">No campaigns available.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-primary" (click)="validateUserCampaignReport(userCampaignReport)">Save
-                    changes</button>
-                <button type="button" class="Btn-Gray" data-dismiss="modal"
-                    (click)="userCampaignReport.response = null">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <app-confirm-sweet-alert-util *ngIf="showSweetAlert"
     (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>

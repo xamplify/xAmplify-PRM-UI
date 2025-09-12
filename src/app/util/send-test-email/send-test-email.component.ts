@@ -7,7 +7,6 @@ import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
@@ -65,7 +64,6 @@ export class SendTestEmailComponent implements OnInit {
   @Output() sendmailTeamMemberNotify =new EventEmitter
   @Output() sendTestEmailComponentTeamMemberEventEmitter = new EventEmitter();
   @Input() selectedPartners : any;
-  @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
   @ViewChild('tagInput') tagInput: SourceTagInput;
   duplicateMdfRequestDto:DuplicateMdfRequest = new DuplicateMdfRequest();
   ngxloading = false;
@@ -486,7 +484,6 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   openCampaignMdfRequestHistoryModalPopup(){
-    this.campaignMdfRequestsEmailsSentHistoryComponent.openModalPopup(this.campaignId);
   }
 
   activeTab(tabName: string) {

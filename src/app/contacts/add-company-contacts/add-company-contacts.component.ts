@@ -8,13 +8,12 @@ import { Pagination } from 'app/core/models/pagination';
 import { ActionsDescription } from 'app/common/models/actions-description';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { ContactService } from '../services/contact.service';
-import { CompanyService } from 'app/company/service/company.service';
 
 @Component({
   selector: 'app-add-company-contacts',
   templateUrl: './add-company-contacts.component.html',
   styleUrls: ['./add-company-contacts.component.css'],
-  providers:[ManageContactsComponent,Properties,ActionsDescription,Pagination,CallActionSwitch,CompanyService]
+  providers:[ManageContactsComponent,Properties,ActionsDescription,Pagination,CallActionSwitch]
 })
 export class AddCompanyContactsComponent implements OnInit {
 
@@ -33,8 +32,8 @@ export class AddCompanyContactsComponent implements OnInit {
   isBreadCrumb: boolean =  false;
   selectedCompanyId: number;
   
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public route:ActivatedRoute, private contactService: ContactService, private companyService: CompanyService) {
-    this.loggedInUserId = this.authenticationService.getUserId();
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public route:ActivatedRoute, private contactService: ContactService) {
+    this.loggedInUserId = this.authenticationService.getUserId()
    }
 
   ngOnInit() {
@@ -67,16 +66,6 @@ export class AddCompanyContactsComponent implements OnInit {
   }
 
   getCompany(companyId: number) {
-    this.companyService.getCompanyById(companyId, this.loggedInUserId)
-      .subscribe(
-        (data: any) => {
-          if (data.statusCode == 200) {
-            this.selectedCompanyName = data.data.name;
-          }
-        },
-        error => {
-        },
-        () => { }
-      );
+   
   }
 }

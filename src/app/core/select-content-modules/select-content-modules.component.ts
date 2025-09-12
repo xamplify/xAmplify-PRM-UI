@@ -38,6 +38,7 @@ export class SelectContentModulesComponent implements OnInit {
       this.loadModules = false;
       }, 5000);
       this.getContentCounts();
+    this.checkAWSCredentials();
   }
   navigate(suffixUrl:string){
     this.loading = true;
@@ -58,6 +59,24 @@ export class SelectContentModulesComponent implements OnInit {
         (_error: any) => {
           this.httpRequestLoader.isServerError = true;
           this.xtremandLogger.error(_error);
+        }
+      );
+    }
+
+    /** Implemented for PRM project **/
+    checkAWSCredentials() {
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.lmsService.checkAWSCredentials().subscribe(
+        (response: any) => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (response.statusCode == 200 && response.data == false) {
+            this.referenceService.showAlertForAWSAccess();
+          }
+        },
+        (_error: any) => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }, () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
     }

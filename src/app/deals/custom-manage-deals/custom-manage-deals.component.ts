@@ -48,7 +48,7 @@ export class CustomManageDealsComponent implements OnInit {
   dealId: number = 0;
   dealsResponse: CustomResponse = new CustomResponse();
   selectedDeal: Deal;
-  isCommentSection: boolean = false;
+  // isCommentSection: boolean = false;
   loggedInUserId: number = 0;
   dealsSortOption: SortOption = new SortOption();
   isVendorVersion = false;
@@ -127,15 +127,6 @@ export class CustomManageDealsComponent implements OnInit {
       }
     }
 
-    if (this.authenticationService.vanityURLEnabled) {
-      this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isRegisterDealEnabled = data.data;
-          }
-        }
-      )
-    }
   }
 
   showDeals() {
@@ -203,15 +194,15 @@ export class CustomManageDealsComponent implements OnInit {
     this.textAreaDisable = false;
   }
 
-  showComments(event: any) {
-    this.selectedDeal = event;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // showComments(event: any) {
+  //   this.selectedDeal = event;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedDeal.unReadChatCount = 0;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // addCommentModalClose(event: any) {
+  //   this.selectedDeal.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   addDeal() {
     this.showContactDeals = false;
@@ -262,7 +253,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   resetModalPopup() {
     this.updateCurrentStage = false;
-    this.isCommentSection = false;
+    // this.isCommentSection = false;
     this.textAreaDisable = false;
     this.showDeals();
   }

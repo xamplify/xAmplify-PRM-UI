@@ -29,8 +29,8 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   lead: Lead;
   @Input()
   isPartnerVersion: boolean;
-  @Input()
-  isCommentSection: boolean;
+  // @Input()
+  // isCommentSection: boolean;
   @Input()
   textAreaDisable: boolean;
   @Input()
@@ -63,11 +63,11 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   ngOnDestroy(){
     $('#changeDealPipelineStageModel').modal('hide');
   }
-  showComments(deal: Deal) {
-    this.showCommentsEmitter.emit(deal);
-    this.isCommentSection = !this.isCommentSection;
-    deal.unReadChatCount = 0;
-  }
+  // showComments(deal: Deal) {
+  //   this.showCommentsEmitter.emit(deal);
+  //   this.isCommentSection = !this.isCommentSection;
+  //   deal.unReadChatCount = 0;
+  // }
 
   updateDealStage(deal: Deal) {
     this.ngxloading = true;

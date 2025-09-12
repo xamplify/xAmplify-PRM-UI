@@ -364,7 +364,6 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
 
     }
     goToCampaignAnalytics() {
-        this.router.navigate(['home/campaigns/' + this.landingPageCampaignId + '/details']);
     }
 
     ngAfterViewInit() {

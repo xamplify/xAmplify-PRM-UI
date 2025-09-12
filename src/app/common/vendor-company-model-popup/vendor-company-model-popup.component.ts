@@ -7,7 +7,6 @@ import { ParterService } from 'app/partners/services/parter.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var $: any;
 
 @Component({
@@ -40,7 +39,7 @@ export class VendorCompanyModelPopupComponent implements OnInit {
   	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	@Input() isPublished: boolean =false;
 	constructor(public authenticationService: AuthenticationService, private partnerService:ParterService,
-    public referenceService: ReferenceService,public pagerService:PagerService, private landingPageService:LandingPageService,
+    public referenceService: ReferenceService,public pagerService:PagerService,
    ) { }
 
 	ngOnInit() {
@@ -104,21 +103,9 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 		}
 
 		shareLandingPageToPartners(shareLandingPageDTO : any){
-			this.landingPageService.sharePartnerJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
-				this.referenceService.scrollToModalBodyTopByClass();
-				if (data.access) {
-					this.responseMessage = data.message;
-					this.closePopupEmit(this.responseMessage)
-				} else {
-					this.authenticationService.forceToLogout();
-				}
-			}, _error => {
-				this.referenceService.goToTop();
-			});
 		}
 
-		closePopupEmit(message) {
-			this.closePopup.emit(message);
+		closePopupEmit(messagse) {
 		}
 		getCompanyStatus(companyId: number) {
 			let status = "N/A";

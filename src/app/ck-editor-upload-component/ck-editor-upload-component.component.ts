@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute,Router} from '@angular/router';
 import { CallActionSwitch } from '../videos/models/call-action-switch';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { UserService } from '../core/services/user.service';
 import { User } from '../core/models/user';
 import { EmailTemplate } from '../email-template/models/email-template';
@@ -66,7 +65,7 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
     folderViewType = "";
     modulesDisplayType = new ModulesDisplayType();
     categoryId: number = 0;
-  constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
+  constructor( private userService: UserService, private router: Router,
           private emailTemplate: EmailTemplate, private logger: XtremandLogger, public authenticationService: AuthenticationService, public refService: ReferenceService,
           public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -80,28 +79,15 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
           this.disableButton = false;
           this.duplicateTemplateName = false;
           this.isUploaded = true;
-          if (emailTemplateService.emailTemplate != undefined) {
-              this.mycontent = emailTemplateService.emailTemplate.body;
-              this.model.name = emailTemplateService.emailTemplate.name;
-            }else{
-                this.goBackToSelectPage();
-            }
       }
 
   }
   
   goBackToSelectPage(){
-      this.router.navigate( ["/home/emailtemplates/select"] );
   }
   
   getAvailableNames(){
-      this.emailTemplateService.getAvailableNames( this.loggedInUserId ).subscribe(
-              ( data: any ) => {
-                  this.availableTemplateNames = data;
-              },
-              ( error: any ) => console.log( error ),
-              () => console.log( "Got List Of Available Email Template Names in regularEmailsComponent constructor" )
-          );
+    
   }
   
   validateNames( value: any ) {
@@ -311,72 +297,11 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
   }
   
   saveCustomEmailTemplate(isOnDestroy:boolean){
-    this.isSaveButtonClicked = true;
-      if(this.type=="custom"){
-          this.emailTemplate.source= EmailTemplateSource.manual;
-      }else if(this.type=="hubspot"){
-          this.emailTemplate.source= EmailTemplateSource.hubspot;
-      }
-      this.emailTemplateService.save( this.emailTemplate )
-          .subscribe(
-          data => {
-             if(data.access){
-                this.refService.stopLoader( this.httpRequestLoader );
-                if ( !isOnDestroy ) {
-                    if ( data.statusCode == 702 ) {
-                        this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
-                        this.navigateToManageSection();
-                    } else {
-                        this.customResponse = new CustomResponse( "ERROR", data.message, true );
-                    }
-                }else{
-                    this.navigateToManageSection();
-                }
-             }else{
-                this.authenticationService.forceToLogout();
-             }
-             
-          },
-          error => {
-              this.refService.stopLoader( this.httpRequestLoader );
-              this.logger.errorPage( error );
-          },
-          () => console.log( " Completed saveHtmlTemplate()" )
-          );
+
   }
   
   saveMarketoTemplate(isOnDestroy:boolean){
-    this.isSaveButtonClicked = true;
-      this.emailTemplate.marketoEmailTemplate = {
-              marketo_id: this.emailTemplateService.emailTemplate.id
-            }
-            this.emailTemplate.source= EmailTemplateSource.marketo;
-            this.emailTemplateService.saveMarketoEmailTemplate(this.emailTemplate)
-              .subscribe(
-                data => {
-                    if(data.access){
-                        this.refService.stopLoader(this.httpRequestLoader);
-                        if (!isOnDestroy) {
-                          if (data.statusCode == 8012) {
-                            this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
-                            this.navigateToManageSection();
-                          } else {
-                            this.customResponse = new CustomResponse("ERROR", data.message, true);
-                          }
-                        }else{
-                            this.navigateToManageSection();
-                        }
-                    }else{
-                        this.authenticationService.forceToLogout();
-                    }
-                  
-                },
-                error => {
-                  this.refService.stopLoader(this.httpRequestLoader);
-                  this.logger.errorPage(error);
-                },
-                () => console.log(" Completed saveHtmlTemplate()")
-              );
+  
   }
 
   navigateToManageSection() {
@@ -438,7 +363,7 @@ ngOnDestroy() {
 @HostListener('window:beforeunload')
       canDeactivate(): Observable<boolean> | boolean {
           this.authenticationService.stopLoaders();
-          let isInvalidEmailTemplateData = this.emailTemplateService.emailTemplate==undefined;
+          let isInvalidEmailTemplateData = false;
           return this.isSaveButtonClicked || isInvalidEmailTemplateData || this.authenticationService.module.logoutButtonClicked;
       }
 

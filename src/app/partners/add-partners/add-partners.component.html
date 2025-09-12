@@ -151,7 +151,7 @@
                                 <div class="cloud_platforms_padding">                         
 
                             <div class="service-icon">
-                                <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" class="setting_icon_color"
+                                <a id="salesforceContact_buttonNormal" class="setting_icon_color"
                                     (click)="salesforceContacts()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
@@ -176,7 +176,7 @@
                                 </div>
                             </div>
                             <div class="service-icon">
-                                <a *ngIf="googleImageBlur" id="googleContact_button" st (click)="googleContacts()"
+                                <a  id="googleContact_button" st (click)="googleContacts()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
                                         src="assets/images/crm/google_img.png" class="googleImageClass" style="border-radius:8px;"
@@ -209,7 +209,7 @@
                                         title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Zoho account"
                                         height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';"
                                         onmouseout="this.src='assets/images/crm/Zoho_img.png';" alt="">
-                                </a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+                                </a> <a  id="zohoContact_buttonNormal"
                                     (click)="checkingZohoContactsAuthentication()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
@@ -237,7 +237,7 @@
                                         title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
                                         height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                         onmouseout="this.src='assets/images/crm/microsoft_img.png';">
-                                </a> <a *ngIf="microsoftDynamicsImageNormal" id="microsoftDynamicsContact_buttonNormal"
+                                </a> <a id="microsoftDynamicsContact_buttonNormal"
                                     (click)="checkingMicrosoftDynamicsAuthentication()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
@@ -258,7 +258,7 @@
                                         title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HubSpot account"
                                         height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                         onmouseout="this.src='assets/images/crm/hubspot_img.png';">
-                                </a> <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal"
+                                </a> <a id="HubspotContact_buttonNormal"
                                     (click)="checkingHubSpotContactsAuthentication()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
@@ -278,7 +278,7 @@
                                         title="Click here to access {{authenticationService?.partnerModule?.customName}} from your ConnectWise account"
                                         height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                         onmouseout="this.src='assets/images/crm/connectwise_img.png';">
-                                </a> <a *ngIf="connectWiseImageNormal" id="connectwise_buttonNormal"
+                                </a> <a id="connectwise_buttonNormal"
                                     (click)="checkingConnectWiseContactsAuthentication()"
                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 12">
                                     <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
@@ -300,7 +300,7 @@
                                             title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Pipedrive account"
                                             height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                             onmouseout="this.src='assets/images/crm/pipedrive_img.png';">
-                                    </a> <a *ngIf="pipedriveImageNormal" id="pipedrive_buttonNormal"
+                                    </a> <a id="pipedrive_buttonNormal"
                                         (click)="checkingPipedriveContactsAuthentication()"
                                         [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 11">
                                         <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
@@ -321,7 +321,7 @@
                                             title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
                                             height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                             onmouseout="this.src='assets/images/crm/marketo_img.png';" alt="">
-                                    </a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
+                                    </a> <a id="MarketoContact_buttonNormal"
                                         (click)="checkingMarketoContactsAuthentication()"
                                         [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                         <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
@@ -342,7 +342,7 @@
                                             title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HaloPSA account"
                                             height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
                                             onmouseout="this.src='assets/images/crm/halospa_img.png';">
-                                    </a> <a *ngIf="haloPSAImageNormal" id="haloPSA_buttonNormal"
+                                    </a> <a id="haloPSA_buttonNormal"
                                         (click)="checkingHaloPSAContactsAuthentication()"
                                         [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 13">
                                         <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
@@ -1433,7 +1433,7 @@
                                 </h4>
 
                                 <button type="button" class="button_blue bgcolor-unset"
-                                    style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()"
+                                    style="margin-left: 38%; margin-top: 2%"
                                     translate><span class="btn btn-primary transition txt_pd-top3">Unlink
                                         Account</span></button>
                             </div>
@@ -1512,12 +1512,6 @@
     </div>
 </div>
 
-<div *ngIf="contactListAssociatedCampaignsList?.length && openCampaignModal">
-    <app-contacts-campaigns-mails [associatedCampaignDetails]="contactListAssociatedCampaignsList" [isPartner]="true"
-        [users]="newUserDetails" [contactListId]="partnerListId"
-        (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
-</div>
-
 
 
 <!-- MARKETO -->
@@ -1590,21 +1584,6 @@
 
 <div *ngIf="showMicrosoftAuthenticationForm">
     <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
-</div>
-<!-- XNFR-230-->
-<div *ngIf="showPipedriveAuthenticationForm">
-    <app-pipedrive-authentication-popup (closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
-</div>
-
-<!-- XNFR-403-->
-<div *ngIf="showConnectWiseAuthenticationForm">
-    <app-connectwise-authentication-popup
-        (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
-</div>
-
-<!-- XNFR-502-->
-<div *ngIf="showHaloPSAAuthenticationForm">
-    <app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
 </div>
 
 <!-- T&C Modal -->
@@ -1772,7 +1751,7 @@
 </app-share-unpublished-content>
 
 <!--Open Pop up-->
-<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+<!-- <app-send-campaigns #sendCampaignComponent></app-send-campaigns> -->
 
 
 <!-- Cloud Partner Saving Modal Popup -->
@@ -2018,6 +1997,3 @@
 <!--- XNFR-992 Activate-Deactivate-Partner-Sweet-Alert --->
 <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="sweetAlertParameterDto"
     (notifyComponent)="deactivatePartner($event)"></app-confirm-sweet-alert-util>
-
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-[isFromManagePartner]="true" [isFromOnboardSection]="true" [selectedContact]="contact" (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

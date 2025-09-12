@@ -15,13 +15,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-import { EmailActivityService } from 'app/activity/services/email-activity-service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
-import { ActivityService } from 'app/activity/services/activity-service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { CompanyService } from 'app/company/service/company.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
@@ -29,15 +25,14 @@ import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-j
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { DamService } from 'app/dam/services/dam.service';
-import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService,
-    CallIntegrationService, DamService,OutlookEmailService]
+  providers: [LeadsService, DealsService, Properties, UserService, CalendarIntegrationService,
+    CallIntegrationService, DamService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -165,8 +160,7 @@ export class ContactDetailsComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
-    public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
+    public calendarIntegratonService: CalendarIntegrationService, public integrationService: IntegrationService,
     public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -204,7 +198,6 @@ export class ContactDetailsComponent implements OnInit {
       this.getContact();
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
-      this.getVendorRegisterDealValue();
       this.fetchOliverActiveIntegration();
       this.getOliverAgentAccessSettings();
     }
@@ -214,7 +207,6 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
-    this.fetchCampaignsAndCount();
     this.referenceService.aircallPhone.on('call_ended', callInfos => {
       this.reloadCallTab();
     });
@@ -599,78 +591,6 @@ export class ContactDetailsComponent implements OnInit {
     this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
 
-  fetchCampaignsAndCount() {
-    this.referenceService.loading(this.campaignsLoader, true);
-    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
-      response => {
-        const data = response.data;
-        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
-        if (isSuccess) {
-          this.campaignsCount = data.totalRecords;
-          this.contactCampaigns = data.list;
-          this.formattedCampaignsCount = this.formatNumber(this.campaignsCount);
-        } else {
-          this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
-        }
-        this.referenceService.loading(this.campaignsLoader, false);
-      }, error => {
-        this.referenceService.loading(this.campaignsLoader, false);
-        let message = this.referenceService.getApiErrorMessage(error);
-        this.campaignsResponse = new CustomResponse('ERROR', message, true);
-      }
-    )
-  }
-
-  viewMoreCampaigns() {
-    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourney) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/cjcd';
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourneyEditContacts) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/fcjcd';
-      this.referenceService.goToRouter(url);
-    } else if (this.isCompanyJourney) {
-      this.showCompanyCampaigns = true;
-    } else {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
-      url += this.isFromEditContacts ? "/" + RouterUrlConstants.cd : "/mcd";
-      this.referenceService.goToRouter(url);
-    }
-  }
-
-  viewCampaignTimeLine(campaignData:any){
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.campaignId);
-    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
-      this.referenceService.goToRouter(url);
-    } else if (this.isCompanyJourney) {
-      let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignTitle);
-			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
-		} else if (this.isFromCompanyJourneyEditContacts) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/fcjcd";
-      this.referenceService.goToRouter(url);
-    } else if (this.isFromCompanyJourney) {
-      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/cjcd";
-      this.referenceService.goToRouter(url);
-    } else {
-      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId;
-      url += this.isFromEditContacts ? "/"+RouterUrlConstants.cd : "/mcd";
-      this.referenceService.goToRouter(url);
-    }
-	}
-
   openTaskModalPopup() {
     this.actionType = 'add';
     this.showTaskModalPopup = true;
@@ -700,22 +620,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   fetchLogoFromExternalSource() {
-    this.imgPathLoading = true;
-    this.activityService.fetchLogoFromExternalSource(this.contactId, this.isCompanyJourney).subscribe(
-      response => {
-        const data = response.data;
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
-          this.imageSourcePath = data;
-          this.showImageTag = true;
-        } else {
-          this.showImageTag = false;
-        }
-        this.imgPathLoading = false;
-      }, error => {
-        this.showImageTag = false;
-        this.imgPathLoading = false;
-      }
-    )
+  
   }
 
   openMeetingModalPopup() {
@@ -789,24 +694,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   getCompany() {
-    this.isLoading = true
-    this.companyService.getCompanyById(this.contactId, this.authenticationService.getUserId()).subscribe(
-      data => {
-        this.selectedContact = data.data;
-        this.selectedContact.mobileNumber = this.selectedContact.phone!=undefined ? this.selectedContact.phone : '';
-        this.selectedContact.emailId = this.selectedContact.email!=undefined ? this.selectedContact.email : '';
-        this.selectedContact.zipCode = this.selectedContact.zip!=undefined ? this.selectedContact.zip:  '';
-        this.isLoading = false;
-      },
-      error => {
-        this.isLoading = false;
-      },
-      () => {
-        this.setHighlightLetter();
-        this.showActivityTab = true;
-        this.contactName = this.selectedContact.name;
-      }
-    )
+
   }
 
   closeCompanyModal() {
@@ -866,19 +754,7 @@ export class ContactDetailsComponent implements OnInit {
     this.referenceService.openWindowInNewTab(url);
   }
 
-  getVendorRegisterDealValue() {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-      data => {
-        if (data.statusCode == 200) {
-          this.isRegisterDealEnabled = data.data;
-        }
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }, error => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }
-    );
-  }
+
 
   closeCompanyCampaigns() {
     this.showCompanyCampaigns = false;

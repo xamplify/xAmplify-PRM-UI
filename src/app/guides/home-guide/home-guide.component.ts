@@ -122,11 +122,7 @@ export class HomeGuideComponent implements OnInit {
 					const roles = this.authenticationService.getRoles();
 					this.authenticationService.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
 					module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
-					module.isOrgAdmin = roles.indexOf(this.roleName.orgAdminRole) > -1;
-					module.isVendor = roles.indexOf(this.roleName.vendorRole) > -1;
 					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
-					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
-					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
 					/*****XNFR-84 **********/
 					if (data.moduleNames != undefined && data.moduleNames.length > 0 && data.moduleNames != null) {
 						this.authenticationService.moduleNames = data.moduleNames;
@@ -205,9 +201,6 @@ export class HomeGuideComponent implements OnInit {
 		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
 		this.authenticationService.isVendorTeamMember = roleDisplayDto.vendorTeamMember;
 		this.authenticationService.isVendorSuperVisor = roleDisplayDto.vendorSuperVisor;
-		this.authenticationService.isOrgAdminSuperVisor = roleDisplayDto.orgAdminSuperVisor;
-		this.authenticationService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
-		this.authenticationService.isOrgAdminTeamMember = roleDisplayDto.orgAdminTeamMember;
 		this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
 		this.authenticationService.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
 		this.authenticationService.folders = data.folders;

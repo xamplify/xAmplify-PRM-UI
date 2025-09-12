@@ -5,36 +5,22 @@ import { AuthGuardService } from './auth-guard.service';
 import { AppCustomPreloader } from './app-routing-loader';
 import { HomeComponent } from './core/home/home.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
-import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
-import { SocialLoginComponent } from './social/common/social-login/social-login.component';
-import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
-import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
-import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
-import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
-import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
-import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
-import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
-import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
-import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 import { FormPreviewComponent } from './forms/preview/form-preview.component';
-import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
-import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
-import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
@@ -44,15 +30,11 @@ import { SelectContentModulesComponent } from 'app/core/select-content-modules/s
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
-import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
 import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
 import { MarketplaceMapUtilComponent } from './util/marketplace-map-util/marketplace-map-util.component';
-import { CampaignMdfAnalyticsComponent } from './campaigns/campaign-mdf-analytics/campaign-mdf-analytics.component';
-import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-template-preview/campaign-mdf-template-preview.component';
-import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-mdf-search.component';
 
 
 export const routes: Routes = [
@@ -90,41 +72,30 @@ export const routes: Routes = [
 		path: 'home', component: HomeComponent, canActivate: [AuthGuard],
 		children: [
 			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
-			{ path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule', data: { preload: true } },
 			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
-			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule', data: { preload: true } },
-			{ path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule', data: { preload: true } },
-			{ path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule', data: { preload: true } },
 			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
 			{ path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: true } },
-			{ path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: true } },
 			{ path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule', data: { preload: true } },
 			{ path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule', data: { preload: true } },
 			{ path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule', data: { preload: true } },
 			{ path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule', data: { preload: true } },
-			{ path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule', data: { preload: true } },
 			{ path: 'design', loadChildren: 'app/design/design.module#DesignModule', data: { preload: true } },
 			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule', data: { preload: true } },
 			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: true } },
 			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule', data: { preload: true } },
 			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: true } },
-			{ path: 'company', loadChildren: 'app/company/company.module#CompanyModule', data: { preload: true } },
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule', data: { preload: true } },
 			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule', data: { preload: true } },
 			{ path: 'select-modules', component: SelectContentModulesComponent, data: { preload: true } },
-			/*******XNFR-83*******/
-			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule', data: { preload: true } },
 			/*******XNFR-83*******/
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule', data: { preload: true } },
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule', data: { preload: true } },
 
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
 			{ path: 'approval-hub', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
-            { path: 'insights', loadChildren: 'app/insights/insights.module#InsightsModule', data: { preload: true } },
              /*** XNFR-1062 ***/
-            { path: 'mails', loadChildren: 'app/outlook-email/outlook-email.module#OutlookEmailModule', data: { preload: true } },
 
 		]
 	},
@@ -132,71 +103,29 @@ export const routes: Routes = [
 	{ path: 'privacy-policy', component: TermsConditonComponent },
 	{ path: 'userlock', component: ProfileLockComponent },
 	{ path: 'logout', component: LoginComponent },
-	{ path: ':social/login', component: SocialLoginComponent },
-	{ path: ':social/callback', component: SocialCallbackComponent },
-	{ path: 'v/:socialProvider/:vud', component: VanitySocialLoginComponent },
-	{ path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
 	{ path: 'v/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule/:redirectURL', component: VanityAddContactsComponent },
 	{ path: 'syn/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule', component: VanitySynchronizeContactsComponent },
 	{ path: 'share/:alias', component: ShareVideoComponent },
 	{ path: 'embed/:alias', component: ShareVideoComponent },
-	{ path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
-	{ path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
 	{ path: 'company-page/:alias', component: CompanyPageComponent },
 	{ path: 'partner-page/:alias', component: CompanyPageComponent },
-	{ path: 'loge/:alias', component: LogEmailClickComponent },
-	{ path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
 	{ path: 'su', component: ServiceUnavailableComponent },
 	{ path: 'access-denied', component: AccessDeniedComponent },
-	{ path: 'rsvp/:alias', component: RsvpComponent },
 	{ path: 'rsvp-response', component: PublicPageResponseComponent },
-	{ path: 'smsShowCampaign/:alias', component: LogRegularCampaignComponentSMS },
-	{ path: 'smsCampaignVideo/:alias', component: CampaignSMSVideoComponent },
-	{ path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
-	{ path: 'logs/:alias', component: LogSMSClickComponent },
 	{ path: 'f/:alias', component: FormPreviewComponent },
 	{ path: 'mlpf/:alias', component: FormPreviewComponent },
 	{ path: 'mlvjf/:landingPageId/:alias', component: FormPreviewComponent },
 	{ path: 'vjf/:alias', component: FormPreviewComponent },
-	{ path: 'l/:alias/:seoName', component: ShowLandingPageComponent },
-	{ path: 'pl/:alias/:seoName', component: ShowLandingPageComponent },
-	{ path: 'l/:alias', component: ShowLandingPageComponent },
-	{ path: 'pl/:alias', component: ShowLandingPageComponent },
-	{ path: 'vjpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'mlpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'mlvjpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'showCampaignLandingPage/:alias', component: ShowLandingPageComponent },
-	{ path: 'scp/:alias', component: ShowLandingPageComponent },
-	{ path: 'clpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'requestdemo', component: RequestDemoComponent },
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
 	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
 	{ path: 'tSignUp/:companyProfileName/:alias', component: AccessAccountComponent },
 	{ path: 'pSignUp/:companyProfileName', component: AccessAccountComponent },
-	{ path: 'download/:type', component: DownloadTemplateComponent },
 	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
 	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },
 	{ path: 'vanity-domain-error', component: DomainErrorComponent },
 	{ path: 'maintenance', component: MaintenanceComponent },
 	{ path: 'login/preview', component: PreviewLoginComponent },
-	{ path: 'pv/t/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/evt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/edevt/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ct/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ulctp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sct/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sect/:campaignId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwaret/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwaret/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwaretfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwarwlt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwarwlt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwarwltfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/wt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/vt/:id', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/lp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/plp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/vjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
@@ -209,23 +138,11 @@ export const routes: Routes = [
 	{ path: 'mp/vmp/:alias', component: MarketplaceUtilComponent },
 	{ path: 'pv/pjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/vmplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
-
-	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'pjpf/:alias', component: FormPreviewComponent },
 	{ path: 'vmpf/:alias', component: FormPreviewComponent },
 	{ path: 'vmppjf/:landingPageId/:alias', component: FormPreviewComponent },
-
-	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
-	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
-    // { path: 'landing/:alias', component: ShowLandingPageComponent , canActivate: [AuthGuard], data: { preload: true }},
-    // { path: 'l/:alias', component: ShowLandingPageComponent },
-
 	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
 	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
-	{ path: 'funding-request/:mdfAlias/analytics', component: CampaignMdfAnalyticsComponent },
-	{ path: 'funding-request/:mdfAlias/preview', component: CampaignMdfTemplatePreviewComponent },
-	{ path: 'search', component: CampaignMdfSearchComponent },
-	{ path: 'pv/otp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent, canActivate: [AuthGuard], data: { preload: true } },
 
 
 	{ path: '404', component: PageNotFoundComponent },

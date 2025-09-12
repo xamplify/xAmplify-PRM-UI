@@ -78,10 +78,6 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
     }
     this.loadContactUploadSubscriptionLimitForCompany();
     this.getTotalContactSubscriptionLimitUsedByCompany();
-    if (this.isMarketing || this.authenticationService.isOrgAdmin()) {
-      this.showSelfContactsCount = true;
-      this.loadSelfContactsCount();
-    }
   }
 
   onContactLimitChange(companyId: number, newLimit: number): void {

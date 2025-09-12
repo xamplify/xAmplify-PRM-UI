@@ -30,14 +30,13 @@ import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name'
 import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
-import { OutlookEmailService } from 'app/outlook-email/outlook-email.service';
 
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription, OutlookEmailService]
+	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription ]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
@@ -852,27 +851,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	campaignRouter(alias: string, viewBy: string) {
-		try {
-			this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
-			this.videoFileService.getVideo(alias, viewBy)
-				.subscribe((videoFile: SaveVideoFile) => {
-					if (videoFile.access) {
-						this.referenceService.campaignVideoFile = videoFile;
-						this.referenceService.selectedCampaignType = 'video';
-						this.referenceService.isCampaignFromVideoRouter = true;
-						this.router.navigateByUrl('/home/campaigns/create/' + this.referenceService.selectedCampaignType);
-						this.referenceService.closeSweetAlertWithDelay();
-					} else {
-						this.referenceService.closeSweetAlert();
-						this.authenticationService.forceToLogout();
-					}
-				},
-					(error: string) => {
-						this.referenceService.closeSweetAlert();
-						this.xtremandLogger.error('Error In: show campaign videos ():' + error);
-						this.xtremandLogger.errorPage(error);
-					});
-		} catch (error) { this.xtremandLogger.error('error' + error); }
+	
 	}
 
 
@@ -1390,7 +1369,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
   }
 
   navigateToAddAsset() {
-    this.referenceService.goToRouterByNavigateUrl('/home/dam/add?from=manage');
+		     this.referenceService.showAlert();
   }
 
 	handleFolders(event) {

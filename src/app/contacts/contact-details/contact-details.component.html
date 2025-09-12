@@ -306,45 +306,6 @@
                   <li><a data-toggle="tab" (click)="setActiveTab('call')" href="#call">Call</a></li>
                 </ul>
               </div>
-              <div class="tab-content tab-bg p-13">
-                <div id="activity1" class="tab-pane fade in active integration-profile">
-                  <app-activity-stream *ngIf="showActivityTab" [contactId]="contactId" [reloadTab]="isReloadActivityTab"
-                    [isCompanyJourney]="isCompanyJourney" [isFromCompanyModule]="isFromCompanyModule"
-                    (notifyShowDealForm)="viewDeal($event)" [selectedUserListId]="selectedContactListId"
-                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId" [contactName]="contactName"
-                    [contactEmailId]="selectedContact.emailId" (notifyNoteUpdateSuccess)="showNoteUpdateCutomResponse($event)"
-                    (notifyNoteDeleteSuccess)="showNoteDeleteSuccessStatus($event)"
-                    (notifyTaskUpdateSuccess)="showTaskUpdateCutomResponse($event)"
-                    (notifyTaskDeleteSuccess)="showTaskDeleteSuccessStatus($event)"></app-activity-stream>
-                </div>
-                <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
-                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab"
-                    (notifyUpdateSuccess)="showNoteUpdateCutomResponse($event)" [selectedUserListId]="selectedContactListId"
-                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)" [isCompanyJourney]="isCompanyJourney"
-                    (notifySubmitSuccess)="showNoteCutomResponse($event)"></app-note>
-                </div>
-                <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
-                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName" [selectedUserListId]="selectedContactListId"
-                    [contactEmailId]="selectedContact.emailId" [isCompanyJourney]="isCompanyJourney" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"
-                    (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"></app-email-activity>
-                </div>
-                <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
-                  <app-task-activity [contactId]="contactId" [reloadTab]="isReloadTaskActivityTab" [isCompanyJourney]="isCompanyJourney"
-                    [selectedUserListId]="selectedContactListId" (notifyDeleteSuccess)="showTaskDeleteSuccessStatus($event)"
-                    (notifyTaskUpdatedStatus)="showTaskUpdateCutomResponse($event)"
-                    (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
-                </div>
-                <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab"
-                    [activeCalendarDetails]="activeCalendarDetails" [isCompanyJourney]="isCompanyJourney"
-                    [selectedUserListId]="selectedContactListId" (notifyClose)="reloadMeetingTab($event)"
-                    (notifyCloseSideBar)="closeLeftSideBarWhenCalendarViewActivated()"></app-meeting-activity>
-                </div>
-                <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
-                  <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()" (notifyAskOliver)="askOliverForCallRecording($event)"></app-call-activity>
-                </div>
-              </div>
               <!-- END -->
             </div>
           </div>
@@ -557,14 +518,6 @@
     [flexiFieldsRequestAndResponseDto]="flexiFields"
     (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
-
-<app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [selectedUserListId]="selectedContactListId" [isCompanyJourney]="isCompanyJourney"
-  [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId"
-  (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)" (notifyClose)="closeEmailModalPopup()"
-  [isReloadEmailActivityTab]="isReloadEmailActivityTab"
-  (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
-
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true"
   [isFromCompanyModule]="isFromCompanyModule" [isCompanyJourney]="isCompanyJourney"
   [isFromCompanyJourney]="isFromCompanyJourney" [selectedContactListId]="selectedContactListId"
@@ -594,25 +547,3 @@
   [isFromCompanyJourney]="isFromCompanyJourney" [companyJourneyId]="companyJourneyId"
   [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts" (notifyClose)="closeDealForm()"></app-add-deal>
 
-<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [contactId]="selectedContact.id" [isReloadTab]="isReloadNoteTab"
-  [selectedUserListId]="selectedContactListId" [isCompanyJourney]="isCompanyJourney"
-  (notifySubmitSuccess)="showNoteCutomResponse($event)"
-  (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
-
-<app-add-task-modal-popup *ngIf="showTaskModalPopup" [isReloadTaskActivityTab]="isReloadTaskActivityTab" [selectedUserListId]="selectedContactListId"
-  (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [isCompanyJourney]="isCompanyJourney" [actionType]="actionType"
-  (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
-
-<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri" [isReloadTab]="isReloadMeetingTab"
-  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup($event)"></app-add-meeting-modal-popup>
-
-<app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>
-
-<app-add-company *ngIf="showEditCompanyModalPopup" (closeEvent)="closeCompanyModal($event)" [actionType]="'edit'"
-    [companyId]="companyIdForEdit" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
-  
-<app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
-  [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
-
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact" [callActivity]="callActivity" [isFromManageContact]="isFromManageContact"
-  (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

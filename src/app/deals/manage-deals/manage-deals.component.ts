@@ -73,7 +73,7 @@ export class ManageDealsComponent implements OnInit {
   showPartnerList = false;
   showCampaignDeals = false;
   selectedDeal: Deal;
-  isCommentSection = false;
+  // isCommentSection = false;
   selectedCampaign: any;
   showFilterOption: boolean = false;
   fromDateFilter: any = "";
@@ -313,22 +313,7 @@ export class ManageDealsComponent implements OnInit {
         }  
       });    
     });
-    this.getVendorRegisterDealValue();
 
-  }
-
-  getVendorRegisterDealValue() {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-      data => {
-        if (data.statusCode == 200) {
-          this.isRegisterDealEnabled = data.data;
-        }
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }, error => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }
-    );
   }
 
     setEnableLeads() {
@@ -426,7 +411,6 @@ export class ManageDealsComponent implements OnInit {
     this.showCampaignDeals = false;
     this.selectedPartnerCompanyId = 0;
     this.listDeals(this.dealsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showWonDeals() {
@@ -446,7 +430,6 @@ export class ManageDealsComponent implements OnInit {
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listDeals(this.dealsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   showLostDeals() {
@@ -466,7 +449,6 @@ export class ManageDealsComponent implements OnInit {
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listDeals(this.dealsPagination);
-    this.listCampaigns(this.campaignPagination);
   }
 
   listDeals(pagination: Pagination) {
@@ -620,46 +602,15 @@ export class ManageDealsComponent implements OnInit {
   }
 
   listCampaigns(pagination: Pagination) {
-    pagination.userId = this.loggedInUserId;
-    if (this.isVendorVersion) {
-      this.listCampaignsForVendor(pagination);
-    } else if (this.isPartnerVersion) {
-      this.listCampaignsForPartner(pagination);
-    }
+   
   }
 
   listCampaignsForVendor(pagination: Pagination) {
-    this.referenceService.loading(this.campaignRequestLoader, true);
-    this.dealsService.listCampaignsForVendor(pagination)
-    .subscribe(
-        response => {            
-            this.referenceService.loading(this.campaignRequestLoader, false);
-            pagination.totalRecords = response.data.totalRecords;
-            this.campaignSortOption.totalRecords = response.data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
-        },
-        error => {
-            this.campaignRequestLoader.isServerError = true;
-            },
-        () => { }
-    );
+    
   }
 
   listCampaignsForPartner(pagination: Pagination) {
-    this.referenceService.loading(this.campaignRequestLoader, true);
-    this.dealsService.listCampaignsForPartner(pagination)
-    .subscribe(
-        response => {            
-            this.referenceService.loading(this.campaignRequestLoader, false);
-            pagination.totalRecords = response.data.totalRecords;
-            this.campaignSortOption.totalRecords = response.data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
-        },
-        error => {
-            this.campaignRequestLoader.isServerError = true;
-            },
-        () => { }
-    );
+   
   }
 
   searchDeals() {
@@ -685,14 +636,14 @@ export class ManageDealsComponent implements OnInit {
     this.listDeals(this.dealsPagination);
     this.campaignPagination.pageIndex = 1;
     this.campaignPagination.searchKey = this.dealsSortOption.searchKey;
-    this.listCampaigns(this.campaignPagination);
+
   }
   dealEventHandler(keyCode: any) { if (keyCode === 13) { this.searchDeals(); } }
 
   setCampaignsPage(event: any) {   
      this.campaignPagination.pageIndex = event.page;
-     this.listCampaigns(this.campaignPagination);
-   }
+
+    }
 
   closeDealForm() {
     this.showDealForm = false;
@@ -727,14 +678,14 @@ export class ManageDealsComponent implements OnInit {
   setPartnersPage(event: any) {
    
     this.partnerPagination.pageIndex = event.page;
-    this.listPartnersForCampaign(this.partnerPagination);
+
   }
 
   getAllFilteredResultsPartners(pagination: Pagination) {
    
     this.partnerPagination.pageIndex = 1;
     this.partnerPagination.searchKey = this.partnerSortOption.searchKey;
-    this.listPartnersForCampaign(this.partnerPagination);
+
   }
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
@@ -856,55 +807,15 @@ export class ManageDealsComponent implements OnInit {
   }
 
   showPartners(campaign: any) {
-    if (campaign.id > 0) {
-      this.selectedCampaignId = campaign.id ;
-      this.selectedCampaignName = campaign.campaign;
-      if (campaign.channelCampaign) {
-        this.showPartnerList = true;
-        campaign.expand = !campaign.expand;
-        if (campaign.expand) {
-          if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
-            this.selectedCampaign.expand = false;
-          }
-          this.selectedCampaign = campaign;
-          this.partnerPagination = new Pagination;
-          this.partnerPagination.filterKey = this.campaignPagination.filterKey;
-          this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
-          this.partnerSortOption.searchKey = "";
-          this.findVendorDetailsWithSelfDealsCount(this.selectedCampaignId);
-          this.listPartnersForCampaign(this.partnerPagination);
-        }
-      } else {
-        this.showOwnCampaignDeals();
-      }            
-    }
+
   }
   
   listPartnersForCampaign (pagination: Pagination) {
-    this.referenceService.loading(this.partnerRequestLoader, true);
-      pagination.userId = this.loggedInUserId;
-      pagination.campaignId = this.selectedCampaignId;
-      this.dealsService.listPartnersForCampaign(pagination)
-      .subscribe(
-          response => {            
-              this.referenceService.loading(this.partnerRequestLoader, false);
-              pagination.totalRecords = response.data.totalRecords;
-              this.partnerSortOption.totalRecords = response.data.totalRecords;
-              pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
-          },
-          error => {
-              this.partnerRequestLoader.isServerError = true;
-              },
-          () => { }
-      );
+   
   }
   
   showCampaignDealsByPartner(partner: any) {
-    if (partner.companyId > 0  && this.selectedCampaignId) {
-      this.selectedPartnerCompanyId = partner.companyId ;
-      this.selectedPartnerCompanyName = partner.companyName;
-      this.showCampaignDeals = true;          
-    }
+   
   }
   
   closeCampaignDeals() {
@@ -941,15 +852,15 @@ export class ManageDealsComponent implements OnInit {
     this.getCounts();
   }
 
-  showComments(deal: any) {
-    this.selectedDeal = deal;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // showComments(deal: any) {
+  //   this.selectedDeal = deal;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedDeal.unReadChatCount = 0;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // addCommentModalClose(event: any) {
+  //   this.selectedDeal.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   downloadDeals1() {
     let type = this.dealsPagination.filterKey;
@@ -1251,7 +1162,6 @@ export class ManageDealsComponent implements OnInit {
     this.referenceService.setTeamMemberFilterForPagination(this.dealsPagination,index);
     this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
     this.listDealsForVendor(this.dealsPagination);
-    this.listCampaignsForVendor(this.campaignPagination);
     
   }
   stageNamesOfV(){
@@ -1299,18 +1209,7 @@ export class ManageDealsComponent implements OnInit {
   }
 
   checkMicrosoftIntegration(): any {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.checkConfigurationByTypeAndUserId("microsoft", this.loggedInUserId).subscribe(data => {
-      let response = data;
-      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-        this.syncMicrosoft = true;  
-      } else {
-        this.syncMicrosoft = false;
-      }
-    }, error => {
-      console.log("Error in salesforce checkMicrosoftIntegration()");
-    }, () => console.log("Error in checkMicrosoftIntegration()"));
-    this.referenceService.loading(this.httpRequestLoader, false);
+    
   }
 
   syncLeadsWithMicrosoft() {
@@ -1369,7 +1268,7 @@ export class ManageDealsComponent implements OnInit {
   }
 
   getActiveCRMDetails() {
-    this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
+    this.leadsService.getActiveCRMDetailsByUserId(this.loggedInUserId)
       .subscribe(
         response => {
           if (response.statusCode == 200) {
@@ -1477,7 +1376,7 @@ export class ManageDealsComponent implements OnInit {
 
   resetModalPopup(){
     this.updateCurrentStage = false;
-    this.isCommentSection = false;
+    // this.isCommentSection = false;
     this.textAreaDisable=false;
     this.showDeals();
   }

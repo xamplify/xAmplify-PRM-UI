@@ -12,7 +12,6 @@ import { LocationComponent } from './location/location.component';
 import { PlatformComponent } from './platform/platform.component';
 import { ResponseMessageComponent } from './response-message/response-message.component';
 import { PreviewVideoComponent } from './preview-video/preview-video.component';
-import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/contacts-campaigns-mails.component';
 import { PieChartComponent } from '../util/pie-chart/pie-chart.component';
 import { ListLoaderComponent } from './loader/list-loader/list-loader.component';
 import { PlayVideoLoaderComponent } from './loader/play-video-loader/play-video-loader.component';
@@ -21,20 +20,15 @@ import { ExportCsvComponent } from './export/export-csv/export-csv.component';
 import { LoadingModule } from 'ngx-loading';
 import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
-import { DetailViewComponent } from './detail-view/detail-view.component';
 import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { SaveAsComponent } from './save-as/save-as.component';
 import { TimestampNewComponent } from './timestamp-new/timestamp.component';
-import { EventSendReminderComponent } from './event-send-reminder/event-send-reminder.component';
 import { VideoPlayComponent } from './video-play/video-play.component';
 import { ImageCropperComponent } from './image-cropper/component/image-cropper.component';
-import { EmailSpamCheckComponent } from '../email-template/email-spam-check/email-spam-check.component';
 import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-response-loader.component';
 import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.component';
-import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
 import { FormPreviewComponent } from '../forms/preview/form-preview.component';
-import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
 import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
 import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-analytics-util.component';
@@ -45,21 +39,11 @@ import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
 import { FlatpickrComponent } from './flatpickr/flatpickr.component';
 import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
-import { SendCampaignsComponent } from './send-campaigns/send-campaigns.component';
 import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-util/category-folder-view-util.component';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
-import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
-import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
-import { PreviewCampaignComponent } from "app/campaigns/preview-campaign/preview-campaign.component";
-import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
-import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-more-receivers.component';
-import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
 import { TagInputModule } from 'ngx-chips'
 import { LoaderComponent } from '../loader/loader.component';
-import { RedistributeCampaignsListViewUtilComponent } from 'app/util/redistribute-campaigns-list-view-util/redistribute-campaigns-list-view-util.component';
-import { XamplifyDefaultTemplatesComponent } from 'app/util/xamplify-default-templates/xamplify-default-templates.component';
-import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DragulaModule } from 'ng2-dragula';
@@ -68,12 +52,9 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { AddLeadComponent } from '../leads/add-lead/add-lead.component';
-import { BeeTemplateUtilComponent } from 'app/util/bee-template-util/bee-template-util.component';
-import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
 import { ImageLoaderComponent } from './image-loader/image-loader.component';
 import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.component';
-import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launched-by-partners/campaigns-launched-by-partners.component';
 import { SpfDescriptionComponent } from 'app/util/spf-description/spf-description.component';
 import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-user-list.component';
 import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component'
@@ -99,14 +80,11 @@ import { TeamMemberGroupPreviewPopupComponent } from 'app/util/team-member-group
 import { PartnerTeamMemberGroupTeamMembersComponent } from 'app/util/partner-team-member-group-team-members/partner-team-member-group-team-members.component';
 import { TeamMemberFilterOptionComponent } from 'app/util/team-member-filter-option/team-member-filter-option.component';
 import { TeamMemberFilterOptionModalPopupComponent } from 'app/util/team-member-filter-option-modal-popup/team-member-filter-option-modal-popup.component';
-import { ManageCampaignLeadsComponent } from 'app/leads/manage-campaign-leads/manage-campaign-leads.component';
-import { ManageCampaignDealsComponent } from 'app/deals/manage-campaign-deals/manage-campaign-deals.component';
 import { TeamMemberPartnersComponent } from 'app/util/team-member-partners/team-member-partners.component';
 import { MicrosoftAuthenticationPopupComponent } from 'app/contacts/microsoft-authentication-popup/microsoft-authentication-popup.component';
 import { MicrosoftAuthenticationComponent } from 'app/dashboard/microsoft-authentication/microsoft-authentication.component';
 import { FormTeamMemberGroupComponent } from 'app/util/form-team-member-group/form-team-member-group.component';
 import { DisplayDateAndTimeComponent } from './display-date-and-time/display-date-and-time.component';
-import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-details-modal-popup/edit-campaign-details-modal-popup.component';
 import { OneClickLaunchPartnerPreviewComponent } from 'app/util/one-click-launch-partner-preview/one-click-launch-partner-preview.component';
 import { CommentsComponent } from 'app/util/comments/comments.component';
 import { FolderTypeViewUtilComponent } from 'app/util/folder-type-view-util/folder-type-view-util.component';
@@ -114,7 +92,6 @@ import { DamListAndGridViewComponent } from 'app/util/dam/dam-list-and-grid-view
 import { CountStatisticsComponent } from 'app/util/count-statistics/count-statistics.component';
 import { ImgCropprV2Component } from './image-cropper-v2/img-croppr-v2/img-croppr-v2.component';
 import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-partner.component';
-import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-authentication-popup/pipedrive-authentication-popup.component';
 /*********XNFR-255******/
 import { PartnerCompanyAndGroupsComponent } from 'app/util/partner-company-and-groups/partner-company-and-groups.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
@@ -126,23 +103,17 @@ import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xam
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { AllPartnersListComponent } from 'app/dashboard/all-partners-list/all-partners-list.component';
 import { QueryBuilderModule } from "angular2-query-builder";
-import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
 import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
-import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-grid-view/campaign-list-and-grid-view.component';
 import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
-import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates/email-templates-list-and-grid-view/email-templates-list-and-grid-view.component';
 import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
-import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or-page-modal-popup/edit-template-or-page-modal-popup.component';
 import { ImageUploadCropperComponent } from './image-upload-cropper/image-upload-cropper.component';
-import { ShareCampaignsComponent } from './share-campaigns/share-campaigns.component';
 import { ShareAssetsComponent } from './share-assets/share-assets.component';
 import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
 import { ShareUnpublishedContentComponent } from './share-unpublished-content/share-unpublished-content.component';
 import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/share-tracks-or-playbooks.component';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/searchable-dropdown.component';
-import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
@@ -151,10 +122,8 @@ import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popu
 import { ChatComponent } from 'app/util/chat/chat.component';
 import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-chat-modal-popup/opportunities-chat-modal-popup.component';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
-import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
-import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
 import { PartnerJourneyCountTilesComponent } from 'app/util/partner-journey-count-tiles/partner-journey-count-tiles.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
@@ -164,11 +133,9 @@ import { UserwiseTrackCountsComponent } from '../util/userwise-track-counts/user
 import { UserwiseTrackDetailsComponent } from '../util/userwise-track-details/userwise-track-details.component';
 import { TrackAssetDetailsComponent } from '../util/track-asset-details/track-asset-details.component';
 import { ShareLeadDetailsComponent } from '../util/share-lead-details/share-lead-details.component';
-import { RedistributedCampaignDetailsComponent } from '../util/redistributed-campaign-details/redistributed-campaign-details.component';
 import { PartnerJourneyLeadDetailsComponent } from '../util/partner-journey-lead-details/partner-journey-lead-details.component';
 import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal-details/partner-journey-deal-details.component';
 import { MdfDetailAnalyticsComponent } from 'app/util/mdf-detail-analytics/mdf-detail-analytics.component';
-import { RedistributedCampaignsAndLeadsBarChartComponent } from '../util/redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
 import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member-analytics-contact-details/team-member-analytics-contact-details.component';
 import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
 import { TeamMemberwiseAssetAnalyticsComponent } from 'app/util/team-member-asset-analytics/team-member-asset-analytics';
@@ -185,7 +152,6 @@ import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.co
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
 import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
 import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
-import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
 import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/multi-select-dropdown.component';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 import { CopyTextComponent } from './copy-text/copy-text.component';
@@ -204,127 +170,111 @@ import { DateRangeDisplayComponent } from './date-range-display/date-range-displ
 import { SelectDigitalSignatureComponent } from 'app/util/select-digital-signature/select-digital-signature.component';
 import { SelectfieldComponent } from './selectfield/selectfield.component';
 import { OrderFieldsComponent } from './order-fields/order-fields.component';
-import { CampaignMdfRequestsEmailsSentHistoryComponent } from 'app/util/campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
-import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulider.component';
-import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
-import { UpdateStatusComponent } from 'app/util/update-status/update-status.component';
 import { ConnectAccountsComponent } from 'app/util/connect-accounts/connect-accounts.component';
 import { FeedUpdateComponent } from 'app/util/feed-update/feed-update.component';
 import { FeedComponent } from 'app/util/feed/feed.component';
 import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
-import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
 import { PreviewContentComponent } from 'app/util/preview-content/preview-content.component';
 import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/custom-blocks-modal-popup.component';
 import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
-import { AddCompanyComponent } from '../company/add-company/add-company.component';
-import { CampaignWorkFlowsUtilComponent } from 'app/campaigns/campaign-work-flows-util/campaign-work-flows-util.component';
-import { CreateTemplateComponent } from 'app/util/create-template/create-template.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
-import { ChatGptIntegrationSettingsComponent } from 'app/dashboard/chat-gpt-integration-settings/chat-gpt-integration-settings.component';
-import { AddDamComponent } from 'app/dam/add-dam/add-dam.component';
 import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
-import { AddLandingPageComponent } from 'app/landing-pages/add-landing-page/add-landing-page.component';
 import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
 
-import { ExecutiveSummaryReportComponent } from 'app/executive-summary-report/executive-summary-report.component';
-import { SelectPartnersAndShareLeadsComponent } from 'app/campaigns/select-partners-and-share-leads/select-partners-and-share-leads.component';
 import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member-modal-popup/invite-team-member-modal-popup.component';
 import { DamAnalyticsDetailsComponent } from 'app/dam/dam-analytics-details/dam-analytics-details.component';
 import { PptDesignPickerComponent } from 'app/util/ppt-design-picker/ppt-design-picker.component';
 import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe';
-import { SelectManageCampaignComponent } from 'app/campaigns/select-manage-campaign/select-manage-campaign.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
 		 ScrollToModule.forRoot(),AngularMultiSelectModule,MarkdownModule.forRoot()],
-	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,AddCompanyComponent,
+	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
-		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
+		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ListLoaderComponent,
 		PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
-		TimestampComponent, ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent,
-		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
-		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
-		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
-		CampaignsListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
-		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
-		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
+		TimestampComponent, ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent,
+		ImageCropperComponent, AutoResponseLoaderComponent, PreviewPopupComponent, FormPreviewComponent,
+		DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
+		 CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, FormsListViewUtilComponent,
+		LoaderComponent, 
+		AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent,
+		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
-		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
+		TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
+		OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		LoginAsPartnerComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
-		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,AllPartnersListComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
-		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
+		UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
+		HomeGuideComponent,DonutPieChartComponent,AllPartnersListComponent,CustomUiSwitchComponent,
+		ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
+		BrowseContentComponent,DealChatPopupComponent,
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
-		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
-		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
+		ShareLeadDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
+		MdfDetailAnalyticsComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
-		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CampaignWorkFlowsUtilComponent,
-		CreateTemplateComponent,ChooseEmailtemplateComponent, ChatGptIntegrationSettingsComponent,AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe, SelectManageCampaignComponent
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,
+		ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
+		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	],
 
 
-	exports: [InternationalPhoneModule,AddCompanyComponent, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
+	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
 		ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
 		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent,
-		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,
-		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
-		MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
-		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent,
-		PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
-		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
+		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, AutoResponseLoaderComponent,
+		PreviewPopupComponent, FormPreviewComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
+		MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, CategoryFolderViewUtilComponent,
+		AddFolderModalPopupComponent, FormsListViewUtilComponent,
+	   LoaderComponent,
+		AddFormUtilComponent, AddTagsUtilComponent, 
+		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent,
+		ShareLeadsComponent, ImageLoaderComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
-		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
+		TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
+		OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		ImgCropprV2Component,LoginAsPartnerComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
-		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,AllPartnersListComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
-		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
+		UserGuideHelpButtonComponent,
+		DonutPieChartComponent,AllPartnersListComponent,QueryBuilderModule,CustomUiSwitchComponent,
+		ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,DealChatPopupComponent,ChatComponent,
-		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
+		BrowseContentComponent,DealChatPopupComponent,ChatComponent,
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
-		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
-		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
+		ShareLeadDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
+		TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
-		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
-		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
-		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, CreateTemplateComponent, ChooseEmailtemplateComponent , CampaignWorkFlowsUtilComponent, ChatGptIntegrationSettingsComponent,
-		AddDamComponent,PartnerCompanyDomainModalPopupComponent,AddLandingPageComponent, ExecutiveSummaryReportComponent, DomainColorConfigurationComponent, SelectPartnersAndShareLeadsComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe, SelectManageCampaignComponent
+		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,SelectfieldComponent,
+		OrderFieldsComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
+		CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
+		PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
 	]
 
 

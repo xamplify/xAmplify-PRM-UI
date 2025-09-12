@@ -3,6 +3,7 @@ import { CustomFields } from '../models/custom-fields';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CustomFieldsDto } from '../models/custom-fields-dto';
+import { LeadsService } from 'app/leads/services/leads.service';
 
 @Component({
   selector: 'app-add-custom-fields',
@@ -22,7 +23,7 @@ export class AddCustomFieldsComponent implements OnInit {
   errorMessage = '';
 
 
-  constructor(private integrationService: IntegrationService, private authenticationService: AuthenticationService) {
+  constructor(private integrationService: IntegrationService, private authenticationService: AuthenticationService, private leadService: LeadsService) {
   }
 
   ngOnInit() {
@@ -92,7 +93,7 @@ export class AddCustomFieldsComponent implements OnInit {
       this.ngxloading = true;
       this.customField.loggedInUserId = this.loggedInUserId;
       this.customField.selectedFields = [this.customFieldsDto];
-      this.integrationService.saveCustomFields(this.customField).subscribe(
+      this.leadService.saveCustomFields(this.customField).subscribe(
           response=>{
             if(response.statusCode == 200){
               this.notifySubmitSuccess.emit();

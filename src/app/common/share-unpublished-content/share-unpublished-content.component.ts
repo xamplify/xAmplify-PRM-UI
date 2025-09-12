@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Properties } from '../models/properties';
-import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.component';
 import { CustomResponse } from '../../common/models/custom-response';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
 import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
 declare var $:any;
@@ -28,7 +26,6 @@ export class ShareUnpublishedContentComponent implements OnInit {
   modalPopUpId = "shareUnPublishedContentPopUp";
   modalHeaderText = "";
   filterOptions:Array<string> = new Array<string>();
-  @ViewChild('shareCampaignsComponent') shareCampaignsComponent: ShareCampaignsComponent;
   selectedUserListId = 0;
   contact:any;
   type  = "";
@@ -57,7 +54,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   checkMaxContactLimitForCampaignLaunch: boolean = false;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public properties:Properties,private router: Router,private campaignService:CampaignService) { }
+    public properties:Properties,private router: Router) { }
 
   ngOnInit() {
     this.isPartnersRouter =  this.router.url.includes("/partners/");
@@ -242,16 +239,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
   private shareCampaigns(campaignDetails:any) {
-    this.campaignService.shareOrSendCampaigns(campaignDetails)
-      .subscribe(
-        data => {
-          this.showPublishedSuccessMessage(data);
-        },
-        _error => {
-          this.showPublishError();
-        }, () => {
-        }
-      );
+  
   }
 
   private showPublishedSuccessMessage(data: any) {

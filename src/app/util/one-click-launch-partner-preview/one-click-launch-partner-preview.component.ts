@@ -7,7 +7,6 @@ import { Pagination } from 'app/core/models/pagination';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 declare var $:any;
 
@@ -45,7 +44,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   @Input() redistributedCount = 0;
   colspanValue = 2;
   isTableLoaded: boolean = true;
-  constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
@@ -58,55 +57,11 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
 
   /****XNFR-125****/
   getOneClickLaunchCampaignPartnerCompany(campaignId:number){
-    this.oneClickLaunchResponse = new CustomResponse();
-    this.oneClickLaunchLoader = true;
-    this.campaignService.getOneClickLaunchCampaignPartnerCompany(campaignId).
-    subscribe(
-      response=>{
-        this.oneClickLaunchStatusCode = response.statusCode;
-        if(this.oneClickLaunchStatusCode==200){
-            this.oneClickLaunchPartnerCompany = response.data;
-            if(this.showShareLeadsList || this.viewType=="analytics"){
-              this.expandList(this.oneClickLaunchPartnerCompany);
-            }
-        }else{
-          let isCampaignLaunched = response.data;
-          let message = isCampaignLaunched ? 'Partnership has been removed.':'No Data found.';
-          this.oneClickLaunchResponse = new CustomResponse('INFO',message,true);
-        }
-        this.oneClickLaunchLoader = false;
-      },error=>{
-        this.oneClickLaunchLoader = false;
-        this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-      },()=>{
-        if (!this.showShareLeadsList) {
-          this.oneClickLaunchLoader = true;
-          if (this.viewType == "tda" || this.viewType == "teoa") {
-            this.getDownloadOrOpenedEmailsCount();
-          }else{
-            this.oneClickLaunchLoader = false;
-          }
-        }
-      }
-      );
+
   }
 
   getDownloadOrOpenedEmailsCount(){
-    this.campaignService
-      .getDownloadOrOpenedCount(this.viewType, this.campaignId)
-      .subscribe(
-        (response) => {
-          let map = response.data;
-          this.downloadCount = map.count;
-          this.openedCount = map.count;
-          this.campaignPartnerId = map.campaignPartnerId;
-          this.oneClickLaunchLoader = false;
-          this.expandList(this.oneClickLaunchPartnerCompany);
-        },
-        (error) => {
-          this.xtremandLogger.errorPage(error);
-        }
-      );
+ 
   }
 
 
@@ -212,27 +167,7 @@ viewShareLeads(partner:any){
   }
 
   listDownloadHistory(pagination: Pagination) {
-		this.referenceService.loading(this.historyLoader, true);
-		this.campaignService.listDownloadOrOpenedHistory(pagination,this.viewType).
-    subscribe((result: any) => {
-			if (result.statusCode === 200) {
-				let data = result.data;
-        pagination.totalRecords = data.totalRecords;
-        let self = this;
-        $.each(data.list, function (_index: number, history: any) {
-            if(self.viewType=="tda"){
-                history.displayTime = new Date(history.downloadedTimeInUTCString);
-            }else{
-                history.displayTime = new Date(history.trackedTimeInUTCString);
-            }
-        });
-        this.historyList = data.list;
-				pagination = this.pagerService.getPagedItems(pagination, data.list);
-			}
-			this.referenceService.loading(this.historyLoader, false);
-		}, error => {
-			this.historyResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-		});
+		
 	}
 	/************Page************** */
 	setHistoryPage(event: any) {

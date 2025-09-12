@@ -62,28 +62,7 @@ export class VendorActivityAnalyticsComponent implements OnInit {
   }
 
   goToRedistributeDiv(campaignType:string){
-    this.ngxLoading = true;
-    let baseUrl = 'home/campaigns/partner/';
-    if("Page"==campaignType){
-        this.router.navigate(['home/pages/partner']);
-    }else if("Email"==campaignType){
-        baseUrl+= "regular";
-        this.router.navigate([baseUrl]);
-    }else if("Video"==campaignType){
-      baseUrl+= "video";
-      this.router.navigate([baseUrl]);
-    }else if("Event"==campaignType){
-      baseUrl+= "event";
-      this.router.navigate([baseUrl]);
-
-    }else if("Social"==campaignType){
-      baseUrl+= "social";
-      this.router.navigate([baseUrl]);
-
-    } else if("Survey"==campaignType){
-      baseUrl+= "survey";
-      this.router.navigate([baseUrl]);
-    }
+  
 }
 
 }

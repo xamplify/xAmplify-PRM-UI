@@ -122,7 +122,7 @@ export class CustomAddLeadComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
-  showCommentActions: boolean = false;
+  // showCommentActions: boolean = false;
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
@@ -213,9 +213,9 @@ export class CustomAddLeadComponent implements OnInit {
   companyError: boolean = true;
   lastNameError: boolean = true;
   /***XNFR-623***/
-  commentsCustomResponse:CustomResponse = new CustomResponse();
-  commentsLoader = true;
-  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  // commentsCustomResponse:CustomResponse = new CustomResponse();
+  // commentsLoader = true;
+  // commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   isCommentAndHistoryCollapsed = false;
   editTextArea = false;
@@ -290,7 +290,7 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
       this.disableCreatedFor = true;
     }
-    this.loadComments();
+    // this.loadComments();
   }
 
   ngOnDestroy(){
@@ -346,9 +346,7 @@ export class CustomAddLeadComponent implements OnInit {
         this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
         this.getActiveCRMDetails();
       }
-    } else {
-      this.getCampaignInfoForAddLead();
-    }
+    } 
     if (this.isConvertingContactToLead) {
       this.setDefaultLeadData(this.selectedContact);
     }
@@ -357,40 +355,30 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
-  private getCampaignInfoForAddLead() {
-    if (this.campaignId > 0) {
-      this.lead.campaignId = this.campaignId;
-      this.lead.campaignName = this.campaignName;
-      this.lead.associatedUserId = this.selectedContact.userId;
-      this.getCreatedForCompanyIdByCampaignId();
-      this.getContactInfo();
-    }
-  }
-
    /***XNFR-623***/
-   private loadComments() {
-    if (this.preview) {
-      this.commentsLoader = true;
-      this.commentsCustomResponse = new CustomResponse();
-      this.leadsService.findLeadAndLeadInfoForComments(this.leadId).
-        subscribe(
-          response => {
-            let statusCode = response.statusCode;
-            if (statusCode == 200) {
-              let data = response.data;
-              this.commentDealAndLeadDto = data;
-              this.commentsLoader = false;
-            } else {
-              this.commentsLoader = false;
-              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this lead.",true);
-            }
-          }, error => {
-            this.commentsLoader = false;
-            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
-          }
-        );
-    }
-  }
+  //  private loadComments() {
+  //   if (this.preview) {
+  //     this.commentsLoader = true;
+  //     this.commentsCustomResponse = new CustomResponse();
+  //     this.leadsService.findLeadAndLeadInfoForComments(this.leadId).
+  //       subscribe(
+  //         response => {
+  //           let statusCode = response.statusCode;
+  //           if (statusCode == 200) {
+  //             let data = response.data;
+  //             this.commentDealAndLeadDto = data;
+  //             this.commentsLoader = false;
+  //           } else {
+  //             this.commentsLoader = false;
+  //             this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this lead.",true);
+  //           }
+  //         }, error => {
+  //           this.commentsLoader = false;
+  //           this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
+  //         }
+  //       );
+  //   }
+  // }
 
   /***XNFR-623***/
   toggleCommentsHistory(event:any){
@@ -409,7 +397,6 @@ export class CustomAddLeadComponent implements OnInit {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
               this.lead.associatedUserId = this.selectedContact.userId;
-              this.getCreatedForCompanyIdByCampaignId();
               this.getContactInfo();
             } else {
               this.getActiveCRMDetails();
@@ -423,86 +410,16 @@ export class CustomAddLeadComponent implements OnInit {
       );
   }
   isSalesForceEnabled() {
-    this.dealsService.isSalesForceEnabled(this.lead.createdForCompanyId, this.loggedInUserId)
-      .subscribe(
-        response => {
-          if (response.statusCode == 200) {
-            this.salesForceEnabled = response.data;
-            if (!this.salesForceEnabled) {
-              if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.getPipelines();
-                }
-              } else {
-                if (this.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.resetPipelines();
-                }
-              }
-            } else {
-              this.getSalesforcePipeline();
-            }
-          }
-        },
-        error => {
-          console.log(error);
-        },
-        () => {
-          //this.setFieldErrorStates();
-        });
+
   }
 
 
   getSalesforcePipeline() {
-    let self = this;
-    this.leadsService.getSalesforcePipeline(this.lead.createdForCompanyId, this.loggedInUserId)
-      .subscribe(
-        data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (data.statusCode == 200) {
-            let salesforcePipeline = data.data;
-            if (this.lead.pipelineId != undefined && this.lead.pipelineId !== salesforcePipeline.id) {
-              this.lead.pipelineStageId = 0
-            }
-            self.lead.pipelineId = salesforcePipeline.id;
-            //self.pipelineIdError = false;
-            self.stages = salesforcePipeline.stages;
-            self.hasSfPipeline = true;
-          } else if (data.statusCode == 404) {
-            self.lead.pipelineId = 0;
-            self.stages = [];
-            self.getPipelines();
-            self.hasSfPipeline = false;
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+  
   }
 
   getCreatedForCompanyIdByCampaignId() {
-    let self = this;
-    if (this.lead.campaignId > 0) {
-      this.leadsService.getCreatedForCompanyIdByCampaignId(this.lead.campaignId, this.loggedInUserId)
-        .subscribe(
-          data => {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            if (data.statusCode == 200) {
-              self.lead.createdForCompanyId = data.data;
-              this.getActiveCRMDetails();
-            }
-          },
-          error => {
-            this.httpRequestLoader.isServerError = true;
-          },
-          () => { }
-        );
-    }
+  
   }
 
   getContactInfo() {
@@ -543,48 +460,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   getCampaignLeadPipeline() {
-    this.isLoading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
-    let self = this;
-    if (this.lead.campaignId > 0) {
-      this.leadsService.getCampaignLeadPipeline(this.lead.campaignId, this.loggedInUserId)
-        .subscribe(
-          data => {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.isLoading = false;
-            if (data.statusCode == 200) {
-              let campaignLeadPipeline = data.data;
-              if (campaignLeadPipeline.createdForCampaignPipelines != undefined) {
-                self.lead.pipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
-                self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
-                self.createdForStages = campaignLeadPipeline.createdForCampaignPipelines.stages;
-              }
-              if (campaignLeadPipeline.createdByCampaignPipelines != undefined) {
-                self.lead.createdByPipelineId = campaignLeadPipeline.createdByCampaignPipelines.id;
-                self.createdByStages = campaignLeadPipeline.createdByCampaignPipelines.stages;
-              }
-              self.hasCampaignPipeline = true;
-              if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType
-                || 'ZOHO' === this.activeCRMDetails.createdForActiveCRMType) {
-                let ticketTypeIdMap = data.map;
-                self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
-                self.isCampaignTicketTypeSelected = true;
-              }
-            } else if (data.statusCode == 404) {
-              self.lead.pipelineId = 0;
-              self.stages = [];
-              self.getPipelines();
-              self.hasCampaignPipeline = false;
-            }
-          },
-          error => {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.isLoading = false;
-            this.httpRequestLoader.isServerError = true;
-          },
-          () => { }
-        );
-    }
+  
   }
 
   /***Find PipeLine & Stages By Selected Vendor Company****/
@@ -1244,7 +1120,7 @@ export class CustomAddLeadComponent implements OnInit {
     else
       this.pipelineIdError = true;
 
-    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0) || (!this.activeCRMDetails.showLeadPipeline && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
+    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0))
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
@@ -1254,7 +1130,7 @@ export class CustomAddLeadComponent implements OnInit {
     else
       this.pipelineStageIdError = true;
 
-    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0) || (!this.activeCRMDetails.showLeadPipelineStage && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
+    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0))
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
@@ -1335,7 +1211,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.showCustomForm = false;
     this.showDefaultForm = false;
     this.isLeadForDivCenterAligned = false;
-    this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
+    this.leadsService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
           this.findActiveCRMDetailsAndCustomFormVariable(response);
@@ -1352,30 +1228,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
   /***Added On 27/07/2024 By Sravan */
   private callPipeLinesOrLeadLayoutsApi() {
-    let activeCRMDetails = this.activeCRMDetails;
-    if (activeCRMDetails != undefined) {
-      let showLeadPipeline = this.activeCRMDetails['showLeadPipeline'];
-      let showLeadPipelineStage = this.activeCRMDetails['showLeadPipelineStage'];
-      this.isLeadForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage && !this.preview 
-        && this.activeCRMDetails['leadFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
-      this.createdForPipelines = [];
-      this.createdForPipelineId = 0;
-      this.createdForPipelineStageId = 0;
-      let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
-      let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
-      this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
-      if(this.showTicketTypesDropdown){
-        this.logger.info("Loading Pipelines for "+this.activeCRMDetails.createdForActiveCRMType);
-        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
-        if (this.lead.campaignId != undefined && this.lead.campaignId > 0) {
-          this.isCampaignTicketTypeSelected = true;
-          this.getPipelinesAndStages();
-        }
-      }else{
         this.getPipelinesAndStages();
-        this.getStagesBySelectedPipeLineId();
-      }
-    }
   }
 
   private getPipelinesAndStages() {
@@ -1387,11 +1240,6 @@ export class CustomAddLeadComponent implements OnInit {
           let data = response.data;
           this.createdForPipelines = data.list;
           let totalRecords = data.totalRecords;
-          this.showCreatedByPipelineAndStage = data['showCreatedByLeadPipelineAndStage'];
-          this.showCreatedByPipelineAndStageOnTop = data['showCreatedByLeadPipelineAndStageOnTop'];
-          if (this.lead.campaignId != undefined && this.lead.campaignId > 0) {
-            this.lead.halopsaTicketTypeId = data['ticketTypeId'];
-          }
           this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
           if (this.activeCRMDetails.hasCreatedForPipeline) {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
@@ -1441,9 +1289,8 @@ export class CustomAddLeadComponent implements OnInit {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
       this.setLeadTitle();
-      let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
       let isXamplifyAsActiveCRM = "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType;
-      if (isSalesforceAsActiveCRM || isXamplifyAsActiveCRM) {
+      if (isXamplifyAsActiveCRM) {
         this.showCustomForm = true;
       } else {
         this.getDefaultLeadCustomFields();
@@ -1533,14 +1380,7 @@ export class CustomAddLeadComponent implements OnInit {
             self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
             self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
-            if (createdByPipelines !== undefined && createdByPipelines !== null) {
-              this.handleCreatedByPipelines(createdByPipelines);
-            }
 
-            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-            if (createdForPipelines !== undefined && createdForPipelines !== null) {
-              this.handleCreatedForPipelines(createdForPipelines);
-            }
             this.setFieldErrorStates();
           } else if (data.statusCode == 404) {
             this.lead.createdForPipelineId = 0;
@@ -1580,17 +1420,6 @@ export class CustomAddLeadComponent implements OnInit {
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
             self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
             self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
-            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
-            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-
-            if (createdByPipelines !== undefined && createdByPipelines !== null) {
-              this.handleCreatedByPipelines(createdByPipelines);
-            }
-
-            if (createdForPipelines !== undefined && createdForPipelines !== null) {
-              this.handleCreatedForPipelines(createdForPipelines);
-            }
-
           } else if (data.statusCode == 404) {
             this.lead.createdForPipelineId = 0;
             this.lead.createdByPipelineId = 0;
@@ -1611,83 +1440,13 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   handleCreatedByPipelines(createdByPipelines: any) {
-    let self = this;
-    self.createdByPipelines = createdByPipelines;
-    if (createdByPipelines.length === 1) {
-      let createdByPipeline = createdByPipelines[0];
-      self.lead.createdByPipelineId = createdByPipeline.id;
-      if ('HALOPSA' === this.activeCRMDetails.createdByActiveCRMType && this.actionType === 'add') {
-        let createdByPipelineStage = null;
-        let stages = createdByPipeline.stages;
-        createdByPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
-          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
-        );
-        self.createdByStages = createdByPipeline.stages;
-        self.lead.createdByPipelineStageId = createdByPipelineStage.id;
-        self.isCreatedByStageIdDisable = true;
-      } else {
-        self.createdByStages = createdByPipeline.stages;
-        self.isCreatedByStageIdDisable = false;
-      }
-      self.activeCRMDetails.hasCreatedByPipeline = true;
-    } else {
-      let createdByPipelineExist = false;
-      for (let p of createdByPipelines) {
-        if (p.id == this.lead.createdByPipelineId) {
-          createdByPipelineExist = true;
-          self.createdByStages = p.stages;
-          break;
-        }
-      }
-      if (!createdByPipelineExist) {
-        self.lead.createdByPipelineId = 0;
-        self.lead.createdByPipelineStageId = 0;
-        //this.setFieldErrorStates();
-      }
-      self.activeCRMDetails.hasCreatedByPipeline = false;
-      self.isCreatedByStageIdDisable = false;
-    }
+  
   }
 
   handleCreatedForPipelines(createdForPipelines: any) {
-    let self = this;
-    self.createdForPipelines = createdForPipelines;
-    if (createdForPipelines.length === 1) {
-      let createdForPipeline = createdForPipelines[0];
-      self.lead.createdForPipelineId = createdForPipeline.id;
-      if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && this.actionType === 'add'
-        || (self.existingHalopsaLeadTicketTypeId != undefined && self.existingHalopsaLeadTicketTypeId != self.lead.halopsaTicketTypeId)) {
-        let createdForPipelineStage = null;
-        let stages = createdForPipeline.stages;
-        createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
-          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
-        );
-        self.createdForStages = createdForPipeline.stages;
-        self.lead.createdForPipelineStageId = createdForPipelineStage.id;
-        self.isCreatedForStageIdDisable = true;
-      } else {
-        self.createdForStages = createdForPipeline.stages;
-        self.isCreatedForStageIdDisable = false;
-      }
-      self.activeCRMDetails.hasCreatedForPipeline = true;
-    } else {
-      let createdForPipelineExist = false;
-      for (let p of createdForPipelines) {
-        if (p.id == this.lead.createdForPipelineId) {
-          createdForPipelineExist = true;
-          self.createdForStages = p.stages;
-          break;
-        }
-      }
-      if (!createdForPipelineExist) {
-        self.lead.createdForPipelineId = 0;
-        self.lead.createdForPipelineStageId = 0;
-        //this.setFieldErrorStates();
-      }
-      self.activeCRMDetails.hasCreatedForPipeline = false;
-      self.isCreatedForStageIdDisable = false;
-    }
+
   }
+
   toggleDealpipepline(event: Event) {
     event.preventDefault();
     this.isCollapsed = !this.isCollapsed;
@@ -1710,34 +1469,7 @@ export class CustomAddLeadComponent implements OnInit {
   halopsaTicketTypes: any;
 
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
-    this.referenceService.loading(this.leadLayoutLoader,true);
-    let isEditOrView = (this.actionType === "edit" || this.actionType=="view") && this.lead.createdForPipelineId!=undefined && this.lead.createdForPipelineId>0;
-    if(isEditOrView){
-      this.referenceService.loading(this.pipelineLoader, true);
-      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
-    }
-    this.ngxloading = true;
-    this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
-      if (data.statusCode == 200) {
-        this.halopsaTicketTypes = data.data;
-      } else if (data.statusCode == 401) {
-        this.customResponse = new CustomResponse('ERROR', data.message, true);
-      }
-      this.ngxloading = false;
-      this.referenceService.loading(this.leadLayoutLoader,false);
-      this.logger.info("Ticket Types Found");
-    },
-    error => {
-      this.ngxloading = false;
-      this.referenceService.loading(this.leadLayoutLoader,false);
-      this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
-    },()=>{
-      if(isEditOrView){
-        this.getPipelinesAndStages();
-        this.getStagesBySelectedPipeLineId();
-      }
-      
-    });
+   
   }
 
   /***Added On 29/07/2024****/

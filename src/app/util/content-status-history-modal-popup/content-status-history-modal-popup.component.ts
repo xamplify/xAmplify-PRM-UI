@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivityService } from 'app/activity/services/activity-service';
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 import { ApproveService } from 'app/approval/service/approve.service';
@@ -16,7 +15,7 @@ declare var $: any;
   selector: 'app-content-status-history-modal-popup',
   templateUrl: './content-status-history-modal-popup.component.html',
   styleUrls: ['./content-status-history-modal-popup.component.css'],
-  providers: [HttpRequestLoader, Properties, ActivityService, ApproveService]
+  providers: [HttpRequestLoader, Properties, ApproveService]
 })
 export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
@@ -72,7 +71,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       private approveService: ApproveService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
-      public activityService:ActivityService
     ) {
       this.loggedInUserId = this.authenticationService.getUserId();
      }
@@ -236,19 +234,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
   
   fetchLogoFromExternalSource() {
-    this.activityService.fetchLogoFromExternalSource(this.createdById, false).subscribe(
-      response => {
-        const data = response.data;
-        if (response.statusCode == 200 && data != '') {
-          this.imageSourcePath = data;
-          this.showImageTag = true;
-        } else {
-          this.showImageTag = false;
-        }
-      }, error => {
-        this.showImageTag = false;
-      }
-    )
   }
 
   setHighlightLetter() {

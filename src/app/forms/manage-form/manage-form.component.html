@@ -16,11 +16,6 @@
                 <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <ng-container *ngIf="pagination.campaignForm">
-                <li>
-                    <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </ng-container>
 
             <ng-container *ngIf="pagination.landingPageCampaignForm || pagination.surveyCampaignForm">
                 <li>
@@ -153,8 +148,7 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4
-                    *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
+    
                 <app-list-loader
                     *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
                 <app-grid-loader

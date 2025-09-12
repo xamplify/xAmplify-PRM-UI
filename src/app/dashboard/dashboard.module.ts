@@ -27,7 +27,6 @@ import { PartnerNotificationComponent } from './partner-notification/partner-not
 import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 import { VendorReportsComponent } from './vendor-reports/vendor-reports.component';
-import { AdminReportComponent } from './admin-report/admin-report.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { MarketoAuthenticationComponent } from './marketo-authentication/marketo-authentication.component';
 import { CKEditorModule } from "ng2-ckeditor";
@@ -40,13 +39,10 @@ import { ListAllUsersComponent } from './list-all-users/list-all-users.component
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
 import { ModuleAnalyticsComponent } from './dashboard-analytics-components/module-analytics/module-analytics.component';
 import { VendorActivityAnalyticsComponent } from './dashboard-analytics-components/vendor-activity-analytics/vendor-activity-analytics.component';
-import { CampaignStatisticsAnalyticsComponent } from './dashboard-analytics-components/campaign-statistics-analytics/campaign-statistics-analytics.component';
 import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-components/regional-statistics-analytics/regional-statistics-analytics.component';
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
-import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
-import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
 import { TagsComponent } from './tags/tags.component';
 import { PartnersStatisticsComponent } from './dashboard-analytics-components/partners-statistics/partners-statistics.component';
@@ -55,13 +51,11 @@ import { MdfStatisticsComponent } from './dashboard-analytics-components/mdf-sta
 import { AdvancedDashboardAnalyticsComponent } from './advanced-dashboard-analytics/advanced-dashboard-analytics.component';
 import { LeadsStatisticsComponent } from './dashboard-analytics-components/leads-statistics/leads-statistics.component';
 import { DealsStatisticsComponent } from './dashboard-analytics-components/deals-statistics/deals-statistics.component';
-import { RedistributedCampaignsWordcloudMapComponent } from './dashboard-analytics-components/redistributed-campaigns-wordcloud-map/redistributed-campaigns-wordcloud-map.component';
 import { LeadsAndDealsBubbleChartComponent } from './dashboard-analytics-components/leads-and-deals-bubble-chart/leads-and-deals-bubble-chart.component';
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
 import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-partner-companies.component';
 import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
-import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-reasons.component';
 import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
 import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
@@ -78,24 +72,18 @@ import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-
 import { AgencyDashboardComponent } from './agency-dashboard/agency-dashboard.component';
 import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
 import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
-import { ProcessingCampaignsComponent } from './processing-campaigns/processing-campaigns.component';
 import { ActiveQueriesComponent } from './active-queries/active-queries.component';
-import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pipedrive-authentication/pipedrive-authentication.component';
 import { EnableSupportAccessToVendorComponent } from './enable-support-access-to-vendor/enable-support-access-to-vendor.component';
 import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsidenavbar-custom.component';
 import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
-import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
 
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
 import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
 import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } from './news-and-announcement-and-instant-navigation-dashboard-analytics/news-and-announcement-and-instant-navigation-dashboard-analytics.component';
 import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
 
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
-import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
-import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa-authentication.component';
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
 import { ProcessingUserListsComponent } from './processing-user-lists/processing-user-lists.component';
 import { UpdatePasswordComponent } from './super-admin/update-password/update-password.component';
@@ -107,7 +95,6 @@ import { UpdateEmailAddressComponent } from './update-email-address/update-email
 import { IntegrationDetailsComponent } from './integration-details/integration-details.component';
 import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/custom-fields-order-popup.component';
 import { SuperAdminService } from './super-admin.service';
-import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
@@ -132,15 +119,13 @@ import { CallIntegrationsComponent } from './call-integrations/call-integrations
 import { CallIntegrationSettingsComponent } from './call-integration-settings/call-integration-settings.component';
 import { PartnerContactUploadManagementSettingsComponent } from './partner-contact-upload-management-settings/partner-contact-upload-management-settings.component';
 import { ContactStatusDropDownComponent } from './contact-status-drop-down/contact-status-drop-down.component';
-/*** XNFR-1062 ***/
-import { MailIntegrationComponent } from './mail-integration/mail-integration.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent, EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent,
-        VendorReportsComponent, AdminReportComponent,
+        VendorReportsComponent,
         MarketoAuthenticationComponent,
         VendorRequestReportComponent,
         DemoRequestComponent,
@@ -150,13 +135,10 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         DashboardAnalyticsComponent,
         ModuleAnalyticsComponent,
         VendorActivityAnalyticsComponent,
-        CampaignStatisticsAnalyticsComponent,
         RegionalStatisticsAnalyticsComponent,
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
-        SocialAccountsAnalyticsComponent,
         DashboardButtonsCarouselComponent,
-        VanityEmailTemplatesComponent,
         ModuleAccessComponent,
         TagsComponent,
         PartnersStatisticsComponent,
@@ -165,13 +147,11 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         AdvancedDashboardAnalyticsComponent,
         LeadsStatisticsComponent,
         DealsStatisticsComponent,
-        RedistributedCampaignsWordcloudMapComponent,
         LeadsAndDealsBubbleChartComponent,
         DetailedDashboardComponent,
         SpfComponent,
         AdminPartnerCompaniesComponent,
         RecentLoggedInUsersComponent,
-        AdminReportCampaignWorkflowAnalyticsComponent,
         UnsubscribeReasonsComponent,
         CustomizeTop4Component,
         VendorInvitationReportComponent,
@@ -188,21 +168,16 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         AgencyDashboardComponent,
         CustomSkinComponent,
         IntegrationSettingsComponent,
-        ProcessingCampaignsComponent,
         ActiveQueriesComponent,
-        PipedriveAuthenticationComponent,
         EnableSupportAccessToVendorComponent,
         LeftsidenavbarCustomComponent,
         EmailNotificationSettingsComponent,
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
-        ConnectwiseAuthenticationComponent,
         AddOrManageDomainsComponent,
         CustomLinksUtilComponent,
         NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
         DashboardBannerImagesComponent,
-        VendorJourneyComponent,
-        HalopsaAuthenticationComponent,
         VendorReportComponent,
         ProcessingUserListsComponent,
         UpdatePasswordComponent,
@@ -213,7 +188,6 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         UpdateEmailAddressComponent,
         IntegrationDetailsComponent,
         CustomFieldsOrderPopupComponent,
-        CampaignAnalyticsSettingsComponent,
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
         FlexiFieldComponent,
@@ -232,10 +206,9 @@ import { MailIntegrationComponent } from './mail-integration/mail-integration.co
         CallIntegrationSettingsComponent,
         PartnerContactUploadManagementSettingsComponent,
         ContactStatusDropDownComponent,
-        MailIntegrationComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
-    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
+    providers: [DashboardService, CompanyProfileService, DealRegistrationService,
         SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService,SignatureService,PendingChangesGuard]
 })
 export class DashboardModule { }

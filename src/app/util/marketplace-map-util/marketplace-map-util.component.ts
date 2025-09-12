@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 
 declare var BroadcastChannel: any;
 @Component({
@@ -29,7 +28,7 @@ export class MarketplaceMapUtilComponent implements OnInit {
 
 
   constructor(private elementRef: ElementRef, private route: ActivatedRoute,private router:Router,
-    private landingPageService: LandingPageService,
+  
   ) {
     this.channel = new BroadcastChannel('my_channel');
   }
@@ -116,28 +115,11 @@ export class MarketplaceMapUtilComponent implements OnInit {
   }
 
   getPartnerCompaniesByAlias() {
-    this.landingPageService.getPartnerCompanyDetailsByVendorLandscapePageAlias(this.alias).subscribe(
-      response => {
-        this.filteredCompanies = response.data;
-        this.calculateMapCenterAndZoom();
-      },
-      error => {
-        this.filteredCompanies = [];
-      },
-    );
+   
   }
 
   getVendorCompaniesByAlias() {
-    this.landingPageService.getVendorCompaniesByAlias(this.alias, false).subscribe(
-      response => {
-        this.categories = response.data;
-        this.getFilteredCompanies();
-      },
-      error => {
-        this.categories = [];
-      },()=>{
-      }
-    );
+  
   }
 
   getFilteredCompanies() {

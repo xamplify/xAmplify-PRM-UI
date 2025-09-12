@@ -57,7 +57,6 @@ import { MY_PROFILE_MENU_CONSTANTS } from './../../../constants/my-profile-menu-
 import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
-import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var swal:any, $:any, videojs: any, Papa: any;
 
 @Component({
@@ -322,6 +321,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus: boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
+	integrationCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
 	isDashboardButtonsOptionClicked: boolean;
@@ -411,7 +411,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
-		public landingPageService: LandingPageService) {
+		) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -1828,46 +1828,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.microsoftRibbonText = "configured";
-			}
-			else {
-				this.microsoftRibbonText = "configure";
-			}
-			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.microsoftRedirectURL = response.data.redirectUrl;
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkIntegrations() for microsoft");
-		}, () => this.logger.log("Microsoft Integration Configuration Checking done"));
-
+	
 	}
 	checkSalesforceIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.sfRibbonText = "configured";
-			}
-			else {
-				this.sfRibbonText = "configure";
-			}
-			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.sfRedirectURL = response.data.redirectUrl;
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkIntegrations()");
-		}, () => this.logger.log("Integration Configuration Checking done"));
-
+	
 	}
 	checkHubspotIntegration() {
 		this.referenceService.loading(this.httpRequestLoader, true);
@@ -1910,48 +1874,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// XNFR-215
 	checkPipedriveIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.checkConfigurationByType("pipedrive").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.pipedriveRibbonText = "configured";
-			}
-			else {
-				this.pipedriveRibbonText = "configure";
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkPipedriveIntegration() for pipedrive");
-		}, () => this.logger.log("Pipedrive Integration Configuration Checking done"));
+
 	}
 	// XNFR-215
 
 	configmarketo() {
-		this.integrationTabIndex = 1;
+		     this.referenceService.showAlert();
 	}
 
 	/*****XNFR-528*****/
 	checkZohoIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.checkConfigurationByType("zoho").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.zohoRibbonText = "configured";
-			}
-			else {
-				this.zohoRibbonText = "configure";
-			}
-			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.zohoRedirectURL = response.data.redirectUrl;
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.zohoRibbonText = "configure";
-			this.logger.error(error, "Error in checkIntegrations()");
-		}, () => this.logger.log("Integration Configuration Checking done"));
+	
 
 	}
 
@@ -2402,43 +2335,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configHubSpot() {
-		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'hubspot';
-			this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(this.hubSpotCurrentUser);
-			const encodedUrl = window.btoa(this.hubSpotRedirectURL);
-			let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
-			let url = null;
-			if (this.hubSpotRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
-
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
-
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-		}
-		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
-			window.location.href = this.hubSpotRedirectURL;
-		}
+				     this.referenceService.showAlert();
 	}
 
 	configureMicrosoft() {
-		this.integrationTabIndex = 3;
-		//let providerName = 'microsoft';
-		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+		     this.referenceService.showAlert();
+	
 	}
 
 	// XNFR-215
 	configurePipedrive() {
-		this.integrationTabIndex = 6;
+		     this.referenceService.showAlert();
 	}
 
 	closeMicrosoftForm(event: any) {
-		if (event === "0")
-			this.integrationTabIndex = 0;
+				     this.referenceService.showAlert();
+
 	}
 
 	configureCRM(providerName: string, crmRedirectURL: any) {
@@ -2464,59 +2376,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	configSalesforce() {
-		if (this.loggedInThroughVanityUrl) {
-			/*	let providerName = 'salesforce';
-				let salesforceCurrentUser = localStorage.getItem('currentUser');
-				let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-				let redirectURL = window.btoa(this.sfRedirectURL);
-				let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
-				var x = screen.width / 2 - 700 / 2;
-				var y = screen.height / 2 - 450 / 2;
-				window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+        		     this.referenceService.showAlert();
 
-			let providerName = 'isalesforce';
-			let salesforceCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(salesforceCurrentUser);
-			const encodedUrl = window.btoa(this.sfRedirectURL);
-			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-			let url = null;
-			if (this.sfRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
-
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-			//this.referenceService.showSweetAlertInfoMessage();
-		}
-		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
-			window.location.href = this.sfRedirectURL;
-		}
 	}
 
 	configZoho() {
-		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'zoho';
-			let zohoCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(zohoCurrentUser);
-			const encodedUrl = window.btoa(this.zohoRedirectURL);
-			let vanityUserId = JSON.parse(zohoCurrentUser)['userId'];
-			let url = null;
-			if (this.zohoRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + 'configuration' + "/" + null;
-			} else {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-			}
+				     this.referenceService.showAlert();
 
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-		}
-		else if (this.zohoRedirectURL !== undefined && this.zohoRedirectURL !== '') {
-			window.location.href = this.zohoRedirectURL;
-		}
 	}
 
 	/*********************GDPR Setting********************** */
@@ -2968,8 +2834,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.router.navigate(['/home/forms/manage/' + categoryId]);
 			} else if ("Pages" == type) {
 				this.router.navigate(['/home/pages/manage/l/' + categoryId + '/fg']);
-			} else if ("Campaigns" == type) {
-				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
 			} else if ("Asset Library" == type) {
 				this.router.navigate(['/home/dam/manage/l/' + categoryId + '/fg']);
 			} else if ("Track Builder" == type) {
@@ -3240,13 +3104,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	salesforceSettings() {
-		this.sfcfPagedItems = [];
-		this.sfcfMasterCBClicked = false;
-		this.customFieldsResponse.isVisible = false;
-		//this.integrationTabIndex = 2;
-		this.integrationType = 'SALESFORCE';
-		this.integrationTabIndex = 5;
-		//this.listSalesforceCustomFields();
+				     this.referenceService.showAlert();
+
 	}
 
 	hubspotSettings() {
@@ -3310,67 +3169,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	listExternalCustomFields(type: string) {
-		let self = this;
-		self.selectedCfIds = [];
-		self.integrationService.listExternalCustomFields(type, this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.sfCustomFieldsResponse = data.data;
-						this.sfcfMasterCBClicked = false;
-						$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
-							if (customField.selected) {
-								self.selectedCfIds.push(customField.name);
-							}
 
-							if (customField.required) {
-								self.requiredCfIds.push(customField.name);
-								if (!customField.selected) {
-									self.selectedCfIds.push(customField.name);
-								}
-							}
-						});
-						this.setSfCfPage(1);
-					}
-				},
-				error => {
-					this.ngxloading = false;
-				},
-				() => { }
-			);
 
 	}
 	listSalesforceCustomFields() {
-		let self = this;
-		self.selectedCfIds = [];
-		self.integrationService.listSalesforceCustomFields(this.loggedInUserId, 'DEAL')
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.sfCustomFieldsResponse = data.data;
-						this.sfcfMasterCBClicked = false;
-						$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
-							if (customField.selected) {
-								self.selectedCfIds.push(customField.name);
-							}
-
-							if (customField.required) {
-								self.requiredCfIds.push(customField.name);
-								if (!customField.selected) {
-									self.selectedCfIds.push(customField.name);
-								}
-							}
-						});
-						this.setSfCfPage(1);
-					}
-				},
-				error => {
-					this.ngxloading = false;
-				},
-				() => { }
-			);
+		
 	}
 
 	closeSfSettings() {
@@ -3378,53 +3181,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	saveCustomFieldsSelection(type: string) {
-		this.ngxloading = true;
-		let self = this;
-		this.selectedCustomFieldIds = [];
-		$('[name="sfcf[]"]:checked').each(function () {
-			var id = $(this).val();
-			self.selectedCustomFieldIds.push(id);
-		});
-
-		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type, 'DEAL')
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-						this.listExternalCustomFields(type);
-					}
-				},
-				error => {
-					this.ngxloading = false;
-				},
-				() => { }
-			);
+	
 	}
 
 	submitSfSettings() {
-		this.ngxloading = true;
-		let self = this;
-		this.selectedCustomFieldIds = [];
-		$('[name="sfcf[]"]:checked').each(function () {
-			var id = $(this).val();
-			self.selectedCustomFieldIds.push(id);
-		});
-
-		this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-						this.listSalesforceCustomFields();
-					}
-				},
-				error => {
-					this.ngxloading = false;
-				},
-				() => { }
-			);
+	
 	}
 
 	setSfCfPage(page: number) {
@@ -3885,59 +3646,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	syncPipeline(pipeline: Pipeline) {
-		let self = this;
-		this.ngxloading = true;
-		if (pipeline.integrationType === "SALESFORCE") {
-			this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
-				.subscribe(
-					data => {
-						this.ngxloading = false;
-						if (data.statusCode == 200) {
-							let message = pipeline.name + " Synchronized Successfully";
-							this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
-							this.pipelinePagination.pageIndex = 1;
-							this.listAllPipelines(this.pipelinePagination);
-						} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-							this.referenceService.loading(this.httpRequestLoader, false);
-							this.pipelineResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
-						} else {
-							this.closePipelineModal();
-							this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-						}
-					},
-					error => {
-						this.ngxloading = false;
-						this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-						this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-					},
-					() => { }
-				);
-		} else {
-			this.integrationService.syncPipeline(pipeline.id, this.loggedInUserId)
-				.subscribe(
-					data => {
-						this.ngxloading = false;
-						if (data.statusCode == 200) {
-							let message = pipeline.name + " Synchronized Successfully";
-							this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
-							this.pipelinePagination.pageIndex = 1;
-							this.listAllPipelines(this.pipelinePagination);
-						} else {
-							this.closePipelineModal();
-							this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-						}
-					},
-					error => {
-						this.ngxloading = false;
-						this.referenceService.loading(this.httpRequestLoader, false);
-						let errorMessage = this.referenceService.getApiErrorMessage(error);
-						this.pipelineResponse = new CustomResponse('ERROR', errorMessage, true);
-					},
-					() => { }
-				);
-
-		}
-
 	}
 
 
@@ -4644,63 +4352,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	activateCRM(type: String) {
-		try {
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "Click Yes to mark this as your active CRM",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, activate!'
-
-			}).then(function () {
-				let request: any = {};
-				request.userId = self.loggedInUserId;
-				request.type = type;
-				self.ngxloading = true;
-				self.integrationService.setActiveCRM(request)
-					.subscribe(
-						data => {
-							if (data.statusCode == 200) {
-								self.getActiveCRMDetails();
-							}
-						});
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		} catch (error) {
-			this.referenceService.showServerError(this.httpRequestLoader);
-		}
+		
 	}
 
 	getActiveCRMDetails() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					this.referenceService.loading(this.httpRequestLoader, false);
-					this.activeCRMDetails = data.data;
-
-				});
+		
 	}
 
 	syncPipelines() {
-		this.ngxloading = true;
-		this.integrationService.syncActiveCRMPipelines(this.loggedInUserId, this.activeCRMDetails.type.toLowerCase())
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
-					this.listAllPipelines(this.pipelinePagination);
-				}, error => {
-					this.ngxloading = false;
-					let errorMessage = this.referenceService.getApiErrorMessage(error);
-					this.pipelineResponse = new CustomResponse('ERROR', errorMessage, true);
-				}
-			);
 
 	}
 
@@ -4996,50 +4655,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// XNFR-403
 	checkConnectWiseIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.integrationService.checkConfigurationByType("connectwise").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.connectwiseRibbonText = "configured";
-			}
-			else {
-				this.connectwiseRibbonText = "configure";
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkConnectWiseIntegration() for ConnectWise");
-		}, () => this.logger.log("ConnectWise Integration Configuration Checking done"));
+	
 	}
 
 	configureConnectWise() {
-		this.integrationTabIndex = 7;
+		     this.referenceService.showAlert();
 	}
 
 	// halo psa
 	checkHaloPsaIntegration() {
-		this.halopsaRibbonText = "configure";
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.halopsaRibbonText = "configure";
-		this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.halopsaRibbonText = "configured";
-			}
-			else {
-				this.halopsaRibbonText = "configure";
-			}
-		}, error => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
-		}, () => this.logger.log("Halopsa Integration Configuration Checking done"));
+		
 	}
 
 	configureHaloPsa() {
-		this.integrationTabIndex = 8;
+			     this.referenceService.showAlert();
+
 	}
 
 
@@ -5143,7 +4773,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	/**XNFR-677**/
 	showSalesforceInstanceModelPopup() {
-		this.showModelPopupForSalesforce = true;
+			     this.referenceService.showAlert();
+
 	}
 
 	closeModelPopup() {

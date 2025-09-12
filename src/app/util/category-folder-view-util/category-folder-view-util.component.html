@@ -188,17 +188,6 @@
                                     <app-forms-list-view-util [folderListViewInput]="folderListViewInput"
                                         (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
                                 </ng-container>
-                                <ng-container *ngIf="selectedModuleType==4">
-                                    <app-campaigns-list-view-util [archived]="archived"
-                                        [showPartnerCreatedCampaigns]="showPartnerCreatedCampaigns"
-                                        [campaignAnalyticsSettingsOptionEnabled] = "campaignAnalyticsSettingsOptionEnabled"
-                                        [folderListViewInput]="folderListViewInput"
-                                        (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
-                                </ng-container>
-                                <ng-container *ngIf="selectedModuleType==5">
-                                    <app-redistribute-campaigns-list-view-util
-                                        [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-redistribute-campaigns-list-view-util>
-                                </ng-container>
                             </ng-container>
                         </td>
                     </tr>

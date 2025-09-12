@@ -158,11 +158,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					const roles = this.authenticationService.getRoles();
 					this.authenticationService.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
 					module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
-					module.isOrgAdmin = roles.indexOf(this.roleName.orgAdminRole) > -1;
-					module.isVendor = roles.indexOf(this.roleName.vendorRole) > -1;
 					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
-					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
-					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
 					this.addZendeskScript(data);
 					/*****XNFR-84 **********/
 					if(data.moduleNames!=undefined && data.moduleNames.length>0 && data.moduleNames!=null){
@@ -242,7 +238,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 	setAuthenticationServiceVariables(module: Module, data: any) {
 		module.isContact = data.contacts;
-		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
 		this.authenticationService.contactsCount = data.contactsCount;
 		module.damAccess = data.dam;
 		module.damAccessAsPartner = data.damAccessAsPartner;
@@ -254,18 +249,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
 		module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
 		module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
-		module.isVendorTier = roleDisplayDto.vendorTier;
-		module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
-		module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
-		module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
 		module.isPrmSuperVisor = roleDisplayDto.prmSuperVisor;
-		module.isMarketingSuperVisor = roleDisplayDto.marketingSuperVisor;
-		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
-		this.authenticationService.isVendorTeamMember = roleDisplayDto.vendorTeamMember;
-		this.authenticationService.isVendorSuperVisor = roleDisplayDto.vendorSuperVisor;
-		this.authenticationService.isOrgAdminSuperVisor = roleDisplayDto.orgAdminSuperVisor;
-		this.authenticationService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
-		this.authenticationService.isOrgAdminTeamMember = roleDisplayDto.orgAdminTeamMember;
 		this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
 		this.authenticationService.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
 		this.authenticationService.folders = data.folders;
@@ -282,18 +266,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
 		module.allBoundSamlSettings = data.allBoundSamlSettings;
 		module.notifyPartners = data.notifyPartners;
-		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
-		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
-    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
-		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
-		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
 		/****XNFR-326****/
 		module.emailNotificationSettings = data.emailNotificationSettings;
 		module.showWorkFlow = data.createWorkflow;
 		module.ssoEnabled = data.ssoEnabled;
 		/****XNFR-583****/
-		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
 		module.updateModulesFromMyProfile = data.updateModulesFromMyProfile;
 

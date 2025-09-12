@@ -513,7 +513,7 @@
                                     <div class="del-icon"></div>
                                   </a>
                                 </ng-container>
-                                <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
+                                <!-- <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
                                   title="Comments/History">
                                   <i class="fa fa-comments mr5 IconCustomization" aria-hidden="true">
@@ -521,7 +521,7 @@
                                   <div class="clickicons"></div>
                                 </a>
                                 <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
-                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span> -->
                                 <a class="custom-icon"
                                   *ngIf="isVendorVersion && !lead.canUpdate && !authenticationService?.module?.isMarketingCompany && authenticationService?.module?.isAnyAdminOrSupervisor"
                                   data-rel="fancybox-button" (click)="lead?.associatedDealId > 0 ? '' : openSendReminiderPopup(lead)" data-toggle="tooltip" data-placement="bottom"
@@ -774,13 +774,7 @@
                 <a (click)="closeCampaignLeads()" class="pull-right close-circle" style="margin: 0px 14px;">
                   <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                     aria-hidden="true"></span></a>
-                <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId"
-                  [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
-                  [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-                  (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
-                  (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
-                  (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)" (showOliver)="askOliver($event)">
-                </app-manage-campaign-leads>
+              
               </div>
             </div>
           </div>
@@ -793,8 +787,8 @@
   </div>
 </div>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)" [isVendorVersion]="isVendorVersion">
-</app-deal-chat-popup>
+<!-- <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)" [isVendorVersion]="isVendorVersion"> 
+</app-deal-chat-popup>-->
 <!-- XNFR-839-->
 <app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [opportunityType]="'LEAD'" [customName]="'manage'" (closeEmitter)="closeEmitter($event)"></app-selectfield>
 <!-- <app-order-fields *ngIf="showOrderFieldComponent" [selectedItems]="selectedFields" [enabledMyPreferances]="enabledMyPreferances" (closeEmitter)="closeEmitter($event)"></app-order-fields> -->
@@ -840,10 +834,5 @@
 <!--- XNFR-970 --->
 <app-send-test-email *ngIf="isLeadOptionClicked" [id]="leadId" [toEmailId]="partnerEmailAddress" [isLeadOptionClicked]="isLeadOptionClicked" (sendTestEmailComponentEventEmitter)="closeSendReminiderPopup()">
 </app-send-test-email>
-
-  <!--- XNFR-1091 --->
-<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [isFromManageLead]="showAskOliverModalPopup" [selectedLead]="oliverLead"
-  (notifyParent)="closeAskAI($event)" [chatGptSettingDTO]="chatGptSettingDTO"></app-ai-chat-manager>
-
 
 <!-- END CONTENT -->

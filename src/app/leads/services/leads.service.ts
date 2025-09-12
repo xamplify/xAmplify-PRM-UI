@@ -45,9 +45,7 @@ export class LeadsService {
   }
 
   getLeadByCampaign(campaignId: number, userId: number, loggedInUserId: number) {
-    return this.http.get(this.URL + `${userId}/campaign/${campaignId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   getVendorList(userId: number) {
@@ -79,9 +77,7 @@ export class LeadsService {
   }
 
   getCreatedForCompanyIdByCampaignId(campaignId: number, userId: number) {
-    return this.http.get(this.URL + `campaign/${campaignId}/createdForCompanyId/${userId}?access_token=${this.authenticationService.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   saveOrUpdateLead(lead: Lead) {
@@ -153,34 +149,19 @@ export class LeadsService {
   }
 
   listCampaignsForVendor(pagination: Pagination) {
-    return this.http.post(this.URL + `campaign/list/v?access_token=${this.authenticationService.access_token}`, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   listPartnersForCampaign(pagination: Pagination) {
-    return this.http.post(this.URL + `campaign/partner/list/v?access_token=${this.authenticationService.access_token}`, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   listCampaignLeads(pagination: Pagination) {
-    return this.http.post(this.URL + `campaign/lead/list?access_token=${this.authenticationService.access_token}`, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
-  listCampaignsForPartner(pagination: Pagination) {
-    /****XNFR-252*****/
-    let companyProfileName = this.authenticationService.companyProfileName;
-    let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
-    if (xamplifyLogin) {
-      pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-    }
-    /****XNFR-252*****/
-    return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+  listCampaignsForPartner(pagination: Pagination) {    
+    return null;
   }
 
   saveComment(comment: DealComments) {
@@ -220,15 +201,11 @@ export class LeadsService {
   }
 
   getStageNamesForPartnerInCampaign(userId: number) {
-    return this.http.get(this.URL + `campaign/lead/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   getStageNamesForCampaign(campaignId: number, userId: number, vanityUrlFilter: boolean) {
-    return this.http.get(this.URL + `campaign/lead/stages/${campaignId}/${userId}/${vanityUrlFilter}?access_token=${this.authenticationService.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
+    return null;
   }
 
   private extractData(res: Response) {
@@ -404,5 +381,49 @@ export class LeadsService {
     let url = this.authenticationService.REST_URL + "lead/checkIfHasOpporunityAcess" + this.ACCESS_TOKEN_SUFFIX_URL + "&userId=" + loggedInUserIdRequestParam + vendorCompanyRequestParam;
     return this.authenticationService.callGetMethod(url);
   }
+
+    getActiveCRMDetails(createdForCompanyId: number, loggedInUserId: number) {
+        return this.http.get(this.authenticationService.REST_URL + `lead/crm/active/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getActiveCRMDetailsByUserId(loggedInUserId: number) {
+        return this.http.get(this.authenticationService.REST_URL + `lead/crm/active/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+        getactiveCRMCustomForm(companyId: any, dealId: any, opportunityType: any) {
+        return this.http.get(this.authenticationService.REST_URL + "lead/crm/active/" + opportunityType + "/custom/form/" + companyId + "/" + dealId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }  
+
+        getCustomFields(opportunityType: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}/${opportunityType}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callGetMethod(url);
+    }
+
+      deleteCustomField(customFieldId: number, loggedInUserId: any) {
+        let url = this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}/${customFieldId}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callDeleteMethod(url);
+    }
+
+       syncCustomFieldsForm(request: any) {
+        let url = this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
+    }
+
+        getLeadCountForCustomField(customFieldId: number) {
+        return this.http.get(this.authenticationService.REST_URL + `/customFields/leads/count/${customFieldId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+       saveCustomFields(request: any) {
+        let url = this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
+    }
 
 }

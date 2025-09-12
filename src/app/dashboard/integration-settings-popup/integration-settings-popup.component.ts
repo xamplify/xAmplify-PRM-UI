@@ -64,15 +64,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.controllerName = this.customField.controllerName;
     this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
     this.customFields.emailNotificationEnabledOnUpdate = this.customField.emailNotificationEnabledOnUpdate;
-    if (this.authenticationService.module.isVendor || this.authenticationService.module.isPrm || this.authenticationService.isVendorTeamMember) {
+    if (this.authenticationService.module.isPrm) {
       this.leadFieldUpdateLableName = "Notify Partners";
       this.leadFieldUpdateTooltip = "Notify partners by email when field data is updated.";
-    } else if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember) {
-      this.leadFieldUpdateLableName = "Notify Partners/Team Members";
-      this.leadFieldUpdateTooltip = "Notify partners/team members by email when field data is updated.";
-    } else if (this.authenticationService.isMarketingCompany()) {
-      this.leadFieldUpdateLableName = "Notify Team Members";
-      this.leadFieldUpdateTooltip = "Notify team members by email when field data is updated.";
     }
   }
   ngOnDestroy(){

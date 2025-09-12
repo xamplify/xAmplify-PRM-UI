@@ -117,11 +117,6 @@
                            <h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications
                            </h3>
                         </li>
-                        <li>
-                           <ul class="dropdown-menu-list scroller" data-handle-color="#637283">
-                              <app-notifications [isTopNavBar]=true></app-notifications>
-                           </ul>
-                        </li>
                         <li class="divider"></li>
                         <li id="logoutButton" style="text-align:center;"><a
                               routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
@@ -155,19 +150,7 @@
                            </a>
                            <div class="border-bt"></div>
                         </li>
-                        <li
-                           *ngIf="(refService.hasAllAccess()
-                            || authenticationService.module.hasSocialStatusRole
-                            || authenticationService.module.isOrgAdmin
-                            || authenticationService.module.isVendor
-                            || authenticationService.module.isPrm
-                            || authenticationService.module.isVendorTier
-                            || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && (authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
-                           <a (click)="goToRouter('/home/social/manage/all')" translate>
-                              <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts <sup>(Beta)</sup>
-                           </a>
-                           <div class="border-bt"></div>
-                        </li>
+
 
                         <ng-container
                            *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">

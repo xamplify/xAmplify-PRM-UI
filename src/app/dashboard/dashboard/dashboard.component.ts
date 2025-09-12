@@ -8,15 +8,11 @@ import { Campaign } from '../../campaigns/models/campaign';
 import { CampaignReport } from '../../campaigns/models/campaign-report';
 
 import { DashboardService } from '../dashboard.service';
-import { TwitterService } from '../../social/services/twitter.service';
-import { FacebookService } from '../../social/services/facebook.service';
-import { SocialService } from '../../social/services/social.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
 
 import { ContactService } from '../../contacts/services/contact.service';
 import { UserService } from '../../core/services/user.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
@@ -24,9 +20,9 @@ import { DashboardReport } from '../../core/models/dashboard-report';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DashboardStatesReport } from '../models/dashboard-states-report';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { setDayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -88,10 +84,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     totalCountryWiseUsersWatchedPagination: Pagination = new Pagination();
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
-        public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
-        public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
+        public contactService: ContactService, public videoFileService: VideoFileService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
-        public campaignService: CampaignService, public referenceService: ReferenceService,
+        public referenceService: ReferenceService,
         public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
@@ -111,18 +106,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     genderDemographics(userId: number) {
-        this.socialService.genderDemographics(userId)
-            .subscribe(
-                data => {
-                    this.dashboardReport.genderDemographicsMale = data['M'];
-                    this.dashboardReport.genderDemographicsFemale = data['F'];
-                    this.dashboardReport.genderDemographicsTotal =
-                    this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
-                },
-                error => this.xtremandLogger.log(error),
-                () => { }
-            );
-
+       
     }
 
     getGenderDemographics(socialConnection: SocialConnection) {
@@ -240,9 +224,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                     events: {
                         click: function (event) {
-                          self.loading = true;
-                          self.referenceService.campaignType = event.point.campaignType;
-                          self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
+                          
                         }
                     }
                 }
@@ -339,148 +321,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
-        this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
-        this.twitterService.getTotalCountOfTFFF(socialConnection)
-            .subscribe(
-                data => {
-                    this.xtremandLogger.log(data);
-                    socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
-                    socialConnection.twitterTotalFollowersCount = data['followersCount'];
-                    socialConnection.twitterTotalFriendsCount = data['friendsCount'];
-                },
-                error => this.xtremandLogger.log(error),
-                () => this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started finished.')
-            );
+      
     }
 
     getPageFanCount(socialConnection: SocialConnection, pageId: string) {
-        this.facebookService.getPageFanCount(socialConnection, pageId)
-            .subscribe(
-                data => {
-                    socialConnection.facebookFanCount = data["fan_count"];
-                },
-                error => this.xtremandLogger.log(error),
-                () => { }
-            );
+
     }
 
     getFriends(socialConnection: SocialConnection) {
-        this.facebookService.getFriends(socialConnection)
-            .subscribe(
-                data => {
-                    this.xtremandLogger.log(data);
-                    // socialConnection.facebookFriendsCount = data.extraData.fan_count;
-                },
-                error => this.xtremandLogger.log(error),
-                () => { }
-            );
+
     }
 
     getPosts(socialConnection: SocialConnection) {
-        this.facebookService.getPosts(socialConnection)
-            .subscribe(
-                data => {
-                    this.xtremandLogger.log(data);
-                },
-                error => this.xtremandLogger.log(error),
-                () => this.xtremandLogger.log('getPosts() Finished.')
-            );
+
     }
 
     getWeeklyPosts(socialConnection: SocialConnection) {
-        this.facebookService.getWeeklyPosts(socialConnection)
-            .subscribe(
-                data => {
-                    const dates = [];
-                    const values = [];
-                    for (const i of Object.keys(data)) {
-                        dates.push(i);
-                        values.push(data[i]);
-                    }
-
-                    $('#sparkline_' + socialConnection.profileId).sparkline(values, {
-                        type: 'bar',
-                        padding: '5px',
-                        barWidth: '4',
-                        height: '20',
-                        barColor: '#00ACED',
-                        barSpacing: '3',
-                        negBarColor: '#e02222',
-                        tooltipFormat: '<span>Posts:{{value}}<br>{{offset:offset}}</span>',
-                        tooltipValueLookups: { 'offset': dates }
-
-                    });
-
-                    var sum = values.reduce((a, b) => a + b, 0);
-                    socialConnection.weeklyPostsCount = sum;
-                },
-                error => this.xtremandLogger.log(error),
-                () => this.xtremandLogger.log('getWeeklyTweets() method invoke started finished.')
-            );
+    
     }
 
     getWeeklyTweets(socialConnection: SocialConnection) {
-        this.twitterService.getWeeklyTweets(socialConnection)
-            .subscribe(
-                data => {
-                    const dates = [];
-                    const values = [];
-                    for (const i of Object.keys(data)) {
-                        dates.push(i);
-                        values.push(data[i]);
-                    }
-                    $('#sparkline_' + socialConnection.profileId).sparkline(values, {
-                        type: 'bar',
-                        padding: '5px',
-                        barWidth: '4',
-                        height: '20',
-                        barColor: '#00ACED',
-                        barSpacing: '3',
-                        negBarColor: '#e02222',
-                        tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
-                        tooltipValueLookups: { 'offset': dates }
-                    });
-
-                    var sum = values.reduce((a, b) => a + b, 0);
-                    socialConnection.weeklyPostsCount = sum;
-                },
-                error => this.xtremandLogger.log(error),
-                () => this.xtremandLogger.log('getWeeklyTweets() method invoke started finished.')
-            );
+       
     }
 
     listActiveSocialAccounts(userId: number) {
-        this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
-            .subscribe(
-                data => {
-                    this.socialConnections = data;
-                    this.socialService.socialConnections = data;
-                    this.socialService.setDefaultAvatar(this.socialConnections);
-                },
-                error => this.xtremandLogger.log(error),
-                () => {
-                    if (this.socialConnections.length > 0) {
-                        for (const i in this.socialConnections) {
-                            if (this.socialConnections[i].source === 'TWITTER') {
-                                this.getTotalCountOfTFFF(this.socialConnections[i]);
-                                this.getGenderDemographics(this.socialConnections[i]);
-                                this.getWeeklyTweets(this.socialConnections[i]);
-                            } else if (this.socialConnections[i].source === 'FACEBOOK') {
-                                this.getWeeklyPosts(this.socialConnections[i]);
-                                this.getPosts(this.socialConnections[i]);
-                                if (this.socialConnections[i].emailId === null) {
-                                    this.getPageFanCount(this.socialConnections[i], this.socialConnections[i].profileId);
-                                } else {
-                                    this.getFriends(this.socialConnections[i]);
-                                }
-
-                            }
-                        }
-                    }
-                    this.xtremandLogger.log('getFacebookAccounts() Finished.');
-                }
-            );
-
+       
     }
 
     getDefaultPage(userId: number) {
@@ -515,49 +380,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listCampaignInteractionsData(userId: number, reportType: string) {
-        this.campaignService.listCampaignInteractionsData(userId, reportType)
-            .subscribe(
-                data => {
-                    this.xtremandLogger.info(data);
-                    this.campaigns = data;
-                    this.xtremandLogger.log(data);
-                    const campaignIdArray = data.map(function (a) { return a[0]; });
-                    this.totalCampaignsCount = this.campaigns.length;
-                    if (this.totalCampaignsCount >= 1) {
-                        this.getCampaignsEamailBarChartReports(campaignIdArray);
-                    }
-                },
-                error => { },
-                () => this.xtremandLogger.info('Finished listCampaign()')
-            );
+      
     }
 
     createCampaign(campaignType: string) {
-        this.referenceService.selectedCampaignType = campaignType;
-        this.router.navigate(['/home/campaigns/create']);
+        
     }
 
     getUserCampaignReport(userId: number) {
-        this.campaignService.getUserCampaignReport(userId)
-            .subscribe(
-                data => {
-                    this.userCampaignReport = data['userCampaignReport'];
-                    this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
-                },
-                error => { },
-                () => {
-                    this.xtremandLogger.info('Finished getUserCampaignReport()');
-                    if (this.userCampaignReport == null) {
-                        this.userCampaignReport = new CampaignReport();
-                        this.userCampaignReport.userId = userId;
-                        this.userCampaignReport.campaignReportOption = 'RECENT';
-                    }
-
-                    this.setLaunchedCampaignsChild(this.userCampaignReport);
-                    this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
-
-                }
-            );
+      
     }
 
     setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
@@ -602,21 +433,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     saveUserCampaignReport(userCampaignReport: CampaignReport) {
-        if (userCampaignReport.userId == null) {
-            userCampaignReport.userId = this.loggedInUserId;
-        }
-        this.campaignService.saveUserCampaignReport(userCampaignReport)
-            .subscribe(
-                data => {
-                    this.userCampaignReport = data;
-                    this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
-                    this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
-                },
-                error => {
-                    this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
-                },
-                () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
-            );
+       setDayOfWeek
     }
 
     setCampaignReportResponse(response: string, responseMessage: string) {
@@ -1045,9 +862,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     showCampaignDetails(campaign:any){
-      this.loading = true;
-      this.referenceService.campaignType = campaign[7];
-      this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
     }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;

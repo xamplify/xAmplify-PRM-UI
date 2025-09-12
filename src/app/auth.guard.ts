@@ -19,10 +19,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     assignLeadBaseUrl = 'assignleads';
     sharedLeadsBaseUrl = 'sharedleads';
     partnerBaseUrl = 'partners';
-    campaignBaseUrl = 'campaigns';
     upgradeBaseUrl = 'upgrade';
     teamBaseUrl = 'team';
     opportunityBaseUrl = 'deals';
+    campaignBaseUrl = 'campaigns';
     formBaseUrl = 'forms';
     landingPagesUrl = 'pages';
     mdfUrl = 'mdf';
@@ -176,26 +176,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.videoBaseUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.videoBaseUrl);
             }
-            if (url.indexOf(this.campaignBaseUrl) > -1) {
-                if (roles.indexOf('ROLE_USER') > -1 && roles.indexOf('ROLE_PRM') > -1) {
-                    if (roles.length == 2) {
-                        this.goToAccessDenied(this.campaignBaseUrl);
-                    } else if (roles.indexOf('ROLE_COMPANY_PARTNER') > -1) {
-                        if (url.indexOf("home/campaigns/select") > -1 || url.indexOf("home/campaigns/create") > -1) {
-                            this.goToAccessDenied(this.campaignBaseUrl);
-                        } else {
-                            return this.authorizeUrl(roles, url, this.campaignBaseUrl);
-                        }
-                    }
-                } else {
-                    if (roles.indexOf('ROLE_USER') > -1 && roles.length == 1 && (url.indexOf("home/campaigns/manage") > -1
-                        || url.indexOf("home/campaigns/calendar") > -1 || url.indexOf("/details") > -1) || url.includes("home/help")) {
-                        return true;
-                    } else {
-                        return this.authorizeUrl(roles, url, this.campaignBaseUrl);
-                    }
-                }
-            }
             if (url.indexOf(this.teamBaseUrl) > -1) {
                 if (roles.indexOf('ROLE_USER') > -1 && roles.length == 1 || url.includes("home/help")) {
                     return true;
@@ -272,9 +252,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (urlType === this.videoBaseUrl) {
                 role = this.roles.videRole;
-            }
-            if (urlType === this.campaignBaseUrl) {
-                role = this.roles.campaignRole;
             }
             if (urlType === this.teamBaseUrl) {
                 role = this.roles.orgAdminRole;
@@ -357,13 +334,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             /***** user guide*******/
             else if (urlType == this.userGuideUrl) {
-                if (urlType == this.campaignBaseUrl) {
-                    role = this.roles.campaignRole;
-                    return true;
-                } else if (urlType == this.teamBaseUrl) {
-                    role = this.roles.orgAdminRole;
-                    return true;
-                }
                 return true;
             }
             const hasRole = roles.includes(role) || roles.includes(this.roles.partnersRole) || roles.includes(this.roles.allRole);
@@ -457,9 +427,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     checkPartnerAccessUrls(url: string, urlType: string): boolean {
         try {
-            if (this.authenticationService.user.hasCompany && (url.includes('/home/deals') || url.includes('/home/campaigns/re-distribute-campaign')
-                || url.includes('/home/emailtemplates') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') 
-                || !(url.includes('/home/content') || url.includes('/home/partners/add') || url.includes('/home/partners/manage')))) {
+            if (this.authenticationService.user.hasCompany && (url.includes('/home/deals') || url.includes('/home/emailtemplates') || !(url.includes('/home/content') || url.includes('/home/partners/add') || url.includes('/home/partners/manage')))) {
                 return true;
             } else {
                 return this.goToAccessDenied(url);

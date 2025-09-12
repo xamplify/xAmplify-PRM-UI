@@ -286,24 +286,7 @@ export class ShowHistoryComponent implements OnInit {
 	}
 	
 	campaignRouter(alias:string, viewBy:string) {
-        try{
-         this.xtremandLogger.log('ManageVideoComponent campaign router:');
-         this.videoFileService.getVideo(alias, viewBy)
-             .subscribe((videoFile: SaveVideoFile) => {
-                 if(videoFile.access){
-                 this.referenceService.campaignVideoFile = videoFile;
-                 this.referenceService.selectedCampaignType = 'video';
-                 this.referenceService.isCampaignFromVideoRouter = true;
-                 this.router.navigateByUrl('/home/campaigns/create');
-                 }else{
-                     this.authenticationService.forceToLogout();
-                 }
-             },
-             (error: string) => {
-                 this.xtremandLogger.error('Error In: show campaign videos ():' + error);
-                 this.xtremandLogger.errorPage(error);
-             });
-           }catch(error){ this.xtremandLogger.error('error'+error);}
+
      }
      
        editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean, videoId:number) {

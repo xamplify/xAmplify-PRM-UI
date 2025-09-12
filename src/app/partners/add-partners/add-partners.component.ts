@@ -26,10 +26,8 @@ import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
-import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
@@ -215,7 +213,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public placeHolder: string = 'Select Legal Basis';
 	isValidLegalOptions = true;
 	filePreview = false;
-	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
 	cloudPartnersModalCheckBox = false;
 	sourceType = "";
 	loggedInThroughVanityUrl = false;
@@ -357,7 +354,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public campaignService: CampaignService, public integrationService: IntegrationService,
+		public integrationService: IntegrationService,
 		private utilService: UtilService,
 		public parterService: ParterService,private chatgptSettingsService: ChatGptSettingsService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -1346,68 +1343,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactService.isContactModalPopup = true;
 	}
 
-	socialContactImage() {
-		try {
-			this.contactService.socialContactImages()
-				.subscribe(
-					data => {
-						this.storeLogin = data;
-						if (this.storeLogin.GOOGLE == true) {
-							this.googleImageNormal = true;
-						} else {
-							this.googleImageBlur = true;
-						}
-						if (this.storeLogin.SALESFORCE == true) {
-							this.sfImageNormal = true;
-						} else {
-							this.sfImageBlur = true;
-						}
-						if (this.storeLogin.ZOHO == true) {
-							this.zohoImageNormal = true;
-						} else {
-							this.zohoImageBlur = true;
-						}
-						if (this.storeLogin.MARKETO == true) {
-							this.marketoImageNormal = true;
-						} else {
-							this.marketoImageBlur = true;
-						}
-						if (this.storeLogin.HUBSPOT == true) {
-							this.hubspotImageNormal = true;
-						} else {
-							this.hubspotImageBlur = true;
-						}
-						if (this.storeLogin.MICROSOFT == true) {
-							this.microsoftDynamicsImageNormal = true;
-						} else {
-							this.microsoftDynamicsImageBlur = true;
-						}
-						if (this.storeLogin.PIPEDRIVE == true) {
-							this.pipedriveImageNormal = true;
-						} else {
-							this.pipedriveImageBlur = true;
-						}
-						if (this.storeLogin.CONNECTWISE == true) {
-							this.connectWiseImageNormal = true;
-						} else {
-							this.connectWiseImageBlur = true;
-						}
-						if (this.storeLogin.HALOPSA == true) {
-							this.haloPSAImageNormal = true;
-						} else {
-							this.haloPSAImageBlur = true;
-						}
-					},
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.log("AddContactsComponent socialContactImage() finished.")
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "social Partners images");
-		}
-	}
+	
 
 	setSocialPage(page: number) {
 		try {
@@ -1441,57 +1377,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.setSocialPage(1); 
 	}
 	googleContacts() {
-		try {
-			if (this.loggedInThroughVanityUrl) {
-				this.googleVanityAuthentication();
-				this.customResponseType();
-				//this.referenceService.showSweetAlertInfoMessage();
-			} else {
-				if (this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality) {
-					this.fileTypeError = false;
-					this.socialPartners.firstName = '';
-					this.socialPartners.lastName = '';
-					this.socialPartners.emailId = '';
-					this.socialPartners.contactName = '';
-					this.socialPartners.showLogin = true;
-					this.socialPartners.statusCode = 0;
-					this.socialPartners.contactType = '';
-					this.socialPartners.alias = '';
-					this.socialPartners.socialNetwork = "GOOGLE";
-					this.contactService.socialProviderName = 'google';
-					this.xtremandLogger.info("socialContacts" + this.socialPartners.socialNetwork);
-					this.contactService.googleLogin('partners')
-						.subscribe(
-							response => {
-								let data = response.data;
-								this.storeLogin = response.data;
-								if (response.statusCode == 200) {
-									this.getGoogleContactsUsers();
-									this.xtremandLogger.info("called getGoogle contacts method:");
-								} else {
-									this.referenceService.callBackURLCondition = 'partners';
-									localStorage.setItem("userAlias", data.userAlias)
-									localStorage.setItem("currentModule", data.module)
-									window.location.href = "" + data.redirectUrl;
-								}
-							},
-							(error: any) => {
-								this.xtremandLogger.error(error);
-								if (error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")) {
-									this.referenceService.showReAuthenticateMessage();
-								} else {
-									this.xtremandLogger.errorPage(error);
-								}
-							},
-							() => this.xtremandLogger.log("AddContactsComponent googleContacts() finished.")
-						);
-				}
-			}
-
-
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "google partners");
-		}
+ this.referenceService.showAlert();
 	}
 
 	getGoogleContactsUsers() {
@@ -1872,43 +1758,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	salesforceContacts() {
-		try {
-			if (this.loggedInThroughVanityUrl) {
-				this.salesForceVanityAuthentication();
-				this.customResponseType();
-				//this.referenceService.showSweetAlertInfoMessage();
-			} else {
-				if (this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality) {
-					this.contactType = "";
-					this.fileTypeError = false;
-					this.socialPartners.socialNetwork = "salesforce";
-					this.xtremandLogger.info("socialContacts" + this.socialPartners.socialNetwork);
-					this.contactService.salesforceLogin('partners')
-						.subscribe(
-							response => {
-								this.storeLogin = response.data;
-								let data = response.data;
-								if (response.statusCode == 200) {
-									this.showModal();
-									console.log("AddContactComponent salesforce() Authentication Success");
-									// this.checkingPopupValues();
-								} else {
-									localStorage.setItem("userAlias", data.userAlias)
-									localStorage.setItem("currentModule", data.module)
-									window.location.href = "" + data.redirectUrl;
-								}
-							},
-							(error: any) => {
-								this.xtremandLogger.error(error);
-							},
-							() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
-						);
-				}
-			}
-
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "salesforce Partners");
-		}
+     this.referenceService.showAlert();
 	}
 
 	checkingPopupValues() {
@@ -2281,53 +2131,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$("#settingSocialNetworkPartner").appendTo("body");
 	}
 
-	unlinkSocailAccount() {
-		try {
-			let socialNetwork = this.settingSocialNetwork.toUpperCase();
-			this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
-				.subscribe(
-					(data: any) => {
-						if (socialNetwork == 'SALESFORCE') {
-							$("#salesforceContact_buttonNormal").hide();
-							$("#salesforceGear").hide();
-							this.sfImageBlur = true;
-							this.socialContactImage();
-						}
-						else if (socialNetwork == 'GOOGLE') {
-							$("#googleContact_buttonNormal").hide();
-							$("#GoogleGear").hide();
-							this.googleImageBlur = true;
-						}
-						else if (socialNetwork == 'ZOHO') {
-							$("#zohoContact_buttonNormal").hide();
-							$("#zohoGear").hide();
-							this.zohoImageBlur = true;
-						}
-						$('#settingSocialNetworkPartner').modal('hide');
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true);
-					},
-					(error: any) => {
-						if (error._body.search('Please launch or delete those campaigns first') != -1) {
-							this.Campaign = error;
-							$('#settingSocialNetworkPartner').modal('hide');
-							this.deleteErrorMessage = true;
-							setTimeout(function () { $("#campaignError").slideUp(500); }, 3000);
-						} else {
-							this.xtremandLogger.errorPage(error);
-						}
-					},
-					() => {
-						$('#settingSocialNetworkPartner').modal('hide');
-						this.cancelPartners();
-						this.xtremandLogger.info("deleted completed");
-					}
-				);
-			this.deleteErrorMessage = false;
-		} catch (error) {
-			this.xtremandLogger.error(error, "addPartnerComponent", "unlink social accounts Partners");
-		}
-	}
-
+	
 	removeDuplicates(originalArray, prop) {
 		var newArray = [];
 		var lookupObject = {};
@@ -2688,7 +2492,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	urlLink: any;
 	ngOnInit() {
 		try {
-			this.socialContactImage();
 			this.searchWithModuleName = 11;
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
@@ -2754,10 +2557,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
-		this.getActiveCrmType();                                                    
 		this.checkVanityAccess();
-		this.fetchOliverActiveIntegration();
-		this.getOliverAgentAccessSettings();
 	}
 
 
@@ -2844,59 +2644,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	marketoContacts() {
 	}
 	checkingMarketoContactsAuthentication() {
-		if (this.loggedInThroughVanityUrl) {
-			// this.referenceService.showSweetAlertInfoMessage();
-			this.vanityCheckingMarketoContactsAuthentication();
-		} else {
-			this.selectedAddPartnerOption = 8;
-			try {
-				if (this.selectedAddPartnerOption == 8 && !this.disableOtherFuctionality) {
-					this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
-						.subscribe(
-							(data: any) => {
-
-								if (data.statusCode == 8000) {
-									this.showMarketoForm = false;
-
-									this.marketoAuthError = false;
-									this.loading = false;
-									this.retriveMarketoContacts();
-								}
-								else {
-
-
-									$("#marketoShowLoginPopup").modal('show');
-									this.marketoAuthError = false;
-									this.loading = false;
-
-								}
-								this.xtremandLogger.info(data);
-
-							},
-							(error: any) => {
-								var body = error['_body'];
-								if (body != "") {
-									var response = JSON.parse(body);
-									if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
-										this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
-									} else {
-										this.xtremandLogger.errorPage(error);
-									}
-								} else {
-									this.xtremandLogger.errorPage(error);
-								}
-								console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
-							},
-							() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
-						)
-				}
-			} catch (error) {
-				this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
-			}
-		}
-
-
+     this.referenceService.showAlert();
 	}
 
 	vanityCheckingMarketoContactsAuthentication() {
@@ -3262,27 +3010,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	// HubSpot Implementation
 
 	checkingHubSpotContactsAuthentication() {
-		if (this.loggedInThroughVanityUrl) {
-			this.hubSpotVanityAuthentication()
-		} else {
-			if (this.selectedAddPartnerOption == 5) {
-				this.hubSpotService.configHubSpot().subscribe(data => {
-					let response = data;
-					if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-						this.xtremandLogger.info("isAuthorize true");
-						this.showHubSpotModal();
-					}
-					else {
-						if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-							window.location.href = response.data.redirectUrl;
-						}
-					}
-				}, (error: any) => {
-					this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-				}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
-			}
-		}
-
+     this.referenceService.showAlert();
 
 	}
 
@@ -3690,42 +3418,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/************Add Campaigns Pop up****************************** */
 	addCampaigns(contact: any) {
-		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
 	}
 
 	checkingZohoContactsAuthentication() {
-		try {
-			this.selectedAddPartnerOption = 6;
-			if (this.loggedInThroughVanityUrl) {
-				this.zohoVanityUrlAuthentication();
-				this.customResponseType();
-			}
-			else {
-				if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
-					this.contactService.checkingZohoAuthentication(this.module)
-						.subscribe(
-							(response: any) => {
-								let data = response.data;
-								this.storeLogin = data;
-								if (response.statusCode == 200) {
-									this.zohoShowModal();
-								} else {
-									localStorage.setItem("userAlias", data.userAlias)
-									localStorage.setItem("currentModule", data.module);
-									window.location.href = "" + data.redirectUrl;
-
-								}
-							},
-							(error: any) => {
-								this.referenceService.showSweetAlertServerErrorMessage();
-							},
-							() => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
-						)
-				}
-			}
-		} catch (error) {
-			this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
-		}
+	     this.referenceService.showAlert();
 	}
 
 
@@ -3874,7 +3570,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.getGoogleConatacts = data;
 		this.zohoImageNormal = false;
 		this.zohoImageBlur = false;
-		this.socialContactImage();
 		let contacts = this.getGoogleConatacts['contacts'];
 		if (contacts != null && contacts.length > 0) {
 			for (var i = 0; i < this.getGoogleConatacts.contacts.length; i++) {
@@ -3929,12 +3624,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	goToCampaigns(contact: any) {
-		this.loading = true;
-		let self = this;
-		let encodedId = this.referenceService.encodePathVariable(contact.id);
-		setTimeout(function () {
-			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + encodedId]);
-		}, 250);
+	
 	}
 
 	googleVanityAuthentication() {
@@ -4134,25 +3824,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	checkingMicrosoftDynamicsAuthentication() {
-		if (this.selectedAddPartnerOption == 5) {
-			this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
-				let response = data;
-				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-					this.xtremandLogger.info("isAuthorize true");
-					this.getMicrosoftContacts();
-				}
-				else {
-					this.showMiscrosoftPreSettingsForm();
-				}
-			}, (error: any) => {
-				this.loading = false;
-				let errorMessage = this.referenceService.getApiErrorMessage(error);
-				this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-				this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
-			}, () =>
-				this.xtremandLogger.log("Microsoft Configuration Checking done")
-			);
-		}
+		     this.referenceService.showAlert();
 	}
 
 	getMicrosoftContacts() {
@@ -4274,25 +3946,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	//XNFR-230
 	checkingPipedriveContactsAuthentication() {
-		if (this.selectedAddPartnerOption == 5) {
-			this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
-				let response = data;
-				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-					this.xtremandLogger.info("isAuthorize true");
-					this.getPipedriveContacts();
-				}
-				else {
-					this.showPipedrivePreSettingsForm();
-				}
-			}, (error: any) => {
-				this.loading = false;
-				let errorMessage = this.referenceService.getApiErrorMessage(error);
-				this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-				this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
-			}, () =>
-				this.xtremandLogger.log("Pipedrive Configuration Checking done")
-			);
-		}
+		     this.referenceService.showAlert();
 	}
 	showPipedrivePreSettingsForm() {
 		this.showPipedriveAuthenticationForm = true;
@@ -4385,26 +4039,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	//XNFR-403
 	checkingConnectWiseContactsAuthentication() {
-		if (this.selectedAddPartnerOption == 5) {
-			this.integrationService.checkConfigurationByType('connectwise').subscribe(data => {
-				let response = data;
-				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-					this.xtremandLogger.info("isAuthorize true");
-					this.getConnectWiseContacts();
-					// this.showConnectWiseModal();
-				}
-				else {
-					this.showConnectWisePreSettingsForm();
-				}
-			}, (error: any) => {
-				this.loading = false;
-				let errorMessage = this.referenceService.getApiErrorMessage(error);
-				this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-				this.xtremandLogger.error(error, "Error in ConnectWise checkIntegrations()");
-			}, () =>
-				this.xtremandLogger.log("ConnectWise Configuration Checking done")
-			);
-		}
+	     this.referenceService.showAlert();
+
 	}
 	showConnectWisePreSettingsForm() {
 		this.showConnectWiseAuthenticationForm = true;
@@ -4589,25 +4225,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	//XNFR-230
 	checkingHaloPSAContactsAuthentication() {
-		if (this.selectedAddPartnerOption == 5) {
-			this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
-				let response = data;
-				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-					this.xtremandLogger.info("isAuthorize true");
-					this.getHaloPSAContacts();
-				}
-				else {
-					this.showHaloPSAPreSettingsForm();
-				}
-			}, (error: any) => {
-				this.loading = false;
-				let errorMessage = this.referenceService.getApiErrorMessage(error);
-				this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-				this.xtremandLogger.error(error, "Error in HaloPSA checkIntegrations()");
-			}, () =>
-				this.xtremandLogger.log("HaloPSA Configuration Checking done")
-			);
-		}
+	this.referenceService.showAlert();
 	}
 	showHaloPSAPreSettingsForm() {
 		this.showHaloPSAAuthenticationForm = true;
@@ -4821,20 +4439,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			);
 	}
 
-	getActiveCrmType() {
-		this.loading = true;
-		this.contactService.getActiveCrmType(this.loggedInUserId)
-			.subscribe(
-				result => {
-					this.activeCrmType = result.data;
-					this.loading = false;
-				},
-				(error: any) => {
-					this.loading = false;
-				},
-			);
 
-	}
 triggerUniversalSearch(){
 	if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Partners') {
 		if(this.searchKey) {
@@ -5093,33 +4698,27 @@ triggerUniversalSearch(){
 		return contactName;
 	}
 
-	fetchOliverActiveIntegration() {
-		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
-		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
-			(response: any) => {
-				if (response.statusCode == 200 && response.data) {
-					let data = response.data;
-					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
-					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
-					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
-					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
-				}
-			}, error => {
-				console.log('Error in fetchOliverActiveIntegration() ', error);
-			});
-	}
+	
 
-	getOliverAgentAccessSettings() {
-		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
-			result => {
-				if (result.data && result.statusCode == 200) {
-					let data = result.data;
-					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
-				}
-			}, error => {
-				console.log('Error in getOliverAgentAccessSettings() ', error);
-			});
+	socialContactImage() {
+		this.googleImageNormal = true;
+		this.googleImageBlur = true;
+		this.sfImageNormal = true;
+		this.sfImageBlur = true;
+		this.zohoImageNormal = true;
+		this.zohoImageBlur = true;
+		this.marketoImageNormal = true;
+		this.marketoImageBlur = true;
+		this.hubspotImageNormal = true;
+		this.hubspotImageBlur = true;
+		this.microsoftDynamicsImageNormal = true;
+		this.microsoftDynamicsImageBlur = true;
+		this.pipedriveImageNormal = true;
+		this.pipedriveImageBlur = true;
+		this.connectWiseImageNormal = true;
+		this.connectWiseImageBlur = true;
+		this.haloPSAImageNormal = true;
+		this.haloPSAImageBlur = true;
 	}
 
 }

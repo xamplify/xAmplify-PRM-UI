@@ -14,16 +14,13 @@ import { EditCompanyProfileComponent } from "./company-profile/edit-company-prof
 import { ReportsComponent } from "./dashboard/reports/reports.component";
 import { NotificationsComponent } from "../core/notifications/notifications.component";
 import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
-import { AdminReportComponent } from './admin-report/admin-report.component';
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
 import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
 import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
-import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
 import { ModuleAccessComponent } from "./module-access/module-access.component";
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
-import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.component";
 import { QuickLinksComponent } from "./quick-links/quick-links.component";
@@ -56,17 +53,14 @@ const routes: Routes = [
   { path: "reports", component: ReportsComponent },
   { path: "notifications", component: NotificationsComponent },
   { path: 'vendors',component:VendorReportsComponent},
-  { path: 'admin-report',component:AdminReportComponent},
   { path: 'vendor-request',component:VendorRequestReportComponent},
   { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
   { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
-  {path:'v-templates', component:VanityEmailTemplatesComponent},
   {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
   {path:'dashboard-stats/:userId/:companyId/:userAlias', component:ModuleAccessComponent},
   {path:'dashboard-stats/:userId/:companyId', component:ModuleAccessComponent},
   {path:'spf', component:SpfComponent},
-  {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
   { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
   {path:RouterUrlConstants.quickLinks,component:QuickLinksComponent},

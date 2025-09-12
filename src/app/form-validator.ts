@@ -15,33 +15,12 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
 
 
 export function validateCampaignSchedule(scheduleType: string, date: string): ValidatorFn {
-    return (group: FormGroup): {[key: string]: any} => {
-      let schedule = group.controls[scheduleType];
-      let launchTime = group.controls[date];
-      if(schedule.value=="SCHEDULE"  && (launchTime.value==null || launchTime.value=="")){
-          return{
-              invalidSchedule:true
-          }
-      }
-      
-    }
+   return null;
   }
 
 export function validateCampaignName(name: string, names:string[],isAdd:boolean,editedCampaignName:string): ValidatorFn {
-    return (group: FormGroup): {[key: string]: any} => {
-       if(names!=undefined){
-           let campaignNames = names[0];
-           let campaignName =  group.controls[name];
-           if(campaignNames!=undefined){
-               if(campaignNames.indexOf(campaignName.value)>-1 && campaignName.value!=editedCampaignName){
-                   return{
-                       duplicateCampaignName:true
-                   };
-               }
-           }
-       }
-       
-    }
+      return null;
+
   }
 
 export function validateOwnThumbnail(imageFile:any,fileItem:FileItem,ownThumb:any):ValidatorFn {

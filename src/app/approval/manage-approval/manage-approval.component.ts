@@ -131,11 +131,7 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   callInitMethos() {
-    localStorage.removeItem('saveVideoFile');
-    this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
-    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.hasAllAccess = this.referenceService.hasAllAccess();
-    this.getCompanyId();
+  
   }
 
   ngOnDestroy() {
@@ -937,27 +933,7 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   campaignRouter(alias: string, viewBy: string) {
-    try {
-      this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
-      this.videoFileService.getVideo(alias, viewBy)
-        .subscribe((videoFile: SaveVideoFile) => {
-          if (videoFile.access) {
-            this.referenceService.campaignVideoFile = videoFile;
-            this.referenceService.selectedCampaignType = 'video';
-            this.referenceService.isCampaignFromVideoRouter = true;
-            this.router.navigateByUrl('/home/campaigns/create/' + this.referenceService.selectedCampaignType);
-            this.referenceService.closeSweetAlertWithDelay();
-          } else {
-            this.referenceService.closeSweetAlert();
-            this.authenticationService.forceToLogout();
-          }
-        },
-          (error: string) => {
-            this.referenceService.closeSweetAlert();
-            this.xtremandLogger.error('Error In: show campaign videos ():' + error);
-            this.xtremandLogger.errorPage(error);
-          });
-    } catch (error) { this.xtremandLogger.error('error' + error); }
+  
   }
 
   sortList(text: any) {

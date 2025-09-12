@@ -36,7 +36,6 @@ import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-typ
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { DatePipe } from '@angular/common';
-import { CampaignWorkFlowsUtilComponent } from 'app/campaigns/campaign-work-flows-util/campaign-work-flows-util.component';
 import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { Reply } from 'app/campaigns/models/campaign-reply';
 import { ParterService } from 'app/partners/services/parter.service';
@@ -216,7 +215,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   isImageFormat: any;
   isTextFormat: any;
 
-  @ViewChild("campaignWorkFlowsUtilComponent") campaignWorkFlowsUtilComponent: CampaignWorkFlowsUtilComponent;
   replies: Array<Reply> = new Array<Reply>();
   deletedWorkflowIds:number[] = [];
   playbookWorkflowLoader = false; 
@@ -1346,17 +1344,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
-      if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
-        this.campaignWorkFlowsUtilComponent.saveWorkflows();
-        if(this.campaignWorkFlowsUtilComponent.hasError){
-          if(this.isAdd){
-            this.tracksPlayBook.published = false;
-          }
-          return;
-        }else{
-        this.setWorkflowDtoData()
-        }
-      }
       this.referenceService.startLoader(this.httpRequestLoader);
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
@@ -1916,35 +1903,6 @@ addTagsCondition(selectedTags:any[]) {
 //XNFR-921
 
   setWorkflowDtoData() {
-    this.tracksPlayBook.deletedWorkflowIds = this.campaignWorkFlowsUtilComponent.deletedWorkflowIds;
-    let workflowExists = this.campaignWorkFlowsUtilComponent.replies != null && this.campaignWorkFlowsUtilComponent.replies.length > 0
-    if (workflowExists) {
-      let workFlowDtos: WorkflowDto[] = [];
-      for (let workflow of this.campaignWorkFlowsUtilComponent.replies) {
-        let workFlowDto: WorkflowDto = new WorkflowDto();
-        workFlowDto.id = workflow.id;
-        workFlowDto.title = workflow.title;
-        workFlowDto.subjectId = workflow.subjectId;
-        workFlowDto.actionId = workflow.actionId;
-        workFlowDto.timePhraseId = workflow.timePhraseId;
-        workFlowDto.selectedPartnerListIds = workflow.selectedPartnerListIds;
-        workFlowDto.customTemplateSelected = workflow.customTemplateSelected;
-        workFlowDto.templateId = workflow.templateId;
-        workFlowDto.notificationSubject = workflow.subject;
-        workFlowDto.notificationMessage = workflow.body;
-        workFlowDto.loggedInUserId = this.loggedInUserId;
-        workFlowDto.customDays = workflow.customDays;
-        workFlowDto.isAdd = true;
-        workFlowDto.preHeader = workflow.preHeader;
-        workFlowDto.fromEmailUserId = workflow.fromEmailUserId;
-        workFlowDto.fromEmail = workflow.fromEmail;
-        workFlowDto.fromName = workflow.fromName;
-        workFlowDto.selectedPartnerListIds = this.tracksPlayBook.groupIds;
-        workFlowDto.selectedPartnerIds = this.tracksPlayBook.userIds;
-        workFlowDtos.push(workFlowDto)
-      }
-      this.tracksPlayBook.workflowDtos = workFlowDtos;
-    }
   }
 
   updateRepliesData(event:any){

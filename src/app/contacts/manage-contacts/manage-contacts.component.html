@@ -1287,9 +1287,9 @@
                               </div>
                               <div class="btn-group pull-right" style="margin-top: 4px; display: flex;">
                                  <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
-                                 <div class="mb-downloadfile" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
-                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
-                           authenticationService.isOrgAdminPartner() || authenticationService.loggedInUserRole === 'Team Member')">
+                                 <div class="mb-downloadfile" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
+                           authenticationService.isPartner() ||
+                           authenticationService.loggedInUserRole === 'Team Member')">
                                     <span class="dropdown-toggle white-co" data-toggle="dropdown" *ngIf="!sharedLeads"
                                        style="box-shadow: none; margin-top: 8px; float: right;display: flex;">
                                        <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px"
@@ -1382,10 +1382,10 @@
                                              <th scope="col" class="text-center">Campaign Analytics</th>
                                           </ng-container>
                                           <th class="text-center" *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory == 'all') && (hasAllAccess 
-                                             || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
-                                             || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing 
-                                             || authenticationService.module.isMarektingAndPartner || authenticationService.module.isMarketingSuperVisor || authenticationService.isOrgAdmin() 
-                                             || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)" scope="row">Actions</th>
+                                             || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                                             || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor 
+                                             || authenticationService.module.isMarektingAndPartner  
+                                            )" scope="row">Actions</th>
                                           <th scope="row" class="text-center" *ngIf="isContactModule && (contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory == 'excluded')"></th>
                                        </tr>
                                     </thead>
@@ -1627,9 +1627,9 @@
                                                    </div>
                                                 </td>
                                              </ng-container>
-                                             <td *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
-                                       || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing || authenticationService.module.isMarektingAndPartner ||authenticationService.module.isMarketingSuperVisor
-                                       || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
+                                             <td *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                                       || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor
+                                       )"
                                                 class="text-center">
                                                 <div class="actions-block no-float">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
@@ -1800,10 +1800,6 @@
       </div>
       <app-scroll-top></app-scroll-top>
    </div>
-
-   <app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO"
-   [isFromManagePartner]="'true'" [selectedContact]="selectedList" [isFromGroupOfPartners]="'true'"
-   (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>
 </div>
 <!-- Filter Modal -->
 <div id="filterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -1945,7 +1941,7 @@
 <app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [inputId]="selectedContactListId"
    *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()" [isShareLeadsModule]="assignLeads">
 </app-partner-company-modal-popup>
-<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+<!-- <app-send-campaigns #sendCampaignComponent></app-send-campaigns> -->
 <div class="modal right fade" id="listSharedDetailsModal" tabindex="-1" role="dialog"
    aria-labelledby="sharedListModalLabel" data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">

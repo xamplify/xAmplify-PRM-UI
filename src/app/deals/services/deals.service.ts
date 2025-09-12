@@ -112,34 +112,19 @@ getViewType(vanityLoginDto:VanityLoginDto) {
 }
 
 listCampaignsForVendor(pagination: Pagination) {
-  return this.http.post(this.URL + `campaign/list/v?access_token=${this.authenticationService.access_token}`, pagination)
-    .map(this.extractData)
-    .catch(this.handleError);
+  return null;
 }
 
 listPartnersForCampaign(pagination: Pagination) {
-  return this.http.post(this.URL + `campaign/partner/list/v?access_token=${this.authenticationService.access_token}`, pagination)
-    .map(this.extractData)
-    .catch(this.handleError);
+  return null;
 }
 
 listCampaignLeads(pagination: Pagination) {
-  return this.http.post(this.URL + `campaign/deal/list?access_token=${this.authenticationService.access_token}`, pagination)
-    .map(this.extractData)
-    .catch(this.handleError);
+  return null;
 }
 
 listCampaignsForPartner(pagination: Pagination) {
-  /****XNFR-252*****/
-  let companyProfileName = this.authenticationService.companyProfileName;
-  let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
-  if(xamplifyLogin){
-      pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-  }
-  /****XNFR-252*****/
-  return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
-    .map(this.extractData)
-    .catch(this.handleError);
+  return null;
 }
 
 deleteProperty(comment: DealDynamicProperties) {
@@ -174,9 +159,7 @@ getStageNamesForPartnerByVendorCompanyId(userId:number, vendorCompanyId:number) 
 }
 
 getStageNamesForCampaign(campaignId:number, userId:number){
-  return this.http.get(this.URL + `campaign/stages/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
-  .map(this.extractData)
-  .catch(this.handleError);
+  return null;
 }
 
 	private extractData(res: Response) {
@@ -192,14 +175,10 @@ getStageNamesForCampaign(campaignId:number, userId:number){
 
 
   getStageNamesOfV(userId:number) {
-    return this.http.get(this.URL + `campaign/deal/list/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
+    return null;
   }
   getStageNamesOfCampaign(userId:number) {
-    return this.http.get(this.URL + `campaign/deal/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
+    return null;
   }
   getStageNamesForPartner1(userId:number){
     return this.http.get(this.URL + `/list/partner/stages/${userId}?access_token=${this.authenticationService.access_token}`)

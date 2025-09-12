@@ -19,7 +19,7 @@ declare var $: any, swal: any;
 @Component({
 	selector: 'app-processing-user-lists',
 	templateUrl: './processing-user-lists.component.html',
-	styleUrls: ['./processing-user-lists.component.css', '../admin-report/admin-report.component.css'],
+	styleUrls: ['./processing-user-lists.component.css'],
 	providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 })
 export class ProcessingUserListsComponent implements OnInit {

@@ -318,14 +318,14 @@
                         <div class="del-icon"></div>
                       </a>
                     </ng-container>
-                    <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
+                    <!-- <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
                       data-toggle="tooltip" data-placement="bottom" title="Comments/History">
                       <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                       </i>
                       <div class="clickicons"></div>
                     </a>
                     <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
-                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span> -->
                   </div>
                 </td>
               </tr>
@@ -351,8 +351,8 @@
   </div>
   </div>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">
-</app-deal-chat-popup>
+<!-- <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">
+</app-deal-chat-popup> -->
 
 <section *ngIf="showLeadForm">
   <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">

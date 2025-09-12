@@ -15,10 +15,8 @@ import { FormOption } from '../models/form-option';
 import { UtilService } from '../../core/services/util.service';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { DomSanitizer } from "@angular/platform-browser";
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { SocialService } from 'app/social/services/social.service'
 import { EnvService } from 'app/env.service'
 import { GeoLocationAnalyticsType } from 'app/util/geo-location-analytics-type.enum';
 import { TracksPlayBook } from '../../tracks-play-book-util/models/tracks-play-book';
@@ -31,7 +29,7 @@ declare var $,swal: any;
   selector: 'app-form-preview',
   templateUrl: './form-preview.component.html',
   styleUrls: ['./form-preview.component.css', '../../../assets/css/loader.css'],
-  providers: [HttpRequestLoader, FormService, Processor, LandingPageService, TracksPlayBookUtilService],
+  providers: [HttpRequestLoader, FormService, Processor, TracksPlayBookUtilService],
 })
 export class FormPreviewComponent implements OnInit {
   deviceInfo: any;
@@ -102,8 +100,8 @@ export class FormPreviewComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
-    private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
-    private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService,
+    private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router,
+    public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService,
      private tracksPlayBookUtilService: TracksPlayBookUtilService) {
       this.siteKey = this.envService.captchaSiteKey;
       this.notifyParent = new EventEmitter<any>();
@@ -265,14 +263,6 @@ export class FormPreviewComponent implements OnInit {
   }
 
   saveAnalytics(geoLocationAnalytics: GeoLocationAnalytics) {
-    this.landingPageService.saveAnalytics(geoLocationAnalytics)
-      .subscribe(
-        (data: any) => {
-        },
-        (error: string) => {
-          this.logger.error("Error In saving Location Details", error);
-        }
-      );
 
   }
 

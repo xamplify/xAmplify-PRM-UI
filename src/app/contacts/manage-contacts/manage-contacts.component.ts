@@ -24,7 +24,6 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { Subject } from 'rxjs';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
@@ -48,7 +47,6 @@ declare var $: any, swal: any;
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
-	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 
@@ -2738,23 +2736,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	showCampaigns(userId: number) {
-		this.campaignLoader = true;
-		let self = this;
-		let encodedUserId = this.referenceService.encodePathVariable(userId);
-		setTimeout(function () {
-			let prefixUrl = "/home/campaigns/user-campaigns/";
-			if (self.isPartner) {
-				self.referenceService.goToRouter(prefixUrl + "/pm/" + encodedUserId);
-			} else {
-				if(!self.sharedLeads){
-					self.referenceService.goToRouter(prefixUrl + "/c/" + encodedUserId);
-				}
-				else{
-					self.referenceService.goToRouter(prefixUrl + "/sl/" + encodedUserId);
-				}
-			}
-		}, 250);
-
 	}
 
 	selectedSharePartner(event: any) {
@@ -2839,10 +2820,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			this.expandedUserList = userList;
 		}
-	}
-
-	openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
-		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(contactList.id, this.checkingContactTypeName);
 	}
 
 	notificationFromPublishToPartnersComponent() {
