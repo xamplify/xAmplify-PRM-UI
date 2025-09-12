@@ -207,6 +207,9 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.signUpForm.valueChanges
             .subscribe(data => this.onValueChanged(data));
         this.onValueChanged(); // (re)set validation messages now
+        if (!this.prmSignup) {
+            this.signUpForm.get('emailId')?.disable();
+        }
     }
 
     onValueChanged(data?: any) {
