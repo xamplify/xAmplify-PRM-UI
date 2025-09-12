@@ -142,9 +142,10 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                             } else {
                                 this.referenceService.userProviderMessage = data.message;
                             }
+                            let self = this;
                             this.referenceService.showSweetAlertProcessingLoader(this.referenceService.userProviderMessage);
                             setTimeout(() => {
-                             this.authenticationService.goToLoginAndReload();
+                             self.authenticationService.goToLoginAndReload();
                             }, 3000);
                         }else{
                            this.customResponse = new CustomResponse('ERROR',"Sign up is restricted.Please contact admin.",true);
@@ -294,8 +295,8 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.vanityURLEnabled = true;
         this.authenticationService.v_companyName = "xAmplify-Prm";
         this.vanityURLService.setVanityURLTitleAndFavIcon();   
-        this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-        this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
+        this.authenticationService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
+        this.authenticationService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
         if(this.router.url.includes('/signup/')){

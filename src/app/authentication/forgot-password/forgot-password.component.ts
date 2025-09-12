@@ -103,7 +103,7 @@ export class ForgotPasswordComponent implements OnInit {
                 this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
                 this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
                     this.isBgColor = result.styleOneBgColor;
-                    let path = "https://xamplify.io/assets/images/stratapps.jpeg";
+                    let path = "assets/images/xAmplify-sandbox.png";
                     if(result.loginType === "STYLE_ONE"){
                       this.isStyleOne = true;
                       this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;

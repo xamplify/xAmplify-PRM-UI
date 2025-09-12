@@ -31,38 +31,6 @@ export class VendorActivityAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-     this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-     this.getVendorActivityAnalytics();
-    
   }
-
-  getVendorActivityAnalytics(){
-    this.referenceService.loading( this.httpRequestLoader, true );
-    this.dashboardService.getVendorActivityAnalytics(this.dashboardAnalyticsDto)
-    .subscribe(
-      response => {
-        let statusCode = response.statusCode;
-        this.statusCode = statusCode;
-        if(statusCode==200){
-          this.vendorActivityViewDtos = response.data;
-          let size = this.vendorActivityViewDtos.length;
-          if(size==4){
-            this.divClass = "col-lg-3 col-md-3 col-sm-3 col-xs-6";
-        }else if(size==5){
-           this.divClass = "col-lg-2 col-md-3 col-sm-3 col-xs-6";
-        }else if(size==6){
-            this.divClass = "col-lg-2 col-md-3 col-sm-3 col-xs-6";
-        }
-        }
-        this.referenceService.loading( this.httpRequestLoader, false );
-      },
-      error => this.xtremandLogger.log(error),
-      () => { }
-  );
-  }
-
-  goToRedistributeDiv(campaignType:string){
-  
-}
 
 }

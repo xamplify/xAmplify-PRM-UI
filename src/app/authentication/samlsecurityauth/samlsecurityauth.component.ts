@@ -79,7 +79,7 @@ export class SamlsecurityauthComponent implements OnInit {
         if (result.companyBgImagePath) {
           this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
         } else {
-          this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+          this.authenticationService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
         }
         localStorage.setItem('appIcon',result.companyFavIconPath);
         this.referenceService.setFavIcon();

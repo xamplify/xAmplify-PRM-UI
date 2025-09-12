@@ -131,8 +131,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
             this.isPleaseWaitButtonDisplayed = true;
             this.loginWithUser(userName);
-            this.loading = false;
-            this.isPleaseWaitButtonDisplayed = false;
           }
           else {
             this.loginWithUser(userName);
@@ -335,8 +333,8 @@ bgIMage2:any;
            this.authenticationService.companyProfileName = this.envService.domainName;
            this.authenticationService.v_companyName = "xAmplify-Prm";
            this.vanityURLService.setVanityURLTitleAndFavIcon();   
-           this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-           this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
+           this.authenticationService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
+           this.authenticationService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
         } 
         this.cleaningLeftSidebar();
         this.authenticationService.navigateToDashboardIfUserExists();

@@ -55,7 +55,7 @@ export class PreviewLoginComponent implements OnInit {
     this.authenticationService.v_companyLogoImagePath = result.companyLogoImagePath;
     this.authenticationService.companyUrl = result.companyUrl;
     this.isBgColor = result.styleOneBgColor;
-    let path = "https://xamplify.io/assets/images/stratapps.jpeg";
+    let path = "assets/images/xAmplify-sandbox.png";
     if(result.loginType === "STYLE_ONE"){
       this.isStyleOne = true;
       this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;
@@ -84,7 +84,7 @@ export class PreviewLoginComponent implements OnInit {
     if(result.companyBgImagePath) {
       this.bgIMage2 = this.authenticationService.MEDIA_URL+ result.companyBgImagePath;
     } else {
-      this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
+      this.bgIMage2 = 'assets/images/xAmplify-sandbox.png';
     }
     this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
     this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;

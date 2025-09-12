@@ -166,7 +166,7 @@ export class AccessAccountComponent implements OnInit {
                 this.authenticationService.loginType = result.loginType;
                 this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
                 this.isBgColor = result.styleOneBgColor;
-                let path = "https://xamplify.io/assets/images/stratapps.jpeg";
+                let path = "assets/images/xAmplify-sandbox.png";
                 if (result.loginType === "STYLE_ONE") {
                     this.getStyleOneData(result, path);
                 } else {
@@ -175,7 +175,7 @@ export class AccessAccountComponent implements OnInit {
                 if (result.companyBgImagePath) {
                     this.bgIMage2 = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
                 } else {
-                    this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
+                    this.bgIMage2 = 'assets/images/xAmplify-sandbox.png';
                 }
                 if (!this.vanityURLEnabled) {
                     this.router.navigate(['/vanity-domain-error']);

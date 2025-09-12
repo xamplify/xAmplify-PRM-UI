@@ -123,9 +123,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         }else{
            this.contactOrPartnerLink =  "/home/contacts/manage";
         }
-        this.showSandboxText = ("https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled);
-
-
     }
     closeModal(event: any){
       console.log('closed modal'+event);

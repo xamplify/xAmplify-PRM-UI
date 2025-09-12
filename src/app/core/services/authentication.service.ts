@@ -206,34 +206,7 @@ export class AuthenticationService {
     }
 
     this.SHARE_URL = this.SERVER_URL + 'embed/';
-    if (this.SERVER_URL == "https://xamp.io/" && this.APP_URL == "https://xamplify.io/") {
-      xtremandLogger.info("production keys are used");
-      this.clientId = this.envService.clientId;
-      this.clientSecret = this.envService.clientSecret;
-      this.beePageClientId = this.envService.beePageProdClientId;
-      this.beePageClientSecret = this.envService.beePageProdClientSecret;
-    } else if (this.SERVER_URL == "https://aravindu.com/" && this.APP_URL == "https://xamplify.co/") {
-      xtremandLogger.info("QA keys are used");
-      this.clientId = this.envService.beeTemplateQAClientId;
-      this.clientSecret = this.envService.beeTemplateQAClientSecret;
-      this.beePageClientId = this.envService.beePageQAClientId;
-      this.beePageClientSecret = this.envService.beePageQAClientSecret;
-    } else if (this.SERVER_URL == "https://release.xamp.io/" && this.APP_URL == "https://xtremand.com/") {
-      xtremandLogger.info("Release keys are used");
-      this.clientId = this.envService.beeTemplateReleaseClientId;
-      this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
-      this.beePageClientId = this.envService.beePageReleaseClientId;
-      this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
-    } else {
-      xtremandLogger.info("dev keys are used");
-      this.clientId = this.envService.beeTemplateDevClientId;
-      this.clientSecret = this.envService.beeTemplateDevClientSecret;
-      this.beePageClientId = this.envService.beePageDevClientId;
-      this.beePageClientSecret = this.envService.beePageDevClientSecret;
-    }
 
-    this.beeHostApi = this.envService.beeHostApi;
-    this.beeRequestType = this.envService.beeRequestType;
     this.imagesHost = this.envService.imagesHost;
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;
@@ -276,7 +249,6 @@ export class AuthenticationService {
       return this.map;
     }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
       this.vanityURLUserRoles = response.data;
-      alert(this.vanityURLUserRoles);
       this.isWelcomePageEnabled = response.map.isWelcomePageEnabled;
     }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
@@ -298,10 +270,11 @@ export class AuthenticationService {
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
+            console.log(this.vanityURLUserRoles);
             userToken[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] =  this.isWelcomePageEnabled;
           }
 
-          if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
+          if(this.vanityURLEnabled && this.companyProfileName){
             userToken['roles'] = res.json().roles;
           }
 
@@ -864,13 +837,8 @@ export class AuthenticationService {
     if (this.getUserId()) {
       dto.userId = this.getUserId();
     }
-    let companyProfileName = this.companyProfileName;
-    if (companyProfileName != undefined && companyProfileName != "") {
-      dto.vanityUrlFilter = true;
-      dto.vendorCompanyProfileName = companyProfileName;
-    } else {
-      dto.vanityUrlFilter = false;
-    }
+    dto.vanityUrlFilter = true;
+    dto.vendorCompanyProfileName = this.envService.domainName;
     return dto;
   }
 

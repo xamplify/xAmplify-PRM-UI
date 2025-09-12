@@ -853,7 +853,6 @@ validateVerifiedLink(control: FormControl): { [key: string]: any } | null {
     return null; 
   }
   setTimeout(() => {
-  //let domain ="xamplify.co";
   let domain= new URL(this.envService.CLIENT_URL).hostname
   const pattern = new RegExp(domain);
   const linkControl = this.customLinkForm.get('link');

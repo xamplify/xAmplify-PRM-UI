@@ -3347,15 +3347,7 @@ export class ReferenceService {
   }
   goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
   }
-   /********Campaigns****/
-
-  public isProduction(){
-    return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
-  }
-
-  public isQA(){
-    return this.envService.SERVER_URL=="https://aravindu.com/" && this.envService.CLIENT_URL=="https://xamplify.co/";
-  }
+ 
 
 
   addBlur(divId:string){

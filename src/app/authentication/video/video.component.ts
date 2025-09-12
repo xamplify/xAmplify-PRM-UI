@@ -21,11 +21,7 @@ export class VideoComponent implements OnInit {
       this.properties.xamplify_router = this.authService.companyUrl;
     }else{
       let hostUrl = this.envService.CLIENT_URL;
-      if("https://xamplify.co/"==hostUrl){
-        this.authService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
-      }else{
-        this.authService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
-      }
+      this.authService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
       document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authService.v_companyBgImagePath2+')');
 
     }

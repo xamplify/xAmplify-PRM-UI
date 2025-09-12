@@ -333,51 +333,7 @@ listDefaultTemplates(userId:any){
   }
 
   generateAndDownloadPpt(blocks: any[], selectedTemplate: string): void {
-    let slideBlocks: any[];
-    if (typeof blocks === 'string') {
-      try {
-        slideBlocks = JSON.parse(blocks);
-      } catch (e) {
-        console.error('[pptx] could not parse blocks JSON', e);
-        return;
-      }
-    } else {
-      slideBlocks = blocks;
-    }
-
-    if (!Array.isArray(slideBlocks) || slideBlocks.length === 0) {
-      console.warn('[pptx] no slide data to send');
-      return;
-    }
-
-    const payload = { ppt_id: selectedTemplate, blocks: slideBlocks };
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    this.http.post(
-      'https://imageconverter.xamplify.co/generate_ppt',
-      payload,
-      { headers, responseType: 'blob' as 'blob' }
-    ).subscribe(
-      (blob: Blob) => {
-        this.downloadBlob(blob, 'Generated-Presentation.pptx');
-        this.referenceService.showSweetAlertSuccessMessage('Presentation Generated successfully!');
-      },
-      err => {
-        console.error('[pptx] generation failed', err.status, err.error);
-      }
-    );
-  }
-
-
-  private downloadBlob(blob: Blob, filename: string) {
-    const url = (window.URL).createObjectURL(blob);
-    const a   = document.createElement('a');
-    a.href      = url;
-    a.download  = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    (window.URL).revokeObjectURL(url);
+   
   }
 
   uploadCampaignDetails(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
