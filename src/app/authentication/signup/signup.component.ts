@@ -28,6 +28,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     loading = false;
     isError = false;
     vendorSignup = false;
+    prmSignup = false;
     invalidVendor = false;
     mainLoader:boolean;
     customResponse: CustomResponse = new CustomResponse();
@@ -102,6 +103,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
           if(this.router.url.includes('/signup/')) {  localStorage.removeItem('currentUser');}
           if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
+          if(this.router.url.includes('/prm-signup')){ this.prmSignup = true; }
           this.signUpForm = new FormGroup({
             firstName: new FormControl(),
             lastName: new FormControl(),
@@ -123,14 +125,24 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.signUpUser.vendorSignUp = this.vendorSignup;
         this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
         this.signUpUser.userId = this.authenticationService.getUserId();
-        this.userService.signUp(this.signUpUser)
+        let signUpObservable;
+        if (this.prmSignup) {
+            signUpObservable = this.userService.signUpAsPrm(this.signUpUser);
+        } else {
+            signUpObservable = this.userService.signUp(this.signUpUser);
+        }
+        signUpObservable
             .subscribe(
                 data => {
                     this.loading = false;
                     if (data !== undefined) {
                         if (data.statusCode==200) {
                             this.loading = false;
-                            this.referenceService.userProviderMessage = data.message;
+                            if (this.prmSignup) {
+                                this.referenceService.userProviderMessage = this.properties.PRM_SIGN_UP_SUCCESS;
+                            } else {
+                                this.referenceService.userProviderMessage = data.message;
+                            }
                             this.router.navigate(['/login']);
                         }else{
                            this.customResponse = new CustomResponse('ERROR',"Sign up is restricted.Please contact admin.",true);
