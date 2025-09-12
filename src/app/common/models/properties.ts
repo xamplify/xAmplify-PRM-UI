@@ -96,11 +96,12 @@ export class Properties {
 	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
 	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
-	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
-	TEAM_MEMBER_SIGN_UP_SUCCESS = "Thanks for signing up! Please login to access the platform.";
-	ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
-	SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
-	ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
+        SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
+        TEAM_MEMBER_SIGN_UP_SUCCESS = "Thanks for signing up! Please login to access the platform.";
+        PRM_SIGN_UP_SUCCESS = "Your PRM Account has been successfully created. Please login";
+        ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
+        SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
+        ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
 	WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
 	ERROR_EMAIL_ADDRESS = "The email address that you've entered doesn't match any account. Sign up for an account.";
 	OTHER_EMAIL_ISSUE = "UserDetailsService returned null, which is an interface contract violation";
