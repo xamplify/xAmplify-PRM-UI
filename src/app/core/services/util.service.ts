@@ -57,9 +57,25 @@ export class UtilService {
     }
 
     getJSONLocation(): Observable<any> {
-        const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
-        return this.http.get( locationurl, '' )
-            .map( response => response.json() );
+        const dummyResponse = {
+            as: "AS15169 Google LLC",
+            city: "San Francisco",
+            country: "United States",
+            countryCode: "US",
+            isp: "Google LLC",
+            lat: 37.7749,
+            lon: -122.4194,
+            org: "Google LLC",
+            query: "8.8.8.8",
+            region: "CA",
+            regionName: "California",
+            status: "success",
+            timezone: "America/Los_Angeles",
+            zip: "94105"
+        };
+
+        // Return static JSON as Observable
+        return Observable.of(dummyResponse);
     }
 
     sortOptionValues(sortValue: any, pagination: Pagination){

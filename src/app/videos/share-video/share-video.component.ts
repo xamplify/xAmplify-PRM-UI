@@ -227,7 +227,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        //this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         const player360 = this;
         this.videoJSplayer = videojs('videoId', {
@@ -480,7 +479,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
 
-       //this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         this.setVideoIdHeightWidth();
         $('.video-js .vjs-tech').css('width', '100%');
