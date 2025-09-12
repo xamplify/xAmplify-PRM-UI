@@ -764,6 +764,10 @@ export class AuthenticationService {
     }
   }
 
+  goToLoginAndReload(){
+    window.location.href = this.envService.CLIENT_URL + "login";
+  }
+
   closeSwal() {
     try {
       swal.close();

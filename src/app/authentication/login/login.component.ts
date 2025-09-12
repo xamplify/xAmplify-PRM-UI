@@ -97,9 +97,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.showVanityLoginErrorMessage();
       this.authenticationService.showVanityURLError1 = false;
     }
-    "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
-
-   this.route.queryParams.subscribe(params => {
+    this.signInText = "Sign In";
+    this.route.queryParams.subscribe(params => {
   if (params['returnUrl']) {
     this.returnUrl = decodeURIComponent(params['returnUrl']);
     localStorage.setItem('returnUrl', this.returnUrl); // persist in storage too

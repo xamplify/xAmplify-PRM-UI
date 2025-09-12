@@ -86,7 +86,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         }
     };
 
-    isNotVanityURL:boolean = false;
     vanityURLEnabled:boolean = false;
     /*** XBI-2362 ***/
     isBgColor:boolean;
@@ -143,7 +142,10 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                             } else {
                                 this.referenceService.userProviderMessage = data.message;
                             }
-                            this.router.navigate(['/login']);
+                            this.referenceService.showSweetAlertProcessingLoader(this.referenceService.userProviderMessage);
+                            setTimeout(() => {
+                             this.authenticationService.goToLoginAndReload();
+                            }, 3000);
                         }else{
                            this.customResponse = new CustomResponse('ERROR',"Sign up is restricted.Please contact admin.",true);
                         }
@@ -229,10 +231,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             'agree': [false, Validators.required],
             'firstName':  [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator])],
             'lastName': [this.signUpUser.lastName]
-            // 'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            // 'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
-            // 'city': [this.signUpUser.city, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50), Validators.pattern(this.regularExpressions.CITY_PATTERN)])],
-            // 'country': [this.countryNames.countries[0], Validators.compose([Validators.required, validateCountryName])],
         }, {
                 validator: matchingPasswords('password', 'confirmPassword')
             }
@@ -293,69 +291,11 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       try{
          this.customResponse = new CustomResponse();
         this.mainLoader = true;
-        if(this.vanityURLService.isVanityURLEnabled()){
-            this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-            this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-              this.vanityURLEnabled = true;
-              this.authenticationService.v_companyName = result.companyName;
-              this.authenticationService.vanityURLink = result.vanityURLink;
-              this.authenticationService.companyUrl = result.companyUrl;
-              /**** XBI-2362 *****/
-              this.authenticationService.loginType = result.loginType;
-              this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
-              this.isBgColor = result.styleOneBgColor;
-              let path = "https://xamplify.io/assets/images/stratapps.jpeg";
-              if (result.loginType === "STYLE_ONE") {
-                this.isStyleOne = true;
-                this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;
-                if (result.styleOneBgColor) {
-                  document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
-                } else {
-                  if (result.companyBgImagePath != null && result.companyBgImagePath != "") {
-                    document.documentElement.style.setProperty('--login-bg-image-style1', 'url(' + this.authenticationService.MEDIA_URL + result.companyBgImagePath + ')');
-                  } else {
-                    document.documentElement.style.setProperty('--login-bg-image-style1', 'url(' + path + ')');
-                  }
-                }
-              } else {
-                this.isStyleOne = false;
-                this.authenticationService.loginScreenDirection = result.loginScreenDirection;
-                if (result.styleTwoBgColor) {
-                  document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
-                } else {
-                  if (result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
-                    document.documentElement.style.setProperty('--login-bg-image', 'url(' + this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2 + ')');
-                  } else {
-                    document.documentElement.style.setProperty('--login-bg-image', 'url(' + path + ')');
-                  }
-                }
-              }
-              if (result.companyBgImagePath) {
-                this.bgIMage2 = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-              } else {
-                this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
-              }
-              this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-              this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-              if (result.companyBgImagePath && result.backgroundLogoStyle2) {
-                this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
-                this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-              } else if (result.companyBgImagePath) {
-                this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-              } else if (result.backgroundLogoStyle2) {
-                this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
-              } else {
-                this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-              }
-              this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-              /*XBI-3362*/
-              this.vanityURLService.setVanityURLTitleAndFavIcon();      
-            }, error => {
-              console.log(error);
-            });
-          }else{
-            this.isNotVanityURL = true;
-          }
+        this.vanityURLEnabled = true;
+        this.authenticationService.v_companyName = "xAmplify-Prm";
+        this.vanityURLService.setVanityURLTitleAndFavIcon();   
+        this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+        this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
         if(this.router.url.includes('/signup/')){
@@ -376,32 +316,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.mainLoader = false;
     }
 
-    getActiveLoginTemplate(companyProfileName:any){
-      this.vanityURLService.getActiveLoginTemplate(companyProfileName)
-      .subscribe(
-        data => {
-          if(data['data']!=undefined){
-            this.loginStyleId = data.data.templateId;
-            this.authenticationService.lognTemplateId = this.loginStyleId;
-            this.createdUserId = data.data.createdBy;
-            this.previewTemplate(this.loginStyleId,this.createdUserId);
-          }
-        })
-  }
-
-  previewTemplate(id: number,createdBy:number) {
-    $(this.htmlContent).empty();
-    this.vanityURLService.getLogInTemplateById(id, createdBy).subscribe(
-      response => {
-        if (response.statusCode == 200) {
-          this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.data.htmlBody)
-          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
-        } else {
-          this.customResponse = new CustomResponse('ERROR', response.message, true)
-        }
-      }
-    )
-  }
 
 
 }

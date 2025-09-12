@@ -98,7 +98,7 @@ export class Properties {
 
         SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
         TEAM_MEMBER_SIGN_UP_SUCCESS = "Thanks for signing up! Please login to access the platform.";
-        PRM_SIGN_UP_SUCCESS = "Your PRM Account has been successfully created. Please login";
+        PRM_SIGN_UP_SUCCESS = "Your PRM Account has been successfully created.";
         ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
         SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
         ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
