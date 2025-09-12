@@ -331,7 +331,7 @@ bgIMage2:any;
         if (this.vanityURLService.isVanityURLEnabled()) {
            this.vanityURLEnabled = true;
            this.authenticationService.companyProfileName = this.envService.domainName;
-           this.authenticationService.v_companyName = "xAmplify-Prm";
+           this.authenticationService.v_companyName = "xAmplify";
            this.vanityURLService.setVanityURLTitleAndFavIcon();   
            this.authenticationService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
            this.authenticationService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";

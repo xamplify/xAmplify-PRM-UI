@@ -235,7 +235,7 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
   }
 
   checkVanityURLDetails() {
-    this.authenticationService.v_companyName = "xAmplify-Prm";
+    this.authenticationService.v_companyName = "xAmplify";
      this.setVanityURLTitleAndFavIcon(); 
      this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
      this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";

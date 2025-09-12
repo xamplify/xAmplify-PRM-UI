@@ -293,7 +293,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
          this.customResponse = new CustomResponse();
         this.mainLoader = true;
         this.vanityURLEnabled = true;
-        this.authenticationService.v_companyName = "xAmplify-Prm";
+        this.authenticationService.v_companyName = "xAmplify";
         this.vanityURLService.setVanityURLTitleAndFavIcon();   
         this.authenticationService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
         this.authenticationService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
