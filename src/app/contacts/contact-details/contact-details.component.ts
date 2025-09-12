@@ -16,10 +16,8 @@ import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
@@ -31,8 +29,8 @@ declare var $: any, swal: any;
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, CalendarIntegrationService,
-    CallIntegrationService, DamService]
+  providers: [LeadsService, DealsService, Properties, UserService,
+    DamService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -160,8 +158,8 @@ export class ContactDetailsComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public calendarIntegratonService: CalendarIntegrationService, public integrationService: IntegrationService,
-    public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
+     public integrationService: IntegrationService,
+    public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -646,18 +644,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   getActiveCalendarDetails() {
-    this.ngxLoading = true;
-    this.calendarIntegratonService.getActiveCalendarDetails().subscribe(
-      response => {
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.activeCalendarDetails = response.data;
-        }
-        this.ngxLoading = false;
-      },
-      error => {
-        this.ngxLoading = false;
-      }
-    )
+    
   }
 
   ngAfterViewChecked() {
@@ -794,18 +781,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   getActiveCallIntegrationDetails() {
-    this.ngxLoading = true;
-    this.callIntegratonService.getActiveCallIntegration().subscribe(
-      response => {
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.activeCallDetails = response.data;
-        }
-        this.ngxLoading = false;
-      },
-      error => {
-        this.ngxLoading = false;
-      }
-    )
+    
   }
 
   reloadCallTab() {

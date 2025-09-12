@@ -7,8 +7,6 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { EnvService } from 'app/env.service';
-import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
-import { CallIntegrationService } from 'app/core/services/call-integration.service';
 
 declare var swal: any;
 
@@ -16,7 +14,7 @@ declare var swal: any;
   selector: 'app-vanity-social-contacts-callback',
   templateUrl: './vanity-social-contacts-callback.component.html',
   styleUrls: ['./vanity-social-contacts-callback.component.css'],
-  providers: [CalendarIntegrationService, CallIntegrationService]
+  providers: []
 })
 export class VanitySocialContactsCallbackComponent implements OnInit {
 
@@ -28,8 +26,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
 			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
-			private integrationService: IntegrationService,public env: EnvService, public calendarIntegrationService: CalendarIntegrationService,
-			private callIntegrationService: CallIntegrationService) {
+			private integrationService: IntegrationService,public env: EnvService
+			) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
@@ -217,70 +215,11 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	}
 
 	calendarIntegrationCallback(code: string, type: string) {
-		try {
-			this.calendarIntegrationService.handleCalendarCallbackByType(code, type)
-				.subscribe(
-					result => {
-						this.referenceService.integrationCallBackStatus = true;
-						this.xtremandLogger.info("Calendar Integration Callback :: " + result);
-						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if (vanityUrlFilter == 'true') {
-							if (type == 'calendly') {
-								this.postingMessage = "isCalendlyAuth";
-							}
-							this.postingMessageToParentWindow(this.postingMessage);
-						}
-						else {
-							this.referenceService.integrationCallBackStatus = true;
-							this.router.navigate(['/home/dashboard/myprofile']);
-						}
-					},
-					error => {
-						localStorage.removeItem("userAlias");
-						this.xtremandLogger.info(error)
-					});
-		} catch (error) {
-			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "calendarIntegrationCallback()");
-		}
+	
 	}
 
 	callIntegrationCallback(code: string, type: string) {
-		try {
-			this.callIntegrationService.handleCallIntegrationCallbackByType(code, type)
-				.subscribe(
-					result => {
-						this.referenceService.integrationCallBackStatus = true;
-						this.xtremandLogger.info("Call Integration Callback :: " + result);
-						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if (vanityUrlFilter == 'true') {
-							if (type == 'aircall') {
-								this.postingMessage = "isAircallAuth";
-							} 
-							/*** XNFR-1062 ***/
-							else if (type == 'gmail') {  
-								this.postingMessage = "gmail";
-							} else if (type == 'outlook') {
-								this.postingMessage = "outlook";	
-							}
-							/*** XNFR-1062 ***/
-							this.postingMessageToParentWindow(this.postingMessage);
-						}
-						else {
-							this.referenceService.integrationCallBackStatus = true;
-							this.router.navigate(['/home/dashboard/myprofile']);
-						}
-					},
-					error => {
-						localStorage.removeItem("userAlias");
-						this.xtremandLogger.info(error)
-					});
-		} catch (error) {
-			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "callIntegrationCallback()");
-		}
+		
 	}
 
 	

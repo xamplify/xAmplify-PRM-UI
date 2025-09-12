@@ -105,8 +105,6 @@ import { UniversalSearchComponent } from './universal-search/universal-search.co
 import { XamplifyCustomFieldsSettingsComponent } from './xamplify-custom-fields-settings/xamplify-custom-fields-settings.component';
 import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
-import { CalendarIntegrationsComponent } from './calendar-integrations/calendar-integrations.component';
-import { CalendarIntegrationSettingsComponent } from './calendar-integration-settings/calendar-integration-settings.component';
 import { ApprovalControlManagementSettingsComponent } from './approval-control-management-settings/approval-control-management-settings.component';
 import { SignatureService } from './services/signature.service';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
@@ -115,8 +113,6 @@ import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-comp
 import { MergePartnerCompaniesComponent } from './merge-partner-companies/merge-partner-companies.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
 import { CustomHtmlBlockComponent } from './custom-html-block/custom-html-block.component';
-import { CallIntegrationsComponent } from './call-integrations/call-integrations.component';
-import { CallIntegrationSettingsComponent } from './call-integration-settings/call-integration-settings.component';
 import { PartnerContactUploadManagementSettingsComponent } from './partner-contact-upload-management-settings/partner-contact-upload-management-settings.component';
 import { ContactStatusDropDownComponent } from './contact-status-drop-down/contact-status-drop-down.component';
 
@@ -195,15 +191,11 @@ import { ContactStatusDropDownComponent } from './contact-status-drop-down/conta
         XamplifyCustomFieldsSettingsComponent,
         LeadCustomFieldsSettingsComponent,
         AddCustomFieldsComponent,
-        CalendarIntegrationsComponent,
-        CalendarIntegrationSettingsComponent,
         ApprovalControlManagementSettingsComponent,
         CustomDashboardSettingsComponent,
         AddDefaultCompaniesOrMapLogoComponent,
         MergePartnerCompaniesComponent,
         CustomHtmlBlockComponent,
-        CallIntegrationsComponent,
-        CallIntegrationSettingsComponent,
         PartnerContactUploadManagementSettingsComponent,
         ContactStatusDropDownComponent,
     ],

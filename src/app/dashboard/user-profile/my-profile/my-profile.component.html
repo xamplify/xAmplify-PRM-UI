@@ -2323,18 +2323,6 @@
                                             <app-oauth-sso-configuration></app-oauth-sso-configuration>
                                         </div>
 
-                                        <!-- Calendar Integration settings -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'calendarIntegrations'}"
-                                         *ngIf="showCalendarIntegrations">
-                                            <app-calendar-integrations></app-calendar-integrations>
-                                        </div>
-
-                                        <!-- Call Integration settings -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'callIntegrations'}"
-                                         *ngIf="showCallIntegrations">
-                                            <app-call-integrations></app-call-integrations>
-                                        </div>
-
                                         <!-- Categories -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'categories'}">
                                             <ng-container *ngIf="!isFolderPreview">
