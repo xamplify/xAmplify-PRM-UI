@@ -154,16 +154,44 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                     }
                 },
                 error => {
-                    this.loading = false;
-                    if (error === "USERNAME IS ALREADY EXISTING") {
-                        this.formErrors['userName'] = error;
-                        // this.isLoading = false;
-                    } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
-                        this.formErrors['emailId'] = 'Email Id already exists';
-                        // this.isLoading = false;
-                    } else {
-                        this.xtremandLogger.errorPage(error);
+          this.loading = false;
+          if (error === "USERNAME IS ALREADY EXISTING") {
+            this.formErrors['userName'] = error;
+          } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
+            this.formErrors['emailId'] = 'Email Id already exists';
+          } else if (
+            typeof error === 'object' && error.statusCode === 400 && error.message &&
+            this.router.url === '/prm-signup'
+          ) {
+            // Show main error message only for /prm-signup
+            this.customResponse = new CustomResponse('ERROR', error.message, true);
+            // Show field-specific errors if present
+            if (error.errors) {
+              Object.keys(error.errors).forEach(field => {
+                if (this.formErrors.hasOwnProperty(field)) {
+                  this.formErrors[field] = error.errors[field];
+                }
+              });
+            }
+          } else if (typeof error === 'string' && error.includes('Required fields are missing')) {
+            let message = error;
+            try {
+              const parsed = JSON.parse(error);
+              if (parsed && parsed.message) {
+                message = parsed.message;
+                if (parsed.errors) {
+                  Object.keys(parsed.errors).forEach(field => {
+                    if (this.formErrors.hasOwnProperty(field)) {
+                      this.formErrors[field] = parsed.errors[field];
                     }
+                  });
+                }
+              }
+            } catch (e) {}
+            this.customResponse = new CustomResponse('ERROR', message, true);
+          } else {
+            this.xtremandLogger.errorPage(error);
+          }
                 },
                 () => this.xtremandLogger.log("Done")
             );

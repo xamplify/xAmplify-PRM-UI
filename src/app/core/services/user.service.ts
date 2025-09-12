@@ -67,7 +67,7 @@ export class UserService {
     }
 
     signUpAsPrm(data: User) {
-        return this.http.post(this.URL + "register/signUpAsPrm", data)
+    return this.http.post(this.URL + "signUpAsPrm", data)
             .map(this.extractData)
             .catch(this.signUpHandleError);
 
