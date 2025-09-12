@@ -155,15 +155,11 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 },
                 error => {
           this.loading = false;
-          if (error === "USERNAME IS ALREADY EXISTING") {
-            this.formErrors['userName'] = error;
-          } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
-            this.formErrors['emailId'] = 'Email Id already exists';
-          } else if (
+          if (
             typeof error === 'object' && error.statusCode === 400 && error.message &&
             this.router.url === '/prm-signup'
           ) {
-            // Show main error message only for /prm-signup
+            // Always show main error message for /prm-signup
             this.customResponse = new CustomResponse('ERROR', error.message, true);
             // Show field-specific errors if present
             if (error.errors) {
@@ -173,6 +169,15 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 }
               });
             }
+            // If no field errors, still show the main error message
+            return;
+          } else if (error === "USERNAME IS ALREADY EXISTING") {
+            this.formErrors['userName'] = error;
+          } else if (
+            error === "USER IS ALREADY EXISTING WITH THIS EMAIL" ||
+            (typeof error === 'string' && error.includes('User is already existing with this email'))
+          ) {
+            this.formErrors['emailId'] = 'Email Id already exists';
           } else if (typeof error === 'string' && error.includes('Required fields are missing')) {
             let message = error;
             try {
