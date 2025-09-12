@@ -73,7 +73,7 @@ export class ManageDealsComponent implements OnInit {
   showPartnerList = false;
   showCampaignDeals = false;
   selectedDeal: Deal;
-  isCommentSection = false;
+  // isCommentSection = false;
   selectedCampaign: any;
   showFilterOption: boolean = false;
   fromDateFilter: any = "";
@@ -852,15 +852,15 @@ export class ManageDealsComponent implements OnInit {
     this.getCounts();
   }
 
-  showComments(deal: any) {
-    this.selectedDeal = deal;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // showComments(deal: any) {
+  //   this.selectedDeal = deal;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedDeal.unReadChatCount = 0;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // addCommentModalClose(event: any) {
+  //   this.selectedDeal.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   downloadDeals1() {
     let type = this.dealsPagination.filterKey;
@@ -1376,7 +1376,7 @@ export class ManageDealsComponent implements OnInit {
 
   resetModalPopup(){
     this.updateCurrentStage = false;
-    this.isCommentSection = false;
+    // this.isCommentSection = false;
     this.textAreaDisable=false;
     this.showDeals();
   }

@@ -77,7 +77,7 @@ export class ManageLeadsComponent implements OnInit {
   showLeadForm = false;
   showDealForm = false;
   selectedLead: Lead;
-  isCommentSection = false;
+  // isCommentSection = false;
   selectedCampaign: any;
   showFilterOption: boolean = false;
   fromDateFilter: any = "";
@@ -847,15 +847,15 @@ triggerUniversalSearch(){
     this.leadId = leadId;
   }
 
-  showComments(lead: any) {
-    this.selectedLead = lead;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // showComments(lead: any) {
+  //   this.selectedLead = lead;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedLead.unReadChatCount = 0;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // addCommentModalClose(event: any) {
+  //   this.selectedLead.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   downloadLeads1() {
     let type = this.leadsPagination.filterKey;
@@ -1266,11 +1266,11 @@ triggerUniversalSearch(){
     this.showLeads();
   }
 
-  resetUnReadChatCount() {
-    this.showLeadForm = false;
-    this.showFilterOption = false;
-    this.showLeads();
-  }
+  // resetUnReadChatCount() {
+  //   this.showLeadForm = false;
+  //   this.showFilterOption = false;
+  //   this.showLeads();
+  // }
 
   findAllRegisteredByCompanies(){
     this.registeredByCompanyLoader = true;

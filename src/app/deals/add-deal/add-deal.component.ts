@@ -114,7 +114,7 @@ export class AddDealComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
-  showCommentActions: boolean = false;
+  // showCommentActions: boolean = false;
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
@@ -169,7 +169,7 @@ export class AddDealComponent implements OnInit {
 
   /***XNFR-623***/
   commentsCustomResponse:CustomResponse = new CustomResponse();
-  commentsLoader = true;
+  // commentsLoader = true;
   commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   isCommentAndHistoryCollapsed = false;
@@ -226,7 +226,7 @@ export class AddDealComponent implements OnInit {
     this.deal.createdForPipelineStageId = 0;
     this.deal.createdByPipelineStageId = 0;
     if (this.actionType === "add") {
-      this.showCommentActions = true;
+      // this.showCommentActions = true;
       this.showAttachLeadButton = true;
       if (this.hideAttachLeadButton) {
         this.showAttachLeadButton = false;
@@ -268,13 +268,13 @@ export class AddDealComponent implements OnInit {
     this.getVendorList();
 
     /***XNFR-623***/
-    this.loadComments();
+    // this.loadComments();
   }
 
   setDeafultValuesForDeal() {
     this.actionType = "add";
     this.isThroughAddUrl = true;
-    this.showCommentActions = true;
+    // this.showCommentActions = true;
     this.showAttachLeadButton = true;
     if (this.hideAttachLeadButton) {
       this.showAttachLeadButton = false;
@@ -287,36 +287,36 @@ export class AddDealComponent implements OnInit {
   }
 
   /***XNFR-623***/
-  private loadComments() {
-    if (this.preview) {
-      this.commentsLoader = true;
-      this.commentsCustomResponse = new CustomResponse();
-      this.dealsService.findDealAndLeadInfoForComments(this.dealId).
-        subscribe(
-          response => {
-            let statusCode = response.statusCode;
-            if (statusCode == 200) {
-              let data = response.data;
-              this.commentDealAndLeadDto = data;
-              let associatedContact = data['associatedContact'];
-              let showLeadInfo = associatedContact != undefined;
-              this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
-              if(showLeadInfo){
-                this.commentDealAndLeadDto.associatedContact = associatedContact;
-                this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
-              }
-              this.commentsLoader = false;
-            } else {
-              this.commentsLoader = false;
-              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.",true);
-            }
-          }, error => {
-            this.commentsLoader = false;
-            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
-          }
-        );
-    }
-  }
+  // private loadComments() {
+  //   if (this.preview) {
+  //     this.commentsLoader = true;
+  //     this.commentsCustomResponse = new CustomResponse();
+  //     this.dealsService.findDealAndLeadInfoForComments(this.dealId).
+  //       subscribe(
+  //         response => {
+  //           let statusCode = response.statusCode;
+  //           if (statusCode == 200) {
+  //             let data = response.data;
+  //             this.commentDealAndLeadDto = data;
+  //             let associatedContact = data['associatedContact'];
+  //             let showLeadInfo = associatedContact != undefined;
+  //             this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
+  //             if(showLeadInfo){
+  //               this.commentDealAndLeadDto.associatedContact = associatedContact;
+  //               this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
+  //             }
+  //             this.commentsLoader = false;
+  //           } else {
+  //             this.commentsLoader = false;
+  //             this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.",true);
+  //           }
+  //         }, error => {
+  //           this.commentsLoader = false;
+  //           this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
+  //         }
+  //       );
+  //   }
+  // }
 
   /***XNFR-623***/
   toggleCommentsHistory(event:any){
@@ -437,9 +437,9 @@ export class AddDealComponent implements OnInit {
             if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
               self.ownDeal = true;
             }
-            if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
-              self.showCommentActions = true;
-            }
+            // if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
+            //   self.showCommentActions = true;
+            // }
 
             if (self.deal.associatedContact != undefined) {
               self.showContactInfo = true;
@@ -1187,11 +1187,11 @@ export class AddDealComponent implements OnInit {
     }
   }
 
-  commentsection(property: DealDynamicProperties) {
-    property.isCommentSection = !property.isCommentSection;
-    property.unReadPropertyChatCount = 0;
+  // commentsection(property: DealDynamicProperties) {
+  //   property.isCommentSection = !property.isCommentSection;
+  //   property.unReadPropertyChatCount = 0;
 
-  }
+  // }
 
   deleteComment(i: number, comment: DealDynamicProperties) {
     try {

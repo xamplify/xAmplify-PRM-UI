@@ -221,17 +221,17 @@
             <div class="col-sm-6 col-xs-12 px-10 pl0">
               <app-modal-popup-loader *ngIf="commentsLoader"></app-modal-popup-loader>
               <app-response-message [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
-              <div *ngIf="!commentsLoader && !commentsCustomResponse?.isVisible" class="panel-group" role="tablist" aria-multiselectable="true">
+             <!-- <div *ngIf="!commentsLoader && !commentsCustomResponse?.isVisible" class="panel-group" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default deal-bgcolor">
-                  <div class="panel-heading deal-bgcolor">
+                   <div class="panel-heading deal-bgcolor">
                     <h4 class="panel-title">
                       <a href="commentsAndHistory" (click)="toggleCommentsHistory($event)">
                         <i [ngClass]="{'fa-chevron-up collapseOut': !isCommentAndHistoryCollapsed, 'fa-chevron-down collapseIn': isCommentAndHistoryCollapsed}"
                           class="arrowpositinon fa collapseIconColorCu float-right" aria-hidden="false"></i>
                         Comments/History</a>
                     </h4>
-                  </div>
-                  <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
+                  </div> -->
+                  <!-- <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
                     <div class="panel-body br-unset pl0 pr0 pt0 pb0 commentScroll">
                       <div class="card-bgcolors h-260 pl0 pr0">
                         <div *ngIf="!commentsLoader"  class="deal-details">
@@ -260,7 +260,7 @@
                                     <span><strong>Deal ID </strong></span>: {{commentDealAndLeadDto?.referenceId}}
                                   </h5>
                                 </div>
-                              <!--Registered Details-->
+                              
                                 <div class="underline mt5"><strong>{{LEAD_CONSTANTS?.addedBy}}:</strong></div>
                                 <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByName" [title]="commentDealAndLeadDto?.createdByName">
                                   <span><strong>Name</strong></span>: {{commentDealAndLeadDto?.createdByName | slice:0:25}}
@@ -288,7 +288,7 @@
                                     <span *ngIf="commentDealAndLeadDto?.partnerType?.length > 25">..</span>
                                   </h5>
                                 </div>
-                                <!--Lead Created Details-->
+                                
                               <div class="lead-details-border mt5">
                                 <h5 class="mt10">
                                   <span class="ml5 underline"><strong>Lead Details:</strong></span>
@@ -306,7 +306,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </ng-container>
         </div>
@@ -358,11 +358,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle pull-right" (click)="closeLeadModal()"><i class="fa fa-times" aria-hidden="true"></i></button>
-        <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" data-toggle="tooltip"
+        <!-- <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" data-toggle="tooltip"
           data-placement="bottom" title="Comments/History" (click)="showComments(lead)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="lead?.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: 6px;margin-top: -35px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-        </button>
+        </button> -->
         <h4 class="modal-title text-center">{{leadFormTitle}}</h4>
       </div>
       <div class="modal-body border-bottom-1px">

@@ -69,7 +69,7 @@ export class AddLeadComponent implements OnInit {
 
   //XNFR-426
   selectedLead: Lead;
-  isCommentSection = false;
+  // isCommentSection = false;
   editTextArea: boolean = false;
 
   disableCreatedFor: boolean = false;
@@ -873,18 +873,18 @@ export class AddLeadComponent implements OnInit {
 
 
   /********XNFR-426********/
-  showComments(lead: any) {
-    this.selectedLead = lead;
-    this.isCommentSection = !this.isCommentSection;
-    this.editTextArea = !this.editTextArea;
-  }
+  // showComments(lead: any) {
+  //   this.selectedLead = lead;
+  //   this.isCommentSection = !this.isCommentSection;
+  //   this.editTextArea = !this.editTextArea;
+  // }
 
-  addCommentModalClose(event: any) {
-    this.selectedLead.unReadChatCount = 0;
+  // addCommentModalClose(event: any) {
+  //   this.selectedLead.unReadChatCount = 0;
     // console.log(this.selectedLead.unReadChatCount)
-    this.isCommentSection = !this.isCommentSection;
-    this.editTextArea = !this.editTextArea;
-  }
+  //   this.isCommentSection = !this.isCommentSection;
+  //   this.editTextArea = !this.editTextArea;
+  // }
 
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;

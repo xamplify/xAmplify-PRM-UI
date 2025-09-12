@@ -122,7 +122,7 @@ export class CustomAddLeadComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
-  showCommentActions: boolean = false;
+  // showCommentActions: boolean = false;
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
@@ -213,9 +213,9 @@ export class CustomAddLeadComponent implements OnInit {
   companyError: boolean = true;
   lastNameError: boolean = true;
   /***XNFR-623***/
-  commentsCustomResponse:CustomResponse = new CustomResponse();
-  commentsLoader = true;
-  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  // commentsCustomResponse:CustomResponse = new CustomResponse();
+  // commentsLoader = true;
+  // commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   isCommentAndHistoryCollapsed = false;
   editTextArea = false;
@@ -290,7 +290,7 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
       this.disableCreatedFor = true;
     }
-    this.loadComments();
+    // this.loadComments();
   }
 
   ngOnDestroy(){
@@ -356,29 +356,29 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
    /***XNFR-623***/
-   private loadComments() {
-    if (this.preview) {
-      this.commentsLoader = true;
-      this.commentsCustomResponse = new CustomResponse();
-      this.leadsService.findLeadAndLeadInfoForComments(this.leadId).
-        subscribe(
-          response => {
-            let statusCode = response.statusCode;
-            if (statusCode == 200) {
-              let data = response.data;
-              this.commentDealAndLeadDto = data;
-              this.commentsLoader = false;
-            } else {
-              this.commentsLoader = false;
-              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this lead.",true);
-            }
-          }, error => {
-            this.commentsLoader = false;
-            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
-          }
-        );
-    }
-  }
+  //  private loadComments() {
+  //   if (this.preview) {
+  //     this.commentsLoader = true;
+  //     this.commentsCustomResponse = new CustomResponse();
+  //     this.leadsService.findLeadAndLeadInfoForComments(this.leadId).
+  //       subscribe(
+  //         response => {
+  //           let statusCode = response.statusCode;
+  //           if (statusCode == 200) {
+  //             let data = response.data;
+  //             this.commentDealAndLeadDto = data;
+  //             this.commentsLoader = false;
+  //           } else {
+  //             this.commentsLoader = false;
+  //             this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this lead.",true);
+  //           }
+  //         }, error => {
+  //           this.commentsLoader = false;
+  //           this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
+  //         }
+  //       );
+  //   }
+  // }
 
   /***XNFR-623***/
   toggleCommentsHistory(event:any){

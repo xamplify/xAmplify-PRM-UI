@@ -464,7 +464,7 @@
                                   </a>
                                 </ng-container>
 
-                                <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
+                                <!-- <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom"
                                   title="Comments/History">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
@@ -472,7 +472,7 @@
                                   <div class="clickicons"></div>
                                 </a>
                                 <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default notify-badge"
-                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span> -->
                               </div>
                             </td>
                           </tr>
@@ -787,14 +787,14 @@
       <a (click)="closeDealForm()" class="pull-right close-circle mrg1">        
         <i class="fa fa-times" aria-hidden="true"></i>
       </a>
-      <a class="pull-right close-circle" *ngIf="actionType === 'edit'" data-rel="fancybox-button"
+      <!-- <a class="pull-right close-circle" *ngIf="actionType === 'edit'" data-rel="fancybox-button"
         (click)="showComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments/History"
         style="margin: 0px -10px;padding-top: 7px;padding-left: 5px;">
         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
           style="font-size:18px"></span>
         <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default edit-deal-notify"
           style="background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
-      </a>
+      </a> -->
 
     </div>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
@@ -802,14 +802,15 @@
   </div>
 </section>
 
+<!-- [isCommentSection]="isCommentSection"   (showCommentsEmitter)="showComments(deal)"-->
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
-  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
-  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
+  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" 
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable"
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
-  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+<!-- <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup> -->
 
 <!-- XNFR-840 -->
 <app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" [opportunityType]="'DEAL'"

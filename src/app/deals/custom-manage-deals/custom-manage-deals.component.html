@@ -265,14 +265,14 @@
                           </a>
                         </ng-container>
 
-                        <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
+                        <!-- <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
                           data-toggle="tooltip" data-placement="bottom" title="Comments/History">
                           <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                           </i>
                           <div class="clickicons"></div>
                         </a>
                         <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default notify-badge"
-                          style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                          style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span> -->
                       </div>
                     </td>
                   </tr>
@@ -316,11 +316,13 @@
   [companyJourneyId]="companyJourneyId"
   [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts"></app-add-deal>
 
+
+  <!-- [isCommentSection]="isCommentSection"   (showCommentsEmitter)="showComments($event)" -->
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="selectedDeal" [isFromCompanyJourney]="isCompanyJourney"
-  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
-  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments($event)"
+  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" 
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" 
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
-
+<!-- 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
-  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup> -->

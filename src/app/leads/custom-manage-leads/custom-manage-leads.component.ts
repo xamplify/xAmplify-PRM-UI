@@ -54,7 +54,7 @@ export class CustomManageLeadsComponent implements OnInit {
   showLeadForm: boolean;
   loggedInUserId: number;
   showFilterOption: boolean;
-  isCommentSection: boolean;
+  // isCommentSection: boolean;
   selectedTabIndex: number;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   selectedFilterIndex: number = 1;
@@ -223,10 +223,10 @@ export class CustomManageLeadsComponent implements OnInit {
 
   }
 
-  showComments(lead: any) {
-    this.selectedLead = lead;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // showComments(lead: any) {
+  //   this.selectedLead = lead;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   closeDealForm() {
     this.showDealForm = false;
@@ -236,10 +236,10 @@ export class CustomManageLeadsComponent implements OnInit {
     this.showLeadForm = false;
   }
 
-  commentModalPopUpClose(event: any) {
-    this.selectedLead.unReadChatCount = 0;
-    this.isCommentSection = !this.isCommentSection;
-  }
+  // commentModalPopUpClose(event: any) {
+  //   this.selectedLead.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
 
   registerDealForm(leadId: any) {
     this.showDealForm = true;
