@@ -50,7 +50,7 @@ describe('SignupComponent', () => {
   });
 
   it('should enable email field for PRM sign up', () => {
-    expect(component.signUpForm.get('emailId')?.enabled).toBeTrue();
+    expect(component.signUpForm.get('emailId')!.enabled).toBeTrue();
   });
 });
 

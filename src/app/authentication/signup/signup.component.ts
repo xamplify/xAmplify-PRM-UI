@@ -236,7 +236,10 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             .subscribe(data => this.onValueChanged(data));
         this.onValueChanged(); // (re)set validation messages now
         if (!this.prmSignup) {
-            this.signUpForm.get('emailId')?.disable();
+            const emailCtrl = this.signUpForm.get('emailId');
+            if (emailCtrl) {
+                emailCtrl.disable();
+            }
         }
     }
 
