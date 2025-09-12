@@ -66,6 +66,13 @@ export class UserService {
 
     }
 
+    signUpAsPrm(data: User) {
+        return this.http.post(this.URL + "register/signUpAsPrm", data)
+            .map(this.extractData)
+            .catch(this.signUpHandleError);
+
+    }
+
     sendPassword(emailId: string) {
         return this.http.get(this.URL + "register/forgotpassword?emailId=" + emailId + "&companyProfileName=" + this.authenticationService.companyProfileName)
             .map(this.extractData)

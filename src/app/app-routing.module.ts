@@ -78,11 +78,12 @@ export const routes: Routes = [
 
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
-	{ path: 'signup', component: SignupComponent },
-	{ path: 'signup/:alias', component: SignupComponent },
-	{ path: 'v-signup', component: SignupComponent },
-	{ path: 'forgot-password', component: ForgotPasswordComponent },
-	{ path: 'register/verifyemail/user', component: VerifyEmailComponent },
+        { path: 'signup', component: SignupComponent },
+        { path: 'signup/:alias', component: SignupComponent },
+        { path: 'v-signup', component: SignupComponent },
+        { path: 'prm-signup', component: SignupComponent },
+        { path: 'forgot-password', component: ForgotPasswordComponent },
+        { path: 'register/verifyemail/user', component: VerifyEmailComponent },
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'home', redirectTo: 'home/dashboard', pathMatch: 'full' },
 	{
