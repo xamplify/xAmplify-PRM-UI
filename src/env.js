@@ -6,7 +6,7 @@
 	/*************Local*******************************/
 
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; 
-	window.__env.SERVER_URL = 'http://localhost:8090/'; 
+	window.__env.SERVER_URL = 'http://localhost:8080/'; 
 	window.__env.SCHEDULER_URL = window.__env.SERVER_URL;
 	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.PREVIEW_HOST = "http://localhost:5000/";

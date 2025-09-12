@@ -129,7 +129,7 @@ export class VideoFileService {
           .catch(this.handleError);
     }
     getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias: string): Observable<SaveVideoFile> {
-      const url = this.envService.SERVER_URL+'xtremand-rest/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
+      const url = this.envService.SERVER_URL+'xamplify-prm-api/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
       return this.http.get(url, '')
         .map(this.extractData)
         .catch(this.handleError);
