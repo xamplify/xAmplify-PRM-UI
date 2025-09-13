@@ -1,4 +1,4 @@
-# XtremandWebCli
+# xamplify-prm-ui
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.2.
 
@@ -12,7 +12,7 @@ To get started locally, follow these instructions:
 `npm install -g @angular/cli@1.4.2`
 check if the cli installed properly or not with `ng --version` command
 
-3.Clone the `xtremand-web-cli` project to your local computer using `git`
+3.Clone the `xamplify-prm-ui` project to your local computer using `git`
 
 4.Run `npm install` to download the node modules of your project. Those files will help you to run the project locally.
 

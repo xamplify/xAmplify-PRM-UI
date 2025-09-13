@@ -1,7 +1,7 @@
 import { BasePage } from './app.po';
 import { browser } from 'protractor';
 
-describe('xtremand-web-cli App', () => {
+describe('xamplify-prm-ui App', () => {
   let page: BasePage;
 
   beforeEach(() => {
