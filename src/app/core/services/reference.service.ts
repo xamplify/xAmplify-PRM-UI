@@ -1940,11 +1940,11 @@ export class ReferenceService {
     } else {
       partnerLogo = partnerLogo.replace(
         "http://localhost:8080",
-        "https://xamp.io"
+        "https://api.myapp.com"
       );
     }
     updatedBody = updatedBody.replace(
-      "https://xamp.io/vod/images/co-branding.png",
+      "https://api.myapp.com/vod/images/co-branding.png",
       partnerLogo
     );
     return (updatedBody = this.replaceCoBrandingDummyUrl(
@@ -2055,7 +2055,7 @@ export class ReferenceService {
         "javascript:void(0)"
       );
       updatedBody = updatedBody.replace(
-        "https://xamp.io/vod/images/xtremand-video.gif",
+        "https://api.myapp.com/vod/images/xtremand-video.gif",
         selectedVideoGifPath
       );
       updatedBody = updatedBody.replace(
@@ -2074,7 +2074,7 @@ export class ReferenceService {
         '<a href="https://dummycobrandingurl.com" style="display:none"'
       );
       updatedBody = updatedBody.replace(
-        "https://xamp.io/vod/images/co-branding.png",
+        "https://api.myapp.com/vod/images/co-branding.png",
         ""
       );
     }
@@ -2132,7 +2132,7 @@ export class ReferenceService {
         "javascript:void(0)"
       );
       updatedBody = updatedBody.replace(
-        "https://xamp.io/vod/images/xtremand-video.gif",
+        "https://api.myapp.com/vod/images/xtremand-video.gif",
         selectedVideoGifPath
       );
       updatedBody = updatedBody.replace(
@@ -2151,7 +2151,7 @@ export class ReferenceService {
         '<a href="https://dummycobrandingurl.com" style="display:none"'
       );
       updatedBody = updatedBody.replace(
-        "https://xamp.io/vod/images/co-branding.png",
+        "https://api.myapp.com/vod/images/co-branding.png",
         ""
       );
     }
