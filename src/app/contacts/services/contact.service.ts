@@ -51,8 +51,8 @@ export class ContactService {
     url = this.authenticationService.REST_URL + "admin/";
     companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
-    contactsSchedulerUrl = this.authenticationService.SERVER_URL+"userlists/";
-    contactsV2Url = this.authenticationService.SERVER_URL+"contacts/v2/";
+    contactsSchedulerUrl = this.authenticationService.REST_URL+"userlists/";
+    contactsV2Url = this.authenticationService.REST_URL+"contacts/v2/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
@@ -356,18 +356,7 @@ export class ContactService {
 
     updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         /**XNFR-713***/
-        if(this.envService.isContactsVersion2ApiEnabled && 
-            userUserListWrapper.isUploadCsvOptionUsed && userUserListWrapper.isContactsModule){
-            this.logger.info("Contacts V2 Api Executed");
-            let contactsRequestDto = new ContactsRequestDto();
-            let userList = userUserListWrapper.userList;
-            contactsRequestDto.users = userUserListWrapper.users;
-            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
-            contactsRequestDto.userListId = userList.id;
-            let url = this.contactsV2Url + "update?access_token=" + this.authenticationService.access_token;
-            return this.authenticationService.callPutMethod(url,contactsRequestDto);
-        }else{
-            this.logger.info("Contacts V1 Api Executed");
+        this.logger.info("Contacts V1 Api Executed");
             var requestoptions = new RequestOptions({
                 body: userUserListWrapper,
             })
@@ -380,8 +369,6 @@ export class ContactService {
             return this._http.post(url, options, requestoptions)
                 .map(this.extractData)
                 .catch(this.handleError);
-    
-        }
     }
 
     updateContactListUser(contactListId: number, editUser: EditUser, isPartner: boolean): Observable<any> {
@@ -398,16 +385,7 @@ export class ContactService {
             return this._http.post(newUrl, options, requestoptions)
                 .map((response: any) => response.json())
                 .catch(this.handleError);
-        } else {
-            this.logger.info("Contacts V2 Api Executed");
-            let contactsRequestDto = new ContactsRequestDto();
-            contactsRequestDto.users = [];
-            contactsRequestDto.users.push(editUser.user);
-            contactsRequestDto.userListId = contactListId;
-            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
-            let url = this.authenticationService.REST_URL + "contacts/v2/update-contact-details?access_token=" + this.authenticationService.access_token;
-            return this.authenticationService.callPutMethod(url, contactsRequestDto);
-        }
+        } 
     }
 
     updateContactListName(updatingObject: any): Observable<any> {

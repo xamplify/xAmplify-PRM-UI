@@ -98,7 +98,7 @@ export class AuthenticationService {
   v_companyFavIconPath: string;
   v_showCompanyLogo: boolean = false;
   vanityURLUserRoles: any;
-  companyProfileName: string = "";
+  companyProfileName: string = "xamplify-prm";
   vanityURLEnabled: boolean = false;
   vanityURLink: string = "";
   dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();

@@ -118,9 +118,9 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     signUp() {
       if (this.signUpForm.valid) {
         try{
-        this.signUpUser = this.signUpForm.value;
-        this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.loading = true;
+        this.signUpUser = this.signUpForm.value;
+        this.signUpUser.emailId = (this.signUpUser.emailId || '').toLowerCase();
         this.signUpUser.vendorSignUp = this.vendorSignup;
         this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
         this.signUpUser.userId = this.authenticationService.getUserId();
