@@ -14,6 +14,7 @@ export class FeedUpdateComponent implements OnInit {
   @Output() navigateUrl = new EventEmitter();
   userId: number;
   feeds: any[] = [];
+  collections: any[] = [];
   loading = false;
   ngOnInit() {
     this.userId = this.authenticationService.getUserId();

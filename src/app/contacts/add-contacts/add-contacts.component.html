@@ -360,7 +360,7 @@
 								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
 									<a  id="haloPSAContact_button" (click)="checkingHaloPSAContactsAuthentication()"
 										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 13">
-										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :halopsa==true}"
+                                                                                <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
 											src="assets/images/crm/halospa_img.png" style="border-radius:8px;" class="haloPSAImageClass"
 											data-toggle="tooltip" data-placement="bottom"
 											title="Click here to access contacts from your HaloPSA account" height="85" width="85"

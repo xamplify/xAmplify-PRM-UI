@@ -28,6 +28,10 @@ export class EnvService {
   /****XNFR-224****/
   domainName = window.location.hostname;
 
+  // role hashes used for authentication
+  vendorRoleHash = '';
+  partnerRoleHash = '';
+
   // XNFR-256
   microsoftQAClientId = "";
   microsoftQAClientSecret = "";

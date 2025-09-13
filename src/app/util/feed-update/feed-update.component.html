@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-bottom: 1px">
+                <div style="margin-bottom: 1px" *ngFor="let item of collections">
                     <div>
                         <div class="heading-top">
                             <a class="mr5" (click)="item.isExpand=!item.isExpand"><i class="fa" style="font-size:16px;color:#2a3f54" [ngClass]="{'fa-angle-down': item.isExpand, 'fa-angle-up': !item.isExpand}"></i></a>
