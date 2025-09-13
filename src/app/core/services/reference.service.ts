@@ -15,7 +15,7 @@ import { Timezone } from "../../core/models/timezone";
 import { Ng2DeviceService } from "ng2-device-detector";
 import { EmailTemplate } from "../../email-template/models/email-template";
 import { Campaign } from "../../campaigns/models/campaign";
-import { CampaignAccess } from "app/campaigns/models/campaign-access";
+import { ModuleAccess } from "app/campaigns/models/module-access";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "../../common/models/custom-response";
 import { User } from "../../core/models/user";
@@ -113,7 +113,7 @@ export class ReferenceService {
   selectedVideoLogodesc: string;
   contentManagementLoader: boolean;
   namesArray: any;
-  campaignAccess: CampaignAccess;
+  moduleAccess: ModuleAccess;
   manageRouter = false;
   detailViewIsLoading: boolean;
   videoCampaign = false;

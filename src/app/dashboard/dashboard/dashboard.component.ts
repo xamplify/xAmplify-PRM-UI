@@ -21,7 +21,7 @@ import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DashboardStatesReport } from '../models/dashboard-states-report';
-import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { ModuleAccess } from 'app/campaigns/models/module-access';
 import { setDayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardReport: DashboardReport = new DashboardReport();
     userDefaultPage: UserDefaultPage = new UserDefaultPage();
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
-    campaignAccess:CampaignAccess = new CampaignAccess();
+    moduleAccess: ModuleAccess = new ModuleAccess();
     totalRecords: number;
     campaigns: Campaign[];
     launchedCampaignsMaster: any[];

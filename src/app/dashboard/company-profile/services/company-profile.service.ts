@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CompanyProfile } from '../models/company-profile';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+import { ModuleAccess } from '../../../campaigns/models/module-access';
 import { CustomLoginScreen } from 'app/vanity-url/models/custom-login-screen';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
 
@@ -72,8 +72,8 @@ export class CompanyProfileService {
             .catch(this.handleError);
     }
 
-    upgradeToVendorRole(campaignAccess: CampaignAccess) {
-        return this.http.post(this.URL + "upgradeToVendor?access_token=" + this.authenticationService.access_token, campaignAccess)
+    upgradeToVendorRole(moduleAccess: ModuleAccess) {
+        return this.http.post(this.URL + "upgradeToVendor?access_token=" + this.authenticationService.access_token, moduleAccess)
             .map(this.extractData)
             .catch(this.handleError);
     }

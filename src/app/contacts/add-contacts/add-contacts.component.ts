@@ -319,9 +319,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         };
         this.parentInput = {};
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let campaginAccessDto = currentUser.campaignAccessDto;
-        if (campaginAccessDto != undefined) {
-            this.companyId = campaginAccessDto.companyId;
+        let moduleAccessDto = currentUser.moduleAccessDto || currentUser.campaignAccessDto;
+        if (moduleAccessDto != undefined) {
+            this.companyId = moduleAccessDto.companyId;
         }
 
     }

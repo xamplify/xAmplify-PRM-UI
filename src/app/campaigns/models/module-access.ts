@@ -1,5 +1,5 @@
 import {DashboardType} from '../models/dashboard-type.enum';
-export class CampaignAccess {
+export class ModuleAccess {
   videoCampaign = false;
   emailCampaign = false
   socialCampaign = false;

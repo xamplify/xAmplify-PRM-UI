@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { ModuleAccess } from 'app/campaigns/models/module-access';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -15,7 +15,7 @@ declare var $: any, swal: any;
     selector: 'app-vendor-report',
     templateUrl: './vendor-report.component.html',
     styleUrls: ['./vendor-report.component.css'],
-    providers: [Pagination, HttpRequestLoader, Properties, CampaignAccess]
+    providers: [Pagination, HttpRequestLoader, Properties, ModuleAccess]
 })
 export class VendorReportComponent implements OnInit {
 

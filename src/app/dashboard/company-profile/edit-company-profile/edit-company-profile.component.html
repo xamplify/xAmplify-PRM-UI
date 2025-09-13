@@ -178,156 +178,156 @@
 												<ng-container *ngIf="!prm">
 													<tr>
 														<th scope="col">Sales Enablement (View In Browser In Create	Campaign)</th>
-														<td><input type="checkbox"[(ngModel)]="campaignAccess.salesEnablement" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox"[(ngModel)]="moduleAccess.salesEnablement" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Data Share</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.dataShare"[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.dataShare"[ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Email Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.emailCampaign" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.emailCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Video Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Social Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Event Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.eventCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Survey Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.survey" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.survey" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Form Builder</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.formBuilder" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Page</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.landingPage" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Page Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.landingPageCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 
-													<tr *ngIf="campaignAccess?.shareLeads">
+													<tr *ngIf="moduleAccess?.shareLeads">
 														<th scope="col">One-Click Launch</th>
 														<td>
-															<input type="checkbox" [(ngModel)]="campaignAccess.oneClickLaunch" [ngModelOptions]="{standalone: true}">
+															<input type="checkbox" [(ngModel)]="moduleAccess.oneClickLaunch" [ngModelOptions]="{standalone: true}">
 														</td>
 													</tr>
 													<tr>
 														<th scope="col">Partner Template Opened Tracking Analytics</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics" [ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.campaignPartnerTemplateOpenedAnalytics" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<!--Refer Vendor-->
 													<tr>
 														<th scope="row">{{properties?.inviteAVendor}} (Option Applicable For Vanity Url)</th>
 														<td class="pt0">
-															<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
+															<app-custom-ui-switch [customSwitch]="moduleAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
 														</td>
 													</tr>
 												</ng-container>
 												<tr>
 													<th scope="row">SSO Enabled</th>
 													<td class="pt0">
-														<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+														<app-custom-ui-switch [customSwitch]="moduleAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
 												<tr>
 													<th scope="col">Share Leads</th>
 													<td>
 														<input type="checkbox" id="share-leads-c"
-															[(ngModel)]="campaignAccess.shareLeads"
+															[(ngModel)]="moduleAccess.shareLeads"
 															[ngModelOptions]="{standalone: true}"
 															(click)="updateOneClickLaunchOption()">
 													</td>
 												</tr>
 												<tr>
 													<th scope="col">Leads (Opportunities)</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.leads"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="row">Login As Team Member</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.loginAsTeamMember"
+															[(ngModel)]="moduleAccess.loginAsTeamMember"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="col">Vanity URL</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain" 
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.vanityUrlDomain" 
 														[ngModelOptions]="{standalone: true}" (change)="onVanityUrlChange()"></td>
 												</tr>
 												<tr *ngIf="vendor || orgAdmin">
 													<th scope="col">Enable Marketing Modules</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.marketingModulesEnabled"
-															[ngModelOptions]="{standalone: true}" [disabled]="!campaignAccess.vanityUrlDomain"></td>
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.marketingModulesEnabled"
+															[ngModelOptions]="{standalone: true}" [disabled]="!moduleAccess.vanityUrlDomain"></td>
 												</tr>
 												<tr>
 													<th scope="col">MDF</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.mdf"
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.mdf"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="row">Social Feeds</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.rssFeeds"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="row">Social Share</th>
-													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
+													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.socialShareOptionEnabled"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="col">DAM</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.dam"
 															id="damCheckBoxC" [ngModelOptions]="{standalone: true}"
 															(click)="updateLmsAndPlayBooks()"></td>
 												</tr>
-												<ng-container *ngIf="campaignAccess.dam">
+												<ng-container *ngIf="moduleAccess.dam">
 													<tr>
 														<th scope="col">LMS</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+														<td><input type="checkbox" [(ngModel)]="moduleAccess.lms"
 																[ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">PlayBooks</th>
 														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.playbooks"
+																[(ngModel)]="moduleAccess.playbooks"
 																[ngModelOptions]="{standalone: true}"></td>
 													</tr>
 												</ng-container>
 												<tr>
 													<th scope="row">Exclude Users/Domains</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.excludeUsersOrDomains"
+															[(ngModel)]="moduleAccess.excludeUsersOrDomains"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
 													<th scope="row">Chat Support</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.chatSupport"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!-- XNFR-134 -->
 												<tr>
 													<th scope="row">Custom Skin Settings</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.customSkinSettings"
+															[(ngModel)]="moduleAccess.customSkinSettings"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!-- XNFR-224 -->
 												<tr *ngIf="!marketing">
 													<th scope="row">Login As Partner</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.loginAsPartner"
+															[(ngModel)]="moduleAccess.loginAsPartner"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 
@@ -335,7 +335,7 @@
 												<tr>
 													<th scope="row">Microsoft SSO</th>
 													<td>
-														<input type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
+														<input type="checkbox" [(ngModel)]="moduleAccess.microsoftSSO"
 															[ngModelOptions]="{standalone: true}">
 													</td>
 
@@ -343,61 +343,61 @@
 												<tr *ngIf="!marketing">
 													<th scope="row">Share White Labeled Content</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.shareWhiteLabeledContent"
+															[(ngModel)]="moduleAccess.shareWhiteLabeledContent"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-381-->
 												<tr *ngIf="!marketing">
 													<th scope="row">Create Workflow (Partner Journey)</th>
 													<td><input type="checkbox"
-															[(ngModel)]="campaignAccess.createWorkflow"
+															[(ngModel)]="moduleAccess.createWorkflow"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-428-->
 												<tr *ngIf="!marketing">
 													<th scope="row">Vendor Journey</th>
-													<td><input type="checkbox"[(ngModel)]="campaignAccess.vendorJourney" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox"[(ngModel)]="moduleAccess.vendorJourney" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-595-->
 												<tr>
 													<th scope="row">Payment Overdue</th>
 													<td class="pt0">
-														<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+														<app-custom-ui-switch [customSwitch]="moduleAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
 												<!--XNFR-595-->
 												<tr>
 													<th scope="row">Welcome Page</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.welcomePages" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.welcomePages" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-820-->
 												<tr>
 													<th scope="row">Approval Hub</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.approvalHub" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.approvalHub" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-979-->
 												<tr>
 													<th scope="row">Insights</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.insights" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.insights" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 
 												<!--XNFR-1062-->
 												<tr>
 													<th scope="row">Mail Integration</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.mailsEnabled" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="moduleAccess.mailsEnabled" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-832-->
 												<tr *ngIf="marketing || orgAdmin">
 													<th scope="row">Unlock MDF Funding</th>
 													<td class="pt0">
-														<app-custom-ui-switch [customSwitch]="campaignAccess.unlockMdfFundingEnabled" (customUiSwitchEventEmitter)="unlockMdfFundingUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+														<app-custom-ui-switch [customSwitch]="moduleAccess.unlockMdfFundingEnabled" (customUiSwitchEventEmitter)="unlockMdfFundingUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
 												<!--XNFR-878-->
 												<tr *ngIf="!marketing">
 													<th scope="row">Allow Vendor to Change Partner Primary Admin</th>
 													<td class="pt0">
-														<app-custom-ui-switch [customSwitch]="campaignAccess.allowVendorToChangePartnerPrimaryAdmin" (customUiSwitchEventEmitter)="allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+														<app-custom-ui-switch [customSwitch]="moduleAccess.allowVendorToChangePartnerPrimaryAdmin" (customUiSwitchEventEmitter)="allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
 												<tr>
@@ -405,7 +405,7 @@
 														<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" width="22px" height="22px">
 													</th>
 														<td>
-															<app-custom-ui-switch [customSwitch]="campaignAccess.oliverActive"
+															<app-custom-ui-switch [customSwitch]="moduleAccess.oliverActive"
 																(customUiSwitchEventEmitter)="oliverActiveUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 															<div style="margin-left: 20px; margin-top: 10px;">
 																
@@ -420,34 +420,34 @@
 																<div>
 																	<strong>
 																		<input class="checkBox_shadow" type="checkbox" [disabled]="disableOliverAgentModuleOptions"
-																			[(ngModel)]="campaignAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
+																			[(ngModel)]="moduleAccess.oliverInsightsEnabled" [ngModelOptions]="{standalone: true}">
 																		<span class="ml10">Enable Oliver Insights</span>
 																	</strong>
 																</div>
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.brainstormWithOliverEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.brainstormWithOliverEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Brainstorm With Oliver</span>
 																	</strong>
 																</div>
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverSparkWriterEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.oliverSparkWriterEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Spark Writer</span>
 																	</strong>
 																</div>
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverParaphraserEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.oliverParaphraserEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Paraphraser</span>
 																	</strong>
 																</div>
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverContactAgentEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.oliverContactAgentEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Contact Agent</span>
 																	</strong>
@@ -455,7 +455,7 @@
 
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverPartnerAgentEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.oliverPartnerAgentEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Partner Agent</span>
 																	</strong>
@@ -463,7 +463,7 @@
 
 																<div>
 																	<strong>
-																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverCampaignAgentEnabled"
+																		<input class="checkBox_shadow" type="checkbox" [(ngModel)]="moduleAccess.oliverCampaignAgentEnabled"
 																			[ngModelOptions]="{standalone: true}" [disabled]="disableOliverAgentModuleOptions">
 																		<span class="ml10">Enable Oliver Campaign Agent</span>
 																	</strong>
@@ -476,16 +476,16 @@
 												<tr *ngIf="!prm">
 													<th scope="row"> Contact Limit </th>
 													<td class="pt0">
-														<app-custom-ui-switch [customSwitch]="campaignAccess.contactSubscriptionLimitEnabled"
+														<app-custom-ui-switch [customSwitch]="moduleAccess.contactSubscriptionLimitEnabled"
 															(customUiSwitchEventEmitter)="contactUploadQuotaEnabledUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 														<div style="padding-left: 5px;">
 															<span class="required"><Strong>*</Strong></span>
 															<strong>Contact Limit: </strong>
 															<input [disabled]="disableContactSubscriptionLimitField" type="number"
-																[(ngModel)]="campaignAccess.contactSubscriptionLimit" [ngModelOptions]="{standalone: true}"
+																[(ngModel)]="moduleAccess.contactSubscriptionLimit" [ngModelOptions]="{standalone: true}"
 																class="form-control" name="contactSubscriptionLimit" placeholder="Enter Limit Here" min="1"
 																oninput="validity.valid||(value='');"
-																(input)="contactUploadQuotaLimitChange(campaignAccess.contactSubscriptionLimit)">
+																(input)="contactUploadQuotaLimitChange(moduleAccess.contactSubscriptionLimit)">
 														</div>
 													</td>
 												</tr>

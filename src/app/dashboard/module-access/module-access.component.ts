@@ -4,7 +4,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
-import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { ModuleAccess } from 'app/campaigns/models/module-access';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
@@ -30,7 +30,7 @@ export class ModuleAccessComponent implements OnInit {
   userAlias: any;
   companyProfilename: any
   customResponse: CustomResponse = new CustomResponse();
-  campaignAccess = new CampaignAccess();
+  moduleAccess = new ModuleAccess();
   moduleAccessList: any = [];
   companyAndUserDetails: any;
   companyLoader = true;
@@ -352,9 +352,9 @@ export class ModuleAccessComponent implements OnInit {
   getModuleAccessByCompanyId() {
     if (this.companyId) {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
-        this.campaignAccess = result;
-        this.oliverActive = this.campaignAccess.oliverActive;
-        if (this.oliverActive && !this.campaignAccess.oliverFilesProcessing) {
+        this.moduleAccess = result;
+        this.oliverActive = this.moduleAccess.oliverActive;
+        if (this.oliverActive && !this.moduleAccess.oliverFilesProcessing) {
           this.fetchOliverActiveIntegrationType();
         }
         this.moduleLoader = false;
@@ -362,8 +362,8 @@ export class ModuleAccessComponent implements OnInit {
         this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
       }, () => {
-        this.disableContactSubscriptionLimitField = !this.campaignAccess.contactSubscriptionLimitEnabled;
-        this.setOliverAgentFlagValues(this.campaignAccess);
+        this.disableContactSubscriptionLimitField = !this.moduleAccess.contactSubscriptionLimitEnabled;
+        this.setOliverAgentFlagValues(this.moduleAccess);
       });
     }
   }
@@ -373,13 +373,13 @@ export class ModuleAccessComponent implements OnInit {
   updateModuleAccess() {
     this.customResponse = new CustomResponse();
     this.ngxLoading = true;
-    this.campaignAccess.companyId = this.companyId;
-    this.campaignAccess.userId = this.companyAndUserDetails.id;
-    if (this.campaignAccess.oliverActive && ((this.campaignAccess.oliverActive != this.oliverActive) || (this.campaignAccess.oliverIntegrationType != this.oliverIntegrationType))) {
-      this.campaignAccess.oliverAccessStatus = true;
-      this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
+    this.moduleAccess.companyId = this.companyId;
+    this.moduleAccess.userId = this.companyAndUserDetails.id;
+    if (this.moduleAccess.oliverActive && ((this.moduleAccess.oliverActive != this.oliverActive) || (this.moduleAccess.oliverIntegrationType != this.oliverIntegrationType))) {
+      this.moduleAccess.oliverAccessStatus = true;
+      this.moduleAccess.oliverIntegrationType = this.oliverIntegrationType;
     }
-    this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
+    this.dashboardService.changeAccess(this.moduleAccess).subscribe(result => {
       this.statusCode = result.statusCode;
       this.customResponse = new CustomResponse('ERROR', result.message, true);
       this.ngxLoading = false;
@@ -389,7 +389,7 @@ export class ModuleAccessComponent implements OnInit {
     },
       () => {
         if (this.statusCode == 200) {
-          if (this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible) {
+          if (this.moduleAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible) {
             this.ngxLoading = true;
             this.addDefaultMdfForm();
           } else {
@@ -441,25 +441,25 @@ export class ModuleAccessComponent implements OnInit {
     this.prm = this.roleId==20;
     this.marketing = this.roleId==18;
     if(this.prm){
-      this.campaignAccess.emailCampaign = false;
-      this.campaignAccess.videoCampaign = false;
-      this.campaignAccess.videoCampaign = false;
-      this.campaignAccess.socialCampaign = false;
-      this.campaignAccess.eventCampaign = false;
-      this.campaignAccess.survey = false;
-      this.campaignAccess.formBuilder = true;
-      this.campaignAccess.landingPage = false;
-      this.campaignAccess.landingPageCampaign = false;
-      this.campaignAccess.allBoundSource = false;
-      this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
-      this.campaignAccess.salesEnablement = false;
-      this.campaignAccess.dataShare = false;
-      this.campaignAccess.referVendor = false;
-      this.campaignAccess.ssoEnabled = false;
+      this.moduleAccess.emailCampaign = false;
+      this.moduleAccess.videoCampaign = false;
+      this.moduleAccess.videoCampaign = false;
+      this.moduleAccess.socialCampaign = false;
+      this.moduleAccess.eventCampaign = false;
+      this.moduleAccess.survey = false;
+      this.moduleAccess.formBuilder = true;
+      this.moduleAccess.landingPage = false;
+      this.moduleAccess.landingPageCampaign = false;
+      this.moduleAccess.allBoundSource = false;
+      this.moduleAccess.campaignPartnerTemplateOpenedAnalytics = false;
+      this.moduleAccess.salesEnablement = false;
+      this.moduleAccess.dataShare = false;
+      this.moduleAccess.referVendor = false;
+      this.moduleAccess.ssoEnabled = false;
     }else if(this.marketing){
-      this.campaignAccess.loginAsPartner = false;
-      this.campaignAccess.shareWhiteLabeledContent = false;
-      this.campaignAccess.createWorkflow = false;
+      this.moduleAccess.loginAsPartner = false;
+      this.moduleAccess.shareWhiteLabeledContent = false;
+      this.moduleAccess.createWorkflow = false;
     }
     else{
      this.getModuleAccessByCompanyId();
@@ -469,19 +469,19 @@ export class ModuleAccessComponent implements OnInit {
   selectDashboardType(){
     let selectedDashboard = $('#dashboardType option:selected').val();
     if(selectedDashboard==DashboardType[DashboardType.DASHBOARD]){
-      this.campaignAccess.dashboardType = DashboardType.DASHBOARD;
+      this.moduleAccess.dashboardType = DashboardType.DASHBOARD;
     }else if(selectedDashboard==DashboardType[DashboardType.ADVANCED_DASHBOARD]){
-      this.campaignAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
+      this.moduleAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
     }else if(selectedDashboard==DashboardType[DashboardType.DETAILED_DASHBOARD]){
-      this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
+      this.moduleAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
     }
   }
 
   updateLmsAndPlaybooks(){
     let isDamChecked = $('#damCheckBox').is(':checked');
     if(!isDamChecked){
-      this.campaignAccess.lms = false;
-      this.campaignAccess.playbooks = false;
+      this.moduleAccess.lms = false;
+      this.moduleAccess.playbooks = false;
     }
   }
 
@@ -490,7 +490,7 @@ export class ModuleAccessComponent implements OnInit {
     let shareLeadsChecked = $('#share-leads-e').is(':checked');
     if(!shareLeadsChecked){
       this.showOneClickLaunchErrorMessage = true;
-      this.campaignAccess.oneClickLaunch = false;
+      this.moduleAccess.oneClickLaunch = false;
       this.findScheduledCampaignsCount();
     }
   }
@@ -516,7 +516,7 @@ export class ModuleAccessComponent implements OnInit {
   /** XNFR-139 ***** */
   setMaxAdmins(){
     let maxAdmins =  $('#maxAdmins-Edit option:selected').val();
-    this.campaignAccess.maxAdmins = maxAdmins;
+    this.moduleAccess.maxAdmins = maxAdmins;
   }
 
 findMaximumAdminsLimitDetails(){
@@ -602,40 +602,40 @@ startCompanyProfileLoader(){
 
  /***XNFR-595****/
  customUiSwitchEventReceiver(event:any){
-  this.campaignAccess.paymentOverDue = event;
+  this.moduleAccess.paymentOverDue = event;
 }
 
 setSSOValue(event:boolean){
-  this.campaignAccess.ssoEnabled = event;
+  this.moduleAccess.ssoEnabled = event;
 }
 
 setReferVendorValue(event:boolean){
-  this.campaignAccess.referVendor = event;
+  this.moduleAccess.referVendor = event;
 }
 
 /**XNFR-832***/
 unlockMdfFundingUiSwitchEventReceiver(event:any){
-  this.campaignAccess.unlockMdfFundingEnabled = event;
+  this.moduleAccess.unlockMdfFundingEnabled = event;
 }
 
 /**XNFR-878***/
 allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
-  this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
+  this.moduleAccess.allowVendorToChangePartnerPrimaryAdmin = event;
 }
 
   /** XNFR-952  start **/
  contactUploadQuotaEnabledUiSwitchEventReceiver(event: boolean) {
     this.disableContactSubscriptionLimitField = !event;
-    this.campaignAccess.contactSubscriptionLimitEnabled = event;
-    const contactSubscriptionLimit = this.campaignAccess.contactSubscriptionLimit;
+    this.moduleAccess.contactSubscriptionLimitEnabled = event;
+    const contactSubscriptionLimit = this.moduleAccess.contactSubscriptionLimit;
     this.disableUpdateModulesButton = event && (!contactSubscriptionLimit || contactSubscriptionLimit == 0);
     this.contactSubscriptionLimitErrorMessage = this.disableUpdateModulesButton ? this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN  : "";
   }
   
   contactUploadQuotaLimitChange(contactSubscriptionLimit: number): void {
-    this.campaignAccess.contactSubscriptionLimit = contactSubscriptionLimit;
+    this.moduleAccess.contactSubscriptionLimit = contactSubscriptionLimit;
     const isQuotaInvalid = contactSubscriptionLimit == 0 || !contactSubscriptionLimit;
-    this.disableUpdateModulesButton = this.campaignAccess.contactSubscriptionLimitEnabled && isQuotaInvalid;
+    this.disableUpdateModulesButton = this.moduleAccess.contactSubscriptionLimitEnabled && isQuotaInvalid;
     this.contactSubscriptionLimitErrorMessage = this.disableUpdateModulesButton ? this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN  : "";
   }
 
@@ -652,35 +652,35 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
     }
   }
 
-  setOliverAgentFlagValues(campaignAccess: CampaignAccess) {
-    this.oliverInsightsEnabledFlag = campaignAccess.oliverInsightsEnabled;
-    this.brainstormWithOliverEnabledFlag = campaignAccess.brainstormWithOliverEnabled;
-    this.oliverSparkWriterEnabledFlag = campaignAccess.oliverSparkWriterEnabled;
-    this.oliverParaphraserEnabledFlag = campaignAccess.oliverParaphraserEnabled;
-    this.oliverContactAgentEnabledFlag = campaignAccess.oliverContactAgentEnabled;
-    this.oliverPartnerAgentEnabledFlag = campaignAccess.oliverPartnerAgentEnabled;
-    this.oliverCampaignAgentEnabledFlag = campaignAccess.oliverCampaignAgentEnabled;
+  setOliverAgentFlagValues(moduleAccess: ModuleAccess) {
+    this.oliverInsightsEnabledFlag = moduleAccess.oliverInsightsEnabled;
+    this.brainstormWithOliverEnabledFlag = moduleAccess.brainstormWithOliverEnabled;
+    this.oliverSparkWriterEnabledFlag = moduleAccess.oliverSparkWriterEnabled;
+    this.oliverParaphraserEnabledFlag = moduleAccess.oliverParaphraserEnabled;
+    this.oliverContactAgentEnabledFlag = moduleAccess.oliverContactAgentEnabled;
+    this.oliverPartnerAgentEnabledFlag = moduleAccess.oliverPartnerAgentEnabled;
+    this.oliverCampaignAgentEnabledFlag = moduleAccess.oliverCampaignAgentEnabled;
   }
   /** XNFR-952 end **/
 
   oliverActiveUiSwitchEventReceiver(event: boolean) {
     this.disableOliverAgentModuleOptions = !event;
-    this.campaignAccess.oliverActive = event;
+    this.moduleAccess.oliverActive = event;
     this.disableUpdateModulesButton = event && !this.oliverIntegrationType;
     if (!event) {
-      this.campaignAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
-      this.campaignAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
-      this.campaignAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
-      this.campaignAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
-      this.campaignAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
-      this.campaignAccess.oliverCampaignAgentEnabled = this.oliverCampaignAgentEnabledFlag;
+      this.moduleAccess.oliverInsightsEnabled = this.oliverInsightsEnabledFlag;
+      this.moduleAccess.brainstormWithOliverEnabled = this.brainstormWithOliverEnabledFlag;
+      this.moduleAccess.oliverSparkWriterEnabled = this.oliverSparkWriterEnabledFlag;
+      this.moduleAccess.oliverParaphraserEnabled = this.oliverParaphraserEnabledFlag;
+      this.moduleAccess.oliverContactAgentEnabled = this.oliverContactAgentEnabledFlag;
+      this.moduleAccess.oliverCampaignAgentEnabled = this.oliverCampaignAgentEnabledFlag;
     }
   }
 
   onIntegrationTypeChange(selected: any) {
     this.oliverIntegrationType = selected;
     this.disableUpdateModulesButton = false;
-    // this.campaignAccess.oliverAccessStatus = true;
+    // this.moduleAccess.oliverAccessStatus = true;
   }
 
   fetchOliverActiveIntegrationType() {
@@ -689,8 +689,8 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
 
   /*** XNFR-1066 ***/
   onVanityUrlChange() {
-    if (!this.campaignAccess.vanityUrlDomain) {
-      this.campaignAccess.marketingModulesEnabled = false;
+    if (!this.moduleAccess.vanityUrlDomain) {
+      this.moduleAccess.marketingModulesEnabled = false;
     }
   }
 

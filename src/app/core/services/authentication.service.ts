@@ -261,7 +261,7 @@ export class AuthenticationService {
             'expiresIn': this.map.expires_in,
             'hasCompany': res.json().hasCompany,
             'roles': res.json().roles,
-            'campaignAccessDto': res.json().campaignAccessDto,
+            'moduleAccessDto': res.json().moduleAccessDto || res.json().campaignAccessDto,
             'logedInCustomerCompanyNeme': res.json().companyName,
             'source': res.json().source,
             'userStatusCode': res.json().userStatusCode

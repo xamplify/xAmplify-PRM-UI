@@ -64,7 +64,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 this.authenticationService.user.emailId = userName;
                 this.authenticationService.user.roles = JSON.parse(currentUser)['roles'];
                 this.authenticationService.user.hasCompany = JSON.parse(currentUser)['hasCompany'];
-                this.authenticationService.user.campaignAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
+                this.authenticationService.user.moduleAccessDto = JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'];
                 this.authenticationService.user.secondAdmin = JSON.parse(currentUser)['secondAdmin'];
                 this.referenceService.isUserProfileLoading = true;
                 this.getUserByUserName(userName);
@@ -290,7 +290,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             const orgAdmin = roles.indexOf(this.roles.orgAdminRole) > -1;
             const isSuperAdmin = roles.indexOf(this.roles.superAdminRole) > -1;
             const isMarketing = roles.indexOf(this.roles.marketingRole) > -1;
-            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            let moduleAccessDto = this.authenticationService.user.moduleAccessDto;
             this.vanityUrlService.isVanityURLEnabled();
             if (isSuperAdmin) {
                 this.router.navigate(['/home/dashboard/admin-report']);
@@ -298,8 +298,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (urlType == this.formBaseUrl) {
                 let hasFormAccess = false;
-                if (campaignAccessDto != undefined) {
-                    hasFormAccess = campaignAccessDto.formBuilder;
+                if (moduleAccessDto != undefined) {
+                    hasFormAccess = moduleAccessDto.formBuilder;
                 }
                 let hasRole = roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.vendorRole) > -1
                     || roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.emailTemplateRole) > -1
@@ -344,9 +344,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             else if (urlType == this.landingPagesUrl) {
                 let hasLandingPageAccess = false;
                 let partnerLandingPageAccess = false;
-                let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
-                if (campaignAccessDto != undefined) {
-                    hasLandingPageAccess = campaignAccessDto.landingPage;
+                let moduleAccessDto = this.authenticationService.user.moduleAccessDto;
+                if (moduleAccessDto != undefined) {
+                    hasLandingPageAccess = moduleAccessDto.landingPage;
                 }
                 let hasRole = roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.vendorRole) > -1
                     || roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.emailTemplateRole) > -1

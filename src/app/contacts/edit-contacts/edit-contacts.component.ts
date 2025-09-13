@@ -395,13 +395,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.loggedInUserId = this.authenticationService.getUserId();
 
 		this.parentInput = {};
-		const currentUser = localStorage.getItem('currentUser');
-		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-		this.companyId = campaginAccessDto.companyId;
-		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
-			this.isFromCompanyModule = true;
-			this.manageCompanies = true;
-		}
+                const currentUser = localStorage.getItem('currentUser');
+                let moduleAccessDto = JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'];
+                this.companyId = moduleAccessDto.companyId;
+                if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
+                        this.isFromCompanyModule = true;
+                        this.manageCompanies = true;
+                }
 	}
 
 	onChangeAllContactUsers(event: Pagination) {

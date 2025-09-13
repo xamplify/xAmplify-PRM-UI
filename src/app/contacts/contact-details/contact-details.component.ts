@@ -169,8 +169,8 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vanityUrlFilter = false;
     }
     const currentUser = localStorage.getItem('currentUser');
-		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-		this.companyId = campaginAccessDto.companyId;
+                let moduleAccessDto = JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'];
+                this.companyId = moduleAccessDto.companyId;
     this.gdprInput = {};
     this.isLocalhost = this.authenticationService.isLocalHost();
    }

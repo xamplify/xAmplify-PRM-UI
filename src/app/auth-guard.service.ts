@@ -51,7 +51,7 @@ export class AuthGuardService implements CanActivate {
     this.authenticationService.user.emailId = user.userName;
     this.authenticationService.user.roles = user.roles;
     this.authenticationService.user.hasCompany = user.hasCompany;
-    this.authenticationService.user.campaignAccessDto = user.campaignAcessDto;
+    this.authenticationService.user.moduleAccessDto = user.moduleAccessDto || user.campaignAcessDto;
     this.authenticationService.user.secondAdmin = user.secondAdmin;
   }
 

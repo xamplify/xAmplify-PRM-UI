@@ -27,7 +27,7 @@ import { UtilService } from 'app/core/services/util.service';
 // ImageCroppedEvent
 import { ImageCroppedEvent } from '../../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { ImageCropperComponent } from '../../../common/image-cropper/component/image-cropper.component';
-import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+import { ModuleAccess } from '../../../campaigns/models/module-access';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { MdfService } from 'app/mdf/services/mdf.service';
@@ -47,11 +47,11 @@ declare var $,swal: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch,MdfService]
+    providers: [Processor, CountryNames, RegularExpressions, Properties,ModuleAccess,CallActionSwitch,MdfService]
 
 })
 export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
-    campaignAccess = new CampaignAccess();
+    moduleAccess = new ModuleAccess();
     upgradeToVendor: boolean;
     createAccount: boolean;
     customResponse: CustomResponse = new CustomResponse();
@@ -252,9 +252,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.validatePattern('userEmailId');
                 this.validateUserUsingEmailId();
             }
-            this.campaignAccess.emailCampaign = true;
-            this.campaignAccess.videoCampaign = true;
-            this.campaignAccess.socialCampaign = true;
+            this.moduleAccess.emailCampaign = true;
+            this.moduleAccess.videoCampaign = true;
+            this.moduleAccess.socialCampaign = true;
             this.isFromAdminPanel = true;
             this.addBlur();
             // Debounce search.
@@ -668,7 +668,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'expiresIn': JSON.parse(currentUser)['expiresIn'],
                             'hasCompany': data.hasCompany,
                             'roles': data.roles,
-                            'campaignAccessDto': data.campaignAccessDto,
+                            'moduleAccessDto': data.moduleAccessDto || data.campaignAccessDto,
                             'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
                             'source': data.source,
                             'isWelcomePageEnabled': JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
@@ -758,7 +758,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'expiresIn': JSON.parse(currentUser)['expiresIn'],
                             'hasCompany': self.authenticationService.user.hasCompany,
                             'roles': JSON.parse(currentUser)['roles'],
-                            'campaignAccessDto': JSON.parse(currentUser)['campaignAccessDto'],
+                            'moduleAccessDto': JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'],
                             'logedInCustomerCompanyNeme': companyName,
                             'source': JSON.parse(currentUser)['source'],
                             'isWelcomePageEnabled': JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
@@ -1715,7 +1715,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
                !this.zipError && !this.logoError && !this.aboutUsError) {
                this.customResponse = new CustomResponse();
-               this.companyProfile.campaignAccessDto = this.campaignAccess;
+               this.companyProfile.moduleAccessDto = this.moduleAccess;
                this.companyProfile.roleId = $('#selectedRole option:selected').val();
                this.companyProfileService.createNewVendorRole(this.companyProfile)
                .subscribe(
@@ -1726,7 +1726,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     this.refService.showSweetAlertErrorMessage("Please Upload Company Logo");
                     this.refService.goToTop();
                    }else{
-                    if(this.campaignAccess.mdf){
+                    if(this.moduleAccess.mdf){
                         this.mdfService.saveMdfRequestForm(this.companyProfile.userEmailId, this.companyProfile.companyProfileName).subscribe((result :any)=> {
                             if (result.access) {
                                 if (result.statusCode === 100) {
@@ -1762,8 +1762,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
            }
         
        }else{
-           this.campaignAccess.userId = this.userId;
-           this.companyProfileService.upgradeToVendorRole(this.campaignAccess)
+           this.moduleAccess.userId = this.userId;
+           this.companyProfileService.upgradeToVendorRole(this.moduleAccess)
            .subscribe(
            (result:any) => {
               this.goBackToAdminPanel(result.message);
@@ -1809,7 +1809,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    }
    
    setVendorTier1(event:any){
-       //this.campaignAccess.vendorTier1 = event;
+       //this.moduleAccess.vendorTier1 = event;
    }
 
     setVendorLogoEnabled(event: any) {
@@ -1940,47 +1940,47 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.orgAdmin = roleId==2;
           this.vendor = roleId==13;
           if(this.prm){
-            this.campaignAccess.emailCampaign = false;
-            this.campaignAccess.videoCampaign = false;
-            this.campaignAccess.videoCampaign = false;
-            this.campaignAccess.socialCampaign = false;
-            this.campaignAccess.eventCampaign = false;
-            this.campaignAccess.survey = false;
-            this.campaignAccess.formBuilder = true;
-            this.campaignAccess.landingPage = false;
-            this.campaignAccess.landingPageCampaign = false;
-            this.campaignAccess.shareLeads = false;
-            this.campaignAccess.allBoundSource = false;
-            this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
-            this.campaignAccess.salesEnablement = false;
-            this.campaignAccess.dataShare = false;
-            this.campaignAccess.oneClickLaunch = false;
-            this.campaignAccess.referVendor = false;
-            this.campaignAccess.ssoEnabled = false;
-            this.campaignAccess.unlockMdfFundingEnabled = false;
+            this.moduleAccess.emailCampaign = false;
+            this.moduleAccess.videoCampaign = false;
+            this.moduleAccess.videoCampaign = false;
+            this.moduleAccess.socialCampaign = false;
+            this.moduleAccess.eventCampaign = false;
+            this.moduleAccess.survey = false;
+            this.moduleAccess.formBuilder = true;
+            this.moduleAccess.landingPage = false;
+            this.moduleAccess.landingPageCampaign = false;
+            this.moduleAccess.shareLeads = false;
+            this.moduleAccess.allBoundSource = false;
+            this.moduleAccess.campaignPartnerTemplateOpenedAnalytics = false;
+            this.moduleAccess.salesEnablement = false;
+            this.moduleAccess.dataShare = false;
+            this.moduleAccess.oneClickLaunch = false;
+            this.moduleAccess.referVendor = false;
+            this.moduleAccess.ssoEnabled = false;
+            this.moduleAccess.unlockMdfFundingEnabled = false;
           }else if(this.marketing){
-              this.campaignAccess.loginAsPartner = false;
-              this.campaignAccess.shareWhiteLabeledContent = false;
-              this.campaignAccess.createWorkflow = false;
+              this.moduleAccess.loginAsPartner = false;
+              this.moduleAccess.shareWhiteLabeledContent = false;
+              this.moduleAccess.createWorkflow = false;
           }
       }
 
       selectDashboardType(){
         let selectedDashboard = $('#dashboardTypeC option:selected').val();
         if(selectedDashboard==DashboardType[DashboardType.DASHBOARD]){
-          this.campaignAccess.dashboardType = DashboardType.DASHBOARD;
+          this.moduleAccess.dashboardType = DashboardType.DASHBOARD;
         }else if(selectedDashboard==DashboardType[DashboardType.ADVANCED_DASHBOARD]){
-          this.campaignAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
+          this.moduleAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
         }else if(selectedDashboard==DashboardType[DashboardType.DETAILED_DASHBOARD]){
-          this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
+          this.moduleAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
         }
       }
 
       updateLmsAndPlayBooks(){
       let isDamChecked = $('#damCheckBoxC').is(':checked');
           if(!isDamChecked){
-              this.campaignAccess.lms = false;
-              this.campaignAccess.playbooks = false;
+              this.moduleAccess.lms = false;
+              this.moduleAccess.playbooks = false;
           }
       }
 
@@ -1988,7 +1988,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       updateOneClickLaunchOption(){
         let isShareLeadsChecked = $('#share-leads-c').is(':checked');
         if(!isShareLeadsChecked){
-            this.campaignAccess.oneClickLaunch = false;
+            this.moduleAccess.oneClickLaunch = false;
         }
       }
       /** XNFR-134 ***** */
@@ -1999,7 +1999,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     /** XNFR-139 ***** */
     setMaxAdmins(){
         let maxAdmins =  $('#maxAdmins option:selected').val();
-        this.campaignAccess.maxAdmins = maxAdmins;
+        this.moduleAccess.maxAdmins = maxAdmins;
     }
     
     getPartnerDetails(){
@@ -2044,12 +2044,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /***XNFR-595****/
     customUiSwitchEventReceiver(event:any){
-        this.campaignAccess.paymentOverDue = event;
+        this.moduleAccess.paymentOverDue = event;
     }
    
 
     setSSOValue(event:any){
-        this.campaignAccess.ssoEnabled = event;
+        this.moduleAccess.ssoEnabled = event;
     }
 
     /** XNFR-618 **/
@@ -2081,7 +2081,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     setReferVendorValue(event:boolean){
-        this.campaignAccess.referVendor = event;
+        this.moduleAccess.referVendor = event;
     }
     isValidTwitterLink(twitterLink: any) {
         const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
@@ -2099,18 +2099,18 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /**XNFR-832***/
     unlockMdfFundingUiSwitchEventReceiver(event:any){
-        this.campaignAccess.unlockMdfFundingEnabled = event;
+        this.moduleAccess.unlockMdfFundingEnabled = event;
     }
 
     /**XNFR-878***/
     allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
-        this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
+        this.moduleAccess.allowVendorToChangePartnerPrimaryAdmin = event;
     }
   
     contactUploadQuotaEnabledUiSwitchEventReceiver(event: boolean) {
         this.disableContactSubscriptionLimitField = !event;
-        this.campaignAccess.contactSubscriptionLimitEnabled = event;
-        const contactSubscriptionLimit = this.campaignAccess.contactSubscriptionLimit;
+        this.moduleAccess.contactSubscriptionLimitEnabled = event;
+        const contactSubscriptionLimit = this.moduleAccess.contactSubscriptionLimit;
         if (event && (!contactSubscriptionLimit || contactSubscriptionLimit == 0)) {
             this.disableModuleAccessButton();
             this.contactSubscriptionLimitErrorMessage = this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN;
@@ -2121,9 +2121,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     contactUploadQuotaLimitChange(contactSubscriptionLimit: number) {
-        this.campaignAccess.contactSubscriptionLimit = contactSubscriptionLimit;
+        this.moduleAccess.contactSubscriptionLimit = contactSubscriptionLimit;
         const isQuotaInvalid = contactSubscriptionLimit == 0 || !contactSubscriptionLimit;
-        if (this.campaignAccess.contactSubscriptionLimitEnabled && isQuotaInvalid) {
+        if (this.moduleAccess.contactSubscriptionLimitEnabled && isQuotaInvalid) {
             this.disableModuleAccessButton();
             this.contactSubscriptionLimitErrorMessage = this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN;
         } else {
@@ -2142,13 +2142,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     oliverActiveUiSwitchEventReceiver(event: boolean) {
         this.disableOliverAgentModuleOptions = !event;
-        this.campaignAccess.oliverActive = event;
+        this.moduleAccess.oliverActive = event;
     }
 
     /*** XNFR-1066 ***/
     onVanityUrlChange() {
-        if (!this.campaignAccess.vanityUrlDomain) {
-            this.campaignAccess.marketingModulesEnabled = false;
+        if (!this.moduleAccess.vanityUrlDomain) {
+            this.moduleAccess.marketingModulesEnabled = false;
         }
     }
 

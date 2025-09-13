@@ -1,4 +1,4 @@
-import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+import { ModuleAccess } from '../../../campaigns/models/module-access';
 
 export class CompanyProfile {
     id = 0;
@@ -30,7 +30,7 @@ export class CompanyProfile {
     firstName:string = "";
     lastName:string = "";
     
-    campaignAccessDto:CampaignAccess;
+    moduleAccessDto: ModuleAccess;
 
     showVendorCompanyLogo:boolean = true;
     favIconLogoPath:string;

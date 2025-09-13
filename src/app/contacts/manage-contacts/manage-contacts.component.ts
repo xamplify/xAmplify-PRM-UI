@@ -394,11 +394,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		//this.loggedInUserId = this.authenticationService.getUserId();
 
 		this.parentInput = {};
-		const currentUser = localStorage.getItem('currentUser');
-		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-		if (campaginAccessDto != undefined) {
-			this.companyId = campaginAccessDto.companyId;
-		}
+                const currentUser = localStorage.getItem('currentUser');
+                let moduleAccessDto = JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'];
+                if (moduleAccessDto != undefined) {
+                        this.companyId = moduleAccessDto.companyId;
+                }
 		/**XNFR-836**/
 		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
 			this.isFromCompanyModule = true;

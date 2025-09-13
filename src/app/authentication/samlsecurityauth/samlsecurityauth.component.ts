@@ -107,7 +107,7 @@ export class SamlsecurityauthComponent implements OnInit {
         'expiresIn': this.authenticationService.expires_in,
         'hasCompany': res.hasCompany,
         'roles': res.roles,
-        'campaignAccessDto': res.campaignAccessDto,
+        'moduleAccessDto': res.moduleAccessDto || res.campaignAccessDto,
         'logedInCustomerCompanyNeme': res.companyName,
         'source': res.source
       };

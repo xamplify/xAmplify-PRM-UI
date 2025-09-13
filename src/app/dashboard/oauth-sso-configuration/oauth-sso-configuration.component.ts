@@ -85,7 +85,7 @@ export class OauthSsoConfigurationComponent implements OnInit {
 
   saveOrUpdateOauthSsoConfiguration() {
     let self = this;
-    self.oauthSso.companyId = self.authenticationService.user.campaignAccessDto.companyId;
+    self.oauthSso.companyId = self.authenticationService.user.moduleAccessDto.companyId;
     self.oauthSso.createdBy = self.loggedInUserId;
     self.ngxLoading = true;
     self.oauthSsoService.saveOrUpdateOauthSsoConfiguration(self.oauthSso).subscribe(data => {

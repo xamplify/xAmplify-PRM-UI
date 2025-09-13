@@ -159,9 +159,9 @@ export class UtilService {
                 'expiresIn':  JSON.parse( currentUser )['expiresIn'],
                 'hasCompany': data.hasCompany,
                 'roles': data.roles,
-                'campaignAccessDto':data.campaignAccessDto,
+                'moduleAccessDto': data.moduleAccessDto || data.campaignAccessDto,
                 'logedInCustomerCompanyNeme':data.companyName,
-				'source':data.source,
+                                'source':data.source,
                 'secondAdmin': data.secondAdmin,
                 'isWelcomePageEnabled':JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey],
             };
