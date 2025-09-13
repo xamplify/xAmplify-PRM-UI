@@ -553,19 +553,10 @@ export class AccessAccountComponent implements OnInit {
 
     logoutAndReloadThePage(){
         $("body").addClass("logout-loader");
-        this.authenticationService.logoutByUserId().subscribe(
-            reponse=>{
-                this.authenticationService.resetData();
-                this.authenticationService.access_token = null;
-                this.authenticationService.redirectUrl = null;
-                window.location.reload();
-            },error=>{
-                this.authenticationService.resetData();
-                this.authenticationService.access_token = null;
-                this.authenticationService.redirectUrl = null;
-                window.location.reload();
-            }
-          );
+        this.authenticationService.resetData();
+        this.authenticationService.access_token = null;
+        this.authenticationService.redirectUrl = null;
+        window.location.reload();
     }
 
     autoFillCompnayByEmailDomain(emailId: any) {
