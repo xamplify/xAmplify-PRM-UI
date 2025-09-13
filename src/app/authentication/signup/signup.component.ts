@@ -25,6 +25,7 @@ declare var $: any;
 })
 export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     signUpForm: FormGroup;
+    emailId = "";
     loading = false;
     isError = false;
     vendorSignup = false;
@@ -120,7 +121,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         try{
         this.loading = true;
         this.signUpUser = this.signUpForm.value;
-        this.signUpUser.emailId = (this.signUpUser.emailId || '').toLowerCase();
+        this.signUpUser.emailId = (this.signUpUser.emailId || this.emailId).toLowerCase();
         this.signUpUser.vendorSignUp = this.vendorSignup;
         this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
         this.signUpUser.userId = this.authenticationService.getUserId();
@@ -276,6 +277,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
        this.signUpUser.firstName = data.firstName;
        this.signUpUser.lastName = data.lastName;
        this.signUpUser.emailId = data.emailId;
+       this.emailId = data.emailId;
        this.buildForm();
      },
     (error)=>{   this.mainLoader = false;this.xtremandLogger.error('error in signup page'+error);}
@@ -284,6 +286,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.signUpUser.firstName = '';
       this.signUpUser.lastName = '';
       this.signUpUser.emailId = '';
+      this.emailId = '';
       this.buildForm(); this.xtremandLogger.error('error in signup page'+error);
       this.mainLoader = false;
      }
