@@ -685,14 +685,7 @@ export class AuthenticationService {
   logout(): void {
     this.module.logoutButtonClicked = true;
     $("body").addClass("logout-loader");
-    this.logoutByUserId().subscribe(
-      reponse=>{
-        this.resetDataAndRemoveTokens();
-      },error=>{
-        this.resetDataAndRemoveTokens();
-      }
-    );
-    
+    this.resetDataAndRemoveTokens();
   }
 
   private resetDataAndRemoveTokens() {
@@ -1445,10 +1438,7 @@ findDashboardButtonPublishEmailNotificationOption() {
   return this.callGetMethod(apiUrl);
 }
 
-logoutByUserId(){
-  let url = this.REST_URL+"logout/"+this.getUserId();
-  return this.callGetMethod(url);
-}
+
 
 vanityWelcomePageRequired(userId) {
   this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
