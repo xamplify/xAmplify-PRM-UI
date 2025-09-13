@@ -211,7 +211,7 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 }
 /**** XNFR-416 *****/
   isVanityURLEnabled() {
-   let url = "https://xamplify-prm.opensource.com";
+   let url = "https://app.myapp.com";
    this.authenticationService.companyProfileName = "xamplify-prm";
    this.setVanityVariables(this.authenticationService.companyProfileName);
     return true;

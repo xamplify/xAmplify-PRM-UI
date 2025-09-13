@@ -5,50 +5,14 @@ export class EnvService {
 
   // API url
 
- // CLIENT_URL = 'http://localhost:4200/'; // xamplify client app server
- // SERVER_URL = 'https://release.xamp.io/'; // xamplify backend production server
-  //SERVER_URL = 'http://localhost:9090/'
-  
     
     /*********************QA**********************/
-     CLIENT_URL= 'https://xamplify.co/'; //socail ubuntu client app server
-     SERVER_URL='https://aravindu.com/'; // social ubuntu backend prodution testing
-     SCHEDULER_URL = "https://qascheduler.xamp.io/";
-     imagesHost = "https://aravindu.com/vod/images/";
-     PREVIEW_HOST = "https://assets.xamplify.io/";
+     CLIENT_URL= 'https://app.myapp.com/'; 
+     SERVER_URL='https://api.myapp.com/'; 
+     imagesHost = this.CLIENT_URL+"vod/images/";
 
-  
-  clientId = "";
-  clientSecret = "";
+    captchaSiteKey = "XXXXXXXXXXXXX";
 
-  beeTemplateDevClientId = "";
-  beeTemplateDevClientSecret = "";
-
-  beeTemplateQAClientId = "";
-  beeTemplateQAClientSecret = "";
-
-  beeTemplateReleaseClientId = "";
-  beeTemplateReleaseClientSecret = "";
-
-  vendorRoleHash = "";
-  partnerRoleHash = "";
-
-  captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
-  beeHostApi = "";
-  beeRequestType = "GET";
-
-  /*****Bee Page Credentials */
-  beePageDevClientId = "";
-  beePageDevClientSecret = "";
-
-  beePageQAClientId = "";
-  beePageQAClientSecret = "";
-
-  beePageProdClientId = "";
-  beePageProdClientSecret = "";
-
-  beePageReleaseClientId = "";
-  beePageReleaseClientSecret = "";
 
 
   /******Auto Reload Configurations */

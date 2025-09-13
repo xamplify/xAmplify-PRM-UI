@@ -3,21 +3,16 @@
 
 	window.__env.domainName = "xamplify-prm";
 	
-	/*************Local*******************************/
-
+	/*************Dev*******************************/
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; 
 	window.__env.SERVER_URL = 'http://localhost:8080/'; 
-	window.__env.SCHEDULER_URL = window.__env.SERVER_URL;
 	window.__env.imagesHost = "http://localhost:8000/images/";
-	window.__env.PREVIEW_HOST = "http://localhost:5000/";
 
 	/*********************Production**********************/
 
-	// window.__env.CLIENT_URL = 'https://xamplify.co/';
-	// window.__env.SERVER_URL =  'https://aravindu.com/';
-	//window.__env.SCHEDULER_URL = window.__env.SERVER_URL; 
-	// window.__env.imagesHost = window.__env.SERVER_URL+"/vod/images/";
-	// window.__env.PREVIEW_HOST = window.__env.CLIENT_URL;
+	// window.__env.CLIENT_URL = '"https://app.myapp.com/';
+	// window.__env.SERVER_URL =  'https://api.myapp.com/';
+	// window.__env.imagesHost = window.__env.SERVER_URL+"vod/images/";
 
 
 	/******Auto Reload Deployment Configurations */

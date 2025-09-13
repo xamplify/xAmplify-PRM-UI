@@ -50,7 +50,6 @@ export class AuthenticationService {
   DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
-  SCHEDULER_URL:string;
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;

@@ -3817,7 +3817,7 @@ preivewAssetOnNewHost(id: any) {
   let encodedIcon = this.getEncodedIcon();
   let companyName = localStorage.getItem("companyName");
   let encodedCompanyName =this.getEncodedCompanyName(companyName);
-  let url = this.envService.PREVIEW_HOST+"preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName;
+  let url = this.envService.CLIENT_URL+"preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName;
   window.open(url,"_blank");
 }
 
@@ -3830,12 +3830,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
   let userId = this.authenticationService.getUserId();
   let userIdAsString: string = String(userId);
   let encodedUserId =  btoa(userIdAsString);
-  console.log(id);
-  console.log(this.authenticationService.access_token);
-  console.log(companyName);
-  console.log(userId);
-  console.log(encodedUserId);
-  let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
+  let url = this.envService.CLIENT_URL+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
   window.open(url,"_blank");
 }
 
@@ -3846,7 +3841,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
     if (iconPath) {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
-      completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
+      completeIconPath += this.envService.CLIENT_URL + "favicon.ico";
     }
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;

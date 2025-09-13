@@ -51,8 +51,8 @@ export class ContactService {
     url = this.authenticationService.REST_URL + "admin/";
     companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
-    contactsSchedulerUrl = this.authenticationService.SCHEDULER_URL+"userlists/";
-    contactsV2Url = this.authenticationService.SCHEDULER_URL+"contacts/v2/";
+    contactsSchedulerUrl = this.authenticationService.SERVER_URL+"userlists/";
+    contactsV2Url = this.authenticationService.SERVER_URL+"contacts/v2/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
