@@ -1,5 +1,5 @@
 import { Role } from './role';
-import { CampaignAccess } from '../../campaigns/models/campaign-access';
+import { ModuleAccess } from '../../campaigns/models/module-access';
 import { CompanyProfileDTO } from '../../dashboard/company-profile/models/company-profile-dto';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 
@@ -46,7 +46,7 @@ export class User {
     region: string = "";
     partnerType: string = "";
     category: string = "";
-    campaignAccessDto:CampaignAccess = new CampaignAccess();
+    moduleAccessDto: ModuleAccess = new ModuleAccess();
     legalBasis = [];
     legalBasisString = [];
 

@@ -318,8 +318,8 @@ export class DashboardService {
     }
 
 
-    changeAccess(campaignAccess: any) {
-        return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
+    changeAccess(moduleAccess: any) {
+        return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, moduleAccess)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -359,9 +359,9 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    updatePartnerModuleAccess(campaignAccess: any){
+    updatePartnerModuleAccess(moduleAccess: any){
         const url = this.superAdminUrl + 'updatePartnerModules?access_token=' + this.authenticationService.access_token;
-        return this.http.post(url, campaignAccess)
+        return this.http.post(url, moduleAccess)
             .map(this.extractData)
             .catch(this.handleError);
     }

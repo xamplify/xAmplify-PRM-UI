@@ -308,7 +308,7 @@ ngOnDestroy(){
         self.showLeadForm = true;
         self.selectedFormSubmitId = formDataRow.formSubmittedId;
         if(self.isOrgAdmin){
-            self.selectFormVendorCompanyId = self.authenticationService.user.campaignAccessDto.companyId;
+            self.selectFormVendorCompanyId = self.authenticationService.user.moduleAccessDto.companyId;
         }
         $("#addLeadsPopup"+this.modalPopupSuffix).modal("show");
         self.changeDetectorRef.detectChanges();

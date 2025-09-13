@@ -52,9 +52,9 @@ refreshText :string;
   ngOnInit() {
      const user = JSON.parse(localStorage.getItem('currentUser'));
       let hasCompany = user.hasCompany;
-      let campaignAccessDto = user.campaignAccessDto;
-      if(hasCompany && campaignAccessDto!=undefined){
-        this.companyId= user.campaignAccessDto.companyId;
+      let moduleAccessDto = user.moduleAccessDto || user.campaignAccessDto;
+      if(hasCompany && moduleAccessDto!=undefined){
+        this.companyId= moduleAccessDto.companyId;
       }
       this.isSpfConfigured();
       this.isGodaddyConfigured();

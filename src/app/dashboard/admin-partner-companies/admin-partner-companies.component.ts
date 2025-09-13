@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
-import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { ModuleAccess } from 'app/campaigns/models/module-access';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 
 declare var $,swal: any;
@@ -30,7 +30,7 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 	selectedPartnerCompany:any;
 	dnsConfigured = false;
 	modalPopupLoader = false;
-	campaignAccess:CampaignAccess = new CampaignAccess();
+        moduleAccess: ModuleAccess = new ModuleAccess();
 	analyticsCountDto: any;
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
@@ -127,8 +127,8 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 
 	  updateModules(partnerCompany:any){
 		this.modalPopupLoader = true;
-		this.campaignAccess.companyId = partnerCompany.companyId;
-		this.dashboardService.updatePartnerModuleAccess(this.campaignAccess).
+		this.moduleAccess.companyId = partnerCompany.companyId;
+		this.dashboardService.updatePartnerModuleAccess(this.moduleAccess).
 		subscribe(result => {
 		  this.modalPopupLoader = false;
 		  if(result.statusCode==200){
@@ -147,7 +147,7 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 	  /** XNFR-139 ***** */
   setMaxAdmins(){
     let maxAdmins =  $('#maxAdmins-partners-Edit option:selected').val();
-    this.campaignAccess.maxAdmins = maxAdmins;
+    this.moduleAccess.maxAdmins = maxAdmins;
 }
 
 findMaximumAdminsLimitDetails(partnerCompany:any){
@@ -165,10 +165,10 @@ findMaximumAdminsLimitDetails(partnerCompany:any){
 	  },()=>{
 		this.selectedPartnerCompany = partnerCompany;
 		this.dnsConfigured = partnerCompany.emailDnsConfigured;
-		this.campaignAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
-		this.campaignAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
-		this.campaignAccess.maxAdmins = partnerCompany.maxAdmins;
-		this.campaignAccess.nonVanityAccessEnabled =  partnerCompany.nonVanityAccessEnabled;
+		this.moduleAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
+		this.moduleAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
+		this.moduleAccess.maxAdmins = partnerCompany.maxAdmins;
+		this.moduleAccess.nonVanityAccessEnabled =  partnerCompany.nonVanityAccessEnabled;
 	  }
 	);
   }
@@ -187,7 +187,7 @@ onNonVanityAccessToggle(event: Event) {
     cancelButtonColor: '#999',
     confirmButtonText: `Yes, ${actionText} it!`
   }).then(() => {
-    this.campaignAccess.nonVanityAccessEnabled = newValue;
+    this.moduleAccess.nonVanityAccessEnabled = newValue;
   }, (dismiss: any) => {
     (event.target as HTMLInputElement).checked = !newValue;
   });

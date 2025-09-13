@@ -57,7 +57,7 @@ export class SamlSsoLoginComponent implements OnInit {
     if (self.samlSecurityObj.id === undefined || self.samlSecurityObj.id === null) {
       let samlObj = {
         emailId: self.emailId,
-        companyId: self.authenticationService.user.campaignAccessDto.companyId,
+        companyId: self.authenticationService.user.moduleAccessDto.companyId,
         createdByUserId: self.loggedInUserId
       }
       self.samlSecurityService.saveSaml2Security(samlObj).subscribe(response => {

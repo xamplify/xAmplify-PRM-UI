@@ -380,11 +380,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 		this.parentInput = {};
 		/*********XNFR-224*********/
-		const currentUser = localStorage.getItem('currentUser');
-		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-		if (campaginAccessDto != undefined) {
-			this.companyId = campaginAccessDto.companyId;
-		}
+                const currentUser = localStorage.getItem('currentUser');
+                let moduleAccessDto = JSON.parse(currentUser)['moduleAccessDto'] || JSON.parse(currentUser)['campaignAccessDto'];
+                if (moduleAccessDto != undefined) {
+                        this.companyId = moduleAccessDto.companyId;
+                }
 		/*********XNFR-224*********/
 
 	}

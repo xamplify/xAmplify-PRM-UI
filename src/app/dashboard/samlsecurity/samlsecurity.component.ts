@@ -35,7 +35,7 @@ export class SamlsecurityComponent implements OnInit {
       if (this.samlSecurityObj.id === undefined || this.samlSecurityObj.id === null) {
         let samlObj = {
           emailId: this.emailId,
-          companyId: this.authenticationService.user.campaignAccessDto.companyId
+          companyId: this.authenticationService.user.moduleAccessDto.companyId
         }
         this.samlSecurityService.saveSamlSecurity(samlObj).subscribe(response => {
           this.samlSecurityObj = response;
