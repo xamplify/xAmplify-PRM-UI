@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ContactService } from '../services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 
 @Component( {
@@ -18,7 +17,7 @@ export class SocialContactsCallbackComponent implements OnInit {
     currentModule = '';
     callbackName: string;
 
-    constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger,private hubSpotService:HubSpotService ,private integrationService:IntegrationService) {
+    constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger,private integrationService:IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
@@ -85,24 +84,7 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
     hubSpotCallback(code:string) {
-        try {
-            this.hubSpotService.hubSpotCallback(code)
-                .subscribe(
-                    result => {
-                        this.referenceService.integrationCallBackStatus = true;
-                        this.xtremandLogger.info("Hubspot Callback :: " + result);
-                        localStorage.removeItem("userAlias");
-                        localStorage.removeItem("currentModule");
-                        this.router.navigate(['/home/dashboard/myprofile'])
-                    },
-                    error => {
-                        localStorage.removeItem("userAlias");
-                        this.xtremandLogger.info(error)
-                    },
-                    () => this.xtremandLogger.info('login() Complete'));
-        } catch (error) {
-            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "hubSpotCallback()");
-        }
+ 
     }
 
     integrationCallback(code:string,type:string) {

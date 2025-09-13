@@ -181,11 +181,9 @@ import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 import { ChooseEmailtemplateComponent } from 'app/util/choose-emailtemplate/choose-emailtemplate.component';
 import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-company-domain-modal-popup/partner-company-domain-modal-popup.component';
-import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
 
 import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member-modal-popup/invite-team-member-modal-popup.component';
 import { DamAnalyticsDetailsComponent } from 'app/dam/dam-analytics-details/dam-analytics-details.component';
-import { PptDesignPickerComponent } from 'app/util/ppt-design-picker/ppt-design-picker.component';
 import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe';
 
 @NgModule({
@@ -230,7 +228,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,
 		ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
-		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe
 	],
 
 
@@ -274,7 +272,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,SelectfieldComponent,
 		OrderFieldsComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
-		PartnerCompanyDomainModalPopupComponent, DomainColorConfigurationComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent, PptDesignPickerComponent,SelectAssetTypeFilterPipe
+		PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe
 	]
 
 

@@ -33,7 +33,6 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Location } from '@angular/common';
 import { ParterService } from 'app/partners/services/parter.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
-import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 
 
 declare var $: any, swal: any;
@@ -270,7 +269,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location, private parterService: ParterService, private chatgptSettingsService: ChatGptSettingsService) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location, private parterService: ParterService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -3280,26 +3279,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	askOliver(selectedListId,listName) {
-		this.selectedList.userListId = selectedListId;
-		this.selectedList.contactName = listName;
-		this.showAskOliverModalPopup = true;
+	
 	}
 
 	closeAskAI(event: any) {
-		this.chatGptSettingDTO = event;
-		this.showAskOliverModalPopup = false;
+		
 	}
 
 	getOliverAgentAccessSettings() {
-		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
-			result => {
-				if (result.data && result.statusCode == 200) {
-					let data = result.data;
-					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
-				}
-			}, error => {
-				console.log('Error in getOliverAgentAccessSettings() ', error);
-			});
+		
 	}
 
 }

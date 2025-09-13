@@ -38,7 +38,6 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { unescape } from 'querystring';
 import { HttpClient } from '@angular/common/http';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { DomainColorConfigurationComponent } from 'app/util/domain-color-configuration/domain-color-configuration.component';
 
 
 declare var $,swal: any;
@@ -237,7 +236,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     enableOliverInsights: boolean = false;
     disableOliverAgentModuleOptions: boolean = false;
     showAskOliver: boolean = true;
-    @ViewChild('domainColorConfig') domainColorComponent: DomainColorConfigurationComponent;
 
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
@@ -846,7 +844,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         localStorage.setItem('currentUser',JSON.stringify(currentUser));
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
                         this.isDisable = this.companyProfile.companyProfileName.length == 0 ? false : true;
-                        this.domainColorComponent.updateTheme();
                         // this.domainColorComponent.getColorsByReferesh();
                     },
                     error => { this.ngxloading = false;

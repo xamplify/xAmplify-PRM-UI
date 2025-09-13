@@ -20,7 +20,6 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
-import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { DamService } from 'app/dam/services/dam.service';
 declare var $: any, swal: any;
@@ -159,7 +158,7 @@ export class ContactDetailsComponent implements OnInit {
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
      public integrationService: IntegrationService,
-    public chatgptSettingsService: ChatGptSettingsService ) {
+    ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -895,64 +894,19 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   fetchThreadIdAndVectorStoreId() {
-    this.ngxLoading = true;
-    this.chatgptSettingsService.getThreadIdAndVectorStoreIdByContactIdAndUserListId(this.contactId, this.selectedContactListId, this.chatGptIntegrationSettingsDto.oliverIntegrationType).subscribe(
-      response => {
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.chatGptSettingDTO = response.data;
-          this.chatGptSettingDTO.contactId = this.contactId;
-          this.chatGptSettingDTO.oliverIntegrationType = this.chatGptIntegrationSettingsDto.oliverIntegrationType;
-          this.chatGptSettingDTO.accessToken = this.chatGptIntegrationSettingsDto.accessToken;
-          this.chatGptSettingDTO.userListId = this.selectedContactListId;
-        }
-        this.ngxLoading = false;
-      }, error => {
-        this.ngxLoading = false;
-      }
-    )
+    
   }
 
   askOliverForCallRecording(callActivity:any) {
-    this.isFromManageContact = false;
-    this.callActivity = callActivity;
-    this.callActivity.contactName = this.contactName;
-    this.callActivity.emailId = this.selectedContact.emailId;
-    this.callActivity.mobileNumber = this.selectedContact.mobileNumber;
-    this.callActivity.contactId = this.selectedContact.id;
-    this.callActivity.userListId = this.selectedContactListId;
-    this.showAskOliverModalPopup = true;
+   
   }
 
   fetchOliverActiveIntegration() {
-    this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityLoginDto.vanityUrlFilter;
-    this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-    this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
-      (response: any) => {
-        if (response.statusCode == 200) {
-          let data = response.data;
-          if (data != null && data != undefined) {
-            this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
-            this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
-            this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
-            this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
-            this.fetchThreadIdAndVectorStoreId();
-          }
-        }
-      }, error => {
-        console.log('Error in fetchOliverActiveIntegration() ', error);
-      });
+   
   }
 
   getOliverAgentAccessSettings() {
-    this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
-      result => {
-        if (result.data && result.statusCode == 200) {
-          let data = result.data;
-          this.showOliverContactAgent = data.showOliverContactAgent;
-        }
-      }, error => {
-        console.log('Error in getOliverAgentAccessSettings() ', error);
-      });
+   
   }
   
 }

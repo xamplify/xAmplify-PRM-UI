@@ -14,7 +14,6 @@ import { HttpRequestLoader } from '../core/models/http-request-loader';
 import { EmailTemplateType } from '../email-template/models/email-template-type';
 import { CustomResponse } from '../common/models/custom-response';
 import { EmailTemplateSource } from '../email-template/models/email-template-source';
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
@@ -67,7 +66,7 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
     categoryId: number = 0;
   constructor( private userService: UserService, private router: Router,
           private emailTemplate: EmailTemplate, private logger: XtremandLogger, public authenticationService: AuthenticationService, public refService: ReferenceService,
-          public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
+          public callActionSwitch: CallActionSwitch,private route: ActivatedRoute) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.type = this.route.snapshot.params['type'];
       this.getAvailableNames();

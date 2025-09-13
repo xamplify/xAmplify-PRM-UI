@@ -15,7 +15,6 @@ import { Properties } from 'app/common/models/properties';
 import { ModuleCustomName } from '../models/module-custom-name';
 import { SuperAdminService } from '../super-admin.service';
 import { CustomDomainDto } from '../models/custom-domain-dto';
-import { ChatGptSettingsService } from '../chat-gpt-settings.service';
 import { runInThisContext } from 'vm';
 
 declare var $:any;
@@ -97,7 +96,7 @@ export class ModuleAccessComponent implements OnInit {
 
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
-    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService, private chatGptSettingsService: ChatGptSettingsService) { }
+    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
 
     ngOnInit() {
       this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
@@ -685,18 +684,7 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
   }
 
   fetchOliverActiveIntegrationType() {
-    this.chatGptSettingsService.fetchOliverActiveIntegrationType(this.companyId).subscribe(
-      (response: any) => {
-        if (response.statusCode == 200) {
-          let data = response.data;
-          if (data != null && data != undefined) {
-            this.oliverIntegrationType = data;
-            this.campaignAccess.oliverIntegrationType = this.oliverIntegrationType;
-          }
-        }
-      }, error => {
-        console.log('Error in fetchOliverActiveIntegrationType() ', error);
-      });
+   
   }
 
   /*** XNFR-1066 ***/

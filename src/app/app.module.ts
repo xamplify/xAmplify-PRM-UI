@@ -39,7 +39,6 @@ import { EnvServiceProvider } from './env.service.provider';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { CommonComponentModule } from 'app/common/common.module';
-import { HubSpotService } from './core/services/hubspot.service';
 import { IntegrationService } from './core/services/integration.service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
@@ -92,7 +91,7 @@ import { PublicTopNavigationBarComponent } from './util/public-top-navigation-ba
 	{provide: ErrorHandler, useClass: ClearChunkFile},
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService,
         XtremandLogger, VideoUtilService, ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
+        VideoFileService, UploadCloudvideoService, ContactService, EnvServiceProvider, Title, IntegrationService,
         VanityURLService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 

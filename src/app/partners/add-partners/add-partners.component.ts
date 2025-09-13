@@ -22,7 +22,6 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
@@ -39,7 +38,6 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
 import { ParterService } from 'app/partners/services/parter.service';
 import { Partnership } from '../models/partnership.model';
-import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { DamService } from 'app/dam/services/dam.service';
 
@@ -352,11 +350,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
-		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
+		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public integrationService: IntegrationService,
 		private utilService: UtilService,
-		public parterService: ParterService,private chatgptSettingsService: ChatGptSettingsService) {
+		public parterService: ParterService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
@@ -3015,30 +3013,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	hubSpotVanityAuthentication() {
-		this.contactService.vanitySocialProviderName = 'hubspot';
-		this.hubSpotService.configHubSpot().subscribe(data => {
-			let response = data;
-			let providerName = 'hubspot'
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.xtremandLogger.info("isAuthorize true");
-				this.showHubSpotModal();
-			}
-			else {
-				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-					this.loggedInUserId = this.authenticationService.getUserId();
-					this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-					let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
-					let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
-
-					var x = screen.width / 2 - 700 / 2;
-					var y = screen.height / 2 - 450 / 2;
-					window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
-
-				}
-			}
-		}, (error: any) => {
-			this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-		}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
 	}
 
 	showHubSpotModal() {
@@ -3063,27 +3037,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 			if (this.contactType === "lists") {
-				$("button#hubspot_save_button").prop('disabled', true);
-				this.hubSpotService.getHubSpotContactsLists()
-					.subscribe(
-						data => {
-							let response = data.data;
-							if (response.contacts.length > 0) {
-								for (var i = 0; i < response.contacts.length; i++) {
-									this.hubSpotContactListsData.push(response.contacts[i]);
-									this.xtremandLogger.log(response.contacts[i]);
-								}
-							} else {
-								this.customResponse = new CustomResponse('ERROR', "No " + this.contactType + " found", true);
-								this.hideHubSpotModal();
-							}
-						},
-						(error: any) => {
-							this.xtremandLogger.error(error);
-							this.xtremandLogger.errorPage(error);
-						},
-						() => this.xtremandLogger.log("onChangeHubSpotDropdown")
-					);
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "AddContactsComponent onChangeHubSpotDropdown().")
@@ -3111,22 +3064,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	getHubSpotContacts() {
-		this.hubSpotService.getHubSpotContacts().subscribe(data => {
-			let response = data.data;
-			this.selectedAddPartnerOption = 9;
-			this.frameHubSpotFilePreview(response);
-		});
 	}
 
 	getHubSpotContactsListsById() {
-		this.xtremandLogger.info("hubSpotSelectContactListOption :" + this.hubSpotSelectContactListOption);
-		if (this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== '') {
-			this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data => {
-				let response = data.data;
-				this.selectedAddPartnerOption = 9;
-				this.frameHubSpotFilePreview(response);
-			});
-		}
 	}
 
 	frameHubSpotFilePreview(response: any) {

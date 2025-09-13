@@ -41,7 +41,6 @@ import { CustomCsvMappingComponent } from '../custom-csv-mapping/custom-csv-mapp
 import { Partnership } from 'app/partners/models/partnership.model';
 import { ParterService } from 'app/partners/services/parter.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
-import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { DamService } from 'app/dam/services/dam.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
@@ -329,7 +328,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
 		public teamMemberService: TeamMemberService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private partnerService: ParterService,
-		private chatgptSettingsService: ChatGptSettingsService) {
+	) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -4031,20 +4030,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	fetchOliverActiveIntegration() {
-		this.chatGptIntegrationSettingsDto.partnerLoggedIn = this.authenticationService.module.damAccessAsPartner;
-		this.chatGptIntegrationSettingsDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-		this.chatgptSettingsService.fetchOliverActiveIntegration(this.chatGptIntegrationSettingsDto).subscribe(
-			(response: any) => {
-				if (response.statusCode == 200 && response.data) {
-					let data = response.data;
-					this.chatGptIntegrationSettingsDto.accessToken = data.accessToken;
-					this.chatGptIntegrationSettingsDto.assistantId = data.assistantId;
-					this.chatGptIntegrationSettingsDto.agentAssistantId = data.agentAssistantId;
-					this.chatGptIntegrationSettingsDto.oliverIntegrationType = data.type;
-				}
-			}, error => {
-				console.log('Error in fetchOliverActiveIntegration() ', error);
-			});
+	
 	}
 
 	showActivatePartnersAlert(partnershipId: number) {
@@ -4087,29 +4073,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	getOliverAgentAccessSettings() {
-		this.chatgptSettingsService.getOliverAgentConfigurationSettings().subscribe(
-			result => {
-				if (result.data && result.statusCode == 200) {
-					let data = result.data;
-					this.showOliverContactAgent = data.showOliverContactAgent;
-					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
-				}
-			}, error => {
-				console.log('Error in getOliverAgentAccessSettings() ', error);
-			});
+	
 	}
 
 	getOliverAgentConfigurationSettingsForVanityLogin() {
-		this.chatgptSettingsService.getOliverAgentConfigurationSettingsForVanityLogin().subscribe(
-			result => {
-				if (result.data && result.statusCode == 200) {
-					let data = result.data;
-					this.showOliverContactAgent = data.showOliverContactAgent;
-					this.showOliverPartnerAgent = data.showOliverPartnerAgent;
-				}
-			}, error => {
-				console.log('Error in getOliverAgentAccessSettings() ', error);
-			});
+		
 	}
 
 }

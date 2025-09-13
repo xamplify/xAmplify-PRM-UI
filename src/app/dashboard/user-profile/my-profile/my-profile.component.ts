@@ -25,7 +25,6 @@ import { DealForms } from '../../../deal-registration/models/deal-forms';
 import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { DashboardService } from '../../dashboard.service';
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../models/gdpr-setting';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
@@ -409,7 +408,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
-		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
+		private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
 		) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -1833,24 +1832,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	
 	}
 	checkHubspotIntegration() {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.hubSpotService.configHubSpot().subscribe(data => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			let response = data;
-			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.hubSpotRibbonText = "configured";
-			}
-			else {
-				this.hubSpotRibbonText = "configure";
-			}
-			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.hubSpotRedirectURL = response.data.redirectUrl;
-			}
-		}, (error: any) => {
-			this.referenceService.loading(this.httpRequestLoader, false);
-			this.hubSpotRibbonText = "configure";
-			this.logger.error(error, "Error in HubSpot checkIntegrations()");
-		}, () => this.logger.log("HubSpot Configuration Checking done"));
 
 	}
 	checkMarketoIntegration() {

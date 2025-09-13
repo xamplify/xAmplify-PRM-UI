@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from 'app/contacts/services/contact.service';
@@ -25,7 +24,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
-			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
+			private contactService: ContactService, public xtremandLogger: XtremandLogger,
 			private integrationService: IntegrationService,public env: EnvService
 			) {
         let currentUrl = this.router.url;
@@ -132,24 +131,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 		}
 	}
 	hubSpotCallback(code: string) {
-		try {
-			this.hubSpotService.hubSpotCallback(code)
-				.subscribe(
-					result => {
-						this.referenceService.integrationCallBackStatus = true;
-						this.xtremandLogger.info("Hubspot Callback :: " + result);
-						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
-						this.router.navigate(['/home/dashboard/myprofile'])
-					},
-					error => {
-						localStorage.removeItem("userAlias");
-						this.xtremandLogger.info(error)
-					},
-					() => this.xtremandLogger.info('login() Complete'));
-		} catch (error) {
-			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "hubSpotCallback()");
-		}
+
 	}
 
 	integrationCallback(code: string, type: string) {

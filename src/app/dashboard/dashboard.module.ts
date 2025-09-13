@@ -98,7 +98,6 @@ import { SuperAdminService } from './super-admin.service';
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
-import { ChatGptSettingsService } from './chat-gpt-settings.service';
 import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
 import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
 import { UniversalSearchComponent } from './universal-search/universal-search.component';
@@ -201,6 +200,6 @@ import { ContactStatusDropDownComponent } from './contact-status-drop-down/conta
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService,
-        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService,SignatureService,PendingChangesGuard]
+        SuperAdminService,MyProfileService,FlexiFieldService,SignatureService,PendingChangesGuard]
 })
 export class DashboardModule { }

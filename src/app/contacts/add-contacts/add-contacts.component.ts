@@ -20,7 +20,6 @@ import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { FileUtil } from '../../core/models/file-util';
-import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
@@ -261,7 +260,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         public properties: Properties,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, public userService: UserService,
         public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public integrationService: IntegrationService, private dashBoardService: DashboardService,
         private flexiFieldService: FlexiFieldService) {
         this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -3386,26 +3385,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
 
             if (this.contactType === "lists") {
-                $("button#hubspot_save_button").prop('disabled', true);
-                this.hubSpotService.getHubSpotContactsLists()
-                    .subscribe(
-                        data => {
-                            let response = data.data;
-                            if (response.contacts.length > 0) {
-                                for (var i = 0; i < response.contacts.length; i++) {
-                                    this.hubSpotContactListsData.push(response.contacts[i]);
-                                }
-                            } else {
-                                this.customResponse = new CustomResponse('ERROR', "No " + this.contactType + " found", true);
-                                this.hideHubSpotModal();
-                            }
-                        },
-                        (error: any) => {
-                            this.xtremandLogger.error(error);
-                            this.xtremandLogger.errorPage(error);
-                        },
-                        () => this.xtremandLogger.log("onChangeHubSpotDropdown")
-                    );
+
             }
         } catch (error) {
             this.xtremandLogger.error(error, "AddContactsComponent onChangeHubSpotDropdown().")
@@ -3436,21 +3416,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getHubSpotContacts() {
-        this.hubSpotService.getHubSpotContacts().subscribe(data => {
-            let response = data.data;
-            this.selectedAddContactsOption = 9
-            this.frameHubSpotFilePreview(response);
-        });
+        
     }
 
     getHubSpotContactsListsById() {
-        if (this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== '') {
-            this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data => {
-                let response = data.data;
-                this.selectedAddContactsOption = 9
-                this.frameHubSpotFilePreview(response);
-            });
-        }
+     
     }
 
     frameHubSpotFilePreview(response: any) {
@@ -3588,37 +3558,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.userUserListWrapper.users = this.socialUsers;
             this.userUserListWrapper.userList = this.contactListObject;
             this.saveAssignedLeadsList();
-        } else {
-            this.loading = true;
-            this.socialContact.type = "hubspot";
-            this.socialContact.userId = this.authenticationService.getUserId();
-            this.socialContact.externalListId = this.hubSpotSelectContactListOption;
-            this.setLegalBasisOptions(this.socialContact.contacts);
-            this.socialContact.publicList = this.model.isPublic;
-            this.socialContact.moduleName = this.getModuleName();
-            this.hubSpotService.saveHubSpotContacts(this.socialContact)
-                .subscribe(
-                    data => {
-                        if (data.access) {
-                            this.loading = false;
-                            this.selectedAddContactsOption = 8;
-                            this.contactService.saveAsSuccessMessage = "add";
-                            this.router.navigateByUrl('/home/contacts/manage');
-                            localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.authenticationService.forceToLogout();
-                            localStorage.removeItem('isZohoSynchronization');
-                        }
-                    },
-
-                    (error: any) => {
-                        this.loading = false;
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => this.xtremandLogger.info("addcontactComponent saveHubSpotContactsWithPermission() finished")
-                )
-        }
+        } 
     }
 
     saveExternalContactsWithPermission_old(type: string) {
