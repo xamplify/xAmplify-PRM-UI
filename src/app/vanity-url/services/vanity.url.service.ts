@@ -258,10 +258,15 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
   }
 
   public setVanityURLTitleAndFavIcon() {
-    if (this.authenticationService.v_companyName){      
+     if (this.authenticationService.v_companyName){      
+      this.titleService.setTitle(this.authenticationService.v_companyName);
+    }else{
       this.titleService.setTitle("xAmplify-Prm");
-       this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.APP_URL + "assets/images/Xamplify.ico");
-
+    }
+    if(this.authenticationService.v_companyFavIconPath) {
+      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
+    }else{
+      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.APP_URL + "assets/images/Xamplify.ico");
     }
   
   }
