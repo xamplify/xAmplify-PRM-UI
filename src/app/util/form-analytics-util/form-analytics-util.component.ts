@@ -1,0 +1,336 @@
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ReferenceService } from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import { FormService } from '../../forms/services/form.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { SubmittedFormData } from '../../forms/models/submitted-form-data';
+import { Router } from '@angular/router';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { Properties } from '../../common/models/properties';
+import { CustomResponse } from '../../common/models/custom-response';
+import { FormSubmit } from 'app/forms/models/form-submit';
+import { Roles } from 'app/core/models/roles';
+
+declare var $: any, swal: any;
+
+
+@Component({
+    selector: 'app-form-analytics-util',
+    templateUrl: './form-analytics-util.component.html',
+    styleUrls: ['./form-analytics-util.component.css'],
+    providers: [Pagination, HttpRequestLoader, FormService, CallActionSwitch, Properties]
+})
+export class FormAnalyticsUtilComponent implements OnInit {
+    copiedLinkCustomResponse: CustomResponse = new CustomResponse();
+    formId: any;
+    partnerLandingPageAlias: any;
+    loggedInUserId: number = 0;
+    partnerId: number = 0;
+    alias: string = "";
+    campaignAlias: string = "";
+    formName = "";
+    pagination: Pagination = new Pagination();
+    columns: Array<any> = new Array<any>();
+    formDataRows: Array<SubmittedFormData> = new Array<SubmittedFormData>();
+    statusCode: number = 200;
+    selectedSortedOption: any;
+    searchKey = "";
+    campaignForms = false;
+    routerLink = "/home/forms/manage";
+    isTotalLeadsData = false;
+    isTotalAttendees: boolean;
+    @Input() importedObject: any;
+    status = true;
+    title: string = "";
+    isEventCheckIn = false;
+    customResponse: CustomResponse = new CustomResponse();
+    publicEventAlias = "";
+    formAnalyticsDownload = false;
+    campaignFormAnalyticsDownload = false;
+    campaignPartnerFormAnalyticsDownload: boolean;
+    @Input() isVendorJourney: boolean;
+    @Input() isMasterLandingPage: boolean;
+    @Input() isMasterLandingPageAnalytics:boolean;
+    formSubmitDto = new FormSubmit;
+    @Input() isPartnerJourneyPage: boolean;
+    @Input() isVendorMarketplacePage: boolean;
+    @Input() isVendorMarketplacePageAnalytics:boolean;
+    isEmailFieldExists: boolean = false;
+    showLeadForm:boolean = false;
+    addLeadsOptionPermissionRequired:boolean = false;
+    selectedFormSubmitId:number;
+    selectFormVendorCompanyId:number=0;
+    roleName: Roles = new Roles();
+    isOrgAdmin: boolean = false;  
+    modalPopupSuffix:string="";
+    @Input() isWelcomePage: boolean;
+ 
+    constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
+        public authenticationService: AuthenticationService, public formService: FormService,
+        public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
+        public logger: XtremandLogger, public callActionSwitch: CallActionSwitch, public properties: Properties,
+        public changeDetectorRef: ChangeDetectorRef
+    ) {
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.pagination.userId = this.loggedInUserId;
+    }
+
+    ngOnInit() {
+        let objectLength = Object.keys(this.importedObject).length;
+        const roles = this.authenticationService.getRoles();
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+            this.isOrgAdmin = true;
+        }
+        if (objectLength > 0) {
+            this.alias = this.importedObject['formAlias'];
+            this.campaignAlias = this.importedObject['campaignAlias'];
+            this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
+            this.formId = this.importedObject['formId'];
+            this.partnerId = this.importedObject['partnerId'];
+            this.title = this.importedObject['title'];
+            this.selectFormVendorCompanyId = this.importedObject['vendorCompanyId'];
+            if (this.campaignAlias != undefined) {
+                this.campaignFormAnalyticsDownload = true;
+                this.pagination.campaignId = parseInt(this.campaignAlias);
+                this.pagination.partnerId = this.partnerId;
+                if (this.pagination.partnerId != undefined) {
+                    this.campaignFormAnalyticsDownload = false;
+                    this.campaignPartnerFormAnalyticsDownload = true;
+                }
+                this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
+                this.pagination.eventCampaign = this.importedObject['eventCampaign'];
+                this.pagination.totalLeads = this.importedObject['totalLeads'];
+                this.pagination.totalAttendees = this.importedObject['totalAttendees'];
+                this.pagination.totalPartnerLeads = this.importedObject['totalPartnerLeads'];
+                this.pagination.checkInLeads = this.importedObject['checkInLeads'];
+                this.pagination.selectedPartnerLeads = this.importedObject['selectedPartnerLeads'];
+                this.pagination.partnerId = this.importedObject['partnerId'];
+                this.isEventCheckIn = this.pagination.checkInLeads;
+                this.publicEventAlias = this.importedObject['publicEventAlias'];
+            } else if (this.partnerLandingPageAlias != undefined) {
+                this.pagination.landingPageAlias = this.partnerLandingPageAlias;
+                this.pagination.formId = this.formId;
+                this.alias = "";
+                this.pagination.partnerLandingPageForm = true;
+            } else {
+                this.formAnalyticsDownload = true;
+            }
+            this.listSubmittedData(this.pagination);
+        }
+
+    }
+ngOnDestroy(){
+    $("#addLeadsPopup"+this.modalPopupSuffix).modal("hide");
+}
+    listSubmittedData(pagination: Pagination) {
+        pagination.searchKey = this.searchKey;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        if(this.isVendorJourney ){
+            pagination.vendorJourney = true;
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }else if(this.isMasterLandingPageAnalytics){
+            pagination.masterLandingPageAnalytics = true;
+            pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+            this.modalPopupSuffix = "masterLandingPageAnalytics"
+        }else  if(this.isPartnerJourneyPage ){
+            pagination.partnerJourneyPage = true;
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }else if(this.isVendorMarketplacePageAnalytics){
+            pagination.vendorMarketplacePageAnalytics = true;
+            pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+            this.modalPopupSuffix = "vendorMarketplacePageAnalytics";
+        }else if(this.isVendorMarketplacePage){
+            pagination.vendorMarketplacePage = true;
+            pagination.vendorLandingPageId = this.importedObject['partnerLandingPageId'];
+        }else if(this.isWelcomePage){
+            pagination.landingPageId = this.importedObject['selectedLandingPageId'];
+        }
+        this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
+            (response: any) => {
+                const data = response.data;
+                this.isTotalLeadsData = this.pagination.totalLeads;
+                this.isTotalAttendees = this.pagination.totalAttendees;
+                this.statusCode = response.statusCode;
+                if (response.statusCode == 200) {
+                    if (this.title == undefined) {
+                        this.title = data.formName;
+                    }
+                    if (this.isTotalLeadsData) {
+                        this.title = "Total Leads";
+                    }
+                    if (this.isTotalAttendees || this.pagination.checkInLeads) {
+                        this.title = "Total Attendees";
+                    }
+                    this.columns = data.columns;
+                    this.selectedSortedOption = this.columns[0];
+                    this.formDataRows = data.submittedData;
+                    pagination.totalRecords = data.totalRecords;
+                    this.isEmailFieldExists = data.isEmailFieldExists;
+                    pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
+                } else {
+                    this.referenceService.goToPageNotFound();
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => { this.logger.errorPage(error); });
+    }
+    search() {
+        this.pagination.pageIndex = 1;
+        this.listSubmittedData(this.pagination);
+    }
+
+
+    eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+
+    refreshList() {
+        this.pagination.searchKey = "";
+        this.listSubmittedData(this.pagination);
+    }
+    /************Page************** */
+    setPage(event: any) {
+        this.pagination.pageIndex = event.page;
+        this.listSubmittedData(this.pagination);
+    }
+
+    expandColumns(selectedFormDataRow: any, selectedIndex: number) {
+        $.each(this.formDataRows, function (index, row) {
+            if (selectedIndex != index) {
+                row.expanded = false;
+                $('#form-data-row-' + index).css("background-color", "#fff");
+            }
+        });
+        selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
+        if (selectedFormDataRow.expanded) {
+            $('#form-data-row-' + selectedIndex).css("background-color", "#d3d3d357");
+        } else {
+            $('#form-data-row-' + selectedIndex).css("background-color", "#fff");
+        }
+
+    }
+
+    getSortedResult(text: any) {
+        console.log(text);
+    }
+
+    goToCampaignAnalytics() {
+    }
+
+
+    checkIn(event: any, formDataRow: any) {
+        let formSubmitId = formDataRow['formSubmittedId'];
+        formDataRow['checkedInForEvent'] = event;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.formService.checkInAttendees(this.pagination.campaignId, formSubmitId, event).subscribe(
+            (response: any) => {
+                this.statusCode = response.statusCode;
+                $(window).scrollTop(0);
+                this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => { this.referenceService.showSweetAlert(this.properties.serverErrorMessage, "", "error"); this.referenceService.loading(this.httpRequestLoader, false); });
+    }
+
+    openLinkInBrowser() {
+        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+            window.open(this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias + "?type=YES&utm_source=public", "_blank");
+        } else {
+            window.open(this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias + "?type=YES&utm_source=public", "_blank");
+        }
+    }
+
+    downloadCsv() {
+        if (this.pagination.totalPartnerLeads) {
+            window.open(this.authenticationService.REST_URL + "campaign/download/pl/" + this.pagination.campaignId + "/" + false + "?access_token=" + this.authenticationService.access_token);
+        } else if (this.pagination.checkInLeads) {
+            window.open(this.authenticationService.REST_URL + "campaign/download/eccl/" + this.pagination.campaignId + "?access_token=" + this.authenticationService.access_token);
+        } else if (this.pagination.totalAttendees) {
+            this.downloadCsvFile();
+        } else if (this.formAnalyticsDownload && !this.isVendorJourney && !this.isMasterLandingPageAnalytics) {
+            window.open(this.authenticationService.REST_URL + "form/download/fa/" + this.alias + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token + "&searchKey=" + this.pagination.searchKey);
+        } else if (this.campaignFormAnalyticsDownload) {
+            this.downloadCsvFile();
+        } else if (this.campaignPartnerFormAnalyticsDownload) {
+            window.open(this.authenticationService.REST_URL + "form/download/cpfa/" + this.alias + "/" + this.pagination.campaignId + "/" + this.pagination.partnerId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
+        } else if (this.pagination.partnerLandingPageForm) {
+            window.open(this.authenticationService.REST_URL + "form/download/plpf/" + this.partnerLandingPageAlias + "/" + this.formId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
+        } else if (this.isVendorJourney || this.isMasterLandingPageAnalytics) {
+            this.downloadVendorJourneyPageAnalyticsCsv();
+        }
+    }
+
+    downloadVendorJourneyPageAnalyticsCsv() {
+        this.formSubmitDto.alias = this.alias;
+        this.formSubmitDto.userId = this.loggedInUserId;
+        this.formSubmitDto.searchKey = this.pagination.searchKey;
+        this.formSubmitDto.vendorJourney = this.isVendorJourney;
+        this.formSubmitDto.masterLandingPage = this.isMasterLandingPageAnalytics;
+        this.formSubmitDto.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
+        this.formSubmitDto.partnerMasterLandingPageId = this.importedObject['masterLandingPageId'];
+
+        const url = `${this.authenticationService.REST_URL}form/download/vjfa`;
+        const headers = {
+            'Authorization': `Bearer ${this.authenticationService.access_token}`,
+            'Content-Type': 'application/json'
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(this.formSubmitDto)
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Regular-form-data.csv';
+                a.click();
+            });
+    }
+
+    downloadCsvFile() {
+        
+    }
+    addLeadsOptionRequired(){
+        //orgadmin,orgadminteammenber, partner, partnerTeammenber
+        this.addLeadsOptionPermissionRequired = this.authenticationService.module.isContact
+    }   
+
+
+    addLeadsForm(formDataRow:any){
+        let self = this;
+        self.showLeadForm = true;
+        self.selectedFormSubmitId = formDataRow.formSubmittedId;
+        if(self.isOrgAdmin){
+            self.selectFormVendorCompanyId = self.authenticationService.user.campaignAccessDto.companyId;
+        }
+        $("#addLeadsPopup"+this.modalPopupSuffix).modal("show");
+        self.changeDetectorRef.detectChanges();
+        setTimeout(() => {
+            self.showLeadForm = true;
+            self.changeDetectorRef.detectChanges();
+          });
+        
+    }
+
+    hideModal(){
+        $("#addLeadsPopup"+this.modalPopupSuffix).modal("hide");
+        this.showLeadForm = false;  
+    }
+
+    showSubmitLeadMessage(event:any){
+        this.hideModal();
+        if(event.statusCode=200){
+            swal("Lead Created Successfully", "", "success"); 
+        }else{
+            swal(event.message, "", "error"); 
+
+        }
+    }
+}

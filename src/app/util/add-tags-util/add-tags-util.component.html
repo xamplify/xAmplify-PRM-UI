@@ -1,0 +1,129 @@
+<div class="modal fade right" id="addTagModalPopup" tabindex="-1" role="dialog" aria-labelledby="addTagModalPopup"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle"  (click)="closeTagModal()"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title text-center">{{tagModalTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <app-dashboard-loader *ngIf="addTagLoader.isLoading"></app-dashboard-loader>
+                <ng-container *ngIf="!addTagLoader.isLoading">
+                    <span *ngIf="!tag.isValid" class="required">{{tagErrorMessage}}</span>
+                    <div class="form-group" id="tagNamesDiv">
+                        <label>Name <span class="required">*</span></label>
+                        <div *ngIf="isAddTag">
+                            <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}"
+                                [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'"
+                                [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag"
+                                (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)"
+                                required></tag-input>
+                        </div>
+                        <div *ngIf="!isAddTag">
+                            <input class="form-control" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event)">
+                        </div>
+                        <span *ngIf="maxlengthError" style="color: red;">{{maxlengthErrorMessage}}</span>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" [disabled]="!tag.isTagNameValid || !tag.isValid || addTagLoader.isLoading "
+                    class="button bgcolor-unset" (click)="tag.isValid && tag.isTagNameValid && saveOrUpdateTag()">
+                    <span class="btn Btn-Green transition txt_pd-top3" [ngClass]="tag.isValid && tag.isTagNameValid ?'':'disabled'">{{tagButtonSubmitText}}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade right" id="addTagModal" tabindex="-1" role="dialog" aria-labelledby="addTagModal"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="isAddTagPopup ?  cancel(): closeTagModal1()"><i
+                        class="fa fa-times"></i></button>
+                <h4 class="modal-title text-center">{{ isAddTagPopup ? 'Enter Tag Details' : 'Pick up Tag(s)' }}</h4>
+            </div>
+            <div class="modal-body">
+                <app-dashboard-loader *ngIf="addTagLoader.isLoading"></app-dashboard-loader>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr0 mb_11 mt10">
+                        <span *ngIf="!isAddTagPopup" class="alert-info m0" style="position: relative;border-radius: 4px; padding:9px;">Please Select Tag(s) </span>
+                </div>
+                    <div *ngIf="!isAddTagPopup" class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                        <div class="float-right input-icon right mb10">
+                            <input class="form-control" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
+                                (keypress)="tagEventHandler($event.keyCode);" placeholder="Search..." type="text">
+                            <button *ngIf = "tagSearchKey?.length>0" class="glyphicon glyphicon-remove search-box-item-clear"
+                                (click)="tagSearchKey='';searchTags();"></button>
+                            <button class="search-box-item-click" type="submit" (click)="searchTags()"><i
+                                    aria-hidden="true" class="fa fa-search"></i></button>
+                        </div>
+                        <button class="float-right btn btn-primary add-btn mr5" (click)="openAddTagModal()"
+                            data-placement="bottom" data-toggle="tooltip" title="" type="button"
+                            data-original-title="Add a Tag">
+                            <i aria-hidden="true" class="fa fa-plus mr5"></i>Add a tag</button>
+                    </div>
+                    <ng-container *ngIf="isAddTagPopup">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span *ngIf="!tag.isValid" class="required">{{tagErrorMessage}}</span>
+                            <div class="form-group" id="tagNamesDiv">
+                                <label>Name <span class="required">*</span></label>
+                                <div>
+                                    <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}"
+                                        [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'"
+                                        [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag"
+                                        (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)"
+                                        required></tag-input>
+                                </div>
+                                <!-- <div>
+                                    <input class="form-control" type="text" [(ngModel)]="tag.tagName"
+                                        (keyup)="validateTagName($event)">
+                                </div> -->
+                                <span *ngIf="maxlengthError" style="color: red;">{{maxlengthErrorMessage}}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!isAddTagPopup && !httpRequestLoader.isLoading ">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt5">
+                        <div class="add-tag-card">
+                            <div *ngIf=" !httpRequestLoader.isLoading && (tagsListFirstColumn == undefined || tagsListFirstColumn.length === 0) && (tagsListSecondColumn == undefined || tagsListSecondColumn.length === 0)"
+                                class="alert alert-info">
+                                <strong>No Tags Found.</strong>
+                            </div>
+
+                            <ul *ngIf= "!httpRequestLoader.isLoading" class="add-tag-list">
+                                <li *ngFor="let tag of tagsListFirstColumn; let i = index">
+                                    <input type="checkbox" id="{{tag.tagName}}" class="hidden-checkbox"
+                                    [checked]="selectedTagNames?.includes(tag.tagName)" (change)="updateSelectedTags(tag, $event.target.checked)">
+                                    <label for="{{tag.tagName}}" class="checkbox-btn" title="{{tag.tagName}}">
+                                        {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                    </label>
+                                </li>
+                                <li *ngFor="let tag of tagsListSecondColumn; let i = index">
+                                    <input type="checkbox" id="{{tag.tagName}}" class="hidden-checkbox"
+                                    [checked]="selectedTagNames?.includes(tag.tagName)"  (change)="updateSelectedTags(tag, $event.target.checked)">
+                                    <label for="{{tag.tagName}}" class="checkbox-btn" title="{{tag.tagName}}">
+                                        {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" [disabled]="(!tag?.isTagNameValid && !tag?.isValid) &&  !tagSelected"
+                    class="button bgcolor-unset"
+                    (click)="(tag.isValid && tag.isTagNameValid ? saveOrUpdateTag() : (tagSelected ? saveSelectedTags() : ''))">
+                    <span class="btn Btn-Green transition txt_pd-top3 text-captialize"
+                        [ngClass]="(tag?.isValid && tag?.isTagNameValid) || tagSelected ?'':'disabled'">{{(selectedTags?.length>0 && !isAddTagPopup) ?'update':'save'}}</span>
+                </button>
+                <button *ngIf = "isAddTagPopup" class="btn Btn-Gray neg_mrg_top4"  (click)="cancel()"
+                    translate>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

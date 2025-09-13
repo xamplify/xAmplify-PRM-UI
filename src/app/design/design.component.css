@@ -1,0 +1,90 @@
+.portlet.light .portlet-body {
+  padding-top: 0px !important;
+}
+.text {
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+h4 {
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+h5 {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+}
+.img-responsive {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: block;
+  max-width: 64px;
+  height: auto;
+}
+.hover-effect:hover {
+  border: 1px solid #4eafd6;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
+}
+.pointer {
+  cursor: pointer;
+}
+.design-name {
+  color: #008fd5;
+  font-size: 13px;
+  font-weight: 600;
+}
+@media only screen and (max-width: 600px) {
+  .mDisableColor {
+    color: #888 !important;
+  }
+}
+.portlet > .portlet-title > .caption {
+  line-height: 30px;
+}
+.padding {
+  padding: 0px 5px !important;
+}
+.header-text-css {
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  margin: 0px;
+  cursor: auto;
+}
+.header-description-css {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 10px 10px;
+  height: auto;
+  cursor: auto;
+}
+.portlet .light {
+  padding: 0px !important;
+}
+.img1:hover {
+  background-position: 100%;
+  background-color: #b8def1;
+  transition-duration: 500ms;
+}
+p {
+  margin: 0px;
+}
+.portlet > .portlet-title {
+  border-bottom: none !important;
+}
+
+@media (min-width: 1133px) and (max-width: 1261px) {
+  .header-description-css {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1132px) {
+  .header-description-css {
+    font-size: 10px;
+  }
+}

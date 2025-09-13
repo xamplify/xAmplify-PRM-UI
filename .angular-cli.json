@@ -1,0 +1,177 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"project": {
+		"name": "xtremand-web-cli"
+	},
+	"apps": [
+		{
+			"root": "src",
+			"outDir": "xtremandApp",
+			"assets": [
+            "assets/images",
+            "favicon.ico",
+            "env.js",
+            ".htaccess",
+            "assets/admin/layout2/img",
+            "assets/admin/pages/media/works",
+            "assets/global/img",
+			"assets/js/indexjscss",			
+			"assets/config-files",
+			"assets/i18n"			
+			  ],
+			"index": "index.html",
+			"main": "main.ts",
+			"polyfills": "polyfills.ts",
+			"test": "test.ts",
+			"tsconfig": "tsconfig.app.json",
+			"testTsconfig": "tsconfig.spec.json",
+			"prefix": "app",
+			"styles": [
+				"styles.css",
+				"./assets/admin/pages/css/portfolio.css",
+				"./assets/global/plugins/bootstrap/css/bootstrap.min.css",
+				"./assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css",
+				"./assets/global/plugins/font-awesome/css/font-awesome.min.css",
+				"./assets/global/plugins/fullcalendar/fullcalendar.min.css",
+				"./assets/global/plugins/simple-line-icons/simple-line-icons.min.css",
+				"./assets/global/plugins/uniform/css/uniform.default.css",
+				"./assets/global/css/components-rounded.css",
+				"./assets/global/css/plugins.css",
+				"./assets/admin/layout2/css/layout.css",
+				"./assets/admin/layout2/css/themes/grey.css",
+				"./assets/admin/layout2/css/custom.css",
+				"./assets/admin/pages/css/tasks.css",
+				"./assets/admin/pages/css/login.css",
+				"./assets/admin/pages/css/lock.css",
+				"./assets/css/dashboardPage.css",
+				"./assets/css/facebook.css",
+				"./assets/css/form.errors.css",
+				"./assets/css/bootstrap-switch.css",
+				"./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css",
+				"./assets/css/google-fonts.css",
+				"./assets/global/plugins/select2/select2.css",
+				"./assets/css/material_green.css",
+				"./assets/css/circle.css",
+				"./assets/js/indexjscss/slider-theme.css",
+				"./assets/css/xamplify-responsive.css",
+				"./assets/js/jquery-ui.css"
+			],
+			"scripts": [
+				"./assets/js/indexjscss/jquery.js",
+				"./assets/global/plugins/jquery-migrate.min.js",
+				"./assets/global/plugins/jquery-ui/jquery-ui.min.js",
+				"./assets/global/plugins/select2/select2.min.js",
+				"./assets/global/plugins/respond.min.js",
+				"./assets/global/plugins/excanvas.min.js",
+				"./assets/global/plugins/bootstrap/js/bootstrap.min.js",
+				"./assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js",
+				"./assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js",
+				"./assets/global/plugins/jquery.blockui.min.js",
+				"./assets/global/plugins/jquery.cokie.min.js",
+				"./assets/global/plugins/uniform/jquery.uniform.min.js",
+				"./assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js",
+				"./assets/global/plugins/sparkline/jquery.sparkline.min.js",
+				"./assets/global/plugins/flot/jquery.flot.min.js",
+				"./assets/global/plugins/flot/jquery.flot.resize.min.js",
+				"./assets/global/plugins/flot/jquery.flot.categories.min.js",
+				"./assets/global/plugins/jquery.pulsate.min.js",
+				"./assets/global/plugins/bootstrap-daterangepicker/moment.min.js",
+				"./assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js",
+				"./assets/global/plugins/fullcalendar/fullcalendar.min.js",
+				"./assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js",
+				"./assets/global/scripts/metronic.js",
+				"./assets/admin/layout2/scripts/layout.js",
+				"./assets/admin/layout2/scripts/quick-sidebar.js",
+				"./assets/admin/layout2/scripts/demo.js",
+				"./assets/admin/pages/scripts/index.js",
+				"./assets/admin/pages/scripts/tasks.js",
+				"./assets/js/jquery.pulsate.js",
+				"./assets/admin/pages/scripts/login.js",
+				"./assets/js/fullscreen.js",
+				"./assets/js/jquery.fullPage.js",
+				"./assets/global/plugins/jquery-mixitup/jquery.mixitup.min.js",
+				"./assets/global/plugins/fancybox/source/jquery.fancybox.pack.js",
+				"./assets/admin/pages/scripts/portfolio.js",
+				"./assets/global/plugins/datatables/media/js/jquery.dataTables.min.js",
+				"./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js",
+				"./assets/admin/pages/scripts/table-managed.js",
+				"./assets/admin/pages/scripts/table-editable.js",
+				"./assets/global/plugins/jquery-file-upload/js/cors/jquery.xdr-transport.js",
+				"./assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js",
+				"./assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js",
+				"./assets/global/plugins/bootstrap-summernote/summernote.min.js",
+				"./assets/admin/pages/scripts/components-editors.js",
+				"./assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js",
+				"./assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js",
+				"./assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js",
+				"./assets/admin/pages/scripts/table-advanced.js",
+				"./assets/global/plugins/backstretch/jquery.backstretch.min.js",
+				"./assets/admin/pages/scripts/form-samples.js",
+				"./assets/global/plugins/nouislider/jquery.nouislider.all.js",
+				"./assets/admin/pages/scripts/timeline.js",
+				"./assets/global/plugins/jquery-knob/js/jquery.knob.js",
+				"./assets/admin/pages/scripts/components-pickers.js",
+				"./assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js",
+				"./assets/global/plugins/clockface/js/clockface.js",
+				"./assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js",
+				"./assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js",
+				"./assets/global/plugins/jcrop/js/jquery.Jcrop.min.js",
+				"./assets/admin/pages/scripts/form-validation.js",
+				"./assets/global/plugins/bootstrap-markdown/lib/markdown.js",
+				"./assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js",
+				"./assets/global/plugins/typeahead/typeahead.bundle.min.js",
+				"./assets/global/plugins/typeahead/handlebars.min.js",
+				"./assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js",
+				"./assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js",
+				"./assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js",
+				"./assets/global/plugins/jquery.input-ip-address-control-1.0.min.js",
+				"./assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js",
+				"./assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js",
+				"./assets/global/plugins/fuelux/js/spinner.min.js",
+				"./assets/global/plugins/jquery-easypiechart/gaugeMeter-2.0.0.min.js",
+				"./assets/admin/pages/scripts/maps-vector.js",
+				"./assets/js/Blob.js",
+				"./assets/js/fileSaver.js",
+				"./assets/js/shim.min.js",
+				"./assets/js/reflect-metadata@0.1.3.js",
+				"./assets/js/system.src.js",
+				"./assets/js/indexjscss/slider.js",
+				"../node_modules/chart.js/dist/Chart.bundle.min.js"		
+			],
+			"environmentSource": "environments/environment.ts",
+			"environments": {
+        "dev": "environments/environment.ts",
+        "qa": "environments/environment.qa.ts",
+        "release": "environments/environment.release.ts",
+        "prod": "environments/environment.prod.ts"
+    		}
+		}
+	],
+	"e2e": {
+		"protractor": {
+			"config": "./protractor.conf.js"
+		}
+	},
+	"lint": [
+		{
+			"project": "src/tsconfig.app.json"
+		},
+		{
+			"project": "src/tsconfig.spec.json"
+		},
+		{
+			"project": "e2e/tsconfig.e2e.json"
+		}
+	],
+	"test": {
+		"karma": {
+			"config": "./karma.conf.js"
+		}
+	},
+	"defaults": {
+		"styleExt": "css",
+		"component": {
+
+		}
+	}
+}

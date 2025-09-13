@@ -1,0 +1,67 @@
+.my-drop-zone {
+  width: auto;
+  border-radius: 0;
+  border: dotted 3px lightgray;
+  min-height: 186px;
+}
+#right {
+  float: right;
+}
+.error {
+  color: red;
+}
+#ck-editor-height {
+  min-height: 515px;
+}
+#templateNameDiv {
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 34px;
+  padding: 2px;
+}
+#templateNameText {
+  border-left: 1px solid #a94442;
+}
+#upload-custom-template {
+  margin: -5px;
+  padding-top: 5px;
+}
+#drag-drop {
+  color: #717171;
+}
+#browse {
+  color: #fff;
+}
+#info {
+  cursor: default;
+  resize: none;
+}
+#clearfix {
+  margin: 5px;
+}
+.success {
+  color: green;
+}
+#margin {
+  margin-left: -14px;
+}
+#templateTypeDiv {
+  margin-left: -11px;
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 34px;
+  padding: 2px;
+}
+#editor-top {
+  margin-top: 10px;
+}
+#upload-custom-category {
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 34px;
+  padding: 2px;
+  margin-left: -13px;
+}
+#category-drop-down-margin-left {
+  margin-left: 3px;
+}

@@ -1,0 +1,1506 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import { HomeComponent } from '../../core/home/home.component';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { SortOption } from '../../core/models/sort-option';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { UtilService } from '../../core/services/util.service';
+import { ListLoaderValue } from '../../common/models/list-loader-value';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Roles } from '../../core/models/roles';
+import { LeadsService } from '../services/leads.service';
+import { Lead } from '../models/lead';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+import { Properties } from 'app/common/models/properties';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DashboardService } from 'app/dashboard/dashboard.service';
+import { UserService } from 'app/core/services/user.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { DamService } from 'app/dam/services/dam.service';
+
+declare var swal:any, $:any, videojs: any;
+
+@Component({
+  selector: 'app-manage-leads',
+  templateUrl: './manage-leads.component.html',
+  styleUrls: ['./manage-leads.component.css'],
+  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue,Properties,DamService],
+  animations: [CustomAnimation]
+})
+export class ManageLeadsComponent implements OnInit {
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+  loggedInUserId: number = 0;
+  superiorId: number = 0;
+  isOnlyPartner: any;
+  roleName: Roles = new Roles();
+  isVendor: boolean;
+  isCompanyPartner: boolean;
+  isOrgAdmin = false;
+  enableLeads = false;
+  isVendorVersion = true;
+  isPartnerVersion = false;
+  selectedTabIndex = 1;
+  leadsPagination: Pagination = new Pagination();
+  leadsSortOption: SortOption = new SortOption();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  countsRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  leadFormTitle = "Lead";
+  actionType = "add";
+  leadId = 0;
+  leadsResponse: CustomResponse = new CustomResponse();
+  counts: any;
+  countsLoader = false;
+  syncSalesForce = false;
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  listView = true;
+  campaignPagination: Pagination = new Pagination();
+  campaignSortOption: SortOption = new SortOption();
+  partnerPagination: Pagination = new Pagination();
+  partnerSortOption: SortOption = new SortOption();
+  selectedCampaignId = 0;
+  selectedCampaignName = "";
+  selectedPartnerCompanyId = 0;
+  selectedPartnerCompanyName = "";
+  showPartnerList = false;
+  showCampaignLeads = false;
+  showLeadForm = false;
+  showDealForm = false;
+  selectedLead: Lead;
+  // isCommentSection = false;
+  selectedCampaign: any;
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
+  selectedFilterIndex: number = 1;
+  lead:any;
+  stageNamesForFilterDropDown: any;
+  
+  prm: boolean;
+  syncMicrosoft: boolean = false;
+  activeCRMDetails: any;
+  titleHeading:string = "";
+  /********** user guide *************/
+  mergeTagForGuide:any;
+  vendorRole:boolean;
+  vendorList:any ;
+  vendorCompanyIdFilter=0;
+  /*******XNFR-426*******/
+  leadApprovalStatusType:any;
+  updateCurrentStage:boolean = false;
+
+  registeredByCompanyLoader = true;
+  isRegisteredByCompaniesLoadedSuccessfully = true;
+  registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedRegisteredByCompanyId = 0;
+
+  registeredByUsersLoader = true;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
+
+  selectedRegisteredForCompanyId = 0;
+  registeredForCompaniesLoader = true;
+  registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
+
+  /*** XNFR-839 ****/
+  showSlectFieldComponent: boolean = false;
+  showOrderFieldComponent: boolean = false;
+  logginUserType: string;
+  enabledMyPreferances: boolean = false;
+  setDefaultFields:boolean = false;
+  /*** XNFR-839 ****/
+  activeCRMDetailsByCompany :any; //XNFR-887
+  isLoggedAsPartner: boolean = false;
+  isLeadOptionClicked: boolean = false;
+  partnerEmailAddress: string = "";
+  showAskOliverModalPopup: boolean =false;
+  oliverLead: any;
+  chatGptSettingDTO: ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+  
+  constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
+    public utilService: UtilService, public referenceService: ReferenceService,
+    public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
+    public sortOption: SortOption, public pagerService: PagerService,private leadsService: LeadsService,
+    public integrationService: IntegrationService,public properties:Properties,public dashboardService:DashboardService,
+    private userService:UserService) {
+
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    } else {
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
+    
+    let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (filterPartner !== null && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+      this.selectedFilterIndex = 0;
+    }
+    this.getUserRolesAndInit();
+  }
+
+  ngOnInit() {
+    this.countsLoader = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
+    if (this.referenceService.isCreated) {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
+    this.mergeTagForUserGuide();
+    /** XNFR-574 **/
+    this.triggerViewLead(); 
+    this.isLoggedAsPartner = this.utilService.isLoggedAsPartner();
+  }
+  triggerViewLead() {
+    if (this.referenceService.universalId !== 0) {
+        //this.lead.id = this.referenceService.universalLeadId;
+        this.showLeadForm = true;
+        this.actionType = "view";
+        this.leadId = this.referenceService.universalId;
+    }
+}
+triggerUniversalSearch(){
+  if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
+    if(this.leadsSortOption.searchKey) {
+      this.referenceService.universalSearchKey = this.leadsSortOption.searchKey;
+    }
+    this.leadsSortOption.searchKey = this.listView ? this.referenceService.universalSearchKey:'';
+    this.selectedFilterIndex =this.referenceService.universalSearchFilterValue; //XNFR-853
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.referenceService.universalSearchFilterValue == 1 ; //XNFR-853
+  }
+}
+
+  init() {
+    const roles = this.authenticationService.getRoles();
+    if (roles !== undefined) {
+      if (this.authenticationService.loggedInUserRole != "Team Member") {
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+          roles.indexOf(this.roleName.allRole) > -1 ||
+          roles.indexOf(this.roleName.vendorRole) > -1 ||
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1 ||
+          roles.indexOf(this.roleName.prmRole) > -1) {
+          this.isVendor = true;
+        }
+        if (roles.indexOf(this.roleName.prmRole) > -1) {
+          this.prm = true;
+        }
+        /** User Guide* */
+        if(roles.indexOf(this.roleName.vendorRole) > -1){
+          this.vendorRole = true;
+        }
+        /** User Guide */
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+          this.isOrgAdmin = true;
+        }
+        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || 
+          this.authenticationService.isPartnerTeamMember) {
+          this.isCompanyPartner = true;
+        }
+      } else {
+        if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
+        && !this.authenticationService.superiorRole.includes("Marketing")&& !this.authenticationService.superiorRole.includes("Prm")
+         && this.authenticationService.superiorRole.includes("Partner")) {
+          this.isOnlyPartner = true;
+        }
+        if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
+          this.isOrgAdmin = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Prm")) {
+          this.prm = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Vendor") ||
+           this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| 
+           this.authenticationService.superiorRole.includes("Prm")) {
+          this.isVendor = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Partner")) {
+          this.isCompanyPartner = true;
+        }
+          /** User Guide* */
+          if(this.authenticationService.superiorRole.includes("Vendor")){
+            this.vendorRole = true;
+          }
+          /** User Guide */
+      }
+    }
+    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
+      this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+        this.enableLeads = data.enableLeads;
+        if (!this.isOnlyPartner) {
+          if (this.authenticationService.vanityURLEnabled) {
+            this.leadsService.getViewType(this.vanityLoginDto).subscribe(
+              response => {
+                if (response.statusCode == 200) {
+                  if (response.data === "PartnerView") {
+                    this.showPartner();
+                  } else if (response.data === "VendorView") {
+                    this.logginUserType = 'v';
+                    this.showVendor();
+                  }
+                }
+              },
+              error => {
+                this.httpRequestLoader.isServerError = true;
+              },
+              () => { }
+            );
+          } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner'){
+              this.showPartner()
+            } else {
+            this.showVendor();
+            }
+          }
+        } else {
+          this.showPartner();
+        }
+
+        if(this.authenticationService.module.navigatedFromMyProfileSection){
+          if(this.authenticationService.module.navigateToPartnerSection){
+            this.showPartner();
+          }
+          this.addLead();
+          this.authenticationService.module.navigatedFromMyProfileSection = false;
+          this.authenticationService.module.navigateToPartnerSection = false;
+        }
+    
+      });
+    });  
+  }
+
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false; 
+    this.referenceService.universalId = 0; //XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";
+    this.referenceService.universalModuleType = ""; //XNFR-758
+  }
+
+  showVendor() {
+    if (this.enableLeads) {
+      this.isVendorVersion = true;
+      this.isPartnerVersion = false;
+      this.logginUserType = 'v';
+      this.leadsSortOption.searchKey = "";//XNFR=799
+      this.getActiveCRMDetails();
+      this.showLeads();
+      if (this.prm) {
+        this.listView = true;
+      }
+      this.findAllRegisteredByCompanies();
+      this.findAllRegisteredByUsers();
+    } else {
+      this.showPartner();
+    }
+  }
+  showPartner() {
+    this.isVendorVersion = false;
+    this.isPartnerVersion = true;
+    this.logginUserType = 'p';
+    this.leadsSortOption.searchKey = "";//XNFR=799
+    this.showLeads();
+    this.getActiveCRMDetails();
+    this.mergeTagForUserGuide();
+    this.findAllRegisteredByUsersForPartnerView();
+  }
+ 
+
+  mergeTagForUserGuide(){
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data: any) => {
+          const role = data.data;
+          const roleName = role.role == 'Team Member'? role.superiorRole : role.role;
+          if (roleName.includes('Marketing')) {
+              this.mergeTagForGuide = 'lead_registration_and_management_marketing';
+          } else if((this.vendorRole && !this.isCompanyPartner) || (this.vendorRole && this.isCompanyPartner) || 
+            (this.prm && !this.isCompanyPartner) || (this.prm && this.isCompanyPartner)){
+              this.mergeTagForGuide = 'manage_leads';
+          } else {
+              this.mergeTagForGuide = 'manage_leads_partner';
+          }
+      });
+   }
+
+  setViewType() {
+    this.leadsService.getViewType(this.vanityLoginDto).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          if (response.data === "PartnerView") {
+            this.showPartner();
+          } else if (response.data === "VendorView") {
+            this.showVendor();
+          }
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
+  }
+
+  getVendorCounts() {
+    this.countsLoader = true;
+    this.referenceService.loading(this.countsRequestLoader, true);
+    this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
+    this.leadsService.getCounts(this.vanityLoginDto)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.countsRequestLoader, false);
+          if (response.statusCode == 200) {
+            this.counts = response.data.vendorCounts;
+          }
+          this.countsLoader = false;
+        },
+        error => {
+          this.countsRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  getPartnerCounts() {
+    this.countsLoader = true;
+    this.leadsService.getCounts(this.vanityLoginDto)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.counts = response.data.partnerCounts;
+          }
+          this.countsLoader = false;
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  resetLeadsPagination() {
+    this.leadsPagination.maxResults = 12;
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showFilterOption = false;
+  }
+
+  showLeads() {
+    this.triggerUniversalSearch();//XNFR-574 && XNFR-853
+    this.getCounts();
+    this.selectedTabIndex = 1;
+    this.titleHeading = "Total ";
+    this.resetLeadsPagination();
+    this.leadsPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;    
+    this.listLeads(this.leadsPagination);
+  }
+
+  showWonLeads() {
+   // this.referenceService.loading(this.httpRequestLoader, true);
+    this.selectedTabIndex = 2;
+    this.titleHeading = "Won ";
+     this.resetLeadsPagination();
+    this.leadsPagination.filterKey = "won";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "won";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listLeads(this.leadsPagination);
+  }
+
+  showLostLeads() {
+    this.selectedTabIndex = 3;
+    this.titleHeading = "Lost "
+    this.resetLeadsPagination();
+    this.leadsPagination.filterKey = "lost";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "lost";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listLeads(this.leadsPagination);
+  }
+
+  showConvertedLeads() {
+    this.selectedTabIndex = 4;
+    this.titleHeading = "Converted ";
+    this.resetLeadsPagination();
+    this.leadsPagination.filterKey = "converted";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "converted";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listLeads(this.leadsPagination);
+  }
+
+  listLeads(pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    if (this.isVendorVersion) {      
+      this.listLeadsForVendor(pagination);
+    } else if (this.isPartnerVersion) {      
+      this.listLeadsForPartner(pagination);
+    }
+  }
+
+  listCampaignsForVendor(pagination: Pagination) {
+   
+  }
+
+  listCampaignsForPartner(pagination: Pagination) {
+
+  }
+ 
+  listLeadsForVendor(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.listLeadsForVendor(pagination)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          pagination.totalRecords = response.totalRecords;
+          this.leadsSortOption.totalRecords = response.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.lead = response.data;
+          this.stageNamesForVendor();
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { 
+          
+        }
+      );
+  }
+
+  stageNamesForVendor() {
+    this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.fromDateFilter;
+          this.addSearchableStatus(response);
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+          this.isStatusLoadedSuccessfully = false;
+        },
+        () => { }
+      );
+  }
+
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+  listLeadsForPartner(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.listLeadsForPartner(pagination)
+      .subscribe(
+        response => {
+          pagination.totalRecords = response.totalRecords;
+          this.leadsSortOption.totalRecords = response.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.stageNamesForPartner();
+          this.companyNamesForPartner();
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  searchLeads() {
+    this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  clearSearch() {
+    this.leadsSortOption.searchKey='';
+    this.referenceService.universalModuleType = '';//XNFR-799
+    this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  clearPartnerSearch() {
+    this.partnerSortOption.searchKey='';
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  leadsPaginationDropdown(items: any) {
+    this.leadsSortOption.itemsSize = items;
+    this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  /************Page************** */
+  setLeadsPage(event: any) {
+    this.leadsPagination.pageIndex = event.page;
+    this.listLeads(this.leadsPagination);
+  }
+
+  getAllFilteredResultsLeads(pagination: Pagination) {
+    this.leadsPagination.pageIndex = 1;
+    this.leadsPagination.searchKey = this.leadsSortOption.searchKey;
+    this.listLeads(pagination);
+    this.campaignPagination.pageIndex = 1;
+    this.campaignPagination.searchKey = this.leadsSortOption.searchKey;
+  }
+  leadEventHandler(keyCode: any) { if (keyCode === 13) { this.searchLeads(); } }
+
+  /************Page************** */
+  setCampaignsPage(event: any) {
+    // this.pipelineResponse = new CustomResponse();
+    // this.customResponse = new CustomResponse();
+
+    
+  }
+
+  getAllFilteredResultsCampaigns(pagination: Pagination) {
+    
+    
+  }
+
+  closeLeadModal() {
+    this.showLeadForm = false;
+    this.showLeads();
+  }
+
+  searchPartners() {
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  partnersPaginationDropdown(items: any) {
+    this.partnerSortOption.itemsSize = items;
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  /************Page************** */
+  setPartnersPage(event: any) {
+
+
+  }
+
+  getAllFilteredResultsPartners(pagination: Pagination) {
+
+    this.partnerPagination.pageIndex = 1;
+    this.partnerPagination.searchKey = this.partnerSortOption.searchKey;
+
+  }
+  searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+
+  showSubmitLeadSuccess() {
+    if (this.actionType == 'edit') {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Updated Successfully", true);
+    } else {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
+    this.showLeadForm = false;
+    this.showFilterOption = false;
+    this.showLeads();
+  }
+
+  addLead() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.addLead;
+    this.showLeadForm = true;
+    this.actionType = "add";
+    this.leadId = 0;
+    this.referenceService.goToRouter(url);
+  }
+
+  resetValues() {
+    this.showLeadForm = false;
+  }
+
+  viewLead(lead: Lead) {
+    //this.leadFormTitle = "View Lead";
+    // $('#leadFormModel').modal('show');    
+    this.showLeadForm = true;
+    this.actionType = "view";
+    this.leadId = lead.id;
+
+  }
+
+  editLead(lead: Lead) {
+    //this.leadFormTitle = "Edit Lead";
+    //$('#leadFormModel').modal('show'); 
+    this.showLeadForm = true;
+    this.actionType = "edit";
+    this.leadId = lead.id;
+  }
+
+  confirmDeleteLead(lead: Lead) {
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
+
+      }).then(function () {
+        self.deleteLead(lead);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  deleteLead(lead: Lead) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    lead.userId = this.loggedInUserId;
+    this.leadsService.deleteLead(lead)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (response.statusCode == 200) {
+            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
+            //this.getCounts();  
+            this.showLeads();
+          } else if (response.statusCode == 500) {
+            this.leadsResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { this.showFilterOption = false; }
+      );
+
+  }
+
+  getCounts() {
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
+  }
+
+  showDealRegistrationForm(lead: Lead) {
+    this.showDealForm = true;
+    this.actionType = "add";
+    this.leadId = lead.id;
+  }
+
+  closeDealForm() {
+    this.showDealForm = false;
+    this.showLeads();
+  }
+
+  closeLeadForm(){
+    this.showLeadForm = false;
+    this.referenceService.universalSearchKey = this.leadsSortOption.searchKey; //XNFR-758
+    this.showLeads();
+  }
+
+  showSubmitDealSuccess() {
+    this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    this.showDealForm = false;
+    this.showFilterOption = false;
+    this.showLeads();
+  }
+
+  checkSalesforceIntegration(): any {
+    
+  }
+
+  checkMicrosoftIntegration(): any {
+  
+  }
+
+  syncLeadsAndDeals() {
+
+  }
+
+  syncLeadsWithSalesforce() {
+    
+  }
+
+  syncLeadsWithMicrosoft() {
+  
+  }
+
+  showPartners(campaign: any) {
+    if (campaign.id > 0) {
+      this.selectedCampaignId = campaign.id;
+      this.selectedCampaignName = campaign.campaign;
+      if (campaign.channelCampaign) {
+        this.showPartnerList = true;
+        campaign.expand = !campaign.expand;
+        if (campaign.expand) {
+          if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
+            this.selectedCampaign.expand = false;
+          }
+          this.selectedCampaign = campaign;
+          this.partnerPagination = new Pagination;
+          this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+          this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+          this.partnerSortOption.searchKey = "";
+
+        }
+      } else {
+
+      }
+    }
+  }
+
+  listPartnersForCampaign(pagination: Pagination) {
+   
+  }
+
+  showCampaignLeadsByPartner(partner: any) {
+   
+  }
+
+  closeCampaignLeads() {
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
+    this.listLeads(this.leadsPagination);
+  }
+
+  showOwnCampaignLeads() {
+   
+  }
+
+  viewCampaignLeadForm(leadId: any) {
+   
+
+  }
+
+  editCampaignLeadForm(leadId: any) {
+   
+  }
+
+  refreshCounts() {
+    this.getCounts();
+  }
+
+  registerDealForm(leadId: any) {
+    this.showDealForm = true;
+    this.actionType = "add";
+    this.leadId = leadId;
+  }
+
+  // showComments(lead: any) {
+  //   this.selectedLead = lead;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
+
+  // addCommentModalClose(event: any) {
+  //   this.selectedLead.unReadChatCount = 0;
+  //   this.isCommentSection = !this.isCommentSection;
+  // }
+
+  downloadLeads1() {
+    let type = this.leadsPagination.filterKey;
+    let fileName = "";
+    if (type == null || type == undefined || type == "") {
+      type = "all";
+      fileName = "leads"
+    } else {
+      fileName = type + "-leads"
+    }
+
+    let searchKey = "";  
+    if (this.leadsPagination.searchKey != null && this.leadsPagination.searchKey != undefined) {
+      searchKey = this.leadsPagination.searchKey;
+    }   
+
+    let partnerTeamMemberGroupFilter = false;    
+    let userType = "";
+    if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+      userType = "v";
+    } else if (this.isPartnerVersion) {
+      userType = "p";
+    }
+    let vendorCompanyProfileName = null;
+    if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
+      vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
+    }
+
+    // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
+    //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+
+    const url = this.authenticationService.REST_URL + "lead/download/"
+      + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+    var mapForm = document.createElement("form");
+    //mapForm.target = "_blank";
+    mapForm.method = "POST";
+    mapForm.action = url;
+
+    // userType
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userType";
+    mapInput.setAttribute("value", userType);
+    mapForm.appendChild(mapInput);
+
+    // type
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "type";
+    mapInput.setAttribute("value", type);
+    mapForm.appendChild(mapInput);
+
+    // loggedInUserId
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userId";
+    mapInput.setAttribute("value", this.loggedInUserId + "");
+    mapForm.appendChild(mapInput);
+
+    // vanityUrlFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vanityUrlFilter";
+    mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
+    mapForm.appendChild(mapInput);
+
+    // vendorCompanyProfileName
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vendorCompanyProfileName";
+    mapInput.setAttribute("value", vendorCompanyProfileName);
+    mapForm.appendChild(mapInput);
+
+    // searchKey
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "searchKey";
+    mapInput.setAttribute("value", searchKey);
+    mapForm.appendChild(mapInput);
+
+    // fromDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "fromDate";
+    mapInput.setAttribute("value", this.leadsPagination.fromDateFilterString);
+    mapForm.appendChild(mapInput);
+
+    // toDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "toDate";
+    mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
+    mapForm.appendChild(mapInput);
+
+    //stageFilter 
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "stageName";
+    mapInput.setAttribute("value", this.leadsPagination.stageFilter);
+    mapForm.appendChild(mapInput);
+
+    // partnerTeamMemberGroupFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "partnerTeamMemberGroupFilter";
+    mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
+    mapForm.appendChild(mapInput);
+    
+    // clientTimeZone
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "timeZone";
+    mapInput.setAttribute("value", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    mapForm.appendChild(mapInput);
+
+    document.body.appendChild(mapForm);
+    mapForm.submit();
+    //window.location.assign(url);
+
+  }
+
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;    
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.statusFilter = "";
+    this.vendorCompanyIdFilter = 0;
+    this.selectedRegisteredByCompanyId = 0;
+    this.selectedRegisteredByUserId = 0;
+    if (!this.showFilterOption) {
+      this.leadsPagination.fromDateFilterString = "";
+      this.leadsPagination.toDateFilterString = "";
+      this.leadsPagination.stageFilter = "";
+      this.leadsPagination.registeredByCompanyId = 0;
+      this.leadsPagination.vendorCompanyId = 0;
+      this.leadsPagination.registeredByUserId = 0;
+      this.filterResponse.isVisible = false;
+      if (this.filterMode) {
+        this.leadsPagination.pageIndex = 1;
+        this.listLeads(this.leadsPagination);
+        this.filterMode = false;
+      }      
+    } else {
+      this.filterMode = false;
+    }
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = ""; 
+    this.statusFilter = "";
+    this.vendorCompanyIdFilter = 0;
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    this.leadsPagination.stageFilter = "";
+    this.leadsPagination.vendorCompanyId = 0;
+    this.leadsPagination.registeredByCompanyId = 0;
+    this.leadsPagination.registeredByUserId = 0;
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listLeads(this.leadsPagination);
+      this.filterMode = false;
+    }    
+  }
+
+  validateDateFilters() {
+    let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+    let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == 0;
+    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter>0;
+    let isInValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId==undefined || this.selectedRegisteredByCompanyId==0;
+    let isValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId!=undefined && this.selectedRegisteredByCompanyId>0;
+    let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
+    let isValidRegisteredByUserFilter = this.selectedRegisteredByUserId!=undefined && this.selectedRegisteredByUserId>0;
+    if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter && isInvalidCompanyIdFilter
+       && isInValidRegisteredByCompanyFilter && isInValidRegisteredByUserFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else { 
+      let validDates = false;   
+      if (isEmptyFromDateFilter && isEmptyToDateFilter ) {
+          validDates = true;
+      } else if (isValidFromDateFilter && isEmptyToDateFilter ) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.leadsPagination.pageIndex = 1;
+          this.leadsPagination.maxResults = 12;
+          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+          this.leadsPagination.toDateFilterString = this.toDateFilter;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+        }        
+      }
+
+      if (validDates) {
+        this.filterStatus(isValidStatusFilter);
+        this.filterVendorCompanyId(isValidCompanyIdFilter);
+        this.filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter);
+        this.filterRegisteredByUserId(isValidRegisteredByUserFilter);
+        this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.maxResults = 12;
+        this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listLeads(this.leadsPagination);
+      }
+      
+    }
+}
+  
+
+  private filterRegisteredByUserId(isValidRegisteredByUserFilter: boolean) {
+    this.leadsPagination.registeredByUserId = 0;
+    if (isValidRegisteredByUserFilter) {
+      this.leadsPagination.registeredByUserId = this.selectedRegisteredByUserId;
+    }
+  }
+
+  private filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter: boolean) {
+    this.leadsPagination.registeredByCompanyId = 0;
+    if (isValidRegisteredByCompanyFilter) {
+      this.leadsPagination.registeredByCompanyId = this.selectedRegisteredByCompanyId;
+    }
+  }
+
+  private filterStatus(isValidStatusFilter:boolean) {
+    if (isValidStatusFilter) {
+      this.leadsPagination.stageFilter = this.statusFilter;
+    }else {
+      this.leadsPagination.stageFilter = "";
+    }
+  }
+
+  private filterVendorCompanyId(isValidCompanyIdFilter) {
+    if (isValidCompanyIdFilter) {
+      this.leadsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+    }else {
+      this.leadsPagination.vendorCompanyId = 0;
+    }
+  }
+
+  setListView() {
+    this.listView = true;
+    this.closeFilterOption();
+  }
+
+  setCampaignView() {
+    this.listView = false;
+    this.closeFilterOption();
+  }
+
+  getSelectedIndex(index:number){
+    this.selectedFilterIndex = index;
+    this.getCounts();
+    this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
+    this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
+    this.listLeadsForVendor(this.leadsPagination);
+    
+  }
+
+  
+  setLeadStatus(lead: Lead) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    let request: Lead = new Lead();
+    request.id = lead.id;
+    request.pipelineStageId = lead.pipelineStageId;
+    request.userId = this.loggedInUserId;
+    this.leadsService.changeLeadStatus(request)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.lead = response.data;
+          if (response.statusCode == 200) {
+            this.leadsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+            this.showLeads();
+          } else if (response.statusCode == 500) {
+            this.leadsResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+  stageNamesForPartner(){
+    this.leadsService.getStageNamesForPartner(this.vanityLoginDto)
+    .subscribe(
+      response =>{
+        this.stageNamesForFilterDropDown = response;
+        this.addSearchableStatus(response);
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+        this.isStatusLoadedSuccessfully = false;
+
+      },
+      ()=> { }
+    ); 
+  }
+
+  getActiveCRMDetails() {
+    this.leadsService.getActiveCRMDetailsByUserId(this.loggedInUserId)
+    .subscribe(response => {
+          if (response.statusCode == 200) {
+            this.activeCRMDetails = response.data;            
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          
+        });
+  }
+
+  syncLeadsWithActiveCRM() {
+
+  }
+
+  companyNamesForPartner(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getVendorList(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.vendorList = response.data;
+        let dtos = [];
+        $.each(this.vendorList,function(index:number,vendor:any){
+          let id = vendor.companyId;
+          let name = vendor.companyName;
+          let dto = {};
+          dto['id'] = id;
+          dto['name'] = name;
+          dtos.push(dto);
+        });
+        this.registeredForCompaniesSearchableDropDownDto.data = dtos;
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Added For";
+        this.registeredForCompaniesLoader = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+        this.registeredForCompaniesLoader = false;
+      },
+      ()=> { }
+    );
+  }
+
+  
+  /***** XNFR-456 *****/
+  downloadLeads(pagination: Pagination){
+    let type = this.leadsPagination.filterKey;
+    if (type == null || type == undefined || type == "") {
+      type = "all";
+    } 
+    let partnerTeamMemberGroupFilter = false;    
+    let userType = "";
+    if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+      userType = "v";
+    } else if (this.isPartnerVersion) {
+      userType = "p";
+    }
+    pagination.type = type;
+    pagination.userType = userType;
+    pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
+    this.leadsService.downloadLeads(pagination, this.loggedInUserId)
+        .subscribe(
+            data => {    
+                if(data.statusCode == 200){
+                  this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+                }else if(data.statusCode == 401){
+                  this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+                }
+                this.selectedFields = [];
+            },error => {
+              this.httpRequestLoader.isServerError = true;
+            },
+            () => { console.log("DownloadLeads() Completed...!") }
+          );
+  }
+
+
+
+  /*********XNFR-426******/
+  addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+    this.leadApprovalStatusType = leadApprovalStatusType;
+    this.selectedLead = lead;
+    this.updateCurrentStage = true;
+  }
+
+  closeApprovalStatusModelPopup(){
+    this.leadApprovalStatusType = null;
+    this.updateCurrentStage = false;
+    this.showLeads();
+  }
+
+  // resetUnReadChatCount() {
+  //   this.showLeadForm = false;
+  //   this.showFilterOption = false;
+  //   this.showLeads();
+  // }
+
+  findAllRegisteredByCompanies(){
+    this.registeredByCompanyLoader = true;
+    this.leadsService.findAllRegisteredByCompanies().subscribe(
+      response=>{
+        this.registeredByCompaniesSearchableDropDownDto.data = response.data;
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy+" Company";
+        this.isRegisteredByCompaniesLoadedSuccessfully = true;
+        this.registeredByCompanyLoader = false;
+      },error=>{
+        this.registeredByCompanyLoader = false;
+        this.isRegisteredByCompaniesLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByCompanyId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByCompanyId = event['id'];
+		}else{
+			this.selectedRegisteredByCompanyId = 0;
+		}
+  }
+
+  findAllRegisteredByUsers(){
+    this.registeredByUsersLoader = true;
+    this.leadsService.findAllRegisteredByUsers().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  findAllRegisteredByUsersForPartnerView() {
+    this.registeredByUsersLoader = true;
+    this.leadsService.findAllRegisteredByUsersForPartnerView().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByUserId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByUserId = event['id'];
+		}else{
+			this.selectedRegisteredByUserId = 0;
+		}
+  }
+  getSelectedRegisteredForCompanyId(event:any){
+    if(event!=null){
+			this.vendorCompanyIdFilter = event['id'];
+		}else{
+			this.vendorCompanyIdFilter = 0;
+		}
+  }
+
+  getSelectedStatus(event:any){
+    if(event!=null){
+			this.statusFilter = event['id'];
+		}else{
+			this.statusFilter = "";
+		}
+  }
+
+  showRegisterDealButton(lead: any): boolean {
+    let showRegisterDeal = false;
+    if (this.canRegisterSelfLead(lead)) {
+      showRegisterDeal = true;
+    }
+    else if (this.canVendorOrPartnerRegisterDeal(lead)) {
+      showRegisterDeal = true;
+    }
+    return showRegisterDeal;
+  }
+
+  private canRegisterSelfLead(lead: any): boolean {
+    return lead.selfLead &&
+      lead.dealBySelfLead &&
+      (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
+      lead.associatedDealId == undefined && !this.isLoggedAsPartner;
+  }
+
+  private canVendorOrPartnerRegisterDeal(lead: any): boolean {
+    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm) && !this.isLoggedAsPartner);
+    let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
+    let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
+      && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
+
+    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.selfLead) && lead.associatedDealId == undefined)
+      && canLeadConvertToDeal;
+  }
+
+  viewCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'view';
+    this.leadId = event.id;
+  }
+
+
+  editCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'edit';
+    this.leadId = event.id;
+  }
+
+  closeCustomForm() {
+    this.showLeadForm = false;
+    this.showDealForm = false;
+    this.closeLeadModal();
+  }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+  /*** XNFR-839 */
+  selectedFields: any[] = [];
+  exportExcelSelection() {
+    if (this.authenticationService.companyProfileName) {
+        this.getActiveCRMDetailsByCompanyProfileName();
+    } else {
+      this.downloadLeads(this.leadsPagination);
+    }
+  }
+  
+  openSelectFieldPopup() {
+    this.showSlectFieldComponent = true
+  }
+  closeEmitter(event: any) {
+    let input = event;
+    if (input['submit'] === 'submit') {
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances'];
+      this.selectedFields = input['selectFields'];
+      this.setDefaultFields = input['defaultField'];
+
+      this.saveSelectedFields();
+    }
+    else {
+      this.showSlectFieldComponent = false;
+    }
+  }
+
+
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    console.log("this.selectedFields :",this.selectedFields)
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    selectedFieldsResponseDto['integation'] = true;
+    selectedFieldsResponseDto['opportunityType'] = "LEAD";
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        data => {
+          this.leadsPagination.selectedExcelFormFields = this.selectedFields;
+          this.downloadLeads(this.leadsPagination)
+        },
+        error => console.log(error),
+        () => {
+        });
+  }
+ 
+  getActiveCRMDetailsByCompanyProfileName() {
+  }
+
+  /*** XNFR-839 */
+
+  getUserRolesAndInit() {
+    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+
+    this.userService.getHomeRoles(url)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.authenticationService.loggedInUserRole = response.data.role;
+            this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+            this.authenticationService.superiorRole = response.data.superiorRole;            
+          }
+          this.init();
+        });
+  }
+
+  /***** XNFR-970 *****/
+  openSendReminiderPopup(lead: any) {
+    this.leadId = lead.id;
+    this.partnerEmailAddress = lead.createdByEmail;
+    this.isLeadOptionClicked = !this.isLeadOptionClicked;
+  }
+
+  /***** XNFR-970 *****/
+  closeSendReminiderPopup() {
+    this.leadId = 0;
+    this.partnerEmailAddress = "";
+    this.isLeadOptionClicked = false;
+  }
+
+  askOliver(lead: any) {
+    this.oliverLead = lead;
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI(event: any) {
+    this.chatGptSettingDTO = event;
+    this.showAskOliverModalPopup = false;
+  }
+
+}

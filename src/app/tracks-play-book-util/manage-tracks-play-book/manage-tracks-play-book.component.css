@@ -1,0 +1,227 @@
+.img-track-list {
+  height: 100px;
+  width: 179px;
+  margin: 0;
+  background: #f2f4f9;
+  border: solid 1px #cccccc;
+  border-radius: 6px;
+}
+
+.img-grid-track {
+  max-height: 150px;
+  min-height: 150px;
+  height: 150px;
+  max-width: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: top;
+  margin: 0px;
+  border-radius: 6px 6px 0px 0px;
+  width: auto;
+  height: 100%;
+  width: 100% !important;
+  border-bottom: solid 1px #dddddd;
+}
+
+.grid-box {
+  background: #fff;
+  min-height: 300px;
+}
+#min-width {
+  min-width: 145px;
+}
+
+
+.ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+
+.ribbon div::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+
+.custom-width-icon {
+  min-width: 210px;
+}
+
+.progress {
+  height: 6px !important;
+  background-color: #d0cfcf;
+  background-image: none;
+  box-shadow: none;
+  border-radius: 6px !important;
+  margin-bottom: 0px;
+}
+
+.progress-bar {
+  background-color: #29d836 !important;
+}
+
+.tag {
+  font-size: 13px;
+  background-color: #d3d3d3;
+  color: #1b1b1b;
+  padding: 4px;
+  text-align: center;
+  width: fit-content;
+  margin: 2px auto;
+  border-radius: 3px;
+  padding: 2px 10px;
+}
+
+.tag-dots {
+  font-size: 10px;
+  margin: 0px 2px;
+}
+
+.grid-title {
+  text-align: left;
+  margin: 15px 0px 0px 15px !important;
+  font-size: 16px;
+}
+
+.CardDetailstext {
+  margin: 0px 0px 0px 15px !important;
+}
+
+.track-info-grid {
+  font-size: 12px;
+  margin: 5px 0 5px 5px;
+}
+
+.actionAlignment {
+  display: flex;
+  /* justify-content: space-evenly; */
+}
+.actionAlignment_sp_even {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+  .mTop {
+    margin-top: 44px;
+  }
+  .mActionAlign {
+    white-space: pre-line !important;
+    line-height: 0.05;
+  }
+  .mDisableColor {
+    color: #888 !important;
+    border: 1px solid;
+  }
+  .edit_icons{
+     padding-left: 3px !important;
+    }
+
+}
+
+/* 27-06-2023 */
+.option-color {
+  color: #333;
+  vertical-align: baseline;
+  padding: 3px;
+  position: relative;
+  top: -2px;
+}
+p.warning-red-textcolor {
+  color: #f00;
+  font-size: 16px;
+}
+
+.popup-cu-widthalign {
+  width: 84%;
+  top: 118px;
+  left: 40px;
+}
+
+/* mobile */
+@media (min-width: 300px) and (max-width: 767px) {
+  .popup-cu-widthalign {
+    width: 95%;
+    top: 200px;
+    left: 6px;
+  }
+}
+@media (min-width: 768px) and (max-width: 900px) {
+  .popup-cu-widthalign {
+    width: 100%;
+    top: 150px;
+    left: 0px;
+  }
+}
+.margin-0-ht5px{
+  margin: 0;
+  height:5px;
+}
+
+@media (min-width: 768px) and (max-width: 1118px) {
+  .ProcessingTextWidth {
+    display: flex !important;
+    justify-content: center;
+  }
+}
+.p0-p10{
+  padding: 0px 10px Im !important;
+}
+@media only screen and (min-width: 768px) and (max-width:  992px) { 
+    .bar {
+      width: 95% !important;
+    }
+}
+.row{
+  display: flex;
+  flex-wrap: wrap;
+}
+.track-deactivated {
+  float: left;
+  margin-left: 12px;
+}
+
+.oliveImg {
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+.oliverImgIcon {
+    width: 19px;
+    height: 19px;
+    filter: brightness(0) invert(1);
+}
+
+.oliveIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #5bb2f5;
+  border-radius: 50%;
+  cursor: pointer
+}
+
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,64 @@
+#repeatPlay{
+	position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 1em;
+}
+
+#skipOverlay{
+	position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 1em;
+}
+#skipOverlay > *, #repeatPlay > *{
+	font-size: 20px;
+	color: #fff;
+}
+.overlay {
+	height: 299px;
+	background: #222;
+    /*	margin: 0 auto; */
+	width: 100%;
+	display: table;
+	padding: 5em;
+}
+
+.overlay-main{position: absolute;display: inline-table;padding: 5em;top: 50%;left: 50%;transform: translate(-50%, -50%);}
+
+.flex {
+	display: flex;
+}
+
+.m02 {
+	margin: 0 0.8em;
+}
+
+.m21 {
+	margin: 0.5em;
+}
+
+.text-box {
+	border-radius: 0;
+	color: #616161;
+}
+
+.play-button {
+	background-color: #e52e2d;
+	color: #FFF;
+	min-width: 100%;
+	padding: 11.5px 16px;
+}
+
+.w-8 {
+	width: 66.6666667%
+}
+
+.w-4 {
+	width: 33.3333333333%
+}
+
+.upper-text-heading {
+	color: #FFF !important;
+	margin: 0;
+}

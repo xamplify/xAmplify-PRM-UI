@@ -1,0 +1,108 @@
+import { NgModule } from '@angular/core';
+import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
+import { LoadingModule } from 'ngx-loading';
+import { CoreModule } from './core/core.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { AppRoutingModule } from './app-routing.module';
+import { ErrorPagesModule } from './error-pages/error-pages.module';
+import { AppComponent } from './app.component';
+import { ShareVideoComponent } from './videos/share-video/share-video.component';
+import { UserService } from './core/services/user.service';
+import { LogService } from './core/services/log.service';
+import { HttpService } from './core/services/http.service';
+import { UtilService } from './core/services/util.service';
+import { VideoFileService } from './videos/services/video-file.service';
+import { UploadCloudvideoService } from './videos/services/upload-cloudvideo.service';
+import { ReferenceService } from './core/services/reference.service';
+import { PagerService } from './core/services/pager.service';
+import { AuthenticationService } from './core/services/authentication.service';
+import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
+import { VideoUtilService } from './videos/services/video-util.service';
+import { ContactService } from './contacts/services/contact.service';
+import { ParterService } from './partners/services/parter.service';
+// logger services
+
+import { LoggerService } from './error-pages/services/logger.service';
+import { ConsoleLoggerService } from './error-pages/services/console-logger.service';
+import { XtremandLogger } from './error-pages/xtremand-logger.service';
+
+import { EnvServiceProvider } from './env.service.provider';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+import { CommonComponentModule } from 'app/common/common.module';
+import { IntegrationService } from './core/services/integration.service';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
+import { VanityURLService } from './vanity-url/services/vanity.url.service';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
+import { NoCacheHeadersInterceptor } from './core/no-cache-provider';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
+import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
+import {ClearChunkFile} from 'app/core/clear-chunk-file';
+import { ErrorHandler } from '@angular/core';
+import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
+import { DatePipe } from '@angular/common';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
+import { PublicTopNavigationBarComponent } from './util/public-top-navigation-bar/public-top-navigation-bar.component';
+
+@NgModule({
+    declarations: [AppComponent, ShareVideoComponent
+        ,
+    PageNotFoundComponent, DomainErrorComponent,
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
+        PublicTopNavigationBarComponent,
+    ],
+
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
+        AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule, LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        ModalModule.forRoot(),],
+        entryComponents: [ConfirmationComponent], // Only when using old ViewEngine
+    providers: [{
+        provide: Http,
+        useFactory: httpService,
+        deps: [XHRBackend, RequestOptions, SlimLoadingBarService,Router]
+    }, { provide: LoggerService, useClass: ConsoleLoggerService },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: NoCacheHeadersInterceptor,
+        multi: true
+    },
+	{provide: ErrorHandler, useClass: ClearChunkFile},
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService,
+        XtremandLogger, VideoUtilService, ParterService,
+        VideoFileService, UploadCloudvideoService, ContactService, EnvServiceProvider, Title, IntegrationService,
+        VanityURLService,DatePipe,UrlAuthGuardService],
+    bootstrap: [AppComponent]
+
+})
+export class AppModule { }
+
+export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService,router:Router) {
+    return new HttpService(backend, options, slimLoadingBarService,router);
+}
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}

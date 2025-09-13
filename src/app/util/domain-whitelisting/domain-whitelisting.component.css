@@ -1,0 +1,82 @@
+@media only screen and (max-width:578px){
+.TotalSearchBoxWidth{
+ width:55%!important;
+}
+.nav-tabs > li > a{
+    font-size: 12px;
+}
+}
+.tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px !important;
+    padding-bottom: 0px;
+}
+
+.custom_fiter-asset {
+    background-color: #f1f5f9;
+    padding: 10px 5px 10px 5px !important;
+}
+
+.createdOnRow{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .ml15 {
+      margin-left: 15px;
+  }
+
+  .custom-align {
+      align-items: center;
+      display: flex;
+      vertical-align: middle;
+  }
+
+  .align-switch {
+      position: relative;
+      left: 6px;
+  }
+
+  .bold-font-weight {
+    font-weight: bold;
+  }
+  .align-item-center{
+    align-items: center;
+  }
+  .domain_text{
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  .modal-footer{
+    position:absolute ;
+    bottom: 1px;
+    width: 100%;
+  }
+.groupUrl {
+  cursor: not-allowed;
+}
+button.primaryBtnCu {
+  padding: 0px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+i.eyeCu {
+  font-size: 11px;
+}
+.copyUrlBtn {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.border_btn{
+  border-left: 1px solid #2b569d;
+}
+.downloadteam{
+    display: flex;
+    align-items: center;
+}

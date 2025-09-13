@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-md-12 col-lg-12">
+    <div class="row">
+      <div class="col-md-3 pr0" style="margin-top: -10px;">
+    <div id="leftbar">
+        <div class="portlet-body" style="height:530px!important;padding-top:0px!important;">
+            <div class="single category">
+                <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center;padding-top:11px;">
+                            <span><i class="fa fa-wifi" style="font-size: 70px;color: #b3b1b1;padding-top: 20px;"></i></span>
+                        </div>
+                        <div class="col-md-12" style="text-align: center;padding-top:16px;">
+                            <p>Keep up with your favourite sources and keyword alerts</p>
+                        </div>
+                        <div class="col-md-12" style="text-align: center;padding-top:19px;    padding-bottom: 12px;">
+                            <a class="button" (click)="navigateRssHome()">CREATE YOUR FIRST FEED</a>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1px" *ngFor="let item of collections">
+                    <div>
+                        <div class="heading-top">
+                            <a class="mr5" (click)="item.isExpand=!item.isExpand"><i class="fa" style="font-size:16px;color:#2a3f54" [ngClass]="{'fa-angle-down': item.isExpand, 'fa-angle-up': !item.isExpand}"></i></a>
+                            <a (click)="getFeedsByCollectionAlias(item.alias)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">{{item.title}}</a></div>
+                        <div class="lbg" style="margin-left: 28px" *ngFor="let source of item.sources" [ngClass]="{'show': item.isExpand, 'hidden': !item.isExpand}">
+                            <a (click)="getFeedsBySourceAlias(source.alias)">
+                                <img src="{{source.imageUrl}}">
+                                <h6 class="overflow" style="font-size: 13px;font-weight: 500;padding: 5px;">{{source.customTitle}}</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-primary btn-block" (click)="navigateRssHome()" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;"><i class="fa fa-plus" style="padding: 5px;font-size:14px"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
+    </div>
+</div>
+      <div class="col-sm-9">
+        <div class="page-bar page-bar-shadow pb-m">
+          <div class="portlet light" style="border-color: #fff !important;">
+            <div class="portlet-body pt0">
+              <h4 class="head-h">Today</h4>
+              <h2 style="font-size:14px">The insights you need to get the inside edge</h2>
+              <app-rss-loader *ngIf="loading"></app-rss-loader>
+                <div *ngFor="let feed of feeds">
+                  <div class="col-md-12 col-lg-12">
+  <div class="rss-entry clearfix">
+    <div class="row">
+      <div class="col-sm-11">
+        <app-feed [feed]="feed"></app-feed>
+      </div>
+      <div class="col-sm-1">
+        <div class="actions-block override-actions">
+          <a (click)="addFeed(feed)" data-placement="top" data-toggle="tooltip" title="Share" data-original-title="Share">
+            <span class="circled-number fa fa-share-alt"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

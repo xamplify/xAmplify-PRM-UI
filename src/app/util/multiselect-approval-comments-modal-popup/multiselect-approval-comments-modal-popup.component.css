@@ -1,0 +1,6 @@
+.custom-align-modal{
+    transform: translate(-50%, -50%) !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

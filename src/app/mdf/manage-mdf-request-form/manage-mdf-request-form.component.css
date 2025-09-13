@@ -1,0 +1,81 @@
+.required {
+  color: red;
+  display: inline-flex !important;
+}
+
+.portlet-body {
+  overflow-x: auto;
+}
+
+.close-circle {
+  margin-left: 5px;
+}
+
+#th-width {
+  width: 20%;
+}
+
+#expanded-table {
+  background-color: #dddddd24;
+}
+
+#child-table {
+  background: #c1c1c11c;
+}
+
+.fa.fa-refresh.margin {
+  line-height: 15px;
+}
+
+#center-align {
+  text-align: center;
+}
+
+.request-details-td {
+  width: 40%;
+}
+
+.request-form-actions-div {
+  width: 160px;
+}
+/* 26-06-2023 */
+.fa-fa-consistency {
+  padding: 6px !important;
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px !important;
+}
+
+/* 22-08-2023 */
+th.alignItamsleft {
+  text-align: left;
+}
+@media only screen and (min-width: 800px) and (max-width: 1200px) {
+  .NumberFontDecrease {
+      font-size: 22px !important;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .comment.user-comment .info{padding-right: 10px;}
+}
+@media only screen and (min-width:320px) and (max-width: 1024px) {
+.img-circle{
+  right: 10px;
+  position: relative;
+}
+}
+/*
+Uncommenting these lines will create an issue.https://xamplify.atlassian.net/issues/XBI-3931
+
+@media (min-width: 768px) {
+  div#comments-div{height:0px !important}
+}
+@media (min-width: 360px) and (max-width: 390px) {
+  div#comments-div{height:0px !important}
+} */

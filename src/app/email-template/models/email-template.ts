@@ -1,0 +1,57 @@
+import { User } from '../../core/models/user';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { EmailTemplateSource } from '../../email-template/models/email-template-source';
+export class EmailTemplate {
+	id: number;
+	name: string;
+	subject: string;
+	content: string;
+	body: string;
+	desc: string;
+	langId: number;
+	userDefined: boolean;
+	defaultTemplate: boolean;
+	regularTemplate: boolean;
+	videoTemplate: boolean;
+	beeRegularTemplate: boolean;
+	beeVideoTemplate: boolean;
+	marketoTemplate: boolean;
+	user: User;
+	jsonBody: string;
+	type: EmailTemplateType;
+	regularCoBrandingTemplate: boolean = false;
+	videoCoBrandingTemplate: boolean = false;
+	createdBy: string = "";
+	campaignDefault: boolean;
+	vendorName: string = "";
+	vendorOrganizationName: string = "";
+	draft: boolean = false;
+	onDestroy: boolean = false;
+	beeEventTemplate: boolean;
+	beeEventCoBrandingTemplate: boolean;
+	marketoEmailTemplate: { marketo_id: number; };
+	isSelectedMarketoTemplate = false;
+	spamScore: string;
+	isSelectedHubSpotTemplate = false;
+	hubSpotTemplate = false;
+	hubSpotEmailTemplate: { hubspot_id: number; };
+	source:EmailTemplateSource;
+	categoryId:number;
+	editPartnerTemplate = false;
+	vendorCompanyLogoPath = "";
+	partnerCompanyLogoPath = "";
+	vendorCompanyId:number = 0;
+	userId:number = 0;
+	surveyTemplate: boolean;
+	surveyCoBrandingTemplate: boolean;
+	domainName = "";
+	/*******XNFR-330*****/
+	autoResponseEmailTemplate = false;
+	autoResponseId = 0;
+	selectedAutoResponseCustomEmailTemplateId = 0;
+	autoResponseType = "";
+	oliverTemplate: boolean;
+	/*******XNFR-330*****/
+	cdnSubject: string; //XNFR-1001
+
+}

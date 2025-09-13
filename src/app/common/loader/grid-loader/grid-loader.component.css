@@ -1,0 +1,41 @@
+.text-input__loading {
+  height: 300px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 100%;
+}
+.text-input__loading--line {
+  height: 10px;
+  margin: 10px auto;
+  animation: pulse 1s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+.rect-box {
+  width: auto;
+  height: 150px;
+  margin: 1px auto;
+  border-radius: 4px;
+}
+
+.w50 {
+  width: 50%;
+}
+.w75 {
+  width: 75%;
+}
+.grid-box {
+  position: relative;
+  height: 312px;
+  border: 1px solid #f1f1f1;
+  background-color: #fff;
+}

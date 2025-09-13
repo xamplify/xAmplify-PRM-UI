@@ -1,0 +1,23 @@
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 45% !important;
+    right: 0 !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
+  }
+}
+.danger {
+  color: red;
+}
+
+.close-circle {width: 30px!important;height: 30px!important;}
+.margin_15{
+  margin-top: 15px;
+}
+.mt_15{
+  margin-top: 15px;
+}

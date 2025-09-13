@@ -1,0 +1,143 @@
+#bottom-right {
+  float: right;
+}
+
+#right {
+  float: right;
+  margin-bottom: 10px;
+}
+
+.vertical-center {
+  align-items: center;
+  justify-content: center;
+  display: block;
+  margin: 10px 100px 0px 100px;
+}
+
+.button-padding {
+  padding: 7px 14px;
+  font-size: 14px;
+  border-width: 0;
+}
+
+.testing {
+  transform: scale(0.77);
+  -webkit-transform: scale(0.77);
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  cursor: not-allowed;
+}
+
+.name-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.label-value-correct {
+  color: #89e7b5;
+  margin: 5px 5px 0 0;
+  font-weight: 600;
+}
+
+.label-value-incorrect {
+  color: red;
+  font-weight: 600;
+  margin: 5px 5px 0 0;
+}
+
+.answer_correct {
+  color: #1e8e3e !important;
+}
+.answer_incorrect {
+  color: #d93025 !important;
+}
+.question_skipped {
+  color: #290505 !important;
+}
+
+span.quiz_optionname {
+  float: right;
+  clear: none;
+  display: block;
+  padding: 0px 0px 0px 8px;
+}
+.btn-border-radius {
+  border-radius: 5px;
+}
+
+.label-box {
+  border: #ddd solid 1px;
+  border-radius: 5px !important;
+  padding: 20px 20px 7px 20px;
+  /* background: #fff; */
+}
+
+.emailorName {
+  border: #ddd solid 1px;
+  border-radius: 5px !important;
+  padding: 10px 20px 20px 20px !important;
+  /* background: #fff; */
+}
+
+label.form-check-label.disable-click {
+  margin-bottom: 0px !important;
+  margin-left: 5px;
+  margin-top: 2px;
+}
+.border-fivepx {
+  border-radius: 5px !important;
+}
+label.questionclass {
+  display: inline;
+  font-size: 14px;
+}
+
+.score {
+  float: right;
+  margin: 0px 40px 0px -110px;
+  border: 1px solid black;
+  padding: 2px 5px 2px 5px;
+  background: #e6e5e5;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin: 3px 0 0;
+}
+.optionTB {
+  margin: 10px 0;
+}
+
+.disable-click {
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* .label-box:hover {
+    background-color: #e6e5e5;
+} */
+
+.disabled-background-color {
+  background-color: #f7f6f6;
+}
+
+.form-description {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Gantari", "Open Sans", sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+/*** XNFR-424 ***/
+.padding-10px-lt-rgt {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+  
+.padding-20px {
+  padding: 20px;
+}
+/*** XNFR-424 ***/

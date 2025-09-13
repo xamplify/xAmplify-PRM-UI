@@ -1,0 +1,6 @@
+<span class="comment-color" *ngIf="!isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'mediumDate'}},  {{dateAndTime |date:'shortTime'}}</span>
+<span class="comment-color" *ngIf="isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'mediumDate'}}</span>
+<span class="comment-color" *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime |date:'mediumDate'}},  {{dateAndTime |date:'shortTime'}}</span>
+<span class="comment-color" *ngIf="isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime |date:'mediumDate'}}</span>
+<span class="comment-color" *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && isSpacethere">{{dateAndTime}}</span>
+

@@ -1,0 +1,45 @@
+.custom-padding {
+	padding-top: 5px !important;
+}
+
+.custp {
+	padding-top: 0px !important;
+	padding-left: 50px !important;
+}
+
+@media screen and (max-width:600px){
+	.mPad{
+		padding-bottom: 5px;
+	}
+}
+
+
+.portlet .dashboard-stat:last-child {
+	margin-bottom: 20px !important;
+}
+.dashboard-stat .details .desc {
+	font-size: 13px !important;
+}
+.portlet.light > .portlet-title > .caption > .caption-subject {
+	font-weight: 600 !important;
+}
+.pjCardTitlebg{    
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 16px 0px 16px !important;
+    margin: -10px -10px 0px -10px;
+  }
+
+.portlet .dashboard-stat:last-child {
+    margin-bottom: 12px !important;
+}
+.portlet.light .portlet-body {
+    padding-top: 25px;
+}
+
+.icon-customize{
+	font-size: 20px;
+    margin-top: 5px;
+}
+/* Sudha Sri(24-07-2024) */
+.dashboard-stat{border-radius: 10px !important;}

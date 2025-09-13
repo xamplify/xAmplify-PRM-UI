@@ -1,0 +1,19 @@
+#donut-chart-container,
+#activeInActivePartnersDonut{
+    height: 250px;
+}
+.active-donut-pie-chart {
+    min-height: 480px;
+    margin-bottom:20px
+}
+/* @media (min-width:200px) and (max-width:767px){
+    .pr0responsive{padding-right: 0px !important;}
+} */
+
+.pjCardTitlebg{    
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+    padding: 6px 10px 4px 10px !important;
+    margin: -10px -10px 0px -10px;
+  }
+  .portlet.light > .portlet-title > .pjCardTitleCenterAlignment{padding: 8px 0px !important;}

@@ -1,0 +1,28 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li *ngIf="!authenticationService.isSuperAdmin()">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li *ngIf="campaignForms">
+				<a (click)="goToCampaignAnalytics()">Campaign Analytics</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li *ngIf="pagination.partnerLandingPageForm || isPartnerNavigation">
+				<a [routerLink]="['/home/pages/partner']">Manage Pages</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li >
+				<a routerLink="{{routerLink}}">Manage Forms</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<a class="default-cursor">Analytics</a> 
+			</li>
+		</ul>
+	</div>
+	<app-form-analytics-util [importedObject]="exportingObject"></app-form-analytics-util>
+	<app-scroll-top></app-scroll-top>
+</div>

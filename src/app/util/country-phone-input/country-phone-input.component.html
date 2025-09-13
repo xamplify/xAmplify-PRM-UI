@@ -1,0 +1,35 @@
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
+</head>
+<div class="phone-input-container" [style.margin-top]="isUploadCsv ? '0px' : '10px'">
+  <div class="phone-input-group" [style.width]="isUploadCsv ? '100%' : '75%'">
+    <div class="custom-dropdown" [class.active]="isOpen" (clickOutside)="isOpen = false">
+      <div class="dropdown-selected" (click)="toggleDropdown()" data-placement="top" data-toggle="tooltip"
+        [attr.data-original-title]="selectedCountry?.name">
+        <span class="flag-icon flag-icon-{{selectedCountry?.code?.toLowerCase()}}"></span>
+        <span class="dropdown-arrow" [class.open]="isOpen">▼</span>
+      </div>
+
+      <div class="dropdown-options-container" *ngIf="isOpen">
+        <div class="search-box">
+          <input id="phoneInput" class="form_controls" type="text" [(ngModel)]="searchQuery" (input)="filterCountries()" placeholder="Search country...">
+        </div>
+        <ul class="dropdown-options">
+          <li *ngFor="let country of filteredCountries" (click)="selectCountry(country)"
+            [class.selected]="country.code === selectedCountry?.code">
+            <span class="flag-icon flag-icon-{{country.code?.toLowerCase()}}"></span>
+            <span class="country-name">{{country.name}}</span>
+            <span class="country-code">{{country.dial_code}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phone-input-field">
+      <input class="form_controls" type="tel" [(ngModel)]="mobileNumber" [placeholder]="placeholder"
+        (input)="onInput($event); validateMobileNumber()" (keydown)="onKeyDown($event)" (keypress)="numbersOnly($event)"
+        [maxlength]="maxlength">
+    </div>
+  </div>
+  <span *ngIf="!isUploadCsv && !isValidMobileNumber" class="required" style="margin-left: 115px;">{{ errorMessage }}</span>
+</div>

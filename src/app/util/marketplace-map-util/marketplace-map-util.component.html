@@ -1,0 +1,33 @@
+<div class="flexbody">
+  <div class="menu" *ngIf="isOnlyMap">
+    <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search"
+      (keyup)="getFilteredCompanies()">
+    <h3>Categories</h3>
+    <ul>
+      <li class="category-button" [class.active]="activeCategory === 'All Categories'" (click)="showAllCategories()">All
+        Categories</li>
+      <li *ngFor="let category of categories" class="category-button" [class.active]="activeCategory === category.name"
+        (click)="showContent(category.name)">
+        {{ category.name }}
+      </li>
+    </ul>
+
+  </div>
+  <div class="tileContent">
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [minZoom]="2" [maxZoom]="15"
+      style="width: 100%; height: 400px;">
+      <agm-marker *ngFor="let company of filteredCompanies" [latitude]="company.latitude"
+        [longitude]="company.longitude" [label]="company.name">
+        <agm-info-window>
+          <div style="max-width: 250px; max-height: 230px;">
+            <p class="map-company-name"><strong>{{ company.name }}</strong></p>
+            <p><strong>Address: </strong>{{ company.address }}</p>
+            <p><strong>Contact: </strong>{{ company.phone }}</p>
+            <p><strong>Website: </strong><a href="{{company.website}}"  (click)="navigateToParent($event, company.openInNewTab)" class="website-url" style="-webkit-box-orient:vertical">{{ company.website }}</a></p>
+            <a href="{{company.link}}" (click)="navigateToParent($event, company.openInNewTab)">View Details</a>
+          </div>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
+</div>

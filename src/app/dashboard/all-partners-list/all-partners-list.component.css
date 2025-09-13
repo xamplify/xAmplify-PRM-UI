@@ -1,0 +1,116 @@
+.mt25m {
+    margin-top: -25px !important;
+    display: flex;
+}
+.mh480{
+    min-height: 480px;
+    height: 480px;
+}
+.tableHeightScroll{
+    height: 343px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.override-actions{
+    float: inherit!important;
+  }
+  
+  .custom_fiter-asset {
+    background-color: #f1f5f9;
+    padding: 10px 5px 10px 5px !important;
+  }
+  .createdOnRow{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  span.filterActiveBg {
+    background-color: #10ad39!important;
+    box-shadow: unset!important;
+  }
+  span.filterActiveBg i {
+    color: #fff;
+  }
+  .defaultFilterACtiveBg{
+    background-color: #f1f3fa;
+  }
+  span.btn-aligmntCu {
+    display: flex;
+    justify-content: flex-end;
+}
+ .panel-bgMain{
+  border-color: #ddd;
+}
+.template_box{
+  border:1px solid#ddd;
+  margin-top: 15px;
+}
+.closeIconCu{
+  width: 28px!important;
+  height: 28px!important;
+}
+::-webkit-scrollbar {
+width: 7px;
+height: 7px;
+}
+.pl5{
+  padding-left: 5px!important;
+}
+
+/*** XNFR-1015 ***/
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+input[type="checkbox"] {
+  margin: 0 auto;
+  display: block;
+}
+/*** XNFR-1015 ***/
+@media screen and (min-width: 768px) and (max-width:1024px) {
+.pl5{
+  padding-left: 15px!important;
+}
+}
+.panel-heading{
+  padding: 6px 10px;
+}
+.panel-info > .panel-heading { background-color: #d9edf7b3;}
+.panel-heading-custom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.Responsivetitle{
+white-space: nowrap;
+}
+.header-controls{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: flex-end;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .panel-heading-custom {
+    padding: 10px;
+  }
+  .header-controls {
+   justify-content: start;
+   gap: 5px;
+  }
+  .Responsivetitle{
+    margin-bottom: 10px;
+  }
+  .mh480{
+    height: auto;
+  }
+  .mb_pl5{
+  padding-left: 15px!important;
+  }
+}

@@ -1,0 +1,249 @@
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="!isTeamMemberRequest"><a>{{properties?.vendorInvites}}</a></li>
+      <li *ngIf="isTeamMemberRequest">
+        <a [routerLink]="['/home/team/add-team']">Add/Manage Team Members</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="isTeamMemberRequest"><a>{{properties?.teamMemberInvites}}</a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a [className]="allVendorsCount > 0 ? 'dashboard-stat dashboard-stat blue-soft' : 'dashboard-stat dashboard-stat blue-soft disable-tile-pj'"
+        (click)="allVendorsCount > 0 ? listOfResults('ALL'): ''" [class.grey]="statusType != 'ALL'">
+        <div class="visual">
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'ALL' ? '#white' : '#ccc' }" *ngIf="statusType == 'ALL'"></i>
+        </div>
+        <div class="details">
+          <div class="number white">{{allVendorsCount}}</div>
+          <div class="desc white">All</div>
+        </div>
+        <span class="morePadding">
+          <a [className]="allVendorsCount>0 ? 'more' : 'more disable-tile-pj'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle"
+              title="Total Invited, Activated, Deactivated Team Members"></i></a>
+        </span>
+      </a>
+    </div>
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a [className]="approvedVendorsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+        (click)="approvedVendorsCount > 0 ? listOfResults('APPROVED'): ''" [class.grey]="statusType != 'APPROVED'">
+        <div class="visual">
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'APPROVED' ? '#white' : '#ccc' }" *ngIf="statusType == 'APPROVED'"></i>
+        </div>
+        <div class="details">
+          <div class="number white">{{approvedVendorsCount}}</div>
+          <div class="desc white">{{ isTeamMemberRequest ? 'Activated' : 'Approved' }}</div>
+        </div>
+        <span class="morePadding">
+          <a [className]="approvedVendorsCount>0 ? 'more' : 'more disable-tile-pj'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Activated Team Members"></i></a>
+        </span>
+      </a>
+    </div>
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a [className]="invitedVendorsCount > 0 ? 'dashboard-stat dashboard-stat purple' : 'dashboard-stat dashboard-stat purple disable-tile-pj'"
+        (click)="invitedVendorsCount > 0 ? listOfResults('INVITED'): ''" [class.grey]="statusType != 'INVITED'">
+        <div class="visual">
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'INVITED' ? '#white' : '#ccc' }" *ngIf="statusType == 'INVITED'"></i>
+        </div>
+        <div class="details">
+          <div class="number">{{invitedVendorsCount}}</div>
+          <div class="desc">Invited</div>
+        </div>
+        <span class="morePadding">
+          <a [className]="invitedVendorsCount>0 ? 'more' : 'more disable-tile-pj'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Invited Team Members"></i></a>
+        </span>
+      </a>
+    </div>
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a [className]="declinedVendorsCount > 0 ? 'dashboard-stat dashboard-stat yellow-gold' : 'dashboard-stat dashboard-stat yellow-gold disable-tile-pj'"
+        (click)="declinedVendorsCount > 0 ? listOfResults('DECLINED') : ''" [class.grey]="statusType != 'DECLINED'">
+        <div class="visual">
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'DECLINED' ? '#white' : '#ccc' }" *ngIf="statusType == 'DECLINED'"></i>
+          </div>
+        <div class="details">
+          <div class="number">{{declinedVendorsCount}}</div>
+          <div class="desc">{{ isTeamMemberRequest ? 'Deactivated' : 'Declined' }}</div>
+        </div>      
+        <span class="morePadding">
+          <a [className]="declinedVendorsCount>0 ? 'more' : 'more disable-tile-pj'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Deactivated Team Members"></i>
+          </a>
+        </span>
+      </a>
+    </div>
+    
+    <div class="col-xs-12 p5">
+      <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
+        <div class="portlet-title remove_border mb0">
+          <div class="caption mt10">
+            <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0 btn-group">
+            <div class="d-flex justify-content-end mb_flex-wrap">
+              <!--- Sort --->
+              <div class="mr5">
+                <select class="form-control SeclectBoxPaddingsAbj mr5 mb_10" id="select-dropdown"
+                  [(ngModel)]="sortOption.teamMemberAnalyticsSortOptions" (ngModelChange)="sortOptionDropdown($event)">
+                  <option *ngFor="let option of sortOption.inviteTeamMemberAnalyticsDropDownOptions" [ngValue]="option">
+                    {{option.name}}
+                  </option>
+                </select>
+              </div>
+              <!--- Search --->
+              <div class="float-right input-icon right mb10 mr5">
+                <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"
+                  placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+                <button *ngIf="pagination.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+                  (click)="pagination.searchKey='';listOfResults(statusType);"></button>
+                <button type="submit" class="search-box-item-click" (click)="listOfResults(statusType)">
+                  <i class="fa fa-search" aria-hidden="true"></i></button>
+              </div>
+                <!--- Refresh --->
+                <span class="btn btn-xs l-g-view mr5"  *ngIf="isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+                  (click)="listOfRequestReports(statusType)">
+                  <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
+                </span>
+                <!--- Export to Excel --->
+                <button class="btn btn-xs hidden-xs l-g-view mr5" *ngIf="isTeamMemberRequest"  data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                  (click)="downloadTeamMembersCsv()" [disabled]="pagination.totalRecords == 0">
+                  <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                </button>
+
+                <button class="btn btn-xs hidden-xs l-g-view mr5" *ngIf="!isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                  (click)="downloadInviteVendorCsv()" [disabled]="pagination.totalRecords == 0">
+                  <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                </button>
+
+                <!--- Filter --->
+                <span class="btn btn-xs l-g-view {{filterActiveBg}}"  *ngIf="isTeamMemberRequest" data-placement="bottom" data-toggle="tooltip" title="Filter">
+                  <div class="btn-group">
+                    <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                      (click)="clickFilterOption()">
+                      <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                    </a>
+                  </div>
+                </span>
+            </div>
+          </div>
+        </div>
+        <ng-template [ngTemplateOutlet]="filterOption"></ng-template>
+        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+          <div class="table-responsive">
+            <table class="table tgrid" *ngIf="pagination.pagedItems.length != 0">
+              <thead>
+                <tr>
+                  <th class="table-header-alignment">Name</th>
+                  <th style="text-align: center;" *ngIf="isTeamMemberRequest">invited by</th>
+                  <th style="text-align: center;">status</th>
+                  <th style="text-align: center;"><span>invited </span>{{isTeamMemberRequest ? 'date and time' : 'on'}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of vendorRequestReport" style="cursor: pointer;">
+                  <td>
+                    <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
+                  </td>
+                  <td style="text-align: center;" *ngIf="isTeamMemberRequest">
+                    {{ item.invitedBy }}
+                  </td>
+                  <td style="text-align: center;text-transform: capitalize;">
+                    {{ getStatusType(item.status) }}
+                  </td>
+                  <td style="text-align: center;">
+                    <app-timestamp [dateAndTime]="item.referredDateUTC"></app-timestamp>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <app-pagination class="pg8" [pagination]="pagination" [type]="'pagination'"
+          (notifyParentDropDown)="paginationDropDown($event)" (notifyParent)="setPage($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #filterOption>
+  <div class="portlet light ht125 mt10" *ngIf="showFilterOption">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <!-- Alert Message Box -->
+        <app-response-message class="pg8" [customResponse]="filterResponse"
+          *ngIf="filterResponse?.isVisible"></app-response-message>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
+          <h4 translate>Apply Filter</h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+          <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+            <ejs-multiselect [(ngModel)]='pagination.filterBy' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+              [ignoreAccent]='true' id='multiselectelement' [dataSource]='teamMemberInfoFilters'
+              [placeholder]='multiSelectPlaceholder'>
+            </ejs-multiselect>
+          </div>
+          <div Class="portlet box custom_fiter-asset custom-margin">
+            <div class="row pl10 pr10 pb10">
+              <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                  <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                    <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="bottom"
+                      title="Select the Date Range to View Team Members"></i>
+                  </div>
+                </div>
+                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                  <label class="control-label">
+                    From Date &nbsp;
+                  </label>
+                  <app-date-picker [(dataField)]="pagination.fromDateFilterString" [isFromFilter]='true'>
+                  </app-date-picker>
+                </div>
+                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                  <label class="control-label">To Date &nbsp;
+                  </label>
+                  <app-date-picker [(dataField)]="pagination.toDateFilterString" [isFromFilter]='true'>
+                  </app-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="pull-right mt5">
+            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+            <button class="btn btn-success" (click)="validateDateFilter()">Apply</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

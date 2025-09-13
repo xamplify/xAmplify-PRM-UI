@@ -1,0 +1,258 @@
+<ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div style="position: relative; top: -10px">
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
+<div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space">
+   <app-dam-analytics-details [contentId]="learningTrackId" [contentType]="type"></app-dam-analytics-details> 
+   
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" clearfix">
+        <div class="portlet-title" style="border-bottom: none">
+          <div class="row">
+            <div class="page-toolbar col-xs-12">
+              <div class="btn-group pull-right">
+                <div class="d-flex" style="float: right">
+                  <div class="pb3">
+                      <select class="form-control mDamSort"
+                        [(ngModel)]="sortOption.selectedSortOptionForPartnerTrackDetails"
+                        (ngModelChange)="sortPartnerCompanies($event)" style="position: relative;">
+                        <option *ngFor="let option of sortOption.partnerTrackDetailsDropDownOptions"
+                          [ngValue]="option">{{option.name}}</option>
+                      </select>
+                    </div>
+                  <div class="portlet-input input-inline ml7" style="width: 180px;">
+                    <div class="input-icon right" style="position: relative;">
+                      <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                        (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                        (click)="sortOption.searchKey='';search();"></button>
+                      <button type="submit" class="search-box-item-click only_content" (click)="search()">
+                        <i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+                  </div>
+                      <div class="inline-block pull-right ml7">
+                      <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+                        title="Export to Excel" (click)="downloadPartnerTrackAndPlaybooksAnalytics()"
+                        [disabled]="pagination?.totalRecords === 0">
+                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                      </button>
+                    </div>
+                  <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                  <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-list-loader *ngIf=" httpRequestLoader.isLoading ">
+        </app-list-loader>
+        <ng-container *ngIf="!httpRequestLoader.isLoading">
+          <div class="table-responsive pos_pd_top6">
+            <table class='table tgrid table-hover table-sm mt10' id="lms-analytics-list-table"
+              *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
+              <thead>
+                <tr>
+                  <th class="" style="width: 35%" id="border-bottom">
+                    <span class="gridHeader" translate>{{authenticationService?.partnerModule?.customName}}</span>
+                  </th>
+                  <th *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center" style="width: 35%" translate>
+                    Progress</th>
+                  <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 35%" translate>QUiz Score</th>
+                  <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center" style="width: 35%" translate>Updated On</th>
+                  <th class="text-center" id="min-width" translate>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
+                  <tr>
+                    <td>
+                      <app-user-info [userInfo]="partner"> </app-user-info>
+                    </td>
+                    <td *ngIf="type == undefined || type == 'TRACK' || type == 'PLAYBOOK'" class="text-center">
+                      <div class="progress" style="width: 50%; margin: 0px 25%;">
+                        <div class="progress-bar" data-toggle="tooltip" data-placement="top"
+                          title="{{partner.learningTrackProgress}}%"
+                          [ngStyle]="{'width': partner.learningTrackProgress + '%'}" style="border-radius:1px;"
+                          role="progressbar">
+                        </div>
+                      </div>
+                      <span *ngIf="partner.learningTrackProgress != undefined">{{partner.learningTrackProgress}}%</span>
+                      <span *ngIf="partner.learningTrackProgress == undefined">0%</span>
+                    </td>
+                    <td class="quiz-width" *ngIf="type == undefined || type == 'TRACK'">
+                      <div
+                        *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackScore !== undefined && partner.learningTrackMaxScore !== undefined "
+                        (click)="showFormAnalytics(partner)">
+                        <div *ngIf="partner?.quizName" data-toggle="tooltip" data-placement="top"
+                          title="{{partner.quizName}}">
+                          {{partner.quizName | slice:0:35}} <span *ngIf="partner.quizName?.length>35">...</span></div>
+                        <div class="quiz-score-margin">
+                          <h6 class="view-banner" style="background-color: #5cb85c;" translate>
+                            {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}
+                          </h6>
+                        </div>
+                        <div *ngIf="partner?.quizSubmittedTime">
+                          Submitted On <br>
+                          <app-timestamp [showInLine]="'true'" [dateAndTime]="partner.quizSubmittedTime">
+                          </app-timestamp>
+                        </div>
+                      </div>
+                      <div class="quiz-score-margin"
+                        *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackScore === undefined && partner.learningTrackMaxScore === undefined">
+                        <h6 class="view-banner" translate>Not Yet Finished
+                        </h6>
+                      </div>
+                      <div class="quiz-score-margin" *ngIf="!partner.hasLearningTrackQuiz">
+                        <h6 class="view-banner" translate>Quiz Not Available
+                        </h6>
+                      </div>
+                    </td>
+                    <td *ngIf="type != undefined && type == 'PLAYBOOK'" class="hidden-xs text-center">
+                      <app-timestamp [dateAndTime]="partner.updatedTime">
+                      </app-timestamp>
+                    </td>
+                    <td id="actions-row" class="text-center">
+                      <div class="actions-block override-actions custom-width-icon"
+                        [ngClass]="{'no-float' : type != undefined && type == 'PLAYBOOK'}">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+                          (click)="viewAnalytics(partner,i)">
+                          <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+            (notifyParentDropDown)="getPartnerAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
+          </app-pagination>
+        </div>
+        <!-- End of 24 -->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+          <strong translate>No Data Found.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- analytics Popup -->
+<div class="modal right" id="analytics-list" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Analytics</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="padding-left: 15px;">
+          <div class="page-toolbar col-xs-12 p5">
+            <div class="btn-group pull-right">
+              <div class="inputs" style="float: right;">
+                <div class="portlet-input input-inline" id="search" style="width: 180px;">
+                  <div id="search-icon">
+                    <input type="text" id="search-text" class="form-control" style="height: 34px;margin-top: -10px;"
+                      [(ngModel)]="detailedAnalyticsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                      placeholder="search..." (keypress)="detailedAnalyticsEventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="margin-top: -10px;"
+                      *ngIf="detailedAnalyticsSortOption.searchKey"
+                      (click)="detailedAnalyticsSortOption.searchKey='';detailedAnalyticsSearch();"></button>
+                    <button type="submit" class="search-box-item-click alignment" (click)="detailedAnalyticsSearch()"><i
+                        class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 p5">
+            <ngx-loading [show]="detailedAnalyticsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }">
+            </ngx-loading>
+            <div>
+              <ul class="timeline custom-padding"
+                *ngFor="let detailedAnalytics of detailedAnalyticsPagination.pagedItems ;let i =index">
+                <li class="timeline-inverted">
+                  <div class="timeline-badge">
+                    <img *ngIf="!detailedAnalytics.typeQuiz" alt="Image not found"
+                      [src]="detailedAnalytics.assetThumbnail">
+                    <img *ngIf="detailedAnalytics.typeQuiz"
+                      [ngClass]="{'form-image':detailedAnalytics.featuredImage === undefined || !detailedAnalytics.featuredImage}"
+                      [src]="detailedAnalytics.featuredImage" onerror="this.src='assets/images/form.png';"
+                      alt="Image not found">
+                  </div>
+                  <div class="timeline-panel" [ngClass]="{'disable-click': detailedAnalytics.type !== 'SUBMITTED'}"
+                    (click)="showFormAnalyticsFromPopup(detailedAnalytics)">
+                    <div class="timeline-heading name-wrap">
+                      <span class="timeline-title">
+                        <label><span *ngIf="!detailedAnalytics.typeQuiz">Asset</span><span
+                            *ngIf="detailedAnalytics.typeQuiz">Quiz</span>
+                          Name:</label>
+                        <h5 style="display: inline;" title="{{detailedAnalytics.assetName}}">
+                          {{detailedAnalytics.assetName}}</h5>
+                      </span>
+                    </div>
+                    <div class="timeline-body">
+                      <div>
+                        <span *ngIf="detailedAnalytics.type == 'OPENED'">
+                          Opened On
+                        </span>
+                        <span *ngIf="detailedAnalytics.type == 'VIEWED'">
+                          Viewed On
+                        </span>
+                        <span *ngIf="detailedAnalytics.type == 'DOWNLOADED'">
+                          Downloaded On
+                        </span>
+                        <span *ngIf="detailedAnalytics.type == 'SUBMITTED'">
+                          SUBMITTED On
+                        </span>
+                        <app-timestamp [showInLine]="'true'" [dateAndTime]="detailedAnalytics.createdTime">
+                        </app-timestamp>
+                        <div *ngIf="detailedAnalytics.type == 'SUBMITTED'">
+                          <div class="quiz-score-margin-popup">
+                            <h6 class="view-banner" style="background-color: #5cb85c; font-size: 12px;" translate>
+                              {{detailedAnalytics.learningTrackScore}} out of
+                              {{detailedAnalytics.learningTrackMaxScore}}
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="detailedAnalyticsPagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="detailedAnalyticsPagination"
+                (notifyParent)="setDetailedAnalyticsPage($event)"
+                (notifyParentDropDown)="getPartnerDetailedAnalytics($event)"
+                [hidden]="detailedAnalyticsLoader.isLoading">
+              </app-pagination>
+            </div>
+            <!-- End of 24 -->
+            <div *ngIf="detailedAnalyticsPagination.totalRecords==0 && !detailedAnalyticsLoader.isLoading"
+              class="alert alert-info">
+              <strong>No Data Found.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form analytics -->
+<app-form-preview-with-submitted-answers #formPreviewWithSubmittedAnswersComponent>
+</app-form-preview-with-submitted-answers>

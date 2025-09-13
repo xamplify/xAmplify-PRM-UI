@@ -1,0 +1,12 @@
+@media only screen and (max-width:600px){
+    .mb_height{
+     height:auto!important;
+    }
+    .pt_8{
+     padding-top: 8px;
+    }
+}
+/* Sudha Sri(24-07-2024) */
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius{border-radius: 10px !important;}

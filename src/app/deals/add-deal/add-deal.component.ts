@@ -1,0 +1,1769 @@
+import { CommentDealAndLeadDto } from './../models/comment-deal-and-lead-dto';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { DealsService } from '../services/deals.service';
+import { Pipeline } from 'app/dashboard/models/pipeline';
+import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
+import { CustomResponse } from '../../common/models/custom-response';
+import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import { LeadsService } from '../../leads/services/leads.service';
+import { UtilService } from '../../core/services/util.service';
+import { Deal } from '../models/deal';
+import { Lead } from 'app/leads/models/lead';
+import { UserService } from 'app/core/services/user.service';
+import { DealQuestions } from 'app/deal-registration/models/deal-questions';
+import { DealType } from 'app/deal-registration/models/deal-type';
+import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
+import { DealAnswer } from 'app/deal-registration/models/deal-answers';
+import { User } from 'app/core/models/user';
+import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
+import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
+import { Properties } from 'app/common/models/properties';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Router } from "@angular/router";
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+declare var $: any, swal: any;
+
+
+@Component({
+  selector: 'app-add-deal',
+  templateUrl: './add-deal.component.html',
+  styleUrls: ['./add-deal.component.css'],
+  providers: [HttpRequestLoader, LeadsService, Properties],
+})
+export class AddDealComponent implements OnInit {
+
+  @Input() public dealId: any;
+  @Input() public leadId: any;
+  @Input() public campaignId: any;
+  @Input() public campaignName: any;
+  @Input() public actionType: string;
+  @Input() public isVendorVersion: boolean;
+  @Input() public isOrgAdmin: boolean;
+  @Input() public hideAttachLeadButton: boolean;
+  @Input() public selectedContact: any;
+  @Input() public isDealFromContact: boolean = false;
+  @Output() notifySubmitSuccess = new EventEmitter();
+  /**XNFR-553**/
+  @Input() isFromCompanyModule:boolean = false;
+  @Input() public isFromContactAllLeadsTab:boolean = false;
+  @Input() public isFromContactAllDealsTab:boolean = false;
+  @Output() notifyClose = new EventEmitter();
+
+  /**XNFR-836**/
+  @Input() public isFromEditContacts: boolean = false;
+  /**XNFR-848**/
+  @Input() public isCompanyJourney: boolean = false;
+  @Input() public selectedUserListId: any;
+  @Input() public isFromCompanyJourney: boolean = false;
+  @Input() public companyJourneyId:any;
+  @Input() public isFromCompanyJourneyEditContacts:boolean = false;
+
+  preview = false;
+  edit = false;
+  loggedInUserId: number;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  dealFormTitle = "Deal Details";
+  showCustomForm: boolean = false;
+  vendorList = new Array();
+  deal: Deal = new Deal();
+  lead: Lead = new Lead();
+  contact: User = new User();
+  pipelines = new Array<Pipeline>();
+  stages = new Array<PipelineStage>();
+  hasCampaignPipeline = false;
+  hasSfPipeline = false;
+  dealTypes: DealType[] = [];
+  defaultDealTypes = ['Select Dealtype', 'New Customer', 'New Product', 'Upgrade', 'Services'];
+  questions: DealQuestions[] = [];
+  propertiesQuestions: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
+  propertiesComments: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
+  properties: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
+  showDefaultForm = false;
+  showContactInfo = false;
+  showContactInfoForLead = false;
+
+  ngxloading: boolean;
+  isLoading = false;
+  showLoadingButton: boolean;
+  customResponse: CustomResponse = new CustomResponse();
+  errorClass: string = "form-group has-error has-feedback";
+  successClass: string = "form-group has-success has-feedback";
+
+  title: string;
+  titleError: boolean = true;
+  opportunityAmount: string;
+  opportunityAmountError: boolean = true;
+  estimatedCloseDate: string;
+  estimatedCloseDateError: boolean = true;
+  dealType: string;
+  dealTypeError: boolean = true;
+  createdForCompanyId: string;
+  createdForCompanyIdError: boolean = true;
+  pipelineId: string;
+  pipelineIdError: boolean = true;
+  pipelineStageId: string;
+  pipelineStageIdError: boolean = true;
+  isDealRegistrationFormValid: boolean = true;
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  property: DealDynamicProperties = new DealDynamicProperties();
+  ownDeal: boolean = false;
+  // showCommentActions: boolean = false;
+
+  @ViewChild(SfDealComponent)
+  sfDealComponent: SfDealComponent;
+  activeCRMDetails: any;
+  isCollapsed: boolean;
+  isCollapsed1: boolean;
+  isCollapsed2: boolean;
+  isCollapsed3: boolean;
+
+  showLeadForm: boolean = false;
+  dealToLead: any;
+  showSelectLeadModel: boolean = false;
+  showAttachLeadButton: boolean = false;
+  attachLeadText: string = "Attach a Lead";
+  deAttachText: string = "";
+
+  createdByPipelines = new Array<Pipeline>();
+  createdByStages = new Array<PipelineStage>();
+  createdForPipelines = new Array<Pipeline>();
+  createdForStages = new Array<PipelineStage>();
+  createdForPipelineIdError: boolean = true;
+  createdForPipelineStageIdError: boolean = true;
+  pipelineText: any;
+  pipelinestageText: string;
+  /*** XNFR-476 ***/
+  holdActiveCRMPipelineId: number = 0;
+  showDetachLeadButton: boolean  = false;
+  holdCreatedForCompanyId: number = 0;
+  createdForPipelineId:any;
+  createdForPipelineStageId:any;
+  createdByActiveCRM: any;
+  createdForActiveCRM: any;
+  isMarketingCompany: boolean = false;
+  showCreatedByPipelineAndStage: boolean = false;
+  showCreatedByPipelineAndStageOnTop: boolean = false;
+
+  titleFields = ['title','name','symptom','Deal_Name'];
+  amountFields = ['amount','value','FOppValue','Amount'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate','Closing_Date'];
+  type = "DEAL";
+  showOpportunityTypes:boolean = false;
+  opportunityTypeId: any;
+  opportunityTypeIdError: boolean = true;
+  isCreatedForStageIdDisable: boolean = false;
+  isCampaignTicketTypeSelected: boolean = false;
+  existingHalopsaDealTicketTypeId: any;
+  isCopiedToClipboard : boolean = false;
+  isZohoLeadAttached: boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
+  isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
+  vendorCompanyName:string = '';
+
+  /***XNFR-623***/
+  commentsCustomResponse:CustomResponse = new CustomResponse();
+  // commentsLoader = true;
+  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
+  isCommentAndHistoryCollapsed = false;
+  editTextArea = false;
+  isDealDetailsTabDisplayed: boolean = true;
+  hideDealDetailsForSelfDeal:boolean = false;
+  hideDealForInEditSelfDeal:boolean = false;
+  isDealForAndContactInfoDivCenterAligned = false;
+  isCRMIdCopiedToClipboard: boolean = false;
+  halopsaTicketTypeId:number = 0;
+  halopsaTicketTypes: any;
+  //XNFR-681
+  isThroughAddUrl : boolean = false;
+  isFromManageDeals : boolean = false;
+  attachLeadError: boolean = false;
+  attachContact: any;
+  showSelectContactModel: boolean = false;
+  contactId: any;
+  showChangeLeadButton: boolean = false;
+  showChangeContactButton: boolean = false;
+  contactInfo: any;
+  detailsTitle: any;
+  showContactDetails: boolean = false;
+  showAttachLead: boolean = true;
+  showChangeLeadAndContactButton: boolean = false;
+  showAttachButton: boolean = false;
+  
+
+  /***XNFR-623***/
+  constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
+    public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
+    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService,private router: Router, private integrationService: IntegrationService) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+
+    }
+  }
+
+  ngOnInit() {
+    let currentUrl = this.router.url;
+    this.utilService.getJSONLocation().subscribe(response => console.log(response));
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.isDealDetailsTabDisplayed = this.actionType!="add";
+    }
+    this.deal.createdForCompanyId = 0;
+    this.deal.pipelineId = 0;
+    this.deal.pipelineStageId = 0;
+    this.deal.createdForPipelineId =0;
+    this.deal.createdByPipelineId = 0;
+    this.deal.createdForPipelineStageId = 0;
+    this.deal.createdByPipelineStageId = 0;
+    if (this.actionType === "add") {
+      // this.showCommentActions = true;
+      this.showAttachLeadButton = true;
+      if (this.hideAttachLeadButton) {
+        this.showAttachLeadButton = false;
+      }
+      this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+      if (this.leadId > 0) {
+        this.getLead(this.leadId);
+      } else {
+        if (this.vanityLoginDto.vanityUrlFilter) {
+          this.setCreatedForCompanyId();
+        } else {
+
+        }
+      }
+    } else if (this.actionType === "view") {
+      this.preview = true;
+      this.showAttachLeadButton = false;
+      this.dealFormTitle = "View Deal";
+      if (this.dealId > 0) {
+        this.getDeal(this.dealId);
+      }
+    } else if (this.actionType === "edit") {
+      this.edit = true;
+      this.dealFormTitle = "Edit Deal";
+      if (this.dealId > 0) {
+        this.getDeal(this.dealId);
+      }
+    } else if (currentUrl.includes(RouterUrlConstants.addDeal)) {
+      this.isFromManageDeals = true;
+      this.checkIfHasAcessForAddDeal();
+      this.setDeafultValuesForDeal();
+    } else if (currentUrl.includes(RouterUrlConstants.addDealFromHome)) {
+      if (this.authenticationService.isPartnershipOnlyWithPrm) {
+        this.setDeafultValuesForDeal();
+      } else {
+        this.referenceService.goToAccessDeniedPage();
+      }
+    }
+    this.getVendorList();
+
+    /***XNFR-623***/
+    // this.loadComments();
+  }
+
+  setDeafultValuesForDeal() {
+    this.actionType = "add";
+    this.isThroughAddUrl = true;
+    // this.showCommentActions = true;
+    this.showAttachLeadButton = true;
+    if (this.hideAttachLeadButton) {
+      this.showAttachLeadButton = false;
+    }
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.dealFormTitle = "";
+      this.setCreatedForCompanyId();
+    }
+  }
+
+  /***XNFR-623***/
+  // private loadComments() {
+  //   if (this.preview) {
+  //     this.commentsLoader = true;
+  //     this.commentsCustomResponse = new CustomResponse();
+  //     this.dealsService.findDealAndLeadInfoForComments(this.dealId).
+  //       subscribe(
+  //         response => {
+  //           let statusCode = response.statusCode;
+  //           if (statusCode == 200) {
+  //             let data = response.data;
+  //             this.commentDealAndLeadDto = data;
+  //             let associatedContact = data['associatedContact'];
+  //             let showLeadInfo = associatedContact != undefined;
+  //             this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
+  //             if(showLeadInfo){
+  //               this.commentDealAndLeadDto.associatedContact = associatedContact;
+  //               this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
+  //             }
+  //             this.commentsLoader = false;
+  //           } else {
+  //             this.commentsLoader = false;
+  //             this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.",true);
+  //           }
+  //         }, error => {
+  //           this.commentsLoader = false;
+  //           this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
+  //         }
+  //       );
+  //   }
+  // }
+
+  /***XNFR-623***/
+  toggleCommentsHistory(event:any){
+    event.preventDefault();
+    this.isCommentAndHistoryCollapsed = !this.isCommentAndHistoryCollapsed;
+  }
+
+  setCreatedForCompanyId() {
+    this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            this.deal.createdForCompanyId = data.data;
+            this.getActiveCRMDetails();
+            this.getActiveCRMPipelines();
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => {
+          this.getActiveCRMPipelines();
+         }
+      );
+  }
+
+  getQuestions() {
+    this.userService.listFormByCompanyId(this.deal.createdForCompanyId).subscribe(questions => {
+      this.questions = questions;
+      this.propertiesQuestions = [];
+      this.questions.forEach(q => {
+        let property = new DealDynamicProperties();
+        property.id = q.id;
+        property.key = q.question;
+        property.propType = 'QUESTION';
+        this.propertiesQuestions.push(property);
+        if (property.value == null || property.value.length == 0) {
+          property.error = true;
+        }
+
+      });
+    },
+      error => console.log(error),
+      () => {
+
+      });
+  }
+
+  getDealTypes() {
+    this.dealRegistrationService.listDealTypesByCompanyId(this.deal.createdForCompanyId).subscribe(dealTypes => {
+      this.dealTypes = dealTypes.data;
+    },
+      error => console.log(error),
+      () => { });
+  }
+
+  getLead(leadId: number) {
+    let self = this;
+    this.leadsService.getLead(leadId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.goToTop();
+          if (data.statusCode == 200) {
+            self.lead = data.data;
+            self.showContactInfoForLead = true;
+            self.showContactInfo = true;
+            self.contact.firstName = self.lead.firstName;
+            self.contact.lastName = self.lead.lastName;
+            self.contact.emailId = self.lead.email;
+            self.deal.associatedLeadId = self.lead.id;
+            self.deal.associatedUserId = self.lead.associatedUserId;
+            if (this.deal.createdForCompanyId == 0 && this.deal.createdForCompanyId != undefined) {
+              self.deal.createdForCompanyId = self.lead.createdForCompanyId;
+              self.createdForCompanyIdError = false;
+              self.getActiveCRMDetails();
+            }
+            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+              self.deal.campaignId = self.lead.campaignId;
+              self.deal.campaignName = self.lead.campaignName;
+              this.getCampaignDealPipeline();
+            } else {
+              self.deal.campaignId = 0;
+              self.deal.campaignName = '';
+              this.hasCampaignPipeline = false;
+              //self.getPipelines();
+            }
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => {
+          if (this.isDealFromContact) {
+            this.validateField("attachLead", false);
+          }
+        }
+      );
+  }
+
+  getCampaignDealPipeline() {
+   
+  }
+
+  getDeal(dealId: number) {
+    let self = this;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getDeal(dealId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
+          this.referenceService.goToTop();
+          if (data.statusCode == 200) {
+            self.deal = data.data;
+            if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
+              self.ownDeal = true;
+            }
+            // if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
+            //   self.showCommentActions = true;
+            // }
+
+            if (self.deal.associatedContact != undefined) {
+              self.showContactInfo = true;
+              self.showContactInfoForLead = true;
+              self.detailsTitle = 'Lead Details';
+              if (self.deal.associatedContactId != undefined) {
+                self.detailsTitle = 'Contact Details';
+                self.showContactDetails = true;
+                self.showContactInfoForLead = false;
+              }
+              self.showAttachLeadButton = false;
+              self.contact = self.deal.associatedContact;
+            }
+            else if (this.actionType !== 'view') {
+              self.showAttachLeadButton = true;
+            }
+            self.setCloseDate(data);
+            if (self.deal.createdForCompanyId > 0) {
+              this.getActiveCRMDetails();
+            }
+            self.existingHalopsaDealTicketTypeId = self.deal.haloPSATickettypeId;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  setQuestions() {
+    if (this.questions.length > 0) {
+      this.questions.forEach(q => {
+        let property = new DealDynamicProperties();
+        property.id = q.id;
+        property.key = q.question;
+        property.propType = 'QUESTION';
+        this.propertiesQuestions.push(property);
+        if (property.value == null || property.value.length == 0) {
+          property.error = true;
+          property.class = this.errorClass;
+        }
+
+      });
+      console.log(this.propertiesQuestions)
+    }
+  }
+
+  setProperties() {
+    if (this.deal.properties != undefined && this.deal.properties.length > 0) {
+      this.properties = this.deal.properties;
+      let i = 1;
+      this.propertiesQuestions = this.properties.filter(p => p.propType == 'QUESTION')
+      this.propertiesComments = this.properties.filter(p => p.propType == 'PROPERTY')
+      this.propertiesComments.forEach(property => {
+        property.divId = "property-" + i++;
+        property.isSaved = true;
+      });
+    } else {
+      this.setQuestions();
+    }
+  }
+
+  setCloseDate(data: any) {
+    let date: any;
+    if (this.deal.closeDate != null) {
+      date = this.getFormatedDate(new Date(this.deal.closeDate));
+    } else {
+      date = this.getFormatedDate(new Date());
+    }
+    //this.deal.closeDate = date;
+    this.deal.closeDateString = date;
+  }
+
+  getFormatedDate(date: Date) {
+    //return string
+    var returnDate = "";
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //because January is 0!
+    var yyyy = date.getFullYear();
+    returnDate += `${yyyy}-`;
+    if (mm < 10) {
+      returnDate += `0${mm}-`;
+    } else {
+      returnDate += `${mm}-`;
+    }
+    //Interpolation date
+    if (dd < 10) {
+      returnDate += `0${dd}`;
+    } else {
+      returnDate += `${dd}`;
+    }
+
+    return returnDate;
+  }
+
+  isSalesForceEnabled() {
+  
+  }
+
+
+  getVendorList() {
+    let self = this;
+    this.leadsService.getVendorList(this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            self.vendorList = data.data;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => {
+          if (this.actionType !== 'view') {
+            this.getFilteredVendorList();
+          }
+         }
+      );
+  }
+
+  resetPipelines() {
+    this.deal.pipelineId = 0;
+    this.deal.createdForPipelineId = 0;
+    this.deal.pipelineStageId = 0;
+    this.deal.createdForPipelineStageId = 0;
+    this.getPipelines();
+    this.hasSfPipeline = false;
+    this.activeCRMDetails.hasDealPipeline = false;
+  }
+
+  onChangeCreatedFor() {
+    this.isDealForAndContactInfoDivCenterAligned = false;
+    this.holdCreatedForCompanyId = this.deal.createdForCompanyId;
+    if (this.deal.createdForCompanyId > 0) {
+      let vendorCompany;
+      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.deal.createdForCompanyId);
+      this.vendorCompanyName = vendorCompany.companyName + "'s";
+      this.getActiveCRMDetails();
+      this.getActiveCRMPipelines();
+    } else {
+      this.deal.pipelineId = 0;
+      this.pipelines = [];
+      this.activeCRMDetails.hasDealPipeline = false;
+      this.stages = [];
+      this.showDefaultForm = false;
+      this.showCustomForm = false;
+      this.propertiesQuestions = [];
+      this.hasCampaignPipeline = false;
+      this.vendorCompanyName = '';
+      this.deal.createdForPipelineId = 0;
+      this.createdForPipelines = [];
+      this.createdForStages = [];
+      this.activeCRMDetails.showDealPipeline = false;
+      this.activeCRMDetails.showDealPipelineStage = false;
+      this.showCreatedByPipelineAndStage = false;
+      this.showOpportunityTypes = false;
+      this.showAttachButton = false;
+      this.showAttachLead = true;
+      this.resetDealTitle();
+    }
+  }
+
+  getSalesforcePipeline() {
+    
+  }
+
+  getPipelines() {
+    let self = this;
+    if (this.deal.createdForCompanyId > 0) {
+      this.dealsService.getPipelines(this.deal.createdForCompanyId, this.loggedInUserId)
+        .subscribe(
+          data => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (data.statusCode == 200) {
+              self.pipelines = data.data;
+              self.createdForPipelines = data.data;
+              self.getStages();
+            } else {
+              self.stages = [];
+              self.createdForStages = [];
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
+    }
+  }
+
+  resetStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.createdForPipelineStageIdError = true;
+      //this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedByPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      //this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedForPipelineStages() {
+    if (!this.preview && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  getStages() {
+    let self = this;
+    if (this.deal.createdForPipelineId > 0) {
+      this.createdForPipelines.forEach(p => {
+        if (p.id == this.deal.createdForPipelineId) {
+          self.createdForStages = p.stages;
+        }
+      });
+    } else {
+      self.createdForStages = [];
+    }
+    if (this.deal.createdByPipelineId > 0) {
+      this.createdByPipelines.forEach(p => {
+        if (p.id == this.deal.createdByPipelineId) {
+          self.createdByStages = p.stages;
+        }
+      });
+    } else {
+      self.createdByStages = [];
+    }
+
+  }
+
+  save() {
+    this.customResponse = new CustomResponse();
+    this.ngxloading = true;
+    this.isLoading = true;
+    this.deal.userId = this.loggedInUserId;
+
+    var obj = [];
+    let answers: DealAnswer[] = [];
+
+    if (this.showCustomForm) {
+      this.showLoadingButton = true;
+      this.setSfFormFieldValues();
+    }
+
+    if (this.edit) {
+      this.propertiesQuestions.forEach(property => {
+        var question = {
+          id: property.id,
+          key: property.key,
+          value: property.value,
+          propType: 'QUESTION'
+        }
+        obj.push(question)
+      })
+      this.propertiesComments.forEach(property => {
+        var question = {
+          id: property.id,
+          key: property.key,
+          value: property.value,
+          propType: 'PROPERTY'
+        }
+        obj.push(question)
+      })
+    } else {
+      this.propertiesQuestions.forEach(property => {
+        var question = {
+          key: property.key,
+          value: property.value,
+          propType: 'QUESTION'
+        }
+        obj.push(question)
+      })
+      this.propertiesComments.forEach(property => {
+        var question = {
+          key: property.key,
+          value: property.value,
+          propType: 'PROPERTY'
+        }
+        obj.push(question)
+      })
+    }
+    this.deal.answers = answers;
+    this.deal.properties = obj;
+
+    if (!this.activeCRMDetails.showDealPipeline) {
+      this.deal.createdForPipelineId = this.activeCRMDetails.dealPipelineId;
+    }
+    if (!this.activeCRMDetails.showDealPipelineStage) {
+      this.deal.createdForPipelineStageId = this.activeCRMDetails.dealPipelineStageId;
+    }
+    if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
+      this.deal.pipelineId = this.deal.createdForPipelineId;
+      this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
+    }
+    else if (this.deal.createdByPipelineId > 0 && this.deal.createdByPipelineStageId > 0) {
+      this.deal.pipelineId = this.deal.createdByPipelineId;
+      this.deal.pipelineStageId = this.deal.createdByPipelineStageId;
+    }
+
+    this.dealsService.saveOrUpdateDeal(this.deal)
+      .subscribe(
+        data => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.referenceService.goToTop();
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.showLoadingButton = false;
+          this.deal.properties.forEach(p => p.isSaved = true);
+          if (data.statusCode == 200) {
+            this.notifySubmitSuccess.emit();
+            if(this.isThroughAddUrl){
+              this.referenceService.isCreated = true;
+              this.goBackToManageDeals();
+            }
+          } else if (data.statusCode == 500) {
+            this.customResponse = new CustomResponse('ERROR', data.message, true);
+          }
+        },
+        error => {
+          this.referenceService.goToTop();
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.showLoadingButton = false;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+        },
+        () => { }
+      );
+  }
+
+  validateQuestion(property: DealDynamicProperties) {
+    if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
+      property.validationStausKey = this.successClass;
+      property.error = false;
+    } else {
+      property.validationStausKey = this.errorClass;
+      property.error = true;
+    }
+
+    this.submitButtonStatus()
+  }
+
+  validateComment(property: DealDynamicProperties) {
+
+    if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
+      property.validationStausKey = this.successClass;
+      property.error = false;
+    } else {
+      property.validationStausKey = this.errorClass;
+      property.error = true;
+    }
+    this.submitButtonStatus()
+
+
+  }
+
+
+  validateField(fieldId: any, isFormElement: boolean) {
+    var errorClass = "form-group has-error has-feedback";
+    var successClass = "form-group has-success has-feedback";
+    if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
+      let fieldValue = $.trim($('#question_' + fieldId.id).val());
+      if (fieldValue.length > 0) {
+        fieldId.class = successClass;
+        fieldId.error = false;
+      } else {
+        fieldId.class = errorClass;
+        fieldId.error = true;
+      }
+    } else {
+      let fieldValue = $.trim($('#' + fieldId).val());
+      if (fieldId == "amount") {
+        fieldValue = fieldValue.replace('$', '').replace(',', '');
+        if (fieldValue.length > 0 && parseFloat(fieldValue) > 0) {
+          this.opportunityAmount = successClass;
+          this.opportunityAmountError = false;
+        } else {
+          this.opportunityAmount = errorClass;
+          this.opportunityAmountError = true;
+        }
+      }
+      if (fieldId == "estimatedCloseDate") {
+        let fieldValue = this.deal.closeDateString;
+        if (fieldValue.length > 0) {
+          this.estimatedCloseDate = successClass;
+          this.estimatedCloseDateError = false;
+        } else {
+          this.estimatedCloseDate = errorClass;
+          this.estimatedCloseDateError = true;
+        }
+      }
+      if (fieldId == "title") {
+        if (fieldValue.length > 0) {
+          this.title = successClass;
+          this.titleError = false;
+        } else {
+          this.title = errorClass;
+          this.titleError = true;
+        }
+
+      }
+      if (fieldId == "dealType") {
+        if (fieldValue.length > 0 && fieldValue != "Select Dealtype") {
+          this.dealType = successClass;
+          this.dealTypeError = false;
+        } else {
+          this.dealType = errorClass;
+          this.dealTypeError = true;
+        }
+
+      }
+      if (fieldId == "createdForCompanyId") {
+        if (fieldValue.length > 0 && fieldValue != "0") {
+          this.createdForCompanyId = successClass;
+          this.createdForCompanyIdError = false;
+        } else {
+          this.createdForCompanyId = errorClass;
+          this.createdForCompanyIdError = true;
+          this.pipelineId = errorClass;
+          this.pipelineIdError = true;
+          this.pipelineStageId = errorClass;
+          this.pipelineStageIdError = true;
+          this.createdForPipelineId = errorClass;
+          this.createdForPipelineIdError = true;
+          this.createdForPipelineStageId = errorClass;
+          this.createdForPipelineStageIdError = true;
+        }
+      }
+      if (fieldId == "createdByPipelineId") {
+        if (fieldValue.length > 0 && fieldValue != "0") {
+          this.pipelineId = successClass;
+          this.pipelineIdError = false;
+        } else {
+          this.pipelineId = errorClass;
+          this.pipelineIdError = true;
+          this.pipelineStageId = errorClass;
+          this.pipelineStageIdError = true;
+        }
+      }
+      if (fieldId == "createdForPipelineId") {
+        if (fieldValue.length > 0 && fieldValue != "0") {
+          this.createdForPipelineId = successClass;
+          this.createdForPipelineIdError = false;
+        } else {
+          this.createdForPipelineId = errorClass;
+          this.createdForPipelineIdError = true;
+          this.createdForPipelineStageId = errorClass;
+          this.createdForPipelineStageIdError = true;
+        }
+      }
+      if (fieldId == "createdByPipelineStageId") {
+        if (fieldValue.length > 0 && fieldValue != "0") {
+          this.pipelineStageId = successClass;
+          this.pipelineStageIdError = false;
+        } else {
+          this.pipelineStageId = errorClass;
+          this.pipelineStageIdError = true;
+        }
+      }
+      if (fieldId == "createdForPipelineStageId") {
+        if (fieldValue.length > 0 && fieldValue != "0") {
+          this.createdForPipelineStageId = successClass;
+          this.createdForPipelineStageIdError = false;
+        } else {
+          this.createdForPipelineStageId = errorClass;
+          this.createdForPipelineStageIdError = true;
+        }
+      }
+      if (this.activeCRMDetails!=undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
+        && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        if (fieldId == "opportunityTypeId") {
+          if (fieldValue.length > 0 && fieldValue != "0") {
+            this.opportunityTypeId = successClass;
+            this.opportunityTypeIdError = false;
+            if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
+              this.createdForPipelineStageIdError = false;
+              this.pipelineStageIdError = false;
+            } else {
+              this.createdForPipelineStageIdError = true;
+              this.pipelineStageIdError = true;
+            }
+            this.createdForPipelineIdError = false;
+          } else {
+            this.opportunityTypeId = errorClass;
+            this.opportunityTypeIdError = true;
+            this.createdForPipelineStageIdError = true;
+            this.pipelineStageIdError = false;
+          }
+        }
+      } else {
+        this.opportunityTypeId = successClass;
+        this.opportunityTypeIdError = false;
+      }
+      if (fieldId == "attachLead") {
+        if (this.deal.associatedLeadId > 0) {
+          this.attachLeadError = false;
+        } else {
+          this.attachLeadError = true;
+        }
+      }
+    }
+    this.setFieldErrorStates();
+  }
+
+
+  submitButtonStatus() {
+    let self = this;
+    if (this.showCustomForm) {
+      this.opportunityAmountError = false;
+      this.titleError = false;
+      this.estimatedCloseDateError = false;
+      this.dealTypeError = false;
+      this.properties.length = 0;
+      this.propertiesQuestions.length = 0;
+    }
+
+    if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
+      this.pipelineIdError = false;
+      this.pipelineStageIdError = false;
+    }
+    if (this.deal.haloPSATickettypeId > 0 && this.activeCRMDetails.createdForActiveCRMType == 'HALOPSA') {
+      this.opportunityTypeIdError = false;
+      if (this.actionType == 'add') {
+        this.pipelineStageIdError = false;
+        this.createdForPipelineStageIdError = false;
+      }
+    } else {
+      this.opportunityTypeIdError = false;
+    }
+
+    if (!this.opportunityAmountError && !this.estimatedCloseDateError
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError && !this.attachLeadError) {
+      let qCount = 0;
+      let cCount = 0;
+      this.propertiesQuestions.forEach(propery => {
+        if (propery.error) {
+          this.isDealRegistrationFormValid = false;
+          qCount++;
+        }
+      })
+      this.propertiesComments.forEach(propery => {
+        if (propery.error) {
+          this.isDealRegistrationFormValid = false;
+          cCount++;
+        }
+      })
+      if (qCount == 0 && cCount == 0)
+        this.isDealRegistrationFormValid = true;
+      else
+        this.isDealRegistrationFormValid = false;
+    } else {
+
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  setFieldErrorStates() {
+    /****************close Date *******************/
+    if (this.deal.closeDateString != null && this.deal.closeDateString.length > 0)
+      this.estimatedCloseDateError = false
+    else
+      this.estimatedCloseDateError = true;
+    /**************** Title *******************/
+    if (this.deal.title != null && $.trim(this.deal.title).length > 0)
+      this.titleError = false
+    else
+      this.titleError = true;
+    /**************** Amount *******************/
+    if (this.deal.amount != null
+      && parseFloat(this.deal.amount) > 0)
+      this.opportunityAmountError = false
+    else
+      this.opportunityAmountError = true;
+    /**************** DealType *******************/
+    if (this.deal.dealType != null && this.deal.dealType.length > 0
+      && this.deal.dealType != 'Select Dealtype')
+      this.dealTypeError = false
+    else
+      this.dealTypeError = true;
+    /**************** Created For Company *******************/
+    if (this.deal.createdForCompanyId != null && this.deal.createdForCompanyId > 0)
+      this.createdForCompanyIdError = false
+    else
+      this.createdForCompanyIdError = true;
+    /**************** Pipeline Id *******************/
+    if (this.deal.createdByPipelineId != null && this.deal.createdByPipelineId > 0)
+      this.pipelineIdError = false
+    else
+      this.pipelineIdError = true;
+    /**************** Pipeline Id *******************/
+    if ((this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0))
+      this.createdForPipelineIdError = false
+    else
+      this.createdForPipelineIdError = true;
+    /**************** Pipeline Stage Id *******************/
+    if (this.deal.createdByPipelineStageId != null && this.deal.createdByPipelineStageId > 0)
+      this.pipelineStageIdError = false
+    else
+      this.pipelineStageIdError = true;
+    /**************** Pipeline Stage Id *******************/
+    if ((this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0))
+      this.createdForPipelineStageIdError = false
+    else
+      this.createdForPipelineStageIdError = true;
+
+    /**************** Contact To Deal *********************/
+    if (this.isDealFromContact) {
+      if (this.deal.associatedLeadId > 0 || this.deal.associatedContactId > 0) 
+        this.attachLeadError = false;
+      else 
+        this.attachLeadError = true;
+    } else {
+      this.attachLeadError = false;
+    }
+
+    this.propertiesQuestions.forEach(property => {
+      this.validateQuestion(property);
+
+    })
+    this.propertiesComments.forEach(property => {
+      this.validateComment(property);
+    })
+
+    this.submitButtonStatus();
+  }
+
+  setSfFormFieldValues() {
+    if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
+      let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
+      if (formLabelDTOs.length !== 0) {
+        this.deal.amount = 0;
+        if (this.activeCRMDetails.createdForActiveCRMType === "XAMPLIFY") {
+          let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
+          for (let formLabel of sfDefaultFields) {
+            if (formLabel.labelId === "Name" || formLabel.labelId === "Deal_Name") {
+              this.deal.title = formLabel.value;
+            } else if (formLabel.labelId === "Description") {
+              this.deal.description = formLabel.value;
+            } else if (formLabel.labelId === "Type") {
+              this.deal.dealType = formLabel.value;
+            } else if (formLabel.labelId === "LeadSource") {
+              this.deal.leadSource = formLabel.value;
+            } else if (formLabel.labelId === "Amount" || formLabel.labelId === "amount") {
+              this.deal.amount = formLabel.value;
+            } else if (formLabel.labelId === "CloseDate" || formLabel.labelId === "Close_Date") {
+              this.deal.closeDateString = formLabel.value;
+            } else if (formLabel.labelId === "NextStep") {
+              this.deal.nextStep = formLabel.value;
+            } else if (formLabel.labelId === "Probability") {
+              this.deal.probability = formLabel.value;
+            } else if (formLabel.labelId === "StageName") {
+              this.deal.stage = formLabel.value;
+            }
+          }
+        }
+        let sfCustomFields = [];
+        if (this.activeCRMDetails.createdForActiveCRMType === "XAMPLIFY") {
+          sfCustomFields = formLabelDTOs;
+        } else {
+          sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+        }        
+        let sfCfDataList = [];
+        for (let formLabel of sfCustomFields) {
+          if (this.titleFields.includes(formLabel.labelId)) {
+            this.deal.title = formLabel.value;
+          } else if (this.amountFields.includes(formLabel.labelId)) {
+            this.deal.amount = formLabel.value;
+          } else if (this.closeDateFields.includes(formLabel.labelId)) {
+            this.deal.closeDateString = formLabel.value;
+          }
+          let sfCfData = new SfCustomFieldsDataDTO();
+          sfCfData.sfCfLabelId = formLabel.labelId;
+          if (formLabel.labelType === 'multiselect') {
+            if (formLabel.value != undefined && formLabel.value.length > 0) {
+              for (let option of formLabel.value) {
+                sfCfData.value = sfCfData.value + option.name + ";";
+              }
+              sfCfData.value = sfCfData.value.substring(0, sfCfData.value.length - 1);
+            }
+
+          } else if (formLabel.labelType === 'datetime') {
+            if (formLabel.value != undefined && formLabel.value.length > 0) {
+              sfCfData.value = formLabel.value;
+              sfCfData.type = formLabel.labelType;
+              const event = new Date(formLabel.value);
+              sfCfData.dateTimeIsoValue = event.toISOString();
+            }
+          } else if (formLabel.labelType === 'lookup') {
+            sfCfData.value = formLabel.value;
+            sfCfData.selectedChoiceValue = formLabel.selectedChoiceValue;
+          } else {
+            sfCfData.value = formLabel.value;
+          }
+          sfCfDataList.push(sfCfData);
+        }
+        this.deal.sfCustomFieldsDataDto = sfCfDataList;
+      }
+    }
+  }
+
+  addProperties() {
+    this.property = new DealDynamicProperties();
+    let length = this.propertiesComments.length;
+    length = length + 1;
+    var id = 'property-' + length;
+    this.property.divId = id;
+    this.property.propType = 'PROPERTY';
+    this.property.isSaved = false;
+    this.property.error = true;
+    this.propertiesComments.push(this.property);
+
+    this.submitButtonStatus()
+
+  }
+
+  isEven(n) {
+    if (n % 2 === 0) { return true; }
+    return false;
+  }
+
+  showAlert(i: number, question: DealDynamicProperties) {
+    if (question.isSaved) {
+      this.deleteComment(i, question);
+
+    } else {
+      this.remove(i, question.id);
+    }
+  }
+
+  // commentsection(property: DealDynamicProperties) {
+  //   property.isCommentSection = !property.isCommentSection;
+  //   property.unReadPropertyChatCount = 0;
+
+  // }
+
+  deleteComment(i: number, comment: DealDynamicProperties) {
+    try {
+      this.logger.info("Comment in sweetAlert() " + comment.id);
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#54a7e9',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
+
+      }).then(function (myData: any) {
+        console.log("deleteComment showAlert then()" + comment);
+        self.dealsService.deleteProperty(comment).subscribe(response => {
+          self.remove(i, comment.id)
+
+        }, error => this.logger.error(error, "DealComponent", "deleteComment()"))
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.logger.error(error, "DealComponent", "deleteCommentAlert()");
+    }
+  }
+
+  remove(i, id) {
+    if (id)
+      console.log(id)
+    var index = 1;
+
+    this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
+      .map(property => {
+        property.divId = 'property-' + index++;
+        return property;
+      });
+    this.submitButtonStatus()
+
+  }
+
+  getActiveCRMDetails() {
+    this.showCustomForm = false;
+    this.showDefaultForm = false;
+    this.leadsService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.activeCRMDetails = response.data;
+            /***Added By Sravan On 08/08/2024****/
+            this.setDealTitle();
+            if(!this.preview){
+              let showDealPipeline = this.activeCRMDetails['showDealPipeline'];
+              let showDealPipelineStage = this.activeCRMDetails['showDealPipelineStage'];
+              this.isDealForAndContactInfoDivCenterAligned = !showDealPipeline && !showDealPipelineStage && !this.preview 
+                && this.activeCRMDetails['dealFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
+            }
+            if (this.activeCRMDetails.hasCustomForm
+              && ("XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType)) {
+              this.showCustomForm = true;
+            } else {
+              this.showOpportunityTypes = false;
+              this.halopsaTicketTypeId = 0;
+              this.halopsaTicketTypes = [];
+              if (this.actionType === "add") {
+                this.deal.haloPSATickettypeId = 0;
+              }
+            }
+            if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled
+                && ((this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0) && (this.deal.associatedContactId == undefined || this.deal.associatedContactId == 0));
+            }
+          } else {
+            this.resetDealTitle();
+          }
+
+          if (("XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) 
+            && this.actionType === 'add') {
+            this.showAttachLead = false;
+            this.showAttachButton = true;
+          } else {
+            this.showAttachLead = true;
+            this.showAttachButton = false;
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          if (!this.showCustomForm) {
+            this.showDefaultForm = true;
+            this.activeCRMDetails.hasDealPipeline = false;
+            if (this.edit || this.preview) {
+              this.setProperties();
+            } else {
+              this.getQuestions();
+            }
+            this.getDealTypes();           
+          }   
+      
+        if (this.actionType === "edit") {
+            this.getActiveCRMPipelines();
+          }
+          if (this.actionType === "view") {
+            this.getDealPipelinesForView();
+          }
+          else if (this.actionType === "edit") {
+            this.getDealPipelines();
+          }
+          if (this.isZohoLeadAttachedWithoutSelectingDealFor) {
+            this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
+          }
+          this.setFieldErrorStates();
+          if (this.actionType === "add" && this.leadId > 0 && this.deal.createdForCompanyId > 0 && this.isVendorVersion) {
+            this.hideDealDetailsForSelfDeal = true;
+          } else if (this.actionType === "edit" && this.deal.createdForCompanyId > 0 && this.isVendorVersion) {
+            this.hideDealForInEditSelfDeal = true;
+          } else {
+            this.hideDealDetailsForSelfDeal = false;
+            this.hideDealForInEditSelfDeal = false;
+          }
+        });
+                    this.getActiveCRMPipelines();
+  }
+
+  getDealPipelines() {
+    let id = 0;
+    let self = this;
+    self.isLoading = true;
+    self.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, id, this.type, this.halopsaTicketTypeId)
+      .subscribe(
+        data => {
+          self.referenceService.loading(this.httpRequestLoader, false);
+          self.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;           
+          } else if (data.statusCode == 404) {
+            this.deal.createdForPipelineId = 0;
+            this.deal.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  getDealPipelinesForView() {
+    let campaignId = 0;
+    let self = this;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
+      campaignId = this.deal.campaignId;
+    }
+    this.dealsService.getDealPipelinesForView(this.dealId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+          } else if (data.statusCode == 404) {
+            this.deal.createdForPipelineId = 0;
+            this.deal.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  getActiveCRMPipelines() {
+    let self = this;
+    this.isLoading = true;
+    let haloPSATickettypeId = 0;
+    let type = "XAMPLIFY";
+    this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type, haloPSATickettypeId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelines: Array<any> = data.data;
+            self.pipelines = activeCRMPipelines;
+            self.createdForPipelines = activeCRMPipelines;
+            if (activeCRMPipelines.length === 1) {
+              let activeCRMPipeline = activeCRMPipelines[0];
+              self.deal.pipelineId = activeCRMPipeline.id;
+              self.deal.createdForPipelineId = activeCRMPipeline.id;
+              self.createdForStages = activeCRMPipeline.stages;
+              self.pipelineIdError = false;
+              self.stages = activeCRMPipeline.stages;
+              self.activeCRMDetails.hasDealPipeline = true;
+              this.holdActiveCRMPipelineId = activeCRMPipeline.id;
+            } else {
+              let dealPipelineExist = false;
+              for (let p of activeCRMPipelines) {
+                if (p.id == this.deal.pipelineId) {
+                  dealPipelineExist = true;
+                  self.stages = p.stages;
+                  break;
+                }
+              }
+              if (!dealPipelineExist) {
+                self.deal.pipelineId = 0;
+                self.deal.createdForPipelineId = 0;
+                self.deal.pipelineStageId = 0;
+                self.deal.createdForPipelineStageId = 0;
+                this.setFieldErrorStates();
+              }
+              self.hasCampaignPipeline = false;
+              self.activeCRMDetails.hasDealPipeline = false;
+            }
+          } else if (data.statusCode == 404) {
+            self.deal.pipelineId = 0;
+            self.stages = [];
+            self.getPipelines();
+            self.activeCRMDetails.hasDealPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+  handleCreatedByPipelines(createdByPipelines: any) {
+
+  }
+
+  handleCreatedForPipelines(createdForPipelines: any) {
+  
+  }
+  //
+  // isCollapsedcontact:boolean=true;
+  toggleDealpipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
+  }
+  toggleCollapsecontact(event: Event) {
+    event.preventDefault();
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+  toggleCollapsecampaignInfo(event: Event) {
+    event.preventDefault();
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+  toggleCollapsepipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed3 = !this.isCollapsed3;
+  }
+
+  addLead() {
+    this.showLeadForm = true;
+    this.leadId = 0;
+    this.dealToLead = new Object();
+    this.dealToLead.dealId = this.dealId;
+    this.dealToLead.leadActionType = "add";
+    this.dealToLead.dealActionType = this.actionType;
+    this.dealToLead.createdForCompanyId = this.deal.createdForCompanyId;
+    this.dealToLead.callingComponent = "DEAL";
+  }
+
+  closeLeadForm() {
+    this.showLeadForm = false;
+  }
+
+  leadSelected(leadId: any) {
+    this.showSelectLeadModel = false;
+    this.showAttachLeadButton = false;
+    this.showChangeLeadButton = true;
+    this.leadId = leadId;
+    this.attachLeadText = "Change Lead";
+    this.deAttachText = "Detach Lead";
+    this.showDetachLeadButton = true;
+    this.getLead(this.leadId);
+  }
+
+  leadCreated(leadId: any) {
+    this.showLeadForm = false;
+    this.leadId = leadId;
+    this.getLead(this.leadId);
+  }
+
+  openSelectLeadModel() {
+    this.showSelectLeadModel = true;
+    this.dealToLead = new Object();
+    this.dealToLead.dealId = this.dealId;
+    this.dealToLead.leadId = this.leadId;
+    this.dealToLead.leadActionType = "add";
+    this.dealToLead.dealActionType = this.actionType;
+    this.dealToLead.createdForCompanyId = this.deal.createdForCompanyId;
+    this.dealToLead.callingComponent = "DEAL";
+    this.dealToLead.isOrgAdmin = this.isOrgAdmin;
+    this.dealToLead.isVendorVersion = this.isVendorVersion;
+  }
+
+
+  closeSelectLeadModel() {
+    this.showSelectLeadModel = false;
+  }
+
+  holdTicketTypeId: any;
+  /*** XNFR-476 ***/
+  resetAttachedLeadInfo() {
+    this.showContactInfoForLead = false;
+    this.showContactDetails = false;
+    this.showContactInfo = false;
+    this.showAttachLeadButton = true;
+    this.showChangeLeadButton = false;
+    this.showChangeContactButton = false;
+    this.deal.associatedLeadId = 0;
+    this.showChangeLeadAndContactButton = false;
+    this.attachLeadText = 'Attach a Lead';
+    this.contactInfo = ''
+    this.showDetachLeadButton = false;
+    this.deal.campaignId = 0;
+    this.deal.campaignName = '';
+    this.leadId = 0;
+    this.contactId = 0
+    this.isZohoLeadAttached = false;
+    this.deal.associatedContactId = 0;
+    this.isZohoLeadAttachedWithoutSelectingDealFor = false;
+    this.vendorCompanyName = '';
+    if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
+      this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
+      if (this.deal.createdForCompanyId == 0) {
+        this.resetPipelines();
+        this.resetStages();
+        this.isDealRegistrationFormValid = false;
+        this.showOpportunityTypes = false;
+        this.pipelines = [];
+        this.createdForPipelines = [];
+        this.stages = [];
+        this.createdForStages = [];
+        this.isCreatedForStageIdDisable = false
+        this.activeCRMDetails.showDealPipeline = false;
+        this.activeCRMDetails.sshowDealPipelineStage = false;
+        this.showCustomForm = false;
+        this.showDefaultForm = false;
+        this.showAttachButton = false;
+        this.showAttachLead = true;
+      }
+  }
+}
+
+  getHaloPSATicketTypes(companyId:number, integrationType: string) {
+  
+  }
+
+  onChangeTicketType() {
+    // this.showCustomForm = true;
+    this.getDealPipelines();
+  }
+
+  copyReferenceId(inputElement: any) {
+    inputElement.select();
+    $('#copy-reference-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-reference-id').show(500);
+    this.isCopiedToClipboard = true;
+  }
+
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCRMIdCopiedToClipboard = true;
+  }
+
+  getConvertMappingLayout(layoutId:string) {
+  
+  }
+
+  getFilteredVendorList(){
+   
+  }
+
+  goBackToManageDeals() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.manageDeals;
+    this.referenceService.goToRouter(url);
+  }
+
+  setDealTitle() {
+    if (this.actionType === "add") {
+      let dealTitle = this.activeCRMDetails.dealTitle;
+      if (dealTitle != undefined) {
+        this.dealFormTitle = dealTitle;
+      } else {
+        this.dealFormTitle = "";
+      }
+    }
+  }
+
+  resetDealTitle() {
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+  }
+
+
+  /**XNFR-553**/
+  goBackToContactDetailsAllLeadsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    let url = RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage;
+    url += this.isFromEditContacts ? '' : '/all';
+    this.referenceService.goToRouter(url);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
+  }
+
+  goBackToContactDetailsPage() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
+    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
+       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+    } else if ((this.isCompanyJourney || this.isFromCompanyJourney) && this.selectedContact.userListId == undefined) {
+      this.referenceService.goToRouter('home/company/manage/details/'+encodeUserId);
+    } else if (this.isFromCompanyJourney && this.selectedContact.userListId != undefined) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
+      this.referenceService.goToRouter(url);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+			let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+			let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'ce/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
+			this.referenceService.goToRouter(url);
+    } else {
+      let url = RouterUrlConstants.home+RouterUrlConstants.contacts;
+      url += this.isFromEditContacts ? RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId : RouterUrlConstants.manage+'/'+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId;
+      this.referenceService.goToRouter(url);
+    }
+  }
+
+  checkIfHasAcessForAddDeal() {
+    this.ngxloading = true;
+    this.isLoading = true;
+    this.leadsService.checkIfHasAcessForAddLeadOrDeal(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          let hasAuthorization = result.data;
+          if (hasAuthorization) {
+            this.setDeafultValuesForDeal();
+          } else {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.httpRequestLoader.isServerError = true;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+        },
+        () => { }
+      );
+  }
+
+  goBackToCompanyJourney() {
+    let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+    let url = "home/company/manage/details/" + encodedId;
+    this.referenceService.goToRouter(url);
+  }
+
+  //XNFR-869
+  openSelectContactModel() {
+    if (this.isDealFromContact) {
+      this.attachContactFromContactJourney();
+    } else {
+      this.showSelectContactModel = true;
+      this.contactInfo = '';
+      this.attachContact = new Object();
+      this.attachContact.dealId = this.dealId;
+      this.attachContact.contactId = this.contactId;
+      this.attachContact.dealActionType = this.actionType;
+      this.attachContact.callingComponent = "DEAL";
+      this.attachContact.isOrgAdmin = this.isOrgAdmin;
+      this.attachContact.isVendorVersion = this.isVendorVersion;
+    }
+  }
+
+  attachContactFromContactJourney() {
+    this.contactId = this.selectedContact.userUserListId;
+    const obj = {
+      'contact': this.selectedContact
+    };
+    this.showDetachLeadButton = true;
+    this.showAttachLeadButton = false;
+    this.deAttachText = "Detach Contact";
+    this.frameContactDetails(obj);
+    this.setFieldErrorStates();
+  }
+
+  closeSelectContactModel() {
+    this.showSelectContactModel = false;
+  }
+
+  contactSelected(event: any) {
+    this.showSelectContactModel = false;
+    this.contactId = event.showSelectedContact;
+    this.showDetachLeadButton = true;
+    this.showChangeContactButton = true;
+    this.showAttachLeadButton = false;
+    this.attachLeadText = "Change Contact";
+    this.deAttachText = "Detach Contact"
+    this.frameContactDetails(event);
+  }
+
+
+  frameContactDetails(event: any) {
+    let self = this;
+    self.showContactInfo = true;
+    self.showContactDetails = true;
+    self.contactInfo = event.contact;
+    self.contact.firstName = self.contactInfo.firstName;
+    self.contact.lastName = self.contactInfo.lastName;
+    self.contact.emailId = self.contactInfo.emailId;
+    self.deal.associatedContactId = self.contactId;
+  }
+
+  openSelectModelByAttachType() {
+    if (this.showChangeContactButton) {
+      this.openSelectContactModel();
+    } else {
+      this.openSelectLeadModel();
+    }
+  }
+
+}
+
+

@@ -1,0 +1,12 @@
+.red {
+    background-color: #efc1c1;
+}
+.green {
+    background-color: #c5f0c5;
+}
+table tr#uploaded-csv-tr.alert-success {
+    background-color: #dff0d8 !important;
+}
+table tr#uploaded-csv-tr.alert-danger {
+    background-color: #f2dede !important;
+}

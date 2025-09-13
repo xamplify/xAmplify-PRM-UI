@@ -1,0 +1,85 @@
+.float-right {
+  float: right;
+}
+#border-bottom {
+  border-bottom: 0;
+}
+#search-div {
+  margin-right: 10px;
+}
+#icon {
+  position: relative;
+  right: -11px;
+}
+#sort-text {
+  height: 34px;
+}
+#left {
+  float: left;
+}
+#select-dropdown {
+  position: relative;
+  right: -3px;
+}
+.form-error .control-label {
+  color: red;
+}
+.form-error .form-control {
+  border-color: red;
+  box-shadow: none;
+}
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.text-area-css {
+  float: right;
+  font-size: 11px;
+  position: relative;
+  left: -4px;
+  color: #7b8894;
+  bottom: 23px;
+}
+.custom-fieldset-unsubscribe-reason {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+legend {
+  display: block;
+  width: auto;
+  padding: 0 10px;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #00a6e8;
+  border: 0;
+  text-align: left;
+  border-bottom: none;
+}
+.shfw {
+  font-weight: 600 !important;
+}
+/* 6-6-2023 sudha sri */
+#border-bottom-none {
+  border-bottom: none !important;
+}
+.table > thead:first-child > tr:first-child > th {
+  border-top: 0 !important;
+}
+/* 12/06/23 */
+.custom-popup-width {
+  width: 85% !important;
+}
+.popup-align {
+  position: relative !important;
+  float: right;
+}
+@media screen and (max-width:578px){
+  .btn-width{
+    padding: 7px 6px!important;
+  }
+    .mr2{
+     margin-right: 2px;
+    }
+  }

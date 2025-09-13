@@ -1,0 +1,56 @@
+@media only screen and (min-width:768px) and (max-width:1135px) { 
+    .modal-dialog {
+      width: 70% !important;
+  }
+  }
+  span.FieldName {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 3px;
+  }
+  .textDecoration{list-style-type: none;list-style-type: none;padding: 0px;margin: 0px;}
+  ul.textDecoration li {
+    display: inline;
+    /* float: left; */
+    /* width: 33%; */
+    padding-right: 10px;
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* padding: 10px; */
+  }
+  .left-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .right-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  ul.drag-menu-cu li:hover { background-color: #eeeeee;opacity: 0.5; cursor: pointer;color: #fff;}
+.drag-menu-cu li { margin-bottom: 2px;}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.cursor-move {
+    cursor: move !important;
+}
+.non-draggable {
+  opacity: 0.5; /* Makes non-draggable items appear faded */
+  cursor: not-allowed !important;
+}
+/* .non-draggable {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+} */

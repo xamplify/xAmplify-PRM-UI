@@ -1,0 +1,251 @@
+<style>.selectedtype{ background:#00a6e8;}</style>
+ <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+   <div>
+     <div class="page-bar mPageBar">
+       <ul class="page-breadcrumb">
+         <li *ngIf="!authenticationService.isSuperAdmin()">
+           <i class="fa fa-home" aria-hidden="true"></i> 
+           <a (click)="gotoHome()" translate>Home</a>
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+           </li>
+         <li *ngIf="authenticationService.isSuperAdmin()">
+           <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+         <li><a (click)="backToManageVideos()" translate>Manage Videos</a> </li>
+         <li *ngIf="editVideo" class="breadcrumb-font-color" style="color: #888;" translate><i class="fa fa-angle-right" aria-hidden="true"></i>Edit Video </li>
+         <li *ngIf="playVideo" class="breadcrumb-font-color" style="color: #888;" translate><i class="fa fa-angle-right" aria-hidden="true"></i>Play Videos </li>
+         <li *ngIf="campaignReport" class="breadcrumb-font-color" style="color: #888;" translate><i class="fa fa-angle-right" aria-hidden="true"></i>Reports - video statistics</li>
+       </ul>
+     </div>
+   </div>
+   <div>
+     <div class="row" *ngIf="manageVideos">
+       <div class="col-xs-12" style="position: relative;top: -9px;" >
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+       </div>
+         <div class="col-xs-12 col-sm-12 col-md-12">
+         <div class="tabbable tabbable-custom tabbable-noborder" style="background: white">
+           <div class="tab-content" style="min-height: 715px;">
+             <div class="tab-pane active">
+               <div class="page-toolbar">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 p0" [ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
+                   <div class="inputs" align="right">
+                     <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3 mList">
+                       <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
+                          <option  [value]="0" translate>All Categories</option>
+                          <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
+                       </select>
+                     </div>
+                     <div class="col-xs-12 col-sm-6 col-md-3"></div>
+                     <div class="col-xs-6 col-sm-3 col-md-3 p0 flex mSort">
+                       <ng-container class='m10'>
+                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         <span class="btn btn-xs hidden-xs l-g-view m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                       </ng-container>
+
+                       <select class="form-control ml5 SeclectBoxPaddingsAbj" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
+                         <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+                       </select>
+                     </div>
+                     <div class="col-xs-6 col-sm-3 col-md-3 col-md-3 mSearch" style="padding-right:0">
+                       <div class="input-icon right mSrchWdth" style="cursor:pointer">
+                          <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode)">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchVideoTitelName()"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchVideoTitelName()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()">
+                   <ul class="mix-filter">
+                   
+                      <li class="filter" (click)="getVideoTypes('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
+                          My Videos
+                      </li>
+
+                      <li class="filter" (click)="getVideoTypes('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                        {{authenticationService?.partnerModule?.customName}} Videos
+                    </li>
+                    
+                    </ul>
+                   
+                  </div>
+                 </div>
+               </div>
+               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
+               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
+                 <div class="margin-top-10 row">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
+                   <div *ngIf="pagination.pagedItems.length == 0" class="col-md-9 alert alert-info alert-dismissable alert-custom-change">
+                     <a class="close" data-dismiss="alert" aria-label="close"></a>
+                     <p translate>No results found</p>
+                   </div>
+                 </div>
+                 <section [hidden]="!isListView">
+                 <div class="table-responsive" style="overflow-x: inherit; padding:15px;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
+                   <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0" aria-describedby="">
+                     <thead>
+                       <tr class="">
+                         <th scope="col" colspan="1" style="width:50%" translate>Videos</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Category</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Upload Date</th>
+                         <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType!='partnerVideos'">
+                          <span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
+                          <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType=='partnerVideos'">
+                          </th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                        <td>
+                        <app-video-thumbnail class="pull-left" [videoFile]="videoFile" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+                        </td>
+                         <td class="text-center hidden-xs">
+                           <span *ngIf="videoFile.viewBy!='DRAFT'">{{videoFile.categoryName | translate}}</span>
+                           <span *ngIf="videoFile.viewBy==='DRAFT'" translate>None</span>
+                         </td>
+                         <td class="text-center hidden-xs" >
+                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+                         </td>
+                         <td *ngIf="!authenticationService.isSuperAdmin()">
+                           <div class="actions-block override-actions mActionAlign" *ngIf="videoFileService.videoType==='myVideos'" style="display: flex;">
+                            <div> 
+                            <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
+                               (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit">
+                                <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+                             </a>
+                             <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
+                                
+                              <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+                                  <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                </a>
+
+                                <a class="disable" *ngIf="videoFile.viewBy=='DRAFT' && videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+                                  <i class="fa fa-bullhorn" aria-hidden="true" ></i>
+                                </a>
+                                <a class="disable" *ngIf="!videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+                                    <i class="fa fa-bullhorn" aria-hidden="true" ></i>
+                                  </a>
+                              </ng-container>
+                            </div>
+                              <ng-container *ngIf="videoFile.processed">
+                             <a (click)="showCampaignVideoReport(videoFile)" data-toggle="tooltip" data-placement="top" *ngIf="videoFile.viewBy!=='DRAFT'" [title]="actionsDescription.video_report">
+                               <i class="fa fa-line-chart" aria-hidden="true" ></i>
+                             </a>
+                             <a class="disable" *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+                               <i class="fa fa-line-chart" aria-hidden="true" ></i>
+                             </a>
+                             <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_delete" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
+                               <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                             </a>
+                             </ng-container>
+                             <ng-container *ngIf="!videoFile.processed">
+                                  <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+                                    <i class="fa fa-line-chart" aria-hidden="true" ></i>
+                                  </a>
+                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailable for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier">
+                                    <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                  </a>
+                              </ng-container>
+                            </div>
+                         </td>
+                       </tr>
+                     </tbody>
+                   </table>
+                   </div>
+                 </section>
+                 <section [hidden]="isListView">
+                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo" (mouseenter) ="mouseEnter(videoFile)" (mouseleave) ="mouseLeave(videoFile)">
+                   <div class="video-thumbnail-wrapper">
+                     <img alt="" *ngIf="authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
+                       <i *ngIf="authenticationService.isSuperAdmin()" class="fa fa-play-circle" aria-hidden="true" ></i>
+                       <img alt="" *ngIf="!authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" (click)="showPlayVideoEvent(videoFile)" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
+                       <i *ngIf="!authenticationService.isSuperAdmin()" class="fa fa-play-circle" (click)="showPlayVideoEvent(videoFile)" aria-hidden="true"></i>
+                       <span class="views-count" title="views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;{{videoFile.views}}</span>
+                       <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+                   </div>
+                      <span class="ellipsis video-title" data-toggle="tooltip" data-placement="top" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
+                      <span *ngIf="!authenticationService.isOnlyPartner()">
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'" data-toggle="tooltip" data-placement="top" title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" data-toggle="tooltip" data-placement="top" title="Uploaded By">By
+                         <span *ngIf="videoFile.companyName" >{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
+                      </span>
+                    </span>
+                      <span *ngIf="authenticationService.isOnlyPartner()">
+                          <span style="float: left;">By {{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                      </span>
+                      <span class="video-upload-date"  title="Uploaded Date">
+                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+                      </span>
+                   <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
+                     <span style="margin: 0px -7px; font-size: 17px; color: white;">
+                       <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>
+                     </span>
+                   </div>
+                   <div class="ribbon" >
+                     <span *ngIf="videoFile.viewBy==='DRAFT'">{{videoFile.viewBy}}</span>
+                   </div>
+                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
+                     <div >
+                      <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
+                        <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
+                          (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                        <span *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
+                            <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(videoFile)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_campaign}}">
+                             <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                             </a>
+                            <a class="disable" *ngIf="videoFile.viewBy=='DRAFT' && videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+                            <i class="fa fa-bullhorn" aria-hidden="true" ></i>
+                             </a>
+                             <a *ngIf="!videoFile.processed && authenticationService?.module?.showCampaignOptionInManageVideos" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                            </a>
+                        </span>
+                        <a  class="disable" *ngIf="videoFile.viewBy=='DRAFT' && videoFile.processed"data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+                          <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="videoFile.viewBy!=='DRAFT' && videoFile.processed" data-toggle="tooltip" data-placement="top" (click)="showCampaignVideoReport(videoFile)"[title]="actionsDescription.video_report">
+                          <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="!videoFile.processed" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          </a>
+                      </ng-container>
+                        <ng-container *ngIf="videoFileService.videoType==='myVideos'">
+                          <a *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && videoFile.processed" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
+                          data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_delete}}">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </a>
+                          <a class="disable" *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !videoFile.processed"
+                          data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
+                            <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                          </a>
+                        </ng-container>
+                     </div>
+                   </div>
+                 </div>
+                 </div>
+                 </section>
+               </div>
+             </div>
+             <div class="clearfix"></div>
+           <div [hidden]="httpRequestLoader.isLoading" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
+            <app-pagination [pagination]="pagination" [type]="'managaVideos'" class="pg8"
+             (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
+            </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <app-scroll-top></app-scroll-top>
+  </div>

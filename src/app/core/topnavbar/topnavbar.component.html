@@ -1,0 +1,327 @@
+<ng-container *ngIf="!refService.loaderFromAdmin">
+   <ngx-loading [show]="authenticationService?.module?.topNavBarLoader"
+      [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="team-member-login-btn" *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember">
+         <div class="team-member-login-alert team-member-login-info">
+            <strong>
+               <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
+               <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId}}
+                 <!-- <span *ngIf="loggedInAsUserEmailId?.length>25">...</span> -->
+               </strong>
+             </strong>
+             <app-login-as-partner [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember"
+             [showLoginAsButton]="false"></app-login-as-partner>
+         </div>
+      </div>
+      <div class="team-member-login-btn" *ngIf="isLoggedInFromAdminSection">
+         <div class="team-member-login-alert team-member-login-info">
+            <strong (click)="goBackToAdminPanel()">
+               <span>Go back to admin panel</span>
+            </strong>
+            <button (click)="goBackToAdminPanel()"
+               class="btn-danger btn-xs margin-left-one-per IconsidesCu xAmplify-btn-danger" data-toggle="tooltip"
+               data-placement="bottom" title="Go back to admin panel" translate>
+               <i class="fa fa-power-off" aria-hidden="true"></i>
+            </button>
+         </div>
+      </div>
+   <div class="page-header navbar navbar-fixed-top zero-padding" style="top: unset;">
+      <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
+       margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
+      </ng2-slim-loading-bar>
+      <!-- BEGIN HEADER INNER -->
+      <div class="page-header-inner" [ngClass]="{'scrolled': isScrolled}">
+         <div *ngIf="refService?.newVersionDeployed" class="alert alert-info">
+            <strong>New Update Is Available.Please refresh your browser to see new changes</strong>
+         </div>
+         <!-- BEGIN LOGO -->
+         <div class="page-logo pttpx" *ngIf="!authenticationService?.isSuperAdmin()">
+            <div
+               [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
+               <img class="cls-pointer" [routerLink]="['/home/dashboard/default']"
+                  *ngIf="!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo"
+                  [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt=""
+                  onerror="this.src='assets/images/xamplify-logo.png';" />
+               <img class="cls-pointer" [routerLink]="['/home/dashboard/default']"
+                  *ngIf="authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo"
+                  [src]="authenticationService.v_companyLogoImagePath" alt=""
+                  onerror="this.src='assets/images/xamplify-logo.png';" />
+            </div>
+            <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed"
+               *ngIf="authenticationService.user.hasCompany">
+               <i class="fa fa-bars" style="font-size: 21px;" aria-hidden="true"></i>
+            </div>
+         </div>
+         <!-- END LOGO -->
+         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+         <a class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+         </a>
+         <!-- END PAGE ACTIONS -->
+         <!-- BEGIN PAGE TOP -->
+         <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
+            <div class="top-menu tab_navbar">
+               <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
+                  <li class="topnav-button-css" style="margin-right: 0px;">
+                     <app-universal-search-bar *ngIf="!helpGuidesUrl && authenticationService?.user?.hasCompany && userId!=1"></app-universal-search-bar>
+                  </li>
+                  <!---XNFR-222-->
+                  <!-- <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
+                     <div class="alert alert-info LogedAsBox" style="position: relative;bottom: 5px;">
+                        <strong>
+                           <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
+                           <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
+                              <span *ngIf="loggedInAsUserEmailId?.length>25">...</span>
+                           </strong>
+                           <app-login-as-partner [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember"
+                              [showLoginAsButton]="false"></app-login-as-partner>
+                        </strong>
+                     </div>
+                  </li> -->
+                  <!---XNFR-222-->
+                  <!-- <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
+                     <button class="btn btn-primary" (click)="goBackToAdminPanel()">
+                        <span class="hidden-xs">Go back to admin panel</span>
+                        <i class="fa fa-power-off" aria-hidden="true"></i>
+                     </button>
+                  </li> -->
+                  <!--Invite A Vendor For Normal Login-->
+                  <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
+                     <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
+                  </li>
+                   <!--Invite A Vendor For Vanity Login-->
+                  <li *ngIf="authenticationService?.vanityURLEnabled && isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
+                     <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
+                  </li>
+                  <li class="btnShare" class="topnav-button-css"
+                     *ngIf="(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember))) &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+                     <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
+                        [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
+                        <span class="hidden-xs hidden-tabview hidden-sm hidden-md" translate>Update Status <sup>(Beta)</sup></span>
+                        <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
+                           data-toggle="tooltip" aria-hidden="true"></i>
+                     </button>
+                  </li>
+                  <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar"
+                     *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && userId!=1">
+                     <a class="dropdown-toggle circlebg-color-bell-v bell_icon" data-toggle="dropdown"
+                        data-hover="dropdown" data-close-others="true">
+                        <i class="icon-bell" aria-hidden="true"></i>
+                        <div class="clickicons"></div>
+                     </a>
+                     <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default count_align"
+                        style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
+                     <ul class="dropdown-menu mb_notify">
+                        <li class="external">
+                           <h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications
+                           </h3>
+                        </li>
+                        <li class="divider"></li>
+                        <li id="logoutButton" style="text-align:center;"><a
+                              routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
+                     </ul>
+                  </li>
+                  <!-- END TODO DROPDOWN -->
+                  <!-- BEGIN USER LOGIN DROPDOWN -->
+                  <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                  <li class="dropdown dropdown-user top-menu-bar" id="headerdropDownLi">
+                     <a class="dropdown-toggle circlebg-none-v" data-toggle="dropdown" data-hover="dropdown"
+                        data-close-others="true">
+                        <img alt="" class="img-circle" src="{{model.profilePicutrePath}}"
+                           (error)="errorHandler($event)" />
+                        <span class="username username-hide-on-mobile">
+                           {{model.displayName | slice:0:7}}<span *ngIf="model.displayName?.length>7">..</span></span>
+                        <i class="fa fa-angle-down"></i>
+                     </a>
+                     <ul class="dropdown-menu dropdown-menu-default mb_profiles">
+                        <li
+                           *ngIf="userId!=1 && ((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner)">
+                           <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
+                              <i class="icon-user"></i>
+                              My Profile
+                           </a>
+                           <div class="border-bt"></div>
+                        </li>
+                        <li
+                           *ngIf="(!isOnlyUser && !isSuperAdmin) || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                           <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"
+                              translate> <i class="fa fa-building-o"></i> Company Profile
+                           </a>
+                           <div class="border-bt"></div>
+                        </li>
+
+
+                        <ng-container
+                           *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
+                           <ng-container *ngFor="let dashboardType of dashboardTypes">
+                              <li (click)="navigateToDashboardType(dashboardType)">
+                                 <a>
+                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                    <ng-container *ngIf="dashboardType=='Welcome'" translate>
+                                       <span translate>Welcome</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="dashboardType!='Welcome'">
+                                       {{dashboardType | translate}}
+                                    </ng-container>
+                                 </a>
+                                 <div class="border-bt"></div>
+                              </li>
+                           </ng-container>
+                        </ng-container>
+                        <!-- Guides Help Icon-->
+                        <li
+                           *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
+                           <a href="{{guideHomeUrl}}" target="_blank" translate>
+                              <i class="fa fa-question-circle-o" style="font-size: 15px;"
+                                 aria-hidden="true"></i>&nbsp;Help
+                           </a>
+                           <div class="border-bt"></div>
+                        </li>
+                        <!-- My Vendors XNFR-698-->
+                        <li *ngIf="myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                           <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
+                        </li>
+                        <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                           <a (click)="goToRouter('/home/dashboard/vendors')">
+                              <i class="fa fa-users" aria-hidden="true"></i><span translate>My Vendors</span> ({{vendorCount}})</a>
+                           <div class="border-bt"></div>
+                        </li>
+                        <!--XBI-1917-->
+                        <ng-container
+                           *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection && authenticationService?.user?.hasCompany">
+                           <!--Register Leads-->
+                           <li>
+                              <a (click)="navigateAndOpenAddLeadsModalPopUp()">
+                                 <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                 {{LEAD_CONSTANTS?.registerLeads | translate}}
+                              </a>
+                              <div class="border-bt"></div>
+                           </li>
+                           <!--Register Deals-->
+                           <li *ngIf="isRegisterDealEnabled">
+                              <a (click)=" navigateAndOpenAddDealsModalPopUp()">
+                                 <i class="fa fa-tags" aria-hidden="true"></i>
+                                 {{DEAL_CONSTANTS?.registerDeals | translate}}
+                              </a>
+                              <div class="border-bt"></div>
+                           </li>
+                        </ng-container>
+                        <!-- <li class="divider"></li> -->
+                        <li class="divider-bottom"></li>
+                        <li id="logoutButton" (click)="logout()">
+                           <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+                  <!-- END USER LOGIN DROPDOWN -->
+                  <!-- BEGIN USER LOGIN DROPDOWN -->
+                  <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                  <!-- END USER LOGIN DROPDOWN -->
+                  <li class="dropdown dropdown-user top-menu-bar" *ngIf="userId!=1">
+                     <a class="dropdown-toggle circlebg-color-bell-v bell_icon" data-toggle="dropdown"
+                        data-hover="dropdown" data-close-others="true">
+                        <span class="pre-lang"
+                           style="text-transform: uppercase;">{{authenticationService.userPreferredLanguage}}</span>
+                        <!-- <i class="fa fa-angle-down"></i> -->
+                        <div class="clickicons"></div>
+                     </a>
+                     <ul class="dropdown-menu dropdown-menu-default mb_lang">
+                        <li *ngFor="let language of authenticationService.allLanguagesList">
+                           <a (click)="selectedLanguage(language.id)"> {{language.name}}
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </div>
+            <!-- END TOP NAVIGATION MENU -->
+         </div>
+         <!-- END PAGE TOP -->
+      </div>
+      <!-- END HEADER INNER -->
+   </div>
+   <!-- END HEADER -->
+   <div class="clearfix"></div>
+   <!--Requesting vendor modal-->
+   <div class="modal fade right" id="requestForVendor" role="dialog" aria-labelledby="myModalLabel"
+      data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+         <div class="my-container">
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         </div>
+         <div class="modal-content">
+            <div class="modal-header">
+               <a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i
+                     class="fa fa-times"></i></a>
+               <h4 class="modal-title left" id="myModalLabel">{{properties?.inviteAVendorToJoinxAmplify}}</h4>
+            </div>
+            <div class="modal-body">
+               <div *ngIf="!isValidationMessage">
+                  <div *ngIf="isError" class="alert alert-danger alert-dismissible left">
+                     <a (click)="isError = false" class="close" data-dismiss="alert" aria-label="close"></a>
+                     Please complete the required fields.
+                  </div>
+                  <div class="form-group">
+                     <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+                     <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel"
+                        [errorMessages]="errorMessages" [validators]="validators"
+                        [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
+                        [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+                        [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
+                        [onTextChangeDebounce]="40" required>
+                     </tag-input>
+                  </div>
+                  <div class="form-group">
+                     <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+                     <input type="text" id="subjectLine" [(ngModel)]="vendoorInvitation.subject"
+                        (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}"
+                        placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
+                  </div>
+                  <div class="form-group" *ngIf="isShowCKeditor">
+                     <label for="subjectLine">Message <span class="text-danger">*</span></label>
+                     <ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}"
+                        (input)="validateVendoorInvitation()" [config]="ckeConfig"></ckeditor>
+                  </div>
+               </div>
+               <div *ngIf="isValidationMessage">
+                  <div *ngIf="customResponse.responseType != null">
+                     <div class="alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+                         'alert-danger': customResponse.responseType == 'ERROR',
+                         'alert-info': customResponse.responseType == 'INFO'}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                           (click)="customResponse.responseType = null; closeInvitationModal()">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 style="padding-top: 6px;">
+                           <span class="text" id='responseMessage' [innerHTML]="customResponse.responseMessage"></span>
+                        </h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
+               <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInvitationModal()"
+                  data-dismiss="modal">Cancel</button>
+               <button type="submit" class="button bgcolor-unset" [disabled]="emailIds.length ==0"
+                  (click)="sendRequestForVendorEmail()"><span
+                     class="btn Btn-Green transition txt_pd-top3">Send</span></button>
+            </div>
+         </div>
+      </div>
+   </div>
+</ng-container>
+
+<ng-template #referVendorTemplate>
+   <div class="btn-group refer-vendor-button btnVendor">
+      <button [ngClass]="authenticationService?.isTop?'customskin':''"
+         (click)="openRequestAsVendorModal()" class="invite_vendor_radius"
+         style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor}}</button>
+      <button [ngClass]="authenticationService?.isTop?'customskin':''"
+         [routerLink]="['/home/dashboard/vendor-request']" class="analytics_icon_radius"
+         style="border-radius: 0px 7px 7px 0px;">
+         <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"
+            data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
+   </div>
+</ng-template>

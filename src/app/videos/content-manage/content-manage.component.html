@@ -1,0 +1,243 @@
+<div class="page-content"
+	[class.ml0]="authenticationService.isSuperAdmin()">
+	<div>
+		<div class="page-bar mPageBar">
+			<ul class="page-breadcrumb">
+				<li *ngIf="!authenticationService.isSuperAdmin()">
+					<i class="fa fa-home" aria-hidden="true"></i>
+					 <a	[routerLink]="referenceService.homeRouter" translate>Home</a>
+					<i	class="fa fa-angle-right" aria-hidden="true"></i></li>
+					<li *ngIf="!authenticationService.isSuperAdmin()">
+						<a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</li>
+        	     <li *ngIf="authenticationService.isSuperAdmin()">
+					<i	class="fa fa-home" aria-hidden="true"></i>
+					<a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+					<i class="fa fa-angle-right" aria-hidden="true"></i>
+				</li>
+				<li><a translate>Manage content</a></li>
+			</ul>
+			<a class="close-circle" title="Refresh" id="custom-align-padding" [routerLink]="['/home/content/manage']"><i class="fa fa-refresh" aria-hidden="true"></i></a>	
+		</div>
+	</div>
+	<div>
+		<div class="row">
+			<div class="col-xs-12 pg8">
+				<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12" *ngIf="!isPreviewed ">
+				<div class="tabbable tabbable-custom tabbable-noborder"
+					style="background: white">
+					<div class="tab-content" style="min-height: 715px;">
+						<div class="tab-pane active m10">
+							<div class="page-toolbar">
+								<div *ngIf="!httpRequestLoader.isLoading"	class="btn-group pull-right col-xs-12 col-sm-12 col-md-12 p0"
+									[ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
+									<div class="inputs" align="right">
+										<div class="col-xs-3 col-sm-3 col-md-3 p0">
+											<button type="button" class="btn btn-danger" style="float:left"	*ngIf="selectedFileIds?.length>1" (click)="delete()" translate>Delete</button>
+										</div>
+										<div class='col-xs-0 col-sm-3 col-md-3'	style="z-index: 99;">
+												<span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+												<span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                    					</div>
+										<div class="col-sm-3 col-md-3 col-xs-12 p0 mSort">
+										<select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+										<ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
+										</ng-container>
+										</select>
+									</div>
+									<div class="col-sm-3 col-md-3 col-xs-12 mcss pointer">
+										<input class="form-control" type="text" name="search" placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
+										<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchTitle" (click)="searchTitle=''"></button>
+										<button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search" aria-hidden="true"></i></button>
+									</div>
+									</div>
+								</div>
+							</div>
+							<div class="progress" *ngIf="loader">
+								<div class="progress-bar" role="progressbar" style="width: 99%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">99%</div>
+							</div>
+							<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+							<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+							<div class="margin-top-10 row" *ngIf="!httpRequestLoader.isLoading">
+								<section [hidden]="!isListView">
+									<div class="table-responsive list-content-table">
+										<table class="table tgrid">
+											<thead>
+												<tr>
+													<th class="text-center"></th>
+													<th style="text-align: left" translate>Name</th>
+													<th class="text-center hidden-xs" translate>Date</th>
+													<th class="text-center hidden-xs" translate>Size</th>
+													<th class="text-center hidden-xs" translate>Type</th>
+													<th class="text-center"
+														*ngIf="!authenticationService.isSuperAdmin()"><span
+														[hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
+												</tr>
+											</thead>
+											<tbody>												
+												<tr *ngFor="let file of pagedItems; let i =index">
+													<td><input	style="cursor: pointer;" (click)="getSelectedListViewFiles(file,file.id, $event)" type="checkbox"
+														[checked]="selectedFileIds.indexOf(file.id)>-1"	value="{{file.fileName}}" id="list_{{file.id}}">
+													</td>
+													<td>
+														<div class="clearfix">
+															<div class='thumbnail-wrapper'>
+																<img id="content_image_{{i}}"	(error)="changeImage(i, file.filePath)"	src="{{file.filePath}}">
+															</div>
+															<div class="title-div" style="cursor: default;">
+																<a data-toggle="tooltip" [title]="file.fileName">
+																	<h4 class='mt5 mb5 f-w-500'>
+																		{{file.fileName | slice: 0: 25}} <span
+																			*ngIf="file.fileName?.length>25">...</span>
+																	</h4>
+																</a>
+															</div>
+														</div>
+													</td>
+													<td class="text-center hidden-xs"><app-timestamp	[isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate"></app-timestamp></td>
+													<td class="text-center hidden-xs"><span>{{file.filesizeInKb}}</span></td>
+													<td class="text-center hidden-xs"><span>{{file.type}}</span></td>
+													<td>
+														<div class="actions-block override-actions mActionAlign">
+                              <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.preview_item" href="{{file.downloadLink}}" target="_blank">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
+                              </a>
+                              <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.delete_item"
+																(click)="delete(file, file.id)"> <i class="fa fa-trash-o" aria-hidden="true"></i>
+															</a>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+                    </table>
+                    <div *ngIf="pagedItems.length == 0" style="width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+                        <a class="close" data-dismiss="alert" aria-label="close"></a><p translate>No results found</p>
+                   </div>
+									</div>
+								</section>
+								<!-- -List View -->
+								<section [hidden]="isListView">
+									<ul class="content__list"
+                    *ngFor="let file of pagedItems; let i =index;">
+										<li class="list__item mListitemWid"
+											[ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
+											<div class="flex-row pointer" (click)="setFileCheck(file,file.id, $event)">
+												<div class="item__select-box-wrapper">
+													<span class="select-box checkBox_shadow" (click)="setFileCheck(file,file.id, $event)"> <label> <input
+															(click)="getSelectedFiles(file,file.id, $event)"
+															type="checkbox"
+															[checked]="selectedFileIds.indexOf(file.id)>-1"
+															value="{{file.fileName}}" id="grid_{{file.id}}">
+													</label>
+													</span> <span class="ng-scope"> <a style="cursor: default;"
+														class="item__preview item__preview--image img-container custom"
+                            target="_BLANK">
+                            <img ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
+                            id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)" class="thumb ng-scope" src="{{file.filePath}}">
+													</a> <a href="javascript:;"> </a>
+													</span>
+												</div>
+												<div class="item__content">
+													<div class="flex-row">
+														<div class="item__last-modified">
+															<span><app-timestamp [isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate">	</app-timestamp></span>
+														</div>
+														<span class="item__name" data-toggle="tooltip" [title]="file.fileName"> <strong>{{file.fileName	| slice: 0: 16}} <span *ngIf="file.fileName?.length>16">...</span>
+														</strong>
+														</span>
+														<div class="item__size">
+															<span>{{file.filesizeInKb}}</span>
+														</div>
+														<div class="item__type">
+															<span>{{file.type}}</span>
+														</div>
+														<div class="item__actions">
+															<span> <a class="fm external-link" target="_BLANK"
+																data-toggle="tooltip" data-placement="top"
+																[title]="actionsDescription.preview_item"	(click)="$event.stopPropagation();"
+																href="{{file.filePath}}" target="_blank">
+																	<i class="fa fa-external-link" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
+															</a> <a class="fm delete" data-toggle="tooltip"
+																data-placement="top"
+																[title]="actionsDescription.delete_item"
+																(click)="$event.stopPropagation();delete(file,file.id)"> <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
+															</a>
+															</span>
+														</div>
+													</div>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</li>
+									</ul>
+                  <div class="col-xs-12" style="padding-top: 15px">
+                      <div *ngIf="pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+                        <a class="close" data-dismiss="alert" aria-label="close"></a>
+                        <p translate>No results found</p>
+                      </div>
+									</div>
+                </section>
+              </div>
+              <section>
+                <ul *ngIf="pager.pages && pager.pages.length"  class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a  (click)="setPage(1)" translate>First</a></li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setPage(pager.currentPage - 1)" translate>Previous</a></li>
+                <li *ngFor="let page of pager.pages"  [ngClass]="{active:pager.currentPage === page}">
+                  <a (click)="setPage(page)">{{page}}</a></li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.currentPage + 1)" translate>Next</a>
+                </li>
+                <li  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.totalPages)" translate>Last</a>
+                </li>
+              </ul>
+              <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+                  <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+                  <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+                  <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+                </select>
+                </section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="portlet light shadow" *ngIf="isPreviewed">
+			<div class="portlet-title">
+				<span>{{previewFile.fileName}}</span> <a
+					class="close-circle pull-right" (click)="hidePreview()"> <i
+					class="fa fa-times"></i>
+				</a>
+			</div>
+			<div class="portlet-body clearfix">
+				<img src="{{previewFile.filePath}}"
+					style="max-width: 100%; max-height: 100%">
+			</div>
+		</div>
+	</div>
+	<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+		aria-labelledby="mySmallModalLabel" aria-hidden="true"
+		id="replace-modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" translate>Modal Header</h4>
+				</div>
+				<div class="modal-body">
+					<h4>Are you sure you want to overwrite {{existingFileName}}
+						file?</h4>
+					<br>
+					<p translate>A previously uploaded file with the same name will be overwritten. This action cannot be done.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn Btn-Gray" data-dismiss="modal" translate>Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<app-scroll-top></app-scroll-top>
+</div>

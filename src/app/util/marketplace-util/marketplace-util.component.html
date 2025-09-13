@@ -1,0 +1,60 @@
+<div *ngIf="categories == null || categories?.length == 0">
+  <img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg"
+  alt="No Image Found">
+</div>
+
+<div class="flexbody" *ngIf="categories != null && categories?.length>0">
+  <div class="menu">
+    <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search" (keyup)="getFilteredCompanies()">
+    <h3>Categories</h3>
+    <ul>
+      <li class="category-button" [class.active]="activeCategory === 'All Categories'" (click)="showAllCategories()">All Categories</li>
+      <li *ngFor="let category of categories" class="category-button" [class.active]="activeCategory === category.name" (click)="showContent(category.name)">
+        {{ category.name }}
+      </li>
+    </ul>
+
+  </div>
+  <div class="tileContent">
+    <div *ngFor="let category of filteredCategories" class="category-section" [attr.id]="category.name">
+      <div *ngIf="activeCategory === 'All Categories' || activeCategory === category.name ">
+      <div class="category">{{ category.name }}</div>
+      <div>
+        <div class="columnClass">
+          <div *ngFor="let company of category.companies ; let i = index" >
+            <!-- (click)="toggleFlip(category.name, i)" -->
+            <div class="flip-card" [class.no-flip]="!isHoveringReadMore">
+              <!-- [class.flipped]="isFlipped(category.name, i)" -->
+              <div id="flip-{{category.name}}-{{i}}" class="flip-card-inner" >
+            <div class="card">
+              <a class="img-card" >
+                <img [src]="company.image" >
+              </a>
+              <div class="card-content" >
+                <h4 class="card-title">
+                  {{ company.name }}
+                </h4>
+                <div class="company-text"  style="-webkit-box-orient:vertical">{{ company.description }}</div>
+              </div>
+             <div class="card-read-more" (mouseenter)="isHoveringReadMore = false" 
+             (mouseleave)="isHoveringReadMore = true">
+                <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" class="btn btn-link btn-block">Know More</a>
+              </div>
+            </div>
+            <div class="flip-card-back">
+              <p><strong>Address: </strong>{{ company.address }}</p>
+              <p><strong>Contact: </strong>{{ company.phone }}</p>
+              <p><strong>Website: </strong><a href="{{company.website}}"  (click)="navigateToParent($event, company.openInNewTab)" class="website-url" style="-webkit-box-orient:vertical">{{ company.website }}</a></p>
+              <button class="btn flip-btn"    (click)="navigateToParentFromButton(company.link, company.openInNewTab)" >Know More</button>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div *ngIf="filteredCategories.length === 0" class="no-data-global no-data">No Data Found</div>
+  </div>
+</div>
+

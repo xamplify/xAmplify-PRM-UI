@@ -1,0 +1,126 @@
+/**************************PricingTagble***************/
+.pricing-head > h4 {
+  background-color: #ffffff !important;
+}
+.pricing {
+  position: relative;
+  margin-bottom: 15px;
+  border: 1px solid #008fd5;
+  border-radius: 3px !important;
+}
+.pricing {
+  position: relative;
+  margin-bottom: 15px;
+  border-radius: 3px !important;
+}
+.pricing:hover {
+  border: 3px solid #4eafd6;
+}
+.pricing:hover h4 {
+  color: #4eafd6;
+}
+.pricing-head {
+  text-align: center;
+}
+.pricing-head h3,
+.pricing-head h4 {
+  margin: 0;
+  line-height: normal;
+}
+.pricing-head h3 span,
+.pricing-head h4 span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  font-style: italic;
+}
+.pricing-head h3 {
+  font-weight: 300;
+  color: #fafafa;
+  padding: 12px 0;
+  font-size: 20px;
+  background: #1fb4ef;
+  border-bottom: solid 1px #8dd7f5;
+}
+.pricing-head h4 {
+  color: #bac39f;
+  padding: 5px 0;
+  font-size: 54px;
+  font-weight: 300;
+  background: #fbfef2;
+  border-bottom: solid 1px #f5f9e7;
+}
+.pricing-head-active h4 {
+  color: #4eafd6;
+}
+.pricing-head h4 i {
+  top: -8px;
+  font-size: 28px;
+  font-style: normal;
+  position: relative;
+}
+.pricing-head h4 span {
+  top: -10px;
+  font-size: 14px;
+  font-style: normal;
+  position: relative;
+}
+/*Pricing Footer*/
+.pricing-footer {
+  color: #777;
+  font-size: 11px;
+  line-height: 17px;
+  text-align: center;
+}
+/*Priceing Active*/
+.pricing:hover {
+  z-index: 9;
+}
+.no-space-pricing .pricing:hover {
+  transition: box-shadow 0.2s ease-in-out;
+}
+.no-space-pricing .price-active .pricing-head h4,
+.no-space-pricing .pricing:hover .pricing-head h4 {
+  color: #36d7ac;
+  padding: 15px 0;
+  font-size: 80px;
+  transition: color 0.5s ease-in-out;
+}
+.pricing-head > h4 {
+  background-color: #60b4f9;
+}
+.pricing-head-img {
+  margin: 0 auto;
+}
+/* 16-06-2023 */
+#notifications {
+  position: absolute;
+  top: -14px;
+  right: -18px;
+  padding: 5px 13px;
+  border-radius: 3px;
+  background: #00a9e9;
+  font-weight: 600;
+  min-height: auto;
+  min-width: 32px;
+  font-size: 14px;
+  color: #fff;
+  clip-path: polygon(50% 0%, 100% 0, 85% 51%, 100% 100%, 0 100%, 15% 49%, 0 0);
+}
+#notification-text {
+  padding-top: 4px;
+  font-size: 14px;
+}
+#image-style {
+  background-color: #f2f4f9 !important;
+  border-bottom: solid 1px #ddd;
+  border-radius: 3px 3px 0px 0px;
+}
+@media only screen and (max-width:1024px){
+  .camp_card_effect.camp-card1 {
+    margin-bottom: 20px;
+  } 
+}
+.mrgt_15{
+  margin-top: 15px!important;
+}

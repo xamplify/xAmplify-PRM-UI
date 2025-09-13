@@ -1,0 +1,8 @@
+.highlightRow,
+.highlightRow:hover {
+    background-color: #dde1f9;
+}
+
+button.button_disabled:disabled span {
+    opacity: 0.5;
+}

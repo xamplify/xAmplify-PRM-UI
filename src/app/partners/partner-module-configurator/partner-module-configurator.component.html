@@ -1,0 +1,93 @@
+<div class="modal fade right" id="partnerModuleConfiguratorModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeModalPopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Partner Modules</h4>
+      </div>
+      <div class="modal-body">
+       <!-- XNFR-938 (avoid deplicate code)-->
+      <ng-template *ngIf="isEdit" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
+      <ng-template *ngIf="vendorCompanyProfileName && hasMarketingModulesAccessToVendor" [ngTemplateOutlet]="showMarketingModules"></ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
+        <button *ngIf="isAdd" type="submit" class="button bgcolor-unset"
+          (click)="submit()"><span class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+          <button *ngIf="isEdit" type="submit" class="button bgcolor-unset"
+          (click)="update()"><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- XNFR-938-->
+<div *ngIf="isAdd">
+  <ng-template *ngIf="isAdd" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
+  <ng-template *ngIf="vendorCompanyProfileName && hasMarketingModulesAccessToVendor" [ngTemplateOutlet]="showMarketingModules"></ng-template>
+</div>
+
+<ng-template #showPartnerModulesWithToggle>
+  <div class="alert alert-info mb5">
+    <p>Note: You can enable or disable modules for the partner using the toggle option.</p>
+  </div>
+  <div class="table-responsive">
+    <table class='table tgrid table-hover full-width' aria-describedby="">
+      <tr *ngFor="let defaultModule of defaultModules;let i = index">
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">
+          <i *ngIf="defaultModule.moduleId != 5 && defaultModule.moduleId != 12 && defaultModule.moduleId != 18"
+            class="{{defaultModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
+          <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
+            [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
+            aria-hidden="true"></i>
+            {{ (defaultModule.moduleId === 2 ? 'Redistribute ' : defaultModule.moduleId === 5 ? 'Shared ' : '') + defaultModule.moduleName }}<sup
+            *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
+          <br>
+        </td>
+        <td class="override-actions">
+          <app-custom-ui-switch *ngIf="defaultModule.moduleName != 'Contacts'"
+            [customSwitch]="defaultModule.partnerAccessModule"
+            (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+          <app-custom-ui-switch *ngIf="defaultModule.moduleName == 'Contacts'"
+            [isSwitchOptionDisabled]="isContactsModuleToggleDisabled" [customSwitch]="defaultModule.partnerAccessModule"
+            (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+<!-- XNFR-938-->
+
+<!--- Marketing Modules --->
+<ng-template #showMarketingModules>
+  <div class="table-responsive">
+    <table class="table tgrid table-hover full-width" aria-describedby="">
+      <tr>
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">Enable Marketing Modules
+          <i class="fa fa-info-circle ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+            title="Enable this toggle to allow your partner to access marketing modules."></i>
+        </td>
+        <td class="override-actions">
+          <app-custom-ui-switch [customSwitch]="hasMarketingModulesAccessToPartner"
+            (customUiSwitchEventEmitter)="marketingModulesChange($event)"></app-custom-ui-switch>
+        </td>
+      </tr>
+      <ng-container *ngIf="hasMarketingModulesAccessToPartner">
+        <tr *ngFor="let marketingModule of marketingModules">
+          <td scope="row" class="fstcw-tm" style="font-weight: 500;">
+            <i class="mrfpx" [ngClass]="marketingModule?.moduleId === 5 ? 'fa fa-file-pdf-o' : marketingModule?.moduleId === 17 
+            ? 'fa fa-paint-brush' : marketingModule?.moduleId === 7 ? 'fa fa-file-text-o' : marketingModule?.moduleId === 10 
+            ? 'fa fa-object-group' : marketingModule?.angularIcon" aria-hidden="true"></i>
+            {{ marketingModule.moduleId === 7 || marketingModule.moduleId === 10 || marketingModule.moduleId === 17
+              ? 'Design ' + marketingModule.moduleName : marketingModule.moduleId === 2 
+              ? 'Create ' + marketingModule.moduleName :  marketingModule.moduleName }}
+          </td>
+          <td class="override-actions">
+            <i class="fa fa-check success" aria-hidden="true"></i>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</ng-template>

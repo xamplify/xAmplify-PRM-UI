@@ -1,0 +1,48 @@
+<ng-container *ngIf="!model">
+ <div class="col-md-3 col-sm-4 col-xs-6 box"
+	*ngFor="let number of [0,1,2,3,4,5,6,7,8,9,10,11]">
+	<div class="timeline-wrapper">
+		<div class="timeline-item">
+			<div class="animated-background">
+				<div class="background-masker header-top"></div>
+				<div class="background-masker header-left"></div>
+				<div class="background-masker header-right"></div>
+				<div class="background-masker header-bottom"></div>
+				<div class="background-masker subheader-left"></div>
+				<div class="background-masker subheader-right"></div>
+				<div class="background-masker subheader-bottom"></div>
+				<div class="background-masker content-top"></div>
+				<div class="background-masker content-first-end"></div>
+				<div class="background-masker content-second-line"></div>
+				<div class="background-masker content-second-end"></div>
+				<div class="background-masker content-third-line"></div>
+				<div class="background-masker content-third-end"></div>
+			</div>
+		</div>
+	</div>
+</div> 
+</ng-container>
+<ng-container *ngIf="model">
+<table>
+	<tr *ngFor="let number of [0,1,2,3,4,5]">
+		<td>
+			<div class='text-input__loading--line rect-box'></div>
+		</td>
+		<td>
+			<div class='text-input__loading--line thick w75'></div>
+			<div class='text-input__loading--line thin w50'></div>
+		</td>
+		<td>
+			<div class='text-input__loading--line thin w50'></div>
+		</td>
+		<td>
+			<div class='text-input__loading--line thin w75'></div>
+		</td>
+		<td>
+			<div class='text-input__loading--line action-icon'></div>
+			<div class='text-input__loading--line action-icon'></div>
+			<div class='text-input__loading--line action-icon'></div>
+		</td>
+	</tr>
+</table>
+</ng-container>

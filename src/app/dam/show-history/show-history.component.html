@@ -1,0 +1,171 @@
+<div class="page-content">
+	<div class="page-bar">
+	   <ul class="page-breadcrumb">
+		  <li><i class="fa fa-home" aria-hidden="true"></i> 
+			 <a [routerLink]="referenceService?.homeRouter" translate>Home</a> 
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a (click)="goToDam()" translate>DAM</a>
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a class="pointer-events-none" translate>History</a>
+		  </li>
+	   </ul>
+	</div>
+	<div style="position: relative; top: -10px;">
+	   <app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+	</div>
+	<div class="row">
+	   <div class="col-md-12">
+		  <div class="portlet light clearfix minhsfp">
+			 <div class="portlet-title bbnone">
+				<div class="row">
+				   <div class="page-toolbar col-xs-12">
+					  <div class="btn-group pull-right">
+						 <div class="inputs" style="float: right">
+							<a	class="close-circle ref-mar" (click)="goToDam()" title="Close"> 
+								<i	class="fa fa-times" aria-hidden="true"></i>
+							</a>
+							<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
+							<i class="fa fa-refresh" aria-hidden="true"></i>
+							</a>
+							<div style="float: left;margin-right:5px;">
+							   <select	class="form-control" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+							   <option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+							   </select> 
+							</div>
+							<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
+							   <div class="input-icon right"	style="position: relative; right: -11px;">
+								  <input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+								  <button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
+								  <button type="submit" class="search-box-item-click"	(click)="searchAssets()">
+								  <i class="fa fa-search" aria-hidden="true"></i>
+								  </button>
+							   </div>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <!---Grid Loader------>
+			 <app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
+			 <section *ngIf="!historyLoader.isLoading">
+				<div *ngIf="showRefreshNotification" class="alert alert-info">
+					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
+				</div>
+				<div class="row p17 neg_margin-10" *ngIf="!historyLoader.isLoading && !historyLoader.isServerError">
+				   <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10 GridviewSidePaddings" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
+					  <div class="grid-box min-h default-cursor mHeight box-shadow">
+						<div class="gridViewImgpositioning">
+							<img  class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
+						</div>
+						<h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
+							<b>Asset Name: </b>{{asset?.assetName | slice: 0:54}} <span *ngIf="asset?.assetName?.length>54">...</span>
+						</h4>
+						 <div class="divapdding-or-cards">
+							<div class="aligntowbtns"> 
+								<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+									<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+										<span><b>Received From:</b> {{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
+									</h6>
+									<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
+								</ng-container>
+								<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
+								
+								<!-- XNFR-781 -->
+								<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-lable-spacing"
+									[ngClass]="{
+										'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+										'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+										'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+								<span
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView  && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+									class="view-banner asset-approval-labele-spacing"
+									[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+										'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+								
+							 </div>
+							 <h6  class="xamplify-ellipsis GridViewCotent pt10">
+								<span *ngIf="isPartnerView"> <b>Published On: </b></span>
+								<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
+								<app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
+							</h6>
+							<h6  class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}"><b>By:</b> {{asset?.displayName}}</h6>
+							<h6 class="xamplify-ellipsis GridViewCotent" >
+								<span data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}" translate> <b>Folder:</b> {{asset?.categoryName}}</span>
+							</h6>
+							<h6 class="GridViewCotent" *ngIf="!isPartnerView && asset?.beeTemplate">
+								<span translate> <b>Version:</b>  {{asset?.versionInString}} </span>
+							</h6>
+							<h6 *ngIf="isPartnerView" class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{asset?.vendorCompanyName}}">
+								<b>From:</b><span>{{asset?.vendorCompanyName}}</span> 
+							</h6>
+						 </div>
+						 <div class="ribbon tab-ribbon">
+							<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+							<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
+						</div>
+						 <div class="bar auto-height gridIconCustomization">
+							<app-asset-grid-view-actions [isPartnerView]="false" [asset]="asset"
+							(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
+							(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
+							(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+							(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
+							(assetGridViewRefreshListEmitter)="refreshList()">
+							</app-asset-grid-view-actions>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </section>
+			 <!---Pagination-->
+			 <div *ngIf="pagination.totalRecords==0 && !historyLoader.isLoading"
+				class="alert alert-info text-center">
+				<strong>No Data Found.</strong>
+			 </div>
+			 <div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="historyLoader.isLoading">
+			 <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)"></app-pagination>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ </div>
+ <!--Preview Popup-->
+ <ng-container *ngIf="isPreview">
+	<app-preview-asset-popup [asset]="asset" (previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>
+ </ng-container>
+ <!---Download PDF Popup-->
+ <ng-container *ngIf="showPdfModalPopup">
+	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
+ </ng-container>
+ <!-----Delete-------->
+ <ng-container *ngIf="deleteAsset">
+	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
+	(deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	</app-delete-assets>
+ </ng-container>
+
+ <!---XNFR-381-->
+<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked" [parameterDto]="changeAsParentPdfSweetAlertParameterDto" (notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
+
+<!-- XNFR-781  -->
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId" [approvalReferenceId]="approvalReferenceId"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
+</app-content-status-history-modal-popup>

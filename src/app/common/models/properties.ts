@@ -1,0 +1,611 @@
+
+export class Properties {
+
+	/*App Info*/
+	COMPANY_LOGO = 'assets/images/xamplify-logo.png';
+	FULL_YEAR = new Date().getFullYear();
+	COPY_RIGHT_PREFIX = '&copy; ' + this.FULL_YEAR;
+	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX + ' xAmplify. All rights reserved.'
+	APP_WEBSITE = 'xAmplify';
+	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
+	APP_Xamplify_URL = "https://xamplify.io";
+	xamplify_router = 'https://www.xamplify.com/';
+
+	NO_RESULTS_FOUND = "No results found.";
+	NO_DATA_FOUND = "No data found.";
+	EMAIL_SENT_SUCCESS = "Email sent successfully.";
+	NO_USERS_SELECT_ERROR = "You have not selected any user.";
+	//FOR CONTACTS
+	FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
+	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
+	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
+	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is campaign-ready.";
+	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
+	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully and it is being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email once your list is ready.";
+
+	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
+	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
+
+	CONTACT_LIST_DELETE_SUCCESS = "Your contact list has been deleted successfully.";
+	CONTACT_LIST_DELETE_ERROR = "An Error occured while deleting your Contact List.";
+	LEAD_LIST_DELETE_SUCCESS = "Your lead list has been deleted successfully.";
+
+	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
+	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
+	MARKETO_CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Synchronization initiated successfully. It might take few minutes.";
+
+	LEAD_LIST_SYNCHRONIZATION_SUCCESS = "Your lead list has been synchronized successfully.";
+	LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
+
+	CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
+	CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
+
+	LEADS_UPDATE_SUCCESS = "Your lead details has been updated successfully.";
+	CONTACTS_UPDATE_SUCCESS = "Your contact has been updated successfully.";
+	CONTACTS_UPDATE_ERROR = "An error occured while updating your contacts.";
+
+	CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully.";
+	CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
+	LEADS_DELETE_SUCCESS = "Your lead(s) have been deleted successfully.";
+
+	LEAD_LIST_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
+	CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";
+	CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
+	CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
+
+	CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact list name has been updated successfully.";
+	CONTACT_LIST_NAME_UPDATE_ERROR = "An error occured while saving your contacts.";
+
+	SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
+	SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
+	CONTACT_LIST_VALIDATION = 'Please click on verify data.';
+	CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
+	CONTACT_REMOVED_FROM_EXCLUDED_LIST = "Selected user has been removed from the excluded list successfully";
+
+
+	/* For Partners*/
+	PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
+	PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
+	PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
+	LEAD_LIST_NAME_UPDATE_SUCCESS = "Your lead list name has been updated successfully.";
+
+	PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
+	PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
+
+	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
+
+	PARTNERS_CREATE_SUCCESS = "Your Partner Group has been created successfully.";
+	PARTNERS_CREATE_ERROR = "An error occured while creating";
+
+	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
+	PARTNERS_UPDATE_ERROR = "An error occured while updating";
+
+	PARTNERS_DELETE_SUCCESS = "Your Partner(s) have been deleted successfully.";
+	PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
+	PARTNERS_DELETE_ERROR = "An error occured while deleting.";
+
+	PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
+	PARTNERS_SAVE_ERROR = "An error occured while saving.";
+	PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partner(s) have been validated successfully.";
+	LEADS_EMAIL_VALIDATE_SUCCESS = "Selected Lead(s) have been validated successfully.";
+
+	/* Authentication Module*/
+
+	ACCOUNT_NOT_CREATED = "You don't have an account, Please sign up to create your account.";
+	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.';
+	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
+	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
+
+        SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
+        TEAM_MEMBER_SIGN_UP_SUCCESS = "Thanks for signing up! Please login to access the platform.";
+        PRM_SIGN_UP_SUCCESS = "Your PRM Account has been successfully created.";
+        ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
+        SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
+        ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
+	WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
+	ERROR_EMAIL_ADDRESS = "The email address that you've entered doesn't match any account. Sign up for an account.";
+	OTHER_EMAIL_ISSUE = "UserDetailsService returned null, which is an interface contract violation";
+
+	BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
+	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
+	/*****XNFR-334 *****/
+	RESEND_ACTIVATION_MAIL = 'Please check your inbox for the account activation email.';
+	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated." + this.RESEND_ACTIVATION_MAIL;
+	ACCOUNT_SUSPENDED = "This account has been suspended.Please contact admin.";
+	/*****XNFR-334 *****/
+	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
+	SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
+	/* User */
+	PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
+	PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
+	DEFAULT_PLAYER_SETTINGS = 'Default player settings updated successfully.';
+	VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully.';
+	PROFILE_PIC_UPDATED = 'Profile picture updated successfully.';
+	COMPANY_PIC_UPDATED = 'Company logo updated successfully.'
+	PROFILE_UPDATED = 'Profile updated successfully.';
+	PASSWORD_UPDATED = 'Password updated successfully.';
+	PAWORD_ERROR = 'New password should not be same as current password.'
+
+	/*Videos*/
+	VIDEO_PROCESS_MESSAGE = 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
+	VIDEO_PROCESSING_MESSAGE = 'Don\'t mind us. We\'re just processing your video.'
+	CONTENT_UPLOAD_SIZE = 'Unable to upload files because your files size is more than 12 MB';
+	CONTENT_UPLOAD_FILETYPE = 'Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
+	CONTENT_PROCESS_MESSAGE = 'Your file(s) has been uploaded. Please wait while we process it.';
+	SUPPORT_FILES = 'These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
+	CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
+	VIDEO_DRAG_MESSAGE = 'Drag and drop a video file here or click to select a Video file.';
+
+	/* campaign */
+	ADD_AUTO_RESPONSE_WEBSITE = 'Auto-Responses to a Website Visit'
+	ADD_AUTO_RESPONSE_EMAIL = 'Auto-Responses to Your Email'
+	EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a Campaign Intended ust for Selected Recipients';
+	TO_PARTNER_MESSAGE = 'To Recipient(s): Send a Campaign intended just for your Partner(s)/ Contact(s)';
+	THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a Campaign that your Partners can Redistribute';
+	ENALEORDISABLE_VENDOR_MESSAGE = 'Enable/disable the Vendor access to your Campaign Analytics';
+	ACTIVE_PARTICIPANTS = 'Active Participants - Share only the recipients that have interacted with your Campaign';
+	ALL_PARTICIPANTS = 'All Participants - Share all Campaign Recipient data';
+
+	/****BEE ClientId/Client Secret********/
+	clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
+	clientSecret = 'FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo';
+
+	xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
+	xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+
+	serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
+
+	/****************** SAML Security *********************/
+	EMAIL_TEXT1 = 'You are about to initiate the SSO configuration with Allbound.'
+	EMAIL_TEXT2 = 'Begin by verifying that the email address listed below is associated with your Allbound instance.'
+	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration and save the entire settings to download the Metadata.'
+	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded after the IDP configuration, we process the content and will save the same into the system.'
+	UPLOAD_METADATA_TEXT2 = 'Success! Processed the metadata and saved into the system.';
+
+	/*************My Profile Tab Names*******************************/
+	personalInfo = "Personal Info";
+	changePassword = "Change Password";
+	viewType = "View Type";
+	defaultPlayerSettings = "Default Player Settings";
+	dealRegistration = "Deal Registration";
+	integrations = "Integrations";
+	gdprSettings = "GDPR Settings";
+	folders = "Folders";
+	dashboardButtons = "Dashboard Buttons";
+	samlSettings = "Allbound SAML Settings";
+	leadPipelines = "Lead Pipelines";
+	dealPipelines = "Deal Pipelines";
+	saml2SSOsettings = "SAML 2.0 SSO Settings";
+	leadFieldSettings = "Custom Fields";
+	oauthSSOConfiguration = "oAuth SSO Settings";
+	calendarIntegrations = "Calendar Integrations";
+	/**XNFR-908**/
+	callIntegrations = "Call Integrations";
+    /*** XNFR-1062 ***/
+	mailIntegration = "Mail Integration";
+
+	/************XNFR-426**********/
+	leadDealApprove = "Lead Approval/Rejection";
+	tags = "Tags";
+	customskin = "Themes";
+	customizeleftmenu = "Customize Left Menu";
+
+	exclude = "Exclusion"
+	exclude_add = "User(s) added successfully";
+	exclude_delete = "User deleted successfully";
+	exclude_domain_add = "Domain added successfully";
+	exclude_domain_delete = "Domain deleted successfully";
+
+	spf = "SPF Configuration";
+	spfHeaderText = "Publish an SPF record with your DNS registrar";
+	unsubscribeReasons = "Unsubscribe Reasons";
+	unsubscribeReasonsHeaderText = "Manage Unsubscribe Reasons";
+	notifyPartners = "Onboarding Configurations";
+	notifyPartnersHeaderText = "Onboarding configurations of your partners";
+
+	vendorJourney = "Vendor Showcase";
+	landingPages = "Vendor Shared Pages";
+	masterLandingPages = "Partner Landscape"
+	masterLandingPageCategories = "Landscape Categories"
+	welcomePages = "Welcome Pages"
+	/*****XNFR-712******/
+	partnerJourneyPages = "Partner Showcase";
+	vendorPartnerJourneyPages = "Partner Shared Pages"
+	vendorMarketplacePages = "Vendor Landscape"
+	/********Error Messages************* */
+	roleUpdatedMessage = "Your role has been changed.Please login again.";
+
+	/****************** Vanity Relates *********************/
+	VANITY_URL_ERROR1 = "You are not associated to vendor company";
+	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added successfully";
+	VANITY_URL_DB_BUTTON_ADDED_AND_PUBLISHED_SUCCESS_TEXT = "Button added & published successfully";
+	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated successfully";
+	VANITY_URL_DB_BUTTON_UPDATED_AND_PUBLISHED_TEXT = "Button updated & published successfully";
+	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted successfully";
+	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
+	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
+	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
+	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
+	DUPLICATE_SUBJECT_ERROR_TEXT="The subject name has already been assigned to another template.";
+
+	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
+
+	unableToShowWelcomePageItems = "Error! We are unable to show welcome items now. Please give us some time.";
+
+
+	zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
+	googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
+	salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
+	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
+	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
+	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
+	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
+	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
+	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
+	companyListImage: string = 'assets/admin/pages/media/works/company.png';
+	halopsaImage: string = 'assets/admin/pages/media/works/halopsa-contacts.png';
+
+	connectwiseGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/connectwise-contacts.png';
+	pipedriveGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/pipedrive.png'
+	marketoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Marketo_Logo.png'
+	updated_Manual_Image: string = 'assets/admin/pages/media/works/Grid_View_Icons/Manual_Contacts.png';
+	hubspotGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Hubspot.png';
+	googleGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Google_Contacts.png';
+	zohoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/ZOHO.png';
+	salesforceGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Salesforce.png';
+	microsoftGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Microsoft.png';
+	halopsaGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/halopsa-contacts.png'
+
+
+	teamMemberGroups = 'Team Member Groups';
+
+	activeMasterPartnerList = 'Active Master Partner Group';
+	inActiveMasterPartnerList = 'Inactive Master Partner Group';
+
+	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
+	oneClickLaunch = "One-Click Launch";
+	/*****Privacy Policy,Cookies,Terms and conidtions urls */
+	privacyPolicyUrl = "https://xamplify.com/privacy-policy-2/";
+	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
+	termsOfServiceUrl = "https://xamplify.com/terms-of-uses/";
+	subProcessorsUrl = "https://www.xamplify.com/subprocessors/";
+	gdprUrl = "https://gdpr-info.eu/";
+	ccpaUrl = "https://www.caprivacy.org/";
+
+	/***One-Click Launch Error Messages */
+	emptyShareListErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available because your account no longer has One-Click Launch access";
+	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
+	oneClickLaunchCampaignRedistributedErrorMessage = "If the campaign has already been redistributed, please use the redistribute option to relaunch it";
+	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is no longer available because your account's One-Click Launch access has been disabled";
+	emptyOneClickLaunchCampaignErrorMessage = "You cannot redistribute the campaign because the vendor deleted the shared list associated with it";
+	/****XNFR-131****/
+	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
+	/***XNFR-128***/
+	downloadRequestNotificationMessage = "We are processing your download request.We will send an email once it is completed.";
+
+	/****XNFR-83****/
+	agencies = "Agencies";
+	agency = "Agency";
+	/****Form Classes*****/
+	formGroupClass: string = "col-sm-8";
+	errorClass: string = "col-sm-8 has-error has-feedback";
+	successClass: string = "col-sm-8 has-success has-feedback";
+	defaultClass: string = this.formGroupClass;
+	formSubmissionFailed = "Form submission failed!";
+
+	/***module names ****/
+	emailTemplates = "emailTemplates";
+	campaigns = "campaigns";
+
+	/**Campaign****/
+	campaignLaunchedMessage = "The campaign was successfully deployed. Please wait until the campaign is processed and launched. We will send you email updates in timely manner."
+	deployingCampaignMessage = "We are deploying the campaign";
+
+
+	/***XNFR-222*****/
+	postingOnSocialMedia = "We are posting on social media  and  deploying the campaign";
+	schedulingCampaignMessage = "We are scheduling the campaign";
+
+	/****XNFR-224****/
+	supportText = "Enable support access to vendor";
+
+	/****XNFR-314****/
+	teamMemberPartnerFilter = "Default Partner Filter";
+
+	/***XNFR-318***/
+	campaignRegularEmailsFilter = "CampaignRegularEmails";
+	campaignVideoEmailsFilter = "CampaignVideoEmails";
+	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
+	sendTestEmail = "Send Test Email";
+
+	/***24/07/2023******/
+	playbackRates = [0.5, 1, 1.5, 2];
+
+
+	customThemeDescription = "Custom Themes enable the creation of unique branded experiences such as Background Color, Text Color, Button Color, Icon Color and so on. You can select from existing Light and Dark Themes. Set your own theme by choosing colors for the Header, Left Menu, Footer and Page Content blocks.";
+
+	whiteLabeledBanner = "White-Labeled";
+
+	/***XNFR-326*****/
+	emailNotificationSettings = "Email Notification Settings";
+
+
+	/***XNFR-386****/
+	customLoginScreen = "Custom Login Screen Settings";
+
+	loginScreenDirectionOptions = ["Center", "Left", "Right"];
+
+	vendorLogoTooltipText = "<b> On </b> - Your company logo will appear on the partner(s) account. <br/>"
+		+ "<b> Off </b> -  Your partner(s) logo will remain unchanged. <br/>" + "<b>*This setting does not affect co-branding.</b>";
+
+	/***XNFR-386****/
+	/**** XNFR-233 **** */
+	loginFormPosition = ["Left", "Right"]
+
+	/***Refer A Vendor ****/
+	inviteAVendor = "Invite A vendor";
+	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+	vendorInvites = "Vendor Invites";
+	InvitedVendorAnalytics = "Invited Vendor Analytics";
+	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+
+	/****XNFR-342****/
+	campaignsHeaderText = "Campaigns";
+	assetsHeaderText = "Assets";
+	tracksHeaderText = "Tracks";
+	playBooksHeaderText = "Playbooks";
+	/****XNFR-342****/
+
+	/***XNFR-454*****/
+	newsAndAnnouncements = "News & Announcements";
+	dashboardBanners = "Dashboard Banners";
+	addDomainsText = "Domain Whitelisting";
+	domainWhitelistingDescription = "A whitelist is a list of domains approved for authorized {{moduleName}} to signup and access the platform.";
+	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up as your {{moduleName}}.";
+	noDataFound = "No Data Found";
+	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 7 dashboard banners. You cannot add any more banners.";
+	maximumDashboardBannersLimitMessage = "You can upload maximum 7 dashboard banners"
+	instantNavigation = "Quick Links";
+	pageNotFound = "Oops, the page you're looking for does not exist.";
+
+	eventCampaignTemplateLocalStorageKey = "eventCampaignTemplatePreviewData";
+
+	PARTNERSHIP_ESTABLISHED_SUCCESSFULLY = "The partnership has been established successfully. You can now log in to access the platform.";
+	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership has been established. Please contact the company admin if you wish to continue as a team member.";
+	UPDATE_AND_CLOSE = "Update & Close";
+	SAVE_AND_CLOSE = "Save & Close";
+	/***XNFR-523****/
+	SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE = "Send an email notification to {{partnersMergeTag}} who have made progress";
+	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
+	MANAGE_ASSETS = "Manage Assets";
+	ACCESS_SHARED_ASSETS = "Access Shared Assets";
+
+	dashboardButton = "Dashboard Button";
+
+
+	ADD_TO_QUICK_LINKS = "Add this to the quick links for display. Quick links will be displayed for vanity login users only.";
+	ADDING_TEAM_MEMBER_IS_NOT_ALLOWED = "This feature is not available when using the Login As option.";
+
+	/** XNFR-534 - SAML2 SSO */
+	AUTHENTICATION_FAILURE = "Oops! your authentication has failed, please try again!";
+
+	/* XNFR-603 OAUTH SSO*/
+	OAUTH_SSO_HELP_TEXT1 = "Please fill the following URLs to set up OAuth Single Sign-On (SSO). These URLs facilitate secure authentication and access to user data.";
+	OAUTH_SSO_HELP_TEXT2 = "Make sure to register below Redirect URI with your oAuth Athourization server and ensure all URLs are accurate and accessible for seamless integration.";
+
+	partnersMergeTag = "{{partnersMergeTag}}";
+	/**Lead And Deal PipeLine Properties****/
+	showDealPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the deal registration form because \"Show Deal Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the deal registration form because \"Show Deal Stage\" is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	showLeadPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Stage\" is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	showRegisterDealOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, your "+this.partnersMergeTag+" will not see the 'Register Deal' button in the opportunities section.";
+	showRegisterDealOnMessage = "Since the \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
+	showRegisterDealForPartnerLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for partner leads.";
+	showRegisterDealForPartnerLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for partner leads.";
+	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
+	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
+	showLeadPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the lead registration form because 'Show Lead Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the lead registration form because 'Show Lead Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	showDealPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the deal registration form because 'Show Deal Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the deal registration form because 'Show Deal Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	leadPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the deal registration form";
+	leadPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
+
+	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
+	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
+	publishedTrackCountText = "Count of Tracks Published to the Partner";
+	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
+	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
+	partnerTeamMemberTrackText = "Count of Tracks Received by Team Members";
+	partnerTeamMemberPlaybookText = "Count of Playbooks Received by Team Members";
+
+	
+	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
+	mapCsvHeaderMessage = " to map your headers to the expected format.";
+	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
+	emailAddressMandatoryMessage = "Email id mapping is mandatory.";
+	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
+	remapHeadersMessage = " to remap the headers";
+	resetMessage = " to reset to the original state.";
+	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
+	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
+	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
+	uploadCsvSaveOptionNote = "Note: By using the save option you can save the list with valid email id(s).";
+	
+	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
+	selectAnOptionToSaveListMessage = "Select an option to save the list.";
+	ignoreInvalidAndEmptyEmailIdsMessage = "Ignore invalid email id(s) and empty records";
+	editInvalidAndIgnoreEmptyEmailIdsMessage = "Edit invalid email id(s) and ignore empty records";
+
+	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
+
+	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
+
+	/**XNFR-553**/
+	noteSubmittedSuccessResponseMessage = "Note Submitted Successfully";
+	noteUpdatedSuccessResponseMessage = "Note Updated Successfully";
+	emailSendSuccessResponseMessage = "Email sent successfully";
+	failedToFetchLeadsResponseMessage = "Failed to fetch leads";
+	leadSubmittedSuccessResponseMessage = "Lead Submitted Successfully";
+	failedToFetchDealsResponseMessage = "Failed to fetch deals";
+	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
+
+	ckEditorConfig = {
+		height:'300px',
+		baseFloatZIndex:1E5
+	}
+
+	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
+	
+	activePartnerTileDescription = "Partners who have interacted with Content, Redistributed Campaigns, Created Leads or Deals.";
+	signupPartnertileDescription = "Partners who have not yet completed the sign-up process.";
+	companyProfileIncompletepartnertileDescription = "Partners who have not yet completed the company profile.";
+	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
+	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
+	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
+	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
+	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
+	totalPartnersDescription = "Total Onboarded Partners."
+	totalDeactivatePartnersDescription = "Total Deactivated Partners."
+	/** XNFR-745 **/
+	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Playbook";
+	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
+	/***** XNFR-755 *****/
+	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
+	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
+	SIGNUP_PROCESS_COMPLETED = "The sign-up process is completed.";
+	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";	
+	
+	/***** XNFR-763 *****/
+	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
+	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
+	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
+	
+	/** XNFR-781 **/
+	approvalConfigurationSettings: string = "Content Approval Settings";
+	approvalControlManagementSettings: string = "Team Member Assignment";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets created by your Team Members.";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject assets submitted by your team before they are available for use. An email will be sent accordingly."
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Tracks created by your Team Members.";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Tracks that are neither rejected nor approved will be automatically Approved!";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject tracks submitted by your team before they are available for use. An email will be sent accordingly."
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Playbooks created by your Team Members.";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Playbooks that are neither rejected nor approved will be automatically Approved!";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject playbooks submitted by your team before they are available for use. An email will be sent accordingly."
+	/***** XNFR-807 *****/
+	redistributed_campaigns = "Total Redistributed Campaigns by";
+    teamMembers_Info = "Total Team Members of";
+    contacts_Info = "Total Contacts Added by";
+    share_Leads_Info = "Total Assigned Share Leads to ";
+    leads_Info = "Total Leads Added by" ;
+    deals_Info = "Total Deals Added by";
+    mdf_Amount_Info = "Total MDF Balance";
+    assets_Info =" Total Assets Published to ";
+    track_Assets_Info = "Total Assets of Published Tracks" ;
+    tracks_Info = "Total Tracks Published to";
+    playbooks_Info = "Total Playbooks Published to";
+	
+	/**** Invite A Team-member ****/
+	inviteATeamMember = "Invite A Team Member";
+	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to Join ";
+	teamMemberInvites = "Team Member Invites";
+	invitedTeamMeberAnalytics = "Invited Team Member Analytics";
+  	my_Landscape_Vendor=' Vendor Landscape Pages ';
+    My_Landscape_Partner = 'Partner Landscape Pages'; 
+    partner_Showcase = 'Landing Pages Shared by Your Partners';
+    vendor_showcase = 'Landing Pages Shared by Your Vendors';
+    myShowcase_vendor = 'Vendor Showcase Pages for Your Partners';
+    MyShowcase_partner = 'Partner Showcase Pages for Your Vendors';
+
+	/***** XNFR-809 *****/
+	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
+	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
+
+
+	UNLOCK_MDF_FUNDING = "UNLOCK_MDF_FUNDING";
+
+	/** XNFR-821  **/
+	TEAM_MEMBER_APPROVAL_PREVILEGES_SETTING_HELPER_TEXT = '**You have the authority to grant approval or rejection rights to team members. Based on the granted authority, team members will be able to approve or reject Assets, Tracks, and Playbooks as required.';
+	ASSET_REVIEW_DISABLED_TOOLTIP = 'Asset Review Control is currently disabled.';
+	TRACK_REVIEW_DISABLED_TOOLTIP = 'Track Review Control is currently disabled.';  
+	PLAYBOOK_REVIEW_DISABLED_TOOLTIP = 'Playbook Review Control is currently disabled.';
+	TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP = 'This team member does not have access to assets.';
+	TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP = 'This team member does not have access to tracks.';
+	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
+	PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP = 'Admin and Supervisor approval authority cannot be modified.';
+
+	/**XNFR-832***/
+	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage regarding an MDF request. The goal is to provide campaign performance insights, enabling assessment of results and release of funds accordingly.";
+
+	AUTHORIZATION_RESPONSE_APPROVAL = "Heads up! The following records cannot be approved because you do not have the required authorization. You can proceed with approving the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! The following records are auto-approved and cannot be rejected. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_REJECT = "Heads up! The following records cannot be rejected because you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	confirmPrimaryAdminText = "Are you sure you want to assign this member as the Primary Admin? This will transfer primary admin rights.";
+	proceed = "Yes, Proceed";
+	defaultSSOTeamMemberGroupToolTip = "Users logging in via SSO will be automatically assigned to this team member group";
+	defaultSSOTeamMemberGroupConfirmationMessage = "This group will be set as the default for SSO users";
+	defaultSSOGroup = "Default SSO Group";
+
+
+	/** XNFR-884 **/
+	CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED = "This asset has been published and cannot be saved as a draft.";
+	CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS = "An asset cannot be saved as a draft if a partner or partner group is selected.";
+	DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS = "Saving as a draft keeps the asset in draft mode. Draft assets cannot be published or used in tracks and playbooks.";
+	DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS = "Saving as a draft keeps the video in draft mode. Draft videos cannot be published or used in tracks, playbooks, or campaigns.";
+	DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN = "Cannot create a campaign with a draft video.";
+	
+	/** XNFR-885 **/
+	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
+	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
+
+	/**XNFR-911**/
+	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_MARKETING_COMPANY = "**This custom template will be used to notify team members when lead details are updated in Salesforce and synced back to xAmplify.";
+	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_VENDOR_ORG_PRM_COMPANIES = "**This custom template will be used to notify partners when lead details are updated in Salesforce and synced back to xAmplify.";
+	/** XNFR-929 **/
+	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
+	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
+
+	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
+
+	/** XNFR-952 **/
+	CONTACT_USAGE_ANALYTICS_TEXT  = 'Contacts Usage Analytics';
+	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
+	LOAD_SELF_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load self contacts count. Please try again later.";
+	LOAD_PARTNER_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load contacts uploaded by partners. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE: "Unable to load subscription limit usage count. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE: "Unable to load subscription limit count. Please try again later.";
+
+	/**XNFR-973**/
+	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."
+
+	/**XNFR-921**/
+	ADD_AUTO_RESPONSE_PLAYBOOK= 'Auto-Responses to Your Playbook'
+
+	SINGLE_DEACTIVATE_PARTNER = "The partnership will be deactivated. A deactivated partner will lose access to the application and be excluded from content";
+
+	SINGLE_ACTIVATE_PARTNER = "The partnership will be activated. An activated partner will gain access to the application and be included in content";
+
+	MULTI_SELECT_DEACTIVATE_PARTNERS = "The partnerships will be deactivated. Deactivated partners will no longer have access to the application and will be excluded from content";
+
+	DOMAIN_WHITELISTING_DEACTIVATE_DOMAIN = "The partnership with all the companies listed below will be deactivated. Once deactivated, the partner(s) will lose access to the application and be excluded from content";
+
+	DOMAIN_WHITELISTING_ACTIVATE_DOMAIN = "The partnership with all the companies listed below will be activated. Once activated, the partner(s) will gain access to the application and be included in content";
+
+
+}
+

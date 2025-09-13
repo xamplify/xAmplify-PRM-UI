@@ -1,0 +1,93 @@
+<div *ngIf="damPostDto" style="margin-bottom:15px;">
+  <div>
+  <div class="asset-card">
+    <div *ngIf="isDam" class="asset-info">
+      <i class="fas fa-file-alt"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Asset Name</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.assetName">
+          {{ damPostDto?.assetName | slice:0:20 }}
+          <span *ngIf="damPostDto?.assetName?.length > 20">…</span>
+        </span>
+      </div>
+    </div>
+    <div *ngIf="isPlaybook" class="asset-info">
+      <i class="fas fa-file-alt"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Playbook Title</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.assetName">
+          {{ damPostDto?.assetName | slice:0:20 }}
+          <span *ngIf="damPostDto?.assetName?.length > 20">…</span>
+        </span>
+      </div>
+    </div>
+     <div *ngIf="isTrack" class="asset-info">
+      <i class="fas fa-file-alt"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Track Title</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.assetName">
+          {{ damPostDto?.assetName | slice:0:20 }}
+          <span *ngIf="damPostDto?.assetName?.length > 20">…</span>
+        </span>
+      </div>
+    </div>
+    <div class="asset-info">
+      <i class="fas fa-folder"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Folder</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.folder">
+          {{ damPostDto?.folder | slice:0:20 }}
+          <span *ngIf="damPostDto?.folder?.length > 20">…</span>
+        </span>
+      </div>
+    </div>
+    <div class="asset-info">
+      <i class="fas fa-user"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Created By</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.fullName">
+          {{ damPostDto?.fullName | slice:0:20 }}
+          <span *ngIf="damPostDto?.fullName?.length > 20">…</span>
+        </span>
+      </div>
+    </div>
+    
+    <div *ngIf="isDam" class="asset-info">
+      <i class="fas" [ngClass]="damPostDto.assetType | fileIcon"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Asset Type</span>
+        <span class="value">
+          <span class="badge"
+                data-toggle="tooltip" data-placement="bottom"
+                [attr.title]="damPostDto?.assetType">
+            {{ damPostDto?.assetType | slice:0:20 }}
+            <span *ngIf="damPostDto?.assetType?.length > 20">…</span>
+          </span>
+        </span> 
+      </div>
+  </div>
+    
+    <div class="asset-info">
+      <i class="fas fa-calendar-alt"></i>
+      <div class="text-group">
+        <span class="label text-align-left">Published On</span>
+        <span class="value"
+              data-toggle="tooltip" data-placement="bottom"
+              [attr.title]="damPostDto?.publishedOn | date:'MMM dd,yyyy hh:mm:ss a'">
+          {{ damPostDto?.publishedOn | date:'MMM dd,yyyy hh:mm:ss a' }}
+        </span>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

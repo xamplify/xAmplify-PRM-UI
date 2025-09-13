@@ -1,0 +1,97 @@
+<div class="loader-container" *ngIf="mainLoader">
+	<div class="loader"></div>
+	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
+ </div>
+ <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div>
+	<div class="content" style="background-color: rgba(0,0,0,.0);"
+		[ngClass]="{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+		<div style="background-color: rgba(0,0,0,.0);">
+			<app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+			<app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
+		</div>
+		<div class="row">
+			<!-- BEGIN LOGIN FORM -->
+			<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+				<!-- XNFR-334--->
+				<div *ngIf="hideCloseButton" style="margin-bottom: 24px;">
+					<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
+						data-toggle="tooltip" data-placement="left" title="Close"> X </a>
+				</div>
+				<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
+					<div class="row solid-wb" style="margin-top: 28px;"></div>
+				<ng-template [ngTemplateOutlet]="showTermsAndPolicies"></ng-template>
+			</div>
+		</div>
+		<!-- 12-12-2023-->
+                <app-copyright [styleOne]="false"></app-copyright>
+	</div>
+</div>
+<ng-template #ShowLoginWithCredentialsUI>
+	<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse"
+		*ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
+	<app-response-message [customResponse]="customResponse"
+		*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+	<!-- XNFR-334--->
+	<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong style="padding-top: 6px;">
+			<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+				<span style="position: relative;top: 4px;">Please
+					<a class="underlinetext success" (click)="resendActivation()"> click here </a>to get the account
+					activation email.</span>
+			</span>
+		</strong>
+	</div>
+	<form class="login-form" (ngSubmit)="login()">
+		<h3 class="form-title text-white">{{signInText}}</h3>
+		<div class="alert alert-danger display-hide">
+			<button class="close" data-close="alert"></button>
+			<label class="custom-label">Enter any Email and password.</label>
+		</div>
+		<div class="form-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9">Email</label>
+			<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag" name="username"
+				[(ngModel)]="model.username" #username="ngModel" required type="text" autocomplete="off"
+				placeholder="Email" (input)="clearErrorMessage()" />
+		</div>
+		<div class="form-group has-feedback">
+			<label class="control-label visible-ie8 visible-ie9">Password</label>
+			<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
+				[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
+				placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
+			<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password"
+				(click)="referenceService.showPassword('password')"
+				*ngIf="!referenceService.showInputPassword && model.password"></span>
+			<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password"
+				(click)="referenceService.showPassword('password')"
+				*ngIf="referenceService.showInputPassword && model.password"></span>
+		</div>
+		<button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit"
+			class="btn btn-primary pull-left  signin">{{signInText}}</button>
+		<button *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i
+				class="fa fa-spinner fa-spin mr5"></i>{{signInText}}</button>
+	</form>
+	<div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
+		<label class="rememberme check">
+			<span hidden><input class="checkBox_shadow" type="checkbox" name="remember"
+					value="1" />&nbsp;Remember</span>
+		</label>
+		<a *ngIf="!isPleaseWaitButtonDisplayed" id="forgetAnchor" routerLink="/forgot-password"
+			class="forget-password text-white">Forgot Password?</a>
+		<span *ngIf="isPleaseWaitButtonDisplayed" class="forget-password text-white disabled">Forgot Password?</span>
+	</div>
+</ng-template>
+
+
+<ng-template #showTermsAndPolicies>
+	<div class="text-center mt10">
+		<label class="check">
+			<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
+			<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+		</label>
+	</div>
+</ng-template>

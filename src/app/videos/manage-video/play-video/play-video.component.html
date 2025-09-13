@@ -1,0 +1,357 @@
+<div class="portlet light">
+    <div class="portlet-body pt0">
+      <div class="row margin-bottom-30">
+        <div class="col-lg-7 col-md-6 col-sm-6 col-xs-12">
+          <app-play-video-loader [isPlaying]="true" *ngIf="isVideoChanged"></app-play-video-loader>
+          <div style="margin-bottom: 1em;" [hidden]="isVideoChanged">
+            <div id="overLayImage"></div>
+            <div id="overlay-logo" class="video-js"
+              [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
+              <a [href]="selectedVideo.brandingLogoDescUri"
+                target="_blank"
+                [class.disabled]="selectedVideo.brandingLogoDescUri===null">
+                <img id="imageDivHide" *ngIf="selectedVideo.brandingLogoUri"
+                [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri"
+                class="img-responsive">
+              </a>
+            </div>
+            <div id="newPlayerVideo"></div>
+          </div>
+          <div id="modalDialog" [hidden]="isVideoChanged"></div>
+          <!-- modal popup  -->
+          <div id="overlay-modal"
+            class="video-js overlay is360video custom-overlay"
+            [hidden]="isVideoChanged" [class.overlaySet]="!overLaySet">
+            <form #f="ngForm" novalidate>
+              <div class="col-xs-12 overlay-main"
+                [ngClass]="{'bottomCss':fullScreenMode}">
+                <h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
+                <div class="flex" *ngIf="callAction.isFistNameChecked==true">
+                  <input type="text" name="firstName" style="margin-right: 0;"
+                    [(ngModel)]="callAction.firstName"
+                    (ngModelChange)="checkingCallToActionValues()" maxlength="20"
+                    class="form-control text-box m21" placeholder="First Name">
+                  <input type="text" name="lastName"
+                    [(ngModel)]="callAction.lastName" maxlength="20"
+                    (ngModelChange)="checkingCallToActionValues()"
+                    class="form-control text-box m21" placeholder="Last Name">
+                </div>
+                <div class="flex m02">
+                  <div class="w-8">
+                    <input type="text" name="email_id"
+                      [(ngModel)]="callAction.email_id"
+                      (ngModelChange)="checkingCallToActionValues()"
+                      class="form-control text-box" placeholder="Email Address"
+                      pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+                      #email_id="ngModel">
+                  </div>
+                  <div class="w-4">
+                    <button type="button" id="playorsubmit"
+                      class="btn play-button text-box"
+                      [disabled]="callAction.isOverlay==true"
+                      (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
+                  </div>
+                </div>
+                <h4 class="upper-text-heading lowerText">{{selectedVideo.lowerText}}</h4>
+              </div>
+            </form>
+            <div [hidden]="isVideoChanged">
+              <div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'"
+                id="repeatPlay" style="cursor: pointer">
+                <i class="fa fa-repeat" aria-hidden="true"></i>
+              </div>
+              <div *ngIf="callAction.isSkipChecked==true" id="skipOverlay"
+                style="cursor: pointer">
+                <i class="fa fa-forward" aria-hidden="true"></i> <b
+                  style="font-size: 13px; color: white;" translate>skip</b>
+              </div>
+            </div>
+          </div>
+          <!-- modal popup end-->
+          <div [hidden]="isVideoChanged">
+            <h3 class="video-title">
+              <span [hidden]="fullTitle">{{selectedVideo.title |
+                slice:0:140}}<a title="more"
+                *ngIf="selectedVideo.title?.length>140"
+                (click)="showFullTitle(true)">...</a>
+              </span> <span [hidden]="!fullTitle">{{selectedVideo.title}}<a
+                title="less" (click)="showFullTitle(false)">...</a></span>
+            </h3>
+          </div>
+          <div class="col-xs-7 col-sm-7 col-md-8" style="padding: 0;"
+            [hidden]="isVideoChanged">
+            <div class="d-flex"
+              *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
+              <button *ngIf="shareVideo==true"
+                class="btn btn-primary shareVideoButton" (click)="shareClick()"
+                [disabled]="isThisDraftVideo==true" translate>
+                <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+              </button>
+              <button *ngIf="embedVideo==true"
+                class="btn btn-primary embedVideoButton" data-toggle="modal"
+                data-target="#myModal" [disabled]="isThisDraftVideo"
+                (click)="embedModal()" translate>
+                <i class="fa fa-external-link" aria-hidden="true"></i> Embed
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-5 col-sm-5 col-md-4" style="padding: 0;"
+            [hidden]="isVideoChanged">
+            <div class="col-xs-12" style="padding: 0;">
+              <span class="pull-right videoViews">
+                <h4 class="viewsh4" style="padding-right:14px;">{{selectedVideo.views}} views</h4>
+              </span>
+            </div>
+            <div class="col-xs-12" style="padding: 0;" [hidden]="true">
+              <span class="pull-right">
+                <button style="color: #337ab7; background: #fff;"
+                  title="I like this" (click)="likesValuesDemo()">
+                  <a style="text-decoration: none;"> <i
+                    class="fa fa-thumbs-up" aria-hidden="true"></i> {{likesValues}}
+                  </a>
+                </button>
+                <button style="color: #f3565d; background: #fff; padding: 0;"
+                  title="I dislike this" (click)="disLikesValuesDemo()">
+                  <a
+                    style="text-decoration: none; color: #f3565d; background: #fff; padding: 0;">
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    {{disLikesValues}}
+                  </a>
+                </button>
+              </span>
+            </div>
+          </div>
+          <!-- emebd src Modal Start-->
+          <app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo"
+            (notifyParent)="closeEmbedModal($event)"></app-embed-modal>
+          <!-- Modal End-->
+          <div [hidden]="isVideoChanged">
+            <strong translate>Uploaded on : <app-timestamp [isOnlyDate]="true"
+                [dateAndTime]="selectedVideo.uploadedDate"> </app-timestamp>
+            </strong>
+            <p align="justify" style="word-break: break-word;">
+              {{selectedVideo.description}}</p>
+          </div>
+          <div [hidden]="isVideoChanged">
+            <p translate>Category : {{selectedVideo.category.name}}</p>
+          </div>
+          <div>
+            <div class="slimScrollDiv"
+              style="position: relative; overflow: hidden; width: auto;"
+              *ngIf="false">
+              <div class="scroller"
+                style="max-height: 800px; overflow: hidden; width: auto;"
+                data-always-visible="0" data-rail-visible="0"
+                data-handle-color="#dae3e7" data-initialized="1">
+                <form action="#" class="form-horizontal">
+                  <div class="tabbable-line">
+                    <ul class="nav nav-tabs ">
+                      <li class="active"><a href="#tab_1" data-toggle="tab"
+                        aria-expanded="true" translate> Comments </a></li>
+                    </ul>
+                    <div *ngIf="!comments">
+                      <h2>
+                        <pre style="border-radius: 0; color: #3e2525;" translate>Comments are disabled for this video.!!! </pre>
+                      </h2>
+                    </div>
+                    <div class="tab-content" *ngIf="comments">
+                      <div class="tab-pane active" id="tab_1">
+                        <!-- TASK COMMENTS -->
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <ul class="media-list">
+                              <li class="media"><a class="pull-left"
+                                href="javascript:;"> <img class="todo-userpic"
+                                  src="assets/admin/layout2/img/avatar8.jpg" width="27px"
+                                  height="27px">
+                              </a>
+                                <div class="media-body todo-comment">
+                                  <button type="button"
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
+                                    Reply &nbsp;</button>
+                                  <p class="todo-comment-head">
+                                    <span class="todo-comment-username">Christina
+                                      Aguilera </span> &nbsp; <span class="todo-comment-date">17
+                                      Sep 2014 at 2:05pm</span>
+                                  </p>
+                                  <p class="todo-text-color">
+                                    Cras sit amet nibh libero, in gravida nulla. Nulla vel
+                                    metus scelerisque ante sollicitudin commodo. Cras purus
+                                    odio, vestibulum in vulputate at, tempus viverra
+                                    turpis. <br>
+                                  </p>
+                                  <!-- Nested media object -->
+                                  <div class="media">
+                                    <a class="pull-left" href="javascript:;"> <img
+                                      class="todo-userpic"
+                                      src="assets/admin/layout2/img/avatar4.jpg"
+                                      width="27px" height="27px">
+                                    </a>
+                                    <div class="media-body">
+                                      <p class="todo-comment-head">
+                                        <span class="todo-comment-username">Carles
+                                          Puyol </span> &nbsp; <span class="todo-comment-date">17
+                                          Sep 2014 at 4:30pm</span>
+                                      </p>
+                                      <p class="todo-text-color" translate>Thanks so much my dear!
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div></li>
+                              <li class="media"><a class="pull-left"
+                                href="javascript:;"> <img class="todo-userpic"
+                                  src="assets/admin/layout2/img/avatar5.jpg" width="27px"
+                                  height="27px">
+                              </a>
+                                <div class="media-body todo-comment">
+                                  <button type="button"
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
+                                    Reply &nbsp;</button>
+                                  <p class="todo-comment-head">
+                                    <span class="todo-comment-username">Andres
+                                      Iniesta </span> &nbsp; <span class="todo-comment-date">18
+                                      Sep 2014 at 9:22am</span>
+                                  </p>
+                                  <p class="todo-text-color">
+                                    Cras sit amet nibh libero, in gravida nulla.
+                                    Scelerisque ante sollicitudin commodo Nulla vel metus
+                                    scelerisque ante sollicitudin commodo. Cras purus odio,
+                                    vestibulum in vulputate at, tempus viverra turpis. <br>
+                                  </p>
+                                </div></li>
+                              <li class="media"><a class="pull-left"
+                                href="javascript:;"> <img class="todo-userpic"
+                                  src="assets/admin/layout2/img/avatar6.jpg" width="27px"
+                                  height="27px">
+                              </a>
+                                <div class="media-body todo-comment">
+                                  <button type="button"
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
+                                    Reply &nbsp;</button>
+                                  <p class="todo-comment-head">
+                                    <span class="todo-comment-username">Olivia Wilde</span>
+                                    &nbsp; <span class="todo-comment-date">18 Sep
+                                      2014 at 11:50am</span>
+                                  </p>
+                                  <p class="todo-text-color">
+                                    Cras sit amet nibh libero, in gravida nulla.
+                                    Scelerisque ante sollicitudin commodo Nulla vel metus
+                                    scelerisque ante sollicitudin commodo. Cras purus odio,
+                                    vestibulum in vulputate at, tempus viverra turpis. <br>
+                                  </p>
+                                </div></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <!-- END TASK COMMENTS -->
+                        <!-- TASK COMMENT FORM -->
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <ul class="media-list">
+                              <li class="media"><img class="todo-userpic pull-left"
+                                src="assets/admin/layout2/img/avatar4.jpg" width="27px"
+                                height="27px">
+                                <div class="media-body">
+                                  <textarea class="form-control todo-taskbody-taskdesc"
+                                    rows="4" placeholder="Type comment..."></textarea>
+                                </div></li>
+                            </ul>
+                            <button type="button"
+                              class="pull-right btn btn-sm btn-circle green-haze" translate>
+                              &nbsp; Submit &nbsp;</button>
+                          </div>
+                        </div>
+                        <!-- END TASK COMMENT FORM -->
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="slimScrollBar"
+                style="width: 7px; position: absolute; top: 102px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 583.941605839416px; background: rgb(218, 227, 231);">
+              </div>
+              <div class="slimScrollRail"
+                style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
+          <!-- BEGIN FILTER -->
+          <div class="row">
+            <div class="col-xs-6"><h4 class="mt0" translate>Related Videos:</h4></div>
+            <div class="col-xs-6" *ngIf="false">
+              <button class="btn btn-xs hidden-xs pull-right l-g-view"
+                [disabled]="isListView" (click)="isListView = true"
+                title="List View">
+                <i class="fa fa-th-list p10" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-xs hidden-xs pull-right l-g-view"
+                [disabled]="!isListView" (click)="isListView = false"
+                title="Grid View">
+                <i class="fa fa-th-large p10" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row m0">
+          <div class="col-md-12 p0">
+            <app-play-video-loader [playVideo]="true"
+              *ngIf="httpRequestLoader.isLoading"></app-play-video-loader>
+            <div *ngIf="allVideos && !httpRequestLoader.isLoading">
+              <ng-container
+                *ngFor="let videoFile of pagination.pagedItems; let i = index;">
+              <div *ngIf="false"
+                class="col-md-6 col-sm-8 mix category_1 mix_all"
+                style="display: block; opacity: 1;">
+                <div class="mix-inner">
+                  <img class="img-responsive" src="{{videoFile.imagePath}}"
+                    (error)="videoUtilService.errorVideoHandler($event)"
+                    class="imagePath" (click)="showVideo(videoFile)" style="cursor:pointer">
+                    <a class="mix-preview" style="position:relative;top:-66px;left:80px"
+                      title="play video" data-rel=""> <i class="fa fa-play" (click)="showVideo(videoFile)"
+                      ></i>
+                    </a>
+                  <div class="mix-details" style="margin-top: -20px;">
+                    <h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
+                     <span align="right"
+                      style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+                    <span align="left"
+                      style="bottom: 17px; position: absolute;">#{{videoFile.views}}</span>
+                    <br> <span align="left"
+                      style="bottom: 3px;  position: absolute;"> <span
+                      *ngIf="!authenticationService.isOnlyPartner()"> <span
+                        class="video-uploaded-by"
+                        title="Uploaded By">By {{videoFile.uploadedUserName |
+                          slice:0:15}}<span
+                          *ngIf="videoFile.uploadedUserName?.length>15">...</span>
+                      </span>    
+                    </span> <span *ngIf="authenticationService.isOnlyPartner()"> <span
+                        style="float: left;">By {{videoFile.companyName |
+                          slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span>
+                      </span>
+                    </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="true" class="mb10">
+                <app-video-thumbnail
+                  [videoFile]="videoFile" (notifyParent)="showVideo($event)"></app-video-thumbnail>
+              </div>
+              </ng-container>
+            </div>
+          </div></div>
+
+          <!-- END FILTER -->
+
+          <div *ngIf="showRelatedMessage == false" class="row">
+          <div class="col-md-12">
+            <app-pagination	[pagination]="pagination" [isDropdown]="true" [type]="'playvideos'" (notifyParent)="setPage($event)"
+              (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
+          </div>
+          </div>
+          <p *ngIf="showRelatedMessage" class="notFoundVideo" translate>No Related videos Found</p>
+        </div>
+      </div>
+    </div>

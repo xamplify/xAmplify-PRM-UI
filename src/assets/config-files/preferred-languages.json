@@ -1,0 +1,23 @@
+{
+	"languages": [{
+			"name": "English",
+			"id": "en",
+			"beeId":"en-US"
+		},
+		{
+			"name": "French",
+			"id": "fr",
+			"beeId":"fr-FR"
+		},
+		{
+			"name": "Spanish",
+			"id": "es",
+			"beeId":"es-ES"
+		},
+		{
+			"name": "Japanese",
+			"id": "ja",
+			"beeId":"ja-JP"
+		}
+	]
+}

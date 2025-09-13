@@ -1,0 +1,92 @@
+.img-class {
+  width: auto;
+}
+
+.ribbon div {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
+}
+.ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.ribbon div::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.bar a bar {
+  width: 25px !important;
+  height: 25px !important;
+  padding: 2px !important;
+  margin: 10px 4px !important;
+}
+.top10 {
+  margin-top: 5px;
+}
+.min-h {
+  min-height: 350px;
+}
+.ref-mar {
+  margin-left: 4px !important;
+}
+.mxv {
+  object-fit: fill;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  max-width: 100% !important;
+  max-height: 150px;
+  min-height: 150px;
+  margin: 0px;
+  width: 100%;
+}
+
+.minhsfp {
+  min-height: 644px !important;
+}
+.bbnone {
+  border-bottom: none;
+}
+
+
+.gridViewImgBg img{margin: 0px;}
+
+.divapdding-or-cards {
+  margin: 5px 0px;
+}
+
+.asset-approval-lable-spacing {
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+
+
+

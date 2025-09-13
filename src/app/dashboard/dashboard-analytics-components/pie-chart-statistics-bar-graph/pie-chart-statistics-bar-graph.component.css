@@ -1,0 +1,18 @@
+.highcharts-figure1 {
+  min-width: 100px;
+  max-width: 800px;
+}
+.box {
+  padding: 10px;
+}
+.text-center {
+  text-align: center;
+}
+.portlet.light .portlet-body {
+  padding: 1em;
+}
+[type="checkbox"] {
+  vertical-align: sub;
+  width: 16px;
+  height: 16px;
+}

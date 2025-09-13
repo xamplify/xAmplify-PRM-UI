@@ -1,0 +1,30 @@
+<div class="page-content">
+    <div class="page-bar mb-height_auto" style="height: 48px;">
+        <ul class="page-breadcrumb">
+            <li *ngIf="!isFromApprovalModule">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i *ngIf="!isAdd || fromManage" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isAdd || fromManage" (click)="goToManagePlayBooks()">Manage Playbooks</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isAdd">Add Playbook</a>
+                <a *ngIf="!isAdd">Edit Playbook</a>
+            </li>
+            <li *ngIf="isFromApprovalModule">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isAdd">Edit Playbook</a>
+            </li>
+        </ul>
+        <div id="folder-margin-xamp">
+            <button class="btn btn custom btn-abjustmentin-breadcrumbs btn_custom_bg" style="margin-top: 3px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>      
+        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    </div>
+    <app-add-tracks-play-book #addTracksPlayBookComponent [type]="type"></app-add-tracks-play-book>
+</div>

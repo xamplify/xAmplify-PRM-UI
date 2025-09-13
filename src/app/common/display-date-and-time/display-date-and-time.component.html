@@ -1,0 +1,7 @@
+<ng-container *ngIf="!invalidInput">
+    <span *ngIf="!referenceService.isSafariBrowser()">{{displayTime |date:'mediumDate'}} {{displayTime |date:'shortTime'}}</span>
+    <span *ngIf="referenceService.isSafariBrowser()">{{displayTime}}</span>
+</ng-container>
+<ng-container *ngIf="invalidInput">
+    <p class="required"><strong>Invalid date/time</strong></p>
+</ng-container>

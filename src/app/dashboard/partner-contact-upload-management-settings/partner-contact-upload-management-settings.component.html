@@ -1,0 +1,147 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light remove_cardBgcolor light_bg_removal remove_space">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+      <div class="maualSPFCardbg">
+        <div class="tenpixelspaddig">
+          <label class="bold-font"><strong>
+            {{isMarketing ? 'You have access to view your contact usage analytics.' : ' You have the authority to set contact limits for your partners and view contact usage analytics.'}}              
+            </strong></label>
+          <div class="contact-analytics-counts-info" *ngIf="showSelfContactsCount" >Contacts Added By You:
+            <span *ngIf="!selfContactsCountLoader?.isLoading"><strong>{{selfContactCount}}</strong></span>
+            <img *ngIf="selfContactsCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+              src="../../../assets/images/Spinner.gif" alt="">
+          </div>
+          <div *ngIf="!isMarketing" class="contact-analytics-counts-info">Contacts Added By Partners:
+            <span
+              *ngIf="!totalPartnerContactUploadCountLoader?.isLoading"><strong>{{contactsUploadedCountByAllPartners}}</strong></span>
+            <img *ngIf="totalPartnerContactUploadCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+              src="../../../assets/images/Spinner.gif" alt="">
+          </div>
+          <div class="contact-analytics-counts-info">Contact Subscription Limit:
+            <span
+              *ngIf="!contactSubscriptionLimitLoader?.isLoading"><strong>{{contactSubscriptionLimit}}</strong></span>
+            <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+              src="../../../assets/images/Spinner.gif" alt="">
+          </div>
+          <div class="contact-analytics-counts-info" >Contact Subscription Limit Used:
+            <span
+              *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading"><strong>{{contactSubscriptionCountUsed}}</strong></span>
+            <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+              src="../../../assets/images/Spinner.gif" alt="">
+          </div>
+            <div class="contact-analytics-counts-info">
+              <span *ngIf="contactSubscriptionCountUsed > contactSubscriptionLimit">
+                Contacts Exceeded By:
+              </span>
+              <span *ngIf="contactSubscriptionCountUsed <= contactSubscriptionLimit">
+                Available Limit:
+              </span>
+              <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+                src="../../../assets/images/Spinner.gif" alt="">
+              <strong>
+                <span *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading" [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
+                                ? 'red' : 'green')}">
+                  {{ contactSubscriptionCountUsed > contactSubscriptionLimit
+                  ? contactSubscriptionCountUsed - contactSubscriptionLimit
+                  : contactSubscriptionLimit - contactSubscriptionCountUsed }}
+                </span>
+              </strong>
+            </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isMarketing" class="row d-flex justify-content-end mb10">
+        <div class="col-lg-4 col-sm-4 col-lg-4 col-lg-6 pr0">
+          <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows" [(ngModel)]="sortOption"
+            (ngModelChange)="sortByOption($event)">
+            <ng-container *ngFor="let sort of sortOptions; let i = index">
+              <option [ngValue]="sort">{{sort.name}}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-lg-4 col-lg-6">
+          <span class="input-icon right mb10">
+            <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+              placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+            <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+              (click)="searchKey='';searchData();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+                aria-hidden="true"></i></button>
+          </span>
+        </div>
+      </div>
+
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !isMarketing"></app-list-loader>
+
+      <div>
+        <section *ngIf="!isMarketing">
+          <div *ngIf="!httpRequestLoader.isLoading" class="table-responsive">
+            <table class="table tgrid table-hover table-sm">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 50%;">Partner Details</th>
+                  <th scope="col" class="contact-limit-row-width text-center">Assigned</th>
+                  <th scope="col" class="contact-limit-row-width text-center">Used</th>
+                  <th scope="col" class="contact-limit-row-width text-center">Remaining</th>
+                  <th scope="col" class="contact-limit-row-width text-center">Exceeded</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let partnerCompanyMetricsDTO of partnerCompanyMetricsDTOs;let i = index">
+                <tr>
+                  <td style="width: 50%;">
+                    
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partnerCompanyMetricsDTO"></app-user-info>
+                    
+                  </td>
+                  <td class="contact-count error text-center" width="14%" id="contact-count-{{i}}">
+                    <input type="number" [(ngModel)]="partnerCompanyMetricsDTO.contactUploadLimit"
+                      [ngModelOptions]="{standalone: true}" class="form-control" name="contactUploadLimit"
+                      placeholder="Contacts" min="1" oninput="validity.valid||(value='');"
+                      (input)="onContactLimitChange(partnerCompanyMetricsDTO.companyId, partnerCompanyMetricsDTO.contactUploadLimit)">
+                  </td>
+                  <td class="text-center">
+                    <div id="text-color-my-profile" class="contact-limit-row-width">
+                      <strong>{{partnerCompanyMetricsDTO.contactsUploadedCount}}</strong>
+                    </div>
+                  </td>
+
+                  <td class="text-center">
+                    <div id="text-color-my-profile" class="contact-limit-row-width"
+                      [ngStyle]="{ 'color': partnerCompanyMetricsDTO.unusedContactUploadLimit > 0 ? 'green' : 'red' }">
+                      <strong>{{ partnerCompanyMetricsDTO.unusedContactUploadLimit }}</strong>
+                    </div>
+                  </td>
+
+                  <td class="text-center">
+                    <div id="text-color-my-profile" class="contact-limit-row-width">
+                      <strong
+                        [ngStyle]="{'color': partnerCompanyMetricsDTO.exceededContactUploadLimit > 0 ? 'red' : 'inherit'}">{{partnerCompanyMetricsDTO.exceededContactUploadLimit}}</strong>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="alert alert-info text-center" *ngIf="pagination?.totalRecords == 0 && !httpRequestLoader.isLoading
+        && !isMarketing">
+        <strong>No Data Found</strong>
+      </div>
+
+      <!--Pagination-->
+      <div class="pdl-mgt" *ngIf="pagination?.totalRecords > 0 && !httpRequestLoader.isLoading && !isMarketing">
+        <app-pagination [pagination]="pagination"
+          (notifyParentDropDown)="listAllPartnersForContactUploadManagementSettings($event)"
+          (notifyParent)="paginateList($event)"></app-pagination>
+      </div>
+
+      <div *ngIf="!httpRequestLoader.isLoading && !isMarketing" style="padding: 10px 0px;float: right;">
+        <button (click)="saveOrUpdate()" [disabled]="pagination?.totalRecords == 0"
+          class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

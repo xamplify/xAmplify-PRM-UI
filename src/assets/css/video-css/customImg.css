@@ -1,0 +1,19 @@
+.colorImg { 
+	/* border: #00008B 4px solid; */
+	 /* box-shadow: 2px 6px 6px #000; */
+	 opacity: 1.0;
+     filter: alpha(opacity=100); /* For IE8 and earlier */
+	 }
+
+.colorShade {
+    opacity: 0.3;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+.sizeImg {
+	height: 71px;
+	width:98px ;
+}
+img:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+} 

@@ -1,0 +1,45 @@
+input.form-control {
+  border: none;
+  width: 100%;
+  padding: 5px;
+  font-size: 1em;
+  border-bottom: 2px solid #efefef;
+}
+input.form-control:focus {
+  border-bottom: 2px solid #2196f3;
+}
+label {
+  font-weight: bold !important;
+}
+.text-danger {
+  color: red !important;
+}
+.alert-dismissible .close {
+  top: 0 !important;
+  right: 0px !important;
+}
+.alert-success,
+.alert-danger {
+  color: #fff;
+  border-radius: 0;
+}
+.alert-success {
+  background-color: #77bf81;
+}
+.alert-danger {
+  background-color: #ec6262;
+}
+.alert-danger1 {
+  background-color: #ec6262;
+  color: white;
+}
+.alert {
+  padding: 10px;
+}
+.alert-success,
+.alert-danger > h5 {
+  font-size: 14px;
+}
+.text {
+  padding-top: 12px;
+}

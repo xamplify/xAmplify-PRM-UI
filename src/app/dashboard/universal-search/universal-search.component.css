@@ -1,0 +1,56 @@
+  .orange-lable-cu1 {
+    padding: 4px 6px !important;
+  }
+  .border-end {
+    border-bottom: 1px solid#ddd;
+  }
+  .border-end:last-child {
+    border-bottom: none!important;
+  }
+  .published {
+    padding: 4px 6px !important;
+  }
+  .instant-links-type {
+    height: 37px;
+    border-radius: 50%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  .portlet > .portlet-title {
+    margin-bottom: 0px;
+    min-height: 30px;
+  }
+  .mix-filter {
+    margin: 5px;
+  }
+  .mix-filter li {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .emailtemplate-selected{
+    background-color: #0276ff;
+    color: #fff;
+  }
+  .quicklinks_icons {
+    margin-right: 5px;
+  }
+  .tag.tablegray-tag {
+    padding: 2px !important;
+    border-radius: 3px !important;
+  }
+.view-banner {
+  white-space: nowrap;
+  width: auto !important;
+}
+.disabled-navigate {
+  cursor: not-allowed;
+  /* pointer-events: none; */
+  opacity: 0.6;
+}
+.disabled-navigate-none {
+  pointer-events: none;
+}

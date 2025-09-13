@@ -1,0 +1,40 @@
+.text-input__loading--line {
+  height: 10px;
+  margin: 7px;
+  animation: pulse 1s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+.rect-box {
+  width: auto;
+  height: 360px;
+  background-color: #f1f1f1;
+}
+.thick {
+  height: 10px;
+}
+.thin {
+  height: 6px;
+}
+.w50 {
+  width: 50%;
+}
+.w75 {
+  width: 75%;
+}
+.w100 {
+  width: 100%;
+}
+.box {
+  width: auto;
+  height: 90px;
+}

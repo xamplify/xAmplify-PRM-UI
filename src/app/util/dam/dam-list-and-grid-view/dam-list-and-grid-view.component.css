@@ -1,0 +1,366 @@
+.img-class {
+  width: auto;
+}
+#actions-row {
+  width: 35%;
+}
+
+#min-width {
+  min-width: 145px;
+}
+
+.cursor {
+  cursor: not-allowed;
+}
+
+.ribbon div {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
+}
+
+.ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.ribbon div::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.delete {
+  background: #cb5a5e;
+}
+.bar a {
+  width: 25px !important;
+  height: 25px !important;
+  padding: 2px !important;
+  margin: 10px 4px !important;
+}
+
+.thumbnail-wrapper {
+  float: left;
+  width: 144px;
+  height: 81px;
+  background-color: #fff;
+  text-align: center;
+  position: relative;
+  border-radius: 5px;
+}
+
+.thumbnail-wrapper > img {
+  max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  margin: 0 auto;
+}
+
+.custom-image-css {
+  position: relative;
+}
+
+#asset-history {
+  background-color: #f1f1f1;
+}
+#history-tr {
+  background-color: #d3d3d317;
+}
+
+.min-h {
+  min-height: 383px;
+}
+.mxv {
+  object-fit: fill;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  max-width: 100% !important;
+  max-height: 150px;
+  min-height: 150px;
+  margin: 0px;
+  width: 100%;
+}
+
+.tag {
+  font-size: 12px;
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  margin: 2px 2px 2px 0px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: inline;
+}
+
+.ActionAlign {
+  /* display: flex;*/
+  text-align: center;
+  float: none;
+}
+
+.ActionButtonPad {
+  display: contents;
+}
+
+@media screen and (max-width: 600px) {
+  .mDamTop {
+    padding-top: 15px;
+  }
+  .mDamSort {
+    width: 90%;
+    padding: 0px !important;
+  }
+  .mDamSearch {
+    right: 9px !important;
+    width: 100%;
+  }
+  .mDamResponse {
+    margin-top: 45px;
+  }
+  .mAlignView {
+    line-height: 1px;
+  }
+  .mActionWidth {
+    min-width: 140px !important;
+  }
+  .mActionAlign {
+    white-space: inherit !important;
+    float: left !important;
+  }
+  .mActionAlign2 {
+    white-space: nowrap !important;
+    display: inherit !important;
+    margin-top: 3px;
+  }
+  .mDisableColor {
+    color: #888 !important;
+    border: 1px solid;
+  }
+  .ref-mar {
+    margin-left: -16px !important;
+    margin-right: 5px;
+  }
+}
+
+.draft-video {
+  background-color: #f76c1a;
+  color: white;
+  width: fit-content;
+  padding: 1px;
+  text-align: center;
+  margin-top: 7px;
+}
+
+.title-div {
+  margin-left: 10px;
+  float: left;
+  text-align: left !important;
+}
+.title-div > a {
+  color: #666;
+}
+.title-div > h4 {
+  font-size: 13px;
+}
+.title-div > h5 {
+  font-size: 12px;
+}
+
+/* sudha sri */
+@media (max-width: 320px) {
+  .pb3 {
+    padding-bottom: 3px;
+  }
+}
+#mt15 {
+  margin-top: 15px;
+}
+@media screen and (max-width: 479px) {
+  .mt15 {
+    margin-top: 15px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .rSearch {
+    right: -2px !important;
+  }
+}
+.mb10 {
+  margin-bottom: 6px !important;
+}
+/* May 19 sudha */
+.img-track-list {
+  height: 100px;
+  width: 180px;
+  margin: 0;
+  background: #f2f4f9;
+  border: solid 1px #cccccc;
+  border-radius: 6px;
+}
+
+/* 14/06/23 */
+
+.ribbon span::before {
+  border-left: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+  border-right: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
+}
+.divapdding-or-cards {
+  margin: 5px 0px;
+}
+
+.width83{
+  width:75%
+}
+
+.alert-su {
+  padding:6px 12px;
+  text-align: center;
+}
+
+.gridViewImgBg img{margin: 0px;}
+/* grid bar */
+@media only screen and (min-width: 768px) and (max-width:  992px) { 
+    .bar {
+      width: 95% !important;
+    }
+}
+
+.tag-custom {
+  display: inline-block !important;
+  cursor: pointer;
+}
+
+.asset-approval-labele-spacing {
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+.oliveIcon{
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #5bb2f5;
+    border-radius: 50%;
+    cursor: pointer
+}
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oliveImg{
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+
+.digital-sign-banner{
+  width: auto!important;
+}
+
+.asset-deactivated {
+  float: left;
+  margin-left: 12px;
+}
+
+.downloadteam {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+}
+.download-btn {
+  border-left: 1px solid #1ca6f3;
+  padding: 0 12px;
+  border-radius: 0 7px 7px 0 !important;
+}
+.dropdown-menu li > a {
+  color: #333;
+}
+    .fileinput-button {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fileinput-button input[type="file"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      cursor: inherit;
+      display: block;
+    }
+
+    .downloadteam {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+}
+.border_btn{
+    border-left: 1px solid #2b569d;
+}
+    .fileinput-button {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fileinput-button input[type="file"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      cursor: inherit;
+      display: block;
+    }
+    .mb_13{
+      margin-bottom: 13px;
+    }

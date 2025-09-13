@@ -1,0 +1,6 @@
+<ng-container *ngIf="!invalidInput">
+  <span>{{ output }}</span>
+</ng-container>
+<ng-container *ngIf="invalidInput">
+  <p class="required"><strong>Invalid date/time</strong></p>
+</ng-container>

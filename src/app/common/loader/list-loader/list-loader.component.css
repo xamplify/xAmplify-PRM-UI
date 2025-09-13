@@ -1,0 +1,68 @@
+.text-input__loading--line {
+  height: 10px;
+  margin: 7px;
+  animation: list-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  position: relative;
+}
+@keyframes list-animation {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+td,
+th {
+  padding: 5px;
+  width: 15%;
+}
+tr {
+  border-bottom: 1px solid  rgba(165, 165, 165, 0.1);
+}
+.action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  float: left;
+}
+.rect-box {
+  width: 130px;
+  height: 75px;
+}
+.thick {
+  height: 10px;
+}
+.thin {
+  height: 6px;
+}
+td:nth-child(1) {
+  width: 10%;
+}
+td:nth-child(2) {
+  width: 20%;
+}
+td:nth-child(last) {
+  text-align: right;
+}
+.w50 {
+  width: 50%;
+}
+.w75 {
+  width: 75%;
+}
+#loading-bg-image{
+  background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
+}
+#processing-time-image{
+  background: transparent url(../../../../assets/images/processing-time.gif) no-repeat center center;
+}

@@ -1,0 +1,108 @@
+.asset-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius:8px;
+  padding: 12px 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.asset-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 12px;
+  border-right: 1.4px solid #e0e6ed; 
+}
+/* .asset-info:hover {
+  transform: translateY(-2px);
+  transition: all .2s ease-in-out;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .1) !important;
+} */
+.asset-info:last-child {
+  border-right: none!important;
+  padding-right: 0;
+}
+.asset-info i {
+  font-size: 18px;
+  color: #ffffff!important;
+  flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+.asset-info>.fa-file-alt{
+ background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+.asset-info>.fa-folder{
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+.asset-info>.fa-user{
+background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+.asset-info>.fa-calendar-alt{
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+.text-group {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.label.text-align-left {
+  font-size: 14px;
+  color: #000;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 0px;
+}
+
+.value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.badge {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1;
+}
+@media (max-width: 480px) {
+  .asset-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .value {
+    font-size: 14px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .asset-info {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #e0e6ed;
+    padding-bottom: 12px;
+  }
+
+  .asset-info:last-child {
+    border-bottom: none;
+  }
+}

@@ -1,0 +1,1507 @@
+<div>
+    <div class="my-container">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div *ngIf="!isHideFormInfo && isValidFormWithFormLabels" class="row">
+        <div class="col-md-12">
+            <div class="portlet light" id="portlet-height">
+                <div class="row">
+                    <div class="col-xs-5 col-sm-3 col-md-3 col-lg-2">
+                        <h4 [attr.class]="formNameClass">
+                            <strong>{{formHeader}}</strong>
+                        </h4>
+                    </div>
+                    <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2" style="padding-top: 2px;">
+                        <button (click)="openFormFields()" class="button_blue bgcolor-unset"
+                            style="border-radius: 3px;">
+                            <span class="btn btn-primary transition hidden-xs margin-right-design txt_pd-top3"
+                                translate>Add Fields
+                                <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></span>
+                        </button>
+                    </div>
+                    <div class=" col-xs-12 col-sm-6 col-md-7 col-lg-8" style="padding-top: 3px;">
+                        <a class="close-circle xamp-margin-left-icon only_themes" (click)="navigateBack()" aria-hidden="true">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                        <div *ngIf="!isMdfForm" class="design-btn-group" style="float: right;">
+                            <button (click)="openFormDesignModal()"
+                                class="button_blue p-top bgcolor-unset design_padding" style="border-radius: 3px;">
+                                <span class="btn btn-primary transition hidden-xs customize_design_btn" translate>Design
+                                    <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="portlet-body" id="add-form-parent-div">
+                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate" *ngIf="form?.associatedWithTrack"
+                        [showCloseIcon]="false">
+                    </app-response-message>
+                    <app-response-message class="pg8" [customResponse]="customResponseForNewFeature" [showCloseIcon]="false">
+                    </app-response-message>
+                    <app-response-message class="pg8" [customResponse]="customResponse"
+                        *ngIf="customResponse.isVisible">
+                    </app-response-message>
+                    <div class="profile-content">
+                        <div class="row">
+                            <!-- ---CREATE FORM -->
+                            <div class="col-md-8" id="complete-form-div">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
+                                            <div class="caption caption-md" style="width: 100%;display: inline-flex;">
+                                                <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong
+                                                        title="{{form.name}}">{{form.name}}</strong>
+                                                </h4>
+                                                <a *ngIf="!isMdfForm" class="icon-margin"
+                                                    style="padding-left: 5px;padding-top: 3px;" data-toggle="tooltip"
+                                                    data-placement="top" title="Change Form Details"
+                                                    (click)="showAddForm()">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 padding-none">
+                                            <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
+                                                (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                                            <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i
+                                                    class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body clearfix" id="create-from-div"
+                                        [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}"
+                                        [style.backgroundColor]="pageBackgroundColor">
+                                        <div *ngIf="form.showCompanyLogo">
+                                            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;"
+                                                [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+                                            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;"
+                                                [src]="form.companyLogo" alt="" />
+                                        </div>
+                                        <div class="vertical-center">
+                                            <div class="panel panel-info mWid" id="form-panel-info"
+                                                [style.backgroundColor]="form.backgroundColor"
+                                                [style.borderColor]="form.borderColor">
+                                                <div *ngIf="form.showTitleHeader" class="panel-heading"
+                                                    id="form-panel-heading" [style.backgroundColor]="form.borderColor"
+                                                    [style.color]="form.titleColor"
+                                                    [style.borderColor]="form.borderColor">
+                                                    <div class="panel-title form-name-wrap" title="{{form.name}}">
+                                                        {{form.name}}</div>
+                                                </div>
+                                                <div class="panel-body tab-content">
+                                                    <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">
+                                                        {{form.description}}</div>
+                                                    <ng-template [ngTemplateOutlet]="FormRows"></ng-template>
+                                                    <br>
+                                                    <!-- End of form-div -->
+                                                    <div *ngIf="form.showCaptcha">
+                                                        <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                                    </div>
+                                                    <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
+                                                    </div>
+                                                    <ng-template #show>
+                                                        <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                                                            [style.backgroundColor]="form.buttonColor"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
+                                                    <ng-template #dontShow>
+                                                        <button type="submit" disabled="disabled" class="btn green-haze margin" id="bottom-right"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
+                                                </div>
+                                                <!-- End of tab pane active -->
+                                            </div>
+                                        </div>
+                                        <!------Show Footer-------->
+                                        <footer>
+                                            <div style="text-align: center;" *ngIf="form.showFooter && form.footer"
+                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Create Form -->
+
+                            <!-- ---EDIT FORM INFO -->
+                            <div class="col-md-4" *ngIf="isColumnClicked && !isFullScreenView" id="edit-fields-div">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Edit Fields
+                                                Info</span>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body clearfix" id="edit-from-div">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active">
+                                                <!-- ----------------Filed Label-------------- -->
+                                                <fieldset [attr.class]="selectedColumn.editFormLabelDivClass">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Field Label</label><span
+                                                            class="required">*</span>
+                                                        <input type="text" [(ngModel)]="selectedColumn.labelName"
+                                                            class="form-control"
+                                                            (input)="updateHiddenLabelId(selectedColumn)"
+                                                            maxlength="1000" />
+                                                    </div>
+                                                    <!-- ----------------Quiz Options Type-------------- -->
+                                                    <div class="form-group"
+                                                        *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                        <label class="control-label">Quiz Options Type</label><br>
+                                                        <select class="drop-down-custom"
+                                                            [(ngModel)]="selectedColumn.labelType"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            (change)="changeQuizChoiceType(selectedColumn)">
+                                                            <option value="quiz_radio">Radio Buttons</option>
+                                                            <option value="quiz_checkbox">Checkboxes</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- ----------------Filed PlaceHolder Text-------------- -->
+                                                    <div class="form-group"
+                                                        *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'">
+                                                        <label class="control-label">Field Placeholder Text</label>
+                                                        <input type="text" [(ngModel)]="selectedColumn.placeHolder"
+                                                            class="form-control" maxlength="255" />
+                                                    </div>
+                                                    <!-- ---------------------------Price----------------------------- -->
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='price'">
+                                                        <label class="control-label">Field Placeholder Text</label>
+                                                        <div class="input-group prefix">
+                                                            <select class="input-group-prefix"
+                                                                [(ngModel)]="selectedColumn.priceType"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (change)="updatePriceSymbol(selectedColumn,$event.target.value)">
+                                                                <ng-container *ngFor="let type of priceTypes">
+                                                                    <ng-container *ngIf="type=='Rupee'">
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            ₹</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='Dollar'">
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            $</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='Yen'">
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            ¥</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='Pound'">
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            £</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='Euro'">
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            €</option>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </select>
+                                                            <input type="number" min="0"
+                                                                [(ngModel)]="selectedColumn.placeHolder"
+                                                                class="form-control input-border" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" *ngIf="!selectedColumn.defaultColumn">
+                                                        <label class="control-label">Required</label>
+                                                        <switch [status]="selectedColumn.required"
+                                                            [onText]="callActionSwitch.onTextValue"
+                                                            [offText]="callActionSwitch.offTextValue"
+                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                            [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                            [size]="callActionSwitch.bsize"
+                                                            (statusChange)="changeStatus($event,selectedColumn)">
+                                                        </switch>
+                                                    </div>
+
+                                                    <div class="form-group" *ngIf="selectedColumn.defaultColumn"
+                                                        title="Status cannot be changed for default label">
+                                                        <label class="control-label">Required</label>
+                                                        <switch [disabled]="callActionSwitch.disabled"
+                                                            [status]="selectedColumn.required"
+                                                            [onText]="callActionSwitch.onTextValue"
+                                                            [offText]="callActionSwitch.offTextValue"
+                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                            [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                            [size]="callActionSwitch.bsize">
+                                                        </switch>
+                                                    </div>
+                                                </fieldset>
+                                                <!-- ----------------Radio Buttons/Check Boxes-------------- -->
+                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass"
+                                                    *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select' || selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                    <form class="form-inline">
+                                                        <legend style="border:none !important ">
+                                                            <div class="form-group">
+                                                                <label class="control-label"
+                                                                    *ngIf="selectedColumn.labelType=='radio'">Radio
+                                                                    Button
+                                                                    Choices</label>
+                                                                <label class="control-label"
+                                                                    *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">Quiz
+                                                                    Choices</label>
+                                                                <label class="control-label"
+                                                                    *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
+                                                                    Choices</label>
+                                                                <label class="control-label"
+                                                                    *ngIf="selectedColumn.labelType=='select'">Drop-down
+                                                                    Choices</label>
+                                                                <br><br>
+                                                                <!-- ---------------Radio Button--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType=='radio'">
+                                                                    <span class="info"
+                                                                        *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
+                                                                    <ng-container
+                                                                        *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="{{selectedColumn.labelType}}"
+                                                                            name="{{selectedColumn.labelId}}">
+                                                                        <input type="text"
+                                                                            class="form-control responsiveWidthCu"
+                                                                            [(ngModel)]="radioButton.name"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            (input)="updateHiddenLabelIdForChoice(radioButton)"
+                                                                            maxlength="1000">
+                                                                        <button type="button"
+                                                                            class="btn btn-success  btn-xs"
+                                                                            (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn-xs"
+                                                                            (click)="removeChoice(selectedColumn,index,radioButton)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Quiz Options--------------- -->
+                                                                <ng-container
+                                                                    *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                                    <span class="info"
+                                                                        *ngIf="selectedColumn.choiceErrorMessage?.length>0">{{selectedColumn.choiceErrorMessage}}<br></span>
+                                                                    <ng-container
+                                                                        *ngFor="let choice of selectedColumn.choices;let index=index">
+                                                                        <br>
+                                                                        <input
+                                                                            type="{{selectedColumn.labelType.split('_')[1]}}"
+                                                                            name="{{selectedColumn.labelId}}"
+                                                                            disabled="true">
+                                                                        <input type="text"
+                                                                            class="form-control responsiveWidthCu1"
+                                                                            [(ngModel)]="choice.name"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            (input)="updateHiddenLabelIdForChoice(choice)"
+                                                                            maxlength="1000">
+                                                                        <button type="button"
+                                                                            class="btn btn-success  btn-xs"
+                                                                            (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn-xs"
+                                                                            (click)="removeChoice(selectedColumn,index,choice)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        <ng-container *ngIf="choice.correct"><i
+                                                                                class="fa fa-check-circle check-icon"
+                                                                                aria-hidden="true"
+                                                                                style="color: #5cb85c;"
+                                                                                (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',false)"></i>
+                                                                        </ng-container>
+                                                                        <ng-container *ngIf="!choice.correct"><i
+                                                                                class="fa fa-check-circle-o check-icon"
+                                                                                aria-hidden="true"
+                                                                                (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',true)"></i>
+                                                                        </ng-container>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Check Box--------------- -->
+                                                                <ng-container
+                                                                    *ngIf="selectedColumn.labelType=='checkbox'">
+                                                                    <span class="info"
+                                                                        *ngIf="selectedColumn.checkBoxErrorMessage?.length>0">{{selectedColumn.checkBoxErrorMessage}}<br></span>
+                                                                    <!-- ---------------CheckBoxes--------------- -->
+                                                                    <ng-container
+                                                                        *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="{{selectedColumn.labelType}}"
+                                                                            name="{{selectedColumn.labelId}}">
+                                                                        <input type="text"
+                                                                            class="form-control responsiveWidthCu2"
+                                                                            [(ngModel)]="checkBox.name"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            (input)="updateHiddenLabelIdForChoice(checkBox)"
+                                                                            maxlength="1000">
+                                                                        <button type="button"
+                                                                            class="btn btn-success  btn-xs"
+                                                                            (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn-xs"
+                                                                            (click)="removeChoice(selectedColumn,index,checkBox)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Drop down--------------- -->
+                                                                <ng-container
+                                                                    *ngIf="selectedColumn.labelType=='select'">
+                                                                    <span class="info"
+                                                                        *ngIf="selectedColumn.dropDownErrorMessage?.length>0">{{selectedColumn.dropDownErrorMessage}}<br></span>
+                                                                    <!-- ---------------CheckBoxes--------------- -->
+                                                                    <ng-container
+                                                                        *ngFor="let dropDown of selectedColumn.dropDownChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="text"
+                                                                            class="form-control fieldWidthCustimization"
+                                                                            [(ngModel)]="dropDown.name"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            (input)="updateHiddenLabelIdForChoice(dropDown)"
+                                                                            maxlength="1000">
+                                                                        <button type="button"
+                                                                            class="btn btn-success  btn-xs"
+                                                                            (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <ng-container *ngIf="dropDown.defaultColumn">
+                                                                            <button
+                                                                                title="Default label cannot be deleted"
+                                                                                class="btn btn-danger btn-xs disabled">
+                                                                                <span
+                                                                                    class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
+                                                                        </ng-container>
+
+                                                                        <ng-container *ngIf="!dropDown.defaultColumn">
+                                                                            <button type="button"
+                                                                                class="btn btn-danger btn-xs"
+                                                                                (click)="removeChoice(selectedColumn,index,dropDown)">
+                                                                                <span
+                                                                                    class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
+                                                                        </ng-container>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </div>
+                                                        </legend>
+                                                    </form>
+                                                </fieldset>
+                                                <!-- ----------------Explanation-------------- -->
+                                                <fieldset class="default-fieldset"
+                                                    *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Explanation</label>
+                                                        <textarea type="text" [(ngModel)]="selectedColumn.description"
+                                                            class="form-control" maxlength="500" style="height: 330px;"
+                                                            (input)="descriptionCharacterSize(selectedColumn)"></textarea>
+                                                        <label
+                                                            class="character-left-text">{{selectedColumn.descriptionCharacterleft}}
+                                                            characters
+                                                            left</label>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Of Row---- -->
+                        <div id="bottom-right">
+                            <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit"
+                                class="button mar-rgt-9 bgcolor-unset" (click)="addOrUpdate()"><span
+                                    class="btn Btn-Green transition txt_pd-top3">{{buttonName}}</span></button>
+                            <button *ngIf="!isAdd && !isMdfForm && !isVendorOrMasterLandingPage" [disabled]="!form.isValid" type="submit"
+                                style="    padding-right: 4px;" class="button bgcolor-unset" (click)="saveAs()"><span
+                                    class="btn Btn-Green transition txt_pd-top3">Save As</span></button>
+                            <button type="button" class="btn Btn-Gray" (click)="navigateBack()"
+                                aria-hidden="true">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isValidFormWithFormLabels">
+        <div class="alert alert-danger"><strong>An unexpected error occurred, please contact support team.</strong></div>
+    </div>
+    <app-preview-popup [isVendorOrMasterLandingPage]="isVendorOrMasterLandingPage" #previewPopUpComponent></app-preview-popup>
+</div>
+<!-- -End Of page-content -->
+
+<!--Modal Popup For Form Details------------>
+<div class="modal right rmv-overflow" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-sm popup-align">
+        <div class="modal-content mPad col-lg-12 col-md-12 p0">
+            <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-center  col-md-8">{{formTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
+                    <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
+                        <label>Name <span class="invalid-form-name">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="form.name" id="formName"
+                            placeholder="Please Enter Form Name" (input)="validateFormNames(form.name)"
+                            (keydown)="sumbitOnEnter($event)">
+                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                    </div>
+                    <div class="form-group  col-md-6 col-lg-6">
+                        <label>Select a folder <span class="invalid-form-name">*</span></label>
+                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="selectCategory($event)">
+                            <option *ngFor="let category of categoryNames" [value]="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group col-lg-12 col-md-12">
+                        <label>Description</label>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description"
+                            id="description" maxlength="1000"></textarea>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12" *ngIf="loggedInAsSuperAdmin">
+                        <input class="checkBox_shadow" type="checkbox" [(ngModel)]="form.isSurvey">
+                        <label>Survey</label>
+                    </div>
+                    <!-- XNFR-108 -->
+                    <div class="form-group col-lg-12 col-md-12" *ngIf = "!isVendorOrMasterLandingPage">
+                        <label>Team Member Group</label>
+                        <p class="pencil-color" style="font-size: 12px;" translate>
+                            Selected team members will receive form submit notifications.
+                        </p>
+                        <app-form-team-member-group [formId]="form.id"
+                            [selectedTeamMemberIds]="form.selectedTeamMemberIds"
+                            [selectedGroupIds]="form.selectedGroupIds"
+                            (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
+                        </app-form-team-member-group>
+                    </div>
+                </div>
+                <!-- XNFR-108 ENDS -->
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="isCopyForm" type="button" class="btn Btn-Gray btn-hvr-tex margin-rgt-5 margin-top-5"
+                    (click)="navigateBack()" aria-hidden="true">Close</button>
+                <button type="submit" [disabled]="!form.isValid"
+                    class="button BtnWidthForPopup bgcolor-unset margin-top-5 pt0" (click)="unBlurDiv()"
+                    id="full-screen"><span class="transition"><span *ngIf="isCopyForm"
+                            class="btn btn-primary transition">Save Changes</span><span *ngIf="!isCopyForm"
+                            class="btn  Btn-Green transition">Continue</span></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal Popup For Form Designs-->
+<div class="modal right fade" id="add-form-designs" data-backdrop="static" data-keyboard="false">
+    <div class="modal-lg" [ngClass]="desigPopup ? 'custom-design-Popup' : 'modal-dialog' ">
+        <div class="modal-content mPad">
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-header">
+                <button type="button"
+                    *ngIf="form.isFormButtonValueValid&&form.isValidFormSubmissionUrl && form.isValidColorCode"
+                    class="close-circle" (click)="closeFormDesignModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-left">Design Your Form</h4>
+            </div>
+            <div class="modal-body">
+                <div class="hide-scrollbar">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Title Color</label>
+                                            <input class="form-control" [value]="titleColor" [(ngModel)]="titleColor"
+                                                style="margin-bottom: 10px;padding-left: 40px;"
+                                                (input)="checkValidColorCode(titleColor,'titleColor',form.customSkinTextColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick" [(colorPicker)]="form.titleColor"
+                                                [style.background]="form.titleColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'titleColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Border Color</label>
+                                            <input class="form-control" [value]="borderColor" [(ngModel)]="borderColor"
+                                                style="padding-left: 40px;"
+                                                (input)="checkValidColorCode(borderColor,'borderColor',form.customSkinButtonBorderColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick"
+                                                [(colorPicker)]="form.borderColor" [style.background]="form.borderColor"
+                                                [cpWidth]="'200px'" [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'borderColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6 group">
+                                            <span *ngIf="!isValidTitleColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <span *ngIf="!isValidBorderColor" class="required" style="padding-left:
+                                                                40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Background Color(Form)</label>
+                                            <input class="form-control" [value]="backgroundColor"
+                                                [(ngModel)]="backgroundColor"
+                                                style="margin-bottom: 10px;padding-left: 40px;"
+                                                (input)="checkValidColorCode(backgroundColor,'backgroundColor',form.customSkinDivBackgroundColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick"
+                                                [(colorPicker)]="form.backgroundColor"
+                                                [style.background]="form.backgroundColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Label Color</label>
+                                            <input class="form-control" [value]="labelColor" [(ngModel)]="labelColor"
+                                                style="padding-left: 40px;"
+                                                (input)="checkValidColorCode(labelColor,'labelColor', form.customSkinTextColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick" [(colorPicker)]="form.labelColor"
+                                                [style.background]="form.labelColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'labelColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <span *ngIf="!isValidBackgroundColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <span *ngIf="!isValidLabelColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Button Background Color</label>
+                                            <input class="form-control" [value]="buttonBackgroundColor"
+                                                [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;"
+                                                (input)="checkValidColorCode(buttonBackgroundColor,'buttonColor',null)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick-1"
+                                                [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor"
+                                                [cpWidth]="'200px'" [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Button Value Color</label>
+                                            <input class="form-control" [value]="buttonValueColor"
+                                                [(ngModel)]="buttonValueColor" style="padding-left: 40px;"
+                                                (input)="checkValidColorCode(buttonValueColor,'buttonValueColor',null)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick"
+                                                [(colorPicker)]="form.buttonValueColor"
+                                                [style.background]="form.buttonValueColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <span *ngIf="!isValidButtonBackgroundColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <span *ngIf="!isValidButtonValueColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group" id="formButtonValueDiv">
+                                            <label>Submit Button Value<span class="invalid-form-name">*</span></label>
+                                            <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="50"
+                                                (input)="validateFormButtonValue(form.buttonValue)" />
+                                            <span *ngIf="!form.isFormButtonValueValid"
+                                                class="required">{{formButtonValueErrorMessage}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group" id="formButtonValueDiv">
+                                            <label>Button Preview</label><br>
+                                            <button class=" btn green-haze button-fixed" type="button"
+                                                style="border-radius: 4px!important;"
+                                                [style.backgroundColor]="form.buttonColor"
+                                                [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Description Color</label>
+                                            <input class="form-control" [value]="descriptionColor"
+                                                [(ngModel)]="descriptionColor" style="padding-left: 40px;"
+                                                (input)="checkValidColorCode(descriptionColor,'descriptionColor',form.customSkinTextColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick-1"
+                                                [(colorPicker)]="form.descriptionColor"
+                                                [style.background]="form.descriptionColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'descriptionColor')"
+                                                [cpPosition]="'bottom'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12" style="padding-bottom: 5px;">
+                                        <span *ngIf="!isValidDescriptionColor" class="required"
+                                            style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 form-border">
+                                <div class="form-group" id="formSubmissionUrlDiv">
+                                    <label>Redirect Url After Form Submission :</label><br>
+                                    <input class="form-control" placeholder="Enter Url"
+                                        [(ngModel)]="form.formSubmissionUrl"
+                                        (input)="validateFormSubmissionUrl(form.formSubmissionUrl)" />
+                                    <span *ngIf="!form.isValidFormSubmissionUrl"
+                                        class="required">{{formSubmissionUrlErrorMessage}}</span>
+                                    <br>
+                                    <label>Open in new tab</label>
+                                    <input class="checkBox_shadow" [disabled]="form.quizForm" type="checkbox"
+                                        [(ngModel)]="form.openLinkInNewTab">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-12 col-lg-12 design-bgcolor">
+                                <div class="form-group">
+                                    <label>Form Submit Message:</label>
+                                    <textarea class="form-control" placeholder="Form Submit Message"
+                                        [(ngModel)]="form.formSubmitMessage" maxlength="1000" rows="5"
+                                        (input)="characterSize()"></textarea>
+                                    <label class="text-area-css">{{charactersLeft}} characters
+                                        left</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12 pl0 pr0" style="padding-top: 10px;">
+                                <div class="row">
+                                    <div class="col-sm-5" style="margin-top: 10px;float: left;">
+                                        <label *ngIf="form.showBackgroundImage">Background Image</label>
+                                        <div *ngIf="!form.showBackgroundImage">Background Image</div>
+                                    </div>
+                                    <div class="col-sm-2" style="float: left;">
+                                        <div class="email-options-checkbox-group email-options-notify">
+                                            <div class="email-options-checkbox clearfix">
+                                                <div class="col-sm-1 ui-switch-custom-div">
+                                                    <switch [status]="form.showBackgroundImage"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.onTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [size]="callActionSwitch.size"
+                                                        (statusChange)="setShowBackgroundImage($event)">
+                                                    </switch>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5" style="margin-top: 12px;float: left;">
+                                        <label *ngIf="!form.showBackgroundImage">Background Color</label>
+                                        <div *ngIf="form.showBackgroundImage">Background Color</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="form.showBackgroundImage">
+                                <div class="col-md-12 col-lg-12 pl0">
+                                    <div class="form-group" style="margin-bottom: 5px!important;">
+                                        <label>Select Background Image</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 col-lg-12 pl0 pr0">
+
+                                    <div class="profile-image-wrapper"
+                                        style="cursor: pointer;text-align:center;color:#fff;"
+                                        (click)="imageClick('formBackgroundImage')">
+                                        <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
+                                        <div
+                                            *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
+                                            <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
+                                                <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">
+                                                    Please upload background image</div>
+                                                <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage"
+                                                    src="assets/images/background-form.png"
+                                                    class="profile-image img-grid" alt="">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
+                                            <img class="img-grid" [src]="formBackgroundImagePath" alt="">
+                                        </div>
+                                        <ng-template #showCroppedBackgroundImage>
+                                            <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
+                                                <img class="img-grid" [src]="croppedBackgroundImage" alt="">
+                                            </span>
+                                        </ng-template>
+                                        <ng-template #showBackgroundImage>
+                                            <img class="img-grid" *ngIf="form.backgroundImage"
+                                                [src]="form.backgroundImage" (error)="errorHandler($event)" alt="">
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!form.showBackgroundImage" class="col-md-12 col-lg-12 pl0 pr0">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Background Color</label>
+                                            <input class="form-control" [value]="pageBgColor" [(ngModel)]="pageBgColor"
+                                                style="margin-bottom: 10px;padding-left: 40px;"
+                                                (input)="checkValidColorCode(pageBgColor,'pageBackgroundColor',form.customSkinBackgroundColor)"
+                                                maxlength="7" />
+                                            <span class="input-group-addon color-pick"
+                                                [(colorPicker)]="form.pageBackgroundColor"
+                                                [style.background]="form.pageBackgroundColor" [cpWidth]="'200px'"
+                                                [cpHeight]="'265px'"
+                                                (colorPickerChange)="changeControllerColor($event,form,'pageBackgroundColor')"
+                                                [cpPosition]="'top'" readonly></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-12">
+                                            <span *ngIf="!isValidPageBackgroundColor" class="required"
+                                                style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+                                <div class="row">
+
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 pl0 pr0">
+                                                <label>Show logo :</label>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 pl0">
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-4"
+                                                        class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
+                                                        type="checkbox" [checked]="form.showCompanyLogo"
+                                                        (change)="showCompanyLogoChange()">
+                                                    <label for="cmn-toggle-4"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.showCompanyLogo" class="col-md-6 col-lg-6 pl0">
+                                        <div class="form-group" style="margin-bottom: 0px!important;">
+                                            <label>Select Company Logo</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="form.showCompanyLogo" class="col-md-12 col-lg-12 pl0 pr0 "
+                                style="margin-top:5px;">
+
+                                <div class="profile-image-wrapper form-group"
+                                    style="cursor: pointer;text-align:center;color:#fff;height: 170px;"
+                                    (click)="imageClick('companyLogo')">
+                                    <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
+                                    <span *ngIf="!croppedCompanyLogoImage && !companyLogoPath && !form.companyLogo">
+                                        <span style="margin: 10px 0px 10px 0px;" *ngIf="!companyLogoPath">
+                                            <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"
+                                                src="assets/images/your-logo.png" class="profile-image img-grid"
+                                                style="height:135px !important;" alt="">
+                                            <div style="color: #f55d7a;">* Please upload company logo</div>
+                                        </span>
+
+                                    </span>
+                                    <span *ngIf="companyLogoPath?.length>0; else showCroppedCompanyLogoImage">
+                                        <img class="img-grid" [src]="companyLogoPath" alt="">
+                                    </span>
+
+                                    <ng-template #showCroppedCompanyLogoImage>
+                                        <span *ngIf="croppedCompanyLogoImage; else showCompanyLogoImage">
+                                            <img class="img-grid" [src]="croppedCompanyLogoImage" alt="">
+                                        </span>
+                                    </ng-template>
+                                    <ng-template #showCompanyLogoImage>
+                                        <span *ngIf="form.companyLogo">
+                                            <img class="img-grid"
+                                                *ngIf="form.companyLogo.indexOf('images/')===0; else showPath"
+                                                [src]="authenticationService.MEDIA_URL + form.companyLogo"
+                                                (error)="errorHandler($event)" alt=""></span>
+                                    </ng-template>
+                                    <ng-template #showPath>
+                                        <span *ngIf="form.companyLogo">
+                                            <img [src]="form.companyLogo" class="profile-image img-grid"
+                                                (error)="errorHandler($event)" alt="" /></span>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+                                <div class="row">
+
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 pl0 pr0">
+                                                <label>Show Footer :</label>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 pl0">
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-5"
+                                                        class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
+                                                        [checked]="form.showFooter" type="checkbox"
+                                                        (change)="showFooterChange()">
+                                                    <label for="cmn-toggle-5"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.showFooter" class="col-md-6 col-lg-6 pl0">
+                                        <div class="form-group" style="margin-bottom: 0px!important;">
+                                            <label>Add Footer</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="form.showFooter" class="col-xs-12 col-md-12 col-lg-12 pl0 pr0"
+                                style="margin-top:5px;">
+                                <ckeditor [(ngModel)]="form.footer" #myckeditor [config]="ckeConfig" debounce="500">
+                                </ckeditor>
+                            </div>
+                            <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-3 col-lg-3 pl0 pr0">
+                                                <label>Show Captcha </label>
+                                            </div>
+                                            <div class="col-md-9 col-lg-9 pl0">
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-6"
+                                                        class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
+                                                        [checked]="form.showCaptcha" type="checkbox"
+                                                        (change)="showCaptchaChange()">
+                                                    <label for="cmn-toggle-6"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-3 col-lg-3 pl0 pr0">
+                                                <label>Show Title Header </label>
+                                            </div>
+                                            <div class="col-md-9 col-lg-9 pl0">
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-7"
+                                                        class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
+                                                        [checked]="form.showTitleHeader" type="checkbox"
+                                                        (change)="showTitleHeaderChange()">
+                                                    <label for="cmn-toggle-7"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit"
+                    [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode"
+                    class="button bgcolor-unset text_pd-top1" (click)="unBlurDiv()" id="full-screen"><span
+                        class="btn Btn-Green transition">Continue</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Popup For Custom Fields------------>
+<div class="modal left fade" id="add-form-fields" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg mb-wth">
+        <div class="modal-content mPad">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeFormFieldsModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-center">ADD FORM FIELDS</h4>
+            </div>
+            <div class="modal-body">
+                <div class="portlet-title tabbable-line">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase">Custom
+                            fields</span>
+                    </div>
+                </div>
+                <div class="portlet-body clearfix">
+                    <div class="tab-content">
+                        <div class="btn-group-form">
+                            <ng-container *ngFor="let customField of customFields;let i=index">
+                                <button
+                                    *ngIf="customField.labelType !== 'quiz_radio' && customField.labelType !== 'quiz_checkbox'"
+                                    (click)="addColumn(customField,false)">{{customField.labelName}}</button>
+                                <button
+                                    *ngIf="(customField.labelType === 'quiz_radio' || customField.labelType === 'quiz_checkbox') && showQuizField"
+                                    (click)="addColumn(customField,false)">{{customField.labelName}}</button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---Pre Defined Fields------- -->
+                <div class="portlet-title tabbable-line">
+                    <div class="caption caption-md">
+                        <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase">Predefined fields</span>
+                    </div>
+                </div>
+                <div class="portlet-body clearfix">
+                    <div class="tab-content">
+                        <div class="btn-group-form">
+                            <ng-container *ngFor="let column of defaultColumns;let i=index">
+                                <button (click)="addColumn(column,true)">{{column.labelName}}</button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal Popup Upload Image------------>
+<div class="modal right fade" id="cropbackgroundImage" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
+    data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog imgCrop-modal" role="document">
+        <div class="modal-content rounded-0">
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+                <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as
+                    <span *ngIf="popupOpenedFor=='formBackgroundImage'">form background</span>
+                    <span *ngIf="popupOpenedFor=='companyLogo'">form company logo</span>
+                </h4>
+            </div>
+            <div class="modal-body" style="overflow-y: unset !important;">
+                <button style="position: relative; top: -5px; width: 118px;margin-left: -10px;"
+                    class="button fileinput-button-css bgcolor-unset mrg_lft0" *ngIf="!imageChangedEvent">
+                    <span class="btn Btn-Green transition txt_pd-top3 pos_pd_lft10">Select image</span> <input
+                        style="height: 36px;" title=" " id="custom-input" type="file"
+                        (change)="filenewChangeEvent($event)">
+                </button>
+                <button style="position: relative; top: -5px; width: 118px;margin-left: -10px;"
+                    class="button bgcolor-unset pos_mrg_lft4" (click)="chooseFileFromList()"><span
+                        class="btn Btn-Green transition txt_pd-top3">Your
+                        images</span></button>
+                <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
+                    only images</div>
+                <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be
+                    less than 12MB</div>
+                <div>
+                    <ngx-loading [show]="loadingcrop"
+                        [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
+                    <div [hidden]="!imageChangedEvent">
+                        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+                            [onlyScaleDown]="true" [roundCropper]="false" format="jpg" outputType="base64"
+                            (imageCropped)="imageCroppedMethod($event)" (imageLoaded)="imageLoaded()"
+                            (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
+                            (imageQuality)=0 (loadImageFailed)="loadImageFailed()"
+                            [style.display]="showCropper ? null : 'none'">
+                        </image-cropper>
+                    </div>
+                    <div *ngIf="!imageChangedEvent">
+                        <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+                        </fieldset>
+                    </div>
+                </div>
+                <div>
+                    <button class="button_blue bgcolor-unset" [disabled]="!showCropper" style="padding-left: 2px;"
+                        (click)="uploadBackgroundImage()"><span class="btn btn-primary transition txt_pd-top3">Save
+                            Changes</span></button>
+                </div>
+                <div>
+                    <ul style="padding: 0 15px;">
+                        <li>For optimal results, your logo should fit within the white rectangle.</li>
+                        <li>If you would like to use a different logo in an email template, you can change it during the
+                            template design process.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <svg id="svg-filter">
+        <filter id="svg-blur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+        </filter>
+    </svg>
+</div>
+
+<!--Modal Popup For Images From Content------------>
+<div class="modal fade" id="yourImages" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-lg full">
+            <div class="modal-content cust-modal">
+                <div class="modal-header">
+                    <a class="close-circle" data-dismiss="modal" (click)="closeYourImagesModal()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                    <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as
+                        <span *ngIf="popupOpenedFor=='formBackgroundImage'">form background</span>
+                        <span *ngIf="popupOpenedFor=='companyLogo'">form company logo</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+                    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                    <div class="row" *ngIf="!formsError">
+                        <ul class="content__list" *ngFor="let file of pagedItems; let i =index;">
+                            <li class="list__item"
+                                [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
+                                <div class="flex-row pointer" (click)="setFileCheck(file.filePath)">
+                                    <div class="item__select-box-wrapper">
+                                        <span class="select-box checkBox_shadow" (click)="setFileCheck(file.filePath)">
+                                            <label>
+                                                <input type="checkbox">
+                                            </label>
+                                        </span> <span class="ng-scope"> <a style="cursor: default;"
+                                                class="item__preview item__preview--image img-container custom"
+                                                target="_BLANK">
+                                                <img ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
+                                                    id="content_image_grid_{{i}}"
+                                                    (error)="changeImage(i, file.filePath)" class="thumb ng-scope"
+                                                    src="{{file.filePath}}" alt="">
+                                            </a> <a href="javascript:;"> </a>
+                                        </span>
+                                    </div>
+                                    <div class="item__content">
+                                        <div class="flex-row">
+                                            <div class="item__last-modified">
+                                                <span>
+                                                    <app-timestamp [isOnlyDate]="true"
+                                                        [dateAndTime]="file.lastModifiedDate"> </app-timestamp>
+                                                </span>
+                                            </div>
+                                            <span class="item__name" data-toggle="tooltip" [title]="file.fileName">
+                                                <strong>{{file.fileName | slice: 0: 8}}
+                                                    <span *ngIf="file.fileName?.length>8">...</span>
+                                                </strong>
+                                            </span>
+                                            <div class="item__size">
+                                                <span>{{file.filesizeInKb}}</span>
+                                            </div>
+                                            <div class="item__type">
+                                                <span>{{file.type}}</span>
+                                            </div>
+                                            <div class="item__algn">
+                                                <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip"
+                                                        data-placement="top" [title]="actionsDescription.preview_item"
+                                                        (click)="$event.stopPropagation();" href="{{file.filePath}}"
+                                                        target="_blank">
+                                                        <i class="fa fa-external-link preview-edit-color ft-size"
+                                                            aria-hidden="true"></i>
+                                                    </a>
+                                                    <a class="fm delete icon-algn" data-toggle="tooltip"
+                                                        data-placement="top" [title]="actionsDescription.delete_item"
+                                                        (click)="$event.stopPropagation();delete(file,file.id)">
+                                                        <i class="fa fa-trash-o preview-edit-color ft-size"
+                                                            aria-hidden="true"></i>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="col-xs-12" style="padding-top: 15px">
+                            <div *ngIf="pagedItems==null || pagedItems.length == 0"
+                                style="position: relative; top: 16px; width: 100%;"
+                                class="col-md-9 alert alert-info alert-dismissable">
+                                <a class="close" data-dismiss="alert" aria-label="close"></a>
+                                <p translate>No results found</p>
+                            </div>
+                        </div>
+                    </div>
+                    <section>
+                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                            <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setPage(1)"
+                                    translate>First</a>
+                            </li>
+                            <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+                                    (click)="setPage(pager.currentPage - 1)" translate>Previous</a></li>
+                            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                <a (click)="setPage(page)">{{page}}</a>
+                            </li>
+                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                <a (click)="setPage(pager.currentPage + 1)" translate>Next</a>
+                            </li>
+                            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                <a (click)="setPage(pager.totalPages)" translate>Last</a>
+                            </li>
+                        </ul>
+                        <select class="form-control" style="cursor: pointer; float: right;width:auto;"
+                            [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+                            <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+                            <option *ngIf="paginatedList?.length>6" [ngValue]="numberPerPage[1]">
+                                {{numberPerPage[1].name}}
+                            </option>
+                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[2]">
+                                {{numberPerPage[2].name}}
+                            </option>
+                            <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[3]">
+                                {{numberPerPage[3].name}}
+                            </option>
+                        </select>
+                    </section>
+                </div>
+            </div>
+            <svg id="svg-filter">
+                <filter id="svg-blur">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+                </filter>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- XNFR-424 ----------->
+<ng-template #formFields let-columnInfo="columnInfoData" let-rowIndex="rowIndexValue" let-columnIndex="columnIndexValue" let-rowFieldsCount="rowFieldsCountValue">
+    <h4 class="dflex">
+        <span class="label-text">
+            <label class="control-label">
+                <span class="label-name">{{columnInfo.labelName}}</span>
+                <span class="required" *ngIf="columnInfo.required">*</span>
+            </label>
+        </span>
+        <span>
+            <div class="dropdown">
+                <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
+                    data-mdb-toggle="dropdown" aria-expanded="false">
+                </div>
+                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
+                    aria-labelledby="dropdownMenuButton">
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="columnIndex < 2 && rowFieldsCount !== 3"
+                        (click)="$event.stopPropagation();setNewColumnIndex(rowIndex, columnIndex)"><button type="button"
+                            class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Add</span></li>
+                    <li class="dropdown-item field-action-align padding-3px"
+                        (click)=" $event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button
+                            type="button" class="btn btn-danger btn-xs" [ngClass]="{'disabled': columnInfo.defaultColumn}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button><span id="form-label-drop-down-option-value" [ngClass]="{'disabled': columnInfo.defaultColumn}" class="padding-3px">Delete</span></li>
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="rowFieldsCount > 1"
+                        (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" 
+                        data-toggle="tooltip" data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button
+                            type="button" class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-circle-arrow-down"></span>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Move</span></li>
+                </ul>
+            </div>
+        </span>
+    </h4>
+    <!-- ---------------------------Text/Email----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
+        <input type="{{columnInfo.labelType}}"
+            autoComplete="off" maxlength="1000"
+            id="{{columnInfo.labelId}}"
+            placeholder="{{columnInfo.placeHolder}}"
+            class="form-control form-placeholder disabled"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor" />
+    </ng-container>
+    <!-- ---------------------------TextArea----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='textarea'">
+        <textarea rows="4" cols="4"
+            autoComplete="off" maxlength="1000"
+            placeholder="{{columnInfo.placeHolder}}"
+            class="form-control form-placeholder disabled"
+            id="{{columnInfo.labelId}}"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor"></textarea>
+    </ng-container>
+    <!-- ---------------------------Date----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='date'">
+        <app-date-picker
+            class="form-placeholder"
+            [isFromForm]='true'
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+        </app-date-picker>
+    </ng-container>
+    <!-- ---------------------------Price----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='price'">
+        <div class="input-group">
+            <span
+                class="edit-field-prefix form-placeholder"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor">
+                {{columnInfo.priceSymbol}}
+            </span>
+            <input type="number" min="0"
+                placeholder="{{columnInfo.placeHolder}}"
+                class="form-control form-placeholder disabled"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor"
+                id="{{columnInfo.labelId}}" />
+        </div>
+    </ng-container>
+    <!-- ---------------------------Number----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='number'">
+        <div class="input-group">
+            <input type="number" min="0"
+                placeholder="{{columnInfo.placeHolder}}"
+                class="form-control form-placeholder disabled form-padding-left"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor"
+                id="{{columnInfo.labelId}}" />
+        </div>
+    </ng-container>
+    <!-- ---------------------------Upload----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='upload'">
+        <input type="file"
+            class="form-control form-placeholder disabled"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor"
+            id="{{columnInfo.labelId}}" />
+    </ng-container>
+    <!-- ---------------------------Radio Button----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='radio'">
+        <ng-container
+            *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+            <div class="form-check">
+                <label class="form-check-label"
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input">
+                    <span
+                        [style.color]="form.labelColor">{{radioButton.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+    <!-- ---------------------------Check Box----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='checkbox'">
+        <ng-container
+            *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+            <div class="form-check">
+
+                <label class="form-check-label"
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input">
+                    <span
+                        [style.color]="form.labelColor">{{checkBox.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+    <!-- ---------------------------DropDown Menu----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='select'">
+        <select
+            class="form-control form-placeholder"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+            <option
+                *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                {{dropDownValue.name}}
+            </option>
+        </select>
+    </ng-container>
+    <!-- ---------------------------DropDown Menu(XNFR-423)----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='country'">
+        <select
+            class="form-control form-placeholder"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+            <option
+                *ngFor="let countryName of countryNames">
+                {{countryName}}
+            </option>
+        </select>
+    </ng-container>
+    <!-- ---------------------------Quiz----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+        <ng-container
+            *ngFor="let choice of columnInfo.choices;let i=index">
+            <div class="form-check">
+
+                <label class=""
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType.split('_')[1]}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input"
+                        [checked]="choice.correct"
+                        disabled="true">
+                    <span
+                        [style.color]="form.labelColor">{{choice.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #FormRows>
+    <ng-container *ngFor="let rowInfo of rowInfos;let rowIndex=index">
+        <div id="form-div" *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0"
+            (click)="highLightSelectedRow(rowInfo)">
+            <div id="{{rowInfo.divId}}">
+                <div class="form-group form-custom label-box padding-12px" [style.background]="form.backgroundColor"
+                    [style.borderColor]="form.borderColor"
+                    [class.selected-field-border-thickness]="rowInfo.divId==selectedRow.divId">
+                        <h4 class="row-options">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown" aria-expanded="false">
+                                </div>
+                                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-item field-action-align padding-3px"
+                                        (click)="$event.stopPropagation();removeRow(rowInfo, rowIndex)"><button type="button"
+                                            class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === rowInfos?.length - 1 || rowInfos?.length < 2}" 
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex + 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Next Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-down fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === 0 || rowInfos?.length < 2}"
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex - 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Previous Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-up fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                </ul>
+                            </div>
+                        </h4>
+                    <a id="drag-div">
+                        <div [dragula]='"form-columns"' [dragulaModel]='rowInfo.formLabelDTOs' style="display: flex;">
+                            <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
+                                <div *ngIf="columnIndex<3" id="form-div-column" class="padding-12px"
+                                    (click)="highLightSelectedColumn(columnInfo, rowIndex, columnIndex)"
+                                    [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4 no-drag':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
+                                    <div id="{{columnInfo.divId}}">
+                                        <div class="form-group form-custom label-box padding-10px"
+                                            [style.background]="form.backgroundColor"
+                                            [style.borderColor]="form.borderColor"
+                                            [class.selected-field-border-thickness]="columnInfo.divId==selectedColumn.divId">
+                                            <a id="drag-div-column">
+                                                <ng-template [ngTemplateOutlet]="formFields"
+                                                    [ngTemplateOutletContext]="{columnInfoData:columnInfo, columnIndexValue:columnIndex, rowIndexValue:rowIndex, rowFieldsCountValue:rowInfo.formLabelDTOs.length}">
+                                                </ng-template>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+
+<!-- XNFR-424 ENDS ----------->

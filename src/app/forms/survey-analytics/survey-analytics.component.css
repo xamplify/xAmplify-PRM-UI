@@ -1,0 +1,109 @@
+.default-cursor{
+	cursor: default;
+}
+
+.clickable{
+    cursor: pointer;  
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+.panel-heading-info-box {
+	margin-right: 5px;
+	color: #000;
+}
+
+.panel-heading-info-box-red {
+	margin-right: 15px;
+	color: #fff;
+}
+
+.panel-heading-custom {
+	height: 50px;
+}
+
+.mt25m {
+	margin-top: -25px !important;
+}
+
+.mt7 {
+	margin-top: 7px !important;
+}
+
+.tr-count {
+	/* margin-top: -60px;
+    margin-right: 30px; */
+	color: #fff;
+}
+
+.nav-tabs .active {
+	font-size: 15px;
+    font-weight: bold;
+    border-bottom: solid 3px;
+}
+
+.scroll {
+	height: 300px;
+    overflow: auto;
+}
+
+.link12 {
+    color: #5b9bd1;
+}
+
+.text-wrap {
+	overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+}
+.portlet{
+	margin-bottom: 20px !important;
+}
+
+/* design Manage Forms Analytics table borders */
+table.table.table-allsideboders {
+    border: 1px solid #ddd;
+}
+@media screen and (max-width:600px){
+	.mb_v_mrg{
+		margin-top: 10px!important;
+	}
+	.mb-height_unset {
+		overflow: hidden;
+		height: unset!important;
+	}
+	.mb_mrg_unset{
+		margin: unset!important;
+	}
+	.mb_display_inline{
+		display: inline-block;
+	}
+    .justify-end {
+	width: 100%;
+	padding: 10px 0px;
+  }
+}
+@media screen and (max-width:380px){
+	.mb_V_tab{
+		padding: 10px 7px!important;
+	}
+}
+/***** XNFR-467 *****/
+.mr200{
+	margin-right: 200px;
+}
+.mr80{
+	margin-right: 80px;
+	margin-top: -60px;
+}
+.download-customized{
+    margin-top: -4px;
+	margin-right: 40px;
+}
+.justify-end{
+display: flex;
+justify-content: end;
+}

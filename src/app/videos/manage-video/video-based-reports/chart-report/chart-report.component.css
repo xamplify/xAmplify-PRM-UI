@@ -1,0 +1,14 @@
+.center {
+    text-align: center;
+}
+
+.headerCss {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@media screen and (max-width:600px){
+    .mVideoTable{
+    overflow-x: auto!important;
+    }
+}

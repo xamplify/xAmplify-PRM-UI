@@ -1,0 +1,280 @@
+#bottom-right {
+  float: right;
+}
+
+#right {
+  float: right;
+  margin-bottom: 10px;
+}
+
+#left {
+  float: left;
+}
+
+#search {
+  margin-right: 35px;
+}
+
+#search-icon {
+  position: relative;
+  right: -11px;
+}
+
+#search-text {
+  height: 34px;
+}
+
+#circle {
+  margin-top: 4px;
+}
+.form-selected{
+	background-color: #0276ff;
+    color: #fff;
+}
+.mix-filter {
+	margin: 5px;
+}
+
+.mix-filter li {
+	font-size: 11px;
+	text-transform: uppercase;
+	font-weight: 600;
+	padding: 5px 12px;
+}
+.success {
+  color: green;
+}
+
+.modal-icon {
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32px;
+  vertical-align: middle;
+  margin-right: 7px;
+  font-size: 13px;
+}
+
+#forms-list {
+  padding-right: 0px !important;
+}
+
+.ml {
+  margin-left: -65px;
+}
+
+.cmif {
+  margin-left: -15px;
+}
+
+#copy-link {
+  width: 230px;
+  height: 35px;
+  cursor: not-allowed;
+  background-color: #eae9e9;
+}
+
+.full {
+  height: 100%;
+  width: 100%;
+}
+
+.vertical-center {
+  align-items: center;
+  justify-content: center;
+  display: block;
+  margin: 10px 50px 0px 50px;
+}
+
+.button-padding {
+  padding: 7px 14px;
+  font-size: 14px;
+  border-width: 0;
+  border-radius: 5px;
+}
+
+.testing {
+  transform: scale(0.77);
+  -webkit-transform: scale(0.77);
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  cursor: not-allowed;
+}
+
+.show-forms-btn {
+  /* color: white;
+  background-color: #008fd5; */
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.label-box {
+  border: #ddd solid 1px;
+  border-radius: 3px !important;
+  padding: 20px;
+  background: #fff;
+}
+
+.view-banner {
+  background-color: #00a6e8;
+  color: white !important;
+  padding: 4px 6px !important;
+  text-align: center;
+  font-size: 10px !important;
+  border-radius: 3px;
+  display: -ms-flexbox;
+  display: flex !important;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100px !important;
+  line-height: 1.3 !important;
+  align-content: space-around;
+  align-items: center;
+}
+
+.form-name-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+  .mWid {
+    width: 175%;
+    margin-left: -70px;
+  }
+
+  .mPadSort {
+    padding: 0px;
+  }
+  .mPadSearch {
+    padding: 0px;
+    margin-right: 0px !important;
+  }
+
+  .mMargin {
+    float: left !important;
+    margin-left: -5px;
+  }
+  .mFloat {
+    display: contents;
+  }
+  .modal.right.fade.in .modal-dialog{
+    width: 96% !important;
+  }
+}
+.pg8 {
+  top: -3px !important;
+}
+
+.form-description {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Gantari", "Open Sans", sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+span.quiz_optionname {
+  float: right;
+  clear: none;
+  display: block;
+  padding: 0px 0px 0px 8px;
+}
+.panel-body {
+  background: #f0f5f9;
+}
+
+.popup-custom-width {
+  width: 60% !important;
+}
+
+.pages-custom-width85 {
+  width: 85% !important;
+  position: relative !important;
+  float: right;
+}
+
+.view-banner-white-labeled {
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+   text-align: center;
+   /* width: 125px; */
+   margin: 0 0;
+   font-size: 10px;
+   font-weight: 600;
+   line-height: 1;
+}
+
+   /* 14-07-2023 */
+.abjusttextarea-width {
+  width: 260px;
+}
+
+@media (min-width: 767px) and (max-width: 1025px)  {
+  .scroll-top-margin {
+      margin-top: 26px;
+  }
+}
+  @media only screen and (max-width:1024px){
+    .tab_formsearch{
+      display: flex!important;
+      margin-right: 10px;
+    }
+    #search{
+      margin-right: 0px;
+    }
+
+  }
+.disabled-element{
+  opacity: 0.65;
+  pointer-events: none;
+}
+/* bnts align */
+.px-0{
+  padding: 0px!important;
+  margin-top: 6px!important;
+} 
+
+/** XNFR-424 **/
+.padding-10px-lt-rgt {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.padding-20px {
+  padding: 20px;
+}
+/** XNFR-424 ENDS **/
+@media only screen and (min-width: 768px) and (max-width: 991px) { 
+  .vertical-center{
+    margin: 10px 5px 0px 5px;
+  }
+}
+.modal-dialog.modal-dialog-width{
+width:85%!important;
+}
+.abjusttextarea-width::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+@media screen and (min-width:768px) {
+.justify-content-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.input-small {
+  width: 175px !important;
+}
+}
