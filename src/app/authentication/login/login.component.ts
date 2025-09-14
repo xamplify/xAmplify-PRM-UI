@@ -148,7 +148,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resendActiveMail = false;
     this.resendAccountSignUpMail = false;
     if(userName!=undefined && userName!="undefined"){
-      const authorization = 'Basic ' + btoa('my-trusted-client:');
+      const authorization = 'Basic ' + btoa('xAmplify-prm-client:');
       const body = new URLSearchParams();
       body.set('username', userName);
       body.set('password',  this.model.password);

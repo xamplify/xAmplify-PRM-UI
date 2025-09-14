@@ -57,7 +57,7 @@ export class ProfileLockComponent implements OnInit {
         this.loading = true;
         console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
         if(this.password && this.userData.emailId){
-        const authorization = 'Basic ' + btoa('my-trusted-client:');
+        const authorization = 'Basic ' + btoa('xAmplify-prm-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
