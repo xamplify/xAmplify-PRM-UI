@@ -1642,7 +1642,6 @@ zoomOut() {
                 this.isVendorSignatureAdded = true;
             }
             this.showClearOption = true;
-            this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
             this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });

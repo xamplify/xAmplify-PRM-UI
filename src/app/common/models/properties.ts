@@ -8,7 +8,7 @@ export class Properties {
 	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX + ' xAmplify. All rights reserved.'
 	APP_WEBSITE = 'xAmplify';
 	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
-	APP_Xamplify_URL = "https://xamplify.io";
+	APP_Xamplify_URL = "https://app.api.io";
 	xamplify_router = 'https://www.xamplify.com/';
 
 	NO_RESULTS_FOUND = "No results found.";

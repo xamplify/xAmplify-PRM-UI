@@ -699,13 +699,9 @@ export class AuthenticationService {
         if(isWelcomePage){
           window.location.reload();
         }
-        window.location.href = "https://" + window.location.hostname + "/login";
+        window.location.href = this.envService.CLIENT_URL + "login";
       } else {
-        if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
-          window.location.href = 'https://www.xamplify.com/';
-        } else {
           this.logoutFormLocalOrVanity();
-        }
       }
     }
   }
@@ -777,7 +773,7 @@ export class AuthenticationService {
 
 
   connect() {
-    let url = this.REST_URL + "socket";//`http://release.xamp.io/websocket-backend-example/socket`
+    let url = this.REST_URL + "socket";
     let socket = new SockJs(url);
     let stompClient = Stomp.over(socket);
     return stompClient;
@@ -1258,20 +1254,12 @@ export class AuthenticationService {
   }
 
   getDefaultM3U8FileForLocal(videoUrl: string) {
-    if (this.envService.CLIENT_URL.indexOf("localhost") > -1) {
-      videoUrl = "https://aravindu.com/vod/videos/54888/11082023/Dhoni1691751422924_mobinar.m3u8?access_token=" + this.access_token;
-    } else {
       videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
-    }
     return videoUrl;
   }
 
   getDefault360M3U8FileForLocal(videoUrl: string) {
-    if (this.envService.CLIENT_URL.indexOf("localhost") > -1) {
-      videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.access_token;
-    } else {
-      videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
-    }
+     videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
     return videoUrl;
   }
 
