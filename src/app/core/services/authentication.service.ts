@@ -479,6 +479,17 @@ export class AuthenticationService {
       this.xtremandLogger.log('error' + error);
     }
   }
+
+
+  isPRMRole() {
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.prmRole) > -1);
+
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
   hasOnlyVideoRole() {
     try {
       const roleNames = this.getRoles();
