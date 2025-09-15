@@ -30,7 +30,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	pagination: Pagination = new Pagination();
 	loggedInUserId: number;
-	public searchKey: string;
+	public searchKey: string="";
 	customResponse: CustomResponse = new CustomResponse();
 	pager: any = {};
 	isSearch: boolean = false;
