@@ -67,7 +67,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.sourceType = this.authenticationService.getSource();
 		this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal();
-		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
+		this.isSuperAdmin = false;
 		/*** XNFR-134***/
 		this.userId = this.authenticationService.getUserId();
 		this.vanityLoginDto.userId = this.userId;
