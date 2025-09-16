@@ -908,7 +908,7 @@ placeLine(event: any) {
     this.availableSignatures = [null, null, null];
   
     if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
-      this.availableSignatures[0] = `${this.signatureResponseDto.drawSignatureImagePath}?t=${cacheBuster}`;
+      this.availableSignatures[0] = 'https://aravindu.com/vod/signatures/35403903/draw-signature.png';
     }
     if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
       this.availableSignatures[1] = `${this.signatureResponseDto.typedSignatureImagePath}?t=${cacheBuster}`;
