@@ -4,11 +4,13 @@ import { XtremandLogger } from '../error-pages/xtremand-logger.service';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { LmsService } from 'app/lms/services/lms.service';
 
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
-  styleUrls: ['./design.component.css']
+  styleUrls: ['./design.component.css'],
+  providers: [ LmsService]
 })
 export class DesignComponent implements OnInit {
     isLoading:boolean = false;
@@ -19,13 +21,15 @@ export class DesignComponent implements OnInit {
     searchWithModuleName:any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     customResponse:CustomResponse = new CustomResponse();
-    constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,public referenceService:ReferenceService) {
+    constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,
+      public referenceService:ReferenceService, public lmsService: LmsService) {
      }
 
     ngOnInit() {
       this.searchWithModuleName = 6;
-        this.landingPageDescription = "Create custom pages with xAmplify that convert more visitors than any other website.";
-        this.getModuleAccess();
+      this.landingPageDescription = "Create custom pages with xAmplify that convert more visitors than any other website.";
+      this.getModuleAccess();
+      this.checkAWSCredentials();
     }
   
   getModuleAccess(){
@@ -56,4 +60,20 @@ export class DesignComponent implements OnInit {
   }
 
  
+  checkAWSCredentials() {
+      this.isLoading = true;
+      this.lmsService.checkAWSCredentials().subscribe(
+        (response: any) => {
+          this.isLoading = false;
+          if (response.statusCode == 200 && response.data == false) {
+            this.referenceService.showAlertForAWSAccess();
+          }
+        },
+        (_error: any) => {
+          this.isLoading = false;
+        }, () => {
+          this.isLoading = false;
+        }
+      );
+    }
 }
