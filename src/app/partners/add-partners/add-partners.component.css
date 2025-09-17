@@ -1,0 +1,398 @@
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 50% !important;
+    right: 0 !important;
+  }
+  .salesforce {
+    margin-top: -44px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
+  }
+  /* .cloud-css {
+    left: 65px !important;
+  } */
+  /* #SgearIcon{left: 65px !important;}
+  #GgearIcon{left: 65px !important;}
+  #ZgearIcon{left: 65px !important;} */
+  .salesforce {
+    margin-top: -25px;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 992px) and (min-width: 601px) {
+  /* .cloud-css {
+    left: 130px !important;
+  } */
+}
+
+@media screen and (max-width: 768px) {
+ .copy_text_area_border{
+    width: 100%!important;
+  }
+}
+
+.cloud-items {
+  position: absolute;
+  font-size: 19px;
+  top: 7px;
+  right: 7px;
+  left: unset;
+}
+
+.white-space-transform {
+  white-space: nowrap;
+}
+
+.danger {
+  color: red;
+}
+.red {
+  color: red !important;
+}
+#download-partners-csv {
+  margin-top: 2px;
+  float: right;
+}
+
+.cct {
+  display: block;
+  margin-top: 0px !important;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 auto 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .mSweetalertWid {
+    left: 30px !important;
+  }
+  .mLegalWid {
+    width: 178%;
+  }
+}
+
+.mlm8 {
+  margin-left: -3px;
+}
+.portlet.light > .portlet-title > .caption {
+  padding: 5px 0 !important;
+}
+
+.sbi-click-child {
+  right: 16px !important;
+}
+.sbi-clear-child {
+  right: 50px !important;
+}
+.portlet > .portlet-title {
+  margin-bottom: 0px;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.table {
+  margin-bottom: 13px;
+}
+h5 {
+  font-weight: 600;
+}
+.height {
+  min-height: 45px;
+}
+.portlet.light > .portlet-title > .caption {
+  padding: 8px 0px !important;
+}
+.border {
+  padding-left: 50px;
+  margin-left: 55px;
+}
+
+/* May 19 sudha*/
+.modal-header {
+  padding: 10px !important;
+}
+.custom-width-modal-popup {
+  width: 85% !important; /*** XNFR-938 ****/
+}
+/* 20-06-2023 */
+button.hidden-xs {
+  border-radius: 4px;
+}
+.main-btn {
+  background-color: #26a69a;
+  color: white;
+}
+.GraY-Btn {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  color: #ffffff;
+}
+
+/* 21-06-23 */
+textarea.textareaNumber {
+  background-color: black;
+    color: '#fff'    
+}
+
+.processing-loader-style{
+  position: relative; 
+  top: -3px; 
+  left: -5px; 
+  width: 25px; 
+  height: 27px;
+}
+
+.alert-rd{
+  margin-top: 0;
+  color: inherit !important;
+}
+
+/* 09-08-2023 */
+.SidePaddings {
+  padding: 10px 10px;
+}
+#clipBoardValidationMessage h5 {
+  line-height: 1.5 !important;
+}
+.SideParddings1 {
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+}
+.SideParddings2 {
+  padding: 0px;
+}
+.SideParddings3 {
+  padding-top: 10px!important;
+  padding-right: 10px!important;
+  padding-bottom: 0px;
+  padding-left: 15px!important;
+}
+i.IconTopMargin {
+  margin-top: 10px !important;
+}
+i.fa.fa-file-excel-o.cct.IconTopMargin {
+  margin-top: 10px !important;
+}
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .SidePaddings span{font-size: 10px !important;}
+}
+@media only screen and (min-width: 1079px) and (max-width: 1150px) {
+  .scroll-top-abj {padding-top: 15px;}
+}
+/* gericon */
+/* @media only screen and (min-width: 800px) and (max-width: 969px) {
+  #SgearIcon{left: 106px !important;}
+  #GgearIcon{left: 106px !important;}
+  #ZgearIcon{left: 106px !important;}
+} 
+
+ @media only screen and (min-width: 969px) and (max-width: 992px) {
+  #SgearIcon{left: 125px !important;}
+  #GgearIcon{left: 125px !important;}
+  #ZgearIcon{left: 125px !important;}
+} 
+@media only screen and (min-width: 992px) and (max-width: 1032px) {
+  #SgearIcon{left: 75px !important;}
+  #GgearIcon{left: 75px !important;}
+  #ZgearIcon{left: 75px !important;}
+}
+@media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 78px !important;}}
+@media only screen and (min-width: 1072px) and (max-width: 1125px) {.cloud-items{left: 81px !important;}}
+@media only screen and (min-width: 1125px) and (max-width: 1170px) {.cloud-items{left: 85px !important;}}
+@media only screen and (min-width: 1170px) and (max-width: 1199px) {.cloud-items{left: 88px !important;}}
+@media only screen and (min-width: 1500px) and (max-width: 1550px) {.cloud-items{left: 74px !important;}}
+@media only screen and (min-width: 1550px) and (max-width: 1600px) {.cloud-items{left: 76px !important;}}
+@media only screen and (min-width: 1600px) and (max-width: 1650px) {.cloud-items{left: 78px !important;}}
+@media only screen and (min-width: 1650px) and (max-width: 1700px) {.cloud-items{left: 80px !important;}}
+@media only screen and (min-width: 1700px) and (max-width: 1750px) {.cloud-items{left: 82px !important;}}
+@media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
+@media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
+@media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
+@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}} */
+
+.borderColorsCU {
+  border: 1px solid #e5e5e5;
+}
+/*** Sudha Sri(20-2-2024) ***/
+.my-icon,
+.my-icon:hover {
+  overflow: hidden; 
+  width: 1em; 
+}
+.mrg-right0{
+  margin: 0px -6px;
+}
+@media (min-width: 1200px) {
+  .image_effect{
+    width: 14.28%;
+  }
+}
+@media (max-width: 1024px) {
+.SideParddings3 {
+  padding-top: 0px!important;
+}
+}
+.cards_align{
+  padding: 8px !important;
+}
+.table_align{
+  padding: 10px 0px !important;
+}
+/**XNFR-890**/
+.mt3 {
+  margin-top: 3px
+}
+/*  */
+.add_partnerbtn{
+  background: linear-gradient(to bottom, #4094f7, #1a6ed1);
+  color: #fff;
+  border: 1px solid #DEDEDE;
+  border-radius: 15px;
+  text-align: start;
+  padding: 10px!important;
+  min-height: 94px;
+}
+.portlet-title.partner_title{
+  border: none!important;
+  min-height: 31px;
+}
+.cards_align{
+  padding: 5px 8px !important;
+}
+.partner_images{
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+}
+.fa-cloud-upload{
+  color: #0d8dd2;
+  font-size: 18px;
+}
+.img-hover-unset:hover{
+background-color: unset!important;
+}
+.cloud_platforms_padding {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  padding: 5px 0px;
+}
+.service-icon {
+  height: 93px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 7%);
+  background: #ffffff;
+  border:1px solid #ddd;
+}
+.service-icon:hover{
+  transform: scale(1.05);
+}
+.white-co.add_partnerbtn:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+@media only screen and (min-width: 960px) and (max-width: 1279.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  } 
+}
+@media only screen and (min-width: 600px) and (max-width: 959.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  } 
+}
+@media only screen and (max-width: 599.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  } 
+  .card_p15 {
+    padding-left: 15px !important;
+    margin-top: 10px;
+  }
+  .mb_pr15{
+    padding-right: 15px!important;
+  }
+}
+
+.item1 {
+  grid-column-end: span 3;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+.fs-10{
+  display: block;
+  font-size: 12px;
+}
+.fs-15{
+  font-size: 15px;
+  font-weight: 600;
+}
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.align-modal-header{
+  align-items: center;
+  display: flex;
+  justify-content: space-between
+}
+.button_blue.bgcolor-unset.neg_mrg_top4{
+  padding-top: 1px !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3.pdt7{
+  padding-top: 7px !important;
+}
+
+.oliveIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #5bb2f5;
+  border-radius: 50%;
+  cursor: pointer
+}
+
+.oliveBackground{
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oliveImg{
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}

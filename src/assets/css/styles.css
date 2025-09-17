@@ -1,0 +1,360 @@
+@charset "utf-8";
+/* CSS Document */
+
+/***************************************************
+ Basic                                                                         
+*/
+* {margin: 0;	padding: 0; box-sizing:border-box; -webkit-box-sizing: border-box;	-moz-box-sizing:    border-box;}
+@font-face {
+ font-family: 'SEGOEUI';
+ src: url('../fonts/SEGOEUI.eot'); /* IE9 Compat Modes */
+ src: url('../fonts/SEGOEUI.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/SEGOEUI.woff') format('woff'), /* Modern Browsers */ url('../fonts/SEGOEUI.ttf') format('truetype'), /* Safari, Android, iOS */ url('../fonts/SEGOEUI.svg#svgFontName') format('svg'); /* Legacy iOS */
+ font-weight: normal; font-style: normal;}
+body {color:#4D4D4F; font-family: 'SEGOEUI'; font-size: 15px; font-weight: normal; margin:0px; padding:0px;}
+html, body {height: 100%;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;}
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section {display:block}
+form input, form select, form textarea {-webkit-appearance: none;}
+.clear {clear: both;}
+p, ul, ol, dl, table {}
+p {}
+a {text-decoration: none; color: #194a7e;}
+a:hover {text-decoration: none;	color: #e6830e;}
+img {border:none}
+.hd-download a:hover {text-decoration:none;}
+.hd-download:hover {background:url(../images/hd-download.png) no-repeat 0px -50px;}
+ul {list-style: none;}
+h1 {font-size: 48px; font-weight:normal; text-align:center; margin:20px 0; color:#194a7e}
+h2 {font-size: 20px; font-weight:normal;}
+h3 {font-size: 16px; margin-bottom:10px;}
+
+/***********************************
+Wrappers                                                                      
+*/
+.main-wrapper {width:100%;	min-height: 100%;	background: #FFF top left repeat-x;	position:relative;/*url(../images/bnr.png)*/}
+.main-wrapper {width:1170px; margin:0px auto;}
+
+.section { 
+    height: auto !important;
+}
+/***********************************
+Main Header 
+*/
+header {position:fixed;	top:0;	left:0; z-index: 70; width: 100%;	padding: 0;	margin:0; background: rgba(255,255,255, 0.9);}
+.header-wrapper{width:1170px; margin:0px auto; padding:2px 0 0; border-bottom:1px solid #ccc;}
+.logo {background:url(../images/logo.png) left top no-repeat; margin-top:12px;	width: 202px;	height:45px; float:left;}
+.logo a {display:block;	width: 202px;	height:45px;}
+.header-right{float:right; margin-bottom:5px;}
+.header-login{text-align:right; font-size:13px; margin-bottom:5px;}
+.hd-download a{margin-bottom:5px;}
+
+/***********************************
+ Menu Navigation                                                    
+*/
+#menu {position: relative;}
+#menu li {display:inline-block;	color: #1a497d; background:#fff; background: rgba(255,255,255, 0.5); -webkit-border-radius: 3px; border-radius: 3px;}
+#menu li.active{background:#194a7e; color: #fff;}
+#menu li a{text-decoration:none; color: #1a497d;}
+#menu li.active a:hover{color: #000;}
+#menu li:hover{background: rgba(232,237,241, 1);}
+#menu li a, #menu li.active a {padding: 9px 18px; display:block;}
+#menu li.active a {color: #fff;}
+#demosMenu{position:fixed; bottom: 10px; right:10px; z-index: 999;}
+
+/* right nav */
+#menu.right ul {text-align: right;}
+
+/* center nav */
+#menu.center ul {text-align: center;}
+
+/************************************
+Home Page Slider
+*/
+.banner-wrapper {width:1170px;height:400px; margin:0px auto; background:#21a0ed;}
+.banner {width:1170px;	margin:0px auto; height:400px; background:url(../images/slider-1.png) top left no-repeat;}
+.slide-wrapper{width:1170px !important; margin:0 auto;}
+.slide .text {float:right;width:740px; text-align:center; margin-top:75px;}
+.slide .text a {text-decoration:underline; color:#194a7e; font-size:18px;}
+.slide .text a:hover {text-decoration: none; color:#e6830e;}
+.slide h1 {font-size:44px; font-weight:normal;}
+.slide h1 span {display:block;}
+.slide p {font-size:24px; color:#194a7e; margin-bottom:20px}
+.slide .image {float:left; width:430px; height:402px;}
+.slide .image img {text-align:center}
+
+/***********************************
+ How It Works
+*/
+.how-works {text-align:center; margin:0 auto; width:1170px;}
+.how-works li{float:left; width:30%;font-size:16px; padding:20px;}
+.how-works li:nth-child(2){margin:0px 5%;}
+
+.how-works li div.image{width:118px; height:130px; margin:0 auto;}
+.how-works li div.image img {display:block; margin:0px auto;}
+
+.how-works h2 {color:#194a7e; font-size:36px; margin-bottom:10px;}
+.how-works p {text-align:center;}
+
+.how-works .video {width:750px; height:400px; margin:0 auto; background:#F1F1F1 url(../images/play-icon.png) center center no-repeat; border:2px solid #194a7e; border-radius:5px;}
+
+/***********************************
+ Features 
+*/
+.features {text-align:center; margin:0 auto; width:1170px;}
+.features li{float:left; width:30%;font-size:16px; padding:20px;}
+.features li:hover{background:#e8edf2; border-radius:5px;}
+.features li:nth-child(2){margin:0px 5%;}
+
+.features li div.image{width:115px; height:115px; border-radius:58px; padding-top:22px; background:#194a7e; margin:0 auto;}
+.features li div.image img {display:block; margin:0px auto; position:relative;}
+
+.features h2 {color:#194a7e; font-size:30px; margin-bottom:10px;}
+.features p {text-align:center;}
+
+/***********************************
+ Integration 
+*/
+.integration {margin:0 auto; width:1170px; font-size:14px;}
+.integration ul {width:850px; margin:20px auto}
+.integration li{margin-bottom:15px; float:left}
+.integration li .image{float:left; width:20%;}
+.integration li .image img {display:block; margin:0 auto;}
+.integration li .text{background:#e8edf2; border-radius:5px; padding:10px 20px; float:right; width:80%;}
+.integration li h2{color:#194a7e; font-size:24px; text-align:left}
+
+/***********************************
+ Experience and Try
+*/
+.experience, .try {width:400px; margin:0 auto 30px; border:2px solid #194a7e; border-radius:5px; padding:25px;}
+.experience label,.try label {font-size:18px; color: #194a7e;}
+.experience input[type="text"], .try input[type="text"]{background-color: whitesmoke; border: 1px solid #c5c5c5; height: 32px; width: 95%; margin:10px 0 20px 22px;}
+.experience input[type="submit"], .try input[type="submit"] {background-color: #194a7e;    border: 0 none;    color: #fff;    cursor: pointer;    font-weight: bold;    margin: 30px 0 0; outline: medium none !important; border-radius:3px;    padding:7px 20px; text-decoration: none;}
+.experience input[type="submit"]:hover, .try input[type="submit"]:hover {background: #3a3a3c;}
+
+/***********************************
+ Customers Section CSS Starts Here 
+*/
+.customer h1{margin-bottom:50px;}
+#clients {display:none;}
+.nbs-flexisel-container {position:relative; max-width:1170px; margin:0 auto;}
+.nbs-flexisel-ul {position:relative; width:99999px; margin:0px; padding:0px; list-style-type:none; text-align:center;}
+.nbs-flexisel-inner {overflow:hidden;    float:left;    width:100%;}
+
+.nbs-flexisel-item {float:left;  margin:0px; padding:0px; cursor:pointer; position:relative; line-height:0px;}
+.nbs-flexisel-item img {width: 100%; cursor: pointer; position: relative; max-width:267px; max-height:71px;}
+
+/*** Navigation ***/
+.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {width: 22px; height: 22px; position: absolute;  cursor: pointer; z-index: 100; opacity: 0.5;}
+.nbs-flexisel-nav-left {left: 10px;  background: url(../images/btn-prev.png) no-repeat;}
+.nbs-flexisel-nav-left:hover {left: 10px;  background: url(../images/btn-prev-hover.png) no-repeat;}
+.nbs-flexisel-nav-right {right: 5px; background: url(../images/btn-next.png) no-repeat;}
+.nbs-flexisel-nav-right:hover {right: 5px; background: url(../images/btn-next-hover.png) no-repeat;}
+
+.testimonials blockquote {margin:0 auto 75px; width:60%; font-size:24px; text-align:center; line-height:150%;}
+.testimonials footer {font-size:16px; font-style:italic; margin-top:5px;}
+.testimonials{text-align:center; margin:75px 0;}
+.testimonials .fp-prev,.testimonials .fp-next {display:none}
+
+/***********************************
+ Communities Section CSS Starts Here 
+*/
+.communities{width:1170px; margin:0 auto;}
+.lead{font-size:20px; color:#194a7e; margin-bottom:25px; text-align:center;}
+ul.communities li{width: 50%; padding-right: 5%; float:left; border-right:1px solid #d4d4d1;}
+ul.communities li:nth-child(2){border-right: none; padding-left:5%; padding-right:0;}
+ul.communities img{width:205px; display:block; margin:0 auto 15px;}
+div.networking{margin:30px 0;}
+div.networking ul {margin:0 36px;}
+div.networking li{float:left; border:1px solid #DDD; padding:1px; margin:0 10px; border-radius:3px; width:250px; height:75px;}
+
+.tabs-menu {float: left; width:100%;}
+.tabs-menu li {height: 45px; line-height: 45px; float: left; margin-right: 10px; border: 1px solid #e8edf2; border-radius:3px;}
+.tabs-menu li.current {position: relative; background-color: #e8edf2;}
+.tabs-menu li a {padding: 10px 35px; color: #194a7e; text-decoration: none; font-size:18px;}
+.tabs-menu .current a {color: #194a7e;}
+.tab {background-color: #fff; float: left; margin: 5px 0 20px; width: 100%;}
+.tab-content {padding:30px 20px; display: none; background-color: #e8edf2; border-radius:3px;}
+#tab-1 {display: block;}
+
+/***********************************
+ Contact Us 
+*/
+.contact{margin:0 auto; width:1170px; text-align:left}
+.contact h1{text-align:left}
+.contact h2{color:#194a7e; font-size:24px;}
+.address {float:left; width:45%; margin-right:5%;}
+.address p {margin-bottom:15px;}
+ul.address li {list-style-type:none; margin:0 0 10px; background-image: url(../images/office-icon.png); background-repeat:no-repeat; padding-left:30px; font-size:13px;}
+ul.address li:nth-child(1) {background-position:0 0;}
+ul.address li:nth-child(2) {background-position:0 -32px;}
+ul.address li:nth-child(3) {background-position:0 -63px;}
+
+ul.address li span {font-weight:bold;}
+
+.contact-form  {float:left; width:50%;}
+.contact-form  h3 {margin-bottom:10px;}
+.contact-form input[type="text"], .contact-form input[type="email"], .contact-form textarea {background-color: whitesmoke; border: 1px solid #c5c5c5;    box-sizing: border-box; margin-bottom: 10px;  min-height: 28px; padding: 7px; width: 100%;}
+.contact-form textarea {font-family: "SEGOEUI";    font-size: 14px;    height: 75px;}
+.contact-form input[type="submit"] {float:right; background-color: #194a7e; border: 0 none; color: #fff; cursor: pointer; font-weight: bold; margin: 0 0 30px;    outline: medium none !important; border-radius:3px; padding:7px 20px; text-decoration: none;}
+.contact-form input[type="submit"]:hover {background: #3a3a3c;}
+
+/**************************************
+ Fonts Buttons Ul Li Styles
+*/
+.btn-watchnow{display: block; cursor:pointer; margin: 20px auto; background: url(../images/btn-watchnow.png) top left no-repeat; width:217px; height:49px;}
+.btn-watchnow:hover{background-image: url(../images/btn-watchnow-hover.png);}
+
+.btn-playnow{display: block; cursor:pointer; margin: 20px auto 0; background: url(../images/btn-playnow.png) top left no-repeat; width:139px; height:34px;}
+.btn-playnow:hover{background-image: url(../images/btn-playnow-hover.png);}
+
+form input[type=text] {width:97%; padding:0px 1%; color:#666; height:35px; line-height:35px; border:1px solid #CCC;	margin-bottom:5px;}
+form input[type=file] {width:99%; color:#666; height:35px; line-height:35px; border:1px solid #CCC;	margin-bottom:5px;}
+form textarea {width:99%;	color:#666;	height:75px;	border:1px solid #CCC;	margin-bottom:5px;	padding:0px;	font-family: 'Lato';font-size: 14px;}
+form input[type=submit] {display: inline-block;	padding: 0.30em 1.25em;	background: #000000;	text-decoration: none !important;	font-weight: 300;	font-size: 1.10em;	font-style: normal;	color: #FFF;	border:none;	cursor:pointer;}
+form input[type=submit]:hover {background: #444;}
+form select {width:99%;	color:#666666;	height: 35px !important;	border: 1px solid #ABADB3;	margin: 0px 0px 5px 0px;	padding: 8px 0px;border:1px solid #CCC;}
+label.error {float: left;	font-size: 12px;	color:#000;}
+
+/***********************************
+ POPUP CSS Starts Here 
+*/
+.black_overlay {display: none;	position: absolute;	top: 0%; left: 0%;	width: 100%; height: 100%; background-color: black;	z-index:1001; -moz-opacity: 0.8;
+opacity:.80; filter: alpha(opacity=80);}
+.white_content {display: none;	position: absolute;	top: 25%; left: 27%; width: 585px; height: 350px; padding: 0px;	border: 5px solid #FFF;	background-color: white;
+z-index:1002; overflow: auto;}
+.white_content iframe, .white_content object, .white_content embed {position:absolute; top:0; left:0; width:100%; height:100%;}
+
+a.btn-close1, a.btn-close2, a.btn-close3, a.btn-close4, a.btn-close5, a.btn-close6, a.btn-close7, a.btn-close8 {position:absolute;top:0; right:0; background:url(../images/btn-close.png) top left no-repeat; width:24px; height:24px; display:block; cursor:pointer;}
+a.btn-close1:hover, a.btn-close2:hover, a.btn-close3:hover, a.btn-close4:hover, a.btn-close5:hover, a.btn-close6:hover, a.btn-close7:hover, a.btn-close8:hover {background-image:url(../images/btn-close-hover.png);}
+
+
+/***********************************
+ Privacy Section CSS Starts Here 
+*/
+div.privacy h1{font-size:30px;}
+div.privacy h2{font-size:18px; color: #194a7e; margin-bottom:10px;}
+div.privacy p{margin-bottom:10px; line-height:140%;}
+div.privacy ul {margin-bottom:10px;}
+div.privacy li {margin-bottom:5px; list-style:disc; margin-left:30px;}
+
+/***********************************
+ FOOTER CSS Starts Here 
+*/
+footer {}
+.footer-wrapper {border-top:1px solid #194a7e;	width: 1170px;	margin:0px auto; overflow:hidden;}
+ul.apps {width:266px; margin:10px auto 0; height:43px;}
+ul.apps li {float:left; height:43px; margin-right:10px;}
+ul.apps li:last-child {margin-right:0px;}
+ul.apps a{background-image:url(../images/apps.png);	background-repeat:no-repeat; cursor:pointer; height:43px; display:block}
+ul.apps a.app-store{width:123px; background-position:0 0px;}
+ul.apps a.google-play{width:133px; background-position:-133px 0;}
+
+ul.social {width:173px; height:39px; margin:10px auto;}
+ul.social li {float:left; width:38px; height:39px; margin-right:7px;}
+ul.social li:last-child {margin-right:0px;}
+ul.social a{background-image:url(../images/social-icons.png); background-repeat:no-repeat; cursor:pointer; width:38px; height:39px;  display:block}
+ul.social a.facebook{background-position:0 0px;}
+ul.social a.twitter{background-position:-46px 0;}
+ul.social a.linkedin{background-position:-94px 0;}
+ul.social a.mobinar{background-position:-141px 0;}
+
+.copyright {clear:both;	padding:0px; text-align: center; color: #4d4d4f; width:100%; font-size:13px; margin-bottom:15px;}
+#totop{border:1px solid #194a7e; color: #194a7e; width:45px; height:45px; text-align:center; border-radius:50px; padding:10px; position:fixed; bottom:10px; right:10px;}
+#totop:hover {background:#194a7e; color:#FFF;}
+
+
+/*************************
+ RESPONSIVE DESIGN CSS  
+ 320px | 480px | 600px | 768px | 900px | 1024px */
+
+@media screen and (max-width: 768px) {
+	.header-wrapper{width:100%; height:auto;}
+	.logo{float:none; width:202px; margin:10px auto;}
+	.header-right{float:none;}
+	.header-login{text-align:center; margin-bottom:10px;}
+	
+	#menu {position: relative;	min-height: 40px;}	
+	#menu ul {width: 98%; color: #194a7e; position: absolute; top: 0; left: 0; border: solid 1px #aaa;
+		background: #fff url(../images/icon-menu.png) no-repeat 10px 8px; color:#194a7e; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,.3);}
+	#menu li {display: none; /* hide all <li> items */
+		margin: 0;}
+	#menu li.active {display: block; /* show only current <li> item */ background:none; color: #194a7e;}
+	#menu li a {display: block;	text-align: left; padding-left: 44px;}
+	#menu li.active a {background: none; color: #194a7e; padding-left:52px;}
+
+	/* on nav hover */
+	#menu ul:hover {background-image: none;}
+	#menu ul:hover li {display: block;	margin: 0 0 5px;}
+	#menu ul:hover li.active {background: url(../images/icon-check.png) no-repeat 10px 7px; color: #194a7e;}
+	#menu ul:hover li.active a {color: #194a7e; padding-left:44px;}
+
+	/* right nav */
+	#menu.right ul {left: auto;	right: 0;}
+
+	/* center nav */
+	#menu.center ul {left: 49%;	margin-left: -48%;}
+		
+	/************************************
+	Home Page Slider  */
+	.banner-wrapper {width:100%; height: auto;}
+	.banner {width:100%; height: auto;}
+	.slide-wrapper{width:100% !important;}
+	.slide .text {float:none; width:100%; margin-top:75px;}
+	.slide h1 {font-size:36px;}
+	.slide h1 span {display: inline;}
+	.slide p {font-size:18px; margin-bottom:20px}
+	.slide .image {display:none}
+		
+	/***********************************
+	 How It Works	*/
+	.how-works, .features {width:100%;}	
+	.how-works li{float:none; width:100%;padding:20px;}
+	.how-works li:nth-child(2){margin:0px;}	
+	.how-works h1 {font-size:24px;}
+	.how-works h2 {font-size:18px;}
+	
+	/***********************************
+	 Features 	*/
+	.features {width:100%;}
+	.features li{width:100%;}
+	.features li:nth-child(2){margin:0px;}
+	.features h1 {font-size:24px;}
+	.features h2 {font-size:18px;}
+	
+	/***********************************
+	 Integration 	*/
+	.integration {margin:0 auto; width:100%;}
+	.integration ul {width:100%;}
+	.integration li .image{float:none; width:100%; margin-bottom:15px;}
+	.integration li .text{float:none; width:100%;}
+	.integration h1 {font-size:24px;}
+	.integration li h2{text-align:center}
+	.integration li p{text-align:center}
+	
+	/***********************************
+	 Customers Section	*/
+	.customer {width:100%;}
+	.customer h1 {font-size:24px;}
+	.testimonials blockquote {margin:0 auto 25px; width:90%; line-height:110%;}	
+	/***********************************
+	 Communities Section 	*/
+	 .communities{width:100%;}
+	.tabs-menu li {float: none;    margin-bottom: 5px;    margin-right: 0px;}
+	ul.communities li{width: 100%; padding-right: 0; float:none; border-right: none; margin-bottom:20px;}
+	ul.communities li:nth-child(2){border-right: none; padding-left:0; padding-right:0;}
+	
+	/***********************************
+	 Contact Us */
+	.contact{width:100%;}
+	.contact h2{font-size:18px;}
+	.address {float:none; width:100%; margin-right: 0;}
+
+	.contact-form  {float:none; width:100%;}
+
+	/***********************************
+	 FOOTER CSS Starts Here	*/
+	footer {}
+	.footer-wrapper {width: 100%;}
+	.copyright span {display:block; margin-bottom:5px}
+
+	
+}

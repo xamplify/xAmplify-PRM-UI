@@ -1,0 +1,351 @@
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Router,ActivatedRoute } from '@angular/router';
+import { SortOption } from '../../core/models/sort-option';
+import { PagerService } from '../../core/services/pager.service';
+import { ReferenceService } from '../../core/services/reference.service';
+import { UserService } from '../../core/services/user.service';
+import { Pagination } from '../../core/models/pagination';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CustomResponse } from '../../common/models/custom-response';
+import { UtilService } from 'app/core/services/util.service';
+import { ModulesDisplayType } from '../models/modules-display-type';
+import { Roles } from 'app/core/models/roles';
+declare var $: any;
+@Component({
+  selector: 'app-folder-type-view-util',
+  templateUrl: './folder-type-view-util.component.html',
+  styleUrls: ['./folder-type-view-util.component.css'],
+  providers: [Pagination, HttpRequestLoader, SortOption]
+})
+export class FolderTypeViewUtilComponent implements OnInit {
+
+  @Input() moduleId:number;
+  @Input()modulesDisplayType:ModulesDisplayType;
+  @Output() folderViewTypeEventEmitter = new EventEmitter();
+  @Output() oliverfolderViewTypeEventEmitter = new EventEmitter();
+  @Output() folderViewAssetEventEmitter = new EventEmitter();
+  @Output() notifyFolders = new EventEmitter();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  customResponse:CustomResponse = new CustomResponse();
+  categorySortOption: SortOption = new SortOption();
+  folderViewType = "";
+  roles:Roles = new Roles();
+  isPartnerView = false;
+  type:string = "";
+  titleHeader:string = "";
+  suffixHeader:string = "";
+  options: string[] = ['Search Folder', 'Search In Folder'];
+  selectedOption: string;
+  @Input() FromOliverPopUp: boolean = false;
+  @Input() selectedFoldersForOliver: any[] = [];
+  @Input() isPartnerViewFromOliver: boolean = false;
+  @Input() pageSource: string = "";
+  constructor(private router: Router,
+    private pagerService: PagerService, public referenceService: ReferenceService,
+    public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
+    public userService: UserService, public utilService: UtilService, private route: ActivatedRoute) {
+    this.isPartnerView = this.router.url.indexOf("/shared") > -1 || this.router.url.indexOf("/pages/partner") > -1;
+  }
+
+  ngOnInit() {
+    this.referenceService.categoryType = '';
+    this.folderViewType = this.route.snapshot.params['viewType'];
+    this.setOliverViewType();
+    this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+    this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+    this.selectedOption = 'Search Folder';
+    this.findAllCategories(this.pagination);
+    this.utilService.searchKey = "";
+    this.pagination.source = this.pageSource;
+  }
+
+  private setOliverViewType() {
+    if (this.FromOliverPopUp) {
+      let oliverViewType;
+      if (this.modulesDisplayType.isFolderListView) {
+        oliverViewType = 'fl';
+      } else if (this.modulesDisplayType.isFolderGridView) {
+        oliverViewType = 'fg';
+      } else {
+        oliverViewType = localStorage.getItem("defaultDisplayType") == 'FOLDER_LIST' ? "fl" : "fg";
+      }
+      this.folderViewType = oliverViewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+    }
+  }
+
+  findAllCategories(pagination:Pagination){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    pagination.companyId = this.referenceService.companyId;
+    
+    if(this.isPartnerView){
+      pagination.partnerCompanyId = pagination.companyId;
+      pagination.partnerView  = this.isPartnerView;
+    }
+    this.suffixHeader = this.isPartnerView ? "Shared " : "Manage ";
+    if(this.pagination.categoryType == "DAM"){
+      this.titleHeader = " Digital Assets";
+    } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+      this.titleHeader = "Tracks";
+    } else if (this.pagination.categoryType == "PLAY_BOOK") {
+      this.titleHeader = "Playbooks";
+    }else if(this.pagination.categoryType == "CAMPAIGN"){
+      this.titleHeader = "Campaigns";
+    }else if(this.pagination.categoryType == "EMAIL_TEMPLATE"){
+      this.titleHeader = "Email Templates";
+    }else if(this.pagination.categoryType=="LANDING_PAGE"){
+      this.titleHeader = "Pages";
+    }else if(this.pagination.categoryType=="FORM"){
+      this.titleHeader = "Forms";
+    }
+    pagination.userId = this.authenticationService.getUserId();
+    this.authenticationService.setVanityUrlFilter(pagination);
+    this.userService.getCategories(this.pagination)
+            .subscribe(
+                response => {
+                    this.customResponse = new CustomResponse();
+                    const data = response.data;
+                    pagination.totalRecords = data.totalRecords;
+                    this.categorySortOption.totalRecords = data.totalRecords;
+                    $.each(data.categories, function (_index: number, category: any) {
+                        category.displayTime = new Date(category.createdTimeInString);
+                    });
+                    pagination = this.pagerService.getPagedItems(pagination, data.categories);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.logger.errorPage(error);
+                });
+  }
+
+  /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+      this.categorySortOption.formsSortOption = text;
+      this.getAllCategoryFilteredResults(this.pagination);
+  }
+
+  /*************************Search********************** */
+  searchCategories() {
+    if (this.selectedOption == 'Search In Folder') {
+      this.folderViewType == "fl" ? this.utilService.folderListViewSelected = true : this.utilService.folderListViewSelected = false;
+      this.utilService.searchKey = this.categorySortOption.searchKey;
+      if (this.pagination.categoryType == "DAM") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/dam/shared/l');
+        }
+        else {
+          this.gridViewtoListView('home/dam/manage/l');
+        }
+      } else if (this.pagination.categoryType == "PLAY_BOOK") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/playbook/shared/l');
+        }
+        else {
+          this.gridViewtoListView('/home/playbook/manage/l/');
+        }
+      } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/tracks/shared/l');
+        }
+        else {
+          this.gridViewtoListView('/home/tracks/manage/l/');
+        }
+      }
+    } else {
+      this.getAllCategoryFilteredResults(this.pagination);
+    }
+  }
+
+  private gridViewtoListView(isView: any) {
+    if (this.utilService.searchKey == "") {
+      if (this.pagination.categoryType == "DAM") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/dam/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/manage/fl');
+          }
+          else {
+            this.referenceService.goToRouter('home/dam/manage/fg');
+          }
+        }
+      }
+      else if (this.pagination.categoryType == "PLAY_BOOK") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/playbook/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/playbook/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('/home/playbook/manage/fl/');
+          } else {
+            this.referenceService.goToRouter('/home/playbook/manage/fg/');
+          }
+        }
+      } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/tracks/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('/home/tracks/manage/fg/');
+
+          }
+        }
+      }
+    }
+    else {
+      this.referenceService.goToRouter(isView);
+    }
+  }
+
+  paginationDropdown(items: any) {
+      this.categorySortOption.itemsSize = items;
+      this.getAllCategoryFilteredResults(this.pagination);
+  }
+
+  /************Page************** */
+  setPage(event: any) {
+      this.pagination.pageIndex = event.page;
+      this.findAllCategories(this.pagination);
+  }
+
+  getAllCategoryFilteredResults(pagination: Pagination) {
+      pagination.pageIndex = 1;
+      pagination.searchKey = this.categorySortOption.searchKey;
+      pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedTeamMemberGroupSortDropDown, pagination);
+      this.findAllCategories(pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
+
+  viewItemsByCategoryId(categoryId: number) {
+    this.utilService.folderListViewSelected = false;
+    if (this.FromOliverPopUp) {
+      this.folderViewAssetEventEmitter.emit(categoryId);
+    }
+    if (!this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssetsByCategoryId("fg", "l", categoryId, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
+        this.referenceService.goToManageCampaignsByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.emailTemplateId) {
+        this.referenceService.goToManageEmailTemplatesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.landingPageId) {
+        this.referenceService.goToManageLandingPagesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.formId) {
+        this.referenceService.goToManageFormsByCategoryId("fg", "l", categoryId);
+      }
+    }
+  }
+
+  setViewType(viewType: string) {
+    this.utilService.folderListViewSelected = false;
+    if (this.folderViewType != viewType && !this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
+        this.referenceService.goToManageCampaigns(viewType);
+      } else if (this.moduleId == this.roles.emailTemplateId) {
+        this.referenceService.goToManageEmailTemplates(viewType);
+      } else if (this.moduleId == this.roles.landingPageId) {
+        this.referenceService.goToManageLandingPages(viewType);
+      }
+    } else if (this.FromOliverPopUp && (viewType == "l" || viewType == "g")) {
+      this.oliverfolderViewTypeEventEmitter.emit(viewType);
+    } else if (this.FromOliverPopUp && (viewType == "fl" || viewType == "fg")) {
+      this.folderViewType = viewType;
+      this.isPartnerView = this.isPartnerViewFromOliver;
+      this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+      this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+      // this.findAllCategories(this.pagination);
+    }
+  }
+
+  viewFolderItems(category:any,selectedIndex:number){
+    this.utilService.folderListViewSelected = false;
+    $.each(this.pagination.pagedItems, function (index:number, row:any) {
+        if (selectedIndex != index) {
+          row.expanded = false;
+        }
+      });
+      category.expanded = !category.expanded;  
+      $('.child-row-list-view').css("background-color", "#fff");          
+    if (category.expanded) {
+        this.referenceService.isCreated = false;
+        this.referenceService.isUpdated = false;
+        $('#folder-row-' + selectedIndex).css("background-color", "#f1f5f9");
+    } else {
+        $('#folder-row-' + selectedIndex).css("background-color", "#fff");
+    }
+}
+
+getUpdatedItemsCount(event:any){
+  let categoryId = event['categoryId'];
+  let itemsCount = event['itemsCount'];
+  $('#count-'+this.moduleId+"-"+categoryId).text(itemsCount);
+}
+
+onSelect(option: string) {
+  this.selectedOption = option;
+}
+
+ AskOliver(categoryId: any,viewType: string) {
+    let url = "";
+    this.referenceService.OliverCategoryId = categoryId;
+    if (this.isPartnerView) {
+      if(viewType == "fl"){
+         url = "/home/dam/askAi/shared/view/fl/" + categoryId;
+      }else{
+        url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+      }
+    } else if(viewType == "fl") {
+      url = "/home/dam/askAi/view/fl/" + categoryId;
+    } else {
+      url = "/home/dam/askAi/view/fg/" + categoryId;
+    }
+    this.referenceService.goToRouter(url)
+  }
+
+  onCheckboxChange(item: any, event: any) {
+		if (event.target.checked) {
+			this.selectedFoldersForOliver.push(item);
+		} else {
+			const index = this.selectedFoldersForOliver.findIndex(selected => selected.id === item.id);
+			if (index !== -1) {
+				this.selectedFoldersForOliver.splice(index, 1);
+			}
+		}
+		this.notifyFolders.emit(this.selectedFoldersForOliver);
+	}
+
+  isSelected(item: any): boolean {
+		if (!item || !this.selectedFoldersForOliver) {
+			return false;
+		}
+		return this.selectedFoldersForOliver.some(selected => selected.id === item.id);
+	}
+
+}

@@ -1,0 +1,82 @@
+<div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
+  <app-box-loader [countLoader]="3" *ngIf="countsLoader"></app-box-loader>
+  <ng-container *ngIf="!countsLoader">
+     <div class="new-width-row">
+        <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect" style="padding-left: 12px;">
+           <button class="btn-block dashboard-stat blue"
+              [class.grey]="partnerSignatureStatusAnalyticsDTO.selectedCategory && partnerSignatureStatusAnalyticsDTO.selectedCategory != 'ALL'"
+              (click)="loadCompaniesByType('ALL')" [disabled]="partnerSignatureStatusAnalyticsDTO.allCount == 0">
+              <div class="visual">
+                 <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': partnerSignatureStatusAnalyticsDTO.selectedCategory == 'ALL' ? '#white' : '#ccc' }"
+                    *ngIf="partnerSignatureStatusAnalyticsDTO.selectedCategory == 'ALL'" aria-hidden="true"></i>
+              </div>
+              <div class="details">
+                 <div class="number NumberFontDecrease">
+                    {{partnerSignatureStatusAnalyticsDTO.allCount}}
+                 </div>
+                 <div class="desc fz-16 TextFontDecrease" translate>
+                    All
+                 </div>
+              </div>
+              <span class="morePadding">
+                 <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                       title="{{'Total Partner Companies'}}"></i></a>
+              </span>
+           </button>
+        </div>
+        <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
+           <button class="btn-block dashboard-stat green"
+              [class.grey]="partnerSignatureStatusAnalyticsDTO.selectedCategory && partnerSignatureStatusAnalyticsDTO.selectedCategory != 'SIGNED'"
+              (click)="loadCompaniesByType('SIGNED')" [disabled]="partnerSignatureStatusAnalyticsDTO.signedCount == 0">
+              <div class="visual">
+                 <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': partnerSignatureStatusAnalyticsDTO.selectedCategory == 'SIGNED' ? '#white' : '#ccc' }"
+                    *ngIf="partnerSignatureStatusAnalyticsDTO.selectedCategory == 'SIGNED'" aria-hidden="true"></i>
+              </div>
+              <div class="details">
+                 <div class="number numberCss NumberFontDecrease" style="font-weight: 300; color: #FFFFFF;">
+                    {{partnerSignatureStatusAnalyticsDTO.signedCount}}
+                 </div>
+                 <div class="desc fz-16 TextFontDecrease" translate>
+                    Signed
+                 </div>
+              </div>
+              <span class="morePadding">
+                 <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                       title="{{'Total Signed Partner Companies'}}"></i></a>
+              </span>
+           </button>
+        </div>
+        <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
+           <button class="btn-block dashboard-stat purple"
+              [class.grey]="partnerSignatureStatusAnalyticsDTO.selectedCategory && partnerSignatureStatusAnalyticsDTO.selectedCategory != 'NOTSIGNED'"
+              (click)="loadCompaniesByType('NOTSIGNED')" [disabled]="partnerSignatureStatusAnalyticsDTO.notSignedCount == 0">
+              <div class="visual">
+                 <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': partnerSignatureStatusAnalyticsDTO.selectedCategory == 'NOTSIGNED' ? '#white' : '#ccc' }"
+                    *ngIf="partnerSignatureStatusAnalyticsDTO.selectedCategory == 'NOTSIGNED'" aria-hidden="true"></i>
+              </div>
+              <div class="details">
+                 <div class="number NumberFontDecrease">
+                    {{partnerSignatureStatusAnalyticsDTO.notSignedCount}}
+                 </div>
+                 <div class="desc fz-16 TextFontDecrease" translate>
+                    Not Signed
+                 </div>
+              </div>
+              <span class="morePadding">
+                 <a class="more" style="text-align: left;" translate> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                       title="{{'Total Partner Companies Pending for Signature'}}"></i></a>
+              </span>
+           </button>
+        </div>
+     </div>
+  </ng-container>
+</div>

@@ -1,0 +1,600 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { PaginationComponent } from 'app/common/pagination/pagination.component';
+import { SocialPagerService } from 'app/contacts/services/social-pager.service';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { CustomFieldsDto } from '../models/custom-fields-dto';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DashboardService } from '../dashboard.service';
+declare var swal:any, $:any;
+
+@Component({
+  selector: 'app-crm-form-settings',
+  templateUrl: './crm-form-settings.component.html',
+  styleUrls: ['./crm-form-settings.component.css']
+})
+export class CrmFormSettingsComponent {
+
+  @Input() integrationType: String;
+  @Input() opportunityType :any;
+  @Output() closeEvent = new EventEmitter<any>();
+  @Output() notifySubmitSuccess = new EventEmitter<any>();
+  loggedInUserId: any;
+	customResponse: CustomResponse = new CustomResponse();
+	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+	loading: boolean = false;
+	selectedCfIds = [];
+	canNotUnSelectIds = [];
+	ngxloading: boolean;
+	sfCustomFieldsResponse: any;
+	sfcfMasterCBClicked: boolean = false;
+	isOnlyPartner: boolean = false;
+	isPartnerTeamMember: boolean = false;
+	requiredCfIds = [];
+	paginatedSelectedIds = [];
+	sfcfPager: any = {};
+	pageSize: number = 12;
+	sfcfPagedItems = new Array<CustomFieldsDto>();
+	customField = new CustomFieldsDto;
+	isHeaderCheckBoxChecked: boolean = false;
+	pageNumber: any;
+	selectedCustomFieldIds = [];
+	customFieldsResponse: CustomResponse = new CustomResponse();
+	activeCRMDetails: any;
+	integrationDetails: any;
+	integrationPipelines = [];
+	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+	customFieldsDtosLoader = false;
+	expandField: boolean = false;
+	typeMismatchMessage: any;
+	searchKey: any;
+	searchKeyValue: any;
+	FilteredCustomFields: any;
+	haveCustomFields: boolean = false;
+	isSortApplied: boolean = false;
+	isFilterApplied: boolean = false;
+	isCustomFieldsModelPopUp: boolean = false;
+	isCustomFieldsOrderModelPopUp: boolean = false;
+	customFieldsList: any;
+	selectedCustomFields: Array<CustomFieldsDto> = new Array<CustomFieldsDto>();
+	showHeaderTextArea: boolean = false;
+	dealHeader = '';
+
+	sortOptions = [
+		{ 'name': 'Sort by', 'value': '' },
+		{ 'name': 'Field name (A-Z)', 'value': 'asc' },
+		{ 'name': 'Field name (Z-A)', 'value': 'desc' },
+	];
+
+	public sortOption: any = this.sortOptions[0].value;
+	
+
+	/*** XNFR-906  ****/
+	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
+		public referenceService: ReferenceService, public authenticationService: AuthenticationService, public dashboardService:DashboardService) {
+		this.pageNumber = this.paginationComponent.numberPerPage[0];
+		this.loggedInUserId = this.authenticationService.getUserId();
+		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
+		/*** XNFR-906  ****/
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.vanityLoginDto.userId = this.loggedInUserId;
+			this.vanityLoginDto.vanityUrlFilter = true;
+		}
+		/*** XNFR-906  ****/
+	}
+	
+	ngOnChanges() {
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
+		this.getActiveCRMDetails();
+	}
+
+  checkAuthorization() {
+	
+	}
+
+	listSalesforceCustomFields(opportunityType: any) {
+	
+	}
+
+	listExternalCustomFields() {
+		
+	}
+
+
+	setSfCfPage(page: number) {
+		this.paginatedSelectedIds = [];
+		try {
+			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
+				return;
+			}
+			if (this.sortOption !== undefined) {
+				if (this.sortOption === 'asc') {
+					this.sfCustomFieldsResponse.sort((a, b) => a.label.localeCompare(b.label));
+				} else if (this.sortOption === 'desc') {
+					this.sfCustomFieldsResponse.sort((a, b) => b.label.localeCompare(a.label));
+				} else if (this.sortOption === '') {
+					this.sfCustomFieldsResponse.sort((a, b) => {
+						if (a.canUnselect && !b.canUnselect) {
+							return 1;
+						} else if (!a.canUnselect && b.canUnselect) {
+							return -1;
+						}
+
+						if (!a.selected && b.selected) {
+							return 1;
+						} else if (a.selected && !b.selected) {
+							return -1;
+						}
+
+						return a.label.localeCompare(b.label);
+					});
+				}
+			}
+			this.referenceService.goToTop();
+			if (this.searchKeyValue !== undefined && this.searchKeyValue !== '') {
+				this.FilteredCustomFields = this.sfCustomFieldsResponse.filter(customField =>
+					(customField.label.toLowerCase().includes(this.searchKeyValue.trim().toLowerCase()) || customField.name.toLowerCase().includes(this.searchKeyValue.trim().toLowerCase()))
+				);
+				this.sfcfPager = this.socialPagerService.getPager(this.FilteredCustomFields.length, page, this.pageSize);
+				this.sfcfPagedItems = this.FilteredCustomFields.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
+				var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
+				var items = $.grep(this.selectedCfIds, function (element) {
+					return $.inArray(element, cfIds) !== -1;
+				});
+				if ((items.length == this.sfcfPager.pageSize || items.length == this.FilteredCustomFields.length || items.length == this.sfcfPagedItems.length) && this.FilteredCustomFields.length > 0) {
+					this.isHeaderCheckBoxChecked = true;
+				} else {
+					this.isHeaderCheckBoxChecked = false;
+				}
+			} else {
+				this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
+				this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
+				var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
+				var items = $.grep(this.selectedCfIds, function (element) {
+					return $.inArray(element, cfIds) !== -1;
+				});
+				if ((items.length == this.sfcfPager.pageSize || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length) && this.sfCustomFieldsResponse.length > 0) {
+					this.isHeaderCheckBoxChecked = true;
+				} else {
+					this.isHeaderCheckBoxChecked = false;
+				}
+			}
+			if (items) {
+				for (let i = 0; i < items.length; i++) {
+					this.paginatedSelectedIds.push(items[i]);
+				}
+			}
+		} catch (error) {
+		}
+
+	}
+
+	selectedPageNumber(event) {
+		this.pageNumber.value = event;
+		if (event === 0) { event = this.sfCustomFieldsResponse.length; }
+		this.pageSize = event;
+		this.setSfCfPage(1);
+	}
+
+	saveCustomFieldsSelection() {
+	
+	}
+
+	closeSfSettings() {
+		this.closeEvent.emit();
+	}
+
+	selectCf(sfCustomField: any) {
+		let cfName = sfCustomField.name;
+		let isChecked = $('#' + cfName).is(':checked');
+		if (isChecked) {
+			if (this.selectedCfIds.indexOf(cfName) == -1) {
+				this.selectedCfIds.push(cfName);
+				this.selectedCustomFieldsDtos.push(sfCustomField);
+			}
+			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+				this.paginatedSelectedIds.push(cfName);
+			}
+			sfCustomField.selected = true;
+		} else {
+			this.selectedCustomFieldsDtos.splice(this.selectedCustomFieldsDtos.indexOf(sfCustomField), 1);
+			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
+			if (indexInSelectedIds !== -1) {
+				this.selectedCfIds.splice(indexInSelectedIds, 1);
+			}
+			
+			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
+			if (indexInPaginatedIds !== -1) {
+				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
+			}
+	
+			sfCustomField.selected = false;
+			sfCustomField.required = false;
+		}
+		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
+
+		this.setAllParentFieldsSelected(sfCustomField,isChecked);
+
+	}
+
+
+	setAllParentFieldsSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let cfParentName = sfCustomField.controllerName;
+			if (isChildChecked) {
+				$('#' + cfParentName).prop('checked', true);
+			}
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					let isOtherChildSelected = this.checkIfOtherChildFieldsSelected(cfParentName);
+					if (!isOtherChildSelected) {
+						sfParentfield.canUnselect = true;
+						sfParentfield.selected = true;
+					}
+				}
+
+				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
+					let cfParentName = sfParentfield.controllerName;
+					let isChecked = false;
+					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
+						$('#' + cfParentName).prop('checked', true);
+						isChecked = true;
+					}
+					this.setAllParentFieldsSelected(sfParentfield, isChecked);
+				}
+			}
+		}
+	}
+
+	checkIfOtherChildFieldsSelected(cfParentName: any): boolean {
+		let sfChildFields = this.sfCustomFieldsResponse.filter(field => field.controllerName === cfParentName);
+		for (let sfChildfield of sfChildFields) {
+			if (sfChildfield.selected) {
+				return true;
+			}
+		}
+	}
+	
+
+	checkIfhasParentField(sfCustomField: any, isChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let cfParentName = sfCustomField.controllerName;
+			if (isChecked) {
+				$('#' + cfParentName).prop('checked', true);
+			}
+			this.setParentFieldSelected(sfCustomField, isChecked);
+		}
+	}
+
+	checkIParentFieldisUnChecked(sfCustomField: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				let hasParentLabel = this.sfcfPagedItems.some(field => field.name === sfParentName);
+				if (sfCustomField.canUnselect) {
+					if (hasParentLabel || !(sfParentfield.canUnselect)) {
+						sfParentfield.selected = false;
+						sfParentfield.canUnselect = true;
+						this.checkIParentFieldisUnChecked(sfParentfield);
+					}
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfCustomField.selected = true;
+					sfCustomField.canUnselect = false;
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+				}
+			}
+		}
+	}
+
+
+	setParentFieldSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfParentfield.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
+				}
+			}
+		}
+	}
+
+	reloadCustomFields() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.searchKeyValue = '';
+		this.searchKey = '';
+		this.sortOption = '';
+		this.isFilterApplied = false;
+		this.isSortApplied = false;
+		this.customFieldsResponse.isVisible = false;
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
+	}
+
+  getIntegrationDealPipelines() {
+	
+	}
+
+  getActiveCRMDetails() {
+		
+	}
+
+	getIntegrationDetails() {
+		
+	}
+
+	checkAll(ev: any) {
+		if (ev.target.checked) {
+			$('[name="sfcf[]"]').prop('checked', true);
+			let self = this;
+			$('[name="sfcf[]"]:checked').each(function () {
+				var id = $(this).val();
+				self.selectedCfIds.push(id);
+				self.paginatedSelectedIds.push(id);
+			});
+			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
+			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+			$.each(this.sfcfPagedItems, function (index: number, value: any) {
+				value.selected = true;
+				self.selectedCustomFieldsDtos.push(value);
+				self.setAllParentFieldsSelected(value, true);
+			});
+			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(self.selectedCustomFieldsDtos);
+		} else {
+			let self = this;
+			$('[name="sfcf[]"]').each(function () {
+				var id = $(this).val();
+				if (self.canNotUnSelectIds.indexOf(id) == -1) {
+					$(this).prop('checked', false);
+					self.paginatedSelectedIds.splice($.inArray(id, self.paginatedSelectedIds), 1);
+				}
+			});
+
+			if (this.sfcfPager.maxResults == this.sfcfPager.totalItems) {
+				this.selectedCfIds = [];
+				this.paginatedSelectedIds = [];
+			} else {
+				let currentPageCfIds = this.sfcfPagedItems.map(function (a) { if (self.requiredCfIds.indexOf(a.name) == -1) { return a.name; } });
+				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
+			}
+			$.each(self.sfcfPagedItems, function (index: number, value: any) {
+				if (value.canUnselect) {
+					value.selected = false;
+					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
+					if (value.controllerName != null && value.controllerName != undefined) {
+						self.checkIfhasParentField(value, false);
+						self.checkIParentFieldisUnChecked(value);
+					}
+				}
+			});
+			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+		}
+		ev.stopPropagation();
+	}
+	toggleSettings(sfCustomField){
+		sfCustomField.showSettings = !sfCustomField.showSettings;
+	}
+		
+	onFieldSelectionChange(selectedField: any): void {
+		const selectedFieldType = selectedField.formDefaultFieldType;
+		const selectedFieldTypeName = selectedField.type;
+
+		selectedField.typeMismatch = false;
+		selectedField.typeMismatchMessage = '';
+
+		if (selectedFieldType === null) {
+			selectedField.canUnselect = true;
+			return;
+		}
+
+		if (
+			(selectedFieldType === 'AMOUNT' && selectedFieldTypeName !== 'number') ||
+			(selectedFieldType === 'DEAL_NAME' && selectedFieldTypeName !== 'text') ||
+			(selectedFieldType === 'CLOSE_DATE' && selectedFieldTypeName !== 'date')
+		) {
+			selectedField.typeMismatch = true;
+			selectedField.typeMismatchMessage = `Type mismatch for ${selectedFieldType}. Expected type is ${selectedFieldType === 'AMOUNT' ? 'number' : selectedFieldType === 'DEAL_NAME' ? 'text' : 'date'
+				}.`;
+			selectedField.formDefaultFieldType = null;
+			return;
+		}
+
+		let countSelectedType = 0;
+
+		this.sfCustomFieldsResponse.forEach(field => {
+			if (
+				field.formDefaultFieldType === selectedFieldType &&
+				((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+					(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+					(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE'))
+			) {
+				countSelectedType++;
+				field.required = true;
+				field.canUnselect = false;
+				field.canEditRequired = false;
+			} else {
+				field.typeMismatch = false;
+				field.typeMismatchMessage = '';
+			}
+		});
+
+		if (countSelectedType > 1) {
+			this.sfCustomFieldsResponse.forEach(field => {
+				if (
+					field.formDefaultFieldType === selectedFieldType &&
+					((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+						(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+						(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE')) &&
+					field !== selectedField
+				) {
+					field.formDefaultFieldType = null;
+					field.canUnselect = true;
+					field.canEditRequired = true;
+				}
+			});
+		}
+	}
+
+
+	searchFieldsKeyPress(keyCode: any) {
+		if (keyCode === 13) {
+			this.searchFields();
+		}
+	}
+
+	searchFields() {
+		this.searchKeyValue = this.searchKey;
+		this.getAllFilteredResultsFields();
+	}
+
+	getAllFilteredResultsFields() {
+		this.isFilterApplied = true;
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
+	}
+
+	clearFieldSearch() {
+		this.searchKey = '';
+		this.searchKeyValue = '';
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
+	}
+
+	sortFieldsByOption() {
+		this.isSortApplied = true;
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
+	}
+
+	//XNFR-576
+	addCustomFielsdModalOpen(customfield: any){
+		this.isCustomFieldsModelPopUp = true;
+		this.customField = customfield;
+		this.customFieldsList = this.sfCustomFieldsResponse;
+	}
+
+	closeCustomFielsModal(event: any) {
+		if (event === "0") {
+			this.isCustomFieldsModelPopUp = false;
+		}	
+  }
+
+  //XNFR-601
+		addCustomFielsdOrderModalOpen(){
+			this.isCustomFieldsOrderModelPopUp = true;
+			this.customFieldsList = this.selectedCustomFieldsDtos;
+		}
+
+		closeCustomFielsOrderModal(event: any) {
+			if (event === "0") {
+				this.isCustomFieldsOrderModelPopUp = false;
+			}	
+	}
+
+	//XNFR-611
+	toggleHeaderSettings(){
+		this.showHeaderTextArea = !this.showHeaderTextArea;
+	}
+
+	/** XNFR-906  ***/
+	openDefaultFieldsPopup: boolean = false;
+	selectedFields: any[] = [];
+	enabledMyPreferances: boolean = false;
+	setDefaultFields:boolean = false;
+	openSetDefaultFieldsPopUp() {
+		this.openDefaultFieldsPopup = true;
+	}
+	closeEmitter(event: any) {
+		let input = event;
+		if (input['submit'] === 'submit') {
+			this.openDefaultFieldsPopup = input['close'];
+			this.enabledMyPreferances = input['myPreferances'];
+			this.setDefaultFields = input['defaultField']
+			this.selectedFields = input['selectFields'];
+			this.saveSelectedFields();
+		}
+		else {
+			this.openDefaultFieldsPopup = false;
+		}
+	}
+	saveSelectedFields() {
+		let selectedFieldsResponseDto = {};
+		console.log("this.selectedFields :",this.selectedFields)
+		selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+		selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+		selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+		selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+		selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+		selectedFieldsResponseDto['integation'] = true;
+		selectedFieldsResponseDto['opportunityType'] = this.opportunityType;
+		this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+			.subscribe(
+				data => {
+					if(data.statusCode === 200) {
+						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+                        this.notifySubmitSuccess.emit(this.customFieldsResponse);
+					}
+				}, error => console.log(error),
+				() => { console.log("saveSelectedFields Completed...!") });
+	}
+	/** XNFR-906  ***/
+
+}

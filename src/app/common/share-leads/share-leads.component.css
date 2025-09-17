@@ -1,0 +1,23 @@
+@media screen and (max-width: 600px) {
+  .accounts-modal {
+    width: 100% !important;
+    position: relative !important;
+  }
+}
+@media screen and (min-width: 601px) {
+  .accounts-modal {
+    width: 45% !important;
+    float: right;
+    position: relative !important;
+  }
+}
+.danger {
+  color: red !important;
+}
+.star {
+  color: red !important;
+  margin-right: -25px;
+}
+.size-font {
+  font-weight: 600;
+}

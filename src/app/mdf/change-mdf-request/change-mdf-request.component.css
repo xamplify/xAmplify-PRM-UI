@@ -1,0 +1,82 @@
+li .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.cw {
+  width: 65% !important;
+}
+
+.mdf-bgcolor {
+  height: 639px;
+  background: #f1f1f1;
+}
+.border-right {
+  border-right: 1px solid #dddd;
+}
+.border-bottom {
+  border-bottom: 1px solid #ddd;
+}
+.right-border {
+  border-right: 1px solid #d8d4d4;
+}
+.h-205 {
+  height: 205px;
+}
+.h-260 {
+  height: 260px;
+}
+
+/* 22-08-2023 */
+.zeroMarginRow {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+  .tabheight {
+    height: 640px !important;
+  }
+}
+
+/* sudha sri (28-8-2023) */
+.border-bottom-1px {
+  border-bottom: 1px solid #ddd;
+}
+
+label.labelTextStyle{
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+}
+label.labelTextStyle1{
+  font-size: 14px;
+  color: #65b6e4;
+}
+label.labelTitleFonts{
+  font-size: 15px;
+  font-weight: 600;
+}
+.cardTextFontsize{
+  font-size: 13px !important;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  label.labelTextStyle{
+    font-size: 12px;
+  }
+  label.labelTextStyle1{
+    font-size: 12px;
+  }
+  label.labelTitleFonts{
+    font-size: 12px;
+  }
+  .cardTextFontsize{
+    font-size: 12px !important;
+  }
+  
+}
+/* Sudha Sri(24-07-2024) */
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius{border-radius: 10px !important;}
+a.close-circle.xamp-margin-left-icon.mdf_light{margin: 5.5px 6px 5px 5px !important;}

@@ -1,0 +1,266 @@
+<div class="modal fade right" id="send-test-email-modal-popup" role="dialog" tabindex="-1"
+   aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog  modal-sm popup-align" role="document">
+      <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4  class="modal-title left" *ngIf="vanityTemplatesPartnerAnalytics"  translate>Send Reminder</h4>
+            <a class="close-circle" (click)="callEventEmitter()" data-dismiss="modal"><i class="fa fa-times"></i></a>
+            <a *ngIf="isSendMdfRequestOptionClicked" class="close-circle mr5" (click)="openCampaignMdfRequestHistoryModalPopup()"><i class="fa fa-history"></i></a>
+            <h4 class="modal-title left" id="myModalLabel">{{headerTitle}}</h4>
+         </div>
+         <div class="modal-body">
+            <div id="modal-content">
+               <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
+               <div [hidden]="processing">
+                  <div *ngIf="!isPreviewEmailTemplate">       
+                     <div class="scrollbar-x" *ngIf="vanityTemplatesPartnerAnalytics && tabsEnabled">
+                        <ul class="nav nav-tabs hideBorder">
+                          <li *ngIf="registerNowItems?.length > 0" [ngClass]="{'active': tabId === 'Register', 'disabled': registerNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#Register"
+                               (click)="registerNowItems?.length > 0 && activeTab('registerNow')">
+                              Register Now <span *ngIf="registerNowItems?.length > 0">({{ registerNowItems.length }})</span>
+                            </a>
+                          </li>
+               
+                          <li *ngIf="activateNowItems?.length > 0"  [ngClass]="{'active': tabId === 'Activate', 'disabled': activateNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#Activate"
+                               (click)="activateNowItems?.length > 0 && activeTab('activateNow')">
+                              Activate Now <span *ngIf="activateNowItems?.length > 0">({{ activateNowItems.length }})</span>
+                            </a>
+                          </li>
+                          <!-- XNFR-1015 -->
+                           <li *ngIf="isAllPartners && loginNowItems?.length > 0" [ngClass]="{'active': tabId === 'logIn' , 'disabled': loginNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#logIn"
+                               (click)="loginNowItems?.length > 0 && activeTab('logIn')">
+                              Company Profile Incomplete <span *ngIf="loginNowItems?.length > 0">({{ loginNowItems.length }})</span>
+                            </a>
+                          </li>
+                          <li *ngIf="isAllPartners && dormantPartnerItems?.length > 0" [ngClass]="{'active': tabId === 'interacted' &&  activateNowItems?.length == 0 , 'disabled': dormantPartnerItems?.length == 0}">
+                            <a data-toggle="tab" href="#interacted"
+                               (click)="dormantPartnerItems?.length > 0 && activeTab('interacted')">
+                              Dormant
+                              {{authenticationService?.partnerModule?.customName | slice:0:10}}
+                               <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span> 
+                              <span *ngIf="dormantPartnerItems?.length > 0">({{ dormantPartnerItems.length }})</span>
+                            </a>
+                          </li>
+                           <!-- XNFR-1015-->
+                      
+                        </ul>
+                      </div>
+                     <div class="tab-content tab-bg" *ngIf="(registerNowItems?.length > 0 || activateNowItems?.length > 0 || dormantPartnerItems?.length > 0 || loginNowItems?.length > 0)">
+                        <div id="Register" class="tab-pane fade in active  integration-profile" *ngIf="registerNowItems?.length > 0">
+                        </div>
+                        <div id="Activate" class="tab-pane fade in " *ngIf="activateNowItems?.length > 0">
+                        </div>
+                        <!-- XNFR-1015 -->
+                        <div id="logIn" class="tab-pane fade in " *ngIf="loginNowItems?.length > 0">
+                        </div>
+                        <div id="interacted" class="tab-pane fade in " *ngIf="dormantPartnerItems?.length > 0">
+                        </div>
+                        <!-- XNFR-1015 -->
+                     </div>
+                     <div class="form-group">
+                        <label>Email Address<span class="required">*</span></label>
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder " autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
+                  
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                           Please enter a valid email address
+                        </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.toEmailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
+                     </div>
+                     
+                     <div *ngIf="isFromDomainWhiteListing && hasVanityAccess">
+                     <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r" style="float:right;">
+                        <span class="mr5" *ngIf="!showCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip"
+                              data-placement="bottom" title="Add Cc recipients"
+                              (click)="showCCEmailInputField = 'true'"><span>Cc</span></a></span>
+                        <span *ngIf="!showBCCEmailInputField"><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom"
+                              title="Add Bcc recipients" (click)="showBCCEmailInputField = 'true'"><span>Bcc</span></a></span>
+                     </div>
+                     </div>
+
+                     <!-- cc -->
+                     <div class="form-group" *ngIf="showCCEmailInputField">
+                        <label>Cc</label>
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.ccEmailIds"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder " autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.ccEmailIds" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
+                  
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                           Please enter a valid email address
+                        </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.ccEmailIds' #ccTagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedCc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
+                     </div>
+
+                     <!-- Bcc -->
+                     <div class="form-group" *ngIf="showBCCEmailInputField">
+                        <label>Bcc</label>
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.bccEmailIds"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder " autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.bccEmailIds" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder"></textarea>
+                  
+                        <span class="required"
+                           *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                           Please enter a valid email address
+                        </span>
+                        <tag-input *ngIf="isFromDomainWhiteListing" [(ngModel)]='sendTestEmailDto.bccEmailIds' #bccTagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+                           [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'" (input)="validateForm()" 
+                           [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true" [addOnBlur]="true"
+                           [pasteSplitPattern]="splitPattern" [onAdding]="onAddedBcc" theme='bootstrap' [onTextChangeDebounce]="40" required>
+                        </tag-input>
+
+                     </div>
+
+                       <!--XNFR-832-->
+                       <div class="form-group" *ngIf="isSendMdfRequestOptionClicked">
+                        <label>Recipient Name</label>
+                        <input type="text" autocomplete="off" placeholder="Please Enter Recipient Name (Optional)" [(ngModel)]="sendTestEmailDto.recipientName" [ngModelOptions]="{standalone: true}" class="form-control">
+                     </div> 
+                     <div class="form-group">
+                        <label>Email Subject<span class="required">*</span></label>
+                        <input type="text" autocomplete="off" [(ngModel)]="sendTestEmailDto.subject"
+                           (input)="validateForm()" [ngModelOptions]="{standalone: true}"
+                           placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" [disabled]="vanityTemplatesPartnerAnalytics || teamMemberReminder ||sendSignatureRemainder || (isFromDomainWhiteListing && !hasVanityAccess)" />
+                     </div>
+                     <div class="form-group">
+                        <label>Email Body</label>
+                        <button class="btn btn-primary pull-right" *ngIf="isFromDomainWhiteListing && hasVanityAccess" (click)="openEditTemplatePopup()"><i class="fa fa-edit mr5"></i>Edit</button>
+                     </div>
+                  </div>
+                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked && !teamMemberReminder && !sendSignatureRemainder && !isFromDomainWhiteListing">
+                     <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
+                     </ng-container>
+                     <div id="sendTestEmailHtmlBody" class="plspx"></div>
+                     <div class="form-group mt10" *ngIf="isFromDomainWhiteListing">
+                        <p *ngIf="showAttachmentErrorMessage" class="text-danger mt10 mb5">The attachment exceeds the maximum allowed file
+                           size of
+                           20MB. You can upload large files to a cloud storage service (e.g., Amazon S3, Google Drive) and share the download
+                           link.</p>
+                        <label for="attachments">Attachments:</label>
+                        <input *ngIf="isFromDomainWhiteListing" id="fileInput" class="file-input" type="file" (change)="onFileChange($event)"
+                           multiple>
+                        <label for="fileInput" class="btn Btn-Green custom-file-label ml10">
+                           Choose a file
+                        </label>
+                        <p *ngIf="showFileTypeError" class="text-danger mt10">The selected file type is not supported. Please upload a file
+                           with a
+                           valid format.</p>
+                        <div *ngIf="isFromDomainWhiteListing && (files.length > 0)">
+                           <ul>
+                              <li *ngFor="let file of files; let i = index">
+                                 {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                                 <button class="m5 btn l-g-view" type="button" (click)="removeFile(i)"><i class="fa fa-times"></i></button>
+                              </li>
+                           </ul>
+                        </div>
+                        <div *ngIf="isFromDomainWhiteListing">
+                           <ul>
+                              <li *ngFor="let emailAttachmentDTO of sendTestEmailDto.emailAttachmentDTOs; let i = index">
+                                 <a *ngIf="emailAttachmentDTO.filePath != undefined" target="_blank"
+                                    href="{{emailAttachmentDTO.filePath}}">{{emailAttachmentDTO.fileName}}</a>
+                                 <a *ngIf="emailAttachmentDTO.filePath == undefined"
+                                    (click)="showFilePathError = 'true'">{{emailAttachmentDTO.fileName}}</a>
+                                 <span *ngIf="showFilePathError" class="text-danger" id="filePathError">Unable to load the file. <p
+                                       (click)="showFilePathError = 'false'"><i class="fa fa-times"></i></p></span>
+                              </li>
+                           </ul>
+                        </div>
+                     
+                     </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal-footer send-email-footer" *ngIf="!processing">
+         <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">{{ isFromDomainWhiteListing ? 'Cancel' : 'Close' }}</button>
+         <button type="submit" class="button bgcolor-unset btn-top3" [disabled]="!isValidForm || clicked"
+            (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate && !isFromDomainWhiteListing">
+            <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked || teamMemberReminder ||sendSignatureRemainder) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
+                  aria-hidden="true"></i></span>
+         </button>
+         <button type="submit" *ngIf="isFromDomainWhiteListing" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0 || !isValidFile || showFileTypeError"
+            (click)="sendWelcomeMailRemainder()">
+            <span class="btn btn-primary transition txt_pd-top3">Send<i aria-hidden="true"
+                  class="fa fa-send"></i></span>
+         </button>
+      </div>
+   </div>
+</div>
+</div>
+
+<!--- XNFR-970 Lead-Status-Reminder --->
+<div class="modal fade right" id="LEAD-STATUS-REMINDER-MODAL-POPUP" role="dialog" tabindex="-1"
+   aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" (click)="closeModalPopup()" data-dismiss="modal">
+               <i class="fa fa-times"></i></a>
+            <h4 class="modal-title left" id="myModalLabel"> {{ headerTitle }} </h4>
+         </div>
+         <div class="modal-body">
+            <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
+            <div *ngIf="!processing">
+               <div class="form-group">
+                  <label>Email Address <span class="required">*</span></label>
+                  <textarea *ngIf="sendTestEmailDto.ccEmailIds?.length === 0" autocomplete="off"
+                     placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmailIds"
+                     [ngModelOptions]="{standalone: true}" class="form-control email_textarea" disabled></textarea>
+                  <ejs-multiselect *ngIf="sendTestEmailDto.ccEmailIds?.length > 0" [(ngModel)]='sendTestEmailDto.toEmailIds'
+                     [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                     [dataSource]='sendTestEmailDto.ccEmailIds' placeholder='Select Email Address' (select)="onEmailSelected($event)"
+                     (removed)="onEmailRemoved($event)">
+                  </ejs-multiselect>
+               </div>
+               <div class="form-group">
+                  <label>Email subject <span class="required">*</span></label>
+                  <input type="text" [(ngModel)]="sendTestEmailDto.subject" [ngModelOptions]="{standalone: true}"
+                     placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" disabled />
+               </div>
+               <div class="form-group">
+                  <label>Email Body <span class="required">*</span></label>
+               </div>
+               <div class="form-group" style="cursor: not-allowed;">
+                  <span [innerHTML]="emailBodyHtml" class="plspx" style="pointer-events: none;"></span>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer" style="border: none" *ngIf="!processing">
+            <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="button bgcolor-unset" [disabled]="sendTestEmailDto.toEmailIds?.length === 0"
+               (click)="sendReminderLeadEmail()">
+               <span class="btn btn-primary transition txt_pd-top3">Send&nbsp;<i aria-hidden="true"
+                     class="fa fa-send"></i></span>
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+

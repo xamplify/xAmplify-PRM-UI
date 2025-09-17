@@ -1,0 +1,69 @@
+.alert-dismissible .close {
+  top: 0px !important;
+  right: 0px !important;
+}
+.alert-success,
+.alert-danger,
+.alert-warning {
+  border-radius: 0;
+}
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-radius: 3px !important;
+  color: #3c763d !important;
+}
+.alert-danger {
+  background-color: #f2dede !important;
+  border-radius: 3px !important;
+  color: #a94442 !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f !important;
+}
+
+.alert-warning {
+  background-color: #f1d43b;
+  border-radius: 3px !important;
+}
+.alert {
+  padding: 10px;
+  margin: 10px 0 !important;
+}
+.alert-success,
+.alert-danger,
+.alert-warning > h5 {
+  font-size: 14px;
+}
+.text {
+  padding-top: 12px;
+}
+.alert-message-fw {
+  font-weight: 600 !important;
+}
+.login-error {
+  color: #a94442;
+}
+.login-success {
+  color: #3c763d;
+}
+.login-info{
+  color: #31708f;
+}
+
+.msg-algn{
+  text-align: center;
+  padding-top: 6px;
+}
+.alert-danger .close {
+  position: relative;
+  top: 10px !important;
+}
+.alert-success .close  {
+  top: 10px !important;
+}
+.alert-warning .close {
+  top: 10px !important;
+}

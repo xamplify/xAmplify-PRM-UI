@@ -1,0 +1,63 @@
+<div class="page-content">
+    <div class="page-bar" [hidden]="loading">
+        <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
+            <div class="col-md-11 col-xs-11 col-sm-11">
+            <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+            </div>
+            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+        </div>
+    </div>
+    <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+    <div class="row" *ngIf="!loading && hasAccess">
+        <div class="">
+            <!---The Below Logic For Only PRM Company-->
+            <ng-container *ngIf="authenticationService?.module?.isPrmCompany">
+                <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
+                    <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
+                </ng-container>
+                <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals && 
+                !authenticationService?.module?.damAccess && !authenticationService?.module?.damAccessAsPartner && 
+                !authenticationService?.module?.lmsAccess && !authenticationService?.module?.lmsAccessAsPartner &&
+                !authenticationService?.module?.playbookAccess && !authenticationService?.module?.playbookAccessAsPartner">
+                    <div class="alert alert-info center-align">
+                        <strong>No Analytics Found</strong>
+                    </div>
+                </ng-container>
+            </ng-container>
+
+            <!---The Below Logic For NOT PRM Company-->
+            <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner
+            && !authenticationService?.module?.isPrmAndPartnerTeamMember)">
+                <div *ngIf="authenticationService?.module?.isMarketingCompany && !authenticationService?.mdf && !authenticationService?.leadsAndDeals" class="alert alert-info center-align">
+                    <strong>No Analytics Found</strong>
+                </div>
+                <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
+            </ng-container>
+
+            <!---The Below Logic For Only PRM Company || Partnership Only With Prm || Logged In As Partner Of PRM-->
+            <ng-container *ngIf="(authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+            <app-show-prm-content [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+            authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+            </app-show-prm-content>
+            <!--Top 4 Assets--------------->  
+            <app-top-4-assets [isPartnerView]="false" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
+            <!--Top 4 Shared Assets--------------->  
+            <app-top-4-assets [isPartnerView]="true" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
+            <!--Top 4 Tracks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="true" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccess"></app-top-4-tracks-and-play-books>
+            <!--Top 4 Shared Tracks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccessAsPartner"></app-top-4-tracks-and-play-books>
+            <!--Top 4 PlayBooks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
+            <!--Top 4 Shared PlayBooks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
+            </ng-container>
+
+
+            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals" [ngClass]="{'mt10': !authenticationService?.module?.createCampaign}">
+                <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
+                <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
+            </div>                
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<style type="text/css">
+
+	#newPlayerVideo {
+		width: auto;
+	}
+
+	#overlay-modal {
+		width: auto;
+	}
+
+	.is360video {
+		z-index: 900;
+	}
+
+	.bottomCss {
+		bottom: -183px;
+	}
+	a.disabled{
+		pointer-events: none;
+	}
+
+</style>
+<div [hidden]="embedVideoFile">
+  <div class="loader-container" [hidden]="errorMessage">
+    <div class="loader"></div>
+    <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+  </div>
+
+  <div *ngIf="errorMessage">
+  <h3 class="content-meesage">{{errorMessage}}</h3>
+  </div>
+
+</div>
+<div [hidden]='!embedVideoFile' class="clearfix" [ngClass]="{'padding-videos': shareUrl.includes('share')}">
+	<div class="portlet-body clearfix">
+		<div style="padding:0" [ngClass]="{'col-md-12': shareUrl.includes('embed'), 'center-div': shareUrl.includes('share')}">
+			<div>
+				<div id="newPlayerVideo" style="position: relative">
+          <div id="overLayImage"></div>
+          <div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
+            <a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
+              <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive imageClass" >
+            </a>
+          </div>
+        </div>
+			</div>
+			<div id="overLayDialog"></div>
+			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}" tabindex="0">
+				<form #f="ngForm" novalidate>
+					<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+					<div class="alert alert-danger alert-dismissible" *ngIf="isCallToActionError">
+ 					 <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="isCallToActionError = false" >&times;</a>
+  						{{callToActionErrorMessage}}
+					</div>
+						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
+						<div class="flex" *ngIf="callAction.isFistNameChecked==true">
+							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
+							 class="form-control text-box m21" placeholder="First Name" maxlength="20">
+							<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
+							 placeholder="Last Name" maxlength="20">
+						</div>
+						<div class="flex m02">
+							<div class="w-8">
+								<input type="text" name="email_id" [(ngModel)]="callAction.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
+								 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel" maxlength="200">
+							</div>
+							<div class="w-4">
+								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay==true"
+								 (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
+							</div>
+						</div>
+						<h4 class="upper-text-heading lowerText">{{lowerTextValue}}</h4>
+					</div>
+				</form>
+				<div>
+					<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+						<i class="fa fa-repeat" aria-hidden="true"></i>
+					</div>
+					<div *ngIf="callAction.isSkipChecked==true" id="skipOverlay" style="cursor: pointer">
+						<i class="fa fa-forward" aria-hidden="true"></i>
+						<b style="font-size: 13px; color:white;">skip</b>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
+				<h3 style="word-break: break-all;color:#777">{{title}}</h3>
+			</div>
+
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
+				<strong>Uploaded on :{{uploadedDate}}</strong>
+				<p align="justify" style="word-break: break-all;"> {{description}}</p>
+			</div>
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
+				<p align="justify">Category : {{categoryName}}</p>
+			</div>
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">			 
+			 <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareShortUrl" [google]= "false" ></share-buttons>
+
+			</div>
+			<!-- 2 modal popup end here-->
+		</div>
+	</div>
+</div>
+<div class="col-md-6" *ngIf="shareUrl.includes('share')"> </div>

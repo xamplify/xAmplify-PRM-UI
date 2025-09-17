@@ -1,0 +1,37 @@
+.avatarImg {
+  margin-top: 25px;
+  height: 114px;
+  width: 111px;
+  border-radius: 50% !important;
+  }
+.alert-custom{
+  background-color: #f58686;
+  border-color: #c3c3c3;
+  color: #fbfbfb;
+  font-size: 13px;
+  height: 40px;
+}
+.lock-head{
+  background: rgb(73, 143, 215,0.5);
+}
+.lock-bottom {
+  background: rgb(73, 143, 215,0.5);
+}
+.page-lock .page-body{
+  width: 100%;
+  margin-top: 50px;
+  background-color: rgba(16, 18, 21, 0.5);
+  border-radius: 7px;
+}
+.lock-form .form-group .form-control{
+  background-color: #fbfbfb;
+  border: white;
+  width: 220px;
+  height: 40px;
+  color: #423f3f;
+}
+.login-options{
+  margin-bottom: 0px;
+  overflow: hidden;
+}
+.password-width {  width: 100%;}

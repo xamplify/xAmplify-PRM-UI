@@ -1,0 +1,160 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { AuthGuardService } from './auth-guard.service';
+import { AppCustomPreloader } from './app-routing-loader';
+import { HomeComponent } from './core/home/home.component';
+import { ShareVideoComponent } from './videos/share-video/share-video.component';
+import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
+import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
+import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
+import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
+import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
+import { LoginComponent } from './authentication/login/login.component';
+import { SignupComponent } from './authentication/signup/signup.component';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
+import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
+import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
+import { FormPreviewComponent } from './forms/preview/form-preview.component';
+import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
+import { AccessAccountComponent } from './authentication/access-account/access-account.component';
+import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
+import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
+import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
+import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
+import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
+import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
+import { LogoutComponent } from 'app/authentication/logout/logout.component';
+import { SelectContentModulesComponent } from 'app/core/select-content-modules/select-content-modules.component';
+import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
+import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
+import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
+import { PreviewPageComponent } from './util/preview-page/preview-page.component';
+import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
+import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
+import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
+import { MarketplaceMapUtilComponent } from './util/marketplace-map-util/marketplace-map-util.component';
+
+
+export const routes: Routes = [
+	{ path: 'login', component: LoginComponent },
+	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/contacts/zoho-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/contacts/salesforce-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/assignleads/google-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/assignleads/zoho-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/assignleads/salesforce-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/partners/google-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/partners/zoho-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/partners/salesforce-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/microsoft-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/zoho-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/calendly-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/aircall-callback', component: VanitySocialContactsCallbackComponent },
+	/*** XNFR-1062 ***/
+    { path: 'home/dashboard/gmail-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/outlook-callback', component: VanitySocialContactsCallbackComponent },
+
+	{ path: 'logout', component: LogoutComponent },
+	{ path: 'expired', component: LogoutComponent },
+        { path: 'signup', component: SignupComponent },
+        { path: 'signup/:alias', component: SignupComponent },
+        { path: 'v-signup', component: SignupComponent },
+        { path: 'prm-signup', component: SignupComponent },
+        { path: 'forgot-password', component: ForgotPasswordComponent },
+        { path: 'register/verifyemail/user', component: VerifyEmailComponent },
+	{ path: '', redirectTo: 'login', pathMatch: 'full' },
+	{ path: 'home', redirectTo: 'home/dashboard', pathMatch: 'full' },
+	{
+		path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+		children: [
+			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
+			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
+			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: true } },
+			{ path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule', data: { preload: true } },
+			{ path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule', data: { preload: true } },
+			{ path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule', data: { preload: true } },
+			{ path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule', data: { preload: true } },
+			{ path: 'design', loadChildren: 'app/design/design.module#DesignModule', data: { preload: true } },
+			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule', data: { preload: true } },
+			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: true } },
+			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule', data: { preload: true } },
+			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: true } },
+			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule', data: { preload: true } },
+			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule', data: { preload: true } },
+			{ path: 'select-modules', component: SelectContentModulesComponent, data: { preload: true } },
+			/*******XNFR-83*******/
+			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule', data: { preload: true } },
+			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule', data: { preload: true } },
+
+			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
+			{ path: 'approval-hub', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
+             /*** XNFR-1062 ***/
+
+		]
+	},
+	{ path: 'terms-conditions', component: TermsConditonComponent },
+	{ path: 'privacy-policy', component: TermsConditonComponent },
+	{ path: 'userlock', component: ProfileLockComponent },
+	{ path: 'logout', component: LoginComponent },
+	{ path: 'v/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule/:redirectURL', component: VanityAddContactsComponent },
+	{ path: 'syn/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule', component: VanitySynchronizeContactsComponent },
+	{ path: 'share/:alias', component: ShareVideoComponent },
+	{ path: 'embed/:alias', component: ShareVideoComponent },
+	{ path: 'company-page/:alias', component: CompanyPageComponent },
+	{ path: 'partner-page/:alias', component: CompanyPageComponent },
+	{ path: 'su', component: ServiceUnavailableComponent },
+	{ path: 'access-denied', component: AccessDeniedComponent },
+	{ path: 'rsvp-response', component: PublicPageResponseComponent },
+	{ path: 'f/:alias', component: FormPreviewComponent },
+	{ path: 'mlpf/:alias', component: FormPreviewComponent },
+	{ path: 'mlvjf/:landingPageId/:alias', component: FormPreviewComponent },
+	{ path: 'vjf/:alias', component: FormPreviewComponent },
+	{ path: 'requestdemo', component: RequestDemoComponent },
+	{ path: 'axAa/:alias', component: AccessAccountComponent },
+	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
+	{ path: 'tSignUp/:companyProfileName/:alias', component: AccessAccountComponent },
+	{ path: 'pSignUp/:companyProfileName', component: AccessAccountComponent },
+	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
+	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },
+	{ path: 'vanity-domain-error', component: DomainErrorComponent },
+	{ path: 'maintenance', component: MaintenanceComponent },
+	{ path: 'login/preview', component: PreviewLoginComponent },
+	{ path: 'pv/lp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/plp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/vjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/mplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/v/pdf/:id', component: PreviewAssetPdfComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'welcome-page', component: WelcomePageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },
+	{ path: 'mp/vmp/:alias', component: MarketplaceUtilComponent },
+	{ path: 'pv/pjplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/vmplp/:id', component: PreviewPageComponent, canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmppjf/:landingPageId/:alias', component: FormPreviewComponent },
+	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
+	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
+
+
+	{ path: '404', component: PageNotFoundComponent },
+	{ path: '401', component: UnauthorizedPageComponent },
+	{ path: '**', component: PageNotFoundComponent },
+
+];
+
+@NgModule({
+	imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader })
+	],
+	exports: [RouterModule],
+	providers: [AppCustomPreloader]
+})
+export class AppRoutingModule { }

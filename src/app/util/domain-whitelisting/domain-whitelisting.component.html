@@ -1,0 +1,376 @@
+<app-response-message [customResponse]="customResponse" *ngIf="isMyProfileAndDomainWhitelisting"></app-response-message>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading && isMyProfileAndDomainWhitelisting"></app-list-loader>
+<div [hidden]="httpRequestLoader?.isLoading" *ngIf="isMyProfileAndDomainWhitelisting">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;" [hidden]="!isTabDisplayed">
+    <li id="team-member-domains-li" [ngClass]="{'active': isTeamMemberDomainsTabSelected}">
+      <a class="teamMemberDomainC" id="width-205px"
+        (click)="!isTeamMemberDomainsTabSelected && activateTeamMemberDomainsTab()" data-toggle="tab"
+        href="#">Team Member Domains
+        <i *ngIf="isTeamMemberDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+      </a>
+    </li>
+    <li id="partner-domains-li" [ngClass]="{'active': isPartnerDomainsTabSelected}">
+      <a class="partnerDomainsC" id="width-205px" (click)="!isPartnerDomainsTabSelected && activatePartnersDomainsTab()"
+        data-toggle="tab" href="#">{{authenticationService.partnerModule.customName}} Domains
+        <i *ngIf="isPartnerDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+      </a>
+    </li>
+  </ul>
+
+  <div class="panel-body tab-bg">
+    <div class="tab-content">
+      <!--Team Member Domains-->
+      <ng-template *ngIf="isTeamMemberDomainsTabSelected" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+      <!--Partner Domains-->
+      <ng-template *ngIf="isPartnerDomainsTabSelected" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="portlet light remove_cardBgcolor glass_Bgcolor" *ngIf="isTeamMemberDomains || isPartnerDomains" style="margin-top: -11px;">
+  <div class="portlet-title">
+    <div class="row">
+      <div class="col-xs-9 col-md-6">
+        <!-- Left side content -->
+        <div class="caption">{{moduleName | translate }} <span translate>Domain Whitelisting</span></div>
+      </div>
+      <div class="col-xs-3 col-md-6 text-right">
+        <!-- Right side content -->
+        <a href="#domainTemplate" (click)="toggleCollapse($event)">
+          <i [ngClass]="{'fa-chevron-up collapseOut': isCollapsed, 'fa-chevron-down collapseIn': !isCollapsed}"
+            class="arrowpositinon fa collapseIconColorCu p10" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading && (isTeamMemberDomains || isPartnerDomains)"></app-list-loader>
+  <div class="portlet-body clearfix neg_mrg_top14" style="padding: 0px;">
+    <div [ngClass]="{'': isCollapsed, 'collapse': !isCollapsed}" id="domainTemplate">
+      <div class="panel-body mpx-0" style="padding: 0px;">
+        <!--Team Member Domains-->
+        <ng-template *ngIf="isTeamMemberDomains" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+        <!--Partner Domains-->
+        <ng-template *ngIf="isPartnerDomains" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #partnerDomianNgTemplate>
+  <!--Copy SignUp Link-->
+  <div style="display:flex; height:45px;">
+    <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly" #signUpUrlInput><br>
+    <div>
+      <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">
+        Copy Url
+      </a>
+    </div>
+  </div>
+  <div>
+    <span class="success" id="copied-signup-url" style="display: none;">
+      <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #teamMemberDomianNgTemplate>
+  <!--- Search Option --->
+  <div class="input-icon right float-right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+    <input type="text" class="form-control" [(ngModel)]="teamMemberGroupPagination.searchKey"
+      [ngModelOptions]="{standalone: true}" (keypress)="searchTeamMemberGroupOnKeyPress($event.keyCode)"
+      placeholder="Search for a group name">
+    <button *ngIf="teamMemberGroupPagination?.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+      (click)="teamMemberGroupPagination.searchKey='';searchTeamMemberGroup()"></button>
+    <button type="submit" class="search-box-item-click" (click)="searchTeamMemberGroup()"><i
+        class="fa fa-search"></i></button>
+  </div>
+  <!--- Team Member Group SignUpUrl Table --->
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt10">
+    <div class="table-responsive">
+      <table class="table tgrid">
+        <thead>
+          <tr>
+            <th style="width: 40%">Team Member Group</th>
+            <th style="width: 40%">Signup URL</th>
+            <th class="text-center" style="width: 20%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of teamMemberGroupPagination.pagedItems; let i = index">
+            <td>
+              <span data-toggle="tooltip" data-placement="top" [title]="group.name">{{ group.name }}</span>
+              <button class="btn btn-primary primaryBtnCu ml5" type="button" (click)="previewModules(group?.id)"
+                data-toggle="tooltip" data-placement="right" title="click to view available modules">
+                <i aria-hidden="true" class="fa fa-eye eyeCu"></i>&nbsp;View</button>
+            </td>
+            <td>
+              <span class="groupUrl" data-toggle="tooltip" data-placement="top"
+                title="{{group.signUpUrl}}">{{ group.signUpUrl }}</span><br>
+              <span class="success" *ngIf="copiedIndex === i">
+                <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+              </span>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-primary mr0 copyUrlBtn" (click)="copyGroupSignUpUrl(group.signUpUrl, i)" data-toggle="tooltip"
+                data-placement="top" title="Only whitelisted domain users can sign-up using this URL.">Copy Url</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--- Total Records --->
+  <div class="pdl-mgt" *ngIf="teamMemberGroupPagination?.totalRecords>0">
+    <app-pagination [pagination]="teamMemberGroupPagination" (notifyParent)="paginateTeamMemberGroup($event)"
+      (notifyParentDropDown)="findTeamMemberGroupSignUpUrls($event)"></app-pagination>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+    <div *ngIf="teamMemberGroupPagination?.totalRecords == 0" class="alert alert-info text-center">
+      <strong>No Records Found</strong>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #domainsNgTemplate>
+  <div class="table-responsive">
+  <table class="table table-light" style="border: 0px !important; background-color: transparent !important;"
+    *ngIf="!httpRequestLoader?.isLoading && !httpRequestLoader?.isServerError">
+    <tbody class="neo-border-radius10">
+      <fieldset class="fild-custome-borders-none mrow_15 domainlist">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+          <div class="alert alert-info">{{domainWhitelistingDescription}}</div>
+          <div class="alert alert-info mt5">{{domainWhitelistingUrlDescription}}</div>
+          <ng-template *ngIf="isTeamMemberDomainsTabSelected || isTeamMemberDomains" [ngTemplateOutlet]="teamMemberDomianNgTemplate"></ng-template>
+          <ng-template *ngIf="isPartnerDomainsTabSelected || isPartnerDomains" [ngTemplateOutlet]="partnerDomianNgTemplate"></ng-template>
+          <app-response-message *ngIf="isTeamMemberDomains || isPartnerDomains" [customResponse]="customResponse"></app-response-message>
+          <div class="col-sm-4 col-lg-4 col-md-4 btn-group p0 btn-align mt10">
+            <!--Add a Domain-->
+            <button id="add_domain" class="btn Btn-Green" (click)="addDomainModalOpen()">
+             Add Domain
+                <i class="fa fa-plus" style="font-size: 12px; margin-left: 2px;"></i>
+            </button>
+          </div>
+          <!--Search Option-->
+          <div
+            class="portlet-input search-class col-sm-68 col-lg-8 col-md-8 TotalSearchBoxWidth mt10 float-right pr0 d-flex"
+            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+            <div class="hidden-xs pull-right downloadteam mr5">
+              <button id="welcome_mail" class="btn btn-primary mr0" (click)="addWelcomeMailModalOpen()"
+                *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected" data-placement="bottom"
+                data-toggle="tooltip" title="Send a welcome email to whitelisted domain users."
+                [disabled]="pagination.totalRecords==0" style="border-radius: 7px 0px 0px 7px!important;">
+                Send Welcome Mail
+              </button>
+              <button class="btn btn-primary button border_btn" (click)="navigateToWelcomeEmailList()"
+              *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && isPartnerDomainsTabSelected"
+                style="border-radius: 0px 7px 7px 0px!important;" data-placement="bottom" data-toggle="tooltip"
+                title="Click here to see welcome email analytics" translate><i aria-hidden="true" class="fa fa-line-chart"></i>
+              </button>
+            </div>
+            <button class="btn btn-xs l-g-view" (click)="toggleFilterOption()" [disabled]="showFilterOption">
+              <i _ngcontent-c17="" aria-hidden="true" data-toggle="tooltip" title="Filter" class="fa fa-filter p10"></i>
+            </button>
+            <button data-placement="bottom" class="btn btn-xs l-g-view" 
+              [disabled]="pagination.totalRecords==0" (click)="downlaodDomainListCsv()">
+              <i aria-hidden="true" class="fas fa-file-export p10" data-toggle="tooltip"
+                title="Export Domain List to Excel"></i>
+            </button>
+            <div class="input-icon right">
+              <input type="text" [(ngModel)]="pagination.searchKey" (keypress)="searchDomainsOnKeyPress($event.keyCode)"
+                [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a domain">
+              <button *ngIf="pagination?.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+                (click)="pagination.searchKey='';searchDomains()"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchDomains()"><i
+                  class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!--Filter Box-->
+        <div *ngIf="showFilterOption" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt10">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="caption" translate>{{applyFilterText}}</div>
+                <button type="button" class="close-circle" style="margin-left: 10px;" (click)="clearFilter()">
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
+                </button>
+              </div>
+              <!--Filter Options-->
+              <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible"></app-response-message>
+              <div class="portlet box custom_fiter-asset">
+                <div class="row pl10 pr10 pb10">
+                  <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                      <div class="control-label" style="font-size:15px">{{createdOnText}}</div>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">
+                        From Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">To Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <button class="buttom_customise btn-primary pull-right mr5" (click)="validateDateFilters()">Filter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix">
+          <div class="col-xs-12 p0 mt10">
+            <div class="table-responsive">
+              <table class='table tgrid'>
+                <thead>
+                  <tr>
+                    <th style="width: 50%">Domain Name</th>
+                    <th class="text-center"style="width: 20%">Created On</th>
+                    <th class="text-center"style="width: 20%" *ngIf="isPartnerDomains || isPartnerDomainsTabSelected">Deactivated On</th>
+                    <th style="width:10%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let domain of pagination.pagedItems ;let i =index">
+                    <tr class='row_{{i}}' style="background-color: #FFFFFF;">
+                      <td>
+                        <h6>{{domain?.domainName}}</h6>
+                        <span *ngIf="domain?.domainDeactivated">
+                          <h6 class="green-banner inline-flex">DEACTIVATED</h6>
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        <h6>
+                          <app-display-date-and-time
+                            [dateAndTimeUTCString]="domain?.createdTime"></app-display-date-and-time>
+                        </h6>
+                      </td>
+                      <td  class="text-center" *ngIf="isPartnerDomains || isPartnerDomainsTabSelected">
+                        <h6 *ngIf="domain.domainDeactivated">
+                          <app-display-date-and-time 
+                            [dateAndTimeUTCString]="domain?.deactivatedOn"></app-display-date-and-time>
+                        </h6>
+                        <h4 *ngIf="!domain.domainDeactivated"><strong>-</strong></h4>
+                      </td>
+                      <td>
+                        <div class="actions-block override-actions mb_whitespace" style="float:none;">
+                          <!-- Edit Icon -->
+                          <a *ngIf="isPartnerDomainsTabSelected" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                            (click)="openDomianModalPopupForEdit(domain)">
+                            <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete"
+                            (click)="confirmDeleteDomain(domain.id)">
+                            <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                            <div class="del-icon"></div>
+                          </a>
+                          <a *ngIf="isPartnerDomainsTabSelected" class="custom-icon" data-toggle="tooltip" data-placement="top" [title]="domain.domainDeactivated ? 'Activate Domain' : ' Deactivate Domain'"
+                            (click)="confirmDeativateDomain(domain)">
+                            <i class="fa fa-power-off IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                        </div>
+                      </td>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--Pagination-->
+          <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+            <app-pagination [pagination]="pagination" (notifyParentDropDown)="findTeamMemberOrPartnerDomains($event)"
+              (notifyParent)="paginateDomains($event)"></app-pagination>
+          </div>
+        </div>
+      </fieldset>
+      <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info text-center">
+        <strong>No Records Found</strong>
+      </div>
+    </tbody>
+  </table>
+</div>
+</ng-template>
+
+
+
+<!--Domain Modal Popup-->
+<div id="domainModal" class="modal fade right" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+  data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog modal-css" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAddDomainModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title size-font" translate>Add Domain</h4>
+      </div>
+      <div class="modal-body">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="alert alert-info mb20">
+          <p>
+            {{descriptionText}} <br>
+            <strong>Example:</strong> example.com
+          </p>
+        </div>
+        <form class="form-horizontal" autocomplete="off">
+          <div class="form-group">
+            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+              <div class="d-flex align-item-center">
+              <label for="domain" class="domain_text">
+                Domain Name<span class="mb-star star">*</span>
+              </label>
+              <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
+                (input)="validateDomain(domain)" [disabled]="editAction" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
+                placeholder="Enter Domain Name" autocomplete="off">
+                </div>
+              <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
+              <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
+            </div>
+          </div>
+          <div *ngIf="isPartnerDomainsTabSelected" class="portlet light">
+            <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">
+              <span class="caption-subject bold"><strong>Distinctive Domain: Turn ON or OFF</strong></span>
+              <div class="pull-right" style="margin-top: -7px;margin-right: 15px;">
+                <app-custom-ui-switch [customSwitch]="isDomainAllowedToAddToSamePartnerAccount"
+                  (customUiSwitchEventEmitter)="setIsDomainAllowed($event)"></app-custom-ui-switch>
+              </div>
+            </div>
+            <label class="mb0 mr10 ml5">Enabling this option will group all partners signing up with this domain under a
+              single company.</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
+        <button *ngIf="!editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+        <button *ngIf="editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndupdateExcludedDomain(domain)" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked"
+  (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
+
+  <app-send-test-email *ngIf="sendTestEmailIconClicked" [isFromDomainWhiteListing]="true" [allPartnerDomains]="allPartnerDomains" [toEmailId]= "''"  [sendTestEmailDtoAttachments] = "attachments" (sendTestEmailComponentEventEmitter)="sendWelcomeMailModalPopupEventReceiver()" (openEditModalPopup) ="openEditModalPopup($event)"></app-send-test-email>
+
+  <app-partner-company-domain-modal-popup *ngIf="isDeactivateOrActivateOptionClicked" [selectedDomain]="selectedDomain" (closeEvent)="closeModalPopup()" (notifyCloseEvent)="notifyCloseModalPopup($event)"></app-partner-company-domain-modal-popup>
+
+
+ <!--- Group Preview Popup --->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId"
+  (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>

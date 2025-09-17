@@ -1,0 +1,246 @@
+<div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
+  <div class="page-bar mb-height_auto" style="height: 48px;">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="!isFromApprovalModule">
+        <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="!isFromApprovalModule"><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i
+          class="fa fa-angle-right" aria-hidden="true"></i> </li>
+      <li *ngIf="isFromApprovalModule">
+        <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li><a class="default-cursor">{{breadCrumb}}</a>
+      </li>
+    </ul>
+  </div>
+  <div>
+  </div>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+    [showCloseIcon]="false"></app-response-message>
+  <app-asset-signature-status-analytics #assetSignatureStatusAnalyticsComponent
+    *ngIf="isPartnerSignatureRequired && isPublished" [damId]="damId"
+    (filterContentByType)="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
+  <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space" *ngIf="isPublished">
+  <app-dam-analytics-details [contentId]="damId" [contentType]="'DAM'"></app-dam-analytics-details>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="clearfix">
+          <div class="portlet-title pb-3px" *ngIf="isPublished">
+            <div class="row">
+
+              <div class="page-toolbar col-xs-12">
+                <!--All/My Partners-->
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
+                  <app-team-member-filter-option
+                    *ngIf="!authenticationService?.module?.isMarketingCompany && isPublished"
+                    (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"
+                    [isAssetOrLms]="true"></app-team-member-filter-option>
+                </div>
+                <!--Search / Sort / Refresh-->
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
+                  <div class="d-flex justify-content-end">
+                    <!--  -->
+                    <button *ngIf="isPartnerSignatureRequired && !isAllPartnerSignesCompleted" data-toggle="tooltip"
+                      data-placement="top" title="Send signature reminder notification to partner(s)"
+                      class=" btn btn-primary" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send
+                      Reminder</button>
+                    <!--Sort Option-->
+                    <div class="pb3">
+                      <select class="form-control mDamSort"
+                        [(ngModel)]="partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption"
+                        (ngModelChange)="sortPartnerCompanies($event)" style="position: relative;">
+                        <option *ngFor="let option of partnerCompaniesSortOption.damPartnerCompaniesDropDown"
+                          [ngValue]="option">{{option.name}}</option>
+                      </select>
+                    </div>
+                    <!--Search-->
+                    <div class="portlet-input input-inline ml5">
+                      <div class="input-icon right mDamSearch rSearch" style="position: relative;">
+                        <input type="text" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                          (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear"
+                          *ngIf="partnerCompaniesSortOption.searchKey"
+                          (click)="partnerCompaniesSortOption.searchKey='';searchPartnerCompanies();"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()"><i
+                            class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
+                    <div class="inline-block pull-right ml5">
+                      <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+                        title="Export to Excel" (click)="downloadDamAnalytics()"
+                        [disabled]="pagination?.totalRecords === 0">
+                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                      </button>
+                    </div>
+                    <!--Refresh-->
+                    <a class="close-circle ref-mar ml5" (click)="refreshList()" data-toggle="tooltip"
+                      data-placement="bottom" title="Refresh">
+                      <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </a>
+                    <a class="close-circle ref-mar ml5" (click)="goBack()" aria-hidden="true">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+          <ng-container *ngIf="!httpRequestLoader?.isLoading">
+            <div class="table-responsive pos_pd_top6 mt10">
+              <table class='table tgrid table-hover table-sm' id="dam-partner-companies">
+                <ng-template *ngIf="isPublished" [ngTemplateOutlet]="partnerCompanyTable"></ng-template>
+                <tbody>
+                  <ng-container *ngIf="isPublished">
+                    <tr *ngFor="let company of pagination?.pagedItems ;let i =index">
+                      <td *ngIf="isPartnerSignatureRequired " class='text-center' scope="col"><input
+                          *ngIf="!company?.partnerSignatureCompleted" type="checkbox" class="checkBox_shadow" name="all"
+                          [(ngModel)]="company.isSelected" (change)="updateSelectionState()"
+                          [disabled]="company?.partnerStatus === 'deactivated'">
+                        <div *ngIf="company?.partnerSignatureCompleted" class="checkBox_shadow"></div>
+                      </td>
+                      <td class="text-center" style="width: 10%;">
+                        <div class="thumbnail-wrapper image_effect">
+                          <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company?.companyLogo"
+                            onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company?.companyLogo}}">
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <h4 class="mt5 mb5 f-w-600 analytics-tooltip" style="word-wrap: break-word;" data-toggle="tooltip" data-placement="bottom" title="{{company?.companyName}}">
+                          <span><strong>{{company?.companyName}}</strong></span>
+                        </h4> -->
+                        <h5>
+                          <strong> Company Name By Partner :
+                            <span title="{{company?.companyName}}">{{company?.companyName | slice:0:50}}</span>
+                            <span *ngIf="company?.companyName.length>50">...</span>
+                          </strong>
+                        </h5>
+                        <h5>
+                          <strong> Company Name By Vendor :
+                            <span title="{{company?.contactCompany}}">{{company?.contactCompany | slice:0:50}}</span>
+                            <span *ngIf="company?.contactCompany.length>50">...</span>
+                          </strong>
+                        </h5>
+                        <span *ngIf="company?.partnerSignatureCompleted" class="view-banner bgc-green"
+                          style="margin-right: 5px;">Partner Signed
+                        </span>
+                        <span
+                          *ngIf="company?.partnerSignatureCompleted && company?.vendorSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature"
+                          class="view-banner bgc-green" style="margin-right: 5px;">Signature added
+                        </span>
+                        <span
+                          *ngIf="company?.partnerSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature && !company?.vendorSignatureCompleted"
+                          class="view-banner bgc-orange" style="margin-right: 5px;">My Signature pending
+                        </span>
+                        <h6 class="green-banner inline-flex" *ngIf="company?.partnerStatus === 'deactivated'"
+                          data-toggle="tooltip" data-placement="bottom" title="Partnership is deactivated">DEACTIVATED
+                        </h6>
+                      </td>
+                      <td class="text-center">{{company?.viewCount}}</td>
+                      <td class="text-center">{{company?.downloadCount}}</td>
+                      <td class="mtext-center" id="actions-row">
+                        <div class="actions-block override-actions custom-width-icon float-none">
+                          <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+                            (click)="viewAnalytics(company)">
+                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="company?.partnerSignatureCompleted" class="custom-icon" data-toggle="tooltip"
+                            data-placement="top" title="View" (click)="viewAsset(company)">
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="company?.partnerSignatureCompleted" class="custom-icon" data-toggle="tooltip"
+                            data-placement="top" title="Download" (click)="downloadAsset(company)">
+                            <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="company?.partnerSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature && !company?.vendorSignatureCompleted"
+                            class="custom-icon" data-toggle="tooltip" data-placement="top" title="Signature"
+                            (click)="addSignature(company)">
+                            <i class="fas fa-pen-nib IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="!company?.partnerSignatureCompleted && isPartnerSignatureRequired "
+                            class="custom-icon" data-toggle="tooltip" data-placement="top"
+                            title="Send Signature Reminder Notification"
+                            (click)="company?.partnerStatus === 'deactivated' ? '' : sendRemainderToIndividulCompany(company.companyId)">
+                            <i class="fas fa-envelope IconCustomization" aria-hidden="true"
+                              [ngClass]="company?.partnerStatus === 'deactivated' ? 'disabled gray' : ''"></i>
+                            <div class="clickicons"></div>
+                          </a>
+
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <app-response-message
+              *ngIf="customResponse.isVisible && !isPublished && !isPartnerSignatureRequired && toggleOnOff"
+              [customResponse]="customResponse" [showCloseIcon]="false"></app-response-message>
+          </ng-container>
+          <!--Pagination-->
+          <div *ngIf="isPublished">
+            <div *ngIf="pagination?.totalRecords > 0 && !httpRequestLoader?.isLoading" class="pg8">
+              <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
+                (notifyParentDropDown)="findPartnerCompanies($event)">
+              </app-pagination>
+            </div>
+            <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader?.isLoading"
+              class="alert alert-info text-center">
+              <strong>No Data Found</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Video Analytics-->
+  <app-modal-popup-loader *ngIf="!isVideoAnalyticsLoaded"></app-modal-popup-loader>
+  <app-video-based-report *ngIf="isVideoFile && isVideoAnalyticsLoaded" [selectedVideo]="selectedVideo"
+    [damId]="damId"></app-video-based-report>
+</div>
+
+<ng-template #partnerCompanyTable>
+  <thead>
+    <tr>
+      <th class='text-center' *ngIf="isPartnerSignatureRequired " scope="col"><input
+          *ngIf="!isAllPartnerSignesCompleted" type="checkbox" class="checkBox_shadow" name="all"
+          [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+        <div *ngIf="isAllPartnerSignesCompleted" class="checkBox_shadow"></div>
+      </th>
+      <th colspan="2" style="width: 45%" id="border-bottom">
+        <span *ngIf="isPublished" class="ui-column-resizer gray"
+          (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)"></span>
+        <span class="gridHeader">Company</span>
+      </th>
+      <th class="text-center">View Count</th>
+      <th class="text-center">Download Count</th>
+      <th class="text-center" id="min-width">Actions</th>
+    </tr>
+  </thead>
+</ng-template>
+
+<div *ngIf="openSelectDigitalSignatureModalPopUp">
+  <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)"
+    (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"
+    [sharedAssetPath]="sharedAssetPath"></app-select-digital-signature>
+</div>
+
+<app-preview-content *ngIf="previewContent" [isPreviewPopup]="true" [previewPath]="assetPreviewProxyPath"
+  [fileType]="previewFileType" (notifyClose)="closePreview()"></app-preview-content>
+
+<app-send-test-email *ngIf="sendTestEmailIconClicked && isPartnerSignatureRequired"
+  [selectedPartners]="selectedPartners" [sendSignatureRemainder]="true"
+  (sendmailNotify)="sendPartnerSignatureReminder()" [selectedItem]="selectedItem" [toEmailId]="selectedEmailId"
+  (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>

@@ -1,0 +1,86 @@
+<style type="text/css">
+  a.disabled { pointer-events: none; cursor: not-allowed; }
+</style>
+<div class="page-content">
+				<div class="page-bar">
+					<ul class="page-breadcrumb">
+						<li>
+							<i class="fa fa-home"></i>
+							<a [routerLink]="referenceService.homeRouter">Home</a>
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+						<a>Followers</a>
+						</li>
+					</ul>
+				</div>
+				<div class="page-bar">
+								<ul class="page-breadcrumb">
+									<li><i style="font-size: 16px;">List of Followers</i></li>
+
+								</ul>
+								<div class="page-toolbar">
+									<div class="btn-group pull-right">
+								<div class="inputs" align="right" style="float: right">
+									<div style="float: left; margin-right: 10px; margin-top: 4.5px">
+										<select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="contactsUsersSort"
+											(ngModelChange)="userSelectedSortByValue($event)">
+											<option *ngFor="let sort of sortContactUsers"
+												[ngValue]="sort">{{sort.name}}</option>
+										</select>
+									</div>
+									<div class="portlet-input input-inline input-small">
+										<div class="input-icon right" style="margin-top: 4.5px">
+											<i class="icon-magnifier"
+												style="cursor: pointer; font-size: 18px;"
+												(click)="searchContactTitelName()"></i> <input type="text"
+												[(ngModel)]="searchKey"
+												[ngModelOptions]="{standalone: true}"
+												class="form-control input-circle" placeholder="search...">
+
+										</div>
+									</div>
+								</div>
+							</div>
+								</div>
+							</div>
+	<table class="table table-striped table-hover table-bordered"
+		id="sample_editable_1" style="background-color: white">
+		<thead>
+			<tr>
+				<th>EMAILID</th>
+				<th>FIRSTNAME</th>
+				<th>LASTNAME</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
+				<td>{{allcontacts.emailId}}</td>
+				<td>{{allcontacts.firstName}}</td>
+				<td class="center">{{allcontacts.lastName}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="pagination">
+		<!--pager here  -->
+		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
+			class="pagination">
+			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
+				(click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a></li>
+			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
+				(click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a></li>
+			<li *ngFor="let page of pagination.pager.pages"
+				[ngClass]="{active:pagination.pager.currentPage === page}"><a
+				(click)="setPage(page)">{{page}}</a></li>
+			<li
+				[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+				<a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+			</li>
+			<li
+				[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+				<a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+			</li>
+		</ul>
+		<!-- pager end here -->
+	</div>
+</div>

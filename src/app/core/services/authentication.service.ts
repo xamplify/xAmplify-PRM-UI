@@ -1,0 +1,1637 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
+import { EnvService } from 'app/env.service';
+import { Router } from '@angular/router';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+
+import { User } from '../models/user';
+import { Roles } from '../models/roles';
+import { Module } from '../models/module';
+import { UserToken } from '../models/user-token';
+import { UtilService } from '../services/util.service';
+declare var swal, $, require: any;
+var SockJs = require("sockjs-client");
+var Stomp = require("stompjs");
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { Pagination } from '../../core/models/pagination';
+import { TranslateService } from '@ngx-translate/core';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
+import { UnsubscribePageDetails } from 'app/dashboard/models/unsubscribe-page-details';
+import { ModuleCustomName } from "app/dashboard/models/module-custom-name";
+import { CommentDto } from 'app/common/models/comment-dto';
+import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { RequestDemo } from 'app/authentication/request-demo/request-demo';
+import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
+import { PartnerPrimaryAdminUpdateDto } from 'app/partners/models/partner-primary-admin-update-dto';
+
+
+@Injectable()
+export class AuthenticationService {
+ 
+ 
+
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  logged_in_time: Date;
+  APP_URL: any;
+  DOMAIN_URL = "";
+  SERVER_URL: any;
+  REST_URL: string;
+  MEDIA_URL: string;
+  SHARE_URL: string;
+  MARKETO_URL: string;
+  isSharePartnerModal = false;
+  user: User = new User();
+  userProfile: User = new User();
+  userToken: UserToken = new UserToken();
+  redirectUrl: string;
+  map: any;
+  isCompanyAdded = false;
+  module: Module = new Module();
+  roleName: Roles = new Roles();
+  isAddedByVendor = false;
+  isPartnerTeamMember = false;
+  isVendorAndPartnerTeamMember = false;
+  isVendorTeamMember = false;
+  isVendorSuperVisor = false;
+  isOrgAdminSuperVisor = false;
+  isOrgAdminAndPartnerTeamMember = false;
+  isOrgAdminTeamMember = false;
+  superiorRole = '';
+  selectedVendorId: number;
+  venorMyProfileReport: any;
+  loggedInUserRole: string;
+  hasOnlyPartnerRole = false;
+  isShowCampaign = false;
+  isShowRedistribution = false;
+  enableLeads = false;
+  isCompanyPartner = false;
+  isShowContact = false;
+
+  isShowForms = false;
+
+  clientId: any;
+  clientSecret: any;
+  imagesHost: any;
+  superiorId: number = 0;
+  formAlias: any;
+  isFromRsvpPage = false;
+  formValues = [];
+  isPartnerRsvp = false;
+  logedInCustomerCompanyNeme: string;
+  v_companyName: string;
+  v_companyLogoImagePath: string;
+  v_companyBgImagePath: string;
+  v_companyFavIconPath: string;
+  v_showCompanyLogo: boolean = false;
+  vanityURLUserRoles: any;
+  companyProfileName: string = "xamplify-prm";
+  vanityURLEnabled: boolean = false;
+  vanityURLink: string = "";
+  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  vendorRoleHash = "";
+  partnerRoleHash = "";
+  sessinExpriedMessage = "";
+  serviceStoppedMessage = "";
+  private userLoggedIn = new Subject<boolean>();
+  pagination: Pagination = new Pagination();
+  userPreferredLanguage: string;
+  beeLanguageCode: string;
+  allLanguagesList: any = [];
+  loginScreenDirection: string = 'Center';
+  vendorTierTeamMember: boolean = false;
+  contactsCount = false;
+  leftSideMenuLoader = false;
+  partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+  partnershipEstablishedOnlyWithPrm = false;
+  folders = false;
+  reloadLoginPage = false;
+  lmsAccess = false;
+  mdf = false;
+  leadsAndDeals = false;
+  dashboardTypes = [];
+  mdfAccessAsPartner = false;
+  opportunitiesAccessAsPartner = false;
+  unauthorized = false;
+  customSkinSettings = false;
+  moduleNames: Array<ModuleCustomName> = new Array<ModuleCustomName>();
+  partnerModule: ModuleCustomName = new ModuleCustomName();
+  beeHostApi = "";
+  beeRequestType = "";
+  beePageClientId = "";
+  beePageClientSecret = "";
+  vendorCompanyId = 0;
+  /***** XNFR-238 *********** */
+  isDarkForCharts: boolean = false;
+  isDefaultTheme: boolean = true;
+  isCustomFooter: boolean = false;
+  isCustomTheme: boolean = false;
+  isLightTheme: boolean = false;
+  isDarkTheme: boolean = false;
+  isDarkForNeoWhite: boolean = false;
+
+  isTop: boolean = false;
+  isLeft: boolean = false;
+  isFoter: boolean = false;
+  isMain: boolean = false;
+  customMap = new Map<string, CustomSkin>();
+  themeMap = new Map<string, ThemeDto>();
+  themeDto: ThemeDto = new ThemeDto();
+  activateThemeId: number;
+  vanityLoginDtoForTheme: VanityLoginDto = new VanityLoginDto();
+  /***** XNFR-238*********** */
+  /********  XNFR-233*****/
+  lognTemplateId: number;
+  loginType: string;
+  v_companyBgImagePath2;
+  /**** XNFR-233 */
+  formBackground = "";
+  /*** XNFR-416 ****/
+  isstyleTWoBgColor: boolean;
+  /*** XNFR-416 ****/
+  properties = new Properties();
+  companyUrl = "";
+  /*** XNFR-570 ****/
+  themeBackgroundImagePath = "";
+  /****XNFR-570 */
+
+  /*** XNFR-603 ****/
+  showVanityURLError1 = false;
+  /***** XNFR-669*********** */
+  isWelcomePageEnabled = false;
+  
+  /** XNFR-781  **/
+  approvalRequiredForAssets: boolean = false;
+  approvalRequiredForTracks: boolean = false;
+  approvalRequiredForPlaybooks: boolean = false;
+  isOliverActive :boolean = false;
+  synth = window.speechSynthesis;
+
+  contactSubscriptionLimitEnabled: boolean = false;
+
+  oliverInsightsEnabled: boolean = false;
+  brainstormWithOliverEnabled: boolean = false;
+  oliverSparkWriterEnabled: boolean = false;
+  oliverParaphraserEnabled: boolean = false;
+  oliverContactAgentEnabled: boolean = false;
+  oliverPartnerAgentEnabled: boolean = false;
+  oliverCampaignAgentEnabled: boolean = false;
+  marketingModulesAccessToPartner: boolean = false;
+  speakToken = 0;
+
+
+  constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
+    this.SERVER_URL = this.envService.SERVER_URL;
+    this.APP_URL = this.envService.CLIENT_URL;
+    this.DOMAIN_URL = this.APP_URL;
+    this.REST_URL = this.SERVER_URL + 'xamplify-prm-api/';
+    if (this.SERVER_URL.indexOf('localhost') > -1) {
+      this.MEDIA_URL = 'http://localhost:8000/';
+    } else {
+      this.MEDIA_URL = this.SERVER_URL + 'vod/';
+    }
+
+    this.SHARE_URL = this.SERVER_URL + 'embed/';
+
+    this.imagesHost = this.envService.imagesHost;
+    this.vendorRoleHash = this.envService.vendorRoleHash;
+    this.partnerRoleHash = this.envService.partnerRoleHash;
+    this.userLoggedIn.next(false);
+  }
+
+
+
+  setUserLoggedIn(userLoggedIn: boolean) {
+    this.userLoggedIn.next(userLoggedIn);
+  }
+
+  getUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
+  }
+
+  getOptions(): RequestOptions {
+    let options: RequestOptions;
+    // check access_token is expired
+    if (!this.logged_in_time) { this.logged_in_time = new Date(); }
+    const loggedInSinceSeconds = Math.abs(new Date().getTime() - this.logged_in_time.getTime()) / 1000;
+    if (loggedInSinceSeconds < this.expires_in) {
+      // add authorization header with access token
+      const headers = new Headers({ 'Authorization': 'Bearer ' + this.access_token });
+      options = new RequestOptions({ headers: headers });
+    } else {
+      // access token expired, get the new one
+    }
+    return options;
+  }
+
+  login(authorization: string, body: string, userName: string) {
+    const url = this.REST_URL + 'oauth/token';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Authorization', authorization);
+    const options = { headers: headers };
+    return this.http.post(url, body, options).map((res: Response) => {
+      this.map = res.json();
+      return this.map;
+    }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
+      this.vanityURLUserRoles = response.data;
+      this.isWelcomePageEnabled = response.map.isWelcomePageEnabled;
+    }))
+      .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
+        + '&access_token=' + this.map.access_token, '')
+        .map((res: Response) => {
+          const userToken = {
+            'userName': userName,
+            'userId': res.json().id,
+            'accessToken': this.map.access_token,
+            'refreshToken': this.map.refresh_token,
+            'expiresIn': this.map.expires_in,
+            'hasCompany': res.json().hasCompany,
+            'roles': res.json().roles,
+            'moduleAccessDto': res.json().moduleAccessDto || res.json().campaignAccessDto,
+            'logedInCustomerCompanyNeme': res.json().companyName,
+            'source': res.json().source,
+            'userStatusCode': res.json().userStatusCode
+          };
+
+          if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
+            userToken['roles'] = this.vanityURLUserRoles;
+            console.log(this.vanityURLUserRoles);
+            userToken[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] =  this.isWelcomePageEnabled;
+          }
+
+          if(this.vanityURLEnabled && this.companyProfileName){
+            userToken['roles'] = res.json().roles;
+          }
+
+          this.translateService.use(res.json().preferredLanguage);
+
+          localStorage.setItem('currentUser', JSON.stringify(userToken));
+          localStorage.setItem('defaultDisplayType', res.json().modulesDisplayType);
+          this.access_token = this.map.access_token;
+          this.refresh_token = this.map.refresh_token;
+          this.expires_in = this.map.expires_in;
+          this.user = res.json();
+          this.userProfile = res.json();
+          this.logedInCustomerCompanyNeme = res.json().companyName;
+          this.setUserLoggedIn(true);
+          localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, res.json().partnerFilter);
+        }));
+  }
+  getUserByUserName(userName: string) {
+    return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, '')
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+  getUserOpportunityModule(userId: number) {
+    return this.http.get(this.REST_URL + 'admin/getUserOppertunityModule/' + userId + '?access_token=' + this.access_token)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  getCategoryNamesByUserId(userId: number) {
+    let url = this.REST_URL + "category/listAllCategoryNamesByLoggedInUserId/" + userId;
+    return this.http.get(url + '?access_token=' + this.access_token)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+
+  getUserId(): number {
+    try {
+      let userId;
+      if (!this.user.id) {
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+          userId = JSON.parse(currentUser)['userId'];
+        }
+
+      } else {
+        userId = this.user.id;
+      }
+      return userId;
+    } catch (error) {
+      this.xtremandLogger.error('error' + error);
+    }
+  }
+
+  getUserName() {
+    let userName = "";
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      userName = JSON.parse(currentUser)['userName'];
+    } else {
+      userName = "";
+    }
+    return userName;
+  }
+
+  getSource() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser != null) {
+      return currentUser.source;
+    }
+  }
+  hasCompany(): boolean {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser != null) {
+        return currentUser.hasCompany;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  getRoles(): any {
+    try {
+
+      let roleNames: string[] = [];
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser != null) {
+        const roles = JSON.parse(currentUser)['roles'];
+        roleNames = roles.map(function (a) { return a.roleName; });
+        if (!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; }); }
+        return roleNames;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+
+  }
+  showRoles(): string {
+    try {
+      const roleNames = this.getRoles();
+      /***********Org Admin**************/
+      if (roleNames) {
+        const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole) > -1;
+        const isPartner = roleNames.indexOf(this.roleName.companyPartnerRole) > -1;
+        const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
+        const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
+        const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
+        const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
+        /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
+         (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
+        if (roleNames.length === 1) {
+          return "User";
+        } else {
+          if (isOrgAdmin && isPartner) {
+            return "Orgadmin & Partner";
+          } else if (isVendor && isPartner) {
+            return "Vendor & Partner";
+          } else if (isOrgAdmin) {
+            return "Orgadmin";
+          } else if (isVendor) {
+            return "Vendor";
+          } else if (isMarketingRole && !isPartner) {
+            return "Marketing";
+          } else if (isMarketingRole && isPartner) {
+            return "Marketing & Partner";
+          } else if (isPrmRole && !isPartner) {
+            return "Prm";
+          } else if (isPrmRole && isPartner) {
+            return "Prm & Partner";
+          } else if (isVendorTierRole) {
+            return "Vendor Tier";
+          } else if (this.isOnlyPartner()) {
+            return "Partner";
+          } else {
+            return "Team Member";
+          } /*else if ( isPartnerAndTeamMember ) {
+                return "Partner & Team Member";
+            }  else if(roleNames.length>2 && isPartner) {
+                return "Team Member & Partner";
+            }*/
+        }
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+  isOnlyPartner() {
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1
+        && roleNames.indexOf('ROLE_VENDOR') < 0 && roleNames.indexOf('ROLE_ORG_ADMIN') < 0 &&
+        roleNames.indexOf('ROLE_MARKETING') < 0 && roleNames.indexOf('ROLE_PRM') < 0; 
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+  isOnlyUser() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.length === 1 && (roleNames.indexOf('ROLE_USER') > -1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+
+  isSuperAdmin() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.length === 1 && (roleNames.indexOf('ROLE_SUPER_ADMIN') > -1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+  isVendor() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && (roleNames.indexOf(this.roleName.vendorRole) > -1) || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+  isMarketingRole() {
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.marketingRole) > -1);
+
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+
+  isPRMRole() {
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.prmRole) > -1);
+
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+  hasOnlyVideoRole() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf(this.roleName.videRole) > -1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+  hasVideoRole() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf(this.roleName.videRole) > -1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+  isPartner() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  isOrgAdmin() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && roleNames.indexOf('ROLE_ORG_ADMIN') > -1) {
+        return true;
+      } else { return false; }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  isOrgAdminPartner() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && ((roleNames.indexOf('ROLE_ORG_ADMIN') > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  isVendorPartner() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1 || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  isMarketingPartner() {
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+  
+  isTeamMember() {
+    try {
+      const roleNames = this.getRoles();
+      if ((roleNames && !this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD') > -1) || (roleNames.indexOf('ROLE_CAMPAIGN') > -1) || (roleNames.indexOf('ROLE_CONTACT') > -1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE') > -1)
+        || (roleNames.indexOf('ROLE_STATS') > -1) || (roleNames.indexOf('ROLE_SHARE_LEADS') > -1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE') > -1)))) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+
+  hasAllAccess() {
+    try {
+      const roles = this.getRoles();
+      if (roles) {
+        if (roles && roles.indexOf('ROLE_ALL') > -1 || roles.indexOf('ROLE_ORG_ADMIN') > -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+
+  removeZenDeskScript() {
+    var element = document.getElementById('ze-snippet');
+    if (element != null) {
+      element.parentNode.removeChild(element);
+    }
+    $('#launcher').contents().find('#Embed').hide();
+  }
+
+  navigateToUnauthorizedPage() {
+    this.resetData();
+    this.closeSwal();
+  }
+
+  resetData() {
+    this.removeZenDeskScript();
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem("campaignRouter");
+    localStorage.removeItem("superiorId");
+    localStorage.removeItem("logedInCustomerCompanyNeme");
+    localStorage.clear();
+    this.utilService.topnavBareLoading = false;
+    this.isCompanyAdded = false;
+    let module = this.module;
+    module.isOrgAdmin = false;
+    this.isShowContact = false;
+    module.isContact = false;
+    module.isPartner = false;
+    module.isEmailTemplate = false;
+    module.isCampaign = false;
+    module.isStats = false;
+    module.isVideo = false;
+    module.hasVideoRole = false;
+    module.isCompanyPartner = false;
+    module.hasSocialStatusRole = false;
+    module.isVendor = false;
+
+    module.hasFormAccess = false;
+    module.hasLandingPageAccess = false;
+    module.hasPartnerLandingPageAccess = false;
+    module.hasLandingPageCampaignAccess = false;
+
+    module.isAddingPartnersAccess = false;
+
+    this.isAddedByVendor = false;
+    this.vendorTierTeamMember = false;
+    this.isPartnerTeamMember = false;
+    this.loggedInUserRole = "";
+    this.hasOnlyPartnerRole = false;
+    module.isOnlyPartner = false;
+    module.isReDistribution = false;
+    module.isPartnershipEstablishedOnlyWithVendorTier = false;
+    module.damAccessAsPartner = false;
+    module.damAccess = false;
+    module.lmsAccess = false;
+    module.lmsAccessAsPartner = false;
+    module.playbookAccess = false;
+    module.playbookAccessAsPartner = false;
+    module.hasPartnerLandingPageAccess = false;
+    module.isMarketing = false;
+    module.isPrm = false;
+    module.isPrmTeamMember = false;
+    module.isPrmAndPartner = false;
+    module.isPrmAndPartnerTeamMember = false;
+    module.isVendorTier = false;
+    module.isVendorTierTeamMember = false;
+    module.isVendorTierAndPartner = false;
+    module.isVendorTierAndPartnerTeamMember = false;
+    module.showCampaignsAnalyticsDivInDashboard = false;
+    module.showContent = false;
+    module.contentDivsCount = 0;
+    module.contentLoader = false;
+    module.showPartnerEmailTemplatesFilter = false;
+    module.isAnyAdminOrSupervisor = false;
+    module.allBoundSamlSettings = false;
+    module.notifyPartners = false;
+    module.opportunitiesAccessAsPartner = false;
+    module.isOnlyPartnerCompany = false;
+    module.showAddLeadsAndDealsOptionInTheDashboard = false;
+    module.showCampaignOptionInManageVideos = false;
+    module.createCampaign = false;
+    module.loggedInThroughXamplifyUrl = false;
+    module.loggedInThroughVendorVanityUrl = false;
+    module.loggedInThroughOwnVanityUrl = false;
+    module.adminOrSuperVisor = false;
+    this.isShowRedistribution = false;
+    this.enableLeads = false;
+    this.contactsCount = false;
+    this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+    this.partnershipEstablishedOnlyWithPrm = false;
+    this.folders = false;
+    this.lmsAccess = false;
+    this.isVendorAndPartnerTeamMember = false;
+    this.isOrgAdminAndPartnerTeamMember = false;
+    this.opportunitiesAccessAsPartner = false;
+    module.isMarketing = false;
+    module.isMarketingTeamMember = false;
+    module.isMarektingAndPartner = false;
+    module.isMarketingAndPartnerTeamMember = false;
+    module.isMarketingCompany = false;
+    module.isPrmCompany = false;
+    module = new Module();
+    this.vendorCompanyId = 0;
+    this.setUserLoggedIn(false);
+  }
+
+  logout(): void {
+    this.module.logoutButtonClicked = true;
+    $("body").addClass("logout-loader");
+    this.resetDataAndRemoveTokens();
+  }
+
+  private resetDataAndRemoveTokens() {
+    this.resetData();
+    this.access_token = null;
+    this.refresh_token = null;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
+    if (!this.router.url.includes('/userlock')) {
+      if (this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost") < 0) {
+        this.closeSwal();
+        if(isWelcomePage){
+          window.location.reload();
+        }
+        window.location.href = this.envService.CLIENT_URL + "login";
+      } else {
+          this.logoutFormLocalOrVanity();
+      }
+    }
+  }
+
+  private logoutFormLocalOrVanity() {
+    this.closeSwal();
+    let self = this;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
+    if (this.envService.CLIENT_URL == "http://localhost:4200/") {
+      setTimeout(() => {
+        if(isWelcomePage){
+          window.location.reload();
+        }
+        self.router.navigate(['/']);
+        $("body").removeClass("logout-loader");
+      }, 1500);
+    } else {
+      window.location.href = this.envService.CLIENT_URL + "login";
+      if(isWelcomePage){
+        window.location.reload();
+      }
+    }
+  }
+
+  goToLoginAndReload(){
+    window.location.href = this.envService.CLIENT_URL + "login";
+  }
+
+  closeSwal() {
+    try {
+      swal.close();
+    } catch (error) {
+      this.xtremandLogger.log(error);
+    }
+  }
+
+  navigateToDashboardIfUserExists() {
+    try {
+      if (localStorage.getItem('currentUser')) { this.router.navigate(["/home/dashboard/default"]); }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
+
+  checkIsPartnerToo() {
+    let roles = this.showRoles();
+    if (roles == "Vendor & Partner" || roles == "Orgadmin & Partner") {
+      return true;
+    } else { return false; }
+  }
+
+  checkLoggedInUserId(userId) {
+    if (this.isSuperAdmin()) { userId = this.selectedVendorId; }
+    return userId;
+  }
+
+  getModulesByUserId() {
+    let userId = this.getUserId();
+    /*****XNFR-83***********/
+    // let domainName = this.getSubDomain();
+    // let url = "";
+    // if(domainName.length>0){
+    //   url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
+    // }else{
+    //   url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
+    // }
+    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token+ "&companyProfileName=" + this.companyProfileName)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  connect() {
+    let url = this.REST_URL + "socket";
+    let socket = new SockJs(url);
+    let stompClient = Stomp.over(socket);
+    return stompClient;
+  }
+  getSMSServiceModule(userId: number) {
+    return this.http.get(this.REST_URL + 'admin/getSMSServiceModule/' + userId + '?access_token=' + this.access_token)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+  getSamlSecurityAlias(alias) {
+    return this.http.get(this.REST_URL + 'saml/sso/getUserName/' + alias)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+  getSamlsecurityAccessToken(userEmail: any) {
+    return this.http.get(this.REST_URL + 'saml/sso/at?userName=' + userEmail)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  checkSamlSettingsUserRoles() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser !== undefined && currentUser != null) {
+      let roles = JSON.parse(currentUser)['roles'];
+      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId === 18 || role.roleId === 19 || role.roleId == 20);
+      if (rolesExists.length > 0) {
+        return true;
+      }
+    }
+  }
+
+  forceToLogout() {
+    this.sessinExpriedMessage = "Your role has been changed. Please login again.";
+    this.logout();
+  }
+
+  revokeAccessToken() {
+    this.navigateToUnauthorizedPage();
+  }
+
+
+  checkPartnerAccess(userId: number) {
+    return this.http.get(this.REST_URL + "admin/hasPartnerAccess/" + userId + "?access_token=" + this.access_token, "")
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {
+    if (this.getUserId()) {
+      dto.userId = this.getUserId();
+    }
+    dto.vanityUrlFilter = true;
+    dto.vendorCompanyProfileName = this.envService.domainName;
+    return dto;
+  }
+
+
+  getVanityURLUserRoles(userName: string, at: string) {
+    this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  getVanityURLUserRolesForLoginAs(userName: string, userId:number) {
+    let dashboardAnalyticsDto = new DashboardAnalyticsDto();
+    let companyProfileName = this.companyProfileName;
+    dashboardAnalyticsDto.userId = userId;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dashboardAnalyticsDto.vanityUrlFilter = true;
+      dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  extractData(res: Response) {
+    let body = res.json();
+    return body || {};
+  }
+
+  handleError(error: any) {
+    return Observable.throw(error);
+  }
+  setVanityUrlFilter(pagination: Pagination) {
+    if (this.companyProfileName !== undefined && this.companyProfileName !== '') {
+      pagination.vendorCompanyProfileName = this.companyProfileName;
+      pagination.vanityUrlFilter = true;
+    }
+  }
+
+  getRoleDetails(userId: number) {
+    return this.http.get(this.REST_URL + "module/getRoleDetails/" + userId + "?access_token=" + this.access_token, "")
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getUrls() {
+    let vanityLoginDto = new VanityLoginDto();
+    if (this.companyProfileName !== undefined && this.companyProfileName !== '') {
+      vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
+      vanityLoginDto.vanityUrlFilter = true;
+    }
+    vanityLoginDto.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token, vanityLoginDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  authorizeUrl(url: string) {
+    let angularUrlInput = {};
+    let browserUrl = window.location.hostname;
+    if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
+      let domainName = browserUrl.split('.');
+      if (domainName.length > 2) {
+        angularUrlInput['vendorCompanyProfileName'] = domainName[0];
+        angularUrlInput['vanityUrlFilter'] = true;
+      }
+    }
+    angularUrlInput['userId'] = this.getUserId();
+    angularUrlInput['url'] = url;
+    return this.http.post(this.REST_URL + "admin/authorizeUrl?access_token=" + this.access_token, angularUrlInput)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getModuleAccessByLoggedInUserId() {
+    return this.http.get(this.REST_URL + "module/getModuleDetails/" + this.getUserId() + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  isSpfConfigured(companyId: number) {
+    return this.http.get(this.REST_URL + `admin/isSpfConfigured/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  saveAsDefaultTemplate(input: any) {
+    return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  deleteDefaultTemplate(id: number) {
+    return this.http.get(this.REST_URL + "superadmin/deleteDefaultTemplate/" + id + "/" + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /*************Unsubscribe Reasons************* */
+  findAll(pagination: Pagination) {
+    pagination.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "unsubscribe/findAll?access_token=" + this.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  saveOrUpdateUnsubscribeReason(unsubscribeReason: UnsubscribeReason, isAdd: boolean) {
+    unsubscribeReason.createdUserId = this.getUserId();
+    let url = isAdd ? 'save' : 'update';
+    return this.http.post(this.REST_URL + "unsubscribe/" + url + "?access_token=" + this.access_token, unsubscribeReason)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findUnsubscribeReasonById(id: number) {
+    return this.http.get(this.REST_URL + "unsubscribe/findById/" + id + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  deleteUnsubscribeReasonById(id: number) {
+    return this.http.get(this.REST_URL + "unsubscribe/delete/" + id + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findHeaderAndFooterText() {
+    return this.http.get(this.REST_URL + "unsubscribe/findHeaderAndFooterText/" + this.getUserId() + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  updateHeaderAndFooterText(unsubscribePageDetails: UnsubscribePageDetails) {
+    unsubscribePageDetails.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "unsubscribe/updateHeaderAndFooterText?access_token=" + this.access_token, unsubscribePageDetails)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  findUnsusbcribePageContent() {
+    return this.http.get(this.REST_URL + "unsubscribe/findUnsubscribePageContent/" + this.getUserId() + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findNotifyPartnersOption(companyId: number) {
+    return this.http.get(this.REST_URL + `admin/findNotifyPartnersOption/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  updateNotifyPartnersOption(companyId: number, status: boolean) {
+    return this.http.get(this.REST_URL + "admin/updateNotifyPartnersOption/" + companyId + "/" + status + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /**********Team Member Groups***************/
+  findAllTeamMemberGroupIdsAndNames(addDefaultOption: boolean) {
+    let userId = this.getUserId();
+    var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/" + userId + "/" + addDefaultOption + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findAllTeamMembersByGroupId(pagination: Pagination) {
+    var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findSelectedTeamMemberIds(partnershipId: number) {
+    var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/" + partnershipId + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  showPartnersFilter() {
+    var url = this.REST_URL + "admin/showPartnersFilter/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  isMarketingCompany() {
+    var url = this.REST_URL + "admin/isMarketingCompany/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  isPartnershipOnlyWithPrm() {
+    var url = this.REST_URL + "admin/partnershipOnlyWithPrm/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  previewTeamMemberGroup(id: number) {
+    const url = this.REST_URL + "teamMemberGroup/previewById/" + id + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  /*********XNFR-83************/
+  getAssigedAgencyModules(id: number) {
+    const url = this.REST_URL + "agencies/" + id + "/assignedModules?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /*********XNFR-83************/
+  getSubDomain() {
+    return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName : "";
+  }
+
+  /*********XNFR-83************/
+  getCompanyAndUserAndModuleDetails(moduleType: string, id: number) {
+    let url = this.REST_URL + "comments/companyAndUserDetails/" + moduleType + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*********XNFR-83************/
+  saveComment(commentDto: CommentDto) {
+    commentDto.commentedBy = this.getUserId();
+    let url = this.REST_URL + "comments?access_token=" + this.access_token;
+    return this.http.post(url, commentDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /*********XNFR-83************/
+  findComments(moduleName: string, id: number) {
+    let url = this.REST_URL + "comments/moduleName/" + moduleName + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*********XNFR-83************/
+  findHistory(id: number, moduleId: number) {
+    let url = this.REST_URL + "comments/agencyContentStatusHistory/id/" + id + "/moduleId/" + moduleId + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /****XNFR-83****/
+  findCampaignAccessDataByDomainName(domainName: string) {
+    let url = this.REST_URL + "admin/campaignAccess/domainName/" + domainName + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /****XNFR-224****/
+  sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto: LoginAsEmailNotificationDto) {
+    let url = this.REST_URL + "admin/sendLoginAsPartnerEmailNotification" + "?access_token=" + this.access_token;
+    return this.callPostMethod(url, loginAsEmailNotificationDto);
+  }
+
+  /******XNFR-255******/
+  findShareWhiteLabelContentAccess() {
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/shareWhiteLabelContentAccess/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
+    }
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+
+  }
+
+  /*****XNFR-278****/
+  findGroupsForMerging(pagination: Pagination) {
+    let url = this.REST_URL + "userlists/findGroupsForMerging?access_token=" + this.access_token;
+    pagination.userId = this.getUserId();
+    return this.callPostMethod(url, pagination);
+  }
+
+  copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
+    let url = this.REST_URL + "userlists/copyGroupUsers?access_token=" + this.access_token;
+    copyGroupUsersDto.loggedInUserId = this.getUserId();
+    return this.callPostMethod(url, copyGroupUsersDto);
+  }
+  /*****XNFR-278****/
+
+  /****XNFR-317****/
+  getTemplateHtmlBodyAndMergeTagsInfo(id: number,fromEmail:string) {
+    let url = this.REST_URL + "email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
+    let map = {};
+    map['id'] = id;
+    if(fromEmail!=undefined && $.trim(fromEmail).length>0){
+      map['emailId'] = fromEmail;
+    }else{
+      map['emailId'] = this.user.emailId;
+    }
+    return this.callPostMethod(url, map);
+  }
+
+  sendTestEmail(sendTestEmailDto: SendTestEmailDto) {
+    console.log("Send Test Email Triggers");
+    sendTestEmailDto.fromEmail = this.user.emailId;
+    let url = this.REST_URL + "email-template/sendTestEmail?access_token=" + this.access_token;
+    return this.callPostMethod(url, sendTestEmailDto);
+  }
+
+  sendCampaignTestEmail(data: any) {
+    let url = this.REST_URL + "admin/sendTestEmail?access_token=" + this.access_token;
+    return this.callPostMethod(url, data);
+  }
+
+  /******XNFR-326******/
+  findAssetPublishEmailNotificationOption() {
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/assetPublishedEmailNotification/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
+    }
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+  }
+
+  findTrackOrPlaybookPublishEmailNotificationOption(type: any) {
+    let isTrack = type == TracksPlayBookType[TracksPlayBookType.TRACK];
+    let suffixUrl = isTrack ? "trackPublishedEmailNotification" : "playbookPublishedEmailNotification";
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/" + suffixUrl + "/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
+    }
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+  }
+  /****XNFR-317****/
+  findAllTeamMembers(pagination: Pagination) {
+    pagination.userId = this.getUserId();
+    if(pagination.userId==1){
+      pagination.userId = pagination.userListId;
+    }
+    let url = this.REST_URL + "teamMember/findAll?access_token=" + this.access_token;
+    return this.callPostMethod(url, pagination);
+  }
+
+  findAllUsers() {
+    let url = this.REST_URL + "company/users/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+
+
+  public callGetMethod(url: string) {
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public callGetMethodWithQueryParameters(url:string,params:any){
+    return this.http.get(url, { search: params })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public callPostMethod(url: string, requestDto: any) {
+    return this.http.post(url, requestDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public callPutMethod(url: string, requestDto: any) {
+    return this.http.put(url, requestDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  public callDeleteMethod(url: string) {
+    return this.http.delete(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  public isLocalHost() {
+    return this.envService.CLIENT_URL == "http://localhost:4200/";
+  }
+
+  
+  setDomainUrl() {
+    this.DOMAIN_URL = this.APP_URL;
+  }
+
+  setCustomDomainUrl(customDomain:string) {
+    if (this.vanityURLEnabled) {
+      this.DOMAIN_URL = "https://"+customDomain+"/";
+    } else {
+      this.DOMAIN_URL = this.APP_URL;
+    }
+    this.xtremandLogger.info("Custom Domain Url To Access Across The Application : "+this.DOMAIN_URL);
+  }
+
+  stopLoaders() {
+    this.module.contentLoader = false;
+    this.leftSideMenuLoader = false;
+    this.module.topNavBarLoader = false;
+  }
+
+
+  /***XNFR-326***/
+  getPartnerModuleCustomName() {
+    let name = "Partner";
+    let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+    if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+      name = partnerModuleCustomName;
+    }
+    return name;
+  }
+
+  getDefaultM3U8FileForLocal(videoUrl: string) {
+      videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+    return videoUrl;
+  }
+
+  getDefault360M3U8FileForLocal(videoUrl: string) {
+     videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+    return videoUrl;
+  }
+
+  navigateToMyProfileSection() {
+    this.router.navigate(["/home/dashboard/myprofile"])
+  }
+
+  /*** XBI-1968 ***/
+  isSpfConfiguredOrDomainConnected(companyId: number) {
+    return this.http.get(this.REST_URL + `admin/isSpfConfiguredOrDomainConnected/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /********XNFR-342****/
+  shareSelectedAssets(requestDto: any) {
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
+
+  /********XNFR-342****/
+  shareSelectedTracksOrPlayBooks(requestDto: any, module: string) {
+    let urlPrefix = module == "Tracks" ? 'shareSelectedTracks' : 'shareSelectedPlayBooks';
+    let url = this.REST_URL + "lms/" + urlPrefix + "?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
+
+  findPublishedPartnerIdsByUserListIdAndModuleId(userListId: number, id: number, moduleName: string) {
+    let urlPrefix = moduleName;
+    if(moduleName==this.properties.dashboardButtons){
+      urlPrefix = "dashboardButtons"
+    }
+    let url = this.REST_URL + urlPrefix + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*******XNFR-423****/
+  getCountryNames() {
+    let url = this.REST_URL + "/admin/countryNames?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  addCountryNamesToList(coutryNames: any, countryNamesArray: any) {
+    countryNamesArray.push('Please Select Country');
+    for (let i = 0; i < coutryNames.length; i++) {
+      countryNamesArray.push(coutryNames[i]);
+    }
+    return countryNamesArray;
+  }
+
+
+/************XNFR-426 **********/
+updateLeadApprovalOrRejectionStatus( companyId: number,leadApprovalStatus:boolean ) {
+  return this.http.get( this.REST_URL + "admin/" + "updateLeadApprovalOrRejectionStatus/" + companyId + "/"+leadApprovalStatus+"?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
+
+getLeadApprovalStatus( companyId: number ) {
+  return this.http.get( this.REST_URL + "admin/" + "getLeadApprovalStatus/" + companyId + "?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
+
+/***XNFR-454****/
+findCompanyDetails(companyProfileName:string) {
+  let url = this.REST_URL + "findCompanyDetails/" + companyProfileName;
+  return this.callGetMethod(url);
+}
+
+signUpAsTeamMember(data: any) {
+  let url = this.REST_URL + "signUpAsTeamMember";
+  return this.callPostMethod(url,data)
+}
+
+signUpAsPartner(data: any) {
+  let url = this.REST_URL + "signUpAsPartner";
+  return this.callPostMethod(url,data)
+}
+
+
+unpublishLearingTracks(learningTrackIds:any){
+  let url = this.REST_URL + "lms/unpublishLearingTracks?access_token="+this.access_token;
+  let data = {};
+  data['ids'] = learningTrackIds;
+  return this.callPostMethod(url,data)
+}
+
+getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
+  let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean,
+  isPartnerJourneyPage:boolean, isVendoeMarketPlacePage:boolean
+){
+  let userId = this.getUserId();
+  let URL_PREFIX = "";
+  let vendorOrPartnerJourneyVar ="";
+  let partnerOrVendorMarketplace = "";
+  let vanityCompanyProfile = "&vanityCompanyProfileName="+this.getSubDomain();
+  if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
+    URL_PREFIX = this.REST_URL+"landing-page/partner/";
+    vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
+  }else if(isMasterLandingPages ||isVendoeMarketPlacePage ){
+    URL_PREFIX = this.REST_URL+"landing-page/master/";
+    partnerOrVendorMarketplace =isMasterLandingPages? "&masterLandingPage=true":isVendoeMarketPlacePage? "&vendoeMarketPlacePage=true":"";
+  }else{
+    URL_PREFIX = this.REST_URL+"landing-page/";
+  }
+  
+  
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+vanityCompanyProfile+"&access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
+getAssetPdfHtmlBody(id:number,isPartnerView:boolean,isTrackOrPlayBookPdfPreview:boolean){
+  let userId = this.getUserId();
+  let URL = "";
+  let URL_PREFIX = "";
+  if(isPartnerView){
+    URL_PREFIX = this.REST_URL+"dam/partner/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  }else if(isTrackOrPlayBookPdfPreview){
+    URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&trackOrPlayBookPdfPreview=true&access_token="+this.access_token;
+  } else{
+    URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  }
+  return this.callGetMethod(URL);
+}
+
+setLocalStorageItemByKeyAndValue(key:string,value:any){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+removeLocalStorageItemByKey(key:string){
+  localStorage.removeItem(key);
+}
+
+getLocalStorageItemByKey(key:string){
+  return JSON.parse(localStorage.getItem(key));
+}
+/*** XNFR-512 ****/
+getRoleByUserId() {
+  var url = this.REST_URL + "admin/getRolesByUserId/" + this.getUserId() + "?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/*** XNFR-512 ****/
+
+/****XNFR-571****/
+findDashboardButtonPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL + "admin/dashboardButtonPublishedEmailNotification/";
+  if (companyProfileName != "") {
+    url += "companyProfileName/" + companyProfileName;
+  } else {
+    url += "loggedInUserId/" + this.getUserId();
+  }
+  let apiUrl = url + "?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
+
+
+
+vanityWelcomePageRequired(userId) {
+  this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+  let url = this.REST_URL + 'v_url/vanityWelcomePageRequired?userId=' + userId +'&vanityUrlFilter='+this.dashboardAnalyticsDto.vanityUrlFilter +'&vendorCompanyProfileName='+this.dashboardAnalyticsDto.vendorCompanyProfileName +'&access_token=' + this.access_token;
+  return this.callGetMethod(url);
+} 
+
+  getCustomFieldsMissingErrorMessage(){
+    let partnersMergeTag = this.properties.partnersMergeTag;
+    let partnerModuleCustomName = this.getPartnerModuleCustomName();
+    return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
+  }
+
+  getCompanyProfileNameByCustomDomain(customDomain:string){
+    let url = this.REST_URL + 'v_url/getCompanyProfileNameByCustomDomain/' + customDomain;
+    return this.callGetMethod(url);
+  }
+
+  publishContentToPartnerCompanyByModuleName(userListId:number,partnerUserId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = this.getUrlPrefix(moduleName);
+    let url = this.REST_URL + urlPrefix+"/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  addPartnerGroupByModuleName(userListId:number,partnershipId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = this.getUrlPrefix(moduleName);
+    let url = this.REST_URL + urlPrefix+"/addPartnerGroup/userListId/"+userListId+"/partnershipId/"+partnershipId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  private getUrlPrefix(moduleName: string) {
+    let urlPrefix = "";
+    if (moduleName == this.properties.dashboardButtons) {
+      urlPrefix = "dashboardButtons";
+    } else if (moduleName == "dam") {
+      urlPrefix = "dam";
+    } else if (moduleName == "lms") {
+      urlPrefix = "lms";
+    }
+    return urlPrefix;
+  }
+  
+  /**** XNFR-599 ****/
+  shareSelectedDashboardButtons(requestDto: any) {
+    let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
+
+  savePartnerFilter(input: number) {
+    let url = this.REST_URL + "admin/savePartnerFilter/" + this.getUserId() + "/" +  input + "?access_token=" + this.access_token ;
+   return this.callPostMethod(url, "");
+
+  }
+
+  /***XNFR-832***/
+  getFundingTemplateHtmlBody() {
+    let url = this.REST_URL + 'v_url/unlockMdfFundingTemplate/' + this.getUserId()+"/htmlBody?access_token="+this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /***XNFR-832***/
+  sendMdfFundRequestEmail(sendTestEmailDto: SendTestEmailDto) {
+    sendTestEmailDto.loggedInUserId = this.getUserId();
+    let url = this.REST_URL + 'campaign/mdf-request-email?access_token='+this.access_token;
+    return this.callPostMethod(url,sendTestEmailDto);
+  }
+  
+  /***XNFR-832***/
+  getMdfCampaignDetails(alias: any) {
+    let url = this.REST_URL + 'campaign-mdf/analytics/'+alias;
+    return this.callGetMethod(url);
+  }
+  
+  /***XNFR-832***/
+  getMdfCampaignTemplatePreview(alias:any){
+    let url = this.REST_URL + 'campaign-mdf/template/'+alias;
+    return this.callGetMethod(url);
+  }
+
+  /***XNFR-832***/
+  requestAccount(requestDemo:RequestDemo){
+    requestDemo.mdfRequest = true;
+    let url = this.REST_URL + 'campaign-mdf/request-account';
+    return this.callPostMethod(url,requestDemo);
+  }
+
+  validateDuplicateMdfRequest(duplicateMdfRequestDto:DuplicateMdfRequest) {
+    const url = this.REST_URL + 'campaign/validateDuplicateCampaignMdfRequest?emailAddress='+duplicateMdfRequestDto.emailAddress+'&campaignId='+duplicateMdfRequestDto.campaignId+'&access_token='+this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /***XNFR-878****/
+  updatePartnerCompanyPrimaryAdmin(partnerPrimaryAdminUpdateDto:PartnerPrimaryAdminUpdateDto) {
+    partnerPrimaryAdminUpdateDto.vendorCompanyUserId = this.getUserId();
+    let url = this.REST_URL +"teamMember/updatePartnerCompanyPrimaryAdmin?access_token="+this.access_token;
+    return this.http.post(url,partnerPrimaryAdminUpdateDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+  
+  //XNFR-889
+  getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
+    let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
+    return this.callGetMethod(url);
+  }
+
+  readText(text: string, onEndCallback: () => void) {
+    this.stopSpeech();
+    const myToken = ++this.speakToken;
+    const trySpeak = () => {
+      if (myToken !== this.speakToken) return;
+      const voice = this.pickVoice('en-US');
+      if (!voice) {
+        setTimeout(trySpeak, 150);
+        return;
+      }
+      this.startSpeaking(text, onEndCallback, voice, myToken);
+    };
+    trySpeak();
+  }
+
+  startSpeaking(text: string, onEndCallback: () => void, voice?: SpeechSynthesisVoice, token?: number) {
+    const myToken = (typeof token === 'number') ? token : ++this.speakToken;
+    const parts = this.chunk(text);
+    let i = 0;
+    const speakNext = () => {
+      if (myToken !== this.speakToken) return;
+      if (i >= parts.length) {
+        if (onEndCallback) onEndCallback();
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(parts[i++]);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang || 'en-US';
+      } else {
+        utterance.lang = 'en-US';
+      }
+      utterance.onend = () => { if (myToken === this.speakToken) speakNext(); };
+      utterance.onerror = () => { if (myToken === this.speakToken) speakNext(); };
+      this.synth.speak(utterance);
+    };
+    speakNext();
+  }
+
+  stopSpeech() {
+    this.speakToken++;
+    try {
+      if (this.synth.speaking || this.synth.pending) this.synth.cancel();
+      if (this.synth.paused) this.synth.resume();
+    } catch (_) { }
+  }
+
+  pickVoice(lang: string = 'en-US'): SpeechSynthesisVoice | null {
+    const voices = (this.synth && this.synth.getVoices) ? this.synth.getVoices() : [];
+    if (!voices || voices.length === 0) return null;
+    const byName = ['Samantha', 'Alex', 'Victoria', 'Google US English', 'Google UK English Female'];
+    for (const n of byName) {
+      const v = voices.find(v => v.name === n);
+      if (v) return v;
+    }
+    return (
+      voices.find(v => (v.lang || '').toLowerCase() === lang.toLowerCase()) ||
+      voices.find(v => (v.lang || '').toLowerCase().startsWith('en')) ||
+      voices[0] || null
+    );
+  }
+
+  chunk(text: string, maxLen: number = 180): string[] {
+    text = (text || '').replace(/\s+/g, ' ').trim();
+    if (!text) return [];
+    const out: string[] = [];
+    let buf = '';
+    for (const w of text.split(' ')) {
+      const next = (buf ? buf + ' ' : '') + w;
+      if (next.length > maxLen) { out.push(buf); buf = w; } else { buf = next; }
+    }
+    if (buf) out.push(buf);
+    return out;
+  }
+
+  sendEmailToUser (sendTestEmailDto: SendTestEmailDto, formData: FormData) {
+    sendTestEmailDto.fromEmail = this.user.emailId;
+    formData.append('sendTestEmailDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
+        type: "application/json"
+    }));
+    
+    let url = this.REST_URL + "email-template/sendEmailFromOliver?access_token=" + this.access_token;
+    return this.callPostMethod(url, formData);
+}
+
+}

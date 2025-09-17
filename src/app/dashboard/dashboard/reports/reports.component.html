@@ -1,0 +1,133 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a>Reports</a>
+			</li>
+		</ul>
+  </div>
+  <div class="col-xs-12 p0">
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+			<div class="panel-title pull-right" style="margin-top: 5px;">
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[2].value || referenceService.daySortValue===sortDates[3].value"  data-toggle="tooltip" data-placement="left" title="7 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[2].value || referenceService.daySortValue===sortDates[3].value" data-toggle="tooltip" data-placement="left" title="14 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[3].value" data-toggle="tooltip" data-placement="left" title="21 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[2].value" data-toggle="tooltip" data-placement="left" title="Current Month">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+
+				<span style="float:right; font-size: 13px;">
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
+						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="portlet-body clearfix" style="max-width: 100%;">
+			<div class="col-xs-12 col-sm-4">
+				<div id="sparkline_bar_chart1" style="cursor: pointer" (click)="selectedChartValue()">
+					<canvas width="172" height="94" style="display: inline-block; width: 172px; height: 94px; vertical-align: top;"></canvas>
+				</div>
+				<h2 style="text-align: left; color: #8e8e8e;font-weight: 400;font-size:13px;margin-left: 29px;margin-top: 9px;">{{reportName}}</h2>
+			</div>
+			<div class="col-xs-12 col-sm-8">
+				<table class='table tgrid' id="tabletest">
+					<thead>
+						<tr>						
+							<th class="headerCss center">Title</th>
+							<th class="headerCss center">{{reportName}}</th>
+							<th class="headerCss center">Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">
+							<tr style="cursor:pointer;" (click)="selectedRow(view)">
+								<td class="center" title="{{view.videoTitle}}">{{view.videoTitle | slice:0:38}}<span *ngIf="view.videoTitle?.length>38">...</span></td>
+								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
+								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
+								<td class="center">
+								<app-timestamp [isOnlyDate]="true" [dateAndTime]="view.date"> </app-timestamp>
+								</td>
+							</tr>
+            </ng-container>
+          </tbody>
+        </table>
+          <div *ngIf="videoViewsLevelFirst?.length ===0" class="text-center"> No data available for the selected stats	</div>
+			</div>
+		</div>
+  </div>
+  </div>
+  <div class="col-xs-12 p0">
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+			<div class="btn-group pull-right setting-icon-cu" data-toggle="tooltip" data-placement="top"
+				title="Click here to export excel" style="margin-top: 4px; cursor:pointer">
+				<span>
+					<a id="delete_button" (click)="videoViewsLevelSecond.length > 0 ? downloadLogs() : null">
+						<i class="fas fa-file-export" style="font-size:15px;margin-right: -4px;"></i>
+					</a>
+				</span>
+			</div>
+		</div>
+		<div class="portlet-body clearfix" style="max-width: 100%;">
+     <app-list-loader *ngIf="loading"></app-list-loader>
+			<table class='table tgrid' id="sample_editable_1" [hidden]="loading">
+				<thead>
+					<tr>
+						<th class="headerCss center">Name</th>
+						<th class="headerCss center hidden-xs" >Title</th>
+						<th class="headerCss center">Date and time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index">
+						<tr>
+							<td>
+								<div class="flex">
+									<span class='profile' style="background-color: #3598dc;">
+										<span class='uppercase'>{{videoViews.firstName | slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
+									</span>
+									<span style="margin-left: 20px;">
+										<h5 style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
+										<h6 class='m0'>
+											<a>{{videoViews.emailId}}</a>
+										</h6>
+									</span>
+								</div>
+							</td>
+							<td [title]="videoViews.videoTitle" class="center hidden-xs">{{videoViews.videoTitle | slice:0:35}} <span *ngIf="videoViews.videoTitle?.length>35">...</span></td>
+							<td class="center">
+							<app-timestamp [dateAndTime]="videoViews.date"> </app-timestamp>
+							</td>
+						</tr>
+          </ng-container>
+        </tbody>
+       </table>
+       <div *ngIf="videoViewsLevelSecond?.length ===0" class="text-center">No data available for the selected stats	</div>
+			<div class="pg8"><app-pagination [hidden]="loading || videoViewsLevelSecond?.length==0" [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
+		</div>
+  </div>
+  </div>
+	<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+  <app-scroll-top></app-scroll-top>
+</div>

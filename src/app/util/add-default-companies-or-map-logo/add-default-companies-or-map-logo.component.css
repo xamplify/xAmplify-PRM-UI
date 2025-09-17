@@ -1,0 +1,70 @@
+#bottom-right {
+    float: right;
+  }
+  #right {
+    float: right;
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  #left {
+    float: left;
+  }
+  #search {
+    margin-right: 35px;
+  }
+  #search-icon {
+    position: relative;
+    right: -11px;
+  }
+  #search-text {
+    height: 34px;
+  }
+  #circle {
+    margin-top: 4px;
+  }
+  .merge-tag-success-message {
+    color: green;
+  }
+  #merge-tag-text {
+    width: 50%;
+  }
+  
+  .merge-tags-btn {
+    color: white;
+    background-color: #008fd5;
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  
+  .npcfs {
+    padding-top: 0px !important;
+    font-size: 15px !important;
+  }
+  .btn {
+    padding: 7px 14px !important;
+  }
+  /* 02-8-2023 */
+  .btn-select-templates {
+    padding: 7px 14px !important;
+    margin-right: 8px !important;
+  }
+  /* sudha sri (05-9-2023) */
+  .btn-mb {
+    margin-bottom: 8px;
+  }
+  /* bnts align */
+  .px-0{
+    padding: 0px!important;
+    margin-top: 6px!important;
+  } 
+
+  .info-padding{
+    padding: 5px;
+    margin: 5px 1px;
+  }
+
+  .model-body-padding{
+    padding: 10px !important;
+  }

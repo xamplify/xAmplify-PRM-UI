@@ -1,0 +1,408 @@
+<ng-template #onlyUserSandBoxText>
+    <div *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !showLeadForm && !authenticationService?.module?.contentLoader"
+        class="page-content">
+        <ng-template [ngTemplateOutlet]="sandBoxText"></ng-template>
+        <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+            <div class="col-xs-12 col-sm-6 p0">
+                <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+            </div>
+        </div>
+        <div class="row" *ngIf="!authenticationService?.module?.agencyUserDashboard">
+            <div class="clearfix"></div>
+            <div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
+                <div class="alert alert-danger alert-dismissible" style="padding: 12px">
+                    <a class="close" data-dismiss="alert" aria-label="close"></a>
+                    You have only limit access please upgrade.
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #sandBoxText>
+    <div *ngIf="showSandboxText" class="alert alert-info">
+        <strong>{{properties?.sandboxText | translate }}</strong>
+    </div>
+</ng-template>
+
+<ng-template #welcomePageHeader>
+    <div class="page-bar" [hidden]="ngxLoading" *ngIf="userDefaultPage.responseType != null"
+        style="margin-bottom: 5px;">
+        <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
+                'alert-danger': userDefaultPage.responseType == 'ERROR'}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                (click)="userDefaultPage.responseType = null">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="flex">
+                <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
+                                'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
+                    style="padding-right: 7px;"></i>
+                <span class="msg-color">{{userDefaultPage.responseMessage}}</span>
+            </h4>
+        </div>
+    </div>
+
+    <app-response-message [customResponse]="welcomeCustomResponse" *ngIf="welcomeCustomResponse?.isVisible"></app-response-message>
+
+    <div class="page-bar p0 mb-height_auto margin_b0" [hidden]="ngxLoading">
+        <div class="col-md-12 col-xs-12 col-sm-12 dahboard_header" style="border-radius: 0;padding: 0.3em;">
+            <div>
+                <h4 class="welcome-header text-overflow">
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}">
+                        {{'Welcome' | translate}} {{logedInCustomerCompanyName | slice: 0: 20 }}</span><span
+                        *ngIf="logedInCustomerCompanyName.length > 20">...</span>
+                </h4>
+            </div>
+            <div
+                [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                <div class="df-mt5 dashboardfloatRight">
+                    <h4 class="defaultScreenText" style="margin: 0.3em" translate>Do you want to set this as your
+                        default screen?</h4>
+                    <div>
+                        <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen" size="small"
+                            (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                    </div>
+                </div>
+            </div>
+            <!-- Btns -->
+            <div class="d-flex">
+                <button class="btn mr5 btn_cancel" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Retrun to default dashboard" (click)="findCustomDashboardLayout(); isDraggingEnabled=false" *ngIf="isDraggingEnabled">
+                    <i class="fa fa-reply"></i>&nbsp;Cancel</button>
+                <button class="btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset</button>
+                <button class="btn hidden-xs" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
+                    data-placement="bottom" data-toggle="tooltip"
+                    [title]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'Custom Dashboard Layout is currently disabled.' : 'Customize Dashboard Layout'"
+                    (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : customizeDashboardLayout()"
+                    [disabled]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor))">
+                    <i class="fa" [ngClass]="{'fa-pencil-square-o': isDraggingEnabled, 'fa-tasks': !isDraggingEnabled}"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize'}}</button>
+                <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+                <app-team-member-filter-option
+                    *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+                            && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
+                    [filterIcon]="true"
+                    (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!--XNFR-458--->
+<ng-template #dashBoardImages>
+    <app-dashboard-banner-images
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-dashboard-banner-images>
+</ng-template>
+
+<ng-template #moduleAnalytics>
+    <div *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        class="page-bar page-bar-shadow margin_17" style="padding: 1em 1em 0 1em;" [ngClass]="{'border_dashed': isDraggingEnabled}">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+        </app-response-message>
+        <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
+        <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
+            (notifyShowLeadForm)="showLeadForm=true" (notifyLeadSuccess)="showSubmitLeadSuccess()"
+            [applyFilter]="applyFilter"></app-module-analytics>
+    </div>
+</ng-template>
+
+<!---XNFR-459--->
+<ng-template #newsAndAnnouncement>
+    <app-news-and-announcement-and-instant-navigation-dashboard-analytics
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+</ng-template>
+
+<ng-template #dashBoardButtons>
+    <app-dashboard-buttons-carousel
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-dashboard-buttons-carousel>
+</ng-template>
+
+<ng-template #opportunityStats>
+    <div *ngIf="!authenticationService?.module?.deletedPartner &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole) 
+        && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                <span class="caption-subject" translate>Opportunity Stats</span>
+            </div>
+        </div>
+        <div class="portlet-body clearfix">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <app-funnel-chart-analytics *ngIf="!ngxLoading"
+                        [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+                </div>
+                <!----Opportunity Stats--------->
+                <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;margin-top: 10px;">
+                    <app-pie-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-pie-chart-analytics>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #vendorActivityAnalytics>
+    <app-vendor-activity-analytics
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-vendor-activity-analytics>
+</ng-template>
+
+<ng-template #partnerStatistics>
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
+        *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
+    !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && 
+    !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember && 
+    !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember && 
+    !authenticationService?.module?.isMarketingCompany && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+        <app-partners-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partners-statistics>
+        <app-partner-contacts-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partner-contacts-statistics>
+        <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter" [isDashboardView]="true"></app-mdf-statistics>
+    </div>
+</ng-template>
+
+<ng-template #regionalStatistics *ngIf="authenticationService?.module?.isReDistribution">
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
+        *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
+        <!---Regional Statistics--->
+        <app-regional-statistics-analytics></app-regional-statistics-analytics>
+        <div>
+            <!---Video Statistics--->
+            <app-video-statistics-analytics></app-video-statistics-analytics>
+
+            <!---email Stats--->
+            <app-email-stats-analytics></app-email-stats-analytics>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #prmMdfStatistics>
+    <div class="row pd_top10 margin_17" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+        && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
+        (authenticationService?.mdf || authenticationService?.leadsAndDeals)" 
+        [ngClass]="{'margin_17': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
+        <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf" [ngClass]="{'border_dashed': isDraggingEnabled}">
+            <app-mdf-statistics [applyFilter]="applyFilter"
+                *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #prmContent>
+    <app-show-prm-content [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="(authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+                    authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner 
+                    || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) 
+                    && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) 
+                    && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)">
+    </app-show-prm-content>
+</ng-template>
+
+<ng-template #prmAssets>
+    <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true" (newItemEvent)="setManageDam($event)"
+        *ngIf="authenticationService?.module?.damAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-assets>
+</ng-template>
+
+<ng-template #prmSharedAssets>
+    <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="authenticationService?.module?.damAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-assets>
+</ng-template>
+
+<ng-template #prmTracks>
+    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="authenticationService?.module?.lmsAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
+</ng-template>
+
+<ng-template #prmSharedTracks>
+    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="authenticationService?.module?.lmsAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
+</ng-template>
+
+<ng-template #prmPlayBooks>
+    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="authenticationService?.module?.playbookAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
+</ng-template>
+
+<ng-template #prmSharedPlayBooks>
+    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
+        *ngIf="authenticationService?.module?.playbookAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+        && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
+</ng-template>
+
+<ng-template #leadAndDealStatistics>
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
+        *ngIf="!ngxLoading && (authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+    && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && (authenticationService?.leadsAndDeals)">
+        <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
+        <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
+    </div>
+</ng-template>
+
+<ng-template #highLevelAnalytics>
+    <div class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}" id="hla-adv-dashboard"
+        *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+        <div class="portlet-title" style="min-height: 0px;">
+            <div class="caption">
+                <span class="caption-subject" translate>High Level Analytics</span>
+            </div>
+            <span data-placement="top" class="btn btn-xs  l-g-view pull-right" data-toggle="tooltip"
+                style="margin-top: -7px;" (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true"
+                *ngIf="!downloadRequestButtonClicked">
+                <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+            </span>
+        </div>
+        <div class="portlet-body clearfix">
+            <app-response-message class="pg8" [customResponse]="downloadRequestCustomResponse"
+                *ngIf="downloadRequestCustomResponse.isVisible">
+            </app-response-message>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6"
+                    *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
+                    <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading"
+                        [applyFilter]="applyFilter"></app-donut-pie-chart>
+                    <app-horizontal-bat-chart *ngIf="!ngxLoading && authenticationService?.module?.createCampaign"
+                        [applyFilter]="applyFilter"></app-horizontal-bat-chart>
+                </div>
+                <div [className]="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-7 col-lg-6' "
+                    style="padding-left: 26px;padding-right: 26px;">
+                    <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"
+                        [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #dynamicTemplate let-template="template">
+    <div class="portlet light margin_17 position-relative custom_block"
+        [ngClass]="{'border_dashed': isDraggingEnabled}">
+        <div class="icon-ribbon"
+            *ngIf="isDraggingEnabled && ((authenticationService?.companyProfileName && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor) 
+                || (!authenticationService?.companyProfileName && !authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor))">
+            <button class="btn btn-edit" (click)="edit(template)" data-placement="top" data-toggle="tooltip"
+                title="Edit Custom Block">
+                <i class="glyphicon glyphicon-pencil"></i></button>
+            <button class="btn btn-close" (click)="remove(template)" data-placement="top" data-toggle="tooltip"
+                title="Remove Custom Block from Dashboard">
+                <i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+        <div class="portlet-title" style="min-height: 0px;" *ngIf="template?.titleVisible">
+            <div class="caption">
+                <span class="caption-subject" translate>{{ template?.title }}</span>
+            </div>
+        </div>
+        <div class="portlet-body" *ngIf="template?.htmlBody">
+            <div [innerHTML]="template?.htmlBody"></div>
+        </div>
+        <div class="portlet-body" *ngIf="template?.leftHtmlBody || template?.rightHtmlBody">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="template?.leftHtmlBody"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="template?.rightHtmlBody"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template [ngTemplateOutlet]="onlyUserSandBoxText"></ng-template>
+
+<div class="page-content"
+    *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) 
+    || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
+    <ng-template [ngTemplateOutlet]="sandBoxText"></ng-template>
+    <ng-template [ngTemplateOutlet]="welcomePageHeader"></ng-template>
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics"
+        [(dragulaModel)]="defaultDashboardLayout">
+        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name ? template.name : template.title" [ngClass]="{ 'disable-clicks': isDraggingEnabled }">
+            <ng-template *ngIf="template?.ref" [ngTemplateOutlet]="template.ref"></ng-template>
+            <ng-container *ngIf="template?.title">
+                <ng-container *ngTemplateOutlet="dynamicTemplate; context: { template: template }"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+
+    <div *ngIf="!isDraggingEnabled">
+        <ng-container *ngFor="let template of defaultDashboardLayout">
+            <ng-template [ngTemplateOutlet]="template.ref"></ng-template>
+            <ng-container *ngIf="template.title">
+                <ng-container *ngTemplateOutlet="dynamicTemplate; context: { template: template }"></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<!-- Deal Form-->
+<section *ngIf="showDealForm">
+    <div class="page-content">
+        <a (click)="closeDealForm()" class="pull-right close-circle"
+            style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+        <app-add-deal [actionType]="'add'" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+    </div>
+</section>
+
+<!-- Lead Form -->
+<ng-container *ngIf="showLeadForm">
+    <section>
+        <div class="page-content">
+            <a (click)="closeLeadForm()" class="pull-right close-circle"
+                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+                <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding-top: 7px;"
+                    aria-hidden="true"></span></a>
+            <app-custom-add-lead [actionType]="'add'" [isVendorVersion]="false"
+                (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+        </div>
+    </section>
+</ng-container>
+
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert"
+    (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
+
+<div class="page-content" *ngIf="editVideo || playVideo">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a (click)="goToDam()" translate>DAM</a>
+            </li>
+            <li *ngIf="editVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a>
+            </li>
+            <li *ngIf="playVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a>
+            </li>
+        </ul>
+    </div>
+    <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
+    <app-play-video *ngIf="playVideo"></app-play-video>
+</div>
+
+<app-custom-blocks-modal-popup *ngIf="customModalPopup" [customHtmlBlockId]="customHtmlBlockId" (notifyParent)="reLoadLayout($event)"></app-custom-blocks-modal-popup>

@@ -1,0 +1,90 @@
+import { Role } from './role';
+import { ModuleAccess } from '../../campaigns/models/module-access';
+import { CompanyProfileDTO } from '../../dashboard/company-profile/models/company-profile-dto';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+
+export class User {
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    middleName:string;
+    fullName: string;
+    contactCompany: string;
+    contactCompanyId: number;
+    jobTitle: string;
+    emailId: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    mobileNumber: string;
+    interests: string;
+    occupation: string;
+    description: string;
+    websiteUrl: string;
+    profileImagePath: string;
+    displayName: string;
+    id: number;
+    userId: number;
+    isChecked: boolean;
+    userListIds: number[];
+    alias: string;
+    userDefaultPage: string;
+    roles: Array<Role> = new Array<Role>();
+    hasCompany: boolean = false;
+
+    isShowDetails = false;
+    companyLogo: string = "";
+
+    companyName:string = "";
+    vendorSignUp:boolean = false;
+    hasPassword = false;
+    
+    vertical: string = "";
+    region: string = "";
+    partnerType: string = "";
+    category: string = "";
+    moduleAccessDto: ModuleAccess = new ModuleAccess();
+    legalBasis = [];
+    legalBasisString = [];
+
+    companyProfileName: string;
+    preferredLanguage:string;
+
+    contactsLimit:number;
+    mdfAmount:any;
+    notifyPartners = false;
+    disableNotifyPartnersOption = false;
+    teamMemberGroupId = 0;
+    selectedTeamMembersCount = 0;
+    selectedTeamMemberIds = [];
+    partnershipId = 0;
+    selectedTeamMemberGroupName = "";
+
+    excludedCatagory = "";
+
+    secondAdmin : boolean = false;
+
+    companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
+    displayContactCompany : string;
+    companyNameStatus : string;
+
+    accountName : string;
+    accountSubType : string;
+    territory : string;
+    companyDomain : string;
+    accountOwner : string;
+    website: string;
+    isValidEmailIdPattern = false;
+    isWelcomePageEnabled:boolean;
+    flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
+    accountId : string;
+    userStatus : string;
+    isValidMobileNumber = true;
+    countryCode: string;
+    contactStatus: string;
+    contactStatusId: number;
+	partnerStatus: string;
+}

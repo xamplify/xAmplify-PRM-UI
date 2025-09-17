@@ -1,0 +1,28 @@
+.copyright-css {
+  text-align: center;
+  padding: 30px 10px;
+  color: #ffffff;
+  font-size: 15px;
+}
+.copyright-css-left {
+  text-align: center;
+  padding:30px 10px;
+  color: #ffffff;
+  font-size: 15px;
+  /* margin-left: 80px; */
+}
+.copyright-css-right {
+  text-align: center;
+  padding: 30px 10px;
+  color: #ffffff;
+  font-size: 15px;
+  /* margin-right: 80px; */
+  /* padding-top: 10px; */
+}
+.copyright-css-right-styleone {
+  text-align: center;
+  /* padding: 10px; */
+  color: #ffffff;
+  font-size: 15px;
+  /* margin-right: 80px; */
+}

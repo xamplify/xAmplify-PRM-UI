@@ -1,0 +1,68 @@
+@media only screen and (max-width: 768px) {
+  .margin-left {
+    margin-left: 8px;
+  }
+  .align-tableimg-center span p {
+    float: left;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .margin-left {
+    margin-left: 20px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .margin-flex {
+    margin-left: 0px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .margin-flex {
+    margin-left: -7px;
+  }
+  .mrgleft_0{
+   margin-left:0px!important;
+  }
+}
+.user-name {
+  margin: 2px 0;
+  font-weight: 400;
+  padding: 0px;
+}
+.user-email {
+  font-weight: 400;
+  float: left;
+  font-size: 13px !important;
+}
+.user-company {
+  margin: 2px 0;
+  font-weight: 600;
+  color: #676767;
+  float:left;
+}
+.ml10 {
+  margin-left: 10px;
+}
+
+/* 20-06-2023 */
+.align-tableimg-center {
+  display: flex;
+  align-items: center;
+}
+b, strong {
+  color: #333;
+}
+@media only screen and (min-width: 320px) and (max-width:  1281px) {
+  .mobile_no{
+    float: inline-start;
+  }
+}
+p.lead_camp_mobile_no {
+  margin: 19px 0 10px;
+}
+.width-100{
+  width: 100%;
+}
+.float-unset{
+  float: unset!important;
+}

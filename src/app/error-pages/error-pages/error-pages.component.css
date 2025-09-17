@@ -1,0 +1,27 @@
+h1 {
+    font-weight: 900;
+    font-size: 8em;
+    color: #e21643;
+    margin: 0;
+}
+h4{
+	color: rgba(236, 15, 65, 0.69);
+    margin-bottom: 1em;
+    font-size: 3em;
+}
+h3{
+	color: rgba(236, 15, 65, 0.69);
+    margin-bottom: 1em;
+    font-size: 19px;
+}
+.loader-container {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20rem;
+    position: relative;
+}

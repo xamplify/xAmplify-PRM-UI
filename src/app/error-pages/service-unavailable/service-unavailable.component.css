@@ -1,0 +1,17 @@
+h1 {
+  font-weight: 900;
+  font-size: 8em;
+  color: #e21643;
+  margin: 0;
+}
+h4{
+color: rgba(236, 15, 65, 0.69);
+  margin-bottom: 1em;
+  font-size: 3em;
+}
+.btn{
+border-radius: 0;
+}
+
+
+

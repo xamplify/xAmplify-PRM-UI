@@ -1,0 +1,45 @@
+/deep/ .tag {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    outline: 0;
+    color: white !important;
+    cursor: pointer;
+    transition: all 0.25s;
+    height: 100px;
+    line-height:100px;
+    user-select: none;
+    overflow: hidden;
+}
+/deep/ .tag.readonly {
+    cursor: default;
+}
+/deep/ .tag.readonly:focus {
+    outline: 0;
+}
+/deep/ .default tag.tag--editing,
+.dark tag.tag--editing,
+.minimal tag.tag--editing {
+    background-color: #fff;
+    cursor: text;
+}
+/deep/ .tag:focus {
+    outline: 0;
+}
+/deep/ .default tag:not(.tag--editing) {
+    color:#fff !important ;
+    background: blue !important;
+}
+/deep/ .default tag:not(.readonly):not(.tag--editing):focus {
+    background: blue;
+    color: #fff;
+}
+
+/deep/ .default tag:not(.readonly):not(.tag--editing):active {
+    background: blue;
+    color: #fff;
+}
+
+/deep/ .default tag:not(:focus):not(.tag--editing):not(:active):not(.readonly):hover {
+    background: lightblue;
+}

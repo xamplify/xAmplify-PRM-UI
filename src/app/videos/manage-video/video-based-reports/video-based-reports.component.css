@@ -1,0 +1,128 @@
+.p-5x {
+padding: 2px 5px;
+}
+#newPlayerVideo {
+width: auto;
+}
+.width30{
+	width:30%;
+}
+
+.videoTitle {
+word-break: break-all;
+color: #5a5a5a;
+font-weight: 500;
+}
+
+.p5 {
+padding: -1px;
+}
+
+.portlet {
+padding: 10px;
+}
+:host /deep/ .vjs-mouse-display {
+	display: none !important;
+}
+:host /deep/ .vjs-time-tooltip{
+display: none !important;
+}
+:host /deep/ .video-js .vjs-progress-control:hover .vjs-mouse-display {
+display: none; }
+
+.td-new,
+th {
+border: 1px solid #dddddd;
+text-align: center;
+padding: 2px;
+}
+.center {
+	text-align: center;
+}
+.td-new-n {
+border: 1px solid #dddddd;
+text-align: center;
+padding: 20px;
+color: #7a8082;
+font-weight: 600;
+}
+.td-color{
+color: white;
+background-color:rgb(0, 166, 232);
+}
+.td-chart {
+position: relative;
+cursor: pointer;
+}
+
+.minutes-color {
+position: absolute;
+left: 0;
+top: 0;
+bottom: 0;
+color: #000;
+background-color: rgb(144, 238, 144);
+z-index: 0;
+text-align: center;
+}
+.headerCss {
+   font-size: 12px;
+   font-weight: 500;
+}
+.center {
+	text-align: center;
+}
+.logoCss{
+    position: absolute;
+    width: 91px;
+    height: 1px;
+    right: 15px;
+    top: 15px;
+    background: transparent;
+    z-index: 99;
+}
+.logoFullscreen{
+    position: absolute;
+    top: 15px;
+    width: 91px;
+    height: 58px;
+    right: 17px;
+    background: transparent;
+    z-index: 99;
+}
+.circle-custom-css{
+  font-size: 20px;
+  float: right;
+  position: relative;
+  top: 4px;
+  right: -3px
+}
+.minutesWatched{
+  position: absolute;
+  top: 1px;
+  z-index: 99;
+  right: 0;
+  left: 0
+}
+@media screen and (max-width:600px){.video-modal { width:100%; } }
+@media screen and (min-width:601px){.video-modal { width:80% !important; } }
+.tooltip-css{position: relative;cursor: pointer;color: #54a7e9;}
+.disabled{
+  pointer-events: none;
+}
+
+@media screen and (max-width:600px){
+.mPannel{
+  padding-top: 1px;
+}
+
+.mrecipient{
+padding: 122px 140px!important;
+}
+.mvideoview{
+  left:175px!important;
+}
+}
+.gear-icon{
+  color: #7d8c98;
+}

@@ -1,0 +1,49 @@
+#actions-row {
+    width: 30%
+}
+
+#min-width {
+    min-width: 145px;
+}
+
+.custom-width-icon {
+    min-width: 130px;
+}
+
+.thumbnail-wrapper {
+    float: left;
+    width: 175px;
+	height: 60px;
+    background-color: #fff;
+    text-align: center;
+    position: relative;
+    border: 1px solid #ccc;
+	border-radius:5px;
+}
+
+.img-company-list {
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    width: auto;
+    margin: 0 auto;
+}
+.actions-block {
+    float: none;
+    text-align: center;
+}
+
+@media screen and (max-width:600px){
+    .mtext-center{
+        text-align: center;
+    }
+}
+.xamp-margin-left-icon {
+    margin: 0px 5px 5px 5px !important;
+}
+.analytics-tooltip{
+display:inline-block;
+}
+.justify-content-end{
+    justify-content: end;
+}

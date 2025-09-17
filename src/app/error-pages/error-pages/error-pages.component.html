@@ -1,0 +1,16 @@
+<div class="clearfix">
+	<div class="page-content">
+		<div class="page-bar">
+			<ng-container *ngFor="let item of errorMap">
+				<div class="loader-container" *ngIf="item.code == errorCode">
+					<div class="text-center">
+						<h1>{{item.code}}</h1>
+						<h4>{{item.message}}</h4>
+            <h3 *ngIf="xtremandLogger.errorMessage.length !=0">Cause:{{xtremandLogger.errorMessage}}</h3>
+            <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>

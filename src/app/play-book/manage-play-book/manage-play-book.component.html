@@ -1,0 +1,22 @@
+<div class="page-content">
+    <!-- --------------Heading -->
+    <div class="page-bar mb-height_auto" style="height: 48px;">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isPartnerView" [routerLink]="['/home/playbook/manage']">Manage Playbooks</a>
+                <a *ngIf="isPartnerView" [routerLink]="['/home/playbook/shared']">Shared Playbooks</a>
+            </li>
+        </ul>
+        <div style="padding: 3px 3px 0px 0px;">
+        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    </div>
+    </div>
+    <ng-container *ngIf="type">
+        <app-manage-tracks-play-book [type]="type"></app-manage-tracks-play-book>
+    </ng-container>
+</div>

@@ -1,0 +1,121 @@
+<div class="page-content">
+  <div class="page-bar" style="height: 48px;">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a>
+        <span>{{authenticationService.partnerModule.customName}} Experience Automation</span>
+        </a> 
+      </li>
+    </ul>
+    <div style="margin-top: 5px;margin-right: 2px;" class="float-right">
+		  <a>
+        <button type="button" class="btn Btn-Green" style="margin-right: 3px;" (click)="goToWorkflow()">
+        Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
+        </button>
+		  </a>
+	   </div>
+  </div>
+  <app-response-message [@fadeInOut] [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+  <div class="page-bar">
+    <div class="tab-content">
+      <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+      <div class="tab-pane active" *ngIf="!httpRequestLoader?.isLoading" >
+        <div class="page-bar pd-mg border-none">
+          <div class="m0">          
+            <ul class="page-breadcrumb table-alignments">
+                <li id="header-custom-li-font">Workflow Prompts</li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-lg-6 p0 pull-right" >
+            <div class="btn-group pull-right">
+              <div class="inputs sort-class pb5" style="display: flex;">
+                  <div 
+                    [ngClass]="{'search-css pr10': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                    <select class="form-control width" [(ngModel)]="sortOption.selectedPartnerJourneyWorkflowDropDownOption"
+                    (ngModelChange)="sortWorkflows($event)"  [ngModelOptions]="{standalone: true}">                                                    
+                    <option  *ngFor="let option of sortOption.partnerJourneyWorkflowsDropDownOptions"
+                        [ngValue]="option">{{option.name}}</option>
+                    </select> 
+                  </div>
+                  <div class="portlet-input input-inline search-class"
+                    [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                    <div class="input-icon right">
+                      <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                      [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                      (keypress)="findWorkflowsOnEnterKeyPress($event.keyCode)" autocomplete="off">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                      (click)="sortOption.searchKey='';searchWorkflows()">
+                    </button>
+                    <button type="submit" class="search-box-item-click" (click)="searchWorkflows()">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+        </div>
+          <section class="col-xs-12 p0">
+            <div class="table-responsive pt5 pd-l-r">
+              <div *ngIf="pagination?.totalRecords==0" class="alert alert-info text-center">
+                <strong>No Data Found</strong>
+              </div>
+              <table class='table tgrid table-hover table-sm' id="workflowsTable" role="grid" aria-describedby="" *ngIf="pagination?.totalRecords > 0">
+                <thead>
+                  <tr>
+                      <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
+                        <span class="ui-column-resizer"
+                            (mousedown)="referenceService?.onMouseDown($event,'workflowsTable',2)"> </span>
+                        <span class="gridHeader" translate>Prompts</span>
+                      </th>
+                      <th scope="col" style="width:21%" colspan="1">
+                        Title
+                    </th>
+                      <th scope="col" style="width:21%" colspan="1">
+                        Created On
+                      </th>
+                      <th scope="col" class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <ng-container *ngFor="let workflow of pagination?.pagedItems;let i = index">
+                      <tr>
+                        <td style="width: 5%;">
+                          <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
+                        </td>
+                        <td>
+                          <span class="float-left">{{workflow?.triggerDescription}}</span>
+                        </td>
+                        <td>
+                        <span class="float-left">{{workflow?.title}}</span>
+                        </td>
+                        <td>
+                          <span class="float-left">
+                            <app-display-date-and-time [dateAndTimeUTCString]="workflow?.createdTimeInString"></app-display-date-and-time>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="actions-block override-actions text-center float-none mw-200px">
+                            <a (click)="editWorkflow(workflow.id)"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
+                              <a (click)="confirmDeleteWorkflow(workflow.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                          </div>
+                        </td>
+                    </tr>
+                    </ng-container>
+                  </tbody>
+              </table>
+            </div>
+            <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+              <app-pagination [pagination]="pagination" (notifyParentDropDown)="findWorkflows($event)" (notifyParent)="paginateWorkflows($event)"></app-pagination>
+          </div>
+        </section>
+        </div>
+      </div>
+  </div>
+</div>
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="deleteWorkflow($event)"></app-confirm-sweet-alert-util>

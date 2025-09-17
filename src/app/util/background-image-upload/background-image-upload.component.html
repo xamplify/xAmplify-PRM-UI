@@ -1,0 +1,38 @@
+<div class="col-sm-6 col-xs-12">
+	<div class="portlet light">
+		<div class="portlet-title">
+			<div class="caption">UPLOAD {{type}}</div>
+		</div>
+
+		<div class="portlet-body clearfix">
+			<app-response-message class="pg8" [customResponse]="customResponse"
+				*ngIf="customResponse.isVisible"></app-response-message>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<div style="text-align: center;">
+					<label class="control-label">Upload Background Image</label>
+					<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage(type)">
+						<span>
+							<img *ngIf="type === 'GLASSMORPHISMLIGHT'" [src]="uploadLightImagePath" class="profile-image img-grid"
+								alt="" style="object-fit: cover; width: 100%;">
+							<img *ngIf="type === 'GLASSMORPHISMDARK'" [src]="uploadDarkImagePath" class="profile-image img-grid"
+								alt="" style="object-fit: cover; width: 100%;">
+						</span>
+						<a class="" (click)="uploadImage(type)">
+							<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
+								title="upload 16:9 ratio image!"
+								style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
+					</div>
+					<div class="p10" *ngIf="authenticationService.isSuperAdmin()">
+						<!-- <span class="conectColor" (click)="updateImage(type)">Update</span> -->
+						<button type="submit" class="btn btn-primary" (click)="updateImage(type)">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreenForLight"
+	(bgImage)="backgroundImage($event)"></app-image-upload-cropper>
+<app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreenForDark"
+	(bgImage)="backgroundImage($event)"></app-image-upload-cropper>

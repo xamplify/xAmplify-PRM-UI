@@ -1,0 +1,850 @@
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" [isPartnerView]="isPartnerView" *ngIf="(!folderListViewExpanded 
+		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled) && !FromOliverPopUp">
+</app-content-module-status-analytics>
+
+<div [className]="folderListView ? 'message-class-folder-list':'message-class'">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div *ngIf="isEditVideo || isPreviewVideo">
+	<app-modal-popup-loader></app-modal-popup-loader>
+</div>
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
+	<div class="col-md-12">
+		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
+			<!--List View / Grid View-->
+			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+				<div *ngIf="(showRefreshNotification && !listLoader?.isLoading) && !FromOliverPopUp" class="alert alert-info">
+					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
+				</div>
+				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
+					<ng-template *ngIf="!listLoader?.isLoading" [ngTemplateOutlet]="damHeaderOptions"></ng-template>
+					<!-- XNFR-409 -->
+					<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
+					<!-- XNFR-409 -->
+					<app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
+					<app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
+					<!---List View----->
+					<section *ngIf="modulesDisplayType.isListView && !listLoader.isLoading">
+						<div class="table-responsive pd_top10">
+							<table class='table tgrid table-hover table-sm' id="manage-assets-table"
+								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
+								<thead>
+									<tr>
+										<th *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView"></th>
+										<th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+											<span class="ui-column-resizer gray"
+												(mousedown)="referenceService?.onMouseDown($event,'manage-assets-table',2)"></span>
+											<span class="gridHeader">Asset Details</span>
+										</th>
+										<th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
+											<span class="ui-column-resizer gray"
+												(mousedown)="referenceService?.onMouseDown($event,'manage-assets-table',1)"></span>
+											<span class="gridHeader">Asset Details</span>
+										</th>
+										<th class="text-center" scope="row" id="border-bottom">Type</th>
+										<th class="text-center" scope="row" *ngIf="isPartnerView" id="border-bottom">Published On</th>
+										<th class="text-center" scope="row" *ngIf="!isPartnerView" id="border-bottom">Created On</th>
+										<th class="text-center" id="border-bottom">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
+										<tr>
+											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView && !fromListView" class="text-center"><input
+													class="chk checkBox_shadow" type="checkbox" [checked]="isSelected(asset)"
+													(change)="onCheckboxChange(asset, $event)"
+													[disabled]="asset.disableAccessForOliver || asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList || (oliverIntegrationType != 'openai' ? 
+													ragItFiles.indexOf(asset.assetType?.toLowerCase()) != -1  : files.indexOf(asset.assetType?.toLowerCase()) === -1)">
+											</td>
+											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
+												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+													<img class="custom-image-css" *ngIf="!referenceService.isCloudFront" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+																alt="Image Not Found"
+																style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+                          <img class="custom-image-css"  *ngIf="referenceService.isCloudFront" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
+														alt="Image Not Found"
+														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+												</div>
+											</td>
+											<td *ngIf="(!isPartnerView && asset.videoId)" class="hidden-xs text-center" style="width: 10%;">
+												<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO"
+													[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName"
+													[processing]="asset?.publishingOrWhiteLabelingInProgress" [hideDetails]="true" [fromOliver]="FromOliverPopUp"></app-video-thumbnail>
+											</td>
+											<td>
+												<h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+													title="{{asset?.assetName}}">
+													<span><b>Asset Name: </b>{{asset?.assetName}} </span>
+												</h6>
+												<h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+													title="{{asset?.categoryName}}">
+													<span><b>Folder: </b>{{asset?.categoryName}} </span>
+												</h6>
+												<h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}">
+													<span *ngIf="isPartnerView"><b>Published By:</b>{{asset?.displayName}}</span>
+													<span *ngIf="!isPartnerView"><b>Created By:</b>{{asset?.displayName}}</span>
+												</h6>
+												<h6 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
+													title="{{asset?.parentAssetName}}">
+													<span><b>Parent Asset Name: </b>{{asset?.parentAssetName}} </span>
+												</h6>
+												<ng-container *ngIf="(!isPartnerView && asset.videoId)">
+													<h6 class="moreipsis">
+														<span *ngIf="asset?.videoFileDTO?.viewBy!=='DRAFT'">
+															<span *ngIf="asset?.videoFileDTO?.views">{{asset?.videoFileDTO?.views}}views</span>
+															<span *ngIf="!asset?.videoFileDTO?.views">0 views</span>
+														</span>
+														<span *ngIf="asset.videoFileDTO?.viewBy==='DRAFT'">0 views</span>
+														<p *ngIf="asset.videoFileDTO?.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</p>
+													</h6>
+												</ng-container>
+												<h6 class="moreipsis" *ngIf="!isPartnerView && asset?.beeTemplate">
+													<span><b>Version: </b> {{asset?.versionInString}} </span>
+												</h6>
+												<h6 class="moreipsis" *ngIf="isPartnerView" data-toggle="tooltip"
+													data-placement="top" title="{{asset?.vendorCompanyName}}">
+													<span><b>From: </b>{{asset?.vendorCompanyName}}</span>
+												</h6>
+												<!---XNFR-255-->
+												<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
+													class="view-banner published" style="margin-right: 5px;">Published
+												</span>
+												<!-- XNFR-781 -->
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !authenticationService?.marketingModulesAccessToPartner" class="view-banner mr5"
+													[ngClass]="{
+														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+													{{getApprovalStatusText(asset.approvalStatus)}}
+												</span>
+												<span
+													*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+													class="view-banner asset-approval-labele-spacing mr5" 
+													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+													{{getApprovalStatusText(asset.approvalStatus)}}
+												</span>
+
+												<!---XNFR-255-->
+												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
+												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
+												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled</span>
+												<span *ngIf="authenticationService?.isOliverActive && asset.disableAccessForOliver && FromOliverPopUp" class="view-banner bgc-red">Access Disabled</span>
+												<!---XNFR-255-->
+												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
+													<h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+														<span><b>Received From: </b>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</span>
+													</h6>
+												</ng-container>
+												<!---XNFR-255-->
+												<h6 *ngIf="asset.tagNames?.length > 0 ">
+													<ng-container *ngIf="asset.tagNames?.length == 1">
+														<div class="tag tablegray-tag tag-custom" title="{{asset.tagNames[0]}}" (click)="filterAssets(asset.tagNames[0])" data-toggle="tooltip" data-placement="top">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
+																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
+															</ng-container>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}}
+																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
+															</ng-container>
+														</div>
+													</ng-container>
+														
+														
+														<ng-container *ngIf="asset.tagNames?.length > 1" >
+															<div *ngFor="let tag of asset.tagNames;let i =index" class="tag tablegray-tag tag-custom" title="{{tag}}" data-toggle="tooltip" data-placement="top" (click)="filterAssets(tag)">
+																{{tag | slice:0:10}} 
+																<span *ngIf="tag?.length>10">..</span>
+															</div>
+														</ng-container>
+
+												</h6>
+												<h6 *ngIf="isPartnerView && asset?.partnerStatus === 'deactivated'" class="green-banner inline-flex"
+													data-toggle="tooltip" data-placement="top" title="Partnership is deactivated">DEACTIVATED</h6>
+											</td>
+											<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}}</span></td>
+											<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
+											<td class="mAlignView">
+												<div class="actions-block override-actions ActionAlign action_inline">
+													<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
+														<div class="mActionAlign ActionButtonPad">
+															<!--History-->
+															<a class="custom-icon" *ngIf="(asset?.history &&!isPartnerView) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
+																<i class="fa IconCustomization"[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<!--Design-->
+															<a class="custom-icon" *ngIf="(asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT') && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
+																<i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<!-- Edit--->
+															<!-- <a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
+																<i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a> -->
+															<!--Edit--->
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.edit) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Edit"
+															 (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
+																<i class="fa fa-edit IconCustomization"aria-hidden="true"
+																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
+																<div class="clickicons"></div>
+															</a>
+															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) 
+																|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !FromOliverPopUp">
+																<!--Create Campaign-->
+																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
+																	title="{{asset?.approvalStatus == 'DRAFT' ? properties.DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN : (asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}">
+																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
+																	[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''"></i>
+																	<div class="clickicons"></div>
+																</a>
+																<!--Campaign-->
+																<a class="disable custom-icon"
+																	*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+																	data-toggle="tooltip" data-placement="top"
+																	[title]="actionsDescription.video_draft">
+																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+																</a>
+																<!--Campaign-->
+																<a class="disable custom-icon"
+																	*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
+																	data-toggle="tooltip" data-placement="top"
+																	title="Unavailable for processing">
+																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+																</a>
+															</ng-container>
+															<!--Preview-->
+															<a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''">
+																<i class="fa fa-eye IconCustomization" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<!--Popup-->
+															<a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Download" (click)="openPopup(asset)">
+																<i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<!--View Analytics-->
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" 
+																*ngIf="(!authenticationService.module.isMarketingCompany && !FromOliverPopUp && !authenticationService?.marketingModulesAccessToPartner) 
+															    || (authenticationService?.marketingModulesAccessToPartner && isPartnerView)"
+																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
+																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
+																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
+																<div class="clickicons"></div>
+															</a>
+															<!--View Details-->
+															<a class="custom-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="View Details" (click)="asset?.partnerStatus === 'deactivated' ? '' : viewDetails(asset)">
+																<i class="fa fa-eye IconCustomization" aria-hidden="true" [ngClass]="(asset?.partnerStatus === 'deactivated') ? 'disabled gray' : ''"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
+
+															<!-- comment/history -->
+															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
+																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+															</a>
+															<a class="oliveIcon mr5" *ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
+																data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
+															<!--Delete-->
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.delete) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
+																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
+																<div class="del-icon"></div>
+															</a>
+														</div>
+													</ng-container>
+													<!--Added On 02/08/2023-->
+													<ng-container
+														*ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
+														<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()">
+															<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+															<div class="clickicons"></div>
+														</a>
+														<p class="success mt5" *ngIf="asset?.publishingToPartnerList || asset?.publishingOrWhiteLabelingInProgress">
+															<strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
+														</p>
+													</ng-container>
+													<!--Added On 02/08/2023-->
+												</div>
+											</td>
+										</tr>
+										<tr [ngClass]="{'hidden': !asset?.expand}">
+											<td [attr.colspan]="colspanValue">
+												<div class="table-responsive">
+													<div *ngIf="showRefreshNotificationForHistoryAssets && !FromOliverPopUp	" class="alert alert-info">
+														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
+													</div>
+													<table class="table tgrid table-condensed"
+														aria-describedby="asset-history" id="asset-history">
+														<thead>
+															<tr>
+																<th colspan="2" style="width: 37%" id="border-bottom">
+																	<span class="gridHeader"
+																		translate>AssetDetails</span>
+																<th class="text-center" scope="row" translate>Type</th>
+																<th class="text-center" scope="row" translate>Created On
+																</th>
+																<th class="text-center" id="min-width" translate>Actions
+																</th>
+															</tr>
+														</thead>
+														<tbody>
+															<app-auto-response-loader
+																*ngIf="historyLoader.isLoading"></app-auto-response-loader>
+															<ng-container *ngIf="!historyLoader.isLoading">
+																<tr *ngFor="let asset of historyPagination.pagedItems ;let i =index"
+																	id="history-tr">
+																	<td style="width: 12%;">
+																		<div class="thumbnail-wrapper dam_image_effect"
+																			style="width: 180px;height: 100px;">
+																			<img class="custom-image-css"
+																				src="{{asset?.thumbnailPath}}"
+																				alt="Image Not Found"
+																				onerror="this.src='assets/images/no-preview.jpg';"
+																				style="width: 180px; height: 100px;border-radius:5px;">
+																		</div>
+																	</td>
+																	<td>
+																		<h4 class="mt5 mb5 f-w-600"
+																			data-toggle="tooltip" data-placement="top"
+																			title="{{asset?.assetName}}">
+																			<span><b>Asset Name:</b> <span>{{asset?.assetName | slice: 0:17}}</span></span>
+																			<span *ngIf="asset?.assetName?.length>17">...</span>
+																		</h4>
+																		<h6 data-toggle="tooltip" data-placement="top"
+																			title="{{asset?.categoryName}}">
+																			<span translate><b>Folder:</b>
+																				{{asset?.categoryName | slice: 0: 20}}
+																			</span>
+																			<span
+																				*ngIf="asset?.categoryName?.length>20">...</span>
+																		</h6>
+																		<h6 data-toggle="tooltip" data-placement="top"
+																			title="{{asset?.displayName}}">
+																			<span translate><b>Created	By:</b>{{asset?.displayName | slice: 0: 23}} </span>
+																		</h6>
+																		<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
+																			title="{{asset?.parentAssetName}}">
+																			<span><b>Parent Asset Name: </b><span>{{asset?.parentAssetName | slice: 0:17}} </span></span>
+																			<span *ngIf="asset?.parentAssetName?.length>17">...</span>
+																		</h4>
+																		<h6 class="moreipsis"
+																			*ngIf="!isPartnerView && asset?.beeTemplate">
+																			<span translate> <b>Version:</b>{{asset?.versionInString}} </span>
+																		</h6>
+																		<h6 class="moreipsis" *ngIf="isPartnerView">
+																			<span data-toggle="tooltip"	data-placement="top" title="{{asset?.vendorCompanyName}}" translate><b>From:</b>
+																				{{asset?.vendorCompanyName | slice:0:20}}
+																				<span *ngIf="asset?.vendorCompanyName?.length>20">...</span>
+																			</span>
+																		</h6>
+																		<!---XNFR-255-->
+																		<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
+																			class="view-banner published">Published</h6>
+																		<!---XNFR-255-->
+																		<span *ngIf="asset.viewBy=='DRAFT'"
+																			class="draft-video mb0">DRAFT</span>
+																		<!---XNFR-255-->
+																		
+																		<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+																		 [ngClass]="{ 'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+																				'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+																				'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+																			{{getApprovalStatusText(asset.approvalStatus)}}
+																		</span>
+																		<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+																			class="view-banner asset-approval-labele-spacing"
+																			 [ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+																			{{getApprovalStatusText(asset.approvalStatus)}}
+																		</span>
+																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"  class="view-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
+																		<ng-container
+																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+																			<span
+																				class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
+																			<h6 class="moreipsis" data-toggle="tooltip"
+																				data-placement="top"
+																				title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+																				<span translate> <b>Received From:</b>
+																					{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}
+																				</span>
+																			</h6>
+																		</ng-container>
+																		<!---XBI-1993-->
+										<h6 *ngIf="asset.tagNames?.length > 0 ">
+													<ng-container *ngIf="asset.tagNames?.length == 1">
+														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
+																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
+															</ng-container>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}}
+																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
+															</ng-container>
+														</div>
+													</ng-container>
+														
+														
+														<ng-container *ngIf="asset.tagNames?.length > 1" >
+															<div *ngFor="let tag of asset.tagNames;let i =index"  class="tag tablegray-tag tag-custom" title="{{tag}}" data-toggle="tooltip" data-placement="top">
+																{{tag | slice:0:10}} 
+																<span *ngIf="tag?.length>10">..</span>
+															</div>
+														</ng-container>
+
+												</h6>
+																		<!---XBI-1993-->
+																	</td>
+																	<td class="text-center"><span
+																			class="assettype-bgcolor">{{asset?.assetType}}</span>
+																	</td>
+																	<td class="text-center"><app-timestamp
+																			[dateAndTime]="asset?.displayTime"></app-timestamp>
+																	</td>
+																	<!--Child Assets-->
+																	<td id="actions-row" style="width: 32%;">
+																		<div class="actions-block override-actions ActionAlign"
+																			*ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
+																			<!--XNFR-381-->
+																			<a  *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
+																				data-placement="top"
+																				title="Switch To Parent Template"
+																				(click)="changeAsParentPdf(asset.id)">
+																				<i class="fa fa-exchange IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<!--XNFR-381-->
+																			<a *ngIf="asset?.edit && asset?.approvalStatus !== 'DRAFT'" class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Design"
+																				(click)="addOrEdit(asset.id)">
+																				<i class="fa fa-paint-brush IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a  class="custom-icon"
+																				*ngIf="asset?.beeTemplate && isPartnerView && asset?.edit"
+																				data-toggle="tooltip"
+																				data-placement="top" title="Edit"
+																				(click)="addOrEdit(asset.id)">
+																				<i class="fa fa-edit IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon"
+																				*ngIf="!isPartnerView && asset?.edit"
+																				data-toggle="tooltip"
+																				data-placement="top" title="Edit"
+																				(click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																				<i class="fa fa-edit IconCustomization"
+																				[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" title="Preview"
+																				(click)="preview(asset)">
+																				<i class="fa fa-eye IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Download"
+																				(click)="openPopup(asset)">
+																				<i class="fa fa-download IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top"
+																				title="View Analytics"
+																				*ngIf="!authenticationService.module.isMarketingCompany && !authenticationService?.marketingModulesAccessToPartner"
+																				(click)="(asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''">
+																				<i class="fa fa-line-chart IconCustomization"
+																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
+																				<div class="clickicons"></div>
+																			</a>
+
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+																			data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
+																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"  aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="oliveIcon mr5"
+																				*ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
+																				data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+																				<div class="oliveBackground">
+																					<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																				</div>
+																			</a>
+																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Delete"
+																				(click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)">
+																				<i class="fa fa-trash-o trashIconCustomization"
+																					aria-hidden="true"[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
+																				<div class="del-icon"></div>
+																			</a>
+																		</div>
+																		<!--Added On 02/08/2023----->
+																		<div class="actions-block override-actions ActionAlign"
+																			*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
+																			<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="listAssetsHistory(historyPagination)">
+																				<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<p class="success mt5" *ngIf="asset?.publishingToPartnerList || asset?.publishingOrWhiteLabelingInProgress">
+																				<strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
+																			</p>
+																		</div>
+																		<!--Added On 02/08/2023----->
+																	</td>
+																</tr>
+															</ng-container>
+														</tbody>
+													</table>
+													<!---Pagination-->
+													<div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading"
+														class="alert alert-info text-center">
+														<strong>No Data Found.</strong>
+													</div>
+													<div *ngIf="historyPagination.pagedItems.length !== 0"
+														[hidden]="historyLoader.isLoading">
+														<app-pagination [pagination]="historyPagination"
+															(notifyParent)="setHistoryPage($event)"
+															(notifyParentDropDown)="listAssetsHistory($event)">
+														</app-pagination>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<!----Grid View------->
+					<section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
+						<div class="row p17 neg_margin-10"
+							*ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
+							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10 GridviewSidePaddings"
+								*ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
+								<div class="grid-box min-h default-cursor mHeight">
+									<div class="gridViewImgpositioning">
+										<img *ngIf="!asset?.videoId" class="img-class mxv"
+											src="{{asset?.thumbnailPath}}"
+											onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found">
+										<img *ngIf="asset?.videoId>0" class="img-class mxv"
+											src="{{asset?.thumbnailPath}}"
+											onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
+									</div>
+									<h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top"
+										title="{{asset?.assetName}}">
+										<span><b>Asset Name:</b> 
+										<span>{{asset?.assetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.assetName?.length>54">...</span>
+									</h4>
+									<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top"
+										title="{{asset?.parentAssetName}}" style="padding-top: 0px;">
+										<span><b>Parent Asset Name: </b>
+											<span>{{asset?.parentAssetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.parentAssetName?.length>54">...</span>
+									</h4>
+									<div class="divapdding-or-cards">
+										<div class="aligntowbtns">
+											<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+												<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
+													data-placement="top"
+													title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+													<span><b>Received From:</b>
+														{{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
+												</h6>
+												<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
+											</ng-container>
+											<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
+											<!-- XNFR-781 -->
+											<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+												[ngClass]="{ 'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+													'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+													'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+												{{getApprovalStatusText(asset.approvalStatus)}}
+											</span>
+											<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+												class="view-banner asset-approval-labele-spacing"
+													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+												{{getApprovalStatusText(asset.approvalStatus)}}
+											</span>
+											<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner digital-sign-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
+										</div>
+										<h6 class="xamplify-ellipsis GridViewCotent pt10">
+											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
+											<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
+											<app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
+										</h6>
+
+										<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
+											data-placement="top" title="{{asset?.displayName}}"><b>By:</b>
+											{{asset?.displayName}}</h6>
+										<h6 class="xamplify-ellipsis GridViewCotent">
+											<span data-toggle="tooltip" data-placement="top"
+												title="{{asset?.categoryName}}" translate> <b>Folder:</b>
+												{{asset?.categoryName}}</span>
+										</h6>
+										<h6 class="GridViewCotent" *ngIf="!isPartnerView && asset?.beeTemplate">
+											<span translate> <b>Version:</b> {{asset?.versionInString}} </span>
+										</h6>
+										<h6 *ngIf="isPartnerView" class="xamplify-ellipsis GridViewCotent"
+											data-toggle="tooltip" data-placement="top"
+											title="{{asset?.vendorCompanyName}}">
+											<b>From:</b><span>{{asset?.vendorCompanyName}}</span>
+										</h6>
+										<span *ngIf="isPartnerView && asset?.partnerStatus === 'deactivated'" data-toggle="tooltip" data-placement="top"
+											title="Partnership is deactivated" class="green-banner inline-flex asset-deactivated">
+											DEACTIVATED
+										</span>
+									</div>
+									<div class="ribbon tab-ribbon">
+										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
+									</div>
+									<div class="bar auto-height gridIconCustomization border_none">
+										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"
+											[folderListView]="folderListView" [FromOliverPopUp]="FromOliverPopUp"
+											(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
+											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
+											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
+											(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
+											(assetGridViewRefreshListEmitter)="refreshList()" (assetGridViewAssetPreviewEmitter)="preview($event)">
+										</app-asset-grid-view-actions>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<!---Pagination-->
+					<div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading"
+						class="alert alert-info text-center">
+						<strong>No Data Found.</strong>
+					</div>
+					<div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
+						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+							(notifyParentDropDown)="listItems($event)"></app-pagination>
+					</div>
+				</ng-container>
+			</div>
+
+			<!--Folder List View / Folder Grid View -->
+			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
+				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
+					[selectedFoldersForOliver]="selectedFolderItems" [modulesDisplayType]="modulesDisplayType"
+					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
+					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
+					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!--Download Pdf Modal Popup-->
+<ng-container *ngIf="showPdfModalPopup">
+	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView"
+		(downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
+</ng-container>
+<!---Preview Pop Up-->
+<ng-container *ngIf="isPreview">
+	<app-preview-asset-popup [asset]="asset"
+		(previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>
+</ng-container>
+<!--Delete Asset-->
+<ng-container *ngIf="deleteAsset">
+	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
+		(deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)"
+		(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
+		(deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	</app-delete-assets>
+</ng-container>
+
+
+<!--Page Bar Option-->
+<ng-template #damHeaderOptions>
+	<div class="portlet-title mb_13">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="padding-left: 5px;">
+				<h4 class="pull-left m10 text-primary">{{SuffixHeading}}
+					<span>Assets</span>
+				</h4>
+			</div>
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                                <div class="btn-group pull-right">
+					<div class="d-flex">
+
+                                      <div class="hidden-xs pull-right downloadteam mr5" *ngIf="!FromOliverPopUp && !isPartnerView">
+                                        <button class="btn btn-primary fileinput-button upload-label mr0" (click)="navigateToUploadAsset()" style="border-radius: 7px 0 0 7px!important;">
+                                                 Upload File
+                                        </button>
+                                        <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle border_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="border-radius: 0px 7px 7px 0px!important;">
+                                                        <i class="fa fa-upload"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a (click)="navigateToUploadAsset()"><i class="fa fa-upload mr5"></i> Upload File</a></li>
+                                                        <li><a (click)="navigateToAddAsset()"><i class="fa fa-file-pdf-o mr5"></i> Design PDF</a></li>
+                                                </ul>
+                                        </div>
+                                </div>
+
+						<!-- Custom Upload Button -->
+						<button *ngIf="FromOliverPopUp && !isPartnerView && !authenticationService?.module?.loggedInThroughVendorVanityUrl"
+							(click)="fileInput.click()" class="btn btn-primary mr5" tabindex="-1" translate="" type="button">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+							Upload New Asset
+						</button>
+						<!-- Start XNFR-409 -->
+						<div class="btn btn-xs l-g-view margin-space mr7" (click)="toggleFilterOption()"
+							[ngClass]="showFilterOption?'disabled':''">
+							<span data-placement="left" data-toggle="tooltip" title="Filter">
+								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+							</span>
+						</div>
+						<input type="file"  (change)="chooseAsset($event)"
+							style="opacity: 0; position: absolute; pointer-events: none;" #fileInput>
+						
+						<!-- End XNFR-409 -->
+						<div class="group-dropdown mr7">
+							<button
+								[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr0' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr0':
+								modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view mr0': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view mr0'"
+								style="padding:10px !important"></button>
+							<div class="group-dd-content">
+								<ng-container class='m10'>
+									<span class="btn btn-xs l-g-view" [ngClass]="{'disabled-div': modulesDisplayType.isListView}" data-toggle="tooltip"
+										data-placement="bottom" title="List View" (click)="!modulesDisplayType.isListView && setViewType('l')">
+										<i class="fa fa-th-list p10" aria-hidden="true" [class.disabled]="modulesDisplayType.isListView">
+										</i>
+									</span>
+									
+									<span class="btn btn-xs l-g-view margin-space" [ngClass]="{'disabled-div': modulesDisplayType.isGridView}"
+										data-toggle="tooltip" data-placement="bottom" title="Grid View"
+										(click)="!modulesDisplayType.isGridView && setViewType('g')">
+										<i class="fa fa-th-large p10" aria-hidden="true" [class.disabled]="modulesDisplayType.isGridView">
+										</i>
+									</span>
+									<ng-container *ngIf="!showUpArrowButton && !folderListView">
+										<span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+											data-placement="bottom" title="Folder Grid View"
+											(click)="setViewType('fg')">
+											<i class="fa fa-folder p10" aria-hidden="true"></i>
+										</span>
+										<span  class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+											data-toggle="tooltip" data-placement="bottom" title="Folder List View" (click)="setViewType('fl')">
+											<i class="fa fa-th p10" aria-hidden="true"></i>
+										</span>
+									</ng-container>
+								</ng-container>
+							</div>
+						</div>
+						<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space mr7" data-toggle="tooltip"
+							data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+						</span>
+						<div class="inputs mDamTop alignline-m-flex" style="float: right">
+							<a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()"
+								data-toggle="tooltip" data-placement="bottom" title="Refresh">
+								<i class="fa fa-refresh" aria-hidden="true"></i>
+							</a>
+							<div class="pb3 float-left mr7">
+								<ng-container *ngIf="isPartnerView">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj mr7" id="alignline-m-width"
+										[(ngModel)]="sortOption.publishedDamSortOption"
+										(ngModelChange)="sortAssets($event)" style="position: relative;">
+										<option *ngFor="let option of sortOption.publishedDamSortDropDownOptions"
+											[ngValue]="option">{{option.name}}</option>
+									</select>
+								</ng-container>
+								<ng-container *ngIf="!isPartnerView">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj mr7" id="alignline-m-width"
+										[(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortAssets($event)"
+										style="position: relative;">
+										<option *ngFor="let option of sortOption.damSortDropDownOptions"
+											[ngValue]="option">{{option.name}}</option>
+									</select>
+								</ng-container>
+							</div>
+							<!--Filter Type---->
+							<!--XNFR-409 {Added false-}-->
+							<div class="pb3 float-left mr7" id="alignline-m-mleftright" *ngIf="false">
+								<ng-container *ngIf="fileTypes?.length>0">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+										[(ngModel)]="selectedFileType" (ngModelChange)="filterAssetsByFileType($event)"
+										style="position: relative; right: -3px;">
+										<option value="">Select Asset Type</option>
+										<option *ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}
+										</option>
+									</select>
+								</ng-container>
+							</div>
+							<div class="portlet-input input-inline input-small tab_srch_w mr7" id="alignline-m-margin">
+								<div class="input-icon right mDamSearch rSearch" id="alignline-m-serch"
+									style="position: relative;">
+									<input type="text" style="height: 34px;" class="form-control"
+										[(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+										placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+									<button class="glyphicon glyphicon-remove search-box-item-clear"
+										*ngIf="sortOption.searchKey"
+										(click)="sortOption.searchKey='';searchAssets();"></button>
+									<button type="submit" class="search-box-item-click only_content" (click)="searchAssets()">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+<!---XNFR-381-->
+<!-- XNFR-409 -->
+<ng-template #filterOptionDiv>
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'" [criteria] = "criteria"
+		[isWhiteLabeledAsset]="isWhiteLabeledAsset" [criterias] = "existingCriterias" [fromDateFilter]="fromDateFilter"
+		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
+		[toDateFilter]="toDateFilter" (filterConditionsEmitter)="assetsFilter($event)"
+		(closeFilterEmitter)="closeFilterEmitter($event)"
+		(cancelSegmentationRowEmitter)="cancelSegmentationRowEmitter($event)"></app-custom-ui-filter>
+</ng-template>
+<!-- XNFR-409 -->
+<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
+	[parameterDto]="changeAsParentPdfSweetAlertParameterDto"
+	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
+
+<!-- XNFR-781  -->
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId" [approvalReferenceId]="approvalReferenceId"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
+</app-content-status-history-modal-popup>
+
+
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+	(notifyClose)="closePreview()"></app-preview-content>
+

@@ -1,0 +1,136 @@
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+<div class="panel panel-info panel-card" id="partner-team-members-list">
+  <div class="panel-heading panel-heading-custom br-10" id="pj-team-member-details-div">
+    <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-3">
+    <h3 class="panel-title mt7">Team Member Details</h3>
+  </div>
+    <div class="col-xs-12 col-sm-12 col-lg-9 reminder_btn margin_14">
+    <button *ngIf="!fromDeactivatedPartnersDiv" class=" btn btn-primary mr5" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+    <button class="mt25m btn btn-xs l-g-view mr5" data-placement="bottom"
+    [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
+    <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+      data-original-title="Export to Excel"></i>
+  </button>
+  <!--  -->
+  <span class="pull-right mt25m mobilesearchdisplay mr5">
+    <select class="form-control SeclectBoxPaddingsAbj searchable-view"  [(ngModel)]="sortOption.activepartnerJourney" (ngModelChange)="sortActivePartnerJourney($event)"
+    id="select-dropdown">  
+         <option *ngFor="let option of sortOption.activePartnerJourneyDropDowns"
+         [ngValue]="option">{{option.name}}</option>
+  </select>
+    </span>
+  <!-- Select a Member dropdown -->
+  <span class="pull-right mt25m mobilesearchdisplay mr5">
+    <select class="form-control  searchable-view" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
+      id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
+      <option [value]="0">Select a Member</option>
+      <option *ngFor="let teamMember of teamEmails" [style.color]="(teamMember?.userStatus === 'APPROVE') ? 'green' : 'red' "  [value]="teamMember.userId">{{teamMember.emailId}}
+      </option>
+    </select>
+  </span>
+  <!--  -->
+    <span class="pull-right mt25m mobilesearchdisplay">
+      <div class="input-icon right serachvoxwidth mobilesearchdisplayTop" >
+        <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+          [ngModelOptions]="{standalone: true}" placeholder="Search"
+          (keypress)="searchKeyPress($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+          (click)="sortOption.searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+    </span>
+    </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
+    <app-response-message [customResponse]="sucessOrFailureResponse" *ngIf="sucessOrFailureResponse.isVisible && !httpRequestLoader.isLoading"></app-response-message>
+    <div class="scroll table-responsive"  *ngIf="!httpRequestLoader.isLoading">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+              [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+          </th>
+            <th scope="col">Team Member</th>
+            <th scope="col">Recent Login</th>
+            <th scope="col" class="text-center">Group</th>
+            <th class="text-center" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor && !fromDeactivatedPartnersDiv">Actions</th>
+          </tr>
+        </thead>
+        <tbody>          
+          <tr *ngFor="let teamMember of pagination.pagedItems;let i  = index">
+            <td class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+              [(ngModel)]="teamMember.isSelected" (change)="updateSelectionState(teamMember)"
+                       [disabled]=" teamMember.status === 'UNAPPROVED'">
+          </td>
+            <td>
+              <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+              <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
+              <h6 *ngIf="teamMember?.primaryAdmin && partnerStatus === 'deactivated'" class="green-banner inline-flex">DEACTIVATED</h6>
+            </td>
+            <td class="text-center">
+              <span *ngIf="teamMember.status === 'UNAPPROVED'">-</span>
+                <app-display-date-and-time *ngIf="teamMember.status !== 'UNAPPROVED'" [dateAndTimeUTCString]="teamMember?.logInTime"></app-display-date-and-time>
+            </td>
+            
+            <td class="text-center">
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
+                <button class="group-name-cclass btn-primary default-btn-cursor" >
+                  <span  data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
+                    {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
+                </button>
+                <button class="tm-group-preview-css btn-primary mobileBtnLeftnone" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
+                <span><strong>No Group Selected</strong></span>
+              </div>
+              <div class="alert alert-info NaNAData" *ngIf="teamMember?.primaryAdmin">
+                <span><strong>N/A</strong></span>
+              </div>
+            </td>
+            <td class="text-center action-cp" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor && !fromDeactivatedPartnersDiv">
+              <!--XNFR-878-->
+              <div class="actions-block override-actions custom-width-icon">
+                <a data-toggle="tooltip" data-placement="bottom"
+                [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
+                (click)="confirmPrimaryAdminChange(teamMember)"
+                [className]="teamMember.status!='APPROVE' && !authenticationService?.module?.isAnyAdminOrSupervisor ? 'inactive custom-icon':'custom-icon'">
+                <i [className]="teamMember.status=='APPROVE' &&  authenticationService?.module?.isAnyAdminOrSupervisor ? 'fa fa-user-o IconCustomization':'fa fa-user-o gray IconCustomization'"
+                  aria-hidden="true"></i>
+                <div class="clickicons"></div>
+              </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+      <strong>No Data Found.</strong>
+    </div>
+    <!--Pagination-->
+    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+        (notifyParentDropDown)="navigateToDivAndGetAllTeamMembers($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Group Preview Popup -->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->
+
+<!----XNFR-878----->
+<app-confirm-sweet-alert-util *ngIf="isEnablePrimaryAdminOptionClicked"
+[parameterDto]="primaryAdminSweetAlertParameterDto"
+(notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
+
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [teamMemberReminder]="teamMemberPreview" (sendmailTeamMemberNotify)= "emittedMethodTemMember($event.item)"  [selectedItemTeamMember]="selectedItemTeamMember" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentTeamMemberEventEmitter)="sendTestEmailModalPopupTeamMemberEventReceiver()"></app-send-test-email>

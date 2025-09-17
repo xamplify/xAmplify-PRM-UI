@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="portlet light" style="padding: 0px 10px 10px 10px!important;border-radius: 8px !important;">
+      <div class="portlet-title border-bottom-1px" style="margin-bottom: 0px !important;">
+        <div class="row">
+          <div class="col-xs-6 col-sm-10 col-md-3 col-lg-3">
+            <h4 class="pull-left text-primary">
+              <span style="font-size:15px"> Apply Filter</span>
+            </h4>
+          </div>
+          <div class="page-toolbar col-xs-6 col-sm-2 col-md-9 col-lg-9">
+            <div class="btn-group pull-right">
+              <div class="d-flex">
+                <div class="btn btn-xs l-g-view margin-space mr5" (click)="closeFilterOption('clear')"
+                  style="height: 28px;width: 28px;margin-top: 5px;border: 1px solid #f05556 !important;"
+                  *ngIf="isclearFilter">
+                  <span data-placement="bottom" data-toggle="tooltip" title="Clear filter">
+                    <i class="fa fa-filter" aria-hidden="true"
+                      style="color: #f05556;;font-size: 22px;margin: 7px 0px 0px 0px;"></i> <i class="fa fa-times"
+                      aria-hidden="true" style="color: #f05556;;font-size: 12px;margin: 7px 0px 0px -6px;"></i>
+                  </span>
+                </div>
+                <a type="button" class="close-circle" (click)="closeFilterOption('close')"
+                  style="width: 30px;height: 30px;margin-top: 4px;">
+                  <i class="fa fa-times" aria-hidden="true" style="margin-top: 2px;"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portlet box custom_fiter-asset" style="margin-bottom: 10px !important;">
+        <div class="">
+          <div class="row">
+            <ng-template [ngTemplateOutlet]="fieldsDropdown" *ngIf="!isFromApprovalHub || isAssetTabSelected"></ng-template>
+            <ng-template #addIcon>
+              <button [disabled]="criterias.length > allfilterOptions.length-1"
+                [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()"
+                type="button" class="btn btn-default">
+                <i data-toggle="tooltip" data-placement="bottom" title="Add a condition" class="fa fa-plus-square"
+                  aria-hidden="true" style="color: #0196da"></i>
+              </button>
+            </ng-template>
+          </div>
+          <ng-template [ngTemplateOutlet]="addIcon" *ngIf="criterias.length <= 0"></ng-template>
+          <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
+            <strong>{{filterConditionErrorMessage}}</strong>
+          </div>
+          <div *ngIf ="!showDateFilters" class="row pl10 pr10 pb10">
+            <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+              <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                <div class="control-label" style="font-size:15px">{{parterViewText}}</div>
+              </div>
+              <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                <label class="control-label">
+                  From Date &nbsp;
+                </label>
+                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+              <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                <label class="control-label">To Date &nbsp;
+                </label>
+                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-inline col-sm-12">
+          <div class="float-right">
+            <button class="buttom_customise btn-primary" (click)="submittFilterData()">Submit</button>
+            <button class="buttom_customise Btn-Gray" (click)="closeFilterOption('close')">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #fieldsDropdown>
+  <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
+    <div class="col-md-4 pl0" style="display: flex">
+      <!-- Field Name DropDown -->
+      <b style="margin: 7px;">{{i+1}}</b>
+      <select class="form-control" [(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"
+        (change)="getOptionsForCriteria(criterias[i],i)" [disabled]="dropdownDisabled[i]">
+        <option *ngIf="criterias[i].property === 'Field Name*'">Field Name*</option>
+        <option *ngIf="criterias[i].property !== 'Field Name*' &&  seletedFiterArray.length > 0 ">
+          {{seletedFiterArray[i]}}</option>
+        <option *ngFor="let filterOption of filterOptions; let i = index">
+          {{filterOption.value}}</option>
+      </select>
+    </div>
+    <!-- Conditions Dropdown-->
+    <div class="col-md-4 mobileTopandBottomSpace">
+      <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
+        [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
+        [disabled]="(criterias[i].property === 'From' || criterias[i].property === 'Type') && type != 'Partners'">
+        <ng-container *ngIf="(criterias[i].property !== 'From' && criterias[i].property !== 'Type') || type == 'Partners'">
+          <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
+          <!-- XNFR-837  -->
+          <!-- <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
+            {{selectedConditionArray[i]}}</option> -->
+          <option *ngFor="let filterCondition of filterConditions; let i = index">
+            {{filterCondition.value}}</option>
+        </ng-container>
+        <ng-container *ngIf="(criterias[i].property === 'From' || criterias[i].property === 'Type') && type != 'Partners'">
+          <option>{{filterConditions[1].value}}</option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="col-md-3" *ngIf="(criterias[i].property !== 'Type' && criterias[i].property !== 'From') || type == 'Partners'">
+      <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" (input)="handleCriteriaValue(criterias[i].value1, i)" required
+        (keypress)="eventEnterKeyHandler($event.keyCode)">
+    </div>
+    <div class="col-md-3" *ngIf="(criterias[i].property === 'Type' ||  criterias[i].property === 'From') && type != 'Partners'">
+      <select class="form-control" [(ngModel)]="criterias[i].value1">
+        <ng-container *ngIf="criterias[i].property === 'Type' ">
+          <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
+          <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
+        </ng-container>
+        <ng-container *ngIf="criterias[i].property === 'From'">
+          <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
+          <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
+            [value]="vendorCompany.sharedByVendorCompanyId">
+            {{vendorCompany.sharedByVendorCompanyName}}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
+      <span (click)="cancelSegmentationRow(i)" type="button">
+        <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
+          data-placement="top" title="Remove a condition"></i>
+      </span>
+      <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
+    </div>
+  </div>
+</ng-template>

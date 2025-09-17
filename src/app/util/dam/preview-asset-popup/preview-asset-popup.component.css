@@ -1,0 +1,9 @@
+@media screen and (max-width:600px){
+  .mBody{
+    max-height: 269.75px!important;
+   }
+}
+
+.text-break {
+	word-break: break-word;
+}

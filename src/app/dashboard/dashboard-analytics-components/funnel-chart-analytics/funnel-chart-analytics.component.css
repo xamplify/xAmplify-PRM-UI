@@ -1,0 +1,15 @@
+#funnel-chart-container {
+  height: 550px;
+}
+.highcharts-figure {
+  min-width: 360px;
+  max-width: 1000px;
+  margin: 1em auto;
+}
+@media (max-width: 460px) {
+  .highcharts-figure {
+    min-width: 0px;
+    max-width: 1000px;
+    margin: 1em -1.5em;
+  }
+}

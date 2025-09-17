@@ -1,0 +1,12 @@
+#myBtn {
+display: none;
+position: fixed;
+bottom: 16px;
+right: 60px;
+z-index: 99;
+border: none;
+outline: none;
+color: white;
+cursor: pointer;
+width: 30px;
+}

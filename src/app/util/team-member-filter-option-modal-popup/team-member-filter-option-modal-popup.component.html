@@ -1,0 +1,34 @@
+<div class="modal fade right" id="teamMemberFilterModalPopup" tabindex="-1" role="dialog"
+    aria-labelledby="teamMemberFilterLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-customize" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="teamMemberFilterLabel">Select Option</h4>
+            </div>
+            <div class="modal-body filter-modal-body">
+                <div _ngcontent-c61="" class="alert alert-info"> {{ selectedTeamMemberFilterOption == 0 ? properties?.all_Partners_Info : properties?.my_Partner_Info}}</div>
+                <div class="clearfix teamfilter_select">
+                    <div class="teamcol-auto">
+                        <label class="form-check-label border-none">
+                            <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
+                                [(ngModel)]="selectedTeamMemberFilterOption" [value]="0"> All {{authenticationService?.partnerModule?.customName}}
+                        </label>
+                        <i *ngIf = "selectedTeamMemberFilterOption!=1" class="fa fa-check-circle-o success display-inline" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Active"></i>
+                    </div>
+                    <div class="teamcol-auto">
+                        <label class="form-check-label border-none">
+                            <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
+                                [(ngModel)]="selectedTeamMemberFilterOption" [value]="1"> My
+                            {{authenticationService?.partnerModule?.customName}}(s)
+                        </label>
+                        <i *ngIf = "selectedTeamMemberFilterOption!=0" class="fa fa-check-circle-o success display-inline" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button  type="button" class="btn btn-primary" (click)="applyFilter(true)">{{previousSelectedFilterIndex == selectedTeamMemberFilterOption ? 'Apply' : 'Apply And Save Settings'}}</button>
+                <button type="button" class="btn Btn-Gray" (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div>
+
+	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0 mrg-10"
+		style="padding-top: 2px;margin-left: 10px;"  (click)="showMergeTagsPopUp()" translate><span
+			class="btn btn-primary transition">Insert Default Logos</span></button>
+
+</div>
+<div class="modal fade right" id="default-logos-popup"  role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" (click)="hideModal()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+				<h4 class="modal-title text-center" translate>Default Logos</h4>
+			</div>
+			<div class="modal-body model-body-padding">
+				<div class="alert-info info-padding">
+					<ng-container *ngIf="isVendorLandscape">
+						<strong>You have the ability to copy and insert the embed link for default company tiles or default partner locator map directly into an HTML block as needed.</strong>
+					</ng-container>
+					<ng-container *ngIf="!isVendorLandscape">
+						<strong>You have the ability to copy and insert the embed link for default company tiles directly into an HTML block as needed.</strong>
+					</ng-container>
+				  </div>
+				<table class='table tgrid table-hover table-sm' aria-describedby="default-logos-table">
+					<thead>
+						<tr>
+              				<th class="row">Name</th>
+							<th scope="row" translate>Embed Link</th>
+							<th scope="row" class="text-center" translate>Copy</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let logo of defaultLogos;let i = index">
+              				<td>{{logo.name}}</td>
+							<td id="default-logo-text">
+								<input type="text" id="default-logo-{{i}}" class="form-control" readonly="readonly"
+									value="{{logo.value}}" #defaultLogoInput>
+								<span class="default-logo-success-message" id="default-logo-copied-message-{{i}}"
+									style="display:none;">
+									<strong translate>{{logo.name}} link copied successfully<i class="fa fa-check"
+											aria-hidden="true"></i></strong>
+								</span>
+							</td>
+							<td class="text-center">
+								<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy"
+									(click)="referenceService.copyInputMessage(defaultLogoInput,i,'default-logo-success-message','default-logo-copied-message-')">
+									<i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+									<div class="clickicons"></div>
+								</a>
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button class="btn Btn-Gray" id="bottom-right" (click)="hideModal()">
+					<span translate>Close</span></button>
+			</div>
+		</div>
+	</div>
+</div>

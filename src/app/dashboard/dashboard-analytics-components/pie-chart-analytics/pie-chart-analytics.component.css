@@ -1,0 +1,71 @@
+#container {
+  height: 210px;
+}
+.highcharts-figure-pie {
+  min-width: 210px;
+  max-width: 800px;
+}
+.mix-filter {
+  margin: 5px -1px;
+}
+.mix-filter li {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 5px 12px;
+}
+.portlet.light .portlet-body {
+  padding: 1em;
+}
+.portlet.light.block:hover {
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  -webkit-transform: translateY(-0.5rem);
+  -ms-transform: translateY(-0.5rem);
+  transform: translateY(-0.5rem);
+  cursor: pointer;
+  cursor: hand;
+}
+.fa-4x {
+  font-size: 4em;
+}
+.btn-hvr-text{
+  background: #eaeff4;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-weight: 500;
+}
+.emailtemplate-selected {
+  background-color: #0276ff;
+  color: #fff!important;
+}
+
+[type="checkbox"] {
+  vertical-align: sub;
+  width: 16px;
+  height: 16px;
+}
+/* 16-06-2023*/
+.white-co {
+  display: flex;
+  align-items: stretch;
+}
+
+@media (min-width: 992px) and (max-width: 1200px)  {  
+  .figurePieResponsiveOverflow {
+    overflow: initial !important;
+    position: relative;
+    right: 0;
+    left: 0;
+}
+
+}
+@media screen and (max-width:578px){
+.mbflex_unset{
+   display: unset!important;
+  }
+  .white-co{
+  display: unset !important;
+  padding: 2px 0px !important;
+  }
+}

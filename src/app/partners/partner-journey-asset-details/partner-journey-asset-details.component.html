@@ -1,0 +1,175 @@
+<div class="col-sm-12 col-md-12 col-lg-12 ml15m">
+  <div class="panel panel-info panel-bgMain panel-card br-10">
+    <div class="panel-heading panel-heading-custom panel-bg" id="asset-details-div">
+      <h3 class="panel-title mt7 Responsivetitle">{{headerText}}</h3>
+      <div class="header-controls">
+      <span class="btn btn-xs hidden-xs l-g-view FliterAlignment filter-btn mr5 {{filterActiveBg}}" data-placement="bottom" data-toggle="tooltip"
+        title="Filter">
+        <div class="btn-group">
+          <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+            (click)="clickFilter()">
+             <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+          </a>
+        </div>
+      </span>
+        <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4 mr5" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+       <div class="mr5">
+      <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.selectedOption"
+        (ngModelChange)="getSortedResults($event)" id="select-dropdown">
+        <option *ngFor="let option of sortOption.assetInteractionDropDownOptions" [ngValue]="option">
+          {{option.name}}
+        </option>
+      </select>
+      </div>
+       <span class="pull-right mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+            (click)="searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
+        [rowsCount]="4"></app-list-loader>
+        <div class="portlet light ht125" *ngIf="showFilterOption && !httpRequestLoader.isLoading">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <!-- Alert Message Box  -->
+              <app-response-message class="pg8" [customResponse]="customResponse"
+                *ngIf="customResponse?.isVisible"></app-response-message>
+              <div class="d-flex justify-content-between align-items-center mb5">
+                <h4 translate>Apply Filter</h4>
+                <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                  <i class="fa fa-times mt0" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+                <ejs-multiselect class="mb10" [(ngModel)]='pagination.assetIds' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='assetNameFilters'
+                  [fields]='assetInfoFields' [placeholder]='multiSelectPlaceholderForAsset'>
+                </ejs-multiselect>
+                <ejs-multiselect *ngIf="!isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedCompanyIds' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
+                  [placeholder]='companyInfoFilterPlaceHolder'>
+                </ejs-multiselect>
+                <ejs-multiselect *ngIf="isDetailedAnalytics" class="mb10" [(ngModel)]='pagination.selectedEmailIds' [ngModelOptions]="{standalone: true}"
+                  [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='emailInfoFilters' [fields]='emailInfoFields'
+                  [placeholder]='EmailInfoFilterPlaceHolder'>
+                </ejs-multiselect>
+                <div class="portlet box custom_fiter-asset template_box mt10">
+                  <div class="row pl10 pr10 pb10">
+                    <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                      <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                        <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                          <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                            title="Filter applies to Viewed and Downloaded dates only."></i>
+                        </div>
+                      </div>
+                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                        <label class="control-label">
+                          From Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="filterFromDate" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                      <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                        <label class="control-label">To Date &nbsp;
+                        </label>
+                        <app-date-picker [(dataField)]="filterToDate" [isFromFilter]='true'>
+                        </app-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="btn-aligmntCu">
+                  <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                  <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team
+                Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name
+              </th>
+              <th scope="col" class="text-center">Asset Name</th>
+              <th scope="col" class="text-center">Asset Type</th>
+              <th scope="col" class="text-center">Created By</th>
+              <th scope="col" class="text-center">View Count</th>
+              <th scope="col" class="text-center">Download Count</th>
+              <th scope="col" class="text-center">Published On</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info>
+              </td>
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
+                  (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
+                    [userInfo]="item"></app-user-info></a></td>
+              <td class="text-center">
+                <p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
+                    <span *ngIf="item.assetName?.length>30">...</span>
+                  </p>
+              </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.assetType}}">{{item.assetType | slice:0:30}}   
+                    <span *ngIf="item.assetType?.length>30">...</span>
+                  </p> </td>
+              <td class="text-center"><p data-toggle="tooltip" data-placement="bottom" title="{{item?.createdByName}}">{{item.createdByName}}   
+                  </p></td>
+              <td class="text-center">
+                <div class="custom-icon">
+                  <i class="circled-number IconviewedCount fontStyleNormal IconCustomization">
+                    <strong>{{item?.viewedCount}}</strong></i>
+                  <div class="clickicons"></div>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="custom-icon">
+                  <i class="circled-number IconodownloadedCount fontStyleNormal IconCustomization">
+                    <strong>{{item?.downloadedCount}}</strong></i>
+                  <div class="clickicons"></div>
+                </div>
+              </td>
+              <td class="text-center"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOn">
+                </app-timestamp></td>
+              <td class="text-center">
+                <div class="actions-block override-actions ActionAlign action_inline">
+                  <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+                    *ngIf="!authenticationService?.module?.isMarketingCompany" (click)="showAnalytics(item)">
+                    <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getAssetDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

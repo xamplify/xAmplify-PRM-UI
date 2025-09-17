@@ -1,0 +1,16 @@
+export enum LogAction {
+    playVideo = 1,
+    pauseVideo = 2,
+    contactButtonPressed = 3,
+    callButtonPressed = 4,
+    emailButtonPressed = 5,
+    chatButtonPressed = 6,
+    applePayButtonPressed = 7,
+    videoPlayer_slideSlider = 8,
+    videoPlayer_movieReachEnd = 9,
+    replyVideo = 10,
+    videoStopped = 11,
+    shareMobinar = 12,
+    email_Opened = 13,
+    email_GIF_clicked = 14,
+}

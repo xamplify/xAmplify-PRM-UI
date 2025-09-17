@@ -1,0 +1,51 @@
+#modal {
+  background: #424242;
+  width: 640px;
+  height: 264px;
+  font-family: open sans-serif;
+  opacity: 0.97;
+}
+ 
+#message {
+  font-size: 2.5em;
+  float: left;
+  padding: 6%;
+  text-align: center;
+  color: #c3c3c3;
+}
+ 
+#button1 {
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 0% 0% 0% 21%;
+  padding: 2% 4% 2% 4%;
+  background: #0e61bd;
+  color: white;
+  border: none;
+}
+ 
+#button2 {
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 0% 0% 0% 5%;
+  padding: 2% 4% 2% 4%;
+  background: #02ac90;
+  color: white;
+  border: none;
+}
+ 
+#replay-video {
+  font-size: 22px; 
+  margin-left: 186px;
+  margin-top: 6px;
+}
+.button {            
+     margin-left: 1px;
+     margin-top: 0px;
+     padding: 15px 45px;
+     font-size: 21px;
+     border: none;
+     display: inline-block;
+     text-decoration: none;
+     border-radius: 0px;
+      }

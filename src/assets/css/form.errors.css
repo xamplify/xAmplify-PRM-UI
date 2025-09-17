@@ -1,0 +1,12 @@
+.ng-valid[required], .ng-valid.required  {
+  border-left: 2px solid #42A948 !important; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 2px solid #a94442 !important; /* red */
+}
+
+.portlet.light > .portlet-title > .caption > .caption-subject {
+    font-size: 14px;
+    margin: 0;
+}

@@ -1,0 +1,131 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
+			<li><a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>  
+			<li><a (click)="goToDam()" translate>DAM</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+			<ng-container >
+            <li><a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+       </ng-container>
+       <li><a translate> Reports</a></li>
+		</ul>
+	</div>
+	<div class="portlet light" style="min-height: 268px;">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video views</span>
+			</div>
+			<div class="panel-title pull-right">
+				<span style="float:right; font-size: 13px;">
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value, false)">
+						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="portlet-body clearfix" style="max-width: 100%;min-height: 308px;">
+			<div class="col-xs-12 col-sm-5 col-md-5 p0">			
+				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="getCategoryValue($event)"></app-bar-chart>
+			</div>
+			<div class="col-xs-12 col-sm-7 col-md-7 p0 mVideoTable">
+				<table class='table tgrid' id="tabletest">
+					<thead>
+						<tr>
+							<th class="headerCss center" style="width: 50%;">TITLE</th>
+							<th class="headerCss center">VIEWS</th>
+							<th class="headerCss center uppercase">
+                  <span *ngIf="daySort?.name==='Current Month'">date</span>
+                  <span *ngIf="daySort?.name==='By Month'">Month</span>
+                  <span *ngIf="daySort?.name==='By Quarter'">QUARTER</span>
+                  <span *ngIf="daySort?.name==='By Year'">YEAR</span>
+              </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="center" title="{{videoTitle}}">
+                {{videoTitle | slice:0:30}}
+                <span *ngIf="videoTitle?.length>30">...</span>
+              </td>
+							<td class="center">{{views}}</td>
+							<td class="center" >
+                  <span *ngIf="daySort?.name==='Current Month'">
+                      {{date}}              
+                  </span>
+                  <span *ngIf="daySort?.name==='By Month'">{{date}} </span>
+                  <span *ngIf="daySort?.name==='By Quarter'">{{date}} </span>
+                  <span *ngIf="daySort?.name==='By Year'">{{date}} </span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="portlet light" [hidden]="videoViewsLevelTwo?.length==0">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+			<div class="btn-group pull-right" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px;margin-right: 21px; float:right;padding-left: 10px;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="portlet-body clearfix mVideoTable" style="max-width: 100%;">
+      <app-list-loader *ngIf="loading"></app-list-loader>
+			<table class='table tgrid' id="sample_editable_1" *ngIf="!loading">
+				<thead>
+					<tr>
+						<th class="headerCss center">NAME</th>
+						<th class="headerCss center">VIEWS</th>
+						<th class="headerCss center uppercase">
+              <span *ngIf="!daySort?.name">date</span>
+              <span *ngIf="daySort?.name==='Current Month'">date</span>
+              <span *ngIf="daySort?.name==='By Month'">Month</span>
+              <span *ngIf="daySort?.name==='By Quarter'">QUARTER</span>
+              <span *ngIf="daySort?.name==='By Year'">YEAR</span>
+            </th>
+						<th class="headerCss center">DEVICE</th>
+						<th class="headerCss center">LOCATION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<ng-container *ngFor="let videoViews of videoViewsLevelTwo; let i = index">
+						<tr>
+							<td>
+								<app-user-info  [userInfo]="videoViews"> </app-user-info>
+							</td>			
+							<td class="center">{{videoViews.views}}</td>
+							<td class="center" >
+							<span *ngIf="daySort?.name!=='Current Month'">{{videoViews.date}}</span>
+							<span *ngIf="daySort?.name==='Current Month'">
+                  {{videoViews.date}}						
+							</span>
+							</td>
+
+							<td class="center">
+							<app-platform [userPlatform]="videoViews"> </app-platform>
+							</td>
+							<td class="center">
+							<app-location  [userLocation]="videoViews"> </app-location>
+							</td>
+						</tr>
+					</ng-container>
+				</tbody>
+			</table>
+			<app-pagination class="pg8" [pagination]="pagination" [type]="'chart report'" (notifyParent)="setPage($event)"></app-pagination>
+		</div>
+	</div>
+	<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="'Video_Statistics.csv'"> </app-export-csv>
+  <app-scroll-top></app-scroll-top>
+</div>
+

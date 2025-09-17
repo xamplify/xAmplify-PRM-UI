@@ -1,0 +1,168 @@
+<div class="modal fade right" id="custom_html_block_modal_popup" role="dialog" aria-labelledby="" data-backdrop="static"
+  data-keyboard="false">
+  <div class="modal-dialog w85-per" role="document">
+    <app-modal-popup-loader *ngIf="popupLoader"></app-modal-popup-loader>
+    <div class="modal-content" *ngIf="!popupLoader">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closeModalPopup()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Update Custom Block Details</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+          [showCloseIcon]="false"></app-response-message>
+        <form *ngIf="!isUpdated">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="title">Title<span class="required">*</span>
+                </label>
+                <input type="text" class="form-control" id="customHtmlName" [(ngModel)]="customHtmlBlock.title"
+                  [ngModelOptions]="{standalone: true}" placeholder="Enter Custom Block Title" required>
+                <span *ngIf="customErrorMessage" class="required">{{customErrorMessage}}</span>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="layoutSize">Layout Type</label>
+                <select class="form-control" id="customHtmlLayout" [(ngModel)]="customHtmlBlock.layoutSize"
+                  [ngModelOptions]="{standalone: true}" (ngModelChange)="updateDropDownHtmlBody($event)">
+                  <option value="SINGLE_COLUMN_LAYOUT">Single Column Layout</option>
+                  <option value="TWO_COLUMN_LAYOUT">Two Column Layout</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Show Title</label>
+                <i class="fa fa-info-circle mr10 ml5" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                  title="Enabling this option will display the custom block title on the dashboard."></i>
+                <app-custom-ui-switch [customSwitch]="customHtmlBlock.titleVisible"
+                  (customUiSwitchEventEmitter)="titleUiSwitchEventReceiver($event)">
+                </app-custom-ui-switch>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Add to Dashboard</label>
+                <i class="fa fa-info-circle mr10 ml5" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                  title="Enabling this option will display the custom block on the dashboard."></i>
+                <app-custom-ui-switch [customSwitch]="customHtmlBlock.selected"
+                  (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)">
+                </app-custom-ui-switch>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="htmlBody">HTML Body<span class="required">*</span></label>
+              <div class="float-right">
+                <a class="btn_custom" (click)="fullFileInput.click()" data-placement="top" data-toggle="tooltip"
+                  title="Upload HTML File">
+                  <i class="fa fa-upload" aria-hidden="true"></i>
+                  Upload HTML File
+                  <input type="file" #fullFileInput (change)="onFileSelected($event, 'full')" accept=".html, .htm"
+                    style="display: none;">
+                </a>
+              </div>
+            </div>
+            <div>
+              <textarea class="form-control" id="htmlBody" [(ngModel)]="customHtmlBlock.htmlBody"
+                (ngModelChange)="updateSanitizedHtml(customHtmlBlock.htmlBody, 'full')"
+                [ngModelOptions]="{standalone: true}" placeholder="Enter Custom HTML Body" required></textarea>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
+            <label>Preview</label>
+            <div class="portlet light position_relative">
+              <div class="portlet-title" style="min-height: 0px;" *ngIf="customHtmlBlock?.titleVisible">
+                <div class="caption">
+                  <span class="caption-subject" translate>{{ customHtmlBlock?.title }}</span>
+                </div>
+              </div>
+              <div class="portlet-body">
+                <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.htmlBody">No Preview Available
+                </div>
+                <div [innerHTML]="sanitizedHtml"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="leftHtmlBody">HTML Body (Left)</label>
+                  <div class="float-right">
+                    <a class="btn_custom" (click)="leftFileInput.click()" data-placement="top" data-toggle="tooltip"
+                      title="Upload HTML File"><i class="fa fa-upload" aria-hidden="true"></i>
+                      Upload HTML File
+                      <input type="file" #leftFileInput (change)="onFileSelected($event, 'left')" accept=".html, .htm"
+                        style="display: none;">
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <textarea class="form-control" id="leftHtmlBody" [(ngModel)]="customHtmlBlock.leftHtmlBody"
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="updateSanitizedHtml(customHtmlBlock.leftHtmlBody, 'left')"
+                    placeholder="Enter Custom HTML Body" required></textarea>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="rightHtmlBody">HTML Body (Right)</label>
+                  <div class="float-right">
+                    <a class="btn_custom" (click)="rightFileInput.click()" data-placement="top" data-toggle="tooltip"
+                      title="Upload HTML File"><i class="fa fa-upload" aria-hidden="true"></i>
+                      Upload HTML File
+                      <input type="file" #rightFileInput (change)="onFileSelected($event, 'right')" accept=".html, .htm"
+                        style="display: none;">
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <textarea class="form-control" id="rightHtmlBody" [(ngModel)]="customHtmlBlock.rightHtmlBody"
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="updateSanitizedHtml(customHtmlBlock.rightHtmlBody, 'right')"
+                    placeholder="Enter Custom HTML Body" required></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
+            <label>Preview</label>
+            <div class="portlet light position_relative">
+              <div class="portlet-title" style="min-height: 0px;" *ngIf="customHtmlBlock?.titleVisible">
+                <div class="caption">
+                  <span class="caption-subject" translate>{{ customHtmlBlock?.title }}</span>
+                </div>
+              </div>
+              <div class="portlet-body">
+                <div class="alert alert-info text-center m0"
+                  *ngIf="!customHtmlBlock.leftHtmlBody && !customHtmlBlock.rightHtmlBody">
+                  No Preview Available</div>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="leftHtmlBody"></div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="rightHtmlBody"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="button bgcolor-unset" [disabled]="isValid() || isUpdated"
+          (click)="updateCustomblock()"><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+        <button type="submit" class="btn Btn-Gray neg_mar_top6" (click)="closeModalPopup()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

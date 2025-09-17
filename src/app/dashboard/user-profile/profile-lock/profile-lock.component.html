@@ -1,0 +1,54 @@
+<video autoplay poster="assets/images/stratapps.jpeg" id="bgvid" loop>
+  <source src="https://myapi.com/vod/videos/16700/26092018/xAmplifwebsitevideo1538008387493.mp4" type="video/mp4">
+</video>
+<div class="page-lock">
+	<div class="page-logo">
+		<a class="brand" [href]="properties.xamplify_router">
+			<img style="height: 54px" [src]="properties.COMPANY_LOGO" alt="logo" />
+		</a>
+	</div>
+	<div class="page-body">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<div class="lock-head" style="color:#fff">Locked</div>
+		<div class="lock-body">
+			<div class="pull-left lock-avatar-block">
+				<img [src]="userProfileImage" class="avatarImg" (error)="errorHandler($event)">
+			</div>
+			<form class="lock-form pull-left">
+				<h4 [title]="userData.displayName">{{userData.displayName| slice:0:15}} <span *ngIf="userData.displayName?.length>15">...</span></h4>
+				<div class="form-actions">
+					<div *ngIf="error" class="alert alert-custom">
+						<span style="position: relative; top: -3px;">{{error}}</span>
+					</div>
+					<input id="password" class="form-control placeholder-no-fix password-width" type="password" (input)="checkPassword()" [(ngModel)]="password" autocomplete="off"
+					 placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
+				<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && password"></span>
+				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && password"></span>
+
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()" style="padding: 7px 14px !important;">Login</button>
+				</div>
+      </form>
+    </div>
+    <div class="login-options" style="border-top: 1px solid #eee;padding: 6px;">
+      <h4 style="margin-top: 7px">Or login with</h4>
+      <ul class="social-icons">
+        <ng-container *ngFor="let socialProvider of socialProviders">
+          <li>
+            <a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}" routerLink="../{{socialProvider.name}}/login"></a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+		<div class="lock-bottom"  >
+			<a (click)="backToLogin()" style="color:#fff">Not
+				<span *ngIf="authenticationService.hasCompany">{{userData.displayName | slice:0:15}}<span *ngIf="userData.displayName?.length>15">...</span></span>
+			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username | slice:0:15}}<span *ngIf="authenticationService.user.username?.length>15">...</span></span>
+				?</a>
+		</div>
+	</div>
+	<div class="page-footer-custom" style="color:#e0f1f7">
+		<app-copyright></app-copyright>
+	</div>
+</div>

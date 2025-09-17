@@ -1,0 +1,186 @@
+<div class="col-xs-12 pr0">
+  <div class="portlet light">
+    <div class="portlet-title portletCardCu" style="border: none !important;">
+      <div class="col-xs-12 col-md-5 col-lg-6 col-sm-12 p0">
+        <div class="caption TitlePaddingTop">
+          <span class="caption-subject font-red-sunglo uppercase"> All
+            {{authenticationService?.partnerModule?.customName}} Journey</span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-7 col-lg-6 col-sm-12 mb_14 p0">
+        <div class="inputs Fullboxmargin d-flex">
+          <!-- XNFR-835 --> 
+          <button class="btn btn-xs l-g-view pos_mar_rgt4 SotybyBoxPosition" data-placement="bottom" *ngIf="!isCollapsed" (click)="downloadAllPartnerReport()" [disabled]="pagination.totalRecords==0">
+            <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+              data-original-title="Export to Excel"></i>
+          </button>
+          <!-- XNFR-835 -->
+          <div class="SotybyBoxPosition mr5">
+            <div style="float: left;" *ngIf="!isCollapsed">
+              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOptionForDeactivatedPartnerJourney"
+                (ngModelChange)="getSortedResults($event)">
+                <option *ngFor="let option of sortOption.sortByDropDownForDeactivatedPartnerJourney" [ngValue]="option">{{option.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="">
+            <div class="portlet-input input-inline mSearch SearchBoxCu">
+              <div class="input-icon right mainSearchBoxCu" *ngIf="!isCollapsed">
+                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+                  [ngModelOptions]="{standalone: true}" placeholder="Search"
+                  (keypress)="searchKeyPress($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                  (click)="sortOption.searchKey='';search()"></button>
+                <button type="submit" class="search-box-item-click" (click)="search()">
+                  <i class="fa fa-search" aria-hidden="true"></i></button>
+              </div>
+            </div>
+
+            <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}} mr5" title="Filter">
+              <div class="btn-group">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false" (click)="clickFilter()">
+                  <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                </a>
+                <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+                  <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+                  <li><a (click)="clearFilter()">Clear Filter</a></li>
+                </ul>
+              </div>
+
+
+            </span>
+            <!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#activePartnerTable"
+            style="float: right; position: relative; bottom: 30px;"></a> -->
+            <a href="activePartnerTable" (click)="toggleCollapse($event)" style="float: right;"> <i
+                [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
+                class="arrowpositinon fa collapseIconColorCu" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isCollapsed" class="alert alert-info mt10 mb10"> List Of All  {{authenticationService?.partnerModule?.customName}}  </div>
+    <ng-template [ngTemplateOutlet]="filter"></ng-template>
+    <ng-template #filter>
+
+      <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- Alert Message Box -->
+            <app-response-message class="pg8" [customResponse]="customResponse"
+              *ngIf="customResponse?.isVisible"></app-response-message>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+              <h4 translate>Apply Filter</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+              <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+              <ejs-multiselect [(ngModel)]='selectedCompanyIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+                [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
+                [placeholder]='companyInfoFilterPlaceHolder'>
+              </ejs-multiselect>
+              <div class="portlet box custom_fiter-asset mt10">
+                <div class="row pl10 pr10 pb10">
+                  <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                      <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                        <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                          title="Select the Date Range to View Analytics"></i>
+                      </div>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">
+                        From Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">To Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="btn-aligmntCu">
+                <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="activePartnerTable">
+      <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
+        <div class="table-responsive">
+          <table class="table tgrid" aria-describedby="all-partner-table">
+            <thead>
+              <tr>
+                <th scope="row" class="center-aligned">Company Logo</th>
+                <th scope="row" class="center-aligned">Company Name</th>
+                <th scope="row" class="center-aligned">Partner Details</th>
+                <th scope="row" class="center-aligned">Status</th>
+                <th scope="row" class="center">Journey</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
+                <tr>
+                  <td>
+                    <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
+                      <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
+                        [src]="authenticationService.MEDIA_URL+item.companyLogo">
+                    </span>
+                  </td>
+                <td>
+                  <h4 class="ellipsis" style="font-size: 14px;" [title]="item?.companyName || 'N/A'">
+                    {{ item?.companyName ? (item.companyName | slice:0:25) : 'N/A' }}
+                    <span *ngIf="item?.companyName?.length > 25">...</span>
+                  </h4>
+                </td>
+                  <td>
+                    <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
+                    </app-user-info>
+                  </td>
+                  <td>
+                  <div class="ellipsis" style="font-size: 14px;" title="{{item?.status}}">
+                      {{item?.status | slice:0:25}}
+                      <span *ngIf="item?.status?.length>25">...</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="actions-block override-actions">
+                      <a class="custom-icon" data-rel="fancybox-button" (click)="(item.status === 'Active') ? viewAnalytics(item.userCompanyId) :'' "
+                        data-toggle="tooltip" data-placement="bottom" title="View Partner Journey" id="pj">
+                        <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
+                        <i [ngClass]="(item.status != 'Active') ? 'disabled gray':''" class="fas fa-route IconCustomization"></i>
+                        <div class="clickicons"></div>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <!---Message-->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+          <strong>No Partners Found.</strong>
+        </div>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getAllPartners($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

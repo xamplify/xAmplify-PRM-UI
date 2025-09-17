@@ -1,0 +1,24 @@
+#loader-margin-top{
+    margin-top: 5px;
+}
+
+.animated-background-menu-loader{
+  animation: menu-loader-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  height: 70px;
+  position: relative;
+  border-radius: 5px;
+}
+@keyframes menu-loader-animation {
+    0% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+  
+    50% {
+      background-color: rgba(165, 165, 165, 0.3);
+    }
+  
+    100% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+  }

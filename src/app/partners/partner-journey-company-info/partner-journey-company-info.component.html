@@ -1,0 +1,120 @@
+<!-- <div class="container"> 
+</div> -->
+
+<div class="page-bar PaddingTwentyCU">
+  <div class="row">
+    <div class="col-md-12 col-md-12 col-xs-12 col-sm-12  p0 mb10">
+      <div [ngClass]=" !isInfonull ? 'col-md-10 col-md-10 col-xs-10 col-sm-10' : 'col-md-4 col-md-4 col-xs-4 col-sm-4'" style="word-break: break-all;">
+        <h4>Company Name: {{companyInfo?.companyName}}</h4>
+      </div>
+      <div *ngIf="!isInfonull" class="col-md-2 col-md-2 col-xs-2 col-sm-2">
+        <span class="btn btn-xs hidden-xs l-g-view FliterAlignment pull-right {{filterActiveBg}}" title="Filter">
+          <div class="btn-group">
+            <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true"
+              aria-expanded="false" (click)="clickFilter()">
+              <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+            </a>
+            <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+              <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+              <li><a (click)="clearFilter()">Clear Filter</a></li>
+            </ul>
+          </div>
+        </span>
+      </div>
+      <div class="col-md-8 col-md-8 col-xs-8 col-sm-8 alert alert-danger text-center custom-alert"
+        id="company-profile-error-div" *ngIf="isInfonull" style="margin-left: -15px;">
+        <strong>{{errorMessage}}</strong>
+      </div>
+    </div>
+  </div>
+  <ng-template [ngTemplateOutlet]="filter"></ng-template>
+  <div class="row BgForCard">
+    <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="logo-wrapper" style="margin-top: 5px;">
+          <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" class="CompanyLogoCu"
+          [src]="authenticationService.MEDIA_URL+companyInfo?.companyLogo">
+        </div>           
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <!-- <p title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</p>
+          <span *ngIf="deal.createdByEmail?.length>30">...</span> -->
+          <!-- <p><i class="fa fa-building" aria-hidden="true"></i> {{companyInfo?.companyName}}</p> -->
+          <p ><i class="fa fa-calendar" aria-hidden="true"></i> <b> Onboarded On :</b>
+            <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.partnerAddedDateStr">
+            </app-timestamp>
+          </p>
+          <p><i class="fa fa-calendar" aria-hidden="true"></i> <b> Recent Login :</b>
+            <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.lastLogInDate">
+            </app-timestamp>
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <p> <i class="fa fa-user" aria-hidden="true"></i> <b> {{authenticationService.partnerModule.customName}} Manager:</b> {{companyInfo?.partnerName}}</p>
+          <p><i class="fa fa-briefcase" aria-hidden="true"></i> <b>Job Title:</b> {{companyInfo?.partnerJobTitle}}</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <p><i class="fa fa-phone" aria-hidden="true"></i> {{companyInfo?.partnerMobileNumber}}</p>
+          <p><i class="fa fa-envelope" aria-hidden="true"></i> {{companyInfo?.partnerEmail}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <ng-template #filter>
+
+      <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- Alert Message Box -->
+            <app-response-message class="pg8" [customResponse]="customResponse"
+              *ngIf="customResponse?.isVisible"></app-response-message>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+              <h4 translate>Apply Filter</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+              <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+              <div class="portlet box custom_fiter-asset mt10">
+                <div class="row pl10 pr10 pb10">
+                  <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                      <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                        <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                          title="Select the Date Range to View Analytics"></i>
+                      </div>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">
+                        From Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">To Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="btn-aligmntCu pull-right">
+                <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>

@@ -1,0 +1,85 @@
+.hiddenStepInfo {
+    display: none;
+}
+
+.activeStepInfo {
+    display: block !important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.step {
+    /*margin-top: 27px;*/
+}
+
+.progress {
+    position: relative;
+    height: 25px;
+}
+
+.progress > .progress-type {
+    position: absolute;
+    left: 0px;
+    font-weight: 800;
+    padding: 3px 30px 2px 10px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(25, 25, 25, 0.2);
+}
+
+.progress > .progress-completed {
+    position: absolute;
+    right: 0px;
+    font-weight: 800;
+    padding: 3px 10px 2px;
+}
+
+.step {
+    text-align: center;
+}
+
+.step .col-md-2 {
+    background-color: #fff;
+    border: 1px solid #C0C0C0;
+    border-right: none;
+}
+
+.step .col-md-2:last-child {
+    border: 1px solid #C0C0C0;
+}
+
+.step .col-md-2:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.step .col-md-2:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.step .col-md-2:hover {
+    color: #F58723;
+    cursor: pointer;
+}
+
+.step .activestep {
+    color: #F58723;
+    /*height: 100px;*/
+    margin-top: -4px;
+    padding-top: 7px;
+    border-left: 2px solid #14B9D6 !important;
+    border-right: 2px solid #14B9D6 !important;
+    border-top: 2px solid #14B9D6 !important;
+    border-bottom: 2px solid #14B9D6 !important;
+    vertical-align: central;
+}
+
+.step #disableTab{
+	pointer-events: none;
+    cursor: not-allowed; 
+    background-color: #ECECEC;
+}
+.step .fa {
+    padding-top: 22px;
+    font-size: 40px;
+}

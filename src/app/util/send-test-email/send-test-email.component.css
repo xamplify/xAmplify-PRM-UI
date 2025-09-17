@@ -1,0 +1,120 @@
+.plspx {
+    padding-left: 16px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd),
+table tr:nth-child(odd) td,
+table tr:nth-child(even) td,
+.search-box-item-clear,
+input {
+    background: none !important;
+}
+
+.ml-4 {
+    margin-left: 4px;
+}
+
+#send-test-email-modal-popup {
+    padding-right: 0px !important;
+}
+
+.popup-align {
+    position: relative !important;
+    float: right;
+}
+
+.modal-dialog {
+    width: 85% !important;
+}
+
+.modal-content {
+    box-shadow: 0 0 0 rgb(255 255 255 / 0%) !important;
+    border-radius: 0px !important;
+}
+
+.hide-scrollbar {
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 1024px) {
+    .vertical-center {
+        margin: 10px 30px 0px 30px !important;
+    }
+}
+
+@media only screen and (max-width: 578px) {
+
+    .modal.left.fade.in .modal-dialog,
+    .modal.right.fade.in .mb-wth {
+        width: 93% !important;
+    }
+}
+
+@media (min-width: 1000px) and (max-width: 1220px) {
+    input.fieldWidthCustimization {
+        width: calc(100% - 70px) !important;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1066px) {
+    input.form-control.responsiveWidthCu {
+        width: 90% !important;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 850px !important;
+    }
+}
+
+.email_textarea {
+    min-height: 34px;
+    max-height: 60px;
+    field-sizing: content;
+    cursor: not-allowed;
+}
+ .tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 0 10px;
+  }
+  .disabled {
+    opacity: 0.5; 
+  }
+  .nav-tabs li.disabled a {
+    color: grey;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.nav>li>a:hover {
+    background-color: #eee;
+}
+.nav-tabs > li > a{
+    font-size: 12px;
+}
+li.disabled.active a {
+    border-bottom: none !important;
+  }
+  
+ .custom-file-label {
+    color: white !important;
+} 
+.file-input {
+    display: none;
+}
+.send-email-footer{
+    position: absolute;
+    width: 100%;
+}
+.l-g-view {
+    height: 29px;
+    width: 29px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+  
+ 

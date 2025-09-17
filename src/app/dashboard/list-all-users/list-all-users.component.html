@@ -1,0 +1,155 @@
+<div class="wrap-collabsible" id="all-approved-users">
+  <input id="{{collpsableId}}" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+  <label for="{{collpsableId}}" class="lbl-toggle">{{headerText}}</label>
+  <div class="collapsible-content" id="allApporvedUsers">
+    <div class="content-inner">
+      <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="portlet light">
+           <div class="portlet-title mb10">
+            <div class="row">
+              <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
+                <!--Searchable DropDown-->
+                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                  <div *ngIf="!isSearchableDropdownHidden">
+                    <p class="mt--10px" *ngIf="dropdownDataLoading">
+                      <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                    </p>
+                      <app-multi-select-dropdown *ngIf="!dropdownDataLoading" [dropdownList]="companiesSearchableDropDownDto.data"
+                        [displayText]="'Select Company'" [singleSelection]="true" 
+                        (multiSelectDropdownSingleSelectionEventEmitter)="searchableDropdownEventReceiver($event)"></app-multi-select-dropdown>
+                  </div>
+                </div>
+                <!--Filter Roles-->
+                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6" *ngIf="!isVanityUrlEnabled">
+                  <div>
+                      <app-multi-select-dropdown  [dropdownList]="xAmplifyRoles"
+                        [displayText]="'Select Role'" [singleSelection]="true" 
+                        (multiSelectDropdownSingleSelectionEventEmitter)="filterDataBySelectedRole($event)"></app-multi-select-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12 mt5 mb5">
+                <!--Sort Drop Down-->
+                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                  <div>
+                    <select class="form-control" [(ngModel)]="sortOption.selectedActiveUsersSortOption"
+                    (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                      {{option.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                 <!--Search Input && Refresh Icon-->
+                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                  <div class="input-icon right mDamSearch rSearch display-inline-box" id="alignline-m-serch">
+                    <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"  [ngModelOptions]="{standalone: true}" placeholder="search..."
+                    (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
+                    <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                     <!--Refresh Icon-->
+                    <a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+            <ng-container *ngIf="!httpRequestLoader.isLoading && !isVanityUrlEnabled">
+              <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
+                <!--Download Admins-->
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Admins.csv')">Admins</button>
+                </div>
+                <!--Download Admin Team Members-->
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Admin-Team-Members.csv')">Admin Team Members</button>
+                </div>
+                <!--Download Partners-->
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Partners.csv')">Partners</button>
+                </div>
+                <!--Download Partner Team Members-->
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Partner-Team-Members.csv')">Partner Team Members</button>
+                </div>
+              </div>
+            </ng-container>
+           <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+             <div>
+               <div class="table-responsive">
+                 <table class='table tgrid' aria-describedby="all-Approved-users">
+                   <thead>
+                     <tr>
+                       <th style="width: 20%;" scope="col">NAME</th>
+                       <th class='text-center' scope="col">COMPANY</th>
+                       <th class='text-center' scope="col">Role</th>
+                       <th *ngIf="!isVanityUrlEnabled" class='text-center' scope="col">Vanity Link</th>
+                       <th class='text-center' scope="col">Created Time</th>
+                        <th class='text-center' scope="col">Login</th>
+                        <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
+                          <a (click)="confirmLogoutForAll()">Logout</a>
+                        </th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
+                       <tr>
+                         <td>
+                           <app-user-info [userInfo]="request" [isFromAdminList]="true"></app-user-info>
+                           <input type="text" class="form-control"  readonly="readonly" value="{{request?.emailId}}" #approvedUserEmailAddressText>
+                            <button class="btn-xs btn-info mt5" (click)="copyApprovedUserEmailAddress(approvedUserEmailAddressText,i)">Copy</button>
+                            <span id="copied-apporved-users-email-address-{{i}}-{{showPartners}}" class="success" style="display:none;">
+                              <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
+                            </span>
+                         </td>
+                         <td class="text-center"  scope="col">{{request.companyName}}</td>
+                         <td  class="text-center" scope="col">{{request.roleName}}</td>
+                         <td class="text-center" *ngIf="!isVanityUrlEnabled">
+                          <p class="required" *ngIf="request.roleName=='Partner'"><strong>Not Available For Partner Role</strong></p>
+                          <a *ngIf="request.roleName!='Partner'" href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
+                         </td>
+                         <td class="text-center"  scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
+                         <td id="center" class="xAmpColor">
+                           <a (click)="loginAs(request)">
+                            <button class="btn btn-primary">Login as </button>
+                          </a>
+                        </td>
+                        <td id="center" class="xAmpColor">
+                          <a (click)="confirmLogout(request)">
+                           <button class="btn btn-danger">Logout</button>
+                         </a>
+                       </td>
+                       </tr>
+                     </ng-container>
+                   </tbody>
+                 </table>
+                 <ng-container *ngIf="!hasError">
+                  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                  <app-pagination [pagination]="pagination"
+                    (notifyParent)="setPage($event)"
+                    (notifyParentDropDown)="listAllApprovedUsers($event)"
+                    [hidden]="httpRequestLoader.isLoading">
+                  </app-pagination>
+                </div>
+                  <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                    <strong>No Data Found.</strong>
+                  </div>
+               </ng-container>
+               </div>
+             </div>
+           </div>
+           
+           <div *ngIf="hasError" class="alert alert-danger">
+         <strong>Oops!Something went wrong.Please try again after sometime</strong>
+       </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,27 @@
+.min-h {
+  min-height: 368px;
+}
+.img-class {
+  width: auto;
+}
+
+.gridViewImgBg img{margin: 0px;}
+
+.mxv {
+  object-fit: fill;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  max-width: 100% !important;
+  max-height: 150px;
+  min-height: 150px;
+  margin: 0px;
+  width: 100%;
+}
+@media screen and (max-width:600px) {
+  .mb-upload-btns{
+    display: inline-block;
+    float: right;
+  }
+}

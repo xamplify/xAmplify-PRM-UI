@@ -1,0 +1,85 @@
+<app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
+<div *ngIf="!loading">
+
+  <!---Partner Invitation-->
+  <ng-template [ngTemplateOutlet]="notificationOptionTemplateOutlet" [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:partnerInvitationTextDto,
+      notificationSettingOption:emailNotificationSettingsDto?.notifyPartners,moduleType:1,
+      vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.partnerOnBoardVendorEmailNotification}">
+  </ng-template>
+
+  <!---Assets-->
+  <ng-template *ngIf="authenticationService?.module?.damAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:assetPublishedTextDto,
+     notificationSettingOption:emailNotificationSettingsDto?.assetPublishedEmailNotification,moduleType:2,
+     vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.assetPublishVendorEmailNotification}">
+  </ng-template>
+
+  <!---Tracks-->
+  <ng-template *ngIf="authenticationService?.module?.lmsAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:trackPublishedTextDto,
+    notificationSettingOption:emailNotificationSettingsDto?.trackPublishedEmailNotification,moduleType:3,
+    vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.trackPublishVendorEmailNotification}">
+  </ng-template>
+
+  <!---Play Book-->
+  <ng-template *ngIf="authenticationService?.module?.playbookAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:playbookPublishedTextDto,
+    notificationSettingOption:emailNotificationSettingsDto?.playbookPublishedEmailNotification,moduleType:4,
+    vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.playbookPublishVendorEmailNotification}">
+  </ng-template>
+
+   <!---Dashboard Buttons-->
+   <ng-template *ngIf="isVanityLogin" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+   [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:dashboardButtonsPublishedTextDto,
+   notificationSettingOption:emailNotificationSettingsDto?.dashboardButtonsEmailNotification,moduleType:5,
+   vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.dashboardButtonPublishVendorEmailNotification}">
+ </ng-template>
+
+  <!--Update Button-->
+  <div id="right">
+    <button type="button" class="button_blue bgcolor-unset" translate (click)="updateSettings()"><span
+        class="btn btn-primary transition txt_pd-top3">Update</span></button>
+  </div>
+
+</div>
+
+<ng-template #notificationOptionTemplateOutlet let-emailNotificationSettingsTextDto="emailNotificationSettingsTextDto"
+  let-notificationSettingOption="notificationSettingOption" let-moduleType="moduleType"
+  let-vendorCompanyEmailNotificationSettingOption="vendorCompanyEmailNotificationSettingOption">
+  <div class="portlet light">
+    <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">
+      <div class="caption caption-md col-xs-12">
+        <span class="caption-subject font-blue-madison bold">{{emailNotificationSettingsTextDto?.headerText | translate }}</span>
+      </div>
+    </div>
+    <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.notificationToggle | translate }}</h4>
+
+    <!--Email Notification Settings For Partner Company-->
+    <div class="portlet light">
+      <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfo | translate }}</label>
+      <div>
+        <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreference | translate }}
+          <br><br>
+          <app-custom-ui-switch [customSwitch]="notificationSettingOption" (customUiSwitchEventEmitter)="updateEmailNotificationSettingForPartner(moduleType,$event)"></app-custom-ui-switch>
+        </h5>
+      </div>
+    </div>
+
+
+    <!--XNFR-688 Email Notification Settings For Vendor Company---->
+    <ng-container>
+      <div class="portlet light">
+        <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfoForVendorCompany | translate }}</label>
+        <div>
+          <h5 class="bold-font-weight h5-custom-font">
+            {{emailNotificationSettingsTextDto?.notificationPreferenceForVendorCompany | translate }}
+            <br><br>
+            <app-custom-ui-switch [customSwitch]="vendorCompanyEmailNotificationSettingOption" (customUiSwitchEventEmitter)="updateEmailNotificationSettingForVendor(moduleType,$event)"></app-custom-ui-switch>
+          </h5>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

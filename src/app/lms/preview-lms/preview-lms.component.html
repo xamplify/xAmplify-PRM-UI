@@ -1,0 +1,27 @@
+<div class="page-content">
+    <div *ngIf="showAsset || showTracksPlayBook" class="page-bar mb-height_auto" style="height: 48px;">
+        <ul class="page-breadcrumb">
+            <li *ngIf="!isFromApprovalModule">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isCreatedUser" (click)="goToManageTracks()">Manage Tracks</a>
+                <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isCreatedUser" (click)="goToManageSharedTracks()">Shared Tracks</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>View Track</a>
+            </li>
+            <li *ngIf="isFromApprovalModule">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>View Track</a>
+            </li>
+        </ul>
+    </div>
+    <app-preview-tracks-play-book [type]="type" [showTracksPlayBook]="showTracksPlayBook" [showAsset]="showAsset" [isCreatedUser]="isCreatedUser" (notifyShowTracksPlayBook)="changeShowTracksPlayBook($event)" (notifyShowAsset)="changeShowAsset($event)" (notifyCreatedUser)="changeIsCreatedUser($event)"></app-preview-tracks-play-book>
+</div>

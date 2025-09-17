@@ -1,0 +1,167 @@
+<div>
+	<button class="btn btn-primary ml5 float-right"
+		style="margin-top: 6px" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate>{{moduleLable}}</button>
+</div>
+
+<div class="modal fade right" id="add-vendor-logo-popup" role="dialog" data-backdrop="static"
+	data-keyboard="false">
+	<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" (click)="hideModal()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+				<h4 class="modal-title text-center" translate>{{moduleLable}}</h4>
+			</div>
+			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
+			</app-response-message>
+			<div *ngIf="vendorLogoDetails.length==0 && isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "vendorLogoDetails.length!=0 && ((!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace)">
+				<div class="table-responsive">
+				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
+					<thead>
+						<tr>
+							<th style="width:30%" scope="row" translate>Logo</th>
+							<th style="width:30%" scope="row" class="text-center" translate>Company Name</th>
+							<th style="width:30%" scope="row">Select Category</th>
+							<th style="width:10%" scope="row" class="text-center" translate>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let vendorLogo of vendorLogoDetails;let i = index">
+							<td class="hidden-xs text-center" style="width: 10%;">
+								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
+										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+								</div>
+								<span class="vendorLogoCheck">
+									<i *ngIf="vendorLogo?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+										style="margin-right:54px;"></i></span>
+							</td>
+							<td class="text-center">{{vendorLogo.companyName}}</td>
+							<td>
+								<angular4-multiselect  [data]="dropdownList" [(ngModel)]="vendorLogo.selectedCategories"  
+								[settings]="vendorLogo.dropdownSettings" (onClose) = 'setSelectedCategoryForTeamMember(vendorLogo.companyId)'
+								(onSelect)="setSelectedCategoryForTeamMember(vendorLogo.companyId)" 
+								(onDeSelect)="setSelectedCategoryForTeamMember(vendorLogo.companyId)"
+								(onSelectAll)="setSelectedCategoryForTeamMember(vendorLogo.companyId)" 
+								(onDeSelectAll)="setSelectedCategoryForTeamMember(vendorLogo.companyId)">
+							  </angular4-multiselect>
+							</td>
+							<td class="text-center">
+								<label class="toggleOnOff">
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="vendorLogo.selected" 
+									(ngModelChange) = "selctectLandingPageForTeamMember(vendorLogo.companyId)" name="Select">
+									<span class="sliderOnOff"></span>
+									<span class="labels" data-on="Selected" data-off=""></span>
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</div>
+			<div *ngIf="sharedVendorLogoDetails.length==0 && !isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "sharedVendorLogoDetails.length!=0 && (authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace)">
+				<div class="table-responsive">
+				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
+					<thead>
+						<tr>
+							<th scope="row" translate>Logo</th>
+							<th scope="row" class="text-center" translate>Company Name</th>
+							<th scope="row" class="text-center" translate>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let vendorLogo of sharedVendorLogoDetails;let i = index">
+						<tr>
+							<td class="hidden-xs text-center" style="width: 10%;">
+								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
+										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+								</div>
+								<span class="vendorLogoCheck">
+									<ng-container *ngFor="let member of vendorLogo.teamMembers; let i = index">
+										<i *ngIf="member?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+											style="margin-left: 32px;"></i>
+									</ng-container>
+								</span>
+							</td>
+							<td class="text-center">{{vendorLogo.companyName}}</td>
+							<td class="text-center">
+								<div class="actions-block ">
+									<a (click)="viewTeamMembers(vendorLogo)" title="View/Hide Team Members">
+										<i class="fa IconCustomization"
+											[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
+											aria-hidden="true"></i>
+									</a>
+								</div>
+							</td>
+						</tr>
+						<tr *ngIf="vendorLogo?.expand">
+							<td colspan="4">
+							  <div class="table-responsive x-hidden">
+								<div>
+								  <ng-container>
+									<table class="table tgrid table-condensed table-bordered child-table-xamp table-overflow"
+									  aria-describedby="team-members-info"
+									  id="admin-and-team-members-{{vendorLogo?.companyId}}">
+									  <thead>
+										<tr>
+										  <th style="width:45%" scope="row">Entity Info</th>
+										  <th style="width:45%" scope="row">Select Category</th>
+										  <th style="width:10%" scope="row" class="text-center">Select</th>
+										</tr>
+									  </thead>
+									  <tbody>
+										<tr class="pointer"
+										  *ngFor="let adminAndTeamMember of vendorLogo.teamMembers;let i = index;"
+										  id="publishToPartners-{{vendorLogo.partnerId}}">
+										  <td>
+											<app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
+											</app-user-info>
+										  </td>
+										  <td>
+											<angular4-multiselect  [data]="dropdownList" [(ngModel)]="adminAndTeamMember.selectedCategories"  
+											(onSelect)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)" 
+											(onDeSelect)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)"
+          									(onSelectAll)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)" 
+		  									(onDeSelectAll)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)"
+											[settings]="adminAndTeamMember.dropdownSettings"  (onClose) = 'setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)'>
+										  </angular4-multiselect>
+										  </td>
+										  <td class="text-center">
+											<label class="toggleOnOff">
+												<input class="checkBox_shadow" type="checkbox" [(ngModel)]="adminAndTeamMember.selected" name="Select"
+												(ngModelChange) = "selctectLandingPageForCompany(vendorLogo.companyId,adminAndTeamMember.partnerId)">
+												<span class="sliderOnOff"></span>
+												<span class="labels" data-on="Selected" data-off=""></span>
+											</label>
+										  </td>
+										</tr>
+									  </tbody>
+									</table>
+								  </ng-container>
+								  <!---Pagination-->
+								</div>
+							  </div>
+							</td>
+						  </tr>
+						</ng-container>
+					</tbody>
+				</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn Btn-Gray" id="bottom-right" (click)="hideModal()">
+					<span translate>Close</span></button>
+			</div>
+		</div>
+	</div>
+</div>

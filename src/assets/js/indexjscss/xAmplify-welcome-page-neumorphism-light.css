@@ -1,0 +1,192 @@
+
+.xamplify-welcome-page-header.navbar .xamplify-welcome-page-top {
+  background: #f0f5fa !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+  border-bottom: 1px solid #d0d5db;
+}
+
+a.xamplify-dropdown-toggle.circlebg-color-bell-v,
+a.xamplify-dropdown-toggle.circlebg-none-v {
+  border: 0px solid #2f4857 !important;
+  color: #000000 !important;
+  background: #f0f5fa !important;
+  box-shadow: .3rem .3rem .6rem #c8d0e7, -.2rem -.2rem .5rem #fff !important;
+}
+
+
+.xamplify-external,
+.xamplify-notify-view {
+  background-color: #e8edf2;
+  background: linear-gradient(225deg, #d8dde1, #fff);
+    box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #fff;
+    border: 1px solid #d0d5db !important;
+}
+
+.horizontal-navbar .navbar-navs .link li a {
+  color: #000000;
+}
+
+.horizontal-navbar .navbar-navs .link li a:active,
+.horizontal-navbar .navbar-navs .link li a:hover {
+  color: #4193cf;
+}
+
+.horizontal-navbar .navbar-navs .link li .sub-menu-bar,
+.xamplify-dropdown-menu {
+  /* background-color: #2c2f33 !important;
+      border: 1px solid #191b1e !important;
+      box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
+  background: linear-gradient(225deg, #d8dde1, #fff);
+  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #fff;
+  border: 1px solid #d0d5db !important;
+}
+
+/* .xamplify-dropdown-user .xamplify-dropdown-menu>li>a:hover {
+  background-color: #2c2f33 !important;
+  color: #000;
+} */
+
+.xamplify-dropdown ul li a:hover {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+}
+
+.xamplify-dropdown-menu li>a {
+  color: #000;
+}
+
+.xamplify-dropdown-user .xamplify-dropdown-menu>li>a,
+.horizontal-navbar .navbar-navs .link li ul li {
+  border-bottom: 1px solid #d0d5db !important;
+}
+
+.horizontal-navbar .navbar-navs .link li ul li:hover {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+    background: linear-gradient(225deg, #d8dde1, #fff) !important;
+}
+@media (max-width: 767px) {
+  .xamplify-welcome-page-header.navbar {
+      height: 126px!important;
+  }
+  .xamplify-welcome-page-top-menu {
+    background: #f0f5fa !important;
+    box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+    border-bottom: 1px solid #d0d5db;
+  }
+}
+@media (max-width: 1024px) {
+  .horizontal-navbar .navbar-navs .nav-link {
+    background-color: #f0f5fa !important;
+    color: #000!important;
+    box-shadow: inset -5px -5px 10px #d6dadf, inset 5px 5px 10px #fff !important;
+  }
+  .horizontal-navbar .navbar-navs .link li .arrow, .horizontal-navbar .navbar-navs .link li a {
+    color: #000!important;
+}
+
+}
+
+/*** Universal Search *******/
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  color: #000 !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+.universal-dropdown-menu {
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #fff !important;
+  border: 1px solid #d0d5db !important;
+}
+.universal-dropdown-menu li {
+  border-bottom: 1px solid #d0d5db !important;
+}
+.universal-dropdown-menu li:hover {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+}
+/*** Universal Search *******/
+/* oliver AI css*/
+.btn-group button.btn-pdf,.share-btn,.action-btn {
+  background: unset !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover {
+  background-color: #f0f7ff !important;
+}
+.btn-pdf:focus {
+  color: rgba(2, 118, 255, 1) !important;
+}
+.panel-heading.accordion_card {
+  border: none !important;
+}
+.modal-body.oliver-header{
+  background: linear-gradient(225deg, #d8dde1, #fff)!important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box,.open > .submenu-toggle,.submenu a.active,.nav .submenu-parent.open > .submenu-toggle:focus,.submenu li a {
+  background: #f0f5fa !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff !important;
+  border: 1px solid #d0d5db;
+  border-radius: 8px!important;
+  }
+.side_bar{
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
+}
+.writing-card,.phara-card,.custom-card,.history-entry{
+  background: #f3f6f9 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;}
+  .oliver_input{
+    background: #fcfcfc!important;}
+  .textarea-card{
+    background: #ecf1f3 !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
+  }
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}
+.preview-border{border: 1px solid #d0d5db !important;}
+.history-divider{
+  border-top: 1px solid rgb(208 213 219)!important;
+}
+.history-header{
+  color: rgba(2, 118, 255, 1) !important;
+}
+.agent-card{
+  background-color: #fcfcfc!important;
+}
+.nav .submenu-parent.open > .submenu-toggle{
+  border-color: transparent !important;
+  border: 1px solid #d0d5db;}
+.form-control {
+  color: #000 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+}
+.modal-content{
+  background: linear-gradient(225deg, #d8dde1, #ffffff);
+  border: 1px solid #cfd6de !important;
+  color: #000 !important;
+}
+
+.oliveBackground {
+  background-color: transparent !important;
+}
+
+.oliver_input textarea {
+  box-shadow: none !important;
+  background: transparent !important;
+
+}
+
+.oliver_input textarea:active,
+.oliver_input textarea:focus {
+  border-color: none !important;
+  outline: none !important;
+}

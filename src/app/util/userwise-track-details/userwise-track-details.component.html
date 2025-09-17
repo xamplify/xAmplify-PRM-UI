@@ -1,0 +1,119 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ml15m">
+  <div class="panel panel-info panel-bgMain panel-card br-10">
+    <div class="panel-heading panel-heading-custom panel-bg">
+      <h3 class="panel-title mt7 Responsivetitle">Track Assets Detailed Report</h3>
+      <span class="header-controls">
+       <button class="pull-right btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4"
+        data-placement="bottom" [disabled]="pagination.totalRecords==0" (click)="downloadTrackAssetsDetailedReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">   
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader> 
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics">Company Name</th>
+              <th scope="col" *ngIf="isTeamMemberAnalytics">Team Member</th>
+              <th scope="col">Track</th>
+              <th scope="col">Assets</th>
+              <th scope="col">Published Time</th>
+              <th scope="col" *ngIf = "!isVendorVersion">Opened</th>
+              <th scope="col" *ngIf = "!isVendorVersion">Viewed</th>
+              <th scope="col" *ngIf = "!isVendorVersion">Downloaded</th>              
+              <th scope="col">Avg. Progress</th>
+              <th scope="col">Quiz</th>
+              <th scope="col" *ngIf = "!isVendorVersion" >Score</th>
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <!-- <td *ngIf="!isDetailedAnalytics">
+                <a class="detailstext" ata-toggle="tooltip" data-placement="top" title="{{item?.companyName}}" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">
+                {{item?.companyName | slice:0:15}}
+                <span *ngIf="item.companyName?.length>15">...</span>
+              </a>
+              </td> -->
+              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td>
+                <span class = "item-title" data-toggle="tooltip" data-placement="top" title="{{item?.title}}"> {{item?.title | slice:0:15}}
+                  <span *ngIf="item.title?.length>15">...</span>
+                </span>
+                </td>
+              <td>
+                <div class="custom-icon">
+              <i class="circled-number IconCustomization fontStyleNormal"> <strong >{{item?.assetCount}}</strong></i>
+            <div class="clickicons"></div>
+            </div>
+              </td>
+              <td>
+                <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
+                </app-timestamp>
+              </td>
+              <td *ngIf = "!isVendorVersion">
+                <div class="custom-icon">
+                <i class="circled-number IconopenedCount fontStyleNormal IconCustomization"> <strong >{{item?.openedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
+              </td>
+              <td *ngIf = "!isVendorVersion">
+                <div class="custom-icon">
+                <i class="circled-number IconviewedCount fontStyleNormal IconCustomization"> <strong >{{item?.viewedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
+              </td> 
+              <td *ngIf = "!isVendorVersion">
+                <div class="custom-icon">
+                <i class="circled-number IconodownloadedCount fontStyleNormal IconCustomization"> <strong >{{item?.downloadedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
+              </td> 
+                   
+              <!-- <td>{{item?.progress}}%</td> -->
+              <td>
+                <div class="progress heightabjustment">
+                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%" [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
+                    </div>
+                </div>
+                <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
+                <span *ngIf="item.progress == undefined">0%</span>
+              </td>
+              <td>{{item?.quizCount}}</td>
+              <td *ngIf="!isVendorVersion">
+                  <ng-container *ngIf="item?.quizCount > 0; else quizNotAvailable">
+                    {{item?.score}}
+                  </ng-container>
+                  <ng-template #quizNotAvailable>
+                    <h6 class="view-banner" translate>Quiz Not Available</h6>
+                  </ng-template>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getUserWiseTrackDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

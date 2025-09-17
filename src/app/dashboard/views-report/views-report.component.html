@@ -1,0 +1,162 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a >Views report</a>
+			</li>
+		</ul>
+	</div>
+	<div class="modal" id="show_preview">
+		<div class="modal-dialog">
+			<div class="modal-content" style="border-radius: 0">
+				<div class="modal-header">
+					<a class="close-circle" data-dismiss="modal" (click)="destroyPreview()"><i class="fa fa-times"></i></a>
+					<h4 *ngIf="videotitle?.length < 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}</h4>
+					<h4 *ngIf="videotitle?.length > 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}...</h4>
+				</div>
+				<div class="modal-body">
+					<div id="main_video"></div>
+				</div>
+				<div class="modal-footer"> <a href="javascript:void(0)" (click)="destroyPreview()" data-dismiss="modal" class="btn btn-default">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="portlet light clearfix" style="min-height: 600px;">
+		<div class="clearfix" style="margin-bottom: 10px;">
+			<div class="col-xs-12 p0">
+				<div class="col-xs-12 col-sm-3 p0">
+					<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()" style="cursor: pointer">
+					<option  [value]="0" class="form-control" style="cursor: pointer">All Categories</option>
+					<option *ngFor="let category of categories" [ngValue]="category.id" class="form-control" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
+				</select>
+				</div>
+				<div class="col-sm-3"></div>
+				<div class="col-xs-12 col-sm-6 p0">
+					<div class="col-xs-12 col-sm-5">
+						<select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
+							<option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-7 p0">
+						<div class="input-icon">
+							<i class="icon-magnifier m10" style="cursor:pointer;font-size:18px;right: 0;" (click)="searchVideoTitelName()"></i>
+							<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control p10" (input)="searchKeyValue()"
+								placeholder="search...">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="noVideos" class="col-xs-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
+				<a class="close" data-dismiss="alert" aria-label="close"></a>
+				<strong>No Views found.. !!!</strong>
+			</div>
+		</div>
+		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+			<div class="col-xs-12 views-box">
+				<div class="col-xs-12 col-md-6 p0 m0">
+					<div class="col-xs-12 col-sm-6 thumb-bg">
+						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
+							<img class="thumb-vid img-responsive" src="{{videoFile.gifImagePath}}">
+						</a>
+					<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<h4 class="videoTitle block-with-text ellipsis" style="color:#333333" title={{videoFile.title}}>{{videoFile.title}}</h4>
+						<h5 class="block-with-text ellipsis" title={{videoFile.description}}>{{videoFile.description}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedBy}}><span class="f-w-600">Uploaded By:</span> {{videoFile.uploadedBy}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedDate}}><span class="f-w-600">Uploaded Date:</span> {{videoFile.uploadedDate}}</h5>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<div>
+						<div class="col-xs-6 col-sm-4 text-center">
+							<h2 class="views-report" style="margin-top:42px">{{videoUtilService.nFormatter(videoFile.views)}}</h2>
+							<h5 class="views-report-heading" style="margin-top: 48px;">Views</h5>
+						</div>
+						<div class="col-xs-6 col-sm-4 text-center"  (click)="watchedFullyDetailReport(videoFile.id)">
+							<section class="percentage-circle" style="margin-top: 15px;cursor: pointer">
+							<app-donut-chart [percentageValue]="videoFile.watchedFully" [totalValue]="100"></app-donut-chart>
+							  <h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{videoFile.watchedFully}}%</h2>
+                            </section>
+							<h5 class="views-report-heading">Watched Fully</h5>
+						</div>
+						<div class="col-xs-12 col-sm-4 text-center">
+							<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
+								<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+							</div>
+							<h5 class="views-report-heading" style="margin-top:40px">Average Duration</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<app-pagination [pagination]="pagination" [type]="'viewsReport'" (notifyParent)="setPage($event)"></app-pagination>
+	</div>
+</div>
+
+<!--  watched modal popup -->
+<div class="modal fade" id="watchedFullyModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg" role="document" style="width: 80%; margin: 1em auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+				<h4 class="modal-title m0">watched fully Reports</h4>
+				<div class="btn-group pull-right" style="margin-top:4px; cursor:pointer; color: #7d8c98;margin-top:4px;">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 26px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+					 <ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div *ngIf="watchedFullyDetailReportData?.length < 1" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
+						<strong>No Records found.. !!!</strong>
+					</div>
+					<div class="table-responsive" style="padding: 0px 7px;">
+						<table class="table tgrid" *ngIf="watchedFullyDetailReportData?.length > 0">
+							<thead>
+								<tr>
+									<th class="center text-uppercase headerCss">NAME</th>
+									<th class="center text-uppercase headerCss">Campaign Name</th>
+									<th class="center text-uppercase headerCss">date</th>
+									<th class="center text-uppercase headerCss">device</th>
+									<th class="center text-uppercase headerCss">location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of watchedFullyDetailReportData">
+									<td>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td class="center">{{item.campaignName}}
+									<h4 *ngIf="item.campaignName==null">-</h4>
+									</td>
+									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
+									<td class="center">
+									<app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
+									</td>
+									<td class="center">{{item.location }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div *ngIf="watchedFullyDetailReportData?.length > 0">
+						<app-pagination [pagination]="watchedPagination" [type]="'watchedFully'" (notifyParent)="setPage($event)"></app-pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

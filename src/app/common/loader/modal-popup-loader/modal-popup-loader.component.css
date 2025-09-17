@@ -1,0 +1,32 @@
+.animated-background-modal-popup {
+  animation: modal-popup-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  position: relative;
+  border-radius: 5px;
+  
+}
+.circle-loader-css {
+  width: 300px;
+  margin: 30px auto;
+  border-radius: 50%;
+}
+@keyframes modal-popup-animation {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+#loading-bg-image{
+  background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
+}
+.timeline-wrapper{
+  border-radius: 7px;
+}
+#processing-time-image{
+  background: transparent url(../../../../assets/images/processing-time.gif) no-repeat center center;
+}

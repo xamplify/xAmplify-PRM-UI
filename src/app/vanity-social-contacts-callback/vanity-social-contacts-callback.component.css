@@ -1,0 +1,27 @@
+
+
+#router-loader {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: white;
+  }
+  
+  p {
+    display: inline-block;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 4em;
+    font-family: arial;
+    font-weight: 600;
+    transform: scale(.5);
+    color: #121212;
+    -webkit-text-stroke: 2px gray;
+  }
+  
+  
+  

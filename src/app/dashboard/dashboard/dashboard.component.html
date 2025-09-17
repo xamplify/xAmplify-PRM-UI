@@ -1,0 +1,663 @@
+<style type="text/css">
+    .notification-box {
+        position: relative;
+        text-align: center;
+        margin: 10px 0 15px 0;
+        padding: 10px;
+        cursor: pointer
+    }
+    
+    .notification-box i {
+        font-size: 24px;
+        padding: 20px 0 0 0;
+        color: #fff;
+    }
+    
+    .notification-box h4 {
+        padding: 10px;
+        color: #fff;
+    }
+    
+    .notification-box h3 {
+        position: absolute;
+        top: -35px;
+        right: -14px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #468bca;
+        border-color: #fff;
+        border: 1px solid #cacaca;
+        font-weight: bold;
+        min-height: 33px;
+        min-width: 33px;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    tspan.highcharts-text-outline {
+        fill: #000;
+    }
+    
+    .social-profile-name {
+        font-size: 13px;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #aab5bc;
+    }
+    
+    b,
+    strong {
+        font-weight: 500;
+    }
+    
+    .disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+    
+    hr {
+        margin: 1em 0;
+        border-top: 0.5px solid rgba(216, 214, 214, 0.4);
+    }
+    
+    input[type=radio] {
+        position: relative;
+        opacity: 1 !important;
+    }
+    
+    td>h5 {
+        margin: 2px;
+    }
+</style>
+<ng-container *ngIf="!authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+<ng-container *ngIf="!referenceService.loaderFromAdmin">
+<div class="page-content" *ngIf="authenticationService.isOnlyUser()">
+    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+        <div class="col-xs-12 col-sm-6 p0">
+            <h4 class="text-primary f-w-600 m10">Welcome {{logedInCustomerCompanyName}}</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="clearfix"></div>
+        <div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
+            <div class="alert alert-danger alert-dismissible" style="padding: 12px">
+                <a class="close" data-dismiss="alert" aria-label="close"></a>
+                You have only limit access please upgrade.
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="page-content" *ngIf="!authenticationService.isOnlyUser()">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div class="page-bar" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
+        <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
+               'alert-danger': userDefaultPage.responseType == 'ERROR'}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            <h4 class="flex">
+                <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
+               'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true" style="padding-right: 7px;"></i>
+                <span>{{userDefaultPage.responseMessage}}</span>
+            </h4>
+        </div>
+    </div>
+    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+        <div class="col-xs-12 col-sm-6 p0">
+            <h4 class="text-primary f-w-600 m10">Welcome {{logedInCustomerCompanyName}}</h4>
+        </div>
+        <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
+            <div style="display: flex;float: right;">
+                <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+                <div style="margin: 3px 0 3px 20px;">
+                    <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen" size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customize Campaign Modal -->
+    <div class="modal right fade" id="customizeCampaignModal" tabindex="-1" role="dialog" aria-labelledby="customizeCampaignModalLabel">
+        <div class="modal-dialog modal-customize" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                   
+                    <a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null">
+                        <i class="fa fa-times"></i>
+                    </a>
+                    <h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix">
+                        <div class="col-xs-12" style="margin-bottom: 10px;" *ngIf="userCampaignReport.response != null">
+                            <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
+                           'alert-danger': userCampaignReport.response == 'ERROR',
+                           'alert-warning': userCampaignReport.response == 'WARNING'}">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userCampaignReport.response = null">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                                <h5 class="flex">
+                                    <i class="fa" [ngClass]="{'fa-check': userCampaignReport.response == 'SUCCESS',
+                           'fa-exclamation': userCampaignReport.response == 'ERROR',
+                           'fa-exclamation-triangle': userCampaignReport.response == 'WARNING'}" aria-hidden="true" style="padding-right: 7px;"></i>
+                                    <span>{{userCampaignReport.responseMessage}}</span>
+                                </h5>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
+                                <label class="form-check-label">
+                    <input class="form-check-input radioButton_shadow" type="radio" name="campaignReportType" [value]="item" [checked]="item === userCampaignReport.campaignReportOption"
+                     (change)="onSelectionChangeCampaignReportOption(item)"> {{item}}
+                  </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
+                            <hr>
+                            <div [hidden]="launchedCampaignsMaster?.length==0">
+                                <div style="margin-bottom: 10px;"><span>Select up to 4 campaigns by dragging & dropping</span></div>
+                                <div class="wrapper">
+                                    <div class="col-xs-6" style="padding: 0 5px 0 0">
+                                        <div class="portlet light border-radius-0">
+                                            <div class="portlet-title">
+                                                <h5>YOUR CAMPAIGNS</h5>
+                                            </div>
+                                            <div class="portlet-body scrollbar launchedCampaignsMaster" [dragula]='"bag-items"'>
+                                                <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
+                                                    <h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" style="padding: 0">
+                                        <div class="portlet light border-radius-0">
+                                            <div class="portlet-title">
+                                                <h5>SELECTED CAMPAIGNS
+                                                    <b>(MAX 4)</b>
+                                                </h5>
+                                            </div>
+                                            <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;" [dragula]='"bag-items"'>
+                                                <div class="gu-block" *ngFor="let item of launchedCampaignsChild">
+                                                    <h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span [hidden]="launchedCampaignsMaster.length>0">No campaigns available.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="color1 btn-campaign" (click)="validateUserCampaignReport(userCampaignReport)">Save changes</button>
+                    <button type="button" class="btn-campaign " data-dismiss="modal" (click)="userCampaignReport.response = null">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
+        <app-dashboard-stats></app-dashboard-stats>
+    </div>
+    <app-partner-notification></app-partner-notification>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || authenticationService.isOnlyPartner()">
+        <div class="clearfix" *ngIf="socialConnections?.length > 0">
+            <div class="portlet light shadow">
+                <div class="portlet-title">
+                    <h4 class="caption-subject font-red-sunglo f-w-600">Social Accounts</h4>
+                </div>
+                <div class="portlet-body clearfix">
+                    <div class="clearfix">
+                        <section *ngFor="let socialConnection of socialConnections">
+                          
+                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
+                                <div class="dashboard-stat2 m0" style="height: 130px;">
+                                    <div class="display">
+                                        <div class="col-xs-3 p0">
+                                            <div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
+                                                <ng-container *ngIf="socialConnection.source === 'TWITTER'">
+                                                    <img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+                                                </ng-container>
+                                                <ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
+                                                    <img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+                                                </ng-container>
+                                                <ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
+                                                    <img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+                                                </ng-container>
+                                                <ng-container *ngIf="socialConnection.source === 'GOOGLE'">
+                                                    <img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-9 p0">
+                                            <h5 class="profile-name">
+                                                <span *ngIf="socialConnection.source === 'TWITTER'">
+                            <a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
+                              @{{socialConnection.profileName}}</a>
+                          </span>
+                                                <span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
+                                                <span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
+                                            </h5>
+                                            <section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
+                                                <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
+                                                    <b>Tweets</b>
+                                                    <h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
+                                                </a>
+                                                <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
+                                                    <b>Followers</b>
+                                                    <h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
+                                                </a>
+                                                <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
+                                                    <b>Friends</b>
+                                                    <h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
+                                                </a>
+                                            </section>
+                                            <section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
+                                                <a class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                    <b>Posts</b>
+                                                    <h4>-</h4>
+                                                </a>
+                                                <a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                    <b>Fans</b>
+                                                    <h4>{{socialConnection.facebookFanCount}}</h4>
+                                                </a>
+                                                <a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                    <b>Friends</b>
+                                                    <h4>{{socialConnection.facebookFriendsCount}}</h4>
+                                                </a>
+                                            </section>
+                                            <section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
+                                                <a class="col-xs-4 social-stats">
+                                                    <b>Posts</b>
+                                                    <h4>-</h4>
+                                                </a>
+                                                <a class="col-xs-4 social-stats">
+                                                    <b>Connections</b>
+                                                    <h4>-</h4>
+                                                </a>
+                                            </section>
+                                            <section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
+                                                <a class="col-xs-4 social-stats">
+                                                    <b>Posts</b>
+                                                    <h4>-</h4>
+                                                </a>
+                                                <a class="col-xs-4 social-stats">
+                                                    <b>Connections</b>
+                                                    <h4>-</h4>
+                                                </a>
+                                            </section>
+                                        </div>
+                                        <div class="col-xs-12 m0 p0">
+                                            <hr style="background-color: #e5e5e5; height: 1px; border: 0; margin: 8px 0 0 0;">
+                                        </div>
+
+                                        <div class="col-xs-8 text-left pl0 pr0">
+                                            <h5 *ngIf="socialConnection.source !== 'LINKEDIN'">
+                                                <span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span> New
+                                                <span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
+                                                <span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
+                                                <br>(Past 7 days)
+                                            </h5>
+                                        </div>
+                                        <div class=" col-xs-4 text-right pt10 pb10">
+                                            <div id="sparkline_{{socialConnection.profileId}}">
+                                                <canvas width="46" height="20"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!--Gender Demographics-->
+                    <div class="clearfix hidden">
+                        <h4 class="gd-title">Gender Demographics</h4>
+                        <div class="col-xs-6 text-right p0">
+                            <div class="facebook-color">
+                                <div class="col-xs-12">
+                                    <span class="gd-male">
+                      <i class="fa fa-male fa1"></i>
+                    </span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="number">
+                                        <span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+                        <h4>
+                          <b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+                        </h4>
+                      </span>
+                                        <ng-template #default_gender_demographics>
+                                            <h4>
+                                                <b>N/A</b>
+                                            </h4>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 p0">
+                            <div class="google-color">
+                                <div class="col-xs-12">
+                                    <span class="gd-female">
+                      <i class="fa fa-female fa1"></i>
+                    </span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="number">
+                                        <span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+                        <h4>
+                          <b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+                        </h4>
+                      </span>
+                                        <ng-template #default_gender_demographics>
+                                            <h4>
+                                                <b>N/A</b>
+                                            </h4>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <app-scroll-top></app-scroll-top>
+</div>
+</ng-container>
+<!-- Modals -->
+<div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+
+    <div class="modal-dialog modal-css" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 class="m0">People who have
+                    <span *ngIf="paginationType=='open'">opened your emails</span>
+                    <span *ngIf="paginationType=='clicked'">clicked your emails</span>
+                    <span *ngIf="paginationType=='watched'">watched your videos</span>
+                </h4>
+                <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+                    <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
+              <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+              <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+            </span>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body clearfix">
+
+                <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+                    <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
+                </div>
+
+                <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
+                    <strong>No results found</strong>
+                </div>
+                <div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
+                    <table class="table tgrid" id="sample_editable_1" [hidden]="isLoadingList">
+                        <thead>
+                            <tr>
+                                <th class="headerCss center">NAME</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType == 'clicked'">URL</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType == 'open'">SUBJECT</th>
+                                <th class="headerCss center hidden-xs">CAMPAIGN NAME</th>
+                                <th class="headerCss center hidden-xs">DATE & Time</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">LOCATION</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">PLATFORM</th>
+                                <th class="hidden-sm hidden-md hidden-lg">MORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let emailClicked of pagination.pagedItems;let i = index">
+                                <tr>
+                                    <td>
+                                        <app-user-info *ngIf="paginationType == 'open'" [userInfo]="emailClicked" [isCompanyInfo]="true"> </app-user-info>
+                                        <app-user-info *ngIf="paginationType != 'open'" [userInfo]="emailClicked"> </app-user-info>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType =='clicked'">
+                                        <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
+                                        <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType == 'open'">
+                                        <h5 title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
+                                        <h4 *ngIf="emailClicked.campaignName==null">-</h4>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType != 'open'">
+                                        <app-location [userLocation]="emailClicked"> </app-location>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType != 'open'">
+                                        <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
+                                    </td>
+                                    <td align="center" class="hidden-sm hidden-md hidden-lg">
+                                        <button  class="lightgray-btn" id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
+                      <span *ngIf="!emailClicked.isShowDetails">More</span>
+                      <span *ngIf="emailClicked.isShowDetails">Less</span>
+                    </button>
+                                    </td>
+                                </tr>
+                                <tr class="hidden-sm hidden-md hidden-lg" [ngClass]="{'hidden': !emailClicked.isShowDetails, 'show-more': emailClicked.isShowDetails}">
+                                    <td colspan="8">
+                                        <table cellpadding="5" cellspacing="0">
+                                            <tbody>
+                                                <tr *ngIf="paginationType == 'clicked'">
+                                                    <td class="headerCss center" *ngIf="paginationType == 'clicked'">URL</td>
+                                                    <td class="center" *ngIf="paginationType =='clicked'">
+                                                        <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
+                                                        <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType == 'open'">
+                                                    <td *ngIf="paginationType == 'open'" class='pt10 pb10 bold'>Subject: </td>
+                                                    <td class="center" *ngIf="paginationType == 'open'">
+                                                        <h5 title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>CAMPAIGN NAME:</td>
+                                                    <td class="center">
+                                                        <h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
+                                                        <h4 *ngIf="emailClicked.campaignName==null">-</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Time:</td>
+                                                    <td class="center">
+                                                        <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType != 'open'">
+                                                    <td class='pt10 pb10 bold'>Location:</td>
+                                                    <td class="center" *ngIf="paginationType != 'open'">
+                                                        <app-location [userLocation]="emailClicked"> </app-location>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType != 'open'">
+                                                    <td class='pt10 pb10 bold'>Platform:</td>
+                                                    <td class="center" *ngIf="paginationType != 'open'">
+                                                        <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pg8" *ngIf="pagination.pagedItems.length !== 0">
+                    <app-pagination [hidden]="isLoadingList" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- world map user details  -->
+<div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 class="m0">Check out where your videos are being watched</h4>
+                <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+                    <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
+              <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+              <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+            </span>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+                    <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
+                </div>
+                <div *ngIf="isLoadingList">
+                    <app-list-loader></app-list-loader>
+                </div>
+                <div class="table-responsive" *ngIf="!isLoadingList">
+                    <table class="table tgrid">
+                        <thead>
+                            <tr>
+                                <th class="headerCss center">NAME</th>
+                                <th class="headerCss center hidden-xs">Most Recent View</th>
+                                <th class="headerCss center hidden-xs">LOCATION</th>
+                                <th class="headerCss center hidden-xs">DEVICE</th>
+                                <th class="hidden-sm hidden-md hidden-lg">MORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of worldMapUserData;let i = index">
+                                <tr>
+                                    <td>
+                                        <app-user-info [userInfo]="item"> </app-user-info>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-location [userLocation]="item"> </app-location>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+                                    </td>
+                                    <td align="center" class="hidden-sm hidden-md hidden-lg">
+                                        <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
+                          <span *ngIf="!item.isShowDetails">More</span>
+                          <span *ngIf="item.isShowDetails">Less</span>
+                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hidden-sm hidden-md hidden-lg" [ngClass]="{'hidden': !item.isShowDetails, 'show-more': item.isShowDetails}">
+                                    <td colspan="8">
+                                        <table cellpadding="5" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Date &Time:</td>
+                                                    <td class="center">
+                                                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Location: </td>
+                                                    <td style="text-align: center">
+                                                        <app-location [userLocation]="item"> </app-location>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Platform: </td>
+                                                    <td style="text-align: center">
+                                                        <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0 && !isLoadingList" [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+
+<div class="portlet light portlet-fullscreen" [hidden]="!isFullscreenToggle">
+    <div class="portlet-title">
+        <div class="caption">
+            <span class="caption-subject">Campaign Statistics</span>
+        </div>
+        <div>
+            <div class="panel-title pull-right">
+                <span style="font-size: 13px;">
+            <span [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value" class="tooltip-css"  data-toggle="tooltip" data-placement="left" title="7 Days">
+              <i class="fa fa-question-circle tool-size" ></i>
+            </span>
+                <span [hidden]="heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value" class="tooltip-css" data-toggle="tooltip"
+                    data-placement="left" title="14 Days">
+              <i class="fa fa-question-circle tool-size" ></i>
+            </span>
+                <span [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value" class="tooltip-css" data-toggle="tooltip"
+                    data-placement="left" title="21 Days">
+              <i class="fa fa-question-circle tool-size" ></i>
+            </span>
+                <span [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[4].value" class="tooltip-css" data-toggle="tooltip"
+                    data-placement="left" title="Current Month">
+              <i class="fa fa-question-circle tool-size"></i>
+            </span>
+                <span [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[2].value" class="tooltip-css" data-toggle="tooltip"
+                    data-placement="left" title="Current Year">
+              <i class="fa fa-question-circle tool-size" ></i>
+            </span>
+                <select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
+              <option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
+            </select>
+                </span>
+                <span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;" data-toggle="tooltip" data-placement="left" title="Exit Full Screen">
+            <i style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i>
+          </span>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
+    </div>
+</div>
+</ng-container>

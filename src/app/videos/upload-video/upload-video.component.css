@@ -1,0 +1,175 @@
+input[type='file'],
+input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer;
+    color: transparent;
+}
+.fa-cloud-upload{
+color: white;
+font-size: 5em;
+line-height: initial;
+}
+textarea {
+resize: none;
+max-height: 100%;
+max-width: 100%;
+min-height: 100%;
+min-width: 100%;
+padding: 10px;
+}
+
+@media only screen and (max-width:600px){
+  #my-video{  height:160px; width: 287px }
+}
+@media only screen and (min-width:768px){
+  #my-video{  height:160px; width: 217px; }
+}
+@media only screen and (min-width:992px){
+  #my-video{  height:160px; width:290px;}
+}
+
+.upload-video{
+font-weight: 500;
+color: #717171;
+}
+#myVideo{  background-color: #5fdbf5; width: 100%; height: 350px;}
+.zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
+            -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
+.zoomin img:hover { width: 87px;height: 87px;  }
+.closeModal {
+float:right;
+font-size:21px;font-weight:700;line-height:1;opacity:1;
+}
+.my-drop-zone {
+width :auto;
+border-radius: 0;
+border: dotted 3px lightgray;
+min-height: 186px;
+}
+.nav-file-over { border: 0;}
+.another-file-over-class { border: dotted 3px green; }
+.fileinput-button {
+position: relative;
+overflow: hidden;
+}
+.fileinput-button input {
+position: absolute;
+top: 0;
+right: 0;
+margin: 0;
+opacity: 0;
+-ms-filter: 'alpha(opacity=0)';
+font-size: 200px;
+direction: ltr;
+cursor: pointer;
+}
+/* Fixes for IE < 8 */
+@media screen\9 {
+.fileinput-button input {
+filter: alpha(opacity=0);
+height: 100%;
+}
+}
+.customLoaderBar{
+padding: 0px;
+background-color: #b0b6bd;
+margin-bottom: 20px;
+margin-right: 304px;
+margin-left: 19px;
+}
+.loaderSymbol{ height: 63px;color: black; border-color: #000000; background: #dff0d8;}
+@media only screen and (max-width:600px){
+.loaderSymbol{ height: 130px;color: black; border-color: #000000; background: #dff0d8;}
+}
+.p-tag-loaderCss {
+  top: -70px;
+  position: relative;
+  left: 31px;
+}
+.loader-image-tag {
+  width: 64px;
+  top: -16px;
+  left: -18px;
+  position: relative;
+}
+.h2text {
+font-weight: bold;color:blue;
+}
+.disabledSocial {
+cursor: not-allowed;
+opacity:0.4;
+}
+:host /deep/ .video-js .vjs-time-control{
+line-height : 3.3em;
+}
+:host /deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
+line-height: 2.455em;
+}
+:host /deep/ .vjs-control-bar {
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+background-color : rgba(43, 51, 63, 0.7) !important;
+}
+.record-textarea{
+width: 100% ;height:55px;line-height:16px; font-size: 14px;
+}
+
+#file-upload { width:0; height:0; }
+.box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
+.portlet.light {padding: 10px;min-height: 580px;}
+.upload-video-css {
+    padding:0;
+    margin-bottom: 9px;
+}
+.customDisableCss {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.upload-button{
+  padding: 22px 71px;
+}
+@media only screen and (max-width:600px){.upload-button{ padding: 14px 30px;} .modal-cam{ width: 100% !important;}}
+@media only screen and (min-width:601px){.modal-cam{ width: 47% !important;}}
+@media only screen and (max-width:600px){
+  .upload-button{ padding: 14px 30px;}
+  .modal-css{ width: 47%;}
+}
+@media only screen and (min-width:992px){
+  .upload-button{ padding: 48px 20px;  }
+}
+@media only screen and (min-width:768px){
+  .upload-button{ padding: 17px 94px;  }
+}
+@media only screen and (min-width:600px){
+  .upload-button{ padding: 19px 23px; }
+}
+
+@media only screen and (max-width:600px){
+  .video-padding{ cursor: pointer;}
+}
+@media only screen and (min-width:992px){
+  .video-padding{ padding: 0;  }
+}
+@media only screen and (min-width:768px){
+  .video-padding{ padding: 0;  }
+}
+.mt-5{margin-top: -5px!important;}
+.text-css{position: absolute;left: 57px;top: 13px;}
+.text-css-content {  position: absolute; left: 57px; top: 20px;}
+.message-content{
+  border: dotted 3px lightgray;
+  min-height: 77px;
+  padding: 4px 0px;
+}
+
+@media only screen and (max-width:600px){
+  .mPageBar{
+    margin-top: -6px;
+    margin-bottom: 10px;
+  }
+  .mtop{
+    top:2px;
+  }
+}
