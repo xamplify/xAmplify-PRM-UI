@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!authenticationService?.module?.prmDashboard">
+<div class="page-content">
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div class="page-bar mPageBar mb-height_auto" style="height:48px;">
       <ul class="page-breadcrumb">
@@ -321,41 +321,5 @@
    </div>   
 </div>
       </div>
-   </div>
-</div>
-<!--XNFR-130 Dashboard For PRM-->
-<div class="page-content" *ngIf="authenticationService?.module?.prmDashboard">
-   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <!--Page Bar-->
-   <div class="page-bar mPageBar">
-      <ul class="page-breadcrumb">
-         <li>
-            <i class="fa fa-home" aria-hidden="true"></i>
-            <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
-         </li>
-      </ul>
-      <!-- User Guide for vanity -->
-      <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
-      <!-- User Guide-->
-   </div>
-   <div>
-      <!--Top 4 Assets--------------->
-      <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false"
-         *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
-      <!--Top 4 Shared Assets--------------->
-      <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false"
-         *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
-      <!--Top 4 Tracks--------------->
-      <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true"
-         *ngIf="authenticationService?.module?.lmsAccess"></app-top-4-tracks-and-play-books>
-      <!--Top 4 Shared Tracks--------------->
-      <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true"
-         *ngIf="authenticationService?.module?.lmsAccessAsPartner"></app-top-4-tracks-and-play-books>
-      <!--Top 4 PlayBooks--------------->
-      <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false"
-         *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
-      <!--Top 4 Shared PlayBooks--------------->
-      <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false"
-         *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
    </div>
 </div>
