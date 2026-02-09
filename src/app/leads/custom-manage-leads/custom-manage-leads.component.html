@@ -351,9 +351,6 @@
   </div>
   </div>
 
-<!-- <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">
-</app-deal-chat-popup> -->
-
 <section *ngIf="showLeadForm">
   <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
