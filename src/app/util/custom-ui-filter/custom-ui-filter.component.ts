@@ -99,7 +99,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		if (type === "Assets") {
 			this.filterOptions.push(
 				{ 'name': 'assetsname', 'value': 'Asset Name' },
-				{ 'name': 'folder', 'value': 'Folder' },
+				// { 'name': 'folder', 'value': 'Folder' },
 				{ 'name': 'type', 'value': 'Type' }
 			);
 
@@ -118,7 +118,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 				this.parterViewText = "Published On";
 			} else {
-				this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });
+				// this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });
 				this.parterViewText = "Created On";
 				/*** XBI-2133 ***/
 				if (this.isWhiteLabeledAsset) {

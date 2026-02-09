@@ -6,7 +6,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { LmsService } from 'app/lms/services/lms.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-module-status-analytics',
@@ -39,13 +39,18 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   isFolderViewTile: any;
   vendorCompanyProfileName: string = null;
   sharedcontentCountsLoader: boolean = false;
+  @Input() showTiles: boolean = true;
+  categoryId: any;
+  publishedCount: number = 0;
+  manageFolderCount: number = 0;
   constructor(private approveService: ApproveService, public authenticationService: AuthenticationService, private lmsService: LmsService, private referenceService: ReferenceService,
-    private router: Router) {
+    private router: Router,private route: ActivatedRoute) {
  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     }
   }
   ngOnInit() {
+    this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
     let selected;
 
     const isFolderView =
@@ -129,8 +134,8 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
         this.getTileCountsForApproveModule();
         this.hideContentTiles = true;
       } else {
-        this.getTileCounts();
         this.getContentCounts();
+        this.getTileCounts();
       }
     }
   }
@@ -147,13 +152,18 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   getTileCounts() {
     this.countsLoader = true;
-    this.approveService.getStatusTileCountsByModuleType(this.moduleType)
+     this.showTiles = this.showTiles;
+    this.categoryId = this.categoryId;
+    if(this.categoryId == null || this.categoryId == 0 || Number.isNaN(this.categoryId)){
+       this.categoryId = 0;
+    }
+    this.approveService.getStatusTileCountsByModuleType(this.moduleType, this.showTiles,this.categoryId)
       .subscribe(
         response => {
-          this.countsLoader = false;
           if (response.data) {
             this.setTilesData(response);
           }
+          this.countsLoader = false;
         },
         (error: any) => {
           this.countsLoader = false;
@@ -260,10 +270,12 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     this.contentCountsLoader = true;
     this.lmsService.getManageContentCounts(this.moduleType).subscribe(
       (response: any) => {
-        this.contentCountsLoader = false;
         if (response.statusCode == 200) {
+          this.publishedCount = response.map.publishedCount;
+          this.manageFolderCount = response.map.manageFolderCount;
           this.manageContentCounts = response.map;
         }
+        this.contentCountsLoader = false;
       },
       (_error: any) => {
         this.contentCountsLoader = false;

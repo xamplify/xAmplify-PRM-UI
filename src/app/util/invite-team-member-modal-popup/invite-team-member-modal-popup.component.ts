@@ -82,7 +82,7 @@ export class InviteTeamMemberModalPopupComponent implements OnInit {
     this.isPopupLoading = true;
     $('#invite_team_member_modal').modal('show');
     this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
-    let templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
+    let templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 50;
     this.teamMemberService.getHtmlBody(templateId).subscribe(
       response => {
         if (response.statusCode === 200) {

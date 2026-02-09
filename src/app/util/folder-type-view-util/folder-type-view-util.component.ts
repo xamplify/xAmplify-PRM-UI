@@ -42,6 +42,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Input() selectedFoldersForOliver: any[] = [];
   @Input() isPartnerViewFromOliver: boolean = false;
   @Input() pageSource: string = "";
+  @Output() previewFolder = new EventEmitter<void>();
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -234,6 +235,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId: number) {
+    this.referenceService.hideTilesForPreview = true;
+    // this.previewFolder.emit();
     this.utilService.folderListViewSelected = false;
     if (this.FromOliverPopUp) {
       this.folderViewAssetEventEmitter.emit(categoryId);

@@ -158,6 +158,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() fromListView: boolean = false;
 	@Input() oliverIntegrationType: any;
 	selectedFolderItems: any[] = []; 
+	showTiles: boolean;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -171,6 +172,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.showTiles = !this.referenceService.hideTilesForPreview;
+        this.referenceService.hideTilesForPreview = false;
 		if (this.referenceService.isOliverEnabled) {
 			this.referenceService.isOliverEnabled = false;
 			this.AskOliver(this.referenceService.asset)

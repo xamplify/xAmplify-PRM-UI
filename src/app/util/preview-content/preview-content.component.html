@@ -1,6 +1,6 @@
 <div *ngIf="!isPreviewPopup">
   <!-- Inline header controls (Close, Refresh, etc.) -->
-  <a *ngIf="!pdfLoader" (click)="closePreview()" class="close-circle ref-mar c ml5 mb5" data-placement="top"
+  <a *ngIf="!pdfLoader && !isFromModalPopup" (click)="closePreview()" class="close-circle ref-mar c ml5 mb5" data-placement="top"
     data-toggle="tooltip" title="Close">
     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
     top: 4px;" aria-hidden="true"></span></a>
@@ -40,7 +40,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <button class="close-circle" (click)="closePreview()" data-dismiss="modal" type="button">
+        <button *ngIf="!isFromModalPopup" class="close-circle" (click)="closePreview()" data-dismiss="modal" type="button">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <h4 class="modal-title text-center" id="myModalLabel">Preview</h4>
