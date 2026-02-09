@@ -633,6 +633,9 @@ export class SortOption {
 		{ 'name': 'website', 'value': 'Website' },
 		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	];
+	partnerGroupFilterOptions = [
+        { 'name': 'groupName', 'value': 'Group Name'  }
+    ];
 	contactFilterOptions = [
 		{ 'name': 'contactStatus', 'value': 'Contact Status'  }
 	];

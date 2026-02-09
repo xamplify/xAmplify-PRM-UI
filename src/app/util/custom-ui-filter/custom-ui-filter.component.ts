@@ -46,6 +46,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	isAssetTabSelected: any = false;
 	sortOption: SortOption = new SortOption();
 	@Input() showDateFilters : boolean;
+	@Input() isTeamMemberPartnerList: boolean;
 
 	constructor(private router: Router,public authenticationService: AuthenticationService) {
 	}
@@ -127,8 +128,14 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			}
 			this.allfilterOptions = this.filterOptions;
 		} else if (type == "Partners") {
-			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
-			this.allfilterOptions = this.filterOptions;
+			if (this.isTeamMemberPartnerList) {
+				this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
+			} else {
+				this.filterOptions = [
+					...this.sortOption.commonFilterOptions,
+					...this.sortOption.partnerFilterOptions, ...this.sortOption.partnerGroupFilterOptions]
+			}
+			this.allfilterOptions = [...this.filterOptions];
 			this.parterViewText = "Onboarded On";
 		} else if (type == "Contacts") {
 			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.contactFilterOptions];
