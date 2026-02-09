@@ -477,4 +477,10 @@ getSharedAssetDetailsByIdForVendor(id: number) {
       .map(this.extractData)
       .catch(this.handleError);
     }
+
+  getAssetById(assetId: any) {
+    let loggedInUserValue = "&loggedInUserId=" + this.authenticationService.getUserId();
+    return this.http.get(this.URL + "assets/" + assetId + "?access_token=" + this.authenticationService.access_token + loggedInUserValue).map(this.extractData).catch(this.handleError);
+  }
+
 }

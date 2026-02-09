@@ -337,10 +337,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   public validatorsTag = [this.startsWithAt];
 
   shareClick() {
-    this.embedModalComponent.shareClick(this.saveVideoFile,'share');
+    // this.embedModalComponent.shareClick(this.saveVideoFile,'share');
+    this.referenceService.showAlert();
   }
   embedModal(){
-     this.embedModelVideo = this.saveVideoFile;
+    //  this.embedModelVideo = this.saveVideoFile;
+    this.referenceService.showAlert();
   }
   // call to action values
   callActionValues(overlayValue: string, startCallAction: boolean, endCallAction: boolean, videoPlaybutton: string) {

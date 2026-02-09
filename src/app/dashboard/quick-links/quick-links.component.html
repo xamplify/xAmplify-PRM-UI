@@ -138,3 +138,6 @@
         </a>
     </div>
 </ng-template>
+
+<app-preview-content-modal-popup *ngIf="showPreviewContentModalPopup" [assetId]="assetId"
+	(notifyClose)="closePreviewContentModalPopup()"></app-preview-content-modal-popup>

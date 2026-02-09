@@ -1,4 +1,5 @@
-<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" [showApprovalTiles]="authenticationService?.approvalRequiredForAssets" [isPartnerView]="isPartnerView" *ngIf="(!folderListViewExpanded 
+<app-content-module-status-analytics [showTiles]="showTiles" [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
+	[showApprovalTiles]="authenticationService?.approvalRequiredForAssets" [isPartnerView]="isPartnerView" *ngIf="(!folderListViewExpanded 
 		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled) && !FromOliverPopUp">
 </app-content-module-status-analytics>
 
@@ -654,7 +655,7 @@
 					[selectedFoldersForOliver]="selectedFolderItems" [modulesDisplayType]="modulesDisplayType"
 					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
 					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
-					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
+					(notifyFolders)="handleFolders($event)" (previewFolder)="hideTiles()"></app-folder-type-view-util>
 			</div>
 
 		</div>

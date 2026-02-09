@@ -31,6 +31,8 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   quickLinksPagination:Pagination = new Pagination();
   isNavigatingToViewAll = false;
   @Input() isDraggingEnabled: boolean;
+  assetId: any;
+  showPreviewContentModalPopup: boolean;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
@@ -79,7 +81,67 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   }
 
   preview(quickLink:any){
-    this.referenceService.handleQuickLinkPreview(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
+    // this.referenceService.handleQuickLinkPreview(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
+    this.handleQuickLinkPreview(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
+  }
+
+  handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
+    const viewType = `/${this.referenceService.getDefaultViewType()}`;
+    let router = '';
+    let id = quickLink.id;
+    if (isPartnerLoggedInThroughVanityUrl) {
+      id = quickLink.damPartnerId;
+    }
+    const navigateToDamPartnerView = () => {
+      router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${id}${viewType}`;
+    };
+
+    const handleAssetPreview = () => {
+      if (this.referenceService.isVideo(quickLink.assetType)) {
+        const videoUrl = `/home/dam/previewVideo/${quickLink.videoId}/${quickLink.id}`;
+        this.referenceService.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
+      } else if (quickLink.beeTemplate) {
+        this.referenceService.previewAssetPdfInNewTab(quickLink.id);
+      } else {
+        // this.preivewAssetOnNewHost(quickLink.id);
+        this.previewContentUsingModalPopup(quickLink);
+      }
+    };
+
+    const handleOtherTypes = () => {
+      switch (quickLink.type) {
+        case 'Track':
+          router = `home/tracks/tb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+          break;
+        case 'Play Book':
+          router = `home/playbook/pb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+          break;
+      }
+    };
+
+    if (quickLink.type === 'Asset') {
+      if (isPartnerLoggedInThroughVanityUrl) {
+        navigateToDamPartnerView();
+      } else {
+        handleAssetPreview();
+      }
+    } else {
+      handleOtherTypes();
+    }
+
+    if (router) {
+      this.referenceService.goToRouter(router);
+    }
+  }
+
+  previewContentUsingModalPopup(quickLink: any) {
+    this.assetId = quickLink.id;
+    this.showPreviewContentModalPopup = true;
+  }
+
+  closePreviewContentModalPopup() {
+    this.assetId = 0;
+    this.showPreviewContentModalPopup = false;
   }
 
 

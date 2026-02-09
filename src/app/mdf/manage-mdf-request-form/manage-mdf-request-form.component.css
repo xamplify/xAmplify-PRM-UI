@@ -79,3 +79,7 @@ Uncommenting these lines will create an issue.https://xamplify.atlassian.net/iss
 @media (min-width: 360px) and (max-width: 390px) {
   div#comments-div{height:0px !important}
 } */
+
+.button-float-left {
+  float: inline-end;
+}

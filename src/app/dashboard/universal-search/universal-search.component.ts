@@ -32,6 +32,10 @@ export class UniversalSearchComponent implements OnInit {
   isTeamMember: boolean;
   showAlertOfContent:boolean = false;
   showTeammemberFilter:boolean= false;
+  showPreviewContentModalPopup: boolean;
+  proxyAssetPath: any;
+  fileType: any;
+  assetId: any;
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService, public router: Router, public utilService: UtilService) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
@@ -106,6 +110,16 @@ export class UniversalSearchComponent implements OnInit {
     }
 
   }
+
+  previewContentUsingModalPopup(quickLink: any) {
+    this.assetId = quickLink.id;
+    this.showPreviewContentModalPopup = true;
+  }
+
+  closePreviewContentModalPopup() {
+    this.assetId = 0;
+    this.showPreviewContentModalPopup = false;
+  }
   handleTrackOrPlaybookePreviwe(quickLink: any) {
     const viewType = `/${this.defaultDisplayType}`;
     let router = '';
@@ -132,7 +146,8 @@ export class UniversalSearchComponent implements OnInit {
     } else if (quickLink.beeTemplate) {
       this.referenceService.previewAssetPdfInNewTab(quickLink.id);
     } else {
-      this.referenceService.preivewAssetOnNewHost(quickLink.id);
+      // this.referenceService.preivewAssetOnNewHost(quickLink.id);
+      this.previewContentUsingModalPopup(quickLink);
     }
   }
   navigateToDamPartnerView(quickLink: any) {

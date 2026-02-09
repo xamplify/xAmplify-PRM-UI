@@ -18,6 +18,7 @@ export class PreviewContentComponent implements OnInit {
   @Input() isImageFormat: boolean = false;
   @Input() isTextFormat: boolean = false;
   @Input() isPreviewPopup: boolean = false;
+  @Input() isFromModalPopup: boolean = false;
   
 
   @Output() notifyClose = new EventEmitter();

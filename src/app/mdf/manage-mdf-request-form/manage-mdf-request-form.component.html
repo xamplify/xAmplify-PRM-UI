@@ -197,6 +197,9 @@
 <div style="margin-top:10px">
    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
+<button *ngIf="showMDFCreateFormButton && authenticationService?.module.isPartner" (click)="createDefaultMDFForm()"
+   class="button_blue bgcolor-unset request-comment button-float-left"><span
+      class="btn btn-primary transition neg_mrg_top8">Create Default MDF Form</span></button>
 <!--Add/Remove Comments Modal Pop Up------->
 <div id="requestCommentModalPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
    data-backdrop="static" data-keyboard="false">

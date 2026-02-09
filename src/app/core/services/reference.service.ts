@@ -187,6 +187,7 @@ export class ReferenceService {
   selectedTab: string;
   categoryTrackPlaybookType:boolean = false;
   docxLoader: boolean = false;
+	hideTilesForPreview: any;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

@@ -33,14 +33,14 @@
          <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect"
                [class.active]="selectedFilter == 'published' || referenceService.categoryType == 'published'"
-               (click)="manageContentCounts?.publishedCount > 0 && filterAssets('published')"
-               [ngStyle]="{'cursor': manageContentCounts?.publishedCount > 0 ? 'pointer' : 'not-allowed'}">
+               (click)="publishedCount > 0 && filterAssets('published')"
+               [ngStyle]="{'cursor': publishedCount > 0 ? 'pointer' : 'not-allowed'}">
                <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'published',
                     'front-count-purple': selectedFilter != 'published'}">
                   <i *ngIf="selectedFilter == 'published'" class="fa fa-check"></i>
                   <i *ngIf="selectedFilter != 'published'" class="fa fa-bullhorn"></i>
                </div>
-               <div class="front-count-number">{{ manageContentCounts?.publishedCount}} </div>
+               <div class="front-count-number">{{ publishedCount}} </div>
                <div class="front-count-label">Published <i class="fa fa-info-circle ml5" aria-hidden="true"
                      title="Total published assets "></i></div>
             </div>
@@ -137,14 +137,14 @@
 
          <div class="front-count-col" *ngIf="moduleType.toLowerCase() != 'approve'">
             <div class="front-count-card tiles_hover_effect" [class.active]="selectedFilter == 'folder'"
-               (click)="manageContentCounts?.manageFolderCount > 0 && filterAssets('folder')"
-               [ngStyle]="{'cursor': manageContentCounts?.manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
+               (click)="manageFolderCount > 0 && filterAssets('folder')"
+               [ngStyle]="{'cursor': manageFolderCount > 0 ? 'pointer' : 'not-allowed'}">
                <div class="front-count-icon" [ngClass]="{'front-count-green': selectedFilter == 'folder',
                              'front-count-purple': selectedFilter !== 'folder'}">
                   <i *ngIf="selectedFilter == 'folder'" class="fa fa-check	"></i>
                   <i *ngIf="selectedFilter !== 'folder'" class="fa fa-folder-open"></i>
                </div>
-               <div class="front-count-number">{{ manageContentCounts?.manageFolderCount }}</div>
+               <div class="front-count-number">{{ manageFolderCount }}</div>
                <div class="front-count-label">Folders <i class="fa fa-info-circle ml5" aria-hidden="true"
                      title="Total folders"></i></div>
             </div>

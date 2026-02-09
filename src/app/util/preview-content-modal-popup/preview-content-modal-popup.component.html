@@ -1,0 +1,20 @@
+<div class="modal fade right" id="addPreviewContentModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog dymc_width" role="document">
+    <!-- <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Preview Content</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+        <app-preview-content *ngIf="proxyAssetPath != undefined" [isFromModalPopup]="'true'" [previewPath]="proxyAssetPath" [fileType]="fileType"
+          [isImageFormat]="isImageFormat" [isTextFormat]="isTextFormat" (notifyClose)="closeModal()"></app-preview-content>
+      </div>
+      <div class="modal-footer" style="border: none">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModal()" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

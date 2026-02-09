@@ -185,6 +185,7 @@ import { PartnerCompanyDomainModalPopupComponent } from 'app/util/partner-compan
 import { InviteTeamMemberModalPopupComponent } from 'app/util/invite-team-member-modal-popup/invite-team-member-modal-popup.component';
 import { DamAnalyticsDetailsComponent } from 'app/dam/dam-analytics-details/dam-analytics-details.component';
 import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe';
+import { PreviewContentModalPopupComponent } from 'app/util/preview-content-modal-popup/preview-content-modal-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -228,7 +229,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
 		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent, SelectfieldComponent, OrderFieldsComponent,
 		ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent,
-		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe
+		ChooseEmailtemplateComponent,PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe, PreviewContentModalPopupComponent
 	],
 
 
@@ -272,7 +273,7 @@ import { SelectAssetTypeFilterPipe } from 'app/dam/select-asset-type-filter.pipe
 		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,SelectfieldComponent,
 		OrderFieldsComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
 		CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent, AssetSignatureStatusAnalyticsComponent, ChooseEmailtemplateComponent ,
-		PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe
+		PartnerCompanyDomainModalPopupComponent, InviteTeamMemberModalPopupComponent,DamAnalyticsDetailsComponent,SelectAssetTypeFilterPipe, PreviewContentModalPopupComponent
 	]
 
 

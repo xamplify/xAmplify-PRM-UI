@@ -119,10 +119,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
        $('#modalDialog').append($('#overlay-modal').show());
     }
     shareClick() {
-      this.embedModalComponent.shareClick(this.selectedVideo,'share');
-    }
+    this.referenceService.showAlert();
+}
     embedModal() {
-        this.embedModelVideo = this.selectedVideo;
+        this.referenceService.showAlert();
     }
     showVideo(videoFile: SaveVideoFile) {
         this.isVideoChanged = true;
