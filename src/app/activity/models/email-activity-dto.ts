@@ -22,5 +22,5 @@ export class EmailActivity {
     toEmailIdsString:any;
     attachmentPaths:any;
     fileNames:any;
-    emailActivityId: number = 0;
+    emailActivityId: number = 0; 
 }
