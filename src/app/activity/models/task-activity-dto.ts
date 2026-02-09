@@ -18,4 +18,6 @@ export class TaskActivity {
     profilePath:any;
     userIds = [];
     isCompanyJourney:boolean;
+
+  
 }
