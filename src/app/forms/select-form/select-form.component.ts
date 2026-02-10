@@ -40,9 +40,7 @@ export class SelectFormComponent implements OnInit {
     this.selectedFormTypeIndex = 0;
     this.pagination.filterKey = "All";
     this.listDefaultForms(this.pagination);
-    /*** XNFR-512 *****/
     this.getRoleByUserId();
-    /*** XNFR-512 *****/
   }
   /*** XNFR-512 *****/
   getRoleByUserId() {
