@@ -1963,7 +1963,8 @@
 <ng-template #filterOptionDiv>
 	<app-custom-ui-filter *ngIf="showFilterOption" [type]="'Partners'" [criteria] = "criteria"
 		(filterConditionsEmitter)="partnersFilter($event)"
-		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
+		(closeFilterEmitter)="closeFilterEmitter($event)"
+        [isTeamMemberPartnerList]="(pagination.partnerTeamMemberGroupFilter) || authenticationService?.isTeamMemberRestrictionEnabled"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-938 -->
 <ng-template *ngIf="actionType === 'edit'" [ngTemplateOutlet]="partnerModuleConfigPopup"

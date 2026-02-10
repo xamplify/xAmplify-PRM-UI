@@ -754,7 +754,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
     /***Remove Column from create form***********/
     removeColumn(columnInfo: ColumnInfo, rowIndex: number, columnIndex: number) {
-        if (columnInfo.defaultColumn === false) {
+        if (columnInfo.defaultColumn === false || columnInfo.defaultColumn == undefined) {
             let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
             this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
             $('#' + columnInfo.divId).remove();
