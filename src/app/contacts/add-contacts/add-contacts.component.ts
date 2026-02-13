@@ -4060,19 +4060,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.hideCSVInNotes = true;
         $("button#salesforce_save_button").prop('disabled', true);
         if (this.contactType === "contacts") {
-            this.getConnectWiseContacts();
             this.hubSpotContactListName = '';
         } else if (this.contactType === "lists") {
-            this.getConnectWiseContactListsById();
+          
         }
     }
 
-    getConnectWiseContacts() {
-       
-    }
-    getConnectWiseContactListsById() {
-        
-    }
     frameConnectWisePreview(response: any) {
         this.connectWiseErrorMessage = false;
         if (!response.contacts || response.contacts.length === 0) {
@@ -4368,5 +4361,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
       }
 }
+
 
 
